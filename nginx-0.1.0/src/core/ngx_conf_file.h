@@ -82,9 +82,11 @@ struct ngx_command_s {
 
 #define ngx_null_command   { ngx_null_string, 0, NULL, 0, 0, NULL }
 
-
+//z 打开的文件
 struct ngx_open_file_s {
+    //z 文件描述符
     ngx_fd_t   fd;
+    //z 文件名称
     ngx_str_t  name;
 #if 0
     /* e.g. append mode, error_log */

@@ -11,7 +11,7 @@
 #include <ngx_config.h>
 #include <ngx_core.h>
 
-
+//z 记录日志的级别
 #define NGX_LOG_STDERR            0
 #define NGX_LOG_EMERG             1
 #define NGX_LOG_ALERT             2
@@ -39,22 +39,24 @@
 #define NGX_LOG_DEBUG_CONNECTION  0x80000000
 #define NGX_LOG_DEBUG_ALL         0x7ffffff0
 
-
+//z 定义函数指针
 typedef size_t  (*ngx_log_handler_pt) (void *ctx, char *buf, size_t len);
 
 
 struct ngx_log_s {
+    //z 记录日志的层级
     ngx_uint_t           log_level;
-    ngx_open_file_t     *file;
+    ngx_open_file_t     *file;//z 文件名以及文件描述符
     void                *data;
-    ngx_log_handler_pt   handler;
+    ngx_log_handler_pt   handler;//z 对应函数
 };
 
+//z 错误字符串长度
 #define MAX_ERROR_STR	 2048
 
 
 /*********************************/
-
+//z 优先查看 gcc
 #if (HAVE_GCC_VARIADIC_MACROS)
 
 #define HAVE_VARIADIC_MACROS  1
@@ -66,7 +68,7 @@ void ngx_log_error_core(ngx_uint_t level, ngx_log_t *log, ngx_err_t err,
                         const char *fmt, ...);
 
 /*********************************/
-
+//z 查看编译器： 是否支持 VARIADIC MACROS
 #elif (HAVE_C99_VARIADIC_MACROS)
 
 #define HAVE_VARIADIC_MACROS  1
@@ -82,7 +84,7 @@ void ngx_log_error_core(ngx_uint_t level, ngx_log_t *log, ngx_err_t err,
 #else /* NO VARIADIC MACROS */
 
 #define HAVE_VARIADIC_MACROS  0
-
+//z 使用其他的方式来解决
 void ngx_log_error(ngx_uint_t level, ngx_log_t *log, ngx_err_t err,
                    const char *fmt, ...);
 void ngx_log_error_core(ngx_uint_t level, ngx_log_t *log, ngx_err_t err,
