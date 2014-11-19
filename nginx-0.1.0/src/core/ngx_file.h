@@ -17,14 +17,14 @@ typedef struct ngx_path_s  ngx_path_t;
 
 
 struct ngx_file_s {
-    ngx_fd_t         fd;
-    ngx_str_t        name;
-    ngx_file_info_t  info;
+    ngx_fd_t         fd;//z 文件描述符
+    ngx_str_t        name;//z 文件名称
+    ngx_file_info_t  info;//z file stat
 
     off_t            offset;
     off_t            sys_offset;
 
-    ngx_log_t       *log;
+    ngx_log_t       *log;//z 日志文件
 
     unsigned         info_valid:1;
 };
@@ -35,9 +35,7 @@ struct ngx_path_s {
     ngx_str_t           name;
     u_int               len;
     u_int               level[3];
-    ngx_gc_handler_pt   gc_handler;
-};
-
+    ngx_gc_handler_pt   gc_hafdc
 
 typedef struct {
     ngx_file_t   file;
