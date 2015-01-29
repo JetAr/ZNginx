@@ -1,4 +1,4 @@
-/* Various functions of utilitarian nature.
+ï»¿/* Various functions of utilitarian nature.
    Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
 
 This file is part of Wget.
@@ -740,7 +740,7 @@ read_whole_line (FILE *fp)
    buffer with the contents.  *NREAD will contain the number of read
    bytes.  The file is loaded in chunks, allocated exponentially,
    starting with FILE_BUFFER_SIZE bytes.  */
-// ½«ÎÄ¼şÈ«ÔØÈëµ½ BUFF ÖĞÈ¥
+// å°†æ–‡ä»¶å…¨è½½å…¥åˆ° BUFF ä¸­å»
 void
 load_file (FILE *fp, char **buf, long *nread)
 {
@@ -752,7 +752,7 @@ load_file (FILE *fp, char **buf, long *nread)
 
 	while (!feof (fp) && !ferror (fp))
     {
-		// ÔÚÎÄ¼ş½ÏĞ¡µÄÇé¿öÏÂ
+		// åœ¨æ–‡ä»¶è¾ƒå°çš„æƒ…å†µä¸‹
 		*buf = (char *)xrealloc (*buf, bufsize + *nread);
 		*nread += fread (*buf + *nread, sizeof (char), bufsize, fp);
 		bufsize <<= 1;

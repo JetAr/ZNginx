@@ -1,4 +1,4 @@
-/* Miscellaneous declarations.
+ï»¿/* Miscellaneous declarations.
    Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
 
 This file is part of Wget.
@@ -106,22 +106,22 @@ char *xstrdup PARAMS ((const char *));
 /* Useful macros used across the code: */
 
 /* Is the string a hpyhen-only?  */
-// xÎª'-'£¬²¢ÇÒx+1²»Îª¿Õ£»ÓÃÔÚ option ÖĞ£¿
+// xä¸º'-'ï¼Œå¹¶ä¸”x+1ä¸ä¸ºç©ºï¼›ç”¨åœ¨ option ä¸­ï¼Ÿ
 #define HYPHENP(x) (*(x) == '-' && !*((x) + 1))
 
 /* The smaller value of the two.  */
 #define MINVAL(x, y) ((x) < (y) ? (x) : (y))
 
 /* ASCII char -> HEX digit */
-//½«ÎÄ±¾×Ö·û×ª»»³É16½øÖÆµÄÊı×Ö
+//å°†æ–‡æœ¬å­—ç¬¦è½¬æ¢æˆ16è¿›åˆ¶çš„æ•°å­—
 #define ASC2HEXD(x) (((x) >= '0' && (x) <= '9') ?               \
 		     ((x) - '0') : (toupper(x) - 'A' + 10))
 
 /* HEX digit -> ASCII char */
-// ½«16½øÖÆ×ª»»³É×ÖÄ¸
+// å°†16è¿›åˆ¶è½¬æ¢æˆå­—æ¯
 #define HEXD2ASC(x) (((x) < 10) ? ((x) + '0') : ((x) - 10 + 'A'))
 
-// µÃµ½ array µÄ´óĞ¡
+// å¾—åˆ° array çš„å¤§å°
 #define ARRAY_SIZE(array) (sizeof (array) / sizeof (*(array)))
 
 /* Note that this much more elegant definition cannot be used:
@@ -132,7 +132,7 @@ char *xstrdup PARAMS ((const char *));
    function correctly.  Gcc under Intel has been reported to offend in
    this case.  */
 
-// ·ÖÅä¿Õ¼ä£¬²¢ÇÒ¸´ÖÆ×Ö·û´®
+// åˆ†é…ç©ºé—´ï¼Œå¹¶ä¸”å¤åˆ¶å­—ç¬¦ä¸²
 #define STRDUP_ALLOCA(ptr, str) do {		\
   (ptr) = (char *)alloca (strlen (str) + 1);	\
   strcpy (ptr, str);				\

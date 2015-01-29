@@ -1,4 +1,4 @@
-/* Command line parsing.
+ï»¿/* Command line parsing.
    Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
 
 This file is part of Wget.
@@ -74,7 +74,7 @@ const char *exec_name;
 /* Initialize I18N.  The initialization amounts to invoking
    setlocale(), bindtextdomain() and textdomain().
    Does nothing if NLS is disabled or missing.  */
-// ³õÊ¼»¯¹ú¼Ê»¯Ö§³Ö
+// åˆå§‹åŒ–å›½é™…åŒ–æ”¯æŒ
 static void
 i18n_initialize (void)
 {
@@ -89,7 +89,7 @@ i18n_initialize (void)
      strptime() fails to handle international dates correctly, which
      makes http_atotm() malfunction.  */
   printf("i18n_initialize:HAVE_NLS\N");
-  // ÉèÖÃÇøÓò»¯ĞÅÏ¢
+  // è®¾ç½®åŒºåŸŸåŒ–ä¿¡æ¯
   setlocale (LC_MESSAGES, "");
   /* Set the text message domain.  */
   bindtextdomain ("wget", LOCALEDIR);
@@ -272,26 +272,26 @@ main (int argc, char *const *argv)
     { 0, 0, 0, 0 }
   };
 
-  // Îª¹ú¼Ê»¯Ö§³Ö×ö³õÊ¼»¯
+  // ä¸ºå›½é™…åŒ–æ”¯æŒåšåˆå§‹åŒ–
   i18n_initialize ();
 
   append_to_log = 0;
 
   /* Construct the name of the executable, without the directory part.  */
-  // ÔÚfull path ÖĞÕÒ³ö×îºóÒ»¸ö·Ö¸ô·ûºóµÄ×Ö·û´®
+  // åœ¨full path ä¸­æ‰¾å‡ºæœ€åä¸€ä¸ªåˆ†éš”ç¬¦åçš„å­—ç¬¦ä¸²
   exec_name = strrchr (argv[0], PATH_SEPARATOR);
-  // µÃµ½¿ÉÖ´ĞĞÎÄ¼şµÄÃû³Æ
+  // å¾—åˆ°å¯æ‰§è¡Œæ–‡ä»¶çš„åç§°
   if (!exec_name)
     exec_name = argv[0];
   else
     ++exec_name;
 
 #ifdef WINDOWS
-  // ½« wget.exe -> wget £¬ È¥³ıºó×ºÃû³Æ
+  // å°† wget.exe -> wget ï¼Œ å»é™¤åç¼€åç§°
   windows_main_junk (&argc, (char **) argv, (char **) &exec_name);
 #endif
 
-  // ÓÃÄ¬ÈÏÖµ½øĞĞ³õÊ¼»¯£¬Ê¹ÓÃÏµÍ³ºÍÓÃ»§¶¨ÒåÎÄ¼şwgetrc½øĞĞ³õÊ¼»¯
+  // ç”¨é»˜è®¤å€¼è¿›è¡Œåˆå§‹åŒ–ï¼Œä½¿ç”¨ç³»ç»Ÿå’Œç”¨æˆ·å®šä¹‰æ–‡ä»¶wgetrcè¿›è¡Œåˆå§‹åŒ–
   initialize ();
 
   // command parser
@@ -669,7 +669,7 @@ Can't timestamp and not clobber old files at the same time.\n"));
   status = RETROK;		/* initialize it, just-in-case */
   recursive_reset ();
 
-  // ´Ó²ÎÊıÁĞ±íÖĞµÃµ½ url 
+  // ä»å‚æ•°åˆ—è¡¨ä¸­å¾—åˆ° url 
   /* Retrieve the URLs from argument list.  */
   for (t = url; *t; t++)
     {
@@ -685,7 +685,7 @@ Can't timestamp and not clobber old files at the same time.\n"));
       FREE_MAYBE (filename);
     }
 
-  // Èç¹ûÑ¡ÏîÖĞÓĞ -f filelist£¬´ÓÎÄ¼şÖĞ¶ÁÈ¡
+  // å¦‚æœé€‰é¡¹ä¸­æœ‰ -f filelistï¼Œä»æ–‡ä»¶ä¸­è¯»å–
   /* And then from the input file, if any.  */
   if (opt.input_filename)
     {

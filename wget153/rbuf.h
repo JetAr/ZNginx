@@ -1,4 +1,4 @@
-/* Declarations for rbuf.c.
+﻿/* Declarations for rbuf.c.
    Copyright (C) 1998 Free Software Foundation, Inc.
 
 This file is part of Wget.

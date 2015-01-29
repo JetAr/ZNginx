@@ -1,4 +1,4 @@
-/* alloca.c -- allocate automatically reclaimed memory
+ï»¿/* alloca.c -- allocate automatically reclaimed memory
 (Mostly) portable public-domain implementation -- D A Gwyn
 
  This implementation of the PWB library alloca function,
@@ -112,9 +112,9 @@ STACK_DIRECTION = 0 => direction of growth unknown  */
 static int stack_dir;		/* 1 or -1 once known.  */
 #define	STACK_DIR	stack_dir
 
-// ±È½ÏĞÂµÄÊÇ 1.11.4 °æ
+// æ¯”è¾ƒæ–°çš„æ˜¯ 1.11.4 ç‰ˆ
 
-// µÃµ½Õ»Ôö³¤µÄ·½Ïò
+// å¾—åˆ°æ ˆå¢é•¿çš„æ–¹å‘
 static void
 find_stack_direction ()
 {
@@ -123,9 +123,9 @@ find_stack_direction ()
 
 	if (addr == NULL)
     {				/* Initial entry.  */
-		// µÚÒ»´ÎµÃµ½Ò»¸öµØÖ·
+		// ç¬¬ä¸€æ¬¡å¾—åˆ°ä¸€ä¸ªåœ°å€
 		// #define ADDRESS_FUNCTION(arg) &(arg)
-		// Ö±½ÓÈ¡Ò»¸öº¯ÊıµÄµØÖ·¡£
+		// ç›´æ¥å–ä¸€ä¸ªå‡½æ•°çš„åœ°å€ã€‚
 		addr = ADDRESS_FUNCTION (dummy);
 
 		find_stack_direction ();	/* Recurse once.  */
@@ -133,7 +133,7 @@ find_stack_direction ()
 	else
     {
 		/* Second entry.  */
-		// µÚ¶ş´Î½øÈë±È½ÏÁ½¸öµØÖ·
+		// ç¬¬äºŒæ¬¡è¿›å…¥æ¯”è¾ƒä¸¤ä¸ªåœ°å€
 		if (ADDRESS_FUNCTION (dummy) > addr)
 			stack_dir = 1;		/* Stack grew upward.  */
 		else
@@ -157,13 +157,13 @@ alignment chunk size.  The following default should work okay.  */
 
 typedef union hdr
 {
-	// 8¸ö×Ö·û´®
+	// 8ä¸ªå­—ç¬¦ä¸²
 	char align[ALIGN_SIZE];	/* To force sizeof(header).  */
 
-	// ½á¹¹
+	// ç»“æ„
 	struct
     {
-		// ÓÖ·ÅÈëÒ»¸ö hdr
+		// åˆæ”¾å…¥ä¸€ä¸ª hdr
 		union hdr *next;		/* For chaining headers.  */
 		// deep 
 		char *deep;		/* For stack depth measure.  */
@@ -172,7 +172,7 @@ typedef union hdr
 
 static header *last_alloca_header = NULL;	/* -> last alloca header.  */
 
-// reclaimed: »ØÊÕµÄ£»ÔÙÔìµÄ
+// reclaimed: å›æ”¶çš„ï¼›å†é€ çš„
 /* Return a pointer to at least SIZE bytes of storage,
 which will be automatically reclaimed upon exit from
 the procedure that called alloca.  Originally, this space
@@ -181,9 +181,9 @@ caller, but that method cannot be made to work for some
 implementations of C, for example under Gould's UTX/32.  */
 
 /*
-·µ»ØÒ»¸öSIZE´óĞ¡µÄ¿Õ¼ä
-ÔÚµ÷ÓÃÕß½áÊøµÄÊ±ºò¸Ã¿Õ¼ä½«×Ô¶¯»ØÊÕ
-¸Ã¿Õ¼äÊÇ´Óµ÷ÓÃÕßÉÏµÄÕ»¿Õ¼äÉêÇëµÄ¡£
+è¿”å›ä¸€ä¸ªSIZEå¤§å°çš„ç©ºé—´
+åœ¨è°ƒç”¨è€…ç»“æŸçš„æ—¶å€™è¯¥ç©ºé—´å°†è‡ªåŠ¨å›æ”¶
+è¯¥ç©ºé—´æ˜¯ä»è°ƒç”¨è€…ä¸Šçš„æ ˆç©ºé—´ç”³è¯·çš„ã€‚
 */
 pointer
 alloca (size)

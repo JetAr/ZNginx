@@ -1,4 +1,4 @@
-/* Pattern matching (globbing).
+﻿/* Pattern matching (globbing).
    Copyright (C) 1991, 1996, 1997 Free Software Foundation, Inc.
 
 This file is part of Wget.

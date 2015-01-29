@@ -1,4 +1,4 @@
-/* Dealing with host names.
+﻿/* Dealing with host names.
    Copyright (C) 1995, 1996, 1997 Free Software Foundation, Inc.
 
 This file is part of Wget.

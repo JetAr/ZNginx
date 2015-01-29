@@ -1,4 +1,4 @@
-/* Opie (s/key) support for FTP.
+﻿/* Opie (s/key) support for FTP.
    Copyright (C) 1998 Free Software Foundation, Inc.
 
 This file is part of Wget.

@@ -1,4 +1,4 @@
-/* mswindows.c -- Windows-specific support
+ï»¿/* mswindows.c -- Windows-specific support
    Copyright (C) 1995, 1996, 1997, 1998  Free Software Foundation, Inc.
 
 This file is part of Wget.
@@ -90,7 +90,7 @@ pwd_cuserid (char *where)
   return xstrdup (buf);
 }
 
-// ×÷ÓÃÀàËÆÓÚ wget.exe -> wget
+// Ã—Ã·Ã“ÃƒÃ€Ã Ã‹Ã†Ã“Ãš wget.exe -> wget
 void
 windows_main_junk (int *argc, char **argv, char **exec_name)
 {

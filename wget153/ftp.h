@@ -1,4 +1,4 @@
-/* Declarations for FTP support.
+﻿/* Declarations for FTP support.
    Copyright (C) 1995, 1996, 1997 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify

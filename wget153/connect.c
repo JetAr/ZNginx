@@ -1,4 +1,4 @@
-/* Establishing and handling network connections.
+﻿/* Establishing and handling network connections.
    Copyright (C) 1995, 1996, 1997 Free Software Foundation, Inc.
 
 This file is part of Wget.

@@ -1,4 +1,4 @@
-/* ansi2knr.c */
+﻿/* ansi2knr.c */
 /* Convert ANSI C function definitions to K&R ("traditional C") syntax */
 
 /*

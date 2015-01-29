@@ -1,4 +1,4 @@
-/* Messages logging.
+﻿/* Messages logging.
    Copyright (C) 1998 Free Software Foundation, Inc.
 
 This file is part of Wget.

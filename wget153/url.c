@@ -1,4 +1,4 @@
-/* URL handling.
+ï»¿/* URL handling.
 Copyright (C) 1995, 1996, 1997 Free Software Foundation, Inc.
 
  This file is part of Wget.
@@ -63,7 +63,7 @@ encoding, and \033 for safe printing.  */
 
 /* If S contains unsafe characters, free it and replace it with a
 version that doesn't.  */
-// SÊÇ·ñ°üº¬²»°²È«×Ö·û´®£¬Èç¹û°üº¬£¬Ôòencode(s)£¬½«SÌæ»»µô
+// Sæ˜¯å¦åŒ…å«ä¸å®‰å…¨å­—ç¬¦ä¸²ï¼Œå¦‚æœåŒ…å«ï¼Œåˆ™encode(s)ï¼Œå°†Sæ›¿æ¢æ‰
 #define URL_CLEANSE(s) do			\
 {						\
 	if (contains_unsafe (s))			\
@@ -74,7 +74,7 @@ version that doesn't.  */
 }						\
 } while (0)
 
-// ÊÇ·ñÊÇÄ¿Â¼×ÔÉí»òÊÇÉÏÒ»¼¶Ä¿Â¼
+// æ˜¯å¦æ˜¯ç›®å½•è‡ªèº«æˆ–æ˜¯ä¸Šä¸€çº§ç›®å½•
 /* Is a directory "."?  */
 #define DOTP(x) ((*(x) == '.') && (!*(x + 1)))
 /* Is a directory ".."?  */
@@ -91,7 +91,7 @@ and FTP are currently supported.
   There are wild things here.  :-) Take a look at
   <URL:http://www.w3.org/pub/WWW/Addressing/schemes.html> for more
 fun.  */
-// Ğ­Òé×Ö·û´®
+// åè®®å­—ç¬¦ä¸²
 static char *protostrings[] =
 {
 	"cid:",
@@ -127,7 +127,7 @@ static char *protostrings[] =
 		NULL
 };
 
-// ÓÃÓÚ´æ´¢Ö§³ÖĞ­ÒéÏà¹ØĞÅÏ¢µÄ½á¹¹
+// ç”¨äºå­˜å‚¨æ”¯æŒåè®®ç›¸å…³ä¿¡æ¯çš„ç»“æ„
 struct proto
 {
 	char *name;
@@ -135,7 +135,7 @@ struct proto
 	unsigned short port;
 };
 
-// Ö§³ÖµÄĞ­Òé
+// æ”¯æŒçš„åè®®
 /* Similar to former, but for supported protocols: */
 static struct proto sup_protos[] =
 {
@@ -153,7 +153,7 @@ static char process_ftp_type PARAMS ((char *));
 /* Returns the number of characters to be skipped if the first thing
 in a URL is URL: (which is 0 or 4+).  The optional spaces after
 URL: are also skipped.  */
-// Ìø¹ıurl:ÒÔ¼°½ôËæÆäºóµÄ¿Õ°×·ûºÅ
+// è·³è¿‡url:ä»¥åŠç´§éšå…¶åçš„ç©ºç™½ç¬¦å·
 int
 skip_url (const char *url)
 {
@@ -166,7 +166,7 @@ skip_url (const char *url)
 		&& url[3] == ':')
     {
 		/* Skip blanks.  */
-		// Ìø¹ı¿Õ°×·ûºÅ
+		// è·³è¿‡ç©ºç™½ç¬¦å·
 		for (i = 4; url[i] && ISSPACE (url[i]); i++);
 		return i;
     }
@@ -175,7 +175,7 @@ skip_url (const char *url)
 }
 
 /* Returns 1 if the string contains unsafe characters, 0 otherwise.  */
-// ÊÇ·ñ°üº¬·Ç°²È«×Ö·û´®
+// æ˜¯å¦åŒ…å«éå®‰å…¨å­—ç¬¦ä¸²
 int
 contains_unsafe (const char *s)
 {
@@ -216,7 +216,7 @@ decode_string (char *s)
 	*p = '\0';
 }
 
-// encode ²»°²È«×Ö·û´®
+// encode ä¸å®‰å…¨å­—ç¬¦ä¸²
 /* Encodes the unsafe characters (listed in URL_UNSAFE) in a given
 string, returning a malloc-ed %XX encoded string.  */
 char *
@@ -229,7 +229,7 @@ encode_string (const char *s)
 	b = s;
 	for (i = 0; *s; s++, i++)
 	{
-		// Ö»Òª·¢ÏÖÒ»¸ö²»°²È«µÄ×Ö·û´®£¬³¤¶È¾ÍÔö¼Ó2£¨Òò±àÂëÒ»¸öÕâÑùµÄ×Ö·ûĞè3×Ö·û£©
+		// åªè¦å‘ç°ä¸€ä¸ªä¸å®‰å…¨çš„å­—ç¬¦ä¸²ï¼Œé•¿åº¦å°±å¢åŠ 2ï¼ˆå› ç¼–ç ä¸€ä¸ªè¿™æ ·çš„å­—ç¬¦éœ€3å­—ç¬¦ï¼‰
 		if (strchr (URL_UNSAFE, *s))
 			i += 2; /* Two more characters (hex digits) */
 	}
@@ -258,18 +258,18 @@ urlproto (const char *url)
 {
 	int i;
 
-	// ½«urlÒÆ¶¯µ½url:Ö®ºó£¨Ô½¹ı¿Õ°×·û£©
+	// å°†urlç§»åŠ¨åˆ°url:ä¹‹åï¼ˆè¶Šè¿‡ç©ºç™½ç¬¦ï¼‰
 	url += skip_url (url);
 
-	// ²é¿´ÊÇ·ñÊÇÖ§³ÖµÄĞ­Òé
+	// æŸ¥çœ‹æ˜¯å¦æ˜¯æ”¯æŒçš„åè®®
 	for (i = 0; i < ARRAY_SIZE (sup_protos); i++)
 		if (!strncasecmp (url, sup_protos[i].name, strlen (sup_protos[i].name)))
 			return sup_protos[i].ind;
 
-		// Ö»ÒªurlÖĞµ±Ç°ÔªËØ²»ÊÇ : »òÊÇ /£¬¾Í¼ÌĞøÇ°½ø
+		// åªè¦urlä¸­å½“å‰å…ƒç´ ä¸æ˜¯ : æˆ–æ˜¯ /ï¼Œå°±ç»§ç»­å‰è¿›
 		for (i = 0; url[i] && url[i] != ':' && url[i] != '/'; i++);
 		
-		// Èç¹ûurlÖĞÓĞ£º
+		// å¦‚æœurlä¸­æœ‰ï¼š
 		if (url[i] == ':')
 		{
 			for (++i; url[i] && url[i] != '/'; i++)
@@ -290,7 +290,7 @@ urlproto (const char *url)
 
 /* Skip the protocol part of the URL, e.g. `http://'.  If no protocol
 part is found, returns 0.  */
-// ·µ»ØĞèÒªÔ½¹ıµÄ×Ö·ûÊıÄ¿£¬Èç "http://" ,¾ÍÔ½¹ı 7¸ö
+// è¿”å›éœ€è¦è¶Šè¿‡çš„å­—ç¬¦æ•°ç›®ï¼Œå¦‚ "http://" ,å°±è¶Šè¿‡ 7ä¸ª
 int
 skip_proto (const char *url)
 {
@@ -313,7 +313,7 @@ skip_proto (const char *url)
 
 /* Returns 1 if the URL begins with a protocol (supported or
 unsupported), 0 otherwise.  */
-// ÊÇ·ñÓĞÒ»¸ö Proto
+// æ˜¯å¦æœ‰ä¸€ä¸ª Proto
 static int
 has_proto (const char *url)
 {
@@ -331,13 +331,13 @@ should be called *not* with the complete URL, but with the part
 right after the protocol.
 
 If no username and password are found, return 0.  */
-// Èç¹ûÓĞÃû×Ö»òÊÇÃÜÂë£¬ÄÇÃ´ÏÈÓÃÓÒ±ßµÄÀ´½øĞĞ·ÃÎÊµÄ£¨×ó±ßº¬ÓĞÓÃ»§ÃûºÍÃÜÂë£©
+// å¦‚æœæœ‰åå­—æˆ–æ˜¯å¯†ç ï¼Œé‚£ä¹ˆå…ˆç”¨å³è¾¹çš„æ¥è¿›è¡Œè®¿é—®çš„ï¼ˆå·¦è¾¹å«æœ‰ç”¨æˆ·åå’Œå¯†ç ï¼‰
 int
 skip_uname (const char *url)
 {
 	const char *p;
 
-	// Èç¹ûÕÒµ½Ò»¸ö "@"
+	// å¦‚æœæ‰¾åˆ°ä¸€ä¸ª "@"
 	for (p = url; *p && *p != '/'; p++)
 	{
 		if (*p == '@')
@@ -357,7 +357,7 @@ skip_uname (const char *url)
 
 /* Allocate a new urlinfo structure, fill it with default values and
 return a pointer to it.  */
-// µÃµ½Ò»¸öĞÂµÄ urlinfo ½á¹¹
+// å¾—åˆ°ä¸€ä¸ªæ–°çš„ urlinfo ç»“æ„
 struct urlinfo *
 newurl (void)
 {
@@ -365,7 +365,7 @@ newurl (void)
 
 	u = (struct urlinfo *)xmalloc (sizeof (struct urlinfo));
 
-	//³õÊ¼»¯
+	//åˆå§‹åŒ–
 	memset (u, 0, sizeof (*u));
 	u->proto = URLUNKNOWN;
 
@@ -416,11 +416,11 @@ pointers to allocated memory.
  
   If the argument STRICT is set, it recognizes only the canonical
 form.  */
-// Íê³É¶ÔurlµÄ½âÎö
-// Ğ­Òé
-// Ö÷»úÃû
-// ÓÃ»§Ãû£¬ÃÜÂë
-// Ä¿Â¼Ãû
+// å®Œæˆå¯¹urlçš„è§£æ
+// åè®®
+// ä¸»æœºå
+// ç”¨æˆ·åï¼Œå¯†ç 
+// ç›®å½•å
 uerr_t
 parseurl (const char *url, struct urlinfo *u, int strict)
 {
@@ -432,15 +432,15 @@ parseurl (const char *url, struct urlinfo *u, int strict)
 	uerr_t type;
 
 	DEBUGP (("parseurl (\"%s\") -> ", url));
-	// Ìø¹ı url: ¼°¿Õ¸ñ
+	// è·³è¿‡ url: åŠç©ºæ ¼
 	url += skip_url (url);
-	// ÊÇ·ñ¾ßÓĞĞ­Òé
+	// æ˜¯å¦å…·æœ‰åè®®
 	recognizable = has_proto (url);
-	// ÊÇ·ñ¶¨ÒåÁË strict ? 
+	// æ˜¯å¦å®šä¹‰äº† strict ? 
 	if (strict && !recognizable)
 		return URLUNKNOWN;
 	
-	// ÔÙ´Î´ÓurlÖĞ²éÕÒÊÇ·ñÓĞÖ§³ÖµÄĞ­Òé
+	// å†æ¬¡ä»urlä¸­æŸ¥æ‰¾æ˜¯å¦æœ‰æ”¯æŒçš„åè®®
 	for (i = 0, l = 0; i < ARRAY_SIZE (sup_protos); i++)
     {
 		l = strlen (sup_protos[i].name);
@@ -471,12 +471,12 @@ parseurl (const char *url, struct urlinfo *u, int strict)
 		return URLBADHOST;
 
 	/* Get the hostname.  */
-	// µÃµ½ host Ãû
+	// å¾—åˆ° host å
 	u->host = strdupdelim (url + l, url + i);
 	DEBUGP (("host %s -> ", u->host));
 
 	/* Assume no port has been given.  */
-	// ½âÎö³öport
+	// è§£æå‡ºport
 	u->port = 0;
 
 	if (url[i] == ':')
@@ -503,11 +503,11 @@ parseurl (const char *url, struct urlinfo *u, int strict)
 		else                      /* or just a misformed port number */
 			return URLBADPORT;
     }
-	// Ä¬ÈÏÎª http Ğ­Òé
+	// é»˜è®¤ä¸º http åè®®
 	else if (type == URLUNKNOWN)
 		u->proto = type = URLHTTP;
 
-	// ÈçÃ»ÓĞÉêÃ÷¶Ë¿Ú£¬²ÉÓÃÄ¬ÈÏµÄ
+	// å¦‚æ²¡æœ‰ç”³æ˜ç«¯å£ï¼Œé‡‡ç”¨é»˜è®¤çš„
 	if (!u->port)
     {
 		int i;
@@ -529,7 +529,7 @@ parseurl (const char *url, struct urlinfo *u, int strict)
 	if (type == URLHTTP)
 		while (url[i] && url[i] == '/')
 			++i;
-		// µÃµ½ dir
+		// å¾—åˆ° dir
 		u->path = (char *)xmalloc (strlen (url + i) + 8);
 		strcpy (u->path, url + i);
 
@@ -663,7 +663,7 @@ parse_uname (const char *url, char **user, char **passwd)
 	 url += l;
 
 	 /* Is there an `@' character?  */
-	 // ÔÚ url ÖĞÊÇ·ñÓĞ '@' ·ûºÅ
+	 // åœ¨ url ä¸­æ˜¯å¦æœ‰ '@' ç¬¦å·
 	 for (p = url; *p && *p != '/'; p++)
 	 {
 		 if (*p == '@')
@@ -671,7 +671,7 @@ parse_uname (const char *url, char **user, char **passwd)
 	 }
 
 	 /* If not, return.  */
-	 // Èç¹ûÃ»ÓĞ'@'Ö±½Ó·µ»ØµÄ
+	 // å¦‚æœæ²¡æœ‰'@'ç›´æ¥è¿”å›çš„
 	 if (*p != '@')
 		 return URLOK;
 
@@ -717,7 +717,7 @@ parse_uname (const char *url, char **user, char **passwd)
  number, directory and optional user/password.  If HIDE is non-zero,
  password will be hidden.  The forbidden characters in the URL will
  be cleansed.  */
- // µÃµ½Ò»¸öurlÁ¼¹¹µÄ×Ö·û´®
+ // å¾—åˆ°ä¸€ä¸ªurlè‰¯æ„çš„å­—ç¬¦ä¸²
  char *
 	 str_url (const struct urlinfo *u, int hide)
  {
@@ -725,7 +725,7 @@ parse_uname (const char *url, char **user, char **passwd)
 	 int i, l, ln, lu, lh, lp, lf, ld;
 
 	 /* Look for the protocol name. */
-	 // ÕÒµ½ºÏÊÊµÄĞ­ÒéÃû³Æ
+	 // æ‰¾åˆ°åˆé€‚çš„åè®®åç§°
 	 for (i = 0; i < ARRAY_SIZE (sup_protos); i++)
 	 {
 		 if (sup_protos[i].ind == u->proto)
@@ -881,7 +881,7 @@ url_equal (const char *url1, const char *url2)
 /* Scans the file for signs of URL-s.  Returns a vector of pointers,
  each pointer representing a URL string.  The file is *not* assumed
  to be HTML.  */
-// ²ÉÓÃÊ²Ã´ÑùµÄ½á¹¹À´ÃèÊö
+// é‡‡ç”¨ä»€ä¹ˆæ ·çš„ç»“æ„æ¥æè¿°
  urlpos *
 	 get_urls_file (const char *file)
  {
@@ -892,7 +892,7 @@ url_equal (const char *url1, const char *url2)
 	 int size;
 	 urlpos *first, *current, *old;
 	 
-	 // ´ò¿ªÎÄ¼ş
+	 // æ‰“å¼€æ–‡ä»¶
 	 if (file && !HYPHENP (file))
 	 {
 		 fp = fopen (file, "rb");
@@ -909,7 +909,7 @@ url_equal (const char *url1, const char *url2)
 	 }
 
 	 /* Load the file.  */
-	// ÔØÈëÎÄ¼şµ½ buff ÖĞÈ¥
+	// è½½å…¥æ–‡ä»¶åˆ° buff ä¸­å»
 	 load_file (fp, &buf, &nread);
 
 	 if (file && !HYPHENP (file))
@@ -920,7 +920,7 @@ url_equal (const char *url1, const char *url2)
 	 first = current = NULL;
 
 	 /* Fill the linked list with URLs.  */
-	 // ½« buf ÖĞµÄ url ´æ·Åµ½ linked list ÖĞÈ¥
+	 // å°† buf ä¸­çš„ url å­˜æ”¾åˆ° linked list ä¸­å»
 	 for (pbuf = buf; (pbuf = findurl (pbuf, nread - (pbuf - buf), &size));pbuf += size)
 	 {
 		 /* Allocate the space.  */
@@ -951,7 +951,7 @@ url_equal (const char *url1, const char *url2)
  constructs the HTML-s from the relative href-s.
  
  If SILENT is non-zero, do not barf on baseless relative links.  */
- // ÓëÉÏÀàËÆ£¬Ö»ÊÇÕâ´ÎÃæ¶ÔµÄÊÇ html 
+ // ä¸ä¸Šç±»ä¼¼ï¼Œåªæ˜¯è¿™æ¬¡é¢å¯¹çš„æ˜¯ html 
  urlpos *
 	 get_urls_html (const char *file, const char *this_url, int silent)
  {
@@ -983,7 +983,7 @@ url_equal (const char *url1, const char *url2)
 	 first_time = 1;
 
 	 /* Iterate over the URLs in BUF, picked by htmlfindurl().  */
-	 // ´Ó buf ÖĞµÃµ½ÏàÓ¦µÄ url µÄ
+	 // ä» buf ä¸­å¾—åˆ°ç›¸åº”çš„ url çš„
 	 for (buf = orig_buf;
 	 (buf = htmlfindurl (buf, nread - (buf - orig_buf), &step, first_time));
 	 buf += step)

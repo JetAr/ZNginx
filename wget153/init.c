@@ -1,4 +1,4 @@
-/* Reading/parsing the initialization file.
+ï»¿/* Reading/parsing the initialization file.
    Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
 
 This file is part of Wget.
@@ -175,7 +175,7 @@ comind (const char *com)
 }
 
 
-// ÖØÖÃ±äÁ¿ÎªÄ¬ÈÏÖµ
+// é‡ç½®å˜é‡ä¸ºé»˜è®¤å€¼
 /* Reset the variables to default values.  */
 static void
 defaults (void)
@@ -187,7 +187,7 @@ defaults (void)
      NULL this way is technically illegal, but porting Wget to a
      machine where NULL is not all-zero bit pattern will be the least
      of the implementors' worries.  */
-  // ¶¨ÒåÁËÒ»¸ö opt ´ó½á¹¹£¬½«Æä³õÊ¼»¯Îª0
+  // å®šä¹‰äº†ä¸€ä¸ª opt å¤§ç»“æ„ï¼Œå°†å…¶åˆå§‹åŒ–ä¸º0
   memset (&opt, 0, sizeof (opt));
   
   opt.verbose = -1;
@@ -349,7 +349,7 @@ run_wgetrc (const char *file)
 
 /* Initialize the defaults and run the system wgetrc and user's own
    wgetrc.  */
-// ³õÊ¼»¯Ä¬ÈÏÖµ£¬Ê¹ÓÃÏµÍ³wgetrc ºÍÓÃ»§×Ô¼ºµÄ wgetrc
+// åˆå§‹åŒ–é»˜è®¤å€¼ï¼Œä½¿ç”¨ç³»ç»Ÿwgetrc å’Œç”¨æˆ·è‡ªå·±çš„ wgetrc
 void
 initialize (void)
 {

@@ -1,4 +1,4 @@
-/* Basic FTP routines.
+﻿/* Basic FTP routines.
    Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
 
 This file is part of Wget.

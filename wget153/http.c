@@ -1,4 +1,4 @@
-/* HTTP support.
+ï»¿/* HTTP support.
 Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
 
  This file is part of Wget.
@@ -556,7 +556,7 @@ again:
 			return HERR;
 		}
 		
-		// ÊÇ·ñÔÚÎÄ¼şÖĞ´æ·Å headers
+		// æ˜¯å¦åœ¨æ–‡ä»¶ä¸­å­˜æ”¾ headers
 		/* If the headers are to be saved to a file later, save them to
 		memory now.  */
 		if (opt.save_headers)
@@ -578,7 +578,7 @@ again:
 		{
 			const char *error;
 			/* Parse the first line of server response.  */
-			// ½âÎö·şÎñÆ÷·´Ó¦µÄµÚÒ»ĞĞ
+			// è§£ææœåŠ¡å™¨ååº”çš„ç¬¬ä¸€è¡Œ
 			statcode = parse_http_status_line (hdr, &error);
 			hs->statcode = statcode;
 			/* Store the descriptive response.  */
@@ -829,7 +829,7 @@ done_header:
 	reset_timer ();
 	
 	/* Get the contents of the document.  */
-	// µÃµ½ÎÄµµÄÚÈİ
+	// å¾—åˆ°æ–‡æ¡£å†…å®¹
 	hs->res = get_contents (sock, fp, &hs->len, hs->restval,
 		(contlen != -1 ? contlen : 0),
 		&rbuf);
@@ -963,7 +963,7 @@ http_loop (struct urlinfo *u, char **newloc, int *dt)
 				*dt &= ~SEND_NOCACHE;
 			
 			/* Try fetching the document, or at least its head.  :-) */
-			// ÊÔÍ¼»ñÈ¡http ÎÄµµ£¬ÖÁÉÙÊÇÎÄ¼şÍ·
+			// è¯•å›¾è·å–http æ–‡æ¡£ï¼Œè‡³å°‘æ˜¯æ–‡ä»¶å¤´
 			err = gethttp (u, &hstat, dt);
 			/* Time?  */
 			tms = time_str (NULL);

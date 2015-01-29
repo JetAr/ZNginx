@@ -1,4 +1,4 @@
-/* Declarations for `headers.c'.
+﻿/* Declarations for `headers.c'.
    Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
 
 This file is part of Wget.

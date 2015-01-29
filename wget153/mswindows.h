@@ -1,4 +1,4 @@
-/* Declarations for windows
+﻿/* Declarations for windows
    Copyright (C) 1995, 1997, 1997, 1998 Free Software Foundation, Inc.
 
 This file is part of Wget.

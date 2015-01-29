@@ -1,4 +1,4 @@
-/* File retrieval.
+ï»¿/* File retrieval.
 Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.
 
  This file is part of Wget.
@@ -296,7 +296,7 @@ rate (long bytes, long msecs)
 /* Retrieve the given URL.  Decides which loop to call -- HTTP, FTP,
 or simply copy it with file:// (#### the latter not yet
 implemented!).  */
-// retrieve: ¼ìË÷£»»ñÈ¡
+// retrieve: Â¼Ã¬Ã‹Ã·Â£Â»Â»Ã±ÃˆÂ¡
 uerr_t
 retrieve_url (const char *origurl, char **file, char **newloc,
 			  const char *refurl, int *dt)

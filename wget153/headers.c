@@ -1,4 +1,4 @@
-/* Generic support for headers.
+ï»¿/* Generic support for headers.
 Copyright (C) 1997, 1998 Free Software Foundation, Inc.
 
 This file is part of Wget.
@@ -55,7 +55,7 @@ used by anything that cares about RFC822-style headers.
 see.  */
 
 
-// ´Ó read-buffer ÖÐµÃµ½Ò»¸ö header£¬²¢½«Ö®´¢´æÔÚ hdr ÖÐ
+// ä»Ž read-buffer ä¸­å¾—åˆ°ä¸€ä¸ª headerï¼Œå¹¶å°†ä¹‹å‚¨å­˜åœ¨ hdr ä¸­
 /* Get a header from read-buffer RBUF and return it in *HDR.
 
  As defined in RFC2068 and elsewhere, a header can be folded into
