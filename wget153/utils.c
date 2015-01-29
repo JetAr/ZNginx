@@ -74,13 +74,16 @@ memfatal (const char *s)
 /* xmalloc, xrealloc and xstrdup exit the program if there is not
    enough memory.  xstrdup also implements strdup on systems that do
    not have it.  */
+//z 对malloc做了一个包装，可以处理内存不足的情况。
 void *
 xmalloc (size_t size)
 {
     void *res;
 
+	//z 分配对应大小的空间
     res = malloc (size);
     if (!res)
+		//z 如果没有分配成功，返回一个错误。
         memfatal ("malloc");
 
     return res;
@@ -127,6 +130,7 @@ xstrdup (const char *s)
 /* Copy the string formed by two pointers (one on the beginning, other
    on the char after the last char) to a new, malloc-ed location.
    0-terminate it.  */
+//z 半闭合区间 [)，为两个指针间的字符串在heap上复制一份。
 char *
 strdupdelim (const char *beg, const char *end)
 {
@@ -146,31 +150,44 @@ sepstring (const char *s)
     const char *p;
     int i = 0;
 
+	//z 如果 s 为null或者*s为0，直接返回。
     if (!s || !*s)
         return NULL;
 
     res = NULL;
+	//z 指针p指向字符串s开头，p指向const char ，确保不会更改字符串内容
     p = s;
 
     while (*s)
     {
+		//z 以 , 作为分隔符。
         if (*s == ',')
         {
+			//z 增加这里+2感觉没有多少意义？
             res = (char **)xrealloc (res, (i + 2) * sizeof (char *));
+			//z heap上创建一份拷贝
             res[i] = strdupdelim (p, s);
+			//z 最后一个置为NULL
             res[++i] = NULL;
+			//z 下一个
             ++s;
+
             /* Skip the blanks following the ','.  */
+			//z 如果下一个是 space 那么跳过这些个space
             while (ISSPACE (*s))
                 ++s;
-            p = s;
+            //z 指向下一个开始的字符
+			p = s;
         }
         else
+			//z 步进
             ++s;
     }
 
+	//z 处理最后一个字符串
     res = (char **)xrealloc (res, (i + 2) * sizeof (char *));
     res[i] = strdupdelim (p, s);
+	//z 设置为NULL
     res[i + 1] = NULL;
     return res;
 }

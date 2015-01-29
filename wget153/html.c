@@ -50,14 +50,17 @@ struct tag_attr
 
 
 /* Match a string against a null-terminated list of identifiers.  */
+//z 将tag以及attr和一个tag_attr结构数组比较；看其中是否已包含。
 static int
 idmatch (struct tag_attr *tags, const char *tag, const char *attr)
 {
     int i;
 
+	//z 其中之一为NULL，那么返回0
     if (!tag || !attr)
         return 0;
 
+	//z 比较
     for (i = 0; tags[i].tag; i++)
         if (!strcasecmp (tags[i].tag, tag) && !strcasecmp (tags[i].attr, attr))
             return 1;
@@ -67,7 +70,7 @@ idmatch (struct tag_attr *tags, const char *tag, const char *attr)
 /*
 which one is useful ?
 */
-
+//z 解析一个BUF，查看其中是否有URLS。如果遇到了对应的tag，那么解析出URL。
 /* Parse BUF (a buffer of BUFSIZE characters) searching for HTML tags
    describing URLs to follow.  When a tag is encountered, extract its
    components (as described by html_allow[] array), and return the
@@ -81,8 +84,10 @@ htmlfindurl(const char *buf, int bufsize, int *size, int init)
 
     /* NULL-terminated list of tags and modifiers someone would want to
        follow -- feel free to edit to suit your needs: */
+	//z 允许的 html tags；声明为static ，只要一份即可。
     static struct tag_attr html_allow[] =
     {
+		//z tag : attr 值对
         { "a", "href" },
         { "img", "src" },
         { "img", "href" },
@@ -105,7 +110,7 @@ htmlfindurl(const char *buf, int bufsize, int *size, int init)
         /* Tags below this line are treated specially.  */
         { "base", "href" },
         { "meta", "content" },
-        { NULL, NULL }
+        { NULL, NULL }//z 最后以NULL作为结尾
     };
 
     s = &global_state;
@@ -118,20 +123,25 @@ htmlfindurl(const char *buf, int bufsize, int *size, int init)
 
     while (1)
     {
+		//z 如果 bufsize 为0，跳出循环
         if (!bufsize)
             break;
 
         /* Let's look for a tag, if we are not already in one.  */
+		//z 首先寻找 tag
         if (!s->at_value)
         {
             /* Find '<'.  */
+			//z 找到 < 
             if (*buf != '<')
                 for (; bufsize && *buf != '<'; ++buf, --bufsize);
 
+			//z 如果 bufsize 为0 ，那么到达了结尾
             if (!bufsize)
                 break;
 
             /* Skip spaces.  */
+			//z 在处理的时候，跳过空格
             for (++buf, --bufsize; bufsize && ISSPACE (*buf) && *buf != '>';
                     ++buf, --bufsize);
 
@@ -141,12 +151,14 @@ htmlfindurl(const char *buf, int bufsize, int *size, int init)
             p = buf;
 
             /* Find the tag end.  */
+			//z 直到找到空格或者找到>，或者找到=，或者到达结尾。
             for (; bufsize && !ISSPACE (*buf) && *buf != '>' && *buf != '=';
                     ++buf, --bufsize);
 
             if (!bufsize)
                 break;
 
+			//z 如果找到了 = 
             if (*buf == '=')
             {
                 /* <tag=something> is illegal.  Just skip it.  */
@@ -175,6 +187,7 @@ htmlfindurl(const char *buf, int bufsize, int *size, int init)
         }
         else                      /* s->at_value */
         {
+			//z 这意思是在查找 value 。
             /* Reset AT_VALUE.  */
             s->at_value = 0;
             /* If in quotes, just skip out of them and continue living.  */
@@ -235,6 +248,7 @@ htmlfindurl(const char *buf, int bufsize, int *size, int init)
             if (!bufsize || *buf == '>')
                 break;
 
+			//z 找到这其间的值为 attr 。
             /* Construct the attribute.  */
             s->attr = strdupdelim (p, buf);
             /* Now we must skip the spaces to find '='.  */
@@ -246,33 +260,45 @@ htmlfindurl(const char *buf, int bufsize, int *size, int init)
             }
 
             /* If we still don't have '=', something is amiss.  */
+			//z 是否找到了 = ，如果没有找到 = ，可能出现了错误。
             if (*buf != '=')
                 continue;
 
             /* Find the beginning of attribute value by skipping the
             spaces.  */
             ++buf, --bufsize;
+			//z 越过若干个空白字符。
             for (; bufsize && ISSPACE (*buf) && *buf != '>'; ++buf, --bufsize);
-            if (!bufsize || *buf == '>')
+            //z 是否结束或者找到了‘>’
+			if (!bufsize || *buf == '>')
                 break;
             ph = NULL;
             /* The value of an attribute can, but does not have to be
             quoted.  */
+			//z 如果当前字符为 ' 或者 " ， 进入引号状态
             if (*buf == '\"' || *buf == '\'')
             {
+				//z 进入 quote 状态
                 s->in_quote = 1;
+				//z 记住当前的字符串，方便寻找到下一个做比对。
                 s->quote_char = *buf;
-                p = buf + 1;
-                for (++buf, --bufsize;
+                //z p 指向引号内第一个字符
+				p = buf + 1;
+                //z 步进，直到找到另一个引号，或者遇到了回车
+				for (++buf, --bufsize;
                         bufsize && *buf != s->quote_char && *buf != '\n';
                         ++buf, --bufsize)
+
+					//z 如果当前字符串为 # ， 记录下其位置
                     if (*buf == '#')
                         ph = buf;
                 if (!bufsize)
                 {
+					//z 如果到达了字符结尾，结束 in_quote 状态
                     s->in_quote = 0;
                     break;
                 }
+				//z 如果遇到了 '\n' ，继续下一轮。
                 if (*buf == '\n')
                 {
                     /* #### Is the following logic good?
@@ -295,12 +321,16 @@ htmlfindurl(const char *buf, int bufsize, int *size, int init)
                 if (!bufsize)
                     break;
             }
+
+			//z URI 中的# （ found unprotected 是什么意思？ ） # 可能表示的意思是一个 html marker 或者 color spec 。
             /* If '#' was found unprotected in a URI, it is probably an
             HTML marker, or color spec.  */
+			//z 如果有 # ，那么将 ph 视作结束？
             *size = (ph ? ph : buf) - p;
             /* The URI is liable to be returned if:
             1) *size != 0;
             2) its tag and attribute are found in html_allow.  */
+			//z 实际可能表示的例子有 ： <a href="http://www.w3school.com.cn/">Visit W3School</a>
             if (*size && idmatch (html_allow, s->tag, s->attr))
             {
                 if (!strcasecmp (s->tag, "base") && !strcasecmp (s->attr, "href"))
