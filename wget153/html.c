@@ -76,6 +76,10 @@ which one is useful ?
    components (as described by html_allow[] array), and return the
    address and the length of the string.  Return NULL if no URL is
    found.  */
+/*History:
+2015-01-29 17:28 初步看了下，没有例子，不知道实际解析时的情况，比较糊涂。最好是自己写例子测试一下的。另外看起来得了解一点html语法。
+
+*/
 const char *
 htmlfindurl(const char *buf, int bufsize, int *size, int init)
 {
@@ -330,7 +334,7 @@ htmlfindurl(const char *buf, int bufsize, int *size, int init)
             /* The URI is liable to be returned if:
             1) *size != 0;
             2) its tag and attribute are found in html_allow.  */
-			//z 实际可能表示的例子有 ： <a href="http://www.w3school.com.cn/">Visit W3School</a>
+			//z 实际可能表示的例子有 ： <a href="http://www.w3school.com.cn/">Visit W3School</a> 这个样子
             if (*size && idmatch (html_allow, s->tag, s->attr))
             {
                 if (!strcasecmp (s->tag, "base") && !strcasecmp (s->attr, "href"))
@@ -338,7 +342,8 @@ htmlfindurl(const char *buf, int bufsize, int *size, int init)
                     FREE_MAYBE (s->base);
                     s->base = strdupdelim (p, buf);
                 }
-                else if (!strcasecmp (s->tag, "meta") && !strcasecmp (s->attr, "content"))
+                //z 比对 meta 和 content
+				else if (!strcasecmp (s->tag, "meta") && !strcasecmp (s->attr, "content"))
                 {
                     /* Some pages use a META tag to specify that the page
                     be refreshed by a new page after a given number of
@@ -353,15 +358,21 @@ htmlfindurl(const char *buf, int bufsize, int *size, int init)
                      author's name and what editor was used to create
                      it.  So we need to be careful to ignore them and
                       not assume that an URL will be present at all.  */
-                    for (; *size && ISDIGIT (*p); p++, *size -= 1);
+					//z 只要是数字，那么持续向前
+					for (; *size && ISDIGIT (*p); p++, *size -= 1);
 
+					//z 查看是否会遇到 ; 
                     if (*p == ';')
                     {
+						//z 跳过 space。
                         for (p++, *size -= 1; *size && ISSPACE (*p); p++, *size -= 1) ;
+						//z 比对，是否找到了 URL,
                         if (!strncasecmp (p, "URL=", 4))
                         {
+							//z 如果在 meta 中找到了 URL
                             p += 4, *size -= 4;
                             s->at_value = 1;
+							//z 这意思是直接返回 p？
                             return p;
                         }
                     }
