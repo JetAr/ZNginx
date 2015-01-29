@@ -28,7 +28,7 @@
 *.x86_64
 *.hex
 
-#vc
+# vc
 *.user
 *.ncb
 *.lib
@@ -45,5 +45,6 @@
 *.user
 *.pch
 *.plg
+*.opt
 Debug
 Release
