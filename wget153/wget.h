@@ -69,7 +69,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 #define DO_NOTHING do {} while (0)
 
 /* Print X if debugging is enabled; a no-op otherwise.  */
-// 
+//
 #ifdef DEBUG
 # define DEBUGP(x) do { debug_logprintf x; } while (0)
 #else  /* not DEBUG */
@@ -88,7 +88,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 enum log_options { LOG_VERBOSE, LOG_NOTQUIET, LOG_NONVERBOSE, LOG_ALWAYS };
 
 void logprintf PARAMS ((enum log_options, const char *, ...))
-     GCC_FORMAT_ATTR (2, 3);
+GCC_FORMAT_ATTR (2, 3);
 void debug_logprintf PARAMS ((const char *, ...)) GCC_FORMAT_ATTR (1, 2);
 void logputs PARAMS ((enum log_options, const char *));
 
@@ -177,30 +177,30 @@ extern const char *exec_name;
 /* Document-type flags */
 enum
 {
-  TEXTHTML      = 0x0001,	/* document is of type text/html */
-  RETROKF       = 0x0002,	/* retrieval was OK */
-  HEAD_ONLY     = 0x0004,	/* only send the HEAD request */
-  SEND_NOCACHE  = 0x0008,	/* send Pragma: no-cache directive */
-  ACCEPTRANGES  = 0x0010	/* Accept-ranges header was found */
+    TEXTHTML      = 0x0001,	/* document is of type text/html */
+    RETROKF       = 0x0002,	/* retrieval was OK */
+    HEAD_ONLY     = 0x0004,	/* only send the HEAD request */
+    SEND_NOCACHE  = 0x0008,	/* send Pragma: no-cache directive */
+    ACCEPTRANGES  = 0x0010	/* Accept-ranges header was found */
 };
 
 /* Universal error type -- used almost everywhere.
    This is, of course, utter crock.  */
 typedef enum
 {
-  NOCONERROR, HOSTERR, CONSOCKERR, CONERROR,
-  CONREFUSED, NEWLOCATION, NOTENOUGHMEM, CONPORTERR,
-  BINDERR, BINDOK, LISTENERR, ACCEPTERR, ACCEPTOK,
-  CONCLOSED, FTPOK, FTPLOGINC, FTPLOGREFUSED, FTPPORTERR,
-  FTPNSFOD, FTPRETROK, FTPUNKNOWNTYPE, FTPRERR,
-  FTPREXC, FTPSRVERR, FTPRETRINT, FTPRESTFAIL,
-  URLOK, URLHTTP, URLFTP, URLFILE, URLUNKNOWN, URLBADPORT,
-  URLBADHOST, FOPENERR, FWRITEERR, HOK, HLEXC, HEOF,
-  HERR, RETROK, RECLEVELEXC, FTPACCDENIED, WRONGCODE,
-  FTPINVPASV, FTPNOPASV,
-  RETRFINISHED, READERR, TRYLIMEXC, URLBADPATTERN,
-  FILEBADFILE, RANGEERR, RETRBADPATTERN, RETNOTSUP,
-  ROBOTSOK, NOROBOTS, PROXERR, AUTHFAILED, QUOTEXC, WRITEFAILED
+    NOCONERROR, HOSTERR, CONSOCKERR, CONERROR,
+    CONREFUSED, NEWLOCATION, NOTENOUGHMEM, CONPORTERR,
+    BINDERR, BINDOK, LISTENERR, ACCEPTERR, ACCEPTOK,
+    CONCLOSED, FTPOK, FTPLOGINC, FTPLOGREFUSED, FTPPORTERR,
+    FTPNSFOD, FTPRETROK, FTPUNKNOWNTYPE, FTPRERR,
+    FTPREXC, FTPSRVERR, FTPRETRINT, FTPRESTFAIL,
+    URLOK, URLHTTP, URLFTP, URLFILE, URLUNKNOWN, URLBADPORT,
+    URLBADHOST, FOPENERR, FWRITEERR, HOK, HLEXC, HEOF,
+    HERR, RETROK, RECLEVELEXC, FTPACCDENIED, WRONGCODE,
+    FTPINVPASV, FTPNOPASV,
+    RETRFINISHED, READERR, TRYLIMEXC, URLBADPATTERN,
+    FILEBADFILE, RANGEERR, RETRBADPATTERN, RETNOTSUP,
+    ROBOTSOK, NOROBOTS, PROXERR, AUTHFAILED, QUOTEXC, WRITEFAILED
 } uerr_t;
 
 #endif /* WGET_H */

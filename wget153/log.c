@@ -105,22 +105,22 @@ static FILE *logfp;
 void
 logputs (enum log_options o, const char *s)
 {
-  CHECK_VERBOSE (o);
-  CANONICALIZE_LOGFP_OR_RETURN;
+    CHECK_VERBOSE (o);
+    CANONICALIZE_LOGFP_OR_RETURN;
 
-  fputs (s, logfp);
-  if (!opt.no_flush)
-    fflush (logfp);
+    fputs (s, logfp);
+    if (!opt.no_flush)
+        fflush (logfp);
 
-  if (save_log_p && saved_log_size < SAVED_LOG_MAXSIZE)
+    if (save_log_p && saved_log_size < SAVED_LOG_MAXSIZE)
     {
-      int len = strlen (s);
+        int len = strlen (s);
 
-      /* Increase size of SAVED_LOG exponentially.  */
-      DO_REALLOC (saved_log, saved_log_size,
-		  saved_log_offset + len + 1, char);
-      memcpy (saved_log + saved_log_offset, s, len + 1);
-      saved_log_offset += len;
+        /* Increase size of SAVED_LOG exponentially.  */
+        DO_REALLOC (saved_log, saved_log_size,
+                    saved_log_offset + len + 1, char);
+        memcpy (saved_log + saved_log_offset, s, len + 1);
+        saved_log_offset += len;
     }
 }
 
@@ -130,46 +130,46 @@ logputs (enum log_options o, const char *s)
 static void
 logvprintf (enum log_options o, const char *fmt, va_list args)
 {
-	CHECK_VERBOSE (o);
-	CANONICALIZE_LOGFP_OR_RETURN;
-	
-	/* Originally, we first used vfprintf(), and then checked whether
-	the message needs to be stored with vsprintf().  However, Watcom
-	C didn't like ARGS being used twice, so now we first vsprintf()
-	the message, and then fwrite() it to LOGFP.  */
-	if (save_log_p && saved_log_size < SAVED_LOG_MAXSIZE)
+    CHECK_VERBOSE (o);
+    CANONICALIZE_LOGFP_OR_RETURN;
+
+    /* Originally, we first used vfprintf(), and then checked whether
+    the message needs to be stored with vsprintf().  However, Watcom
+    C didn't like ARGS being used twice, so now we first vsprintf()
+    the message, and then fwrite() it to LOGFP.  */
+    if (save_log_p && saved_log_size < SAVED_LOG_MAXSIZE)
     {
-		int len;
-		/* Increase size of `saved_log' exponentially.  */
-		DO_REALLOC (saved_log, saved_log_size,
-			saved_log_offset + SAVED_LOG_MAXMSG, char);
-		/* Print the message to the log saver...  */
+        int len;
+        /* Increase size of `saved_log' exponentially.  */
+        DO_REALLOC (saved_log, saved_log_size,
+                    saved_log_offset + SAVED_LOG_MAXMSG, char);
+        /* Print the message to the log saver...  */
 #ifdef HAVE_VSNPRINTF
-		vsnprintf (saved_log + saved_log_offset, SAVED_LOG_MAXMSG, fmt, args);
+        vsnprintf (saved_log + saved_log_offset, SAVED_LOG_MAXMSG, fmt, args);
 #else  /* not HAVE_VSNPRINTF */
-		vsprintf (saved_log + saved_log_offset, fmt, args);
+        vsprintf (saved_log + saved_log_offset, fmt, args);
 #endif /* not HAVE_VSNPRINTF */
-		/* ...and then dump it to LOGFP.  */
-		len = strlen (saved_log + saved_log_offset);
-		fwrite (saved_log + saved_log_offset, len, 1, logfp);
-		saved_log_offset += len;
-		/* If we ran off the limits and corrupted something, bail out
-		immediately.  */
-		assert (saved_log_size >= saved_log_offset);
+        /* ...and then dump it to LOGFP.  */
+        len = strlen (saved_log + saved_log_offset);
+        fwrite (saved_log + saved_log_offset, len, 1, logfp);
+        saved_log_offset += len;
+        /* If we ran off the limits and corrupted something, bail out
+        immediately.  */
+        assert (saved_log_size >= saved_log_offset);
     }
-	else
-		vfprintf (logfp, fmt, args);
-	
-	if (!opt.no_flush)
-		fflush (logfp);
+    else
+        vfprintf (logfp, fmt, args);
+
+    if (!opt.no_flush)
+        fflush (logfp);
 }
 
 /* Flush LOGFP.  */
 void
 logflush (void)
 {
-  CANONICALIZE_LOGFP_OR_RETURN;
-  fflush (logfp);
+    CANONICALIZE_LOGFP_OR_RETURN;
+    fflush (logfp);
 }
 
 /* Portability makes these two functions look like @#%#@$@#$.  */
@@ -180,24 +180,24 @@ logprintf (enum log_options o, const char *fmt, ...)
 #else  /* not USE_STDARG */
 void
 logprintf (va_alist)
-     va_dcl
+va_dcl
 #endif /* not USE_STDARG */
 {
-  va_list args;
+    va_list args;
 #ifndef USE_STDARG
-  enum log_options o;
-  const char *fmt;
+    enum log_options o;
+    const char *fmt;
 #endif
 
 #ifdef USE_STDARG
-  va_start (args, fmt);
+    va_start (args, fmt);
 #else
-  va_start (args,fmt);
-  o = va_arg (args, enum log_options);
-  fmt = va_arg (args, char *);
+    va_start (args,fmt);
+    o = va_arg (args, enum log_options);
+    fmt = va_arg (args, char *);
 #endif
-  logvprintf (o, fmt, args);
-  va_end (args);
+    logvprintf (o, fmt, args);
+    va_end (args);
 }
 
 #ifdef DEBUG
@@ -209,24 +209,24 @@ debug_logprintf (const char *fmt, ...)
 #else  /* not USE_STDARG */
 void
 debug_logprintf (va_alist)
-     va_dcl
+va_dcl
 #endif /* not USE_STDARG */
 {
-	if (opt.debug)
+    if (opt.debug)
     {
-		va_list args;
+        va_list args;
 #ifndef USE_STDARG
-		const char *fmt;
+        const char *fmt;
 #endif
-		
+
 #ifdef USE_STDARG
-		va_start (args, fmt);
+        va_start (args, fmt);
 #else
-		va_start (args,fmt);
-		fmt = va_arg (args, char *);
+        va_start (args,fmt);
+        fmt = va_arg (args, char *);
 #endif
-		logvprintf (LOG_ALWAYS, fmt, args);
-		va_end (args);
+        logvprintf (LOG_ALWAYS, fmt, args);
+        va_end (args);
     }
 }
 #endif /* DEBUG */
@@ -237,30 +237,30 @@ debug_logprintf (va_alist)
 void
 log_init (const char *file, int appendp)
 {
-	if (file)
+    if (file)
     {
-		logfp = fopen (file, appendp ? "a" : "w");
-		if (!logfp)
-		{
-			perror (opt.lfilename);
-			exit (1);
-		}
+        logfp = fopen (file, appendp ? "a" : "w");
+        if (!logfp)
+        {
+            perror (opt.lfilename);
+            exit (1);
+        }
     }
-	else
+    else
     {
-		logfp = stderr;
-		/* If the output is a TTY, enable logging, which will make Wget
-		remember all the printed messages, to be able to dump them to
-		a log file in case SIGHUP or SIGUSR1 is received (or
-		Ctrl+Break is pressed under Windows).  */
-		if (1
+        logfp = stderr;
+        /* If the output is a TTY, enable logging, which will make Wget
+        remember all the printed messages, to be able to dump them to
+        a log file in case SIGHUP or SIGUSR1 is received (or
+        Ctrl+Break is pressed under Windows).  */
+        if (1
 #ifdef HAVE_ISATTY
-			&& isatty (fileno (logfp))
+                && isatty (fileno (logfp))
 #endif
-			)
-		{
-			save_log_p = 1;
-		}
+           )
+        {
+            save_log_p = 1;
+        }
     }
 }
 
@@ -269,11 +269,11 @@ log_init (const char *file, int appendp)
 void
 log_close (void)
 {
-  fclose (logfp);
-  save_log_p = 0;
-  FREE_MAYBE (saved_log);
-  saved_log = NULL;
-  saved_log_size = saved_log_offset = 0;
+    fclose (logfp);
+    save_log_p = 0;
+    FREE_MAYBE (saved_log);
+    saved_log = NULL;
+    saved_log_size = saved_log_offset = 0;
 }
 
 /* Dump SAVED_LOG using logprintf(), but quit further logging to memory.
@@ -281,15 +281,15 @@ log_close (void)
 static void
 log_dump (void)
 {
-	save_log_p = 0;
+    save_log_p = 0;
 
-	if (!saved_log)
-		return;
+    if (!saved_log)
+        return;
 
-	logputs (LOG_ALWAYS, saved_log);
-	free (saved_log);
-	saved_log = NULL;
-	saved_log_size = saved_log_offset = 0;
+    logputs (LOG_ALWAYS, saved_log);
+    free (saved_log);
+    saved_log = NULL;
+    saved_log_size = saved_log_offset = 0;
 }
 
 /* Redirect output to `wget-log' if opt.lfile is stdout.  MESSIJ is
@@ -300,24 +300,24 @@ log_dump (void)
 void
 redirect_output (const char *messij)
 {
-	char *logfile;
+    char *logfile;
 
-	if (!save_log_p)
-		return;
+    if (!save_log_p)
+        return;
 
-	logfile = unique_name (DEFAULT_LOGFILE);
-	logfp = fopen (logfile, "w");
+    logfile = unique_name (DEFAULT_LOGFILE);
+    logfp = fopen (logfile, "w");
 
-	if (!logfp)
+    if (!logfp)
     {
-		printf ("%s: %s: %s\n", exec_name, logfile, strerror (errno));
-		/* `stdin' is magic to not print anything.  */
-		logfp = stdin;
+        printf ("%s: %s: %s\n", exec_name, logfile, strerror (errno));
+        /* `stdin' is magic to not print anything.  */
+        logfp = stdin;
     }
 
-	printf (messij, logfile);
-	free (logfile);
+    printf (messij, logfile);
+    free (logfile);
 
-	/* Dump all the previous messages to LOGFILE.  */
-	log_dump ();
+    /* Dump all the previous messages to LOGFILE.  */
+    log_dump ();
 }

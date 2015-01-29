@@ -59,16 +59,16 @@ extern int errno;
 static void
 memfatal (const char *s)
 {
-  /* HACK: expose save_log_p from log.c, so we can turn it off in
-     order to prevent saving the log.  Saving the log is dangerous
-     because logprintf() and logputs() can call malloc(), so this
-     could infloop.  When logging is turned off, infloop can no longer
-     happen.  */
-  extern int save_log_p;
+    /* HACK: expose save_log_p from log.c, so we can turn it off in
+       order to prevent saving the log.  Saving the log is dangerous
+       because logprintf() and logputs() can call malloc(), so this
+       could infloop.  When logging is turned off, infloop can no longer
+       happen.  */
+    extern int save_log_p;
 
-  save_log_p = 0;
-  logprintf (LOG_ALWAYS, _("%s: %s: Not enough memory.\n"), exec_name, s);
-  exit (1);
+    save_log_p = 0;
+    logprintf (LOG_ALWAYS, _("%s: %s: Not enough memory.\n"), exec_name, s);
+    exit (1);
 }
 
 /* xmalloc, xrealloc and xstrdup exit the program if there is not
@@ -77,49 +77,49 @@ memfatal (const char *s)
 void *
 xmalloc (size_t size)
 {
-  void *res;
+    void *res;
 
-  res = malloc (size);
-  if (!res)
-    memfatal ("malloc");
+    res = malloc (size);
+    if (!res)
+        memfatal ("malloc");
 
-  return res;
+    return res;
 }
 
 void *
 xrealloc (void *obj, size_t size)
 {
-  void *res;
+    void *res;
 
-  /* Not all Un*xes have the feature of realloc() that calling it with
-     a NULL-pointer is the same as malloc(), but it is easy to
-     simulate.  */
-  if (obj)
-    res = realloc (obj, size);
-  else
-    res = malloc (size);
-  if (!res)
-    memfatal ("realloc");
+    /* Not all Un*xes have the feature of realloc() that calling it with
+       a NULL-pointer is the same as malloc(), but it is easy to
+       simulate.  */
+    if (obj)
+        res = realloc (obj, size);
+    else
+        res = malloc (size);
+    if (!res)
+        memfatal ("realloc");
 
-  return res;
+    return res;
 }
 
 char *
 xstrdup (const char *s)
 {
 #ifndef HAVE_STRDUP
-  int l = strlen (s);
-  char *s1 = malloc (l + 1);
-  if (!s1)
-    memfatal ("strdup");
-  memcpy (s1, s, l + 1);
+    int l = strlen (s);
+    char *s1 = malloc (l + 1);
+    if (!s1)
+        memfatal ("strdup");
+    memcpy (s1, s, l + 1);
 
-  return s1;
+    return s1;
 #else  /* HAVE_STRDUP */
-  char *s1 = strdup (s);
-  if (!s1)
-    memfatal ("strdup");
-  return s1;
+    char *s1 = strdup (s);
+    if (!s1)
+        memfatal ("strdup");
+    return s1;
 #endif /* HAVE_STRDUP */
 }
 
@@ -130,10 +130,10 @@ xstrdup (const char *s)
 char *
 strdupdelim (const char *beg, const char *end)
 {
-  char *res = (char *)xmalloc (end - beg + 1);
-  memcpy (res, beg, end - beg);
-  res[end - beg] = '\0';
-  return res;
+    char *res = (char *)xmalloc (end - beg + 1);
+    memcpy (res, beg, end - beg);
+    res[end - beg] = '\0';
+    return res;
 }
 
 /* Parse a string containing comma-separated elements, and return a
@@ -142,37 +142,37 @@ strdupdelim (const char *beg, const char *end)
 char **
 sepstring (const char *s)
 {
-  char **res;
-  const char *p;
-  int i = 0;
+    char **res;
+    const char *p;
+    int i = 0;
 
-  if (!s || !*s)
-    return NULL;
+    if (!s || !*s)
+        return NULL;
 
-  res = NULL;
-  p = s;
+    res = NULL;
+    p = s;
 
-  while (*s)
-  {
-      if (*s == ',')
-	  {
-		  res = (char **)xrealloc (res, (i + 2) * sizeof (char *));
-		  res[i] = strdupdelim (p, s);
-		  res[++i] = NULL;
-		  ++s;
-		  /* Skip the blanks following the ','.  */
-		  while (ISSPACE (*s))
-			  ++s;
-		  p = s;
-	  }
-      else
-		  ++s;
-  }
+    while (*s)
+    {
+        if (*s == ',')
+        {
+            res = (char **)xrealloc (res, (i + 2) * sizeof (char *));
+            res[i] = strdupdelim (p, s);
+            res[++i] = NULL;
+            ++s;
+            /* Skip the blanks following the ','.  */
+            while (ISSPACE (*s))
+                ++s;
+            p = s;
+        }
+        else
+            ++s;
+    }
 
-  res = (char **)xrealloc (res, (i + 2) * sizeof (char *));
-  res[i] = strdupdelim (p, s);
-  res[i + 1] = NULL;
-  return res;
+    res = (char **)xrealloc (res, (i + 2) * sizeof (char *));
+    res[i] = strdupdelim (p, s);
+    res[i + 1] = NULL;
+    return res;
 }
 
 /* Return pointer to a static char[] buffer in which zero-terminated
@@ -184,17 +184,17 @@ sepstring (const char *s)
 char *
 time_str (time_t *tm)
 {
-  static char tms[15];
-  struct tm *ptm;
-  time_t tim;
+    static char tms[15];
+    struct tm *ptm;
+    time_t tim;
 
-  *tms = '\0';
-  tim = time (tm);
-  if (tim == -1)
+    *tms = '\0';
+    tim = time (tm);
+    if (tim == -1)
+        return tms;
+    ptm = localtime (&tim);
+    sprintf (tms, "%02d:%02d:%02d", ptm->tm_hour, ptm->tm_min, ptm->tm_sec);
     return tms;
-  ptm = localtime (&tim);
-  sprintf (tms, "%02d:%02d:%02d", ptm->tm_hour, ptm->tm_min, ptm->tm_sec);
-  return tms;
 }
 
 /* Returns an error message for ERRNUM.  #### This requires more work.
@@ -203,21 +203,21 @@ time_str (time_t *tm)
 const char *
 uerrmsg (uerr_t errnum)
 {
-  switch (errnum)
+    switch (errnum)
     {
     case URLUNKNOWN:
-      return _("Unknown/unsupported protocol");
-      break;
+        return _("Unknown/unsupported protocol");
+        break;
     case URLBADPORT:
-      return _("Invalid port specification");
-      break;
+        return _("Invalid port specification");
+        break;
     case URLBADHOST:
-      return _("Invalid host name");
-      break;
+        return _("Invalid host name");
+        break;
     default:
-      abort ();
-      /* $@#@#$ compiler.  */
-      return NULL;
+        abort ();
+        /* $@#@#$ compiler.  */
+        return NULL;
     }
 }
 
@@ -236,47 +236,47 @@ uerrmsg (uerr_t errnum)
 char *
 pwd_cuserid (char *where)
 {
-  struct passwd *pwd;
+    struct passwd *pwd;
 
-  if (!(pwd = getpwuid (getuid ())) || !pwd->pw_name)
-    return NULL;
-  if (where)
+    if (!(pwd = getpwuid (getuid ())) || !pwd->pw_name)
+        return NULL;
+    if (where)
     {
-      strcpy (where, pwd->pw_name);
-      return where;
+        strcpy (where, pwd->pw_name);
+        return where;
     }
-  else
-    return pwd->pw_name;
+    else
+        return pwd->pw_name;
 }
 
 void
 fork_to_background (void)
 {
-  pid_t pid;
-  /* Whether we arrange our own version of opt.lfilename here.  */
-  int changedp = 0;
+    pid_t pid;
+    /* Whether we arrange our own version of opt.lfilename here.  */
+    int changedp = 0;
 
-  if (!opt.lfilename)
+    if (!opt.lfilename)
     {
-      opt.lfilename = unique_name (DEFAULT_LOGFILE);
-      changedp = 1;
+        opt.lfilename = unique_name (DEFAULT_LOGFILE);
+        changedp = 1;
     }
-  pid = fork ();
-  if (pid < 0)
+    pid = fork ();
+    if (pid < 0)
     {
-      /* parent, error */
-      perror ("fork");
-      exit (1);
+        /* parent, error */
+        perror ("fork");
+        exit (1);
     }
-  else if (pid != 0)
+    else if (pid != 0)
     {
-      /* parent, no error */
-      printf (_("Continuing in background.\n"));
-      if (changedp)
-	printf (_("Output will be written to `%s'.\n"), opt.lfilename);
-      exit (0);
+        /* parent, no error */
+        printf (_("Continuing in background.\n"));
+        if (changedp)
+            printf (_("Output will be written to `%s'.\n"), opt.lfilename);
+        exit (0);
     }
-  /* child: keep running */
+    /* child: keep running */
 }
 #endif /* not WINDOWS */
 
@@ -299,107 +299,107 @@ fork_to_background (void)
 void
 path_simplify (char *path)
 {
-  register int i, start, ddot;
-  char stub_char;
+    register int i, start, ddot;
+    char stub_char;
 
-  if (!*path)
-    return;
+    if (!*path)
+        return;
 
-  /*stub_char = (*path == '/') ? '/' : '.';*/
-  stub_char = '/';
+    /*stub_char = (*path == '/') ? '/' : '.';*/
+    stub_char = '/';
 
-  /* Addition: Remove all `./'-s preceding the string.  If `../'-s
-     precede, put `/' in front and remove them too.  */
-  i = 0;
-  ddot = 0;
-  while (1)
+    /* Addition: Remove all `./'-s preceding the string.  If `../'-s
+       precede, put `/' in front and remove them too.  */
+    i = 0;
+    ddot = 0;
+    while (1)
     {
-      if (path[i] == '.' && path[i + 1] == '/')
-	i += 2;
-      else if (path[i] == '.' && path[i + 1] == '.' && path[i + 2] == '/')
-	{
-	  i += 3;
-	  ddot = 1;
-	}
-      else
-	break;
+        if (path[i] == '.' && path[i + 1] == '/')
+            i += 2;
+        else if (path[i] == '.' && path[i + 1] == '.' && path[i + 2] == '/')
+        {
+            i += 3;
+            ddot = 1;
+        }
+        else
+            break;
     }
-  if (i)
-    strcpy (path, path + i - ddot);
+    if (i)
+        strcpy (path, path + i - ddot);
 
-  /* Replace single `.' or `..' with `/'.  */
-  if ((path[0] == '.' && path[1] == '\0')
-      || (path[0] == '.' && path[1] == '.' && path[2] == '\0'))
+    /* Replace single `.' or `..' with `/'.  */
+    if ((path[0] == '.' && path[1] == '\0')
+            || (path[0] == '.' && path[1] == '.' && path[2] == '\0'))
     {
-      path[0] = stub_char;
-      path[1] = '\0';
-      return;
+        path[0] = stub_char;
+        path[1] = '\0';
+        return;
     }
-  /* Walk along PATH looking for things to compact.  */
-  i = 0;
-  while (1)
+    /* Walk along PATH looking for things to compact.  */
+    i = 0;
+    while (1)
     {
-      if (!path[i])
-	break;
+        if (!path[i])
+            break;
 
-      while (path[i] && path[i] != '/')
-	i++;
+        while (path[i] && path[i] != '/')
+            i++;
 
-      start = i++;
+        start = i++;
 
-      /* If we didn't find any slashes, then there is nothing left to do.  */
-      if (!path[start])
-	break;
+        /* If we didn't find any slashes, then there is nothing left to do.  */
+        if (!path[start])
+            break;
 
-      /* Handle multiple `/'s in a row.  */
-      while (path[i] == '/')
-	i++;
+        /* Handle multiple `/'s in a row.  */
+        while (path[i] == '/')
+            i++;
 
-      if ((start + 1) != i)
-	{
-	  strcpy (path + start + 1, path + i);
-	  i = start + 1;
-	}
+        if ((start + 1) != i)
+        {
+            strcpy (path + start + 1, path + i);
+            i = start + 1;
+        }
 
-      /* Check for trailing `/'.  */
-      if (start && !path[i])
-	{
-	zero_last:
-	  path[--i] = '\0';
-	  break;
-	}
+        /* Check for trailing `/'.  */
+        if (start && !path[i])
+        {
+zero_last:
+            path[--i] = '\0';
+            break;
+        }
 
-      /* Check for `../', `./' or trailing `.' by itself.  */
-      if (path[i] == '.')
-	{
-	  /* Handle trailing `.' by itself.  */
-	  if (!path[i + 1])
-	    goto zero_last;
+        /* Check for `../', `./' or trailing `.' by itself.  */
+        if (path[i] == '.')
+        {
+            /* Handle trailing `.' by itself.  */
+            if (!path[i + 1])
+                goto zero_last;
 
-	  /* Handle `./'.  */
-	  if (path[i + 1] == '/')
-	    {
-	      strcpy (path + i, path + i + 1);
-	      i = (start < 0) ? 0 : start;
-	      continue;
-	    }
+            /* Handle `./'.  */
+            if (path[i + 1] == '/')
+            {
+                strcpy (path + i, path + i + 1);
+                i = (start < 0) ? 0 : start;
+                continue;
+            }
 
-	  /* Handle `../' or trailing `..' by itself.  */
-	  if (path[i + 1] == '.' &&
-	      (path[i + 2] == '/' || !path[i + 2]))
-	    {
-	      while (--start > -1 && path[start] != '/');
-	      strcpy (path + start + 1, path + i + 2);
-	      i = (start < 0) ? 0 : start;
-	      continue;
-	    }
-	}	/* path == '.' */
+            /* Handle `../' or trailing `..' by itself.  */
+            if (path[i + 1] == '.' &&
+                    (path[i + 2] == '/' || !path[i + 2]))
+            {
+                while (--start > -1 && path[start] != '/');
+                strcpy (path + start + 1, path + i + 2);
+                i = (start < 0) ? 0 : start;
+                continue;
+            }
+        }	/* path == '.' */
     } /* while */
 
-  if (!*path)
+    if (!*path)
     {
-      *path = stub_char;
-      path[1] = '\0';
+        *path = stub_char;
+        path[1] = '\0';
     }
 }
 
@@ -409,15 +409,15 @@ void
 touch (const char *file, time_t tm)
 {
 #ifdef HAVE_STRUCT_UTIMBUF
-  struct utimbuf times;
-  times.actime = times.modtime = tm;
+    struct utimbuf times;
+    times.actime = times.modtime = tm;
 #else
-  time_t times[2];
-  times[0] = times[1] = tm;
+    time_t times[2];
+    times[0] = times[1] = tm;
 #endif
 
-  if (utime (file, &times) == -1)
-    logprintf (LOG_NOTQUIET, "utime: %s\n", strerror (errno));
+    if (utime (file, &times) == -1)
+        logprintf (LOG_NOTQUIET, "utime: %s\n", strerror (errno));
 }
 
 /* Checks if FILE is a symbolic link, and removes it if it is.  Does
@@ -425,18 +425,18 @@ touch (const char *file, time_t tm)
 int
 remove_link (const char *file)
 {
-  int err = 0;
-  struct stat st;
+    int err = 0;
+    struct stat st;
 
-  if (lstat (file, &st) == 0 && S_ISLNK (st.st_mode))
+    if (lstat (file, &st) == 0 && S_ISLNK (st.st_mode))
     {
-      DEBUGP (("Unlinking %s (symlink).\n", file));
-      err = unlink (file);
-      if (err != 0)
-	logprintf (LOG_VERBOSE, _("Failed to unlink symlink `%s': %s\n"),
-		   file, strerror (errno));
+        DEBUGP (("Unlinking %s (symlink).\n", file));
+        err = unlink (file);
+        if (err != 0)
+            logprintf (LOG_VERBOSE, _("Failed to unlink symlink `%s': %s\n"),
+                       file, strerror (errno));
     }
-  return err;
+    return err;
 }
 
 /* Does FILENAME exist?  This is quite a lousy implementation, since
@@ -450,10 +450,10 @@ int
 file_exists_p (const char *filename)
 {
 #ifdef HAVE_ACCESS
-  return access (filename, F_OK) >= 0;
+    return access (filename, F_OK) >= 0;
 #else
-  struct stat buf;
-  return stat (filename, &buf) >= 0;
+    struct stat buf;
+    return stat (filename, &buf) >= 0;
 #endif
 }
 
@@ -462,34 +462,34 @@ file_exists_p (const char *filename)
 int
 file_non_directory_p (const char *path)
 {
-  struct stat buf;
-  /* Use lstat() rather than stat() so that symbolic links pointing to
-     directories can be identified correctly.  */
-  if (lstat (path, &buf) != 0)
-    return 0;
-  return S_ISDIR (buf.st_mode) ? 0 : 1;
+    struct stat buf;
+    /* Use lstat() rather than stat() so that symbolic links pointing to
+       directories can be identified correctly.  */
+    if (lstat (path, &buf) != 0)
+        return 0;
+    return S_ISDIR (buf.st_mode) ? 0 : 1;
 }
 
 /* Return a unique filename, given a prefix and count */
 static char *
 unique_name_1 (const char *fileprefix, int count)
 {
-  char *filename;
+    char *filename;
 
-  if (count)
+    if (count)
     {
-      filename = (char *)xmalloc (strlen (fileprefix) + numdigit (count) + 2);
-      sprintf (filename, "%s.%d", fileprefix, count);
+        filename = (char *)xmalloc (strlen (fileprefix) + numdigit (count) + 2);
+        sprintf (filename, "%s.%d", fileprefix, count);
     }
-  else
-    filename = xstrdup (fileprefix);
+    else
+        filename = xstrdup (fileprefix);
 
-  if (!file_exists_p (filename))
-    return filename;
-  else
+    if (!file_exists_p (filename))
+        return filename;
+    else
     {
-      free (filename);
-      return NULL;
+        free (filename);
+        return NULL;
     }
 }
 
@@ -497,12 +497,12 @@ unique_name_1 (const char *fileprefix, int count)
 char *
 unique_name (const char *prefix)
 {
-  char *file = NULL;
-  int count = 0;
+    char *file = NULL;
+    int count = 0;
 
-  while (!file)
-    file = unique_name_1 (prefix, count++);
-  return file;
+    while (!file)
+        file = unique_name_1 (prefix, count++);
+    return file;
 }
 
 /* Create DIRECTORY.  If some of the pathname components of DIRECTORY
@@ -514,35 +514,35 @@ unique_name (const char *prefix)
 int
 make_directory (const char *directory)
 {
-  int quit = 0;
-  int i;
-  char *dir;
+    int quit = 0;
+    int i;
+    char *dir;
 
-  /* Make a copy of dir, to be able to write to it.  Otherwise, the
-     function is unsafe if called with a read-only char *argument.  */
-  STRDUP_ALLOCA (dir, directory);
+    /* Make a copy of dir, to be able to write to it.  Otherwise, the
+       function is unsafe if called with a read-only char *argument.  */
+    STRDUP_ALLOCA (dir, directory);
 
-  /* If the first character of dir is '/', skip it (and thus enable
-     creation of absolute-pathname directories.  */
-  for (i = (*dir == '/'); 1; ++i)
+    /* If the first character of dir is '/', skip it (and thus enable
+       creation of absolute-pathname directories.  */
+    for (i = (*dir == '/'); 1; ++i)
     {
-      for (; dir[i] && dir[i] != '/'; i++)
-	;
-      if (!dir[i])
-	quit = 1;
-      dir[i] = '\0';
-      /* Check whether the directory already exists.  */
-      if (!file_exists_p (dir))
-	{
-	  if (mkdir (dir, 0777) < 0)
-	    return -1;
-	}
-      if (quit)
-	break;
-      else
-	dir[i] = '/';
+        for (; dir[i] && dir[i] != '/'; i++)
+            ;
+        if (!dir[i])
+            quit = 1;
+        dir[i] = '\0';
+        /* Check whether the directory already exists.  */
+        if (!file_exists_p (dir))
+        {
+            if (mkdir (dir, 0777) < 0)
+                return -1;
+        }
+        if (quit)
+            break;
+        else
+            dir[i] = '/';
     }
-  return 0;
+    return 0;
 }
 
 static int in_acclist PARAMS ((const char *const *, const char *, int));
@@ -552,23 +552,23 @@ static int in_acclist PARAMS ((const char *const *, const char *, int));
 int
 acceptable (const char *s)
 {
-  int l = strlen (s);
+    int l = strlen (s);
 
-  while (l && s[l] != '/')
-    --l;
-  if (s[l] == '/')
-    s += (l + 1);
-  if (opt.accepts)
+    while (l && s[l] != '/')
+        --l;
+    if (s[l] == '/')
+        s += (l + 1);
+    if (opt.accepts)
     {
-      if (opt.rejects)
-	return (in_acclist ((const char *const *)opt.accepts, s, 1)
-		&& !in_acclist ((const char *const *)opt.rejects, s, 1));
-      else
-	return in_acclist ((const char *const *)opt.accepts, s, 1);
+        if (opt.rejects)
+            return (in_acclist ((const char *const *)opt.accepts, s, 1)
+                    && !in_acclist ((const char *const *)opt.rejects, s, 1));
+        else
+            return in_acclist ((const char *const *)opt.accepts, s, 1);
     }
-  else if (opt.rejects)
-    return !in_acclist ((const char *const *)opt.rejects, s, 1);
-  return 1;
+    else if (opt.rejects)
+        return !in_acclist ((const char *const *)opt.rejects, s, 1);
+    return 1;
 }
 
 /* Compare S1 and S2 frontally; S2 must begin with S1.  E.g. if S1 is
@@ -577,8 +577,8 @@ acceptable (const char *s)
 int
 frontcmp (const char *s1, const char *s2)
 {
-  for (; *s1 && *s2 && (*s1 == *s2); ++s1, ++s2);
-  return !*s1;
+    for (; *s1 && *s2 && (*s1 == *s2); ++s1, ++s2);
+    return !*s1;
 }
 
 /* Iterate through STRLIST, and return the first element that matches
@@ -586,21 +586,21 @@ frontcmp (const char *s1, const char *s2)
 static char *
 proclist (char **strlist, const char *s, enum accd flags)
 {
-  char **x;
+    char **x;
 
-  for (x = strlist; *x; x++)
-    if (has_wildcards_p (*x))
-      {
-	if (fnmatch (*x, s, FNM_PATHNAME) == 0)
-	  break;
-      }
-    else
-      {
-	char *p = *x + ((flags & ALLABS) && (**x == '/')); /* Remove '/' */
-	if (frontcmp (p, s))
-	  break;
-      }
-  return *x;
+    for (x = strlist; *x; x++)
+        if (has_wildcards_p (*x))
+        {
+            if (fnmatch (*x, s, FNM_PATHNAME) == 0)
+                break;
+        }
+        else
+        {
+            char *p = *x + ((flags & ALLABS) && (**x == '/')); /* Remove '/' */
+            if (frontcmp (p, s))
+                break;
+        }
+    return *x;
 }
 
 /* Returns whether DIRECTORY is acceptable for download, wrt the
@@ -611,20 +611,20 @@ proclist (char **strlist, const char *s, enum accd flags)
 int
 accdir (const char *directory, enum accd flags)
 {
-  /* Remove starting '/'.  */
-  if (flags & ALLABS && *directory == '/')
-    ++directory;
-  if (opt.includes)
+    /* Remove starting '/'.  */
+    if (flags & ALLABS && *directory == '/')
+        ++directory;
+    if (opt.includes)
     {
-      if (!proclist (opt.includes, directory, flags))
-	return 0;
+        if (!proclist (opt.includes, directory, flags))
+            return 0;
     }
-  if (opt.excludes)
+    if (opt.excludes)
     {
-      if (proclist (opt.excludes, directory, flags))
-	return 0;
+        if (proclist (opt.excludes, directory, flags))
+            return 0;
     }
-  return 1;
+    return 1;
 }
 
 /* Match the end of STRING against PATTERN.  For instance:
@@ -635,16 +635,16 @@ accdir (const char *directory, enum accd flags)
 static int
 match_backwards (const char *string, const char *pattern)
 {
-  int i, j;
+    int i, j;
 
-  for (i = strlen (string), j = strlen (pattern); i >= 0 && j >= 0; i--, j--)
-    if (string[i] != pattern[j])
-      break;
-  /* If the pattern was exhausted, the match was succesful.  */
-  if (j == -1)
-    return 1;
-  else
-    return 0;
+    for (i = strlen (string), j = strlen (pattern); i >= 0 && j >= 0; i--, j--)
+        if (string[i] != pattern[j])
+            break;
+    /* If the pattern was exhausted, the match was succesful.  */
+    if (j == -1)
+        return 1;
+    else
+        return 0;
 }
 
 /* Checks whether string S matches each element of ACCEPTS.  A list
@@ -656,30 +656,30 @@ match_backwards (const char *string, const char *pattern)
 static int
 in_acclist (const char *const *accepts, const char *s, int backward)
 {
-  for (; *accepts; accepts++)
+    for (; *accepts; accepts++)
     {
-      if (has_wildcards_p (*accepts))
-	{
-	  /* fnmatch returns 0 if the pattern *does* match the
-	     string.  */
-	  if (fnmatch (*accepts, s, 0) == 0)
-	    return 1;
-	}
-      else
-	{
-	  if (backward)
-	    {
-	      if (match_backwards (s, *accepts))
-		return 1;
-	    }
-	  else
-	    {
-	      if (!strcmp (s, *accepts))
-		return 1;
-	    }
-	}
+        if (has_wildcards_p (*accepts))
+        {
+            /* fnmatch returns 0 if the pattern *does* match the
+               string.  */
+            if (fnmatch (*accepts, s, 0) == 0)
+                return 1;
+        }
+        else
+        {
+            if (backward)
+            {
+                if (match_backwards (s, *accepts))
+                    return 1;
+            }
+            else
+            {
+                if (!strcmp (s, *accepts))
+                    return 1;
+            }
+        }
     }
-  return 0;
+    return 0;
 }
 
 /* Return the malloc-ed suffix of STR.  For instance:
@@ -690,13 +690,13 @@ in_acclist (const char *const *accepts, const char *s, int backward)
 char *
 suffix (const char *str)
 {
-  int i;
+    int i;
 
-  for (i = strlen (str); i && str[i] != '/' && str[i] != '.'; i--);
-  if (str[i++] == '.')
-    return xstrdup (str + i);
-  else
-    return NULL;
+    for (i = strlen (str); i && str[i] != '/' && str[i] != '.'; i--);
+    if (str[i++] == '.')
+        return xstrdup (str + i);
+    else
+        return NULL;
 }
 
 /* Read a line from FP.  The function reallocs the storage as needed
@@ -710,30 +710,30 @@ suffix (const char *str)
 char *
 read_whole_line (FILE *fp)
 {
-  char *line;
-  int i, bufsize, c;
+    char *line;
+    int i, bufsize, c;
 
-  i = 0;
-  bufsize = 40;
-  line = (char *)xmalloc (bufsize);
-  /* Construct the line.  */
-  while ((c = getc (fp)) != EOF && c != '\n')
+    i = 0;
+    bufsize = 40;
+    line = (char *)xmalloc (bufsize);
+    /* Construct the line.  */
+    while ((c = getc (fp)) != EOF && c != '\n')
     {
-      if (i > bufsize - 1)
-	line = (char *)xrealloc (line, (bufsize <<= 1));
-      line[i++] = c;
+        if (i > bufsize - 1)
+            line = (char *)xrealloc (line, (bufsize <<= 1));
+        line[i++] = c;
     }
-  if (c == EOF && !i)
+    if (c == EOF && !i)
     {
-      free (line);
-      return NULL;
+        free (line);
+        return NULL;
     }
-  /* Check for overflow at zero-termination (no need to double the
-     buffer in this case.  */
-  if (i == bufsize)
-    line = (char *)xrealloc (line, i + 1);
-  line[i] = '\0';
-  return line;
+    /* Check for overflow at zero-termination (no need to double the
+       buffer in this case.  */
+    if (i == bufsize)
+        line = (char *)xrealloc (line, i + 1);
+    line[i] = '\0';
+    return line;
 }
 
 /* Load file pointed to by FP to memory and return the malloc-ed
@@ -744,21 +744,21 @@ read_whole_line (FILE *fp)
 void
 load_file (FILE *fp, char **buf, long *nread)
 {
-	long bufsize;
-	
-	bufsize = 512;
-	*nread = 0;
-	*buf = NULL;
+    long bufsize;
 
-	while (!feof (fp) && !ferror (fp))
+    bufsize = 512;
+    *nread = 0;
+    *buf = NULL;
+
+    while (!feof (fp) && !ferror (fp))
     {
-		// 在文件较小的情况下
-		*buf = (char *)xrealloc (*buf, bufsize + *nread);
-		*nread += fread (*buf + *nread, sizeof (char), bufsize, fp);
-		bufsize <<= 1;
+        // 在文件较小的情况下
+        *buf = (char *)xrealloc (*buf, bufsize + *nread);
+        *nread += fread (*buf + *nread, sizeof (char), bufsize, fp);
+        bufsize <<= 1;
     }
 
-	/* #### No indication of encountered error??  */
+    /* #### No indication of encountered error??  */
 }
 
 /* Free the pointers in a NULL-terminated vector of pointers, then
@@ -766,12 +766,12 @@ load_file (FILE *fp, char **buf, long *nread)
 void
 free_vec (char **vec)
 {
-  if (vec)
+    if (vec)
     {
-      char **p = vec;
-      while (*p)
-	free (*p++);
-      free (vec);
+        char **p = vec;
+        while (*p)
+            free (*p++);
+        free (vec);
     }
 }
 
@@ -781,29 +781,29 @@ free_vec (char **vec)
 char **
 merge_vecs (char **v1, char **v2)
 {
-  int i, j;
+    int i, j;
 
-  if (!v1)
-    return v2;
+    if (!v1)
+        return v2;
 
-  if (!v2)
-    return v1;
+    if (!v2)
+        return v1;
 
-  if (!*v2)
+    if (!*v2)
     {
-      /* To avoid j == 0 */
-      free (v2);
-      return v1;
+        /* To avoid j == 0 */
+        free (v2);
+        return v1;
     }
-  /* Count v1.  */
-  for (i = 0; v1[i]; i++);
-  /* Count v2.  */
-  for (j = 0; v2[j]; j++);
-  /* Reallocate v1.  */
-  v1 = (char **)xrealloc (v1, (i + j + 1) * sizeof (char **));
-  memcpy (v1 + i, v2, (j + 1) * sizeof (char *));
-  free (v2);
-  return v1;
+    /* Count v1.  */
+    for (i = 0; v1[i]; i++);
+    /* Count v2.  */
+    for (j = 0; v2[j]; j++);
+    /* Reallocate v1.  */
+    v1 = (char **)xrealloc (v1, (i + j + 1) * sizeof (char **));
+    memcpy (v1 + i, v2, (j + 1) * sizeof (char *));
+    free (v2);
+    return v1;
 }
 
 /* A set of simple-minded routines to store and search for strings in
@@ -815,99 +815,99 @@ merge_vecs (char **v1, char **v2)
 slist *
 add_slist (slist *l, const char *s, int flags)
 {
-  slist *t, *old, *beg;
-  int cmp;
+    slist *t, *old, *beg;
+    int cmp;
 
-  if (flags & NOSORT)
+    if (flags & NOSORT)
     {
-      if (!l)
-	{
-	  t = (slist *)xmalloc (sizeof (slist));
-	  t->string = xstrdup (s);
-	  t->next = NULL;
-	  return t;
-	}
-      beg = l;
-      /* Find the last element.  */
-      while (l->next)
-	l = l->next;
-      t = (slist *)xmalloc (sizeof (slist));
-      l->next = t;
-      t->string = xstrdup (s);
-      t->next = NULL;
-      return beg;
+        if (!l)
+        {
+            t = (slist *)xmalloc (sizeof (slist));
+            t->string = xstrdup (s);
+            t->next = NULL;
+            return t;
+        }
+        beg = l;
+        /* Find the last element.  */
+        while (l->next)
+            l = l->next;
+        t = (slist *)xmalloc (sizeof (slist));
+        l->next = t;
+        t->string = xstrdup (s);
+        t->next = NULL;
+        return beg;
     }
 
-  /* Empty list or changing the first element.  */
-  if (!l || (cmp = strcmp (l->string, s)) > 0)
+    /* Empty list or changing the first element.  */
+    if (!l || (cmp = strcmp (l->string, s)) > 0)
     {
-      t = (slist *)xmalloc (sizeof (slist));
-      t->string = xstrdup (s);
-      t->next = l;
-      return t;
+        t = (slist *)xmalloc (sizeof (slist));
+        t->string = xstrdup (s);
+        t->next = l;
+        return t;
     }
 
-  beg = l;
-  if (cmp == 0)
+    beg = l;
+    if (cmp == 0)
+        return beg;
+
+    /* Second two one-before-the-last element.  */
+    while (l->next)
+    {
+        old = l;
+        l = l->next;
+        cmp = strcmp (s, l->string);
+        if (cmp == 0)             /* no repeating in the list */
+            return beg;
+        else if (cmp > 0)
+            continue;
+        /* If the next list element is greater than s, put s between the
+        current and the next list element.  */
+        t = (slist *)xmalloc (sizeof (slist));
+        old->next = t;
+        t->next = l;
+        t->string = xstrdup (s);
+        return beg;
+    }
+    t = (slist *)xmalloc (sizeof (slist));
+    t->string = xstrdup (s);
+    /* Insert the new element after the last element.  */
+    l->next = t;
+    t->next = NULL;
+
     return beg;
-
-  /* Second two one-before-the-last element.  */
-  while (l->next)
-    {
-      old = l;
-      l = l->next;
-      cmp = strcmp (s, l->string);
-      if (cmp == 0)             /* no repeating in the list */
-	return beg;
-      else if (cmp > 0)
-	continue;
-      /* If the next list element is greater than s, put s between the
-	 current and the next list element.  */
-      t = (slist *)xmalloc (sizeof (slist));
-      old->next = t;
-      t->next = l;
-      t->string = xstrdup (s);
-      return beg;
-    }
-  t = (slist *)xmalloc (sizeof (slist));
-  t->string = xstrdup (s);
-  /* Insert the new element after the last element.  */
-  l->next = t;
-  t->next = NULL;
-
-  return beg;
 }
 
 /* Is there a specific entry in the list?  */
 int
 in_slist (slist *l, const char *s)
 {
-  int cmp;
+    int cmp;
 
-  while (l)
+    while (l)
     {
-      cmp = strcmp (l->string, s);
-      if (cmp == 0)
-	return 1;
-      else if (cmp > 0)         /* the list is ordered!  */
-	return 0;
-      l = l->next;
+        cmp = strcmp (l->string, s);
+        if (cmp == 0)
+            return 1;
+        else if (cmp > 0)         /* the list is ordered!  */
+            return 0;
+        l = l->next;
     }
-  return 0;
+    return 0;
 }
 
 /* Free the whole slist.*/
 void
 free_slist (slist *l)
 {
-  slist *n;
+    slist *n;
 
-  while (l)
+    while (l)
     {
-      n = l->next;
-      free (l->string);
-      free (l);
-      l = n;
+        n = l->next;
+        free (l->string);
+        free (l);
+        l = n;
     }
 }
 
@@ -915,50 +915,50 @@ free_slist (slist *l)
 char *
 legible (long l)
 {
-  static char outbuf[20];
-  char inbuf[20];
-  int i, i1, mod;
-  char *outptr, *inptr;
+    static char outbuf[20];
+    char inbuf[20];
+    int i, i1, mod;
+    char *outptr, *inptr;
 
-  /* Print the number into the buffer.  */
-  long_to_string (inbuf, l);
-  /* Reset the pointers.  */
-  outptr = outbuf;
-  inptr = inbuf;
-  /* If the number is negative, shift the pointers.  */
-  if (*inptr == '-')
+    /* Print the number into the buffer.  */
+    long_to_string (inbuf, l);
+    /* Reset the pointers.  */
+    outptr = outbuf;
+    inptr = inbuf;
+    /* If the number is negative, shift the pointers.  */
+    if (*inptr == '-')
     {
-      *outptr++ = '-';
-      ++inptr;
+        *outptr++ = '-';
+        ++inptr;
     }
-  /* How many digits before the first separator?  */
-  mod = strlen (inptr) % 3;
-  /* Insert them.  */
-  for (i = 0; i < mod; i++)
-    *outptr++ = inptr[i];
-  /* Now insert the rest of them, putting separator before every
-     third digit.  */
+    /* How many digits before the first separator?  */
+    mod = strlen (inptr) % 3;
+    /* Insert them.  */
+    for (i = 0; i < mod; i++)
+        *outptr++ = inptr[i];
+    /* Now insert the rest of them, putting separator before every
+       third digit.  */
 
-  for (i1 = i, i = 0; inptr[i1]; i++, i1++)
+    for (i1 = i, i = 0; inptr[i1]; i++, i1++)
     {
-      if (i % 3 == 0 && i1 != 0)
-	*outptr++ = ',';
-      *outptr++ = inptr[i1];
+        if (i % 3 == 0 && i1 != 0)
+            *outptr++ = ',';
+        *outptr++ = inptr[i1];
     }
 
-  /* Zero-terminate the string.  */
-  *outptr = '\0';
-  return outbuf;
+    /* Zero-terminate the string.  */
+    *outptr = '\0';
+    return outbuf;
 }
 
 /* Count the digits in a (long) integer.  */
 int
 numdigit (long a)
 {
-  int res = 1;
-  while ((a /= 10) != 0)
-    ++res;
-  return res;
+    int res = 1;
+    while ((a /= 10) != 0)
+        ++res;
+    return res;
 }
 
 /* Print NUMBER to BUFFER.  The digits are first written in reverse
@@ -966,29 +966,29 @@ numdigit (long a)
 void
 long_to_string (char *buffer, long number)
 {
-  char *p;
-  int i, l;
+    char *p;
+    int i, l;
 
-  if (number < 0)
+    if (number < 0)
     {
-      *buffer++ = '-';
-      number = -number;
+        *buffer++ = '-';
+        number = -number;
     }
-  p = buffer;
-  /* Print the digits to the string.  */
-  do
+    p = buffer;
+    /* Print the digits to the string.  */
+    do
     {
-      *p++ = number % 10 + '0';
-      number /= 10;
+        *p++ = number % 10 + '0';
+        number /= 10;
     }
-  while (number);
-  /* And reverse them.  */
-  l = p - buffer - 1;
-  for (i = l/2; i >= 0; i--)
+    while (number);
+    /* And reverse them.  */
+    l = p - buffer - 1;
+    for (i = l/2; i >= 0; i--)
     {
-      char c = buffer[i];
-      buffer[i] = buffer[l - i];
-      buffer[l - i] = c;
+        char c = buffer[i];
+        buffer[i] = buffer[l - i];
+        buffer[l - i] = c;
     }
-  buffer[l + 1] = '\0';
+    buffer[l + 1] = '\0';
 }

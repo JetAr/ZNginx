@@ -62,41 +62,41 @@ static struct sockaddr *addr;
 uerr_t
 make_connection (int *sock, char *hostname, unsigned short port)
 {
-  struct sockaddr_in sock_name;
-  /* struct hostent *hptr; */
+    struct sockaddr_in sock_name;
+    /* struct hostent *hptr; */
 
-  /* Get internet address of the host.  We can do it either by calling
-     ngethostbyname, or by calling store_hostaddress, from host.c.
-     storehostaddress is better since it caches calls to
-     gethostbyname.  */
+    /* Get internet address of the host.  We can do it either by calling
+       ngethostbyname, or by calling store_hostaddress, from host.c.
+       storehostaddress is better since it caches calls to
+       gethostbyname.  */
 #if 1
-  if (!store_hostaddress ((unsigned char *)&sock_name.sin_addr, hostname))
-    return HOSTERR;
+    if (!store_hostaddress ((unsigned char *)&sock_name.sin_addr, hostname))
+        return HOSTERR;
 #else  /* never */
-  if (!(hptr = ngethostbyname (hostname)))
-    return HOSTERR;
-  /* Copy the address of the host to socket description.  */
-  memcpy (&sock_name.sin_addr, hptr->h_addr, hptr->h_length);
+    if (!(hptr = ngethostbyname (hostname)))
+        return HOSTERR;
+    /* Copy the address of the host to socket description.  */
+    memcpy (&sock_name.sin_addr, hptr->h_addr, hptr->h_length);
 #endif /* never */
 
-  /* Set port and protocol */
-  sock_name.sin_family = AF_INET;
-  sock_name.sin_port = htons (port);
+    /* Set port and protocol */
+    sock_name.sin_family = AF_INET;
+    sock_name.sin_port = htons (port);
 
-  /* Make an internet socket, stream type.  */
-  if ((*sock = socket (AF_INET, SOCK_STREAM, 0)) == -1)
-    return CONSOCKERR;
+    /* Make an internet socket, stream type.  */
+    if ((*sock = socket (AF_INET, SOCK_STREAM, 0)) == -1)
+        return CONSOCKERR;
 
-  /* Connect the socket to the remote host.  */
-  if (connect (*sock, (struct sockaddr *) &sock_name, sizeof (sock_name)))
+    /* Connect the socket to the remote host.  */
+    if (connect (*sock, (struct sockaddr *) &sock_name, sizeof (sock_name)))
     {
-      if (errno == ECONNREFUSED)
-	return CONREFUSED;
-      else
-	return CONERROR;
+        if (errno == ECONNREFUSED)
+            return CONREFUSED;
+        else
+            return CONERROR;
     }
-  DEBUGP (("Created fd %d.\n", *sock));
-  return NOCONERROR;
+    DEBUGP (("Created fd %d.\n", *sock));
+    return NOCONERROR;
 }
 
 /* Bind the local port PORT.  This does all the necessary work, which
@@ -108,44 +108,44 @@ make_connection (int *sock, char *hostname, unsigned short port)
 uerr_t
 bindport (unsigned short *port)
 {
-  int optval = 1;
-  static struct sockaddr_in srv;
+    int optval = 1;
+    static struct sockaddr_in srv;
 
-  msock = -1;
-  addr = (struct sockaddr *) &srv;
-  if ((msock = socket (AF_INET, SOCK_STREAM, 0)) < 0)
-    return CONSOCKERR;
-  if (setsockopt (msock, SOL_SOCKET, SO_REUSEADDR,
-		  (char *)&optval, sizeof (optval)) < 0)
-    return CONSOCKERR;
-  srv.sin_family = AF_INET;
-  srv.sin_addr.s_addr = htonl (INADDR_ANY);
-  srv.sin_port = htons (*port);
-  if (bind (msock, addr, sizeof (struct sockaddr_in)) < 0)
+    msock = -1;
+    addr = (struct sockaddr *) &srv;
+    if ((msock = socket (AF_INET, SOCK_STREAM, 0)) < 0)
+        return CONSOCKERR;
+    if (setsockopt (msock, SOL_SOCKET, SO_REUSEADDR,
+                    (char *)&optval, sizeof (optval)) < 0)
+        return CONSOCKERR;
+    srv.sin_family = AF_INET;
+    srv.sin_addr.s_addr = htonl (INADDR_ANY);
+    srv.sin_port = htons (*port);
+    if (bind (msock, addr, sizeof (struct sockaddr_in)) < 0)
     {
-      CLOSE (msock);
-      msock = -1;
-      return BINDERR;
+        CLOSE (msock);
+        msock = -1;
+        return BINDERR;
     }
-  DEBUGP (("Master socket fd %d bound.\n", msock));
-  if (!*port)
+    DEBUGP (("Master socket fd %d bound.\n", msock));
+    if (!*port)
     {
-      size_t addrlen = sizeof (struct sockaddr_in);
-      if (getsockname (msock, addr, (int *)&addrlen) < 0)
-	{
-	  CLOSE (msock);
-	  msock = -1;
-	  return CONPORTERR;
-	}
-      *port = ntohs (srv.sin_port);
+        size_t addrlen = sizeof (struct sockaddr_in);
+        if (getsockname (msock, addr, (int *)&addrlen) < 0)
+        {
+            CLOSE (msock);
+            msock = -1;
+            return CONPORTERR;
+        }
+        *port = ntohs (srv.sin_port);
     }
-  if (listen (msock, 1) < 0)
+    if (listen (msock, 1) < 0)
     {
-      CLOSE (msock);
-      msock = -1;
-      return LISTENERR;
+        CLOSE (msock);
+        msock = -1;
+        return LISTENERR;
     }
-  return BINDOK;
+    return BINDOK;
 }
 
 #ifdef HAVE_SELECT
@@ -158,18 +158,18 @@ bindport (unsigned short *port)
 static int
 select_fd (int fd, int maxtime, int writep)
 {
-  fd_set fds, exceptfds;
-  struct timeval timeout;
+    fd_set fds, exceptfds;
+    struct timeval timeout;
 
-  FD_ZERO (&fds);
-  FD_SET (fd, &fds);
-  FD_ZERO (&exceptfds);
-  FD_SET (fd, &exceptfds);
-  timeout.tv_sec = maxtime;
-  timeout.tv_usec = 0;
-  /* HPUX reportedly warns here.  What is the correct incantation?  */
-  return select (fd + 1, writep ? NULL : &fds, writep ? &fds : NULL,
-		 &exceptfds, &timeout);
+    FD_ZERO (&fds);
+    FD_SET (fd, &fds);
+    FD_ZERO (&exceptfds);
+    FD_SET (fd, &exceptfds);
+    timeout.tv_sec = maxtime;
+    timeout.tv_usec = 0;
+    /* HPUX reportedly warns here.  What is the correct incantation?  */
+    return select (fd + 1, writep ? NULL : &fds, writep ? &fds : NULL,
+                   &exceptfds, &timeout);
 }
 #endif /* HAVE_SELECT */
 
@@ -181,16 +181,16 @@ select_fd (int fd, int maxtime, int writep)
 uerr_t
 acceptport (int *sock)
 {
-  int addrlen = sizeof (struct sockaddr_in);
+    int addrlen = sizeof (struct sockaddr_in);
 
 #ifdef HAVE_SELECT
-  if (select_fd (msock, opt.timeout, 0) <= 0)
-    return ACCEPTERR;
+    if (select_fd (msock, opt.timeout, 0) <= 0)
+        return ACCEPTERR;
 #endif
-  if ((*sock = accept (msock, addr, &addrlen)) < 0)
-    return ACCEPTERR;
-  DEBUGP (("Created socket fd %d.\n", *sock));
-  return ACCEPTOK;
+    if ((*sock = accept (msock, addr, &addrlen)) < 0)
+        return ACCEPTERR;
+    DEBUGP (("Created socket fd %d.\n", *sock));
+    return ACCEPTOK;
 }
 
 /* Close SOCK, as well as the most recently remembered MSOCK, created
@@ -198,12 +198,12 @@ acceptport (int *sock)
 void
 closeport (int sock)
 {
-  /*shutdown (sock, 2);*/
-  if (sock != -1)
-    CLOSE (sock);
-  if (msock != -1)
-    CLOSE (msock);
-  msock = -1;
+    /*shutdown (sock, 2);*/
+    if (sock != -1)
+        CLOSE (sock);
+    if (msock != -1)
+        CLOSE (msock);
+    msock = -1;
 }
 
 /* Return the local IP address associated with the connection on FD.
@@ -211,16 +211,16 @@ closeport (int sock)
 unsigned char *
 conaddr (int fd)
 {
-  static unsigned char res[4];
-  struct sockaddr_in mysrv;
-  struct sockaddr *myaddr;
-  size_t addrlen = sizeof (mysrv);
+    static unsigned char res[4];
+    struct sockaddr_in mysrv;
+    struct sockaddr *myaddr;
+    size_t addrlen = sizeof (mysrv);
 
-  myaddr = (struct sockaddr *) (&mysrv);
-  if (getsockname (fd, myaddr, (int *)&addrlen) < 0)
-    return NULL;
-  memcpy (res, &mysrv.sin_addr, 4);
-  return res;
+    myaddr = (struct sockaddr *) (&mysrv);
+    if (getsockname (fd, myaddr, (int *)&addrlen) < 0)
+        return NULL;
+    memcpy (res, &mysrv.sin_addr, 4);
+    return res;
 }
 
 /* Read at most LEN bytes from FD, storing them to BUF.  This is
@@ -231,35 +231,35 @@ conaddr (int fd)
 int
 iread (int fd, char *buf, int len)
 {
-  int res;
+    int res;
 
-  do
+    do
     {
 #ifdef HAVE_SELECT
-      if (opt.timeout)
-	{
-	  do
-	    {
-	      res = select_fd (fd, opt.timeout, 0);
-	    }
-	  while (res == -1 && errno == EINTR);
-	  if (res <= 0)
-	    {
-	      /* Set errno to ETIMEDOUT on timeout.  */
-	      if (res == 0)
-		/* #### Potentially evil!  */
-		errno = ETIMEDOUT;
-	      return -1;
-	    }
-	}
+        if (opt.timeout)
+        {
+            do
+            {
+                res = select_fd (fd, opt.timeout, 0);
+            }
+            while (res == -1 && errno == EINTR);
+            if (res <= 0)
+            {
+                /* Set errno to ETIMEDOUT on timeout.  */
+                if (res == 0)
+                    /* #### Potentially evil!  */
+                    errno = ETIMEDOUT;
+                return -1;
+            }
+        }
 #endif
-	  //#define READ(fd, buf, cnt) recv ((fd), (buf), (cnt), 0)
-      res = READ (fd, buf, len);
-	  //OutputDebugString(buf);
+        //#define READ(fd, buf, cnt) recv ((fd), (buf), (cnt), 0)
+        res = READ (fd, buf, len);
+        //OutputDebugString(buf);
     }
-  while (res == -1 && errno == EINTR);
+    while (res == -1 && errno == EINTR);
 
-  return res;
+    return res;
 }
 
 /* Write LEN bytes from BUF to FD.  This is similar to iread(), but
@@ -270,42 +270,42 @@ iread (int fd, char *buf, int len)
 int
 iwrite (int fd, char *buf, int len)
 {
-  int res = 0;
+    int res = 0;
 
-  /* `write' may write less than LEN bytes, thus the outward loop
-     keeps trying it until all was written, or an error occurred.  The
-     inner loop is reserved for the usual EINTR f*kage, and the
-     innermost loop deals with the same during select().  */
-  while (len > 0)
+    /* `write' may write less than LEN bytes, thus the outward loop
+       keeps trying it until all was written, or an error occurred.  The
+       inner loop is reserved for the usual EINTR f*kage, and the
+       innermost loop deals with the same during select().  */
+    while (len > 0)
     {
-      do
-	{
+        do
+        {
 #ifdef HAVE_SELECT
-	  if (opt.timeout)
-	    {
-	      do
-		{
-		  res = select_fd (fd, opt.timeout, 1);
-		}
-	      while (res == -1 && errno == EINTR);
-	      if (res <= 0)
-		{
-		  /* Set errno to ETIMEDOUT on timeout.  */
-		  if (res == 0)
-		    /* #### Potentially evil!  */
-		    errno = ETIMEDOUT;
-		  return -1;
-		}
-	    }
+            if (opt.timeout)
+            {
+                do
+                {
+                    res = select_fd (fd, opt.timeout, 1);
+                }
+                while (res == -1 && errno == EINTR);
+                if (res <= 0)
+                {
+                    /* Set errno to ETIMEDOUT on timeout.  */
+                    if (res == 0)
+                        /* #### Potentially evil!  */
+                        errno = ETIMEDOUT;
+                    return -1;
+                }
+            }
 #endif
-	  res = WRITE (fd, buf, len);
-	  OutputDebugString(buf);
-	}
-      while (res == -1 && errno == EINTR);
-      if (res <= 0)
-	break;
-      buf += res;
-      len -= res;
+            res = WRITE (fd, buf, len);
+            OutputDebugString(buf);
+        }
+        while (res == -1 && errno == EINTR);
+        if (res <= 0)
+            break;
+        buf += res;
+        len -= res;
     }
-  return res;
+    return res;
 }

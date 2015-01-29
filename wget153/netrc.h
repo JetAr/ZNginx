@@ -19,11 +19,11 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 typedef struct _acc_t
 {
-  char *host;			/* NULL if this is the default machine
+    char *host;			/* NULL if this is the default machine
 				   entry.  */
-  char *acc;
-  char *passwd;			/* NULL if there is no password.  */
-  struct _acc_t *next;
+    char *acc;
+    char *passwd;			/* NULL if there is no password.  */
+    struct _acc_t *next;
 } acc_t;
 
 void search_netrc PARAMS((const char *, const char **, const char **, int));

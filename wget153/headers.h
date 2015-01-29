@@ -17,17 +17,19 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
-enum {
-  HG_OK, HG_ERROR, HG_EOF
+enum
+{
+    HG_OK, HG_ERROR, HG_EOF
 };
 
 enum header_get_flags { HG_NONE = 0,
-			HG_NO_CONTINUATIONS = 0x2 };
+                        HG_NO_CONTINUATIONS = 0x2
+                      };
 
 int header_get PARAMS ((struct rbuf *, char **, enum header_get_flags));
 int header_process PARAMS ((const char *, const char *,
-			    int (*) (const char *, void *),
-			    void *));
+                            int (*) (const char *, void *),
+                            void *));
 
 int header_extract_number PARAMS ((const char *, void *));
 int header_strdup PARAMS ((const char *, void *));

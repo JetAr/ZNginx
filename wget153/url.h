@@ -27,39 +27,39 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 /* Structure containing info on a URL.  */
 struct urlinfo
 {
-  char *url;			/* Unchanged URL */
-  uerr_t proto;			/* URL protocol */
-  char *host;			/* Extracted hostname */
-  unsigned short port;
-  char ftp_type;
-  char *path, *dir, *file;	/* Path, as well as dir and file
+    char *url;			/* Unchanged URL */
+    uerr_t proto;			/* URL protocol */
+    char *host;			/* Extracted hostname */
+    unsigned short port;
+    char ftp_type;
+    char *path, *dir, *file;	/* Path, as well as dir and file
 				   (properly decoded) */
-  char *user, *passwd;		/* Username and password */
-  struct urlinfo *proxy;	/* The exact string to pass to proxy
+    char *user, *passwd;		/* Username and password */
+    struct urlinfo *proxy;	/* The exact string to pass to proxy
 				   server */
-  char *referer;		/* The source from which the request
+    char *referer;		/* The source from which the request
 				   URI was obtained */
-  char *local;			/* The local filename of the URL
+    char *local;			/* The local filename of the URL
 				   document */
 };
 
 enum uflags
 {
-  URELATIVE     = 0x0001,      /* Is URL relative? */
-  UNOPROTO      = 0x0002,      /* Is URL without a protocol? */
-  UABS2REL      = 0x0004,      /* Convert absolute to relative? */
-  UREL2ABS      = 0x0008       /* Convert relative to absolute? */
+    URELATIVE     = 0x0001,      /* Is URL relative? */
+    UNOPROTO      = 0x0002,      /* Is URL without a protocol? */
+    UABS2REL      = 0x0004,      /* Convert absolute to relative? */
+    UREL2ABS      = 0x0008       /* Convert relative to absolute? */
 };
 
 /* A structure that defines the whereabouts of a URL, i.e. its
    position in an HTML document, etc.  */
 typedef struct _urlpos
 {
-  char *url;                   /* URL */
-  char *local_name;            /* Local file to which it was saved */
-  enum uflags flags;           /* Various flags */
-  int pos, size;               /* Rekative position in the buffer */
-  struct _urlpos *next;        /* Next struct in list */
+    char *url;                   /* URL */
+    char *local_name;            /* Local file to which it was saved */
+    enum uflags flags;           /* Various flags */
+    int pos, size;               /* Rekative position in the buffer */
+    struct _urlpos *next;        /* Next struct in list */
 } urlpos;
 
 

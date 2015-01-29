@@ -21,19 +21,21 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 #define UTILS_H
 
 /* Flags for slist.  */
-enum {
-   NOSORT     = 1
+enum
+{
+    NOSORT     = 1
 };
 
-enum accd {
-   ALLABS = 1
+enum accd
+{
+    ALLABS = 1
 };
 
 /* A linked list of strings.  The list is ordered alphabetically.  */
 typedef struct _slist
 {
-  char *string;
-  struct _slist *next;
+    char *string;
+    struct _slist *next;
 } slist;
 
 char *time_str PARAMS ((time_t *));

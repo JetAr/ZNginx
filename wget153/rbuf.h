@@ -23,12 +23,12 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 /* Retrieval stream */
 struct rbuf
 {
-  int fd;
-  char buffer[4096];		/* the input buffer */
-  char *buffer_pos;		/* current position in the buffer */
-  size_t buffer_left;		/* number of bytes left in the buffer:
+    int fd;
+    char buffer[4096];		/* the input buffer */
+    char *buffer_pos;		/* current position in the buffer */
+    size_t buffer_left;		/* number of bytes left in the buffer:
 				   buffer_left = buffer_end - buffer_pos */
-  int internal_dont_touch_this;	/* used by RBUF_READCHAR macro */
+    int internal_dont_touch_this;	/* used by RBUF_READCHAR macro */
 };
 
 /* Read a character from RBUF.  If there is anything in the buffer,

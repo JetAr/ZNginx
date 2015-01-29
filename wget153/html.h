@@ -23,10 +23,10 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 /* Structure of a parser state */
 typedef struct
 {
-  int at_value, in_quote;
-  char quote_char;
-  char *tag, *attr;
-  char *base;
+    int at_value, in_quote;
+    char quote_char;
+    char *tag, *attr;
+    char *base;
 } state_t;
 
 struct fileinfo;

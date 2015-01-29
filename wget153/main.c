@@ -78,22 +78,22 @@ const char *exec_name;
 static void
 i18n_initialize (void)
 {
-  /* If HAVE_NLS is defined, assume the existence of the three
-     functions invoked here.  */
+    /* If HAVE_NLS is defined, assume the existence of the three
+       functions invoked here.  */
 #ifdef HAVE_NLS
-  /* Set the current locale.  */
-  /* Here we use LC_MESSAGES instead of LC_ALL, for two reasons.
-     First, message catalogs are all of I18N Wget uses anyway.
-     Second, setting LC_ALL has a dangerous potential of messing
-     things up.  For example, when in a foreign locale, Solaris
-     strptime() fails to handle international dates correctly, which
-     makes http_atotm() malfunction.  */
-  printf("i18n_initialize:HAVE_NLS\N");
-  // 设置区域化信息
-  setlocale (LC_MESSAGES, "");
-  /* Set the text message domain.  */
-  bindtextdomain ("wget", LOCALEDIR);
-  textdomain ("wget");
+    /* Set the current locale.  */
+    /* Here we use LC_MESSAGES instead of LC_ALL, for two reasons.
+       First, message catalogs are all of I18N Wget uses anyway.
+       Second, setting LC_ALL has a dangerous potential of messing
+       things up.  For example, when in a foreign locale, Solaris
+       strptime() fails to handle international dates correctly, which
+       makes http_atotm() malfunction.  */
+    printf("i18n_initialize:HAVE_NLS\N");
+    // 设置区域化信息
+    setlocale (LC_MESSAGES, "");
+    /* Set the text message domain.  */
+    bindtextdomain ("wget", LOCALEDIR);
+    textdomain ("wget");
 #endif /* HAVE_NLS */
 }
 
@@ -101,7 +101,7 @@ i18n_initialize (void)
 static void
 print_usage (void)
 {
-  printf (_("Usage: %s [OPTION]... [URL]...\n"), exec_name);
+    printf (_("Usage: %s [OPTION]... [URL]...\n"), exec_name);
 }
 
 /* Print the help message, describing all the available options.  If
@@ -109,12 +109,12 @@ print_usage (void)
 static void
 print_help (void)
 {
-  printf (_("GNU Wget %s, a non-interactive network retriever.\n"),
-	  version_string);
-  print_usage ();
-  /* Had to split this in parts, so the #@@#%# Ultrix compiler and cpp
-     don't bitch.  Also, it makes translation much easier.  */
-  printf ("%s%s%s%s%s%s%s%s%s%s", _("\
+    printf (_("GNU Wget %s, a non-interactive network retriever.\n"),
+            version_string);
+    print_usage ();
+    /* Had to split this in parts, so the #@@#%# Ultrix compiler and cpp
+       don't bitch.  Also, it makes translation much easier.  */
+    printf ("%s%s%s%s%s%s%s%s%s%s", _("\
 \n\
 Mandatory arguments to long options are mandatory for short options too.\n\
 \n"), _("\
@@ -198,532 +198,532 @@ Recursive accept/reject:\n\
 int
 main (int argc, char *const *argv)
 {
-  char **url, **t;
-  int i, c, nurl, status, append_to_log;
+    char **url, **t;
+    int i, c, nurl, status, append_to_log;
 
-  static struct option long_options[] =
-  {
-    { "background", no_argument, NULL, 'b' },
-    { "continue", no_argument, NULL, 'c' },
-    { "convert-links", no_argument, NULL, 'k' },
-    { "debug", no_argument, NULL, 'd' },
-    { "dont-remove-listing", no_argument, NULL, 21 },
-    { "email-address", no_argument, NULL, 'E' }, /* undocumented (debug) */
-    { "follow-ftp", no_argument, NULL, 14 },
-    { "force-directories", no_argument, NULL, 'x' },
-    { "force-hier", no_argument, NULL, 'x' }, /* obsolete */
-    { "force-html", no_argument, NULL, 'F'},
-    { "help", no_argument, NULL, 'h' },
-    { "ignore-length", no_argument, NULL, 10 },
-    { "mirror", no_argument, NULL, 'm' },
-    { "no-clobber", no_argument, NULL, 13 },
-    { "no-directories", no_argument, NULL, 19 },
-    { "no-host-directories", no_argument, NULL, 20 },
-    { "no-host-lookup", no_argument, NULL, 22 },
-    { "no-parent", no_argument, NULL, 5 },
-    { "non-verbose", no_argument, NULL, 18 },
-    { "passive-ftp", no_argument, NULL, 11 },
-    { "quiet", no_argument, NULL, 'q' },
-    { "recursive", no_argument, NULL, 'r' },
-    { "relative", no_argument, NULL, 'L' },
-    { "retr-symlinks", no_argument, NULL, 9 },
-    { "save-headers", no_argument, NULL, 's' },
-    { "server-response", no_argument, NULL, 'S' },
-    { "span-hosts", no_argument, NULL, 'H' },
-    { "spider", no_argument, NULL, 4 },
-    { "timestamping", no_argument, NULL, 'N' },
-    { "verbose", no_argument, NULL, 'v' },
-    { "version", no_argument, NULL, 'V' },
-
-    { "accept", required_argument, NULL, 'A' },
-    { "append-output", required_argument, NULL, 'a' },
-    { "backups", required_argument, NULL, 23 }, /* undocumented */
-    { "base", required_argument, NULL, 'B' },
-    { "cache", required_argument, NULL, 'C' },
-    { "cut-dirs", required_argument, NULL, 17 },
-    { "delete-after", no_argument, NULL, 8 },
-    { "directory-prefix", required_argument, NULL, 'P' },
-    { "domains", required_argument, NULL, 'D' },
-    { "dot-style", required_argument, NULL, 6 },
-    { "execute", required_argument, NULL, 'e' },
-    { "exclude-directories", required_argument, NULL, 'X' },
-    { "exclude-domains", required_argument, NULL, 12 },
-    { "glob", required_argument, NULL, 'g' },
-    { "header", required_argument, NULL, 3 },
-    { "htmlify", required_argument, NULL, 7 },
-    { "http-passwd", required_argument, NULL, 2 },
-    { "http-user", required_argument, NULL, 1 },
-    { "include-directories", required_argument, NULL, 'I' },
-    { "input-file", required_argument, NULL, 'i' },
-    { "level", required_argument, NULL, 'l' },
-    { "no", required_argument, NULL, 'n' },
-    { "output-document", required_argument, NULL, 'O' },
-    { "output-file", required_argument, NULL, 'o' },
-    { "proxy", required_argument, NULL, 'Y' },
-    { "proxy-passwd", required_argument, NULL, 16 },
-    { "proxy-user", required_argument, NULL, 15 },
-    { "quota", required_argument, NULL, 'Q' },
-    { "reject", required_argument, NULL, 'R' },
-    { "timeout", required_argument, NULL, 'T' },
-    { "tries", required_argument, NULL, 't' },
-    { "user-agent", required_argument, NULL, 'U' },
-    { "use-proxy", required_argument, NULL, 'Y' },
-    { "wait", required_argument, NULL, 'w' },
-    { 0, 0, 0, 0 }
-  };
-
-  // 为国际化支持做初始化
-  i18n_initialize ();
-
-  append_to_log = 0;
-
-  /* Construct the name of the executable, without the directory part.  */
-  // 在full path 中找出最后一个分隔符后的字符串
-  exec_name = strrchr (argv[0], PATH_SEPARATOR);
-  // 得到可执行文件的名称
-  if (!exec_name)
-    exec_name = argv[0];
-  else
-    ++exec_name;
-
-#ifdef WINDOWS
-  // 将 wget.exe -> wget ， 去除后缀名称
-  windows_main_junk (&argc, (char **) argv, (char **) &exec_name);
-#endif
-
-  // 用默认值进行初始化，使用系统和用户定义文件wgetrc进行初始化
-  initialize ();
-
-  // command parser
-  while ((c = getopt_long (argc, argv, "\
-    hVqvdksxmNWrHSLcFbEY:g:T:U:O:l:n:i:o:a:t:D:A:R:P:B:e:Q:X:I:w:",
-			   long_options, (int *)0)) != EOF)
+    static struct option long_options[] =
     {
-      switch (c)
-	{
-	  /* Options without arguments: */
-	case 4:
-	  setval ("spider", "on");
-	  break;
-	case 5:
-	  setval ("noparent", "on");
-	  break;
-	case 8:
-	  setval ("deleteafter", "on");
-	  break;
-	case 9:
-	  setval ("retrsymlinks", "on");
-	  break;
-	case 10:
-	  setval ("ignorelength", "on");
-	  break;
-	case 11:
-	  setval ("passiveftp", "on");
-	  break;
-	case 13:
-	  setval ("noclobber", "on");
-	  break;
-	case 14:
-	  setval ("followftp", "on");
-	  break;
-	case 17:
-	  setval ("cutdirs", optarg);
-	  break;
-	case 18:
-	  setval ("verbose", "off");
-	  break;
-	case 19:
-	  setval ("dirstruct", "off");
-	  break;
-	case 20:
-	  setval ("addhostdir", "off");
-	  break;
-	case 21:
-	  setval ("removelisting", "off");
-	  break;
-	case 22:
-	  setval ("simplehostcheck", "on");
-	  break;
-	case 'b':
-	  setval ("background", "on");
-	  break;
-	case 'c':
-	  setval ("continue", "on");
-	  break;
-	case 'd':
-#ifdef DEBUG
-	  setval ("debug", "on");
-#else  /* not DEBUG */
-	  fprintf (stderr, _("%s: debug support not compiled in.\n"),
-		   exec_name);
-#endif /* not DEBUG */
-	  break;
-	case 'E':
-	  /* For debugging purposes.  */
-	  printf ("%s\n", ftp_getaddress ());
-	  exit (0);
-	  break;
-	case 'F':
-	  setval ("forcehtml", "on");
-	  break;
-	case 'H':
-	  setval ("spanhosts", "on");
-	  break;
-	case 'h':
-	  print_help ();
+        { "background", no_argument, NULL, 'b' },
+        { "continue", no_argument, NULL, 'c' },
+        { "convert-links", no_argument, NULL, 'k' },
+        { "debug", no_argument, NULL, 'd' },
+        { "dont-remove-listing", no_argument, NULL, 21 },
+        { "email-address", no_argument, NULL, 'E' }, /* undocumented (debug) */
+        { "follow-ftp", no_argument, NULL, 14 },
+        { "force-directories", no_argument, NULL, 'x' },
+        { "force-hier", no_argument, NULL, 'x' }, /* obsolete */
+        { "force-html", no_argument, NULL, 'F'},
+        { "help", no_argument, NULL, 'h' },
+        { "ignore-length", no_argument, NULL, 10 },
+        { "mirror", no_argument, NULL, 'm' },
+        { "no-clobber", no_argument, NULL, 13 },
+        { "no-directories", no_argument, NULL, 19 },
+        { "no-host-directories", no_argument, NULL, 20 },
+        { "no-host-lookup", no_argument, NULL, 22 },
+        { "no-parent", no_argument, NULL, 5 },
+        { "non-verbose", no_argument, NULL, 18 },
+        { "passive-ftp", no_argument, NULL, 11 },
+        { "quiet", no_argument, NULL, 'q' },
+        { "recursive", no_argument, NULL, 'r' },
+        { "relative", no_argument, NULL, 'L' },
+        { "retr-symlinks", no_argument, NULL, 9 },
+        { "save-headers", no_argument, NULL, 's' },
+        { "server-response", no_argument, NULL, 'S' },
+        { "span-hosts", no_argument, NULL, 'H' },
+        { "spider", no_argument, NULL, 4 },
+        { "timestamping", no_argument, NULL, 'N' },
+        { "verbose", no_argument, NULL, 'v' },
+        { "version", no_argument, NULL, 'V' },
+
+        { "accept", required_argument, NULL, 'A' },
+        { "append-output", required_argument, NULL, 'a' },
+        { "backups", required_argument, NULL, 23 }, /* undocumented */
+        { "base", required_argument, NULL, 'B' },
+        { "cache", required_argument, NULL, 'C' },
+        { "cut-dirs", required_argument, NULL, 17 },
+        { "delete-after", no_argument, NULL, 8 },
+        { "directory-prefix", required_argument, NULL, 'P' },
+        { "domains", required_argument, NULL, 'D' },
+        { "dot-style", required_argument, NULL, 6 },
+        { "execute", required_argument, NULL, 'e' },
+        { "exclude-directories", required_argument, NULL, 'X' },
+        { "exclude-domains", required_argument, NULL, 12 },
+        { "glob", required_argument, NULL, 'g' },
+        { "header", required_argument, NULL, 3 },
+        { "htmlify", required_argument, NULL, 7 },
+        { "http-passwd", required_argument, NULL, 2 },
+        { "http-user", required_argument, NULL, 1 },
+        { "include-directories", required_argument, NULL, 'I' },
+        { "input-file", required_argument, NULL, 'i' },
+        { "level", required_argument, NULL, 'l' },
+        { "no", required_argument, NULL, 'n' },
+        { "output-document", required_argument, NULL, 'O' },
+        { "output-file", required_argument, NULL, 'o' },
+        { "proxy", required_argument, NULL, 'Y' },
+        { "proxy-passwd", required_argument, NULL, 16 },
+        { "proxy-user", required_argument, NULL, 15 },
+        { "quota", required_argument, NULL, 'Q' },
+        { "reject", required_argument, NULL, 'R' },
+        { "timeout", required_argument, NULL, 'T' },
+        { "tries", required_argument, NULL, 't' },
+        { "user-agent", required_argument, NULL, 'U' },
+        { "use-proxy", required_argument, NULL, 'Y' },
+        { "wait", required_argument, NULL, 'w' },
+        { 0, 0, 0, 0 }
+    };
+
+    // 为国际化支持做初始化
+    i18n_initialize ();
+
+    append_to_log = 0;
+
+    /* Construct the name of the executable, without the directory part.  */
+    // 在full path 中找出最后一个分隔符后的字符串
+    exec_name = strrchr (argv[0], PATH_SEPARATOR);
+    // 得到可执行文件的名称
+    if (!exec_name)
+        exec_name = argv[0];
+    else
+        ++exec_name;
+
 #ifdef WINDOWS
-	  ws_help (exec_name);
+    // 将 wget.exe -> wget ， 去除后缀名称
+    windows_main_junk (&argc, (char **) argv, (char **) &exec_name);
 #endif
-	  exit (0);
-	  break;
-	case 'k':
-	  setval ("convertlinks", "on");
-	  break;
-	case 'L':
-	  setval ("relativeonly", "on");
-	  break;
-	case 'm':
-	  setval ("mirror", "on");
-	  break;
-	case 'N':
-	  setval ("timestamping", "on");
-	  break;
-	case 'S':
-	  setval ("serverresponse", "on");
-	  break;
-	case 's':
-	  setval ("saveheaders", "on");
-	  break;
-	case 'q':
-	  setval ("quiet", "on");
-	  break;
-	case 'r':
-	  setval ("recursive", "on");
-	  break;
-	case 'V':
-	  printf ("GNU Wget %s\n\n", version_string);
-	  printf ("%s", _("\
+
+    // 用默认值进行初始化，使用系统和用户定义文件wgetrc进行初始化
+    initialize ();
+
+    // command parser
+    while ((c = getopt_long (argc, argv, "\
+    hVqvdksxmNWrHSLcFbEY:g:T:U:O:l:n:i:o:a:t:D:A:R:P:B:e:Q:X:I:w:",
+                             long_options, (int *)0)) != EOF)
+    {
+        switch (c)
+        {
+        /* Options without arguments: */
+        case 4:
+            setval ("spider", "on");
+            break;
+        case 5:
+            setval ("noparent", "on");
+            break;
+        case 8:
+            setval ("deleteafter", "on");
+            break;
+        case 9:
+            setval ("retrsymlinks", "on");
+            break;
+        case 10:
+            setval ("ignorelength", "on");
+            break;
+        case 11:
+            setval ("passiveftp", "on");
+            break;
+        case 13:
+            setval ("noclobber", "on");
+            break;
+        case 14:
+            setval ("followftp", "on");
+            break;
+        case 17:
+            setval ("cutdirs", optarg);
+            break;
+        case 18:
+            setval ("verbose", "off");
+            break;
+        case 19:
+            setval ("dirstruct", "off");
+            break;
+        case 20:
+            setval ("addhostdir", "off");
+            break;
+        case 21:
+            setval ("removelisting", "off");
+            break;
+        case 22:
+            setval ("simplehostcheck", "on");
+            break;
+        case 'b':
+            setval ("background", "on");
+            break;
+        case 'c':
+            setval ("continue", "on");
+            break;
+        case 'd':
+#ifdef DEBUG
+            setval ("debug", "on");
+#else  /* not DEBUG */
+            fprintf (stderr, _("%s: debug support not compiled in.\n"),
+                     exec_name);
+#endif /* not DEBUG */
+            break;
+        case 'E':
+            /* For debugging purposes.  */
+            printf ("%s\n", ftp_getaddress ());
+            exit (0);
+            break;
+        case 'F':
+            setval ("forcehtml", "on");
+            break;
+        case 'H':
+            setval ("spanhosts", "on");
+            break;
+        case 'h':
+            print_help ();
+#ifdef WINDOWS
+            ws_help (exec_name);
+#endif
+            exit (0);
+            break;
+        case 'k':
+            setval ("convertlinks", "on");
+            break;
+        case 'L':
+            setval ("relativeonly", "on");
+            break;
+        case 'm':
+            setval ("mirror", "on");
+            break;
+        case 'N':
+            setval ("timestamping", "on");
+            break;
+        case 'S':
+            setval ("serverresponse", "on");
+            break;
+        case 's':
+            setval ("saveheaders", "on");
+            break;
+        case 'q':
+            setval ("quiet", "on");
+            break;
+        case 'r':
+            setval ("recursive", "on");
+            break;
+        case 'V':
+            printf ("GNU Wget %s\n\n", version_string);
+            printf ("%s", _("\
 Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.\n\
 This program is distributed in the hope that it will be useful,\n\
 but WITHOUT ANY WARRANTY; without even the implied warranty of\n\
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n\
 GNU General Public License for more details.\n"));
-	  printf (_("\nWritten by Hrvoje Niksic <hniksic@srce.hr>.\n"));
-	  exit (0);
-	  break;
-	case 'v':
-	  setval ("verbose", "on");
-	  break;
-	case 'x':
-	  setval ("dirstruct", "on");
-	  break;
+            printf (_("\nWritten by Hrvoje Niksic <hniksic@srce.hr>.\n"));
+            exit (0);
+            break;
+        case 'v':
+            setval ("verbose", "on");
+            break;
+        case 'x':
+            setval ("dirstruct", "on");
+            break;
 
-	  /* Options accepting an argument: */
-	case 1:
-	  setval ("httpuser", optarg);
-	  break;
-	case 2:
-	  setval ("httppasswd", optarg);
-	  break;
-	case 3:
-	  setval ("header", optarg);
-	  break;
-	case 6:
-	  setval ("dotstyle", optarg);
-	  break;
-	case 7:
-	  setval ("htmlify", optarg);
-	  break;
-	case 12:
-	  setval ("excludedomains", optarg);
-	  break;
-	case 15:
-	  setval ("proxyuser", optarg);
-	  break;
-	case 16:
-	  setval ("proxypasswd", optarg);
-	  break;
-	case 23:
-	  setval ("backups", optarg);
-	  break;
-	case 'A':
-	  setval ("accept", optarg);
-	  break;
-	case 'a':
-	  setval ("logfile", optarg);
-	  append_to_log = 1;
-	  break;
-	case 'B':
-	  setval ("base", optarg);
-	  break;
-	case 'C':
-	  setval ("cache", optarg);
-	  break;
-	case 'D':
-	  setval ("domains", optarg);
-	  break;
-	case 'e':
-	  {
-	    char *com, *val;
-	    if (parse_line (optarg, &com, &val))
-	      {
-		if (!setval (com, val))
-		  exit (1);
-	      }
-	    else
-	      {
-		fprintf (stderr, _("%s: %s: invalid command\n"), exec_name,
-			 optarg);
-		exit (1);
-	      }
-	    free (com);
-	    free (val);
-	  }
-	  break;
-	case 'g':
-	  setval ("glob", optarg);
-	  break;
-	case 'I':
-	  setval ("includedirectories", optarg);
-	  break;
-	case 'i':
-	  setval ("input", optarg);
-	  break;
-	case 'l':
-	  setval ("reclevel", optarg);
-	  break;
-	case 'n':
-	  {
-	    /* #### The n? options are utter crock!  */
-	    char *p;
+        /* Options accepting an argument: */
+        case 1:
+            setval ("httpuser", optarg);
+            break;
+        case 2:
+            setval ("httppasswd", optarg);
+            break;
+        case 3:
+            setval ("header", optarg);
+            break;
+        case 6:
+            setval ("dotstyle", optarg);
+            break;
+        case 7:
+            setval ("htmlify", optarg);
+            break;
+        case 12:
+            setval ("excludedomains", optarg);
+            break;
+        case 15:
+            setval ("proxyuser", optarg);
+            break;
+        case 16:
+            setval ("proxypasswd", optarg);
+            break;
+        case 23:
+            setval ("backups", optarg);
+            break;
+        case 'A':
+            setval ("accept", optarg);
+            break;
+        case 'a':
+            setval ("logfile", optarg);
+            append_to_log = 1;
+            break;
+        case 'B':
+            setval ("base", optarg);
+            break;
+        case 'C':
+            setval ("cache", optarg);
+            break;
+        case 'D':
+            setval ("domains", optarg);
+            break;
+        case 'e':
+        {
+            char *com, *val;
+            if (parse_line (optarg, &com, &val))
+            {
+                if (!setval (com, val))
+                    exit (1);
+            }
+            else
+            {
+                fprintf (stderr, _("%s: %s: invalid command\n"), exec_name,
+                         optarg);
+                exit (1);
+            }
+            free (com);
+            free (val);
+        }
+        break;
+        case 'g':
+            setval ("glob", optarg);
+            break;
+        case 'I':
+            setval ("includedirectories", optarg);
+            break;
+        case 'i':
+            setval ("input", optarg);
+            break;
+        case 'l':
+            setval ("reclevel", optarg);
+            break;
+        case 'n':
+        {
+            /* #### The n? options are utter crock!  */
+            char *p;
 
-	    for (p = optarg; *p; p++)
-	      switch (*p)
-		{
-		case 'v':
-		  setval ("verbose", "off");
-		  break;
-		case 'h':
-		  setval ("simplehostcheck", "on");
-		  break;
-		case 'H':
-		  setval ("addhostdir", "off");
-		  break;
-		case 'd':
-		  setval ("dirstruct", "off");
-		  break;
-		case 'c':
-		  setval ("noclobber", "on");
-		  break;
-		case 'r':
-		  setval ("removelisting", "off");
-		  break;
-		case 'p':
-		  setval ("noparent", "on");
-		  break;
-		default:
-		  printf (_("%s: illegal option -- `-n%c'\n"), exec_name, *p);
-		  print_usage ();
-		  printf ("\n");
-		  printf (_("Try `%s --help\' for more options.\n"), exec_name);
-		  exit (1);
-		}
-	    break;
-	  }
-	case 'O':
-	  setval ("outputdocument", optarg);
-	  break;
-	case 'o':
-	  setval ("logfile", optarg);
-	  break;
-	case 'P':
-	  setval ("dirprefix", optarg);
-	  break;
-	case 'Q':
-	  setval ("quota", optarg);
-	  break;
-	case 'R':
-	  setval ("reject", optarg);
-	  break;
-	case 'T':
-	  setval ("timeout", optarg);
-	  break;
-	case 't':
-	  setval ("tries", optarg);
-	  break;
-	case 'U':
-	  setval ("useragent", optarg);
-	  break;
-	case 'w':
-	  setval ("wait", optarg);
-	  break;
-	case 'X':
-	  setval ("excludedirectories", optarg);
-	  break;
-	case 'Y':
-	  setval ("useproxy", optarg);
-	  break;
+            for (p = optarg; *p; p++)
+                switch (*p)
+                {
+                case 'v':
+                    setval ("verbose", "off");
+                    break;
+                case 'h':
+                    setval ("simplehostcheck", "on");
+                    break;
+                case 'H':
+                    setval ("addhostdir", "off");
+                    break;
+                case 'd':
+                    setval ("dirstruct", "off");
+                    break;
+                case 'c':
+                    setval ("noclobber", "on");
+                    break;
+                case 'r':
+                    setval ("removelisting", "off");
+                    break;
+                case 'p':
+                    setval ("noparent", "on");
+                    break;
+                default:
+                    printf (_("%s: illegal option -- `-n%c'\n"), exec_name, *p);
+                    print_usage ();
+                    printf ("\n");
+                    printf (_("Try `%s --help\' for more options.\n"), exec_name);
+                    exit (1);
+                }
+            break;
+        }
+        case 'O':
+            setval ("outputdocument", optarg);
+            break;
+        case 'o':
+            setval ("logfile", optarg);
+            break;
+        case 'P':
+            setval ("dirprefix", optarg);
+            break;
+        case 'Q':
+            setval ("quota", optarg);
+            break;
+        case 'R':
+            setval ("reject", optarg);
+            break;
+        case 'T':
+            setval ("timeout", optarg);
+            break;
+        case 't':
+            setval ("tries", optarg);
+            break;
+        case 'U':
+            setval ("useragent", optarg);
+            break;
+        case 'w':
+            setval ("wait", optarg);
+            break;
+        case 'X':
+            setval ("excludedirectories", optarg);
+            break;
+        case 'Y':
+            setval ("useproxy", optarg);
+            break;
 
-	case '?':
-	  print_usage ();
-	  printf ("\n");
-	  printf (_("Try `%s --help' for more options.\n"), exec_name);
-	  exit (0);
-	  break;
-	}
+        case '?':
+            print_usage ();
+            printf ("\n");
+            printf (_("Try `%s --help' for more options.\n"), exec_name);
+            exit (0);
+            break;
+        }
     }
 
-  if (opt.verbose == -1)
-    opt.verbose = !opt.quiet;
+    if (opt.verbose == -1)
+        opt.verbose = !opt.quiet;
 
-  /* Sanity checks.  */
-  if (opt.verbose && opt.quiet)
+    /* Sanity checks.  */
+    if (opt.verbose && opt.quiet)
     {
-      printf (_("Can't be verbose and quiet at the same time.\n"));
-      print_usage ();
-      exit (1);
+        printf (_("Can't be verbose and quiet at the same time.\n"));
+        print_usage ();
+        exit (1);
     }
-  if (opt.timestamping && opt.noclobber)
+    if (opt.timestamping && opt.noclobber)
     {
-      printf (_("\
+        printf (_("\
 Can't timestamp and not clobber old files at the same time.\n"));
-      print_usage ();
-      exit (1);
+        print_usage ();
+        exit (1);
     }
 
-  nurl = argc - optind;
-  if (!nurl && !opt.input_filename)
+    nurl = argc - optind;
+    if (!nurl && !opt.input_filename)
     {
-      /* No URL specified.  */
-      printf (_("%s: missing URL\n"), exec_name);
-      print_usage ();
-      printf ("\n");
-      /* #### Something nicer should be printed here -- similar to the
-	 pre-1.5 `--help' page.  */
-      printf (_("Try `%s --help' for more options.\n"), exec_name);
-      exit (1);
+        /* No URL specified.  */
+        printf (_("%s: missing URL\n"), exec_name);
+        print_usage ();
+        printf ("\n");
+        /* #### Something nicer should be printed here -- similar to the
+        pre-1.5 `--help' page.  */
+        printf (_("Try `%s --help' for more options.\n"), exec_name);
+        exit (1);
     }
 
-  if (opt.background)
-    fork_to_background ();
+    if (opt.background)
+        fork_to_background ();
 
-  /* Allocate basic pointer.  */
-  url = ALLOCA_ARRAY (char *, nurl + 1);
+    /* Allocate basic pointer.  */
+    url = ALLOCA_ARRAY (char *, nurl + 1);
 
-  /* Fill in the arguments.  */
-  for (i = 0; i < nurl; i++, optind++)
+    /* Fill in the arguments.  */
+    for (i = 0; i < nurl; i++, optind++)
     {
-      char *irix4_cc_needs_this;
-      STRDUP_ALLOCA (irix4_cc_needs_this, argv[optind]);
-      url[i] = irix4_cc_needs_this;
+        char *irix4_cc_needs_this;
+        STRDUP_ALLOCA (irix4_cc_needs_this, argv[optind]);
+        url[i] = irix4_cc_needs_this;
     }
-  url[i] = NULL;
+    url[i] = NULL;
 
-  /* Change the title of console window on Windows.  #### I think this
-     statement should belong to retrieve_url().  --hniksic.  */
+    /* Change the title of console window on Windows.  #### I think this
+       statement should belong to retrieve_url().  --hniksic.  */
 #ifdef WINDOWS
-  ws_changetitle (*url, nurl);
+    ws_changetitle (*url, nurl);
 #endif
 
-  /* Initialize logging.  */
-  log_init (opt.lfilename, append_to_log);
+    /* Initialize logging.  */
+    log_init (opt.lfilename, append_to_log);
 
-  DEBUGP (("DEBUG output created by Wget %s on %s.\n\n", version_string,
-	   OS_TYPE));
+    DEBUGP (("DEBUG output created by Wget %s on %s.\n\n", version_string,
+             OS_TYPE));
 
-  /* Open the output filename if necessary.  */
-  if (opt.output_document)
+    /* Open the output filename if necessary.  */
+    if (opt.output_document)
     {
-      if (HYPHENP (opt.output_document))
-		opt.dfp = stdout;
-      else
-	{
-	  opt.dfp = fopen (opt.output_document, "wb");
+        if (HYPHENP (opt.output_document))
+            opt.dfp = stdout;
+        else
+        {
+            opt.dfp = fopen (opt.output_document, "wb");
 
-	  if (opt.dfp == NULL)
-	    {
-	      perror (opt.output_document);
-	      exit (1);
-	    }
-	}
+            if (opt.dfp == NULL)
+            {
+                perror (opt.output_document);
+                exit (1);
+            }
+        }
     }
 
 #ifdef WINDOWS
-  // winsock
-  ws_startup ();
+    // winsock
+    ws_startup ();
 #endif
 
-  /* Setup the signal handler to redirect output when hangup is
-     received.  */
+    /* Setup the signal handler to redirect output when hangup is
+       received.  */
 #ifdef HAVE_SIGNAL
-  if (signal(SIGHUP, SIG_IGN) != SIG_IGN)
-    signal(SIGHUP, redirect_output_signal);
-  /* ...and do the same for SIGUSR1.  */
-  signal (SIGUSR1, redirect_output_signal);
-  /* Writing to a closed socket normally signals SIGPIPE, and the
-     process exits.  What we want is to ignore SIGPIPE and just check
-     for the return value of write().  */
-  signal (SIGPIPE, SIG_IGN);
+    if (signal(SIGHUP, SIG_IGN) != SIG_IGN)
+        signal(SIGHUP, redirect_output_signal);
+    /* ...and do the same for SIGUSR1.  */
+    signal (SIGUSR1, redirect_output_signal);
+    /* Writing to a closed socket normally signals SIGPIPE, and the
+       process exits.  What we want is to ignore SIGPIPE and just check
+       for the return value of write().  */
+    signal (SIGPIPE, SIG_IGN);
 #endif /* HAVE_SIGNAL */
 
-  status = RETROK;		/* initialize it, just-in-case */
-  recursive_reset ();
+    status = RETROK;		/* initialize it, just-in-case */
+    recursive_reset ();
 
-  // 从参数列表中得到 url 
-  /* Retrieve the URLs from argument list.  */
-  for (t = url; *t; t++)
+    // 从参数列表中得到 url
+    /* Retrieve the URLs from argument list.  */
+    for (t = url; *t; t++)
     {
-      char *filename, *new_file;
-      int dt;
+        char *filename, *new_file;
+        int dt;
 
-      status = retrieve_url (*t, &filename, &new_file, NULL, &dt);
+        status = retrieve_url (*t, &filename, &new_file, NULL, &dt);
 
-      if (opt.recursive && status == RETROK && (dt & TEXTHTML))
-		status = recursive_retrieve (filename, new_file ? new_file : *t);
+        if (opt.recursive && status == RETROK && (dt & TEXTHTML))
+            status = recursive_retrieve (filename, new_file ? new_file : *t);
 
-      FREE_MAYBE (new_file);
-      FREE_MAYBE (filename);
+        FREE_MAYBE (new_file);
+        FREE_MAYBE (filename);
     }
 
-  // 如果选项中有 -f filelist，从文件中读取
-  /* And then from the input file, if any.  */
-  if (opt.input_filename)
+    // 如果选项中有 -f filelist，从文件中读取
+    /* And then from the input file, if any.  */
+    if (opt.input_filename)
     {
-      int count;
-      status = retrieve_from_file (opt.input_filename, opt.force_html, &count);
-      if (!count)
+        int count;
+        status = retrieve_from_file (opt.input_filename, opt.force_html, &count);
+        if (!count)
 
-	  logprintf (LOG_NOTQUIET, _("No URLs found in %s.\n"),
-		   opt.input_filename);
+            logprintf (LOG_NOTQUIET, _("No URLs found in %s.\n"),
+                       opt.input_filename);
     }
 
-  /* Print the downloaded sum.  */
-  if (opt.recursive
-      || nurl > 1
-      || (opt.input_filename && opt.downloaded != 0))
+    /* Print the downloaded sum.  */
+    if (opt.recursive
+            || nurl > 1
+            || (opt.input_filename && opt.downloaded != 0))
     {
-      logprintf (LOG_NOTQUIET,
-		 _("\nFINISHED --%s--\nDownloaded: %s bytes in %d files\n"),
-		 time_str (NULL), legible (opt.downloaded), opt.numurls);
-      /* Print quota warning, if exceeded.  */
-      if (opt.quota && opt.downloaded > opt.quota)
-	logprintf (LOG_NOTQUIET,
-		   _("Download quota (%s bytes) EXCEEDED!\n"),
-		   legible (opt.quota));
+        logprintf (LOG_NOTQUIET,
+                   _("\nFINISHED --%s--\nDownloaded: %s bytes in %d files\n"),
+                   time_str (NULL), legible (opt.downloaded), opt.numurls);
+        /* Print quota warning, if exceeded.  */
+        if (opt.quota && opt.downloaded > opt.quota)
+            logprintf (LOG_NOTQUIET,
+                       _("Download quota (%s bytes) EXCEEDED!\n"),
+                       legible (opt.quota));
     }
 
-  if (opt.convert_links)
+    if (opt.convert_links)
     {
-      convert_all_links ();
+        convert_all_links ();
     }
 
-  log_close ();
-  cleanup ();
+    log_close ();
+    cleanup ();
 
-  if (status == RETROK)
-    return 0;
-  else
-    return 1;
+    if (status == RETROK)
+        return 0;
+    else
+        return 1;
 }
 
 /* Hangup signal handler.  When wget receives SIGHUP or SIGUSR1, it
@@ -734,15 +734,15 @@ Can't timestamp and not clobber old files at the same time.\n"));
 static RETSIGTYPE
 redirect_output_signal (int sig)
 {
-  char tmp[100];
-  signal (sig, redirect_output_signal);
-  /* Please note that the double `%' in `%%s' is intentional, because
-     redirect_output passes tmp through printf.  */
-  sprintf (tmp, _("%s received, redirecting output to `%%s'.\n"),
-	   (sig == SIGHUP ? "SIGHUP" :
-	    (sig == SIGUSR1 ? "SIGUSR1" :
-	     "WTF?!")));
-  redirect_output (tmp);
+    char tmp[100];
+    signal (sig, redirect_output_signal);
+    /* Please note that the double `%' in `%%s' is intentional, because
+       redirect_output passes tmp through printf.  */
+    sprintf (tmp, _("%s received, redirecting output to `%%s'.\n"),
+             (sig == SIGHUP ? "SIGHUP" :
+              (sig == SIGUSR1 ? "SIGUSR1" :
+               "WTF?!")));
+    redirect_output (tmp);
 }
 
 #endif /* HAVE_SIGNAL */

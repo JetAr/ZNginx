@@ -7,15 +7,15 @@ This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
-  
+
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-   
+
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
-Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  
+Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
 #include "config.h"
@@ -41,16 +41,16 @@ used by anything that cares about RFC822-style headers.
  Header is defined in RFC2068, as quoted below.  Note that this
  definition is not HTTP-specific -- it is virtually
  indistinguishable from the one given in RFC822 or RFC1036.
- 
+
   message-header = field-name ":" [ field-value ] CRLF
-  
+
    field-name     = token
    field-value    = *( field-content | LWS )
-   
+
 	field-content  = <the OCTETs making up the field-value
 			 and consisting of either *TEXT or combinations
 			 of token, tspecials, and quoted-string>
-			 
+
 			  The public functions are header_get() and header_process(), which
 see.  */
 
@@ -72,62 +72,62 @@ zero-terminated.   #### Is this well-behaved?  */
 int
 header_get (struct rbuf *rbuf, char **hdr, enum header_get_flags flags)
 {
-	int i;
-	int bufsize = 80;
-	
-	*hdr = (char *)xmalloc (bufsize);
-	
-	for (i = 0; 1; i++)
+    int i;
+    int bufsize = 80;
+
+    *hdr = (char *)xmalloc (bufsize);
+
+    for (i = 0; 1; i++)
     {
-		int res;
-		/* #### Use DO_REALLOC?  */
-		if (i > bufsize - 1)
-			*hdr = (char *)xrealloc (*hdr, (bufsize <<= 1));
+        int res;
+        /* #### Use DO_REALLOC?  */
+        if (i > bufsize - 1)
+            *hdr = (char *)xrealloc (*hdr, (bufsize <<= 1));
 
-		res = RBUF_READCHAR (rbuf, *hdr + i);
+        res = RBUF_READCHAR (rbuf, *hdr + i);
 
-		if (res == 1)
-		{
-			if ((*hdr)[i] == '\n')
-			{
-				if (!((flags & HG_NO_CONTINUATIONS)
-					|| i == 0
-					|| (i == 1 && (*hdr)[0] == '\r')))
-				{
-					char next;
-					/* If the header is non-empty, we need to check if
-					it continues on to the other line.  We do that by
-					peeking at the next character.  */
-					res = rbuf_peek (rbuf, &next);
+        if (res == 1)
+        {
+            if ((*hdr)[i] == '\n')
+            {
+                if (!((flags & HG_NO_CONTINUATIONS)
+                        || i == 0
+                        || (i == 1 && (*hdr)[0] == '\r')))
+                {
+                    char next;
+                    /* If the header is non-empty, we need to check if
+                    it continues on to the other line.  We do that by
+                    peeking at the next character.  */
+                    res = rbuf_peek (rbuf, &next);
 
-					if (res == 0)
-						return HG_EOF;
-					else if (res == -1)
-						return HG_ERROR;
+                    if (res == 0)
+                        return HG_EOF;
+                    else if (res == -1)
+                        return HG_ERROR;
 
-					/*  If the next character is HT or SP, just continue.  */
-					if (next == '\t' || next == ' ')
-						continue;
-				}
+                    /*  If the next character is HT or SP, just continue.  */
+                    if (next == '\t' || next == ' ')
+                        continue;
+                }
 
-				/* The header ends.  */
-				(*hdr)[i] = '\0';
-				/* Get rid of '\r'.  */
-				if (i > 0 && (*hdr)[i - 1] == '\r')
-					(*hdr)[i - 1] = '\0';
-				
-				break;
-			}
-		}
-		else if (res == 0)
-			return HG_EOF;
-		else
-			return HG_ERROR;
+                /* The header ends.  */
+                (*hdr)[i] = '\0';
+                /* Get rid of '\r'.  */
+                if (i > 0 && (*hdr)[i - 1] == '\r')
+                    (*hdr)[i - 1] = '\0';
+
+                break;
+            }
+        }
+        else if (res == 0)
+            return HG_EOF;
+        else
+            return HG_ERROR;
     }
 
-	DEBUGP (("%s\n", *hdr));
+    DEBUGP (("%s\n", *hdr));
 
-	return HG_OK;
+    return HG_OK;
 }
 
 /* Check whether HEADER begins with NAME and, if yes, skip the `:' and
@@ -135,18 +135,18 @@ the whitespace, and call PROCFUN with the arguments of HEADER's
 contents (after the `:' and space) and ARG.  Otherwise, return 0.  */
 int
 header_process (const char *header, const char *name,
-				int (*procfun) (const char *, void *),
-				void *arg)
+                int (*procfun) (const char *, void *),
+                void *arg)
 {
-	/* Check whether HEADER matches NAME.  */
-	while (*name && (tolower (*name) == tolower (*header)))
-		++name, ++header;
-	if (*name || *header++ != ':')
-		return 0;
+    /* Check whether HEADER matches NAME.  */
+    while (*name && (tolower (*name) == tolower (*header)))
+        ++name, ++header;
+    if (*name || *header++ != ':')
+        return 0;
 
-	header += skip_lws (header);
+    header += skip_lws (header);
 
-	return ((*procfun) (header, arg));
+    return ((*procfun) (header, arg));
 }
 
 /* Helper functions for use with header_process().  */
@@ -156,27 +156,27 @@ error is encountered, return 0, else 1.  */
 int
 header_extract_number (const char *header, void *closure)
 {
-	const char *p = header;
-	long result;
+    const char *p = header;
+    long result;
 
-	for (result = 0; ISDIGIT (*p); p++)
-		result = 10 * result + (*p - '0');
+    for (result = 0; ISDIGIT (*p); p++)
+        result = 10 * result + (*p - '0');
 
-	if (*p)
-		return 0;
+    if (*p)
+        return 0;
 
-	*(long *)closure = result;
+    *(long *)closure = result;
 
-	return 1;
+    return 1;
 }
 
 /* Strdup HEADER, and place the pointer to CLOSURE.  */
 int
 header_strdup (const char *header, void *closure)
 {
-	*(char **)closure = xstrdup (header);
+    *(char **)closure = xstrdup (header);
 
-	return 1;
+    return 1;
 }
 
 /* Skip LWS (linear white space), if present.  Returns number of
@@ -184,10 +184,10 @@ characters to skip.  */
 int
 skip_lws (const char *string)
 {
-	const char *p = string;
+    const char *p = string;
 
-	while (*p == ' ' || *p == '\t' || *p == '\r' || *p == '\n')
-		++p;
+    while (*p == ' ' || *p == '\t' || *p == '\r' || *p == '\n')
+        ++p;
 
-	return p - string;
+    return p - string;
 }

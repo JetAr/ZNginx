@@ -36,57 +36,57 @@ struct urlinfo;
 /* File types.  */
 enum ftype
 {
-  FT_PLAINFILE,
-  FT_DIRECTORY,
-  FT_SYMLINK,
-  FT_UNKNOWN
+    FT_PLAINFILE,
+    FT_DIRECTORY,
+    FT_SYMLINK,
+    FT_UNKNOWN
 };
 
 
 /* Globbing (used by ftp_retrieve_glob).  */
 enum
 {
-  GLOBALL, GETALL, GETONE
+    GLOBALL, GETALL, GETONE
 };
 
 /* Information about one filename in a linked list.  */
 struct fileinfo
 {
-  enum ftype type;		/* file type */
-  char *name;			/* file name */
-  long size;			/* file size */
-  long tstamp;			/* time-stamp */
-  int perms;			/* file permissions */
-  char *linkto;			/* link to which file points */
-  struct fileinfo *prev;	/* previous... */
-  struct fileinfo *next;	/* ...and next structure. */
+    enum ftype type;		/* file type */
+    char *name;			/* file name */
+    long size;			/* file size */
+    long tstamp;			/* time-stamp */
+    int perms;			/* file permissions */
+    char *linkto;			/* link to which file points */
+    struct fileinfo *prev;	/* previous... */
+    struct fileinfo *next;	/* ...and next structure. */
 };
 
 /* Commands for FTP functions.  */
 enum command
 {
-  DO_LOGIN      = 0x0001,	/* Connect and login to the server.  */
-  DO_CWD        = 0x0002,	/* Change current directory.  */
-  DO_RETR       = 0x0004,	/* Retrieve the file.  */
-  DO_LIST       = 0x0008,	/* Retrieve the directory list.  */
-  LEAVE_PENDING = 0x0010	/* Do not close the socket.  */
+    DO_LOGIN      = 0x0001,	/* Connect and login to the server.  */
+    DO_CWD        = 0x0002,	/* Change current directory.  */
+    DO_RETR       = 0x0004,	/* Retrieve the file.  */
+    DO_LIST       = 0x0008,	/* Retrieve the directory list.  */
+    LEAVE_PENDING = 0x0010	/* Do not close the socket.  */
 };
 
 enum fstatus
 {
-  NOTHING       = 0x0000,	/* Nothing done yet.  */
-  ON_YOUR_OWN   = 0x0001,	/* The ftp_loop_internal sets the
+    NOTHING       = 0x0000,	/* Nothing done yet.  */
+    ON_YOUR_OWN   = 0x0001,	/* The ftp_loop_internal sets the
 				   defaults.  */
-  DONE_CWD      = 0x0002	/* The current working directory is
+    DONE_CWD      = 0x0002	/* The current working directory is
 				   correct.  */
 };
 
 typedef struct
 {
-  int st;			/* connection status */
-  int cmd;			/* command code */
-  struct rbuf rbuf;		/* control connection buffer */
-  long dltime;			/* time of the download */
+    int st;			/* connection status */
+    int cmd;			/* command code */
+    struct rbuf rbuf;		/* control connection buffer */
+    long dltime;			/* time of the download */
 } ccon;
 
 struct fileinfo *ftp_parse_ls PARAMS ((const char *));

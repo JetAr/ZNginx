@@ -25,7 +25,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 int get_contents PARAMS ((int, FILE *, long *, long, long, struct rbuf *));
 
 uerr_t retrieve_url PARAMS ((const char *, char **, char **,
-			     const char *, int *));
+                             const char *, int *));
 uerr_t retrieve_from_file PARAMS ((const char *, int, int *));
 
 void reset_timer PARAMS ((void));

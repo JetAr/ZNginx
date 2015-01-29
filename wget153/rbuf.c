@@ -28,21 +28,21 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 void
 rbuf_initialize (struct rbuf *rbuf, int fd)
 {
-  rbuf->fd = fd;
-  rbuf->buffer_pos = rbuf->buffer;
-  rbuf->buffer_left = 0;
+    rbuf->fd = fd;
+    rbuf->buffer_pos = rbuf->buffer;
+    rbuf->buffer_left = 0;
 }
 
 int
 rbuf_initialized_p (struct rbuf *rbuf)
 {
-  return rbuf->fd != -1;
+    return rbuf->fd != -1;
 }
 
 void
 rbuf_uninitialize (struct rbuf *rbuf)
 {
-  rbuf->fd = -1;
+    rbuf->fd = -1;
 }
 
 /* Currently unused -- see RBUF_READCHAR.  */
@@ -51,7 +51,7 @@ rbuf_uninitialize (struct rbuf *rbuf)
 int
 rbuf_readchar (struct rbuf *rbuf, char *store)
 {
-  return RBUF_READCHAR (rbuf, store);
+    return RBUF_READCHAR (rbuf, store);
 }
 #endif
 
@@ -59,18 +59,18 @@ rbuf_readchar (struct rbuf *rbuf, char *store)
 int
 rbuf_peek (struct rbuf *rbuf, char *store)
 {
-  if (!rbuf->buffer_left)
+    if (!rbuf->buffer_left)
     {
-      int res;
-      rbuf->buffer_pos = rbuf->buffer;
-      rbuf->buffer_left = 0;
-      res = iread (rbuf->fd, rbuf->buffer, sizeof (rbuf->buffer));
-      if (res <= 0)
-	return res;
-      rbuf->buffer_left = res;
+        int res;
+        rbuf->buffer_pos = rbuf->buffer;
+        rbuf->buffer_left = 0;
+        res = iread (rbuf->fd, rbuf->buffer, sizeof (rbuf->buffer));
+        if (res <= 0)
+            return res;
+        rbuf->buffer_left = res;
     }
-  *store = *rbuf->buffer_pos;
-  return 1;
+    *store = *rbuf->buffer_pos;
+    return 1;
 }
 
 /* Flush RBUF's buffer to WHERE.  Flush MAXSIZE bytes at most.
@@ -79,17 +79,17 @@ rbuf_peek (struct rbuf *rbuf, char *store)
 int
 rbuf_flush (struct rbuf *rbuf, char *where, int maxsize)
 {
-  if (!rbuf->buffer_left)
-    return 0;
-  else
+    if (!rbuf->buffer_left)
+        return 0;
+    else
     {
-      int howmuch = MINVAL (rbuf->buffer_left, maxsize);
+        int howmuch = MINVAL (rbuf->buffer_left, maxsize);
 
-      if (where)
-	memcpy (where, rbuf->buffer_pos, howmuch);
-      rbuf->buffer_left -= howmuch;
-      rbuf->buffer_pos += howmuch;
-      return howmuch;
+        if (where)
+            memcpy (where, rbuf->buffer_pos, howmuch);
+        rbuf->buffer_left -= howmuch;
+        rbuf->buffer_pos += howmuch;
+        return howmuch;
     }
 }
 
@@ -97,6 +97,6 @@ rbuf_flush (struct rbuf *rbuf, char *where, int maxsize)
 void
 rbuf_discard (struct rbuf *rbuf)
 {
-  rbuf->buffer_left = 0;
-  rbuf->buffer_pos = rbuf->buffer;
+    rbuf->buffer_left = 0;
+    rbuf->buffer_pos = rbuf->buffer;
 }
