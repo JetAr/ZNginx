@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Test\Test_2005.vcproj", "{06489497-E47E-4650-AC0B-0E46FADBBDB8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ansi2knr", "ansi2knr\ansi2knr_2005.vcproj", "{500EF6A8-2D76-48DC-8D3D-B40746CAC28C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wget153", "wget153_2005.vcproj", "{AF17FAC1-4FC9-46E6-82F1-8EAC7EDF4882}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{06489497-E47E-4650-AC0B-0E46FADBBDB8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{06489497-E47E-4650-AC0B-0E46FADBBDB8}.Debug|Win32.Build.0 = Debug|Win32
+		{06489497-E47E-4650-AC0B-0E46FADBBDB8}.Release|Win32.ActiveCfg = Release|Win32
+		{06489497-E47E-4650-AC0B-0E46FADBBDB8}.Release|Win32.Build.0 = Release|Win32
+		{500EF6A8-2D76-48DC-8D3D-B40746CAC28C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{500EF6A8-2D76-48DC-8D3D-B40746CAC28C}.Debug|Win32.Build.0 = Debug|Win32
+		{500EF6A8-2D76-48DC-8D3D-B40746CAC28C}.Release|Win32.ActiveCfg = Release|Win32
+		{500EF6A8-2D76-48DC-8D3D-B40746CAC28C}.Release|Win32.Build.0 = Release|Win32
+		{AF17FAC1-4FC9-46E6-82F1-8EAC7EDF4882}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AF17FAC1-4FC9-46E6-82F1-8EAC7EDF4882}.Debug|Win32.Build.0 = Debug|Win32
+		{AF17FAC1-4FC9-46E6-82F1-8EAC7EDF4882}.Release|Win32.ActiveCfg = Release|Win32
+		{AF17FAC1-4FC9-46E6-82F1-8EAC7EDF4882}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
