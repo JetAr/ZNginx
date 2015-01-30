@@ -36,6 +36,10 @@
 
 #include "sds.h"
 
+/*ZLog
+2015-01-30 10:29 注释
+*/
+
 /* Create a new sds string with the content specified by the 'init' pointer
  * and 'initlen'.
  * If NULL is used for 'init' the string is initialized with zero bytes.
@@ -51,48 +55,68 @@
 sds sdsnewlen(const void *init, size_t initlen)
 {
     struct sdshdr *sh;
-
+    
+    //z 如果 init 不为 NULL
     if (init)
     {
+        //z 分配的长度为 头 + 内容 + 1
         sh = malloc(sizeof *sh+initlen+1);
     }
     else
     {
+        //z calloc ，将分配的内存空间置为0
         sh = calloc(sizeof *sh+initlen+1,1);
     }
+
+    //z 分配内存失败，返回
     if (sh == NULL) return NULL;
+
+    //z 将长度设置为分配的长度。注意即便INIT为null，也是这样。
     sh->len = initlen;
+    //z 设置free长度
     sh->free = 0;
+    //z 如果initlen 不为0并且init不为NULL
     if (initlen && init)
+        //z 从init空间拷贝initlen个字符到buf中去。
         memcpy(sh->buf, init, initlen);
+    //z 设置有效内容之后为字符串结束符。
     sh->buf[initlen] = '\0';
+    //z 在返回时，返回的是buf地址，为内容字符串起始的地方。
     return (char*)sh->buf;
 }
 
 /* Create an empty (zero length) sds string. Even in this case the string
  * always has an implicit null term. */
+//z 创建空字符串，有一个结束符。
 sds sdsempty(void)
 {
     return sdsnewlen("",0);
 }
 
 /* Create a new sds string starting from a null termined C string. */
+//z 从一个null结束符的c字符串创建一个新的sds字符串。
 sds sdsnew(const char *init)
 {
+    //z 如果init为NULL，那么长度为0，否则长度为字符串的长度。
     size_t initlen = (init == NULL) ? 0 : strlen(init);
     return sdsnewlen(init, initlen);
 }
 
 /* Duplicate an sds string. */
+//z 类似 strdup，操作类型为sds
 sds sdsdup(const sds s)
 {
     return sdsnewlen(s, sdslen(s));
 }
 
 /* Free an sds string. No operation is performed if 's' is NULL. */
+//z 释放 sds 字符串
 void sdsfree(sds s)
 {
+    //z 如果为NULL，直接返回
     if (s == NULL) return;
+    //z 感觉添加一个 magic number 会不会好点儿，这样方便确定就是sds字符串
+    //z 释放分配的空间
     free(s-sizeof(struct sdshdr));
 }
 
@@ -110,10 +134,14 @@ void sdsfree(sds s)
  * The output will be "2", but if we comment out the call to sdsupdatelen()
  * the output will be "6" as the string was modified but the logical length
  * remains 6 bytes. */
+//z 以strlen的长度作为sds的长度
 void sdsupdatelen(sds s)
 {
-    struct sdshdr *sh = (void*) (s-sizeof *sh);;
+    //z 获取头
+    struct sdshdr *sh = (void*) (s-sizeof *sh);
+    //z 得到字符串长度
     int reallen = strlen(s);
+    //z 更新长度信息
     sh->free += (sh->len-reallen);
     sh->len = reallen;
 }
@@ -122,6 +150,7 @@ void sdsupdatelen(sds s)
  * However all the existing buffer is not discarded but set as free space
  * so that next append operations will not require allocations up to the
  * number of bytes previously available. */
+//z 将 sds 字符串置空
 void sdsclear(sds s)
 {
     struct sdshdr *sh = (void*) (s-sizeof *sh);;
@@ -136,24 +165,35 @@ void sdsclear(sds s)
  *
  * Note: this does not change the *length* of the sds string as returned
  * by sdslen(), but only the free buffer space we have. */
+//z 确保空闲空间至少有 addlen 长度。
 sds sdsMakeRoomFor(sds s, size_t addlen)
 {
     struct sdshdr *sh, *newsh;
+    //z 得到空闲长度
     size_t free = sdsavail(s);
     size_t len, newlen;
 
+    //z 如果空闲空间已经不小于 addlen ， 那么直接返回。
     if (free >= addlen) return s;
+    //z 得到字符串长度
     len = sdslen(s);
+    //z 字符串头
     sh = (void*) (s-sizeof *sh);;
+    //z 新的长度
     newlen = (len+addlen);
+    //z 如果小于该值，那么增加一倍，否则只是加上最大值
     if (newlen < SDS_MAX_PREALLOC)
         newlen *= 2;
     else
         newlen += SDS_MAX_PREALLOC;
+    //z 重分配空间；其下会自动考虑内存移动等问题。
     newsh = realloc(sh, sizeof *newsh+newlen+1);
+    //z 如果为NULL，失败，返回NULL。
     if (newsh == NULL) return NULL;
 
+    //z 更新空闲空间长度。
     newsh->free = newlen - len;
+    //z 返回对应的buf
     return newsh->buf;
 }
 

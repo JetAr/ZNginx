@@ -36,21 +36,24 @@
 #include <sys/types.h>
 #include <stdarg.h>
 
+//z 2015-01-30 10:22 定义一个类型别名
 typedef char *sds;
 
 struct sdshdr
 {
-    int len;
-    int free;
-    char buf[];
+    int len;//z 长度
+    int free;//z 剩余空间
+    char buf[];//z 占位符
 };
 
+//z 占用空间长度
 static inline size_t sdslen(const sds s)
 {
     struct sdshdr *sh = (void*)(s-sizeof *sh);
     return sh->len;
 }
 
+//z 空余空间长度
 static inline size_t sdsavail(const sds s)
 {
     struct sdshdr *sh = (void*)(s-sizeof *sh);
