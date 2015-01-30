@@ -21,7 +21,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 #define RBUF_H
 
 /* Retrieval stream */
-struct rbuf
+struct 4f
 {
     int fd;
     char buffer[4096];		/* the input buffer */
