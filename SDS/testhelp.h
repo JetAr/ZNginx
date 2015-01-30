@@ -1,4 +1,4 @@
-/* This is a really minimal testing framework for C.
+﻿/* This is a really minimal testing framework for C.
  *
  * Example:
  *

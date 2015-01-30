@@ -1,4 +1,4 @@
-/* SDS (Simple Dynamic Strings), A C dynamic strings library.
+﻿/* SDS (Simple Dynamic Strings), A C dynamic strings library.
  *
  * Copyright (c) 2006-2014, Salvatore Sanfilippo <antirez at gmail dot com>
  * All rights reserved.
@@ -38,18 +38,21 @@
 
 typedef char *sds;
 
-struct sdshdr {
+struct sdshdr
+{
     int len;
     int free;
     char buf[];
 };
 
-static inline size_t sdslen(const sds s) {
+static inline size_t sdslen(const sds s)
+{
     struct sdshdr *sh = (void*)(s-sizeof *sh);
     return sh->len;
 }
 
-static inline size_t sdsavail(const sds s) {
+static inline size_t sdsavail(const sds s)
+{
     struct sdshdr *sh = (void*)(s-sizeof *sh);
     return sh->free;
 }
@@ -71,7 +74,7 @@ sds sdscpy(sds s, const char *t);
 sds sdscatvprintf(sds s, const char *fmt, va_list ap);
 #ifdef __GNUC__
 sds sdscatprintf(sds s, const char *fmt, ...)
-    __attribute__((format(printf, 2, 3)));
+__attribute__((format(printf, 2, 3)));
 #else
 sds sdscatprintf(sds s, const char *fmt, ...);
 #endif
