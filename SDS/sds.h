@@ -41,9 +41,9 @@ typedef char *sds;
 
 struct sdshdr
 {
-    int len;//z 长度
-    int free;//z 剩余空间
-    char buf[];//z 占位符
+    int len; //z 长度
+    int free; //z 剩余空间
+    char buf[]; //z 占位符
 };
 
 //z 占用空间长度

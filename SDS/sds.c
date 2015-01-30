@@ -203,6 +203,7 @@ sds sdsMakeRoomFor(sds s, size_t addlen)
  *
  * After the call, the passed sds string is no longer valid and all the
  * references must be substituted with the new pointer returned by the call. */
+//z 删除 free 空间
 sds sdsRemoveFreeSpace(sds s)
 {
     struct sdshdr *sh;
@@ -220,6 +221,7 @@ sds sdsRemoveFreeSpace(sds s)
  * 3) The free buffer at the end if any.
  * 4) The implicit null term.
  */
+//z 得到sds字符串占用的空间
 size_t sdsAllocSize(sds s)
 {
     struct sdshdr *sh = (void*) (s-sizeof *sh);;
@@ -250,14 +252,19 @@ size_t sdsAllocSize(sds s)
  * ... check for nread <= 0 and handle it ...
  * sdsIncrLen(s, nread);
  */
+//z 这样的函数用起来，感觉很提心吊胆的；新增加字符串部分内容可能会不确定。
 void sdsIncrLen(sds s, int incr)
 {
     struct sdshdr *sh = (void*) (s-sizeof *sh);;
 
+    //z 确保空闲空间大于欲增加的空间
     assert(sh->free >= incr);
+    //z 内容部分添加 incr ， 空闲部分减去 incr
     sh->len += incr;
     sh->free -= incr;
+    //z 与前面assert重复？
     assert(sh->free >= 0);
+    
     s[sh->len] = '\0';
 }
 
@@ -271,12 +278,14 @@ sds sdsgrowzero(sds s, size_t len)
     struct sdshdr *sh = (void*) (s-sizeof *sh);
     size_t totlen, curlen = sh->len;
 
+    //z 小于当前空间，那么不做任何操作
     if (len <= curlen) return s;
     s = sdsMakeRoomFor(s,len-curlen);
     if (s == NULL) return NULL;
 
     /* Make sure added region doesn't contain garbage */
     sh = (void*)(s-sizeof *sh);
+    //z 字符串结尾处的 '\0' 直接在这里设置了
     memset(s+curlen,0,(len-curlen+1)); /* also set trailing \0 byte */
     totlen = sh->len+sh->free;
     sh->len = len;
@@ -490,6 +499,7 @@ void sdsrange(sds s, int start, int end)
 }
 
 /* Apply tolower() to every character of the sds string 's'. */
+//z 将字符串中的字母变为小写字母
 void sdstolower(sds s)
 {
     int len = sdslen(s), j;
@@ -498,6 +508,7 @@ void sdstolower(sds s)
 }
 
 /* Apply toupper() to every character of the sds string 's'. */
+//z 将字符串中的字幕变为大写字母
 void sdstoupper(sds s)
 {
     int len = sdslen(s), j;
