@@ -437,8 +437,10 @@ html_quote_string (const char *s)
     int i;
 
     /* Pass through the string, and count the new size.  */
+	//z 扫描字符串，得到替换后的字符串的长度。
     for (i = 0; *s; s++, i++)
     {
+		//z 不同字符串长度有不同长度
         if (*s == '&')
             i += 4;                /* `amp;' */
         else if (*s == '<' || *s == '>')
@@ -447,11 +449,14 @@ html_quote_string (const char *s)
             i += 5;                /* `quot;' */
     }
 
+	//z 分配新的空间
     res = (char *)xmalloc (i + 1);
+	//z 回到开头
     s = b;
 
     for (p = res; *s; s++)
     {
+		//z 转义替换字符串
         switch (*s)
         {
         case '&':
@@ -481,6 +486,7 @@ html_quote_string (const char *s)
         }
     }
 
+	//z 设置字符串结束符
     *p = '\0';
     return res;
 }
