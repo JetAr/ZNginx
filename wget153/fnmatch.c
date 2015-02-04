@@ -190,6 +190,7 @@ matched:
 
 /* Return non-zero if S contains globbing wildcards (`*', `?', `[' or
    `]').  */
+//z 是否包含匹配符
 int
 has_wildcards_p (const char *s)
 {

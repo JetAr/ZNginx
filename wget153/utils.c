@@ -427,7 +427,8 @@ void
 touch (const char *file, time_t tm)
 {
 #ifdef HAVE_STRUCT_UTIMBUF
-    struct utimbuf times;
+    //z 更新 actime 以及 modtime
+	struct utimbuf times;
     times.actime = times.modtime = tm;
 #else
     time_t times[2];
@@ -446,6 +447,7 @@ remove_link (const char *file)
     int err = 0;
     struct stat st;
 
+	//z 文件存在且是link类型
     if (lstat (file, &st) == 0 && S_ISLNK (st.st_mode))
     {
         DEBUGP (("Unlinking %s (symlink).\n", file));
@@ -464,13 +466,14 @@ remove_link (const char *file)
    proper way should, of course, be to have a third, error state,
    other than true/false, but that would introduce uncalled-for
    additional complexity to the callers.  */
+//z 判断文件是否存在
 int
 file_exists_p (const char *filename)
 {
 #ifdef HAVE_ACCESS
     return access (filename, F_OK) >= 0;
 #else
-    struct stat buf;
+	struct stat buf;
     return stat (filename, &buf) >= 0;
 #endif
 }
@@ -489,6 +492,7 @@ file_non_directory_p (const char *path)
 }
 
 /* Return a unique filename, given a prefix and count */
+//z 通过前缀和计数器，产生一个新的文件名
 static char *
 unique_name_1 (const char *fileprefix, int count)
 {
@@ -502,10 +506,12 @@ unique_name_1 (const char *fileprefix, int count)
     else
         filename = xstrdup (fileprefix);
 
+	//z 如果文件名不存在，返回该文件名
     if (!file_exists_p (filename))
         return filename;
     else
     {
+		//z 文件名存在，返回NULL
         free (filename);
         return NULL;
     }
@@ -650,11 +656,13 @@ accdir (const char *directory, enum accd flags)
    match_backwards ("abc", "bc") -> 1
    match_backwards ("abc", "ab") -> 0
    match_backwards ("abc", "abc") -> 1 */
+//z 字符串是否以 pattern 结尾
 static int
 match_backwards (const char *string, const char *pattern)
 {
     int i, j;
 
+	//z 从后向前匹配
     for (i = strlen (string), j = strlen (pattern); i >= 0 && j >= 0; i--, j--)
         if (string[i] != pattern[j])
             break;
@@ -705,6 +713,7 @@ in_acclist (const char *const *accepts, const char *s, int backward)
    suffix ("foo.bar.baz")   -> "baz"
    suffix ("/foo/bar")      -> NULL
    suffix ("/foo.bar/baz")  -> NULL  */
+//z 得到后缀名；规则详见上
 char *
 suffix (const char *str)
 {
@@ -725,6 +734,7 @@ suffix (const char *str)
    It is not an exemplary of correctness, since it kills off the
    newline (and no, there is no way to know if there was a newline at
    EOF).  */
+//z 从文件中读取一行
 char *
 read_whole_line (FILE *fp)
 {
@@ -733,14 +743,19 @@ read_whole_line (FILE *fp)
 
     i = 0;
     bufsize = 40;
+	//z 预先分配四十个字节
     line = (char *)xmalloc (bufsize);
     /* Construct the line.  */
     while ((c = getc (fp)) != EOF && c != '\n')
     {
+		//z 如果超过了预分配的大小，那么空间扩展一倍
         if (i > bufsize - 1)
             line = (char *)xrealloc (line, (bufsize <<= 1));
-        line[i++] = c;
+        //z 将字符存入缓冲区
+		line[i++] = c;
     }
+
+	//z 如果该行只有EOF，读取的字节数为0。释放分配的缓冲区。
     if (c == EOF && !i)
     {
         free (line);
@@ -748,7 +763,8 @@ read_whole_line (FILE *fp)
     }
     /* Check for overflow at zero-termination (no need to double the
        buffer in this case.  */
-    if (i == bufsize)
+    //z 重新分配空间，用于放置结束符
+	if (i == bufsize)
         line = (char *)xrealloc (line, i + 1);
     line[i] = '\0';
     return line;
@@ -781,6 +797,7 @@ load_file (FILE *fp, char **buf, long *nread)
 
 /* Free the pointers in a NULL-terminated vector of pointers, then
    free the pointer itself.  */
+//z 字符数组的数组
 void
 free_vec (char **vec)
 {
@@ -817,9 +834,13 @@ merge_vecs (char **v1, char **v2)
     for (i = 0; v1[i]; i++);
     /* Count v2.  */
     for (j = 0; v2[j]; j++);
+
     /* Reallocate v1.  */
+	//z 分配内存并且拷贝过来
     v1 = (char **)xrealloc (v1, (i + j + 1) * sizeof (char **));
     memcpy (v1 + i, v2, (j + 1) * sizeof (char *));
+
+	//z 释放 v2
     free (v2);
     return v1;
 }
@@ -984,9 +1005,10 @@ legible (long l)
     /* Insert them.  */
     for (i = 0; i < mod; i++)
         *outptr++ = inptr[i];
-    /* Now insert the rest of them, putting separator before every
-       third digit.  */
 
+	//z 没三个数字之间插入一个分隔符 ','，阅读起来清晰
+	/* Now insert the rest of them, putting separator before every
+       third digit.  */
     for (i1 = i, i = 0; inptr[i1]; i++, i1++)
     {
         if (i % 3 == 0 && i1 != 0)
