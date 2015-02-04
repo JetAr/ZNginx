@@ -44,6 +44,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 extern int errno;
 #endif
 
+//z 文件扩展名
 #define NETRC_FILE_NAME ".netrc"
 
 acc_t *netrc_list;
@@ -61,8 +62,10 @@ search_netrc (const char *host, const char **acc, const char **passwd,
               int slack_default)
 {
     acc_t *l;
+	//z 默认
     static int processed_netrc;
 
+	//z 是否使用 netrc
     if (!opt.netrc)
         return;
 

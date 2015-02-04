@@ -901,6 +901,7 @@ myatoi (const char *s)
         return res;
 }
 
+//z 是否是八进制数字；项目里未用。
 #define ISODIGIT(x) ((x) >= '0' && (x) <= '7')
 
 static int
@@ -908,12 +909,14 @@ check_user_specified_header (const char *s)
 {
     const char *p;
 
-    for (p = s; *p && *p != ':' && !ISSPACE (*p); p++);
+	for (p = s; *p && *p != ':' && !ISSPACE (*p); p++);
     /* The header MUST contain `:' preceded by at least one
        non-whitespace character.  */
-    if (*p != ':' || p == s)
+
+	if (*p != ':' || p == s)
         return 0;
     /* The header MUST NOT contain newlines.  */
+	//z 不可以包含 '\n'
     if (strchr (s, '\n'))
         return 0;
     return 1;

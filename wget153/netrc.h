@@ -19,10 +19,14 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 typedef struct _acc_t
 {
+	//z 主机名称
     char *host;			/* NULL if this is the default machine
 				   entry.  */
-    char *acc;
+    //z 用户名
+	char *acc;
+	//z 密码
     char *passwd;			/* NULL if there is no password.  */
+	//z 链表
     struct _acc_t *next;
 } acc_t;
 

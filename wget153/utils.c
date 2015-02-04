@@ -119,6 +119,7 @@ xstrdup (const char *s)
 
     return s1;
 #else  /* HAVE_STRDUP */
+	//z lib 中已有strdup函数
     char *s1 = strdup (s);
     if (!s1)
         memfatal ("strdup");
@@ -835,36 +836,56 @@ add_slist (slist *l, const char *s, int flags)
     slist *t, *old, *beg;
     int cmp;
 
+	//z 如果字符串不排序
     if (flags & NOSORT)
     {
+		//z 如果链表为NULL
         if (!l)
         {
+			//z 为链表节点分配空间
             t = (slist *)xmalloc (sizeof (slist));
+			//z 为字符串分配空间
             t->string = xstrdup (s);
+			//z 指向结束的部分为NULL
             t->next = NULL;
             return t;
         }
+
+		//z 记住链表开始的地方
         beg = l;
         /* Find the last element.  */
+		//z 找到最后一个节点
         while (l->next)
             l = l->next;
+
+		//z 分配一个新的节点
         t = (slist *)xmalloc (sizeof (slist));
+		//z 将新节点添加到链表结尾的地方
         l->next = t;
+		//z 复制字符串
         t->string = xstrdup (s);
+		//z 字符串结束的地方为NULL
         t->next = NULL;
         return beg;
     }
 
+	//z 如果字符串是排序的
     /* Empty list or changing the first element.  */
+	//z 链表为NULL或者比第一个字符串还小
     if (!l || (cmp = strcmp (l->string, s)) > 0)
     {
+		//z 将新字符串放在链表开头的地方
         t = (slist *)xmalloc (sizeof (slist));
+		//z 分配字符串
         t->string = xstrdup (s);
+		//z 指向链表开头的地方
         t->next = l;
         return t;
     }
 
+	//z 链表开头的地方
     beg = l;
+	//z 如果比较函数为NULL，直接返回beg
     if (cmp == 0)
         return beg;
 
@@ -874,9 +895,10 @@ add_slist (slist *l, const char *s, int flags)
         old = l;
         l = l->next;
         cmp = strcmp (s, l->string);
-        if (cmp == 0)             /* no repeating in the list */
+        //z 如果是排序的，找到了相同的不允许重复；找到同样的，那么直接返回
+		if (cmp == 0)             /* no repeating in the list */
             return beg;
-        else if (cmp > 0)
+        else if (cmp > 0)//z 字符串按字典序小于s，那么继续
             continue;
         /* If the next list element is greater than s, put s between the
         current and the next list element.  */
@@ -886,6 +908,7 @@ add_slist (slist *l, const char *s, int flags)
         t->string = xstrdup (s);
         return beg;
     }
+	//z 字符串中所有字符都小于s，插入到字符串链表最后的地方。
     t = (slist *)xmalloc (sizeof (slist));
     t->string = xstrdup (s);
     /* Insert the new element after the last element.  */
@@ -896,6 +919,7 @@ add_slist (slist *l, const char *s, int flags)
 }
 
 /* Is there a specific entry in the list?  */
+//z 查看给定的字符串是否在链表中
 int
 in_slist (slist *l, const char *s)
 {
@@ -903,9 +927,12 @@ in_slist (slist *l, const char *s)
 
     while (l)
     {
+		//z 比较字符串
         cmp = strcmp (l->string, s);
+		//z 找到了
         if (cmp == 0)
             return 1;
+		//z list 是经过排序的
         else if (cmp > 0)         /* the list is ordered!  */
             return 0;
         l = l->next;
@@ -917,15 +944,19 @@ in_slist (slist *l, const char *s)
 void
 free_slist (slist *l)
 {
-    slist *n;
+	slist *n;
 
-    while (l)
-    {
-        n = l->next;
-        free (l->string);
-        free (l);
-        l = n;
-    }
+	while (l)
+	{
+		//z 保存下一个节点
+		n = l->next;
+		//z 释放指向的字符串 （malloc而来）
+		free (l->string);
+		//z 释放节点占用的内存
+		free (l);
+		//z 将l指向下一个节点
+		l = n;
+	}
 }
 
 /* Legible -- return a static pointer to the legibly printed long.  */
@@ -969,6 +1000,7 @@ legible (long l)
 }
 
 /* Count the digits in a (long) integer.  */
+//z 计数数中有多少个数字，即共有多少位
 int
 numdigit (long a)
 {
@@ -986,23 +1018,33 @@ long_to_string (char *buffer, long number)
     char *p;
     int i, l;
 
+	//z 如果number小于0
     if (number < 0)
     {
+		//z 记录下符号
         *buffer++ = '-';
+		//z 然后将数变为正数
         number = -number;
     }
+
+	//z p指向buffer指向的位置
     p = buffer;
     /* Print the digits to the string.  */
     do
     {
+		//z 将数字变为对应的字符
         *p++ = number % 10 + '0';
+		//z 记录的顺序是从低位到高位
         number /= 10;
     }
     while (number);
-    /* And reverse them.  */
-    l = p - buffer - 1;
+
+	/* And reverse them.  */
+	//z 将数字按从高位到低位存放
+    l = p - buffer - 1;//z p 会多++一次，所以这里减去1
     for (i = l/2; i >= 0; i--)
     {
+		//z 交换两个字符
         char c = buffer[i];
         buffer[i] = buffer[l - i];
         buffer[l - i] = c;
