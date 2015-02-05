@@ -1,4 +1,4 @@
-#ifndef HARNESS_H_INCLUDED
+﻿#ifndef HARNESS_H_INCLUDED
 #define HARNESS_H_INCLUDED
 #include "internal.h"
 #include "hsyscalls.h"
@@ -38,5 +38,9 @@ void Tvba(const char *str);
 /* Shared globals */
 extern vbuf vb;
 extern struct timeval currenttime;
-extern const struct Terrno { const char *n; int v; } Terrnos[];
+extern const struct Terrno
+{
+    const char *n;
+    int v;
+} Terrnos[];
 #endif

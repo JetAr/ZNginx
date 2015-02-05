@@ -1,4 +1,4 @@
-// adns_dll.cpp : Defines the entry point for the DLL application.
+﻿// adns_dll.cpp : Defines the entry point for the DLL application.
 //
 
 #include "adns.h"

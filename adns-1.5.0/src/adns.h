@@ -1,4 +1,4 @@
-/*
+﻿/*
  * adns.h
  * - adns user-visible API
  */
@@ -16,25 +16,25 @@
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 3, or (at your option)
  *  any later version.
- *  
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
- * 
+ *
  *  For the benefit of certain LGPL'd `omnibus' software which
  *  provides a uniform interface to various things including adns, I
  *  make the following additional licence.  I do this because the GPL
  *  would otherwise force either the omnibus software to be GPL'd or
  *  the adns-using part to be distributed separately.
- *  
+ *
  *  So: you may also redistribute and/or modify adns.h (but only the
  *  public header file adns.h and not any other part of adns) under the
  *  terms of the GNU Library General Public License as published by the
  *  Free Software Foundation; either version 2 of the License, or (at
  *  your option) any later version.
- *  
+ *
  *  Note that adns itself is GPL'd.  Authors of adns-using applications
  *  with GPL-incompatible licences, and people who distribute adns with
  *  applications where the whole distribution is not GPL'd, are still
@@ -93,132 +93,135 @@ extern "C" { /* I really dislike this - iwj. */
 typedef struct adns__state *adns_state;
 typedef struct adns__query *adns_query;
 
-typedef enum { /* In general, or together the desired flags: */
- adns_if_none=        0x0000,/* no flags.  nicer than 0 for some compilers */
- adns_if_noenv=       0x0001,/* do not look at environment */
- adns_if_noerrprint=  0x0002,/* never print to stderr (_debug overrides) */
- adns_if_noserverwarn=0x0004,/* do not warn to stderr about duff servers etc */
- adns_if_debug=       0x0008,/* enable all output to stderr plus debug msgs */
- adns_if_logpid=      0x0080,/* include pid in diagnostic output */
- adns_if_noautosys=   0x0010,/* do not make syscalls at every opportunity */
- adns_if_eintr=       0x0020,/* allow _wait and _synchronous to return EINTR */
- adns_if_nosigpipe=   0x0040,/* applic has SIGPIPE ignored, do not protect */
- adns_if_checkc_entex=0x0100,/* consistency checks on entry/exit to adns fns */
- adns_if_checkc_freq= 0x0300,/* consistency checks very frequently (slow!) */
+typedef enum   /* In general, or together the desired flags: */
+{
+    adns_if_none=        0x0000,/* no flags.  nicer than 0 for some compilers */
+    adns_if_noenv=       0x0001,/* do not look at environment */
+    adns_if_noerrprint=  0x0002,/* never print to stderr (_debug overrides) */
+    adns_if_noserverwarn=0x0004,/* do not warn to stderr about duff servers etc */
+    adns_if_debug=       0x0008,/* enable all output to stderr plus debug msgs */
+    adns_if_logpid=      0x0080,/* include pid in diagnostic output */
+    adns_if_noautosys=   0x0010,/* do not make syscalls at every opportunity */
+    adns_if_eintr=       0x0020,/* allow _wait and _synchronous to return EINTR */
+    adns_if_nosigpipe=   0x0040,/* applic has SIGPIPE ignored, do not protect */
+    adns_if_checkc_entex=0x0100,/* consistency checks on entry/exit to adns fns */
+    adns_if_checkc_freq= 0x0300,/* consistency checks very frequently (slow!) */
 
- adns_if_permit_ipv4= 0x0400,/* allow _addr queries to return IPv4 addresses  */
- adns_if_permit_ipv6= 0x0800,/* allow _addr queries to return IPv6 addresses */
- adns_if_afmask=      0x0c00,
-   /* These are policy flags, and overridden by the adns_af:... option in
-    * resolv.conf.  If the adns_qf_want_... query flags are incompatible with
-    * these settings (in the sense that no address families are permitted at
-    * all) then the query flags take precedence; otherwise only records which
-    * satisfy all of the stated requirements are allowed.
-    */
- adns__if_sizeforce= 0x7fff,
+    adns_if_permit_ipv4= 0x0400,/* allow _addr queries to return IPv4 addresses  */
+    adns_if_permit_ipv6= 0x0800,/* allow _addr queries to return IPv6 addresses */
+    adns_if_afmask=      0x0c00,
+    /* These are policy flags, and overridden by the adns_af:... option in
+     * resolv.conf.  If the adns_qf_want_... query flags are incompatible with
+     * these settings (in the sense that no address families are permitted at
+     * all) then the query flags take precedence; otherwise only records which
+     * satisfy all of the stated requirements are allowed.
+     */
+    adns__if_sizeforce= 0x7fff,
 } adns_initflags;
 
-typedef enum { /* In general, or together the desired flags: */
- adns_qf_none=           0x00000000,/* no flags */
- adns_qf_search=         0x00000001,/* use the searchlist */
- adns_qf_usevc=          0x00000002,/* use a virtual circuit (TCP conn) */
- adns_qf_owner=          0x00000004,/* fill in the owner field in the answer */
- adns_qf_quoteok_query=  0x00000010,/* allow special chars in query domain */
- adns_qf_quoteok_cname=  0x00000000,/*  ... in CNAME we go via (now default) */
- adns_qf_quoteok_anshost=0x00000040,/*  ... in things supposedly hostnames */
- adns_qf_quotefail_cname=0x00000080,/* refuse if quote-req chars in CNAME we go via */
- adns_qf_cname_loose=    0x00000100,/* allow refs to CNAMEs - without, get _s_cname */
- adns_qf_cname_strict=   0x00010000,/* forbid CNAME refs (default, currently) */
- adns_qf_cname_forbid=   0x00000200,/* don't follow CNAMEs, instead give _s_cname */
+typedef enum   /* In general, or together the desired flags: */
+{
+    adns_qf_none=           0x00000000,/* no flags */
+    adns_qf_search=         0x00000001,/* use the searchlist */
+    adns_qf_usevc=          0x00000002,/* use a virtual circuit (TCP conn) */
+    adns_qf_owner=          0x00000004,/* fill in the owner field in the answer */
+    adns_qf_quoteok_query=  0x00000010,/* allow special chars in query domain */
+    adns_qf_quoteok_cname=  0x00000000,/*  ... in CNAME we go via (now default) */
+    adns_qf_quoteok_anshost=0x00000040,/*  ... in things supposedly hostnames */
+    adns_qf_quotefail_cname=0x00000080,/* refuse if quote-req chars in CNAME we go via */
+    adns_qf_cname_loose=    0x00000100,/* allow refs to CNAMEs - without, get _s_cname */
+    adns_qf_cname_strict=   0x00010000,/* forbid CNAME refs (default, currently) */
+    adns_qf_cname_forbid=   0x00000200,/* don't follow CNAMEs, instead give _s_cname */
 
- adns_qf_want_ipv4=	 0x00000400,/* try to return IPv4 addresses */
- adns_qf_want_ipv6=	 0x00000800,/* try to return IPv6 addresses */
- adns_qf_want_allaf=	 0x00000c00,/* all the above flag bits */
-   /* Without any of the _qf_want_... flags, _qtf_deref queries try to return
-    * all address families permitted by _if_permit_... (as overridden by the
-    * `adns_af:...'  configuration option).  Set flags to restrict the
-    * returned address families to the ones selected.
-    */
- adns_qf_ipv6_mapv4=	 0x00001000,/*  ... return IPv4 addresses as v6-mapped */
+    adns_qf_want_ipv4=	 0x00000400,/* try to return IPv4 addresses */
+    adns_qf_want_ipv6=	 0x00000800,/* try to return IPv6 addresses */
+    adns_qf_want_allaf=	 0x00000c00,/* all the above flag bits */
+    /* Without any of the _qf_want_... flags, _qtf_deref queries try to return
+     * all address families permitted by _if_permit_... (as overridden by the
+     * `adns_af:...'  configuration option).  Set flags to restrict the
+     * returned address families to the ones selected.
+     */
+    adns_qf_ipv6_mapv4=	 0x00001000,/*  ... return IPv4 addresses as v6-mapped */
 
- adns_qf_addrlit_scope_forbid=0x00002000,/* forbid %<scope> in IPv6 literals */
- adns_qf_addrlit_scope_numeric=0x00004000,/* %<scope> may only be numeric */
- adns_qf_addrlit_ipv4_quadonly=0x00008000,/* reject non-dotted-quad ipv4 */
+    adns_qf_addrlit_scope_forbid=0x00002000,/* forbid %<scope> in IPv6 literals */
+    adns_qf_addrlit_scope_numeric=0x00004000,/* %<scope> may only be numeric */
+    adns_qf_addrlit_ipv4_quadonly=0x00008000,/* reject non-dotted-quad ipv4 */
 
- adns__qf_internalmask=  0x0ff00000,
- adns__qf_sizeforce=     0x7fffffff
+    adns__qf_internalmask=  0x0ff00000,
+    adns__qf_sizeforce=     0x7fffffff
 } adns_queryflags;
 
-typedef enum {
- adns_rrt_typemask=  0x0ffff,
- adns_rrt_reprmask= 0xffffff,
- adns__qtf_deref_bit=0x10000,/* internal version of ..._deref below */
- adns__qtf_mail822=  0x20000,/* return mailboxes in RFC822 rcpt field fmt   */
+typedef enum
+{
+    adns_rrt_typemask=  0x0ffff,
+    adns_rrt_reprmask= 0xffffff,
+    adns__qtf_deref_bit=0x10000,/* internal version of ..._deref below */
+    adns__qtf_mail822=  0x20000,/* return mailboxes in RFC822 rcpt field fmt   */
 
- adns__qtf_bigaddr=0x1000000,/* use the new larger sockaddr union */
- adns__qtf_manyaf= 0x2000000,/* permitted to return multiple address families */
+    adns__qtf_bigaddr=0x1000000,/* use the new larger sockaddr union */
+    adns__qtf_manyaf= 0x2000000,/* permitted to return multiple address families */
 
- adns__qtf_deref=    adns__qtf_deref_bit|adns__qtf_bigaddr
+    adns__qtf_deref=    adns__qtf_deref_bit|adns__qtf_bigaddr
 #ifdef ADNS_FEATURE_MANYAF
-		     |adns__qtf_manyaf
+                        |adns__qtf_manyaf
 #endif
-			    ,/* dereference domains; perhaps get extra data */
+    ,/* dereference domains; perhaps get extra data */
 
- adns_r_unknown=     0x40000,
-   /* To use this, ask for records of type   <rr-type-code>|adns_r_unknown.
-    * adns will not process the RDATA - you'll get adns_rr_byteblocks,
-    * where the int is the length and the unsigned char* points to the
-    * data.  String representation of the RR data (by adns_rrinfo) is as in
-    * RFC3597.  adns_rr_info will not return the type name in *rrtname_r
-    * (due to memory management problems); *fmtname_r will be set to
-    * "unknown".
-    *
-    * Do not specify adns_r_unknown along with a known RR type which
-    * requires domain name uncompression (see RFC3597 s4); domain names
-    * will not be uncompressed and the resulting data would be useless.
-    * Asking for meta-RR types via adns_r_unknown will not work properly
-    * either and may make adns complain about server misbehaviour, so don't
-    * do that.
-    *
-    * Don't forget adns_qf_quoteok if that's what you want. */
+    adns_r_unknown=     0x40000,
+    /* To use this, ask for records of type   <rr-type-code>|adns_r_unknown.
+     * adns will not process the RDATA - you'll get adns_rr_byteblocks,
+     * where the int is the length and the unsigned char* points to the
+     * data.  String representation of the RR data (by adns_rrinfo) is as in
+     * RFC3597.  adns_rr_info will not return the type name in *rrtname_r
+     * (due to memory management problems); *fmtname_r will be set to
+     * "unknown".
+     *
+     * Do not specify adns_r_unknown along with a known RR type which
+     * requires domain name uncompression (see RFC3597 s4); domain names
+     * will not be uncompressed and the resulting data would be useless.
+     * Asking for meta-RR types via adns_r_unknown will not work properly
+     * either and may make adns complain about server misbehaviour, so don't
+     * do that.
+     *
+     * Don't forget adns_qf_quoteok if that's what you want. */
 
- adns_r_none=             0,
- 		     
- adns_r_a=                1,
- 		     
- adns_r_ns_raw=           2,
- adns_r_ns=                  adns_r_ns_raw|adns__qtf_deref,
- 		     
- adns_r_cname=            5,
- 		     
- adns_r_soa_raw=          6,
- adns_r_soa=                 adns_r_soa_raw|adns__qtf_mail822, 
- 		     
- adns_r_ptr_raw=         12, /* do not mind PTR with wrong or missing addr */
- adns_r_ptr=                 adns_r_ptr_raw|adns__qtf_deref,
- 		     
- adns_r_hinfo=           13,  
- 		     
- adns_r_mx_raw=          15,
- adns_r_mx=                  adns_r_mx_raw|adns__qtf_deref,
- 		     
- adns_r_txt=             16,
- 		     
- adns_r_rp_raw=          17,
- adns_r_rp=                  adns_r_rp_raw|adns__qtf_mail822,
+    adns_r_none=             0,
 
- adns_r_aaaa=		 28,
+    adns_r_a=                1,
 
- /* For SRV records, query domain without _qf_quoteok_query must look
-  * as expected from SRV RFC with hostname-like Name.  _With_
-  * _quoteok_query, any query domain is allowed. */
- adns_r_srv_raw=         33,
- adns_r_srv=                 adns_r_srv_raw|adns__qtf_deref,
-		     
- adns_r_addr=                adns_r_a|adns__qtf_deref,
+    adns_r_ns_raw=           2,
+    adns_r_ns=                  adns_r_ns_raw|adns__qtf_deref,
 
- adns__rrt_sizeforce= 0x7fffffff,
- 
+    adns_r_cname=            5,
+
+    adns_r_soa_raw=          6,
+    adns_r_soa=                 adns_r_soa_raw|adns__qtf_mail822,
+
+    adns_r_ptr_raw=         12, /* do not mind PTR with wrong or missing addr */
+    adns_r_ptr=                 adns_r_ptr_raw|adns__qtf_deref,
+
+    adns_r_hinfo=           13,
+
+    adns_r_mx_raw=          15,
+    adns_r_mx=                  adns_r_mx_raw|adns__qtf_deref,
+
+    adns_r_txt=             16,
+
+    adns_r_rp_raw=          17,
+    adns_r_rp=                  adns_r_rp_raw|adns__qtf_mail822,
+
+    adns_r_aaaa=		 28,
+
+    /* For SRV records, query domain without _qf_quoteok_query must look
+     * as expected from SRV RFC with hostname-like Name.  _With_
+     * _quoteok_query, any query domain is allowed. */
+    adns_r_srv_raw=         33,
+    adns_r_srv=                 adns_r_srv_raw|adns__qtf_deref,
+
+    adns_r_addr=                adns_r_a|adns__qtf_deref,
+
+    adns__rrt_sizeforce= 0x7fffffff,
+
 } adns_rrtype;
 
 /*
@@ -226,7 +229,7 @@ typedef enum {
  * legal syntax, or you get adns_s_querydomainvalid (if the query
  * domain contains bad characters) or adns_s_answerdomaininvalid (if
  * the answer contains bad characters).
- * 
+ *
  * In queries _with_ qf_quoteok_*, domains in the query or response
  * may contain any characters, quoted according to RFC1035 5.1.  On
  * input to adns, the char* is a pointer to the interior of a "
@@ -289,157 +292,173 @@ typedef enum {
  * case.
  */
 
-typedef enum {
- adns_s_ok,
+typedef enum
+{
+    adns_s_ok,
 
- /* locally induced errors */
- adns_s_nomemory,
- adns_s_unknownrrtype,
- adns_s_systemfail,
+    /* locally induced errors */
+    adns_s_nomemory,
+    adns_s_unknownrrtype,
+    adns_s_systemfail,
 
- adns_s_max_localfail= 29,
- 
- /* remotely induced errors, detected locally */
- adns_s_timeout,
- adns_s_allservfail,
- adns_s_norecurse,
- adns_s_invalidresponse,
- adns_s_unknownformat,
+    adns_s_max_localfail= 29,
 
- adns_s_max_remotefail= 59,
- 
- /* remotely induced errors, reported by remote server to us */
- adns_s_rcodeservfail,
- adns_s_rcodeformaterror,
- adns_s_rcodenotimplemented,
- adns_s_rcoderefused,
- adns_s_rcodeunknown,
+    /* remotely induced errors, detected locally */
+    adns_s_timeout,
+    adns_s_allservfail,
+    adns_s_norecurse,
+    adns_s_invalidresponse,
+    adns_s_unknownformat,
 
- adns_s_max_tempfail= 99,
+    adns_s_max_remotefail= 59,
 
- /* remote configuration errors */
- adns_s_inconsistent, /* PTR gives domain whose addr is missing or mismatch */
- adns_s_prohibitedcname, /* CNAME, but eg A expected (not if _qf_cname_loose) */
- adns_s_answerdomaininvalid,
- adns_s_answerdomaintoolong,
- adns_s_invaliddata,
- 
- adns_s_max_misconfig= 199,
+    /* remotely induced errors, reported by remote server to us */
+    adns_s_rcodeservfail,
+    adns_s_rcodeformaterror,
+    adns_s_rcodenotimplemented,
+    adns_s_rcoderefused,
+    adns_s_rcodeunknown,
 
- /* permanent problems with the query */
- adns_s_querydomainwrong,
- adns_s_querydomaininvalid,
- adns_s_querydomaintoolong,
- 
- adns_s_max_misquery= 299,
+    adns_s_max_tempfail= 99,
 
- /* permanent errors */
- adns_s_nxdomain,
- adns_s_nodata,
+    /* remote configuration errors */
+    adns_s_inconsistent, /* PTR gives domain whose addr is missing or mismatch */
+    adns_s_prohibitedcname, /* CNAME, but eg A expected (not if _qf_cname_loose) */
+    adns_s_answerdomaininvalid,
+    adns_s_answerdomaintoolong,
+    adns_s_invaliddata,
 
- adns_s_max_permfail= 499
- 
+    adns_s_max_misconfig= 199,
+
+    /* permanent problems with the query */
+    adns_s_querydomainwrong,
+    adns_s_querydomaininvalid,
+    adns_s_querydomaintoolong,
+
+    adns_s_max_misquery= 299,
+
+    /* permanent errors */
+    adns_s_nxdomain,
+    adns_s_nodata,
+
+    adns_s_max_permfail= 499
+
 } adns_status;
 
-typedef union {
-  struct sockaddr sa;
-  struct sockaddr_in inet;
+typedef union
+{
+    struct sockaddr sa;
+    struct sockaddr_in inet;
 } adns_sockaddr_v4only;
 
-typedef union {
-  struct sockaddr sa;
-  struct sockaddr_in inet;
-  struct sockaddr_in6 inet6;
+typedef union
+{
+    struct sockaddr sa;
+    struct sockaddr_in inet;
+    struct sockaddr_in6 inet6;
 } adns_sockaddr;
 
-typedef struct {
-  int len;
-  adns_sockaddr addr;
+typedef struct
+{
+    int len;
+    adns_sockaddr addr;
 } adns_rr_addr;
 
-typedef struct {
-  /* the old v4-only structure; handy if you have complicated binary
-   * compatibility problems. */
-  int len;
-  adns_sockaddr_v4only addr;
+typedef struct
+{
+    /* the old v4-only structure; handy if you have complicated binary
+     * compatibility problems. */
+    int len;
+    adns_sockaddr_v4only addr;
 } adns_rr_addr_v4only;
 
-typedef struct {
-  char *host;
-  adns_status astatus;
-  int naddrs; /* temp fail => -1, perm fail => 0, s_ok => >0 */
-  adns_rr_addr *addrs;
+typedef struct
+{
+    char *host;
+    adns_status astatus;
+    int naddrs; /* temp fail => -1, perm fail => 0, s_ok => >0 */
+    adns_rr_addr *addrs;
 } adns_rr_hostaddr;
 
-typedef struct {
-  char *(array[2]);
+typedef struct
+{
+    char *(array[2]);
 } adns_rr_strpair;
 
-typedef struct {
-  int i;
-  adns_rr_hostaddr ha;
+typedef struct
+{
+    int i;
+    adns_rr_hostaddr ha;
 } adns_rr_inthostaddr;
 
-typedef struct {
-  /* Used both for mx_raw, in which case i is the preference and str
-   * the domain, and for txt, in which case each entry has i for the
-   * `text' length, and str for the data (which will have had an extra
-   * nul appended so that if it was plain text it is now a
-   * null-terminated string).
-   */
-  int i;
-  char *str;
+typedef struct
+{
+    /* Used both for mx_raw, in which case i is the preference and str
+     * the domain, and for txt, in which case each entry has i for the
+     * `text' length, and str for the data (which will have had an extra
+     * nul appended so that if it was plain text it is now a
+     * null-terminated string).
+     */
+    int i;
+    char *str;
 } adns_rr_intstr;
 
-typedef struct {
-  adns_rr_intstr array[2];
+typedef struct
+{
+    adns_rr_intstr array[2];
 } adns_rr_intstrpair;
 
-typedef struct {
-  char *mname, *rname;
-  unsigned long serial, refresh, retry, expire, minimum;
+typedef struct
+{
+    char *mname, *rname;
+    unsigned long serial, refresh, retry, expire, minimum;
 } adns_rr_soa;
 
-typedef struct {
-  int priority, weight, port;
-  char *host;
+typedef struct
+{
+    int priority, weight, port;
+    char *host;
 } adns_rr_srvraw;
 
-typedef struct {
-  int priority, weight, port;
-  adns_rr_hostaddr ha;
+typedef struct
+{
+    int priority, weight, port;
+    adns_rr_hostaddr ha;
 } adns_rr_srvha;
 
-typedef struct {
-  int len;
-  unsigned char *data;
+typedef struct
+{
+    int len;
+    unsigned char *data;
 } adns_rr_byteblock;
 
-typedef struct {
-  adns_status status;
-  char *cname; /* always NULL if query was for CNAME records */
-  char *owner; /* only set if req'd in query flags; maybe 0 on error anyway */
-  adns_rrtype type; /* guaranteed to be same as in query */
-  time_t expires;/*abs time.  def only if _s_ok, nxdomain or nodata. NOT TTL!*/
-  int nrrs, rrsz; /* nrrs is 0 if an error occurs */
-  union {
-    void *untyped;
-    unsigned char *bytes;
-    char *(*str);                    /* ns_raw, cname, ptr, ptr_raw */
-    adns_rr_intstr *(*manyistr);     /* txt (list strs ends with i=-1, str=0)*/
-    adns_rr_addr *addr;              /* addr */
-    struct in_addr *inaddr;          /* a */
-    struct in6_addr *in6addr;	     /* aaaa */
-    adns_rr_hostaddr *hostaddr;      /* ns */
-    adns_rr_intstrpair *intstrpair;  /* hinfo */
-    adns_rr_strpair *strpair;        /* rp, rp_raw */
-    adns_rr_inthostaddr *inthostaddr;/* mx */
-    adns_rr_intstr *intstr;          /* mx_raw */
-    adns_rr_soa *soa;                /* soa, soa_raw */
-    adns_rr_srvraw *srvraw;          /* srv_raw */
-    adns_rr_srvha *srvha;/* srv */
-    adns_rr_byteblock *byteblock;    /* ...|unknown */
-  } rrs;
+typedef struct
+{
+    adns_status status;
+    char *cname; /* always NULL if query was for CNAME records */
+    char *owner; /* only set if req'd in query flags; maybe 0 on error anyway */
+    adns_rrtype type; /* guaranteed to be same as in query */
+    time_t expires;/*abs time.  def only if _s_ok, nxdomain or nodata. NOT TTL!*/
+    int nrrs, rrsz; /* nrrs is 0 if an error occurs */
+    union
+    {
+        void *untyped;
+        unsigned char *bytes;
+        char *(*str);                    /* ns_raw, cname, ptr, ptr_raw */
+        adns_rr_intstr *(*manyistr);     /* txt (list strs ends with i=-1, str=0)*/
+        adns_rr_addr *addr;              /* addr */
+        struct in_addr *inaddr;          /* a */
+        struct in6_addr *in6addr;	     /* aaaa */
+        adns_rr_hostaddr *hostaddr;      /* ns */
+        adns_rr_intstrpair *intstrpair;  /* hinfo */
+        adns_rr_strpair *strpair;        /* rp, rp_raw */
+        adns_rr_inthostaddr *inthostaddr;/* mx */
+        adns_rr_intstr *intstr;          /* mx_raw */
+        adns_rr_soa *soa;                /* soa, soa_raw */
+        adns_rr_srvraw *srvraw;          /* srv_raw */
+        adns_rr_srvha *srvha;/* srv */
+        adns_rr_byteblock *byteblock;    /* ...|unknown */
+    } rrs;
 } adns_answer;
 
 /* Memory management:
@@ -460,7 +479,7 @@ typedef struct {
  *  (eg, failure to create sockets, malloc failure, etc.) return errno
  *  values.  EINVAL from _init et al means the configuration file
  *  is erroneous and cannot be parsed.
- * 
+ *
  *  For _wait and _check failures are reported in the answer
  *  structure, and only 0, ESRCH or (for _check) EAGAIN is
  *  returned: if no (appropriate) requests are done adns_check returns
@@ -489,23 +508,23 @@ typedef struct {
  */
 
 int adns_init(adns_state *newstate_r, adns_initflags flags,
-	      FILE *diagfile /*0=>stderr*/);
+              FILE *diagfile /*0=>stderr*/);
 
 int adns_init_strcfg(adns_state *newstate_r, adns_initflags flags,
-		     FILE *diagfile /*0=>discard*/, const char *configtext);
+                     FILE *diagfile /*0=>discard*/, const char *configtext);
 
 typedef void adns_logcallbackfn(adns_state ads, void *logfndata,
-				const char *fmt, va_list al);
-  /* Will be called perhaps several times for each message; when the
-   * message is complete, the string implied by fmt and al will end in
-   * a newline.  Log messages start with `adns debug:' or `adns
-   * warning:' or `adns:' (for errors), or `adns debug [PID]:'
-   * etc. if adns_if_logpid is set. */
+                                const char *fmt, va_list al);
+/* Will be called perhaps several times for each message; when the
+ * message is complete, the string implied by fmt and al will end in
+ * a newline.  Log messages start with `adns debug:' or `adns
+ * warning:' or `adns:' (for errors), or `adns debug [PID]:'
+ * etc. if adns_if_logpid is set. */
 
 int adns_init_logfn(adns_state *newstate_r, adns_initflags flags,
-		    const char *configtext /*0=>use default config files*/,
-		    adns_logcallbackfn *logfn /*0=>logfndata is a FILE* */,
-		    void *logfndata /*0 with logfn==0 => discard*/);
+                    const char *configtext /*0=>use default config files*/,
+                    adns_logcallbackfn *logfn /*0=>logfndata is a FILE* */,
+                    void *logfndata /*0 with logfn==0 => discard*/);
 
 /* Configuration:
  *  adns_init reads /etc/resolv.conf, which is expected to be (broadly
@@ -516,7 +535,7 @@ int adns_init_logfn(adns_state *newstate_r, adns_initflags flags,
  *  is set later overrides any that is set earlier.
  *
  * Standard directives understood in resolv[-adns].conf:
- * 
+ *
  *  nameserver <address>
  *   Must be followed by the IP address of a nameserver.  Several
  *   nameservers may be specified, and they will be tried in the order
@@ -595,7 +614,7 @@ int adns_init_logfn(adns_state *newstate_r, adns_initflags flags,
  *   logging them.  To be effective, appear in the configuration
  *   before the unknown options.  ADNS_RES_OPTIONS is generally early
  *   enough.
- * 
+ *
  * There are a number of environment variables which can modify the
  * behaviour of adns.  They take effect only if adns_init is used, and
  * the caller of adns_init can disable them using adns_if_noenv.  In
@@ -623,10 +642,10 @@ int adns_init_logfn(adns_state *newstate_r, adns_initflags flags,
  */
 
 int adns_synchronous(adns_state ads,
-		     const char *owner,
-		     adns_rrtype type,
-		     adns_queryflags flags,
-		     adns_answer **answer_r);
+                     const char *owner,
+                     adns_rrtype type,
+                     adns_queryflags flags,
+                     adns_answer **answer_r);
 
 /* NB: if you set adns_if_noautosys then _submit and _check do not
  * make any system calls; you must use some of the asynch-io event
@@ -634,29 +653,29 @@ int adns_synchronous(adns_state ads,
  */
 
 int adns_submit(adns_state ads,
-		const char *owner,
-		adns_rrtype type,
-		adns_queryflags flags,
-		void *context,
-		adns_query *query_r);
+                const char *owner,
+                adns_rrtype type,
+                adns_queryflags flags,
+                void *context,
+                adns_query *query_r);
 
 /* The owner should be quoted in master file format. */
 
 int adns_check(adns_state ads,
-	       adns_query *query_io,
-	       adns_answer **answer_r,
-	       void **context_r);
+               adns_query *query_io,
+               adns_answer **answer_r,
+               void **context_r);
 
 int adns_wait(adns_state ads,
-	      adns_query *query_io,
-	      adns_answer **answer_r,
-	      void **context_r);
+              adns_query *query_io,
+              adns_answer **answer_r,
+              void **context_r);
 
 /* same as adns_wait but uses poll(2) internally */
 int adns_wait_poll(adns_state ads,
-		   adns_query *query_io,
-		   adns_answer **answer_r,
-		   void **context_r);
+                   adns_query *query_io,
+                   adns_answer **answer_r,
+                   void **context_r);
 
 void adns_cancel(adns_query query);
 
@@ -673,22 +692,22 @@ void adns_cancel(adns_query query);
  */
 
 int adns_submit_reverse(adns_state ads,
-			const struct sockaddr *addr,
-			adns_rrtype type,
-			adns_queryflags flags,
-			void *context,
-			adns_query *query_r);
+                        const struct sockaddr *addr,
+                        adns_rrtype type,
+                        adns_queryflags flags,
+                        void *context,
+                        adns_query *query_r);
 /* type must be _r_ptr or _r_ptr_raw.  _qf_search is ignored.
  * addr->sa_family must be AF_INET or you get ENOSYS.
  */
 
 int adns_submit_reverse_any(adns_state ads,
-			    const struct sockaddr *addr,
-			    const char *rzone,
-			    adns_rrtype type,
-			    adns_queryflags flags,
-			    void *context,
-			    adns_query *query_r);
+                            const struct sockaddr *addr,
+                            const char *rzone,
+                            adns_rrtype type,
+                            adns_queryflags flags,
+                            void *context,
+                            adns_query *query_r);
 /* For RBL-style reverse `zone's; look up
  *   <reversed-address>.<zone>
  * Any type is allowed.  _qf_search is ignored.
@@ -706,55 +725,55 @@ void adns_finish(adns_state ads);
   + 1/* nul; included in IF_NAMESIZE */)
 
 int adns_text2addr(const char *text, uint16_t port, adns_queryflags flags,
-		   struct sockaddr *sa_r,
-		   socklen_t *salen_io /* updated iff OK or ENOSPC */);
+                   struct sockaddr *sa_r,
+                   socklen_t *salen_io /* updated iff OK or ENOSPC */);
 int adns_addr2text(const struct sockaddr *sa, adns_queryflags flags,
-		   char *buffer, int *buflen_io /* updated ONLY on ENOSPC */,
-		   int *port_r /* may be 0 */);
-  /*
-   * port is always in host byte order and is simply copied to and
-   * from the appropriate sockaddr field (byteswapped as necessary).
-   *
-   * The only flags supported are adns_qf_addrlit_...
-   *
-   * Error return values are:
-   *
-   *  ENOSPC    Output buffer is too small.  Can only happen if
-   *            *buflen_io < ADNS_ADDR2TEXT_BUFLEN or
-   *            *salen_io < sizeof(adns_sockaddr).  On return,
-   *            *buflen_io or *salen_io has been updated by adns.
-   *
-   *  EINVAL    text has invalid syntax.
-   *
-   *            text represents an address family not supported by
-   *            this version of adns.
-   *
-   *            Scoped address supplied (text contained "%" or
-   *            sin6_scope_id nonzero) but caller specified
-   *            adns_qf_addrlit_scope_forbid.
-   *
-   *            Scope name (rather than number) supplied in text but
-   *            caller specified adns_qf_addrlit_scope_numeric.
-   *
-   *  EAFNOSUPPORT   sa->sa_family is not supported (addr2text only).
-   *
-   *  ENOSYS    Unsupported flags set.
-   *
-   * Only if neither adns_qf_addrlit_scope_forbid nor
-   * adns_qf_addrlit_scope_numeric are set:
-   *
-   *  ENOSYS    Scope name supplied in text but IPv6 address part of
-   *            sockaddr is not a link local address.
-   *
-   *  ENXIO     Scope name supplied in text but if_nametoindex
-   *            said it wasn't a valid local interface name.
-   *
-   *  EIO       Scoped address supplied but if_nametoindex failed
-   *            in an unexpected way; adns has printed a message to
-   *            stderr.
-   *
-   *  any other   if_nametoindex failed in a more-or-less expected way.
-   */
+                   char *buffer, int *buflen_io /* updated ONLY on ENOSPC */,
+                   int *port_r /* may be 0 */);
+/*
+ * port is always in host byte order and is simply copied to and
+ * from the appropriate sockaddr field (byteswapped as necessary).
+ *
+ * The only flags supported are adns_qf_addrlit_...
+ *
+ * Error return values are:
+ *
+ *  ENOSPC    Output buffer is too small.  Can only happen if
+ *            *buflen_io < ADNS_ADDR2TEXT_BUFLEN or
+ *            *salen_io < sizeof(adns_sockaddr).  On return,
+ *            *buflen_io or *salen_io has been updated by adns.
+ *
+ *  EINVAL    text has invalid syntax.
+ *
+ *            text represents an address family not supported by
+ *            this version of adns.
+ *
+ *            Scoped address supplied (text contained "%" or
+ *            sin6_scope_id nonzero) but caller specified
+ *            adns_qf_addrlit_scope_forbid.
+ *
+ *            Scope name (rather than number) supplied in text but
+ *            caller specified adns_qf_addrlit_scope_numeric.
+ *
+ *  EAFNOSUPPORT   sa->sa_family is not supported (addr2text only).
+ *
+ *  ENOSYS    Unsupported flags set.
+ *
+ * Only if neither adns_qf_addrlit_scope_forbid nor
+ * adns_qf_addrlit_scope_numeric are set:
+ *
+ *  ENOSYS    Scope name supplied in text but IPv6 address part of
+ *            sockaddr is not a link local address.
+ *
+ *  ENXIO     Scope name supplied in text but if_nametoindex
+ *            said it wasn't a valid local interface name.
+ *
+ *  EIO       Scoped address supplied but if_nametoindex failed
+ *            in an unexpected way; adns has printed a message to
+ *            stderr.
+ *
+ *  any other   if_nametoindex failed in a more-or-less expected way.
+ */
 
 void adns_forallqueries_begin(adns_state ads);
 adns_query adns_forallqueries_next(adns_state ads, void **context_r);
@@ -842,11 +861,11 @@ void adns_processtimeouts(adns_state ads, const struct timeval *now);
  */
 
 void adns_firsttimeout(adns_state ads,
-		       struct timeval **tv_mod, struct timeval *tv_buf,
-		       struct timeval now);
+                       struct timeval **tv_mod, struct timeval *tv_buf,
+                       struct timeval now);
 /* Asks adns when it would first like the opportunity to time
  * something out.  now must be the current time, from gettimeofday.
- * 
+ *
  * If tv_mod points to 0 then tv_buf must be non-null, and
  * _firsttimeout will fill in *tv_buf with the time until the first
  * timeout, and make *tv_mod point to tv_buf.  If adns doesn't have
@@ -880,9 +899,9 @@ void adns_globalsystemfailure(adns_state ads);
  */
 
 void adns_beforeselect(adns_state ads, int *maxfd, fd_set *readfds,
-		       fd_set *writefds, fd_set *exceptfds,
-		       struct timeval **tv_mod, struct timeval *tv_buf,
-		       const struct timeval *now);
+                       fd_set *writefds, fd_set *exceptfds,
+                       struct timeval **tv_mod, struct timeval *tv_buf,
+                       const struct timeval *now);
 /* Find out file descriptors adns is interested in, and when it would
  * like the opportunity to time something out.  If you do not plan to
  * block then tv_mod may be 0.  Otherwise, tv_mod and tv_buf are as
@@ -896,8 +915,8 @@ void adns_beforeselect(adns_state ads, int *maxfd, fd_set *readfds,
  */
 
 void adns_afterselect(adns_state ads, int maxfd, const fd_set *readfds,
-		      const fd_set *writefds, const fd_set *exceptfds,
-		      const struct timeval *now);
+                      const fd_set *writefds, const fd_set *exceptfds,
+                      const struct timeval *now);
 /* Gives adns flow-of-control for a bit; intended for use after
  * select.  This is just a fancy way of calling adns_processreadable/
  * writeable/timeouts as appropriate, as if select had returned the
@@ -930,12 +949,12 @@ struct pollfd;
  */
 
 int adns_beforepoll(adns_state ads, struct pollfd *fds,
-		    int *nfds_io, int *timeout_io,
-		    const struct timeval *now);
+                    int *nfds_io, int *timeout_io,
+                    const struct timeval *now);
 /* Finds out which fd's adns is interested in, and when it would like
  * to be able to time things out.  This is in a form suitable for use
  * with poll(2).
- * 
+ *
  * On entry, usually fds should point to at least *nfds_io structs.
  * adns will fill up to that many structs will information for poll,
  * and record in *nfds_io how many structs it filled.  If it wants to
@@ -983,7 +1002,7 @@ int adns_beforepoll(adns_state ads, struct pollfd *fds,
  */
 
 void adns_afterpoll(adns_state ads, const struct pollfd *fds, int nfds,
-		    const struct timeval *now);
+                    const struct timeval *now);
 /* Gives adns flow-of-control for a bit; intended for use after
  * poll(2).  fds and nfds should be the results from poll().  pollfd
  * structs mentioning fds not belonging to adns will be ignored.
@@ -991,9 +1010,9 @@ void adns_afterpoll(adns_state ads, const struct pollfd *fds, int nfds,
 
 
 adns_status adns_rr_info(adns_rrtype type,
-			 const char **rrtname_r, const char **fmtname_r,
-			 int *len_r,
-			 const void *datap, char **data_r);
+                         const char **rrtname_r, const char **fmtname_r,
+                         int *len_r,
+                         const void *datap, char **data_r);
 /*
  * Get information about a query type, or convert reply data to a
  * textual form.  type must be specified, and the official name of the

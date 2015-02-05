@@ -1,4 +1,4 @@
-#ifndef HREDIRECT_H_INCLUDED
+﻿#ifndef HREDIRECT_H_INCLUDED
 #define HREDIRECT_H_INCLUDED
 #include "hsyscalls.h"
 #undef select

@@ -1,4 +1,4 @@
-/* src/config.h.  Generated automatically by configure.  */
+﻿/* src/config.h.  Generated automatically by configure.  */
 /* src/config.h.in.  Generated automatically from configure.in by autoheader.  */
 
 /* Define if inline functions a la GCC are available.  */
@@ -43,7 +43,12 @@
 #else
 #if _MSC_VER < 1400
 /* kludge it up */
-struct pollfd { int fd; short events; short revents; };
+struct pollfd
+{
+    int fd;
+    short events;
+    short revents;
+};
 #define POLLIN  1
 #define POLLPRI 2
 #define POLLOUT 4
