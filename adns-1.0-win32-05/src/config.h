@@ -39,12 +39,15 @@
 
 #ifdef HAVE_POLL
 #include <sys/poll.h>
+#elif (_WIN32_WINNT >= 0x0600)
 #else
+#if _MSC_VER < 1400
 /* kludge it up */
 struct pollfd { int fd; short events; short revents; };
 #define POLLIN  1
 #define POLLPRI 2
 #define POLLOUT 4
+#endif
 #endif
 
 /* GNU C attributes. */
