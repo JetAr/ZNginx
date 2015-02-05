@@ -1,0 +1,60 @@
+# depslib dependency file v1.0
+1338534828 source:d:\larbin\main.cpp
+	<iostream>
+	<cstdlib>
+	<ctime>
+	"url.h"
+	"fifo.h"
+	"hashTable.h"
+	"hashDup.h"
+	"types.h"
+
+1338460078 d:\larbin\url.h
+	<stdlib.h>
+	<stdint.h>
+	"types.h"
+	<WinSock2.h>
+
+1338460078 d:\larbin\types.h
+
+1338460078 d:\larbin\fifo.h
+	"assert.h"
+
+1338460078 d:\larbin\hashtable.h
+	"types.h"
+	"url.h"
+
+1338460078 source:d:\larbin\text.cpp
+	<string.h>
+	"text.h"
+
+1338460078 d:\larbin\text.h
+
+1338460078 source:d:\larbin\url.cpp
+	<WinSock2.h>
+	<assert.h>
+	<string>
+	<stdio.h>
+	<cstdlib>
+	"types.h"
+	"url.h"
+	"debug.h"
+	"text.h"
+
+1338460078 d:\larbin\debug.h
+
+1338460714 source:d:\larbin\hashtable.cpp
+	<fstream>
+	<iostream>
+	"hashTable.h"
+	"types.h"
+
+1338534597 source:d:\larbin\hashdup.cpp
+	<iostream>
+	<fstream>
+	"hashDup.h"
+	"types.h"
+
+1338534478 d:\larbin\hashdup.h
+	"types.h"
+

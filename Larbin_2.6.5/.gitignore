@@ -1,0 +1,20 @@
+# result directory
+save/
+
+# build directory
+build/
+
+# object files
+*.o
+
+# depend files
+.depend
+
+# larbin main
+larbin
+
+# fifo files
+fifo0*
+
+# lib files
+*.a
