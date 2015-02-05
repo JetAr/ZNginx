@@ -53,19 +53,21 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 extern int errno;
 #endif
 
+//z 主机列表
 /* Host list entry */
 struct host
 {
     /* Host's symbolical name, as encountered at the time of first
     	inclusion, e.g. "fly.cc.fer.hr".  */
-    char *hostname;
+    char *hostname;//z 域名
     /* Host's "real" name, i.e. its IP address, written out in ASCII
     form of N.N.N.N, e.g. "161.53.70.130".  */
-    char *realname;
-    /* More than one HOSTNAME can correspond to the same REALNAME.  For
+    char *realname;//z ip地址
+    //z 一个ip地址可以对应多个域名。
+	/* More than one HOSTNAME can correspond to the same REALNAME.  For
     our purposes, the canonical name of the host is its HOSTNAME when
     it was first encountered.  This entry is said to have QUALITY.  */
-    int quality;
+    int quality;//z
     /* Next entry in the list.  */
     struct host *next;
 };
@@ -94,11 +96,13 @@ ngethostbyname (const char *name)
 
 /* Search for HOST in the linked list L, by hostname.  Return the
    entry, if found, or NULL.  The search is case-insensitive.  */
+//z 搜索 host 列表
 static struct host *
 search_host (struct host *l, const char *host)
 {
     for (; l; l = l->next)
     {
+		//z 单纯比较 host 名称
         if (strcasecmp (l->hostname, host) == 0)
             return l;
     }
@@ -107,11 +111,13 @@ search_host (struct host *l, const char *host)
 }
 
 /* Like search_host, but searches by address.  */
+//z 是否是否IP地址已经在host list中了。
 static struct host *
 search_address (struct host *l, const char *address)
 {
     for (; l; l = l->next)
     {
+		//z 比较的是IP地址
         int cmp = strcmp (l->realname, address);
 
         if (cmp == 0)
@@ -139,48 +145,61 @@ store_hostaddress (unsigned char *where, const char *hostname)
 
     /* If the address is of the form d.d.d.d, there will be no trouble
     with it.  */
+	//z 在windows上出错时会返回 INADDR_NONE 或者 INADDR_ANY
     addr = (unsigned long)inet_addr (hostname);
     if ((int)addr == -1)
     {
         /* If it is not of that form, try to find it in the cache.  */
+		//z 不在那种格式里，返回出错，搜索已经保存的host信息。
         t = search_host (hlist, hostname);
-        if (t)
+        //z 如果找到了
+		if (t)
+			//z 那么使用该ip地址
             addr = (unsigned long)inet_addr (t->realname);
     }
     /* If we have the numeric address, just store it.  */
-    if ((int)addr != -1)
+	if ((int)addr != -1)
     {
         /* This works on both little and big endian architecture, as
         inet_addr returns the address in the proper order.  It
         	appears to work on 64-bit machines too.  */
-        memcpy (where, &addr, 4);
+        //z 将addr拷贝到where
+		memcpy (where, &addr, 4);
         return 1;
     }
     /* Since all else has failed, let's try gethostbyname().  Note that
     we use gethostbyname() rather than ngethostbyname(), because we
     *know* the address is not numerical.  */
-    hptr = gethostbyname (hostname);
+    //z 如果不是IP地址的形式且host list中没有该host
+	hptr = gethostbyname (hostname);
     if (!hptr)
         return 0;
     /* Copy the address of the host to socket description.  */
+	//z 拷贝host的地址到where
     memcpy (where, hptr->h_addr_list[0], hptr->h_length);
-    /* Now that we're here, we could as well cache the hostname for
+    //z 将hostname给cache起来；首先要查找该IP地址是否已经有所指向
+	/* Now that we're here, we could as well cache the hostname for
     future use, as in realhost().  First, we have to look for it by
     address to know if it's already in the cache by another name.  */
 
     /* Originally, we copied to in.s_addr, but it appears to be missing
     on some systems.  */
     memcpy (&in, *hptr->h_addr_list, sizeof (in));
-    STRDUP_ALLOCA (inet_s, inet_ntoa (in));
+    //z The inet_ntoa function converts an (Ipv4) Internet network address into an ASCII string in Internet standard dotted-decimal format.
+	STRDUP_ALLOCA (inet_s, inet_ntoa (in));
+	//z 查看该ip地址是否已储存
     t = search_address (hlist, inet_s);
-    if (t) /* Found in the list, as realname.  */
+    //z 如果在 host list 中已发现
+	if (t) /* Found in the list, as realname.  */
     {
         /* Set the default, 0 quality.  */
+		//z 该ip已经存在过了，那么设置 quality 为0。
         hlist = add_hlist (hlist, hostname, inet_s, 0);
         return 1;
     }
     /* Since this is really the first time this host is encountered,
     set quality to 1.  */
+	//z 否则，该ip地址在host list中并不存在，那么quality为1
     hlist = add_hlist (hlist, hostname, inet_s, 1);
     return 1;
 }
@@ -195,11 +214,13 @@ add_hlist (struct host *l, const char *nhost, const char *nreal, int quality)
 
     /* The entry goes to the beginning of the list if the list is empty
     or the order requires it.  */
+	//z 如果host list为NULL，或者小于list header的 ip 地址
     if (!l || (strcmp (nreal, l->realname) < 0))
     {
         t = (struct host *)xmalloc (sizeof (struct host));
         t->hostname = xstrdup (nhost);
         t->realname = xstrdup (nreal);
+		//z 此时存储为0。
         t->quality = quality;
         t->next = l;
         return t;
@@ -212,6 +233,7 @@ add_hlist (struct host *l, const char *nhost, const char *nreal, int quality)
         int cmp;
         old = l;
         l = l->next;
+		//z 比较的都是 ip 地址。可能多个 host name 对应一个IP地址
         cmp = strcmp (nreal, l->realname);
         if (cmp >= 0)
             continue;
@@ -225,6 +247,8 @@ add_hlist (struct host *l, const char *nhost, const char *nreal, int quality)
         t->quality = quality;
         return beg;
     }
+
+	//z 遍历完了 host list 也没有发现，那么将该host放置在host list 最后面
     t = (struct host *)xmalloc (sizeof (struct host));
     t->hostname = xstrdup (nhost);
     t->realname = xstrdup (nreal);
@@ -235,6 +259,13 @@ add_hlist (struct host *l, const char *nhost, const char *nreal, int quality)
     return beg;
 }
 
+/*
+	判断由wget获取的HOST的 real name。如果HOST引用了多于一次，那么返回头一次遇到的值
+
+	如果host在host list 中没有发现。
+	如果失败了（没有发现？），那么使用ip地址，如果仍旧没有发现，将之加入到Host list 中去
+
+*/
 /* Determine the "real" name of HOST, as perceived by Wget.  If HOST
    is referenced by more than one name, "real" name is considered to
    be the first one encountered in the past.
@@ -254,8 +285,10 @@ realhost (const char *host)
     DEBUGP (("Checking for %s.\n", host));
     /* Look for the host, looking by the host name.  */
     l = search_host (hlist, host);
-    if (l && l->quality)              /* Found it with quality */
+	//z 如果 quality 不为0
+	if (l && l->quality)              /* Found it with quality */
     {
+		//z 
         DEBUGP (("%s was already used, by that name.\n", host));
         /* Here we return l->hostname, not host, because of the possible
            case differences (e.g. jaGOR.srce.hr and jagor.srce.hr are
@@ -295,15 +328,18 @@ realhost (const char *host)
     /* Now we certainly have the INET address.  The following loop is
        guaranteed to pick either an entry with quality (because it is
        the first one), or none at all.  */
+	//z 通过host name没有发现，那么通过ip地址再次查找
     l = search_address (hlist, inet_s);
     if (l) /* Found in the list, as realname.  */
     {
         /* Set the default, 0 quality.  */
+		//z 如果找到，那么设置quality为0，加入host list，设置quality为0
         hlist = add_hlist (hlist, host, inet_s, 0);
         return xstrdup (l->hostname);
     }
     /* Since this is really the first time this host is encountered,
        set quality to 1.  */
+	//z 通过host以及ip均没有找到，确定是第一次遇上，加入list host，设置quality为1
     hlist = add_hlist (hlist, host, inet_s, 1);
     return xstrdup (host);
 }
