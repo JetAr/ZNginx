@@ -71,7 +71,8 @@
 #define NGX_MAX_CONF_ERRSTR  256
 
 
-struct ngx_command_s {
+struct ngx_command_s
+{
     ngx_str_t     name;
     int           type;
     char       *(*set)(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
@@ -83,7 +84,8 @@ struct ngx_command_s {
 #define ngx_null_command   { ngx_null_string, 0, NULL, 0, 0, NULL }
 
 //z 打开的文件
-struct ngx_open_file_s {
+struct ngx_open_file_s
+{
     //z 文件描述符
     ngx_fd_t   fd;
     //z 文件名称
@@ -98,7 +100,8 @@ struct ngx_open_file_s {
 };
 
 
-struct ngx_module_s {
+struct ngx_module_s
+{
     ngx_uint_t       ctx_index;
     ngx_uint_t       index;
     void            *ctx;
@@ -112,14 +115,16 @@ struct ngx_module_s {
 };
 
 
-typedef struct {
+typedef struct
+{
     ngx_str_t       name;
     void         *(*create_conf)(ngx_cycle_t *cycle);
     char         *(*init_conf)(ngx_cycle_t *cycle, void *conf);
-} ngx_core_module_t; 
+} ngx_core_module_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_file_t   file;
     ngx_buf_t   *buffer;
     ngx_uint_t   line;
@@ -130,7 +135,8 @@ typedef char *(*ngx_conf_handler_pt)(ngx_conf_t *cf,
                                      ngx_command_t *dummy, void *conf);
 
 
-struct ngx_conf_s {
+struct ngx_conf_s
+{
     char                 *name;
     ngx_array_t          *args;
 
@@ -149,21 +155,24 @@ struct ngx_conf_s {
 
 
 typedef char *(*ngx_conf_post_handler_pt) (ngx_conf_t *cf,
-                                           void *data, void *conf);
+        void *data, void *conf);
 
-typedef struct {
+typedef struct
+{
     ngx_conf_post_handler_pt  post_handler;
 } ngx_conf_post_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_conf_post_handler_pt  post_handler;
     int                       low;
     int                       high;
 } ngx_conf_num_bounds_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_str_t   name;
     ngx_uint_t  value;
 } ngx_conf_enum_t;
@@ -171,7 +180,8 @@ typedef struct {
 
 #define NGX_CONF_BITMASK_SET  1
 
-typedef struct {
+typedef struct
+{
     ngx_str_t   name;
     ngx_uint_t  mask;
 } ngx_conf_bitmask_t;

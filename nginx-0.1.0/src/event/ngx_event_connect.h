@@ -16,7 +16,8 @@
 #define NGX_CONNECT_ERROR   -10
 
 
-typedef struct {
+typedef struct
+{
     in_addr_t          addr;
     ngx_str_t          host;
     in_port_t          port;
@@ -27,21 +28,23 @@ typedef struct {
 } ngx_peer_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_int_t           current;
     ngx_int_t           number;
     ngx_int_t           max_fails;
     ngx_int_t           fail_timeout;
     ngx_int_t           last_cached;
 
- /* ngx_mutex_t        *mutex; */
+    /* ngx_mutex_t        *mutex; */
     ngx_connection_t  **cached;
 
     ngx_peer_t          peers[1];
 } ngx_peers_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_peers_t       *peers;
     ngx_int_t          cur_peer;
     ngx_int_t          tries;

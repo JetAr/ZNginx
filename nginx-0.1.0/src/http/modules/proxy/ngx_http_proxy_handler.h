@@ -16,7 +16,8 @@
 #include <ngx_http.h>
 
 
-typedef enum {
+typedef enum
+{
     NGX_HTTP_PROXY_CACHE_PASS = 1,
     NGX_HTTP_PROXY_CACHE_BYPASS,
     NGX_HTTP_PROXY_CACHE_AUTH,
@@ -28,7 +29,8 @@ typedef enum {
 } ngx_http_proxy_state_e;
 
 
-typedef enum {
+typedef enum
+{
     NGX_HTTP_PROXY_CACHE_BPS = 1,
     NGX_HTTP_PROXY_CACHE_XAE,
     NGX_HTTP_PROXY_CACHE_CTL,
@@ -39,7 +41,8 @@ typedef enum {
 } ngx_http_proxy_reason_e;
 
 
-typedef struct {
+typedef struct
+{
     ngx_str_t                        url;
     ngx_str_t                        host;
     ngx_str_t                        uri;
@@ -53,7 +56,8 @@ typedef struct {
 } ngx_http_proxy_upstream_conf_t;
 
 
-typedef struct {
+typedef struct
+{
     size_t                           header_buffer_size;
     size_t                           busy_buffers_size;
     size_t                           max_temp_file_size;
@@ -97,7 +101,8 @@ typedef struct {
  * "EXPR/10/15/NB HIT/-/- -"
  */
 
-typedef struct {
+typedef struct
+{
     ngx_http_proxy_state_e           cache_state;
     time_t                           expired;
     time_t                           bl_time;
@@ -112,7 +117,8 @@ typedef struct {
 } ngx_http_proxy_state_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_list_t                       headers;
 #if 0
     ngx_table_t                      headers;   /* it must be first field */
@@ -138,7 +144,8 @@ typedef struct {
 } ngx_http_proxy_headers_in_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_http_cache_ctx_t             ctx;
     ngx_uint_t                       status;
     ngx_str_t                        status_line;
@@ -147,7 +154,8 @@ typedef struct {
 } ngx_http_proxy_cache_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_peer_connection_t            peer;
     ngx_uint_t                       status;
     ngx_str_t                        status_line;
@@ -162,7 +170,8 @@ typedef struct {
 
 typedef struct ngx_http_proxy_ctx_s  ngx_http_proxy_ctx_t;
 
-struct ngx_http_proxy_ctx_s {
+struct ngx_http_proxy_ctx_s
+{
     ngx_http_request_t           *request;
     ngx_http_proxy_loc_conf_t    *lcf;
     ngx_http_proxy_upstream_t    *upstream;
@@ -206,7 +215,8 @@ struct ngx_http_proxy_ctx_s {
 };
 
 
-typedef struct {
+typedef struct
+{
     ngx_uint_t             connection;
     ngx_http_proxy_ctx_t  *proxy;
 } ngx_http_proxy_log_ctx_t;

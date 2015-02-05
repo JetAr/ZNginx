@@ -16,15 +16,18 @@ int ngx_write_chain_to_temp_file(ngx_temp_file_t *tf, ngx_chain_t *chain)
 {
     int  rc;
 
-    if (tf->file.fd == NGX_INVALID_FILE) {
+    if (tf->file.fd == NGX_INVALID_FILE)
+    {
         rc = ngx_create_temp_file(&tf->file, tf->path, tf->pool,
                                   tf->persistent);
 
-        if (rc == NGX_ERROR || rc == NGX_AGAIN) {
+        if (rc == NGX_ERROR || rc == NGX_AGAIN)
+        {
             return rc;
         }
 
-        if (!tf->persistent && tf->warn) {
+        if (!tf->persistent && tf->warn)
+        {
             ngx_log_error(NGX_LOG_WARN, tf->file.log, 0, tf->warn);
         }
     }
@@ -45,8 +48,9 @@ int ngx_create_temp_file(ngx_file_t *file, ngx_path_t *path,
                   NGX_ERROR);
 
 #if 0
-    for (i = 0; i < file->name.len; i++) {
-         file->name.data[i] = 'X';
+    for (i = 0; i < file->name.len; i++)
+    {
+        file->name.data[i] = 'X';
     }
 #endif
 
@@ -54,9 +58,10 @@ int ngx_create_temp_file(ngx_file_t *file, ngx_path_t *path,
 
     num = ngx_next_temp_number(0);
 
-    for ( ;; ) {
+    for ( ;; )
+    {
         ngx_snprintf((char *)
-                            (file->name.data + path->name.len + 1 + path->len),
+                     (file->name.data + path->name.len + 1 + path->len),
                      11, "%010u", num);
 
         ngx_create_hashed_filename(file, path);
@@ -70,30 +75,34 @@ int ngx_create_temp_file(ngx_file_t *file, ngx_path_t *path,
         ngx_log_debug1(NGX_LOG_DEBUG_CORE, file->log, 0,
                        "temp fd:%d", file->fd);
 
-        if (file->fd != NGX_INVALID_FILE) {
+        if (file->fd != NGX_INVALID_FILE)
+        {
             return NGX_OK;
         }
 
         err = ngx_errno;
 
-        if (err == NGX_EEXIST) {
+        if (err == NGX_EEXIST)
+        {
             num = ngx_next_temp_number(1);
             continue;
         }
 
         if ((path->level[0] == 0)
-            || (err != NGX_ENOENT
+                || (err != NGX_ENOENT
 #if (WIN32)
-                && err != NGX_ENOTDIR
+                    && err != NGX_ENOTDIR
 #endif
-        )) {
+                   ))
+        {
             ngx_log_error(NGX_LOG_CRIT, file->log, err,
                           ngx_open_tempfile_n " \"%s\" failed",
                           file->name.data);
             return NGX_ERROR;
         }
 
-        if (ngx_create_path(file, path) == NGX_ERROR) {
+        if (ngx_create_path(file, path) == NGX_ERROR)
+        {
             return NGX_ERROR;
         }
     }
@@ -110,10 +119,12 @@ void ngx_create_hashed_filename(ngx_file_t *file, ngx_path_t *path)
 
     file->name.data[path->name.len + path->len]  = '/';
 
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < 3; i++)
+    {
         level = path->level[i];
 
-        if (level == 0) {
+        if (level == 0)
+        {
             break;
         }
 
@@ -135,8 +146,10 @@ int ngx_create_path(ngx_file_t *file, ngx_path_t *path)
 
     pos = path->name.len;
 
-    for (i = 0; i < 3; i++) {
-        if (path->level[i] == 0) {
+    for (i = 0; i < 3; i++)
+    {
+        if (path->level[i] == 0)
+        {
             break;
         }
 
@@ -147,9 +160,11 @@ int ngx_create_path(ngx_file_t *file, ngx_path_t *path)
         ngx_log_debug1(NGX_LOG_DEBUG_CORE, file->log, 0,
                        "temp file: \"%s\"", file->name.data);
 
-        if (ngx_create_dir(file->name.data) == NGX_FILE_ERROR) {
+        if (ngx_create_dir(file->name.data) == NGX_FILE_ERROR)
+        {
             err = ngx_errno;
-            if (err != NGX_EEXIST) {
+            if (err != NGX_EEXIST)
+            {
                 ngx_log_error(NGX_LOG_CRIT, file->log, err,
                               ngx_create_dir_n " \"%s\" failed",
                               file->name.data);
@@ -170,7 +185,8 @@ void ngx_init_temp_number()
 
     ngx_temp_number = ngx_random;
 
-    while (ngx_random < 10000) {
+    while (ngx_random < 10000)
+    {
         ngx_random = 123456;
     }
 }
@@ -178,7 +194,8 @@ void ngx_init_temp_number()
 
 ngx_uint_t ngx_next_temp_number(ngx_uint_t collision)
 {
-    if (collision) {
+    if (collision)
+    {
         ngx_temp_number += ngx_random;
     }
 
@@ -197,7 +214,8 @@ char *ngx_conf_set_path_slot(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 
     pp = (ngx_path_t **) (p + cmd->offset);
 
-    if (*pp) {
+    if (*pp)
+    {
         return "is duplicate";
     }
 
@@ -217,9 +235,11 @@ char *ngx_conf_set_path_slot(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 
     path->len = 0;
 
-    for (i = 0, n = 2; n < cf->args->nelts; i++, n++) {
+    for (i = 0, n = 2; n < cf->args->nelts; i++, n++)
+    {
         level = ngx_atoi(value[n].data, value[n].len);
-        if (level == NGX_ERROR || level == 0) {
+        if (level == NGX_ERROR || level == 0)
+        {
             return "invalid value";
         }
 
@@ -227,7 +247,8 @@ char *ngx_conf_set_path_slot(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
         path->len += level + 1;
     }
 
-    while (i < 3) {
+    while (i < 3)
+    {
         path->level[i++] = 0;
     }
 

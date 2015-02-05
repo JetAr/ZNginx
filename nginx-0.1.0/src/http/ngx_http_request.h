@@ -69,13 +69,13 @@
 
 /*
  * We use the special code for the plain HTTP requests that are sent to
- * HTTPS port to distinguish it from 4XX in an error page redirection 
+ * HTTPS port to distinguish it from 4XX in an error page redirection
  */
 #define NGX_HTTP_TO_HTTPS                  497
 
 /*
  * We use the special code for the requests with invalid host name
- * to distinguish it from 4XX in an error page redirection 
+ * to distinguish it from 4XX in an error page redirection
  */
 #define NGX_HTTP_INVALID_HOST              498
 
@@ -95,14 +95,16 @@
 #define NGX_HTTP_GATEWAY_TIME_OUT          504
 
 
-typedef enum {
+typedef enum
+{
     NGX_HTTP_RESTRICT_HOST_OFF = 0,
     NGX_HTTP_RESTRICT_HOST_ON,
     NGX_HTTP_RESTRICT_HOST_CLOSE
 } ngx_http_restrict_host_e;
 
 
-typedef enum {
+typedef enum
+{
     NGX_HTTP_INITING_REQUEST_STATE = 0,
     NGX_HTTP_READING_REQUEST_STATE,
     NGX_HTTP_PROCESS_REQUEST_STATE,
@@ -117,13 +119,15 @@ typedef enum {
 } ngx_http_state_e;
 
 
-typedef struct {
+typedef struct
+{
     ngx_str_t         name;
     ngx_uint_t        offset;
 } ngx_http_header_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_list_t        headers;
 
     ngx_table_elt_t  *host;
@@ -163,14 +167,16 @@ typedef struct {
 } ngx_http_headers_in_t;
 
 
-typedef struct {
+typedef struct
+{
     off_t             start;
     off_t             end;
     ngx_str_t         content_range;
 } ngx_http_range_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_list_t        headers;
 
     ngx_uint_t        status;
@@ -198,24 +204,29 @@ typedef struct {
 } ngx_http_headers_out_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_temp_file_t   *temp_file;
     ngx_chain_t       *bufs;
     ngx_buf_t         *buf;
     size_t             rest;
-    void             (*handler) (void *data); 
+    void             (*handler) (void *data);
     void              *data;
 } ngx_http_request_body_t;
 
 
-struct ngx_http_cleanup_s {
-    union {
-        struct {
+struct ngx_http_cleanup_s
+{
+    union
+    {
+        struct
+        {
             ngx_fd_t                 fd;
             u_char                  *name;
         } file;
 
-        struct {
+        struct
+        {
             ngx_http_cache_hash_t   *hash;
             ngx_http_cache_t        *cache;
         } cache;
@@ -226,7 +237,8 @@ struct ngx_http_cleanup_s {
 };
 
 
-typedef struct {
+typedef struct
+{
     ngx_http_request_t   *request;
 
     ngx_buf_t           **busy;
@@ -241,7 +253,8 @@ typedef struct {
 
 typedef ngx_int_t (*ngx_http_handler_pt)(ngx_http_request_t *r);
 
-struct ngx_http_request_s {
+struct ngx_http_request_s
+{
     uint32_t                  signature;         /* "HTTP" */
 
     ngx_connection_t         *connection;

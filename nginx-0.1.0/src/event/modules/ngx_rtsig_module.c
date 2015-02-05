@@ -28,7 +28,8 @@ int ngx_linux_rtsig_max;
 #endif
 
 
-typedef struct {
+typedef struct
+{
     int        signo;
     ngx_int_t  overflow_events;
     ngx_int_t  overflow_test;
@@ -48,7 +49,7 @@ static ngx_int_t ngx_rtsig_process_overflow(ngx_cycle_t *cycle);
 static void *ngx_rtsig_create_conf(ngx_cycle_t *cycle);
 static char *ngx_rtsig_init_conf(ngx_cycle_t *cycle, void *conf);
 static char *ngx_check_ngx_overflow_threshold_bounds(ngx_conf_t *cf,
-                                                     void *post, void *data);
+        void *post, void *data);
 
 
 static sigset_t        set;
@@ -58,46 +59,57 @@ static struct pollfd  *overflow_list;
 
 static ngx_str_t      rtsig_name = ngx_string("rtsig");
 
-static ngx_conf_num_bounds_t  ngx_overflow_threshold_bounds = {
+static ngx_conf_num_bounds_t  ngx_overflow_threshold_bounds =
+{
     ngx_check_ngx_overflow_threshold_bounds, 2, 10
 };
 
 
-static ngx_command_t  ngx_rtsig_commands[] = {
+static ngx_command_t  ngx_rtsig_commands[] =
+{
 
-    {ngx_string("rtsig_signo"),
-     NGX_EVENT_CONF|NGX_CONF_TAKE1,
-     ngx_conf_set_num_slot,
-     0,
-     offsetof(ngx_rtsig_conf_t, signo),
-     NULL},
+    {
+        ngx_string("rtsig_signo"),
+        NGX_EVENT_CONF|NGX_CONF_TAKE1,
+        ngx_conf_set_num_slot,
+        0,
+        offsetof(ngx_rtsig_conf_t, signo),
+        NULL
+    },
 
-    {ngx_string("rtsig_overflow_events"),
-     NGX_EVENT_CONF|NGX_CONF_TAKE1,
-     ngx_conf_set_num_slot,
-     0,
-     offsetof(ngx_rtsig_conf_t, overflow_events),
-     NULL},
+    {
+        ngx_string("rtsig_overflow_events"),
+        NGX_EVENT_CONF|NGX_CONF_TAKE1,
+        ngx_conf_set_num_slot,
+        0,
+        offsetof(ngx_rtsig_conf_t, overflow_events),
+        NULL
+    },
 
-    {ngx_string("rtsig_overflow_test"),
-     NGX_EVENT_CONF|NGX_CONF_TAKE1,
-     ngx_conf_set_num_slot,
-     0,
-     offsetof(ngx_rtsig_conf_t, overflow_test),
-     NULL},
+    {
+        ngx_string("rtsig_overflow_test"),
+        NGX_EVENT_CONF|NGX_CONF_TAKE1,
+        ngx_conf_set_num_slot,
+        0,
+        offsetof(ngx_rtsig_conf_t, overflow_test),
+        NULL
+    },
 
-    {ngx_string("rtsig_overflow_threshold"),
-     NGX_EVENT_CONF|NGX_CONF_TAKE1,
-     ngx_conf_set_num_slot,
-     0,
-     offsetof(ngx_rtsig_conf_t, overflow_threshold),
-     &ngx_overflow_threshold_bounds},
+    {
+        ngx_string("rtsig_overflow_threshold"),
+        NGX_EVENT_CONF|NGX_CONF_TAKE1,
+        ngx_conf_set_num_slot,
+        0,
+        offsetof(ngx_rtsig_conf_t, overflow_threshold),
+        &ngx_overflow_threshold_bounds
+    },
 
     ngx_null_command
 };
 
 
-ngx_event_module_t  ngx_rtsig_module_ctx = {
+ngx_event_module_t  ngx_rtsig_module_ctx =
+{
     &rtsig_name,
     ngx_rtsig_create_conf,               /* create configuration */
     ngx_rtsig_init_conf,                 /* init configuration */
@@ -117,7 +129,8 @@ ngx_event_module_t  ngx_rtsig_module_ctx = {
 
 };
 
-ngx_module_t  ngx_rtsig_module = {
+ngx_module_t  ngx_rtsig_module =
+{
     NGX_MODULE,
     &ngx_rtsig_module_ctx,               /* module context */
     ngx_rtsig_commands,                  /* module directives */
@@ -131,7 +144,8 @@ static ngx_int_t ngx_rtsig_init(ngx_cycle_t *cycle)
 {
     ngx_rtsig_conf_t  *rtscf;
 
-    if (ngx_poll_module_ctx.actions.init(cycle) == NGX_ERROR) {
+    if (ngx_poll_module_ctx.actions.init(cycle) == NGX_ERROR)
+    {
         return NGX_ERROR;
     }
 
@@ -142,19 +156,22 @@ static ngx_int_t ngx_rtsig_init(ngx_cycle_t *cycle)
     sigaddset(&set, rtscf->signo + 1);
     sigaddset(&set, SIGIO);
 
-    if (sigprocmask(SIG_BLOCK, &set, NULL) == -1) {
+    if (sigprocmask(SIG_BLOCK, &set, NULL) == -1)
+    {
         ngx_log_error(NGX_LOG_EMERG, cycle->log, ngx_errno,
                       "sigprocmask() failed");
         return NGX_ERROR;
     }
 
-    if (overflow_list) {
+    if (overflow_list)
+    {
         ngx_free(overflow_list);
     }
 
     overflow_list = ngx_alloc(sizeof(struct pollfd) * rtscf->overflow_events,
                               cycle->log);
-    if (overflow_list == NULL) {
+    if (overflow_list == NULL)
+    {
         return NGX_ERROR;
     }
 
@@ -179,12 +196,14 @@ static ngx_int_t ngx_rtsig_add_connection(ngx_connection_t *c)
     int                signo;
     ngx_rtsig_conf_t  *rtscf;
 
-    if (c->read->accept && c->read->disabled) {
+    if (c->read->accept && c->read->disabled)
+    {
 
         ngx_log_debug1(NGX_LOG_DEBUG_EVENT, c->log, 0,
                        "rtsig enable connection: fd:%d", c->fd);
 
-        if (fcntl(c->fd, F_SETOWN, ngx_pid) == -1) {
+        if (fcntl(c->fd, F_SETOWN, ngx_pid) == -1)
+        {
             ngx_log_error(NGX_LOG_ALERT, c->log, ngx_errno,
                           "fcntl(F_SETOWN) failed");
             return NGX_ERROR;
@@ -201,26 +220,30 @@ static ngx_int_t ngx_rtsig_add_connection(ngx_connection_t *c)
     ngx_log_debug2(NGX_LOG_DEBUG_EVENT, c->log, 0,
                    "rtsig add connection: fd:%d signo:%d", c->fd, signo);
 
-    if (fcntl(c->fd, F_SETFL, O_RDWR|O_NONBLOCK|O_ASYNC) == -1) {
+    if (fcntl(c->fd, F_SETFL, O_RDWR|O_NONBLOCK|O_ASYNC) == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, c->log, ngx_errno,
                       "fcntl(O_RDWR|O_NONBLOCK|O_ASYNC) failed");
         return NGX_ERROR;
     }
 
-    if (fcntl(c->fd, F_SETSIG, signo) == -1) {
+    if (fcntl(c->fd, F_SETSIG, signo) == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, c->log, ngx_errno,
                       "fcntl(F_SETSIG) failed");
         return NGX_ERROR;
     }
 
-    if (fcntl(c->fd, F_SETOWN, ngx_pid) == -1) {
+    if (fcntl(c->fd, F_SETOWN, ngx_pid) == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, c->log, ngx_errno,
                       "fcntl(F_SETOWN) failed");
         return NGX_ERROR;
     }
 
 #if (HAVE_ONESIGFD)
-    if (fcntl(c->fd, F_SETAUXFL, O_ONESIGFD) == -1) {
+    if (fcntl(c->fd, F_SETAUXFL, O_ONESIGFD) == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, c->log, ngx_errno,
                       "fcntl(F_SETAUXFL) failed");
         return NGX_ERROR;
@@ -239,7 +262,8 @@ static ngx_int_t ngx_rtsig_del_connection(ngx_connection_t *c, u_int flags)
     ngx_log_debug1(NGX_LOG_DEBUG_EVENT, c->log, 0,
                    "rtsig del connection: fd:%d", c->fd);
 
-    if ((flags & NGX_DISABLE_EVENT) && c->read->accept) {
+    if ((flags & NGX_DISABLE_EVENT) && c->read->accept)
+    {
 
         ngx_log_debug1(NGX_LOG_DEBUG_EVENT, c->log, 0,
                        "rtsig disable connection: fd:%d", c->fd);
@@ -249,13 +273,15 @@ static ngx_int_t ngx_rtsig_del_connection(ngx_connection_t *c, u_int flags)
         return NGX_OK;
     }
 
-    if (flags & NGX_CLOSE_EVENT) {
+    if (flags & NGX_CLOSE_EVENT)
+    {
         c->read->active = 0;
         c->write->active = 0;
         return NGX_OK;
     }
 
-    if (fcntl(c->fd, F_SETFL, O_RDWR|O_NONBLOCK) == -1) {
+    if (fcntl(c->fd, F_SETFL, O_RDWR|O_NONBLOCK) == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, c->log, ngx_errno,
                       "fcntl(O_RDWR|O_NONBLOCK) failed");
         return NGX_ERROR;
@@ -285,28 +311,35 @@ ngx_int_t ngx_rtsig_process_events(ngx_cycle_t *cycle)
     ngx_connection_t   *c;
     ngx_rtsig_conf_t   *rtscf;
 
-    if (overflow) {
+    if (overflow)
+    {
         timer = 0;
         expire = 0;
 
-    } else {
-        for ( ;; ) {
+    }
+    else
+    {
+        for ( ;; )
+        {
             timer = ngx_event_find_timer();
 
 #if (NGX_THREADS)
 
-            if (timer == NGX_TIMER_ERROR) {
+            if (timer == NGX_TIMER_ERROR)
+            {
                 return NGX_ERROR;
             }
 
-            if (timer == NGX_TIMER_INFINITE || timer > 500) {
+            if (timer == NGX_TIMER_INFINITE || timer > 500)
+            {
                 timer = 500;
                 break;
             }
 
 #endif
 
-            if (timer != 0) {
+            if (timer != 0)
+            {
                 break;
             }
 
@@ -316,40 +349,49 @@ ngx_int_t ngx_rtsig_process_events(ngx_cycle_t *cycle)
             ngx_event_expire_timers((ngx_msec_t)
                                     (ngx_elapsed_msec - ngx_old_elapsed_msec));
 
-            if (ngx_posted_events && ngx_threaded) {
+            if (ngx_posted_events && ngx_threaded)
+            {
                 ngx_wakeup_worker_thread(cycle);
             }
         }
 
         expire = 1;
 
-        if (ngx_accept_mutex) {
-            if (ngx_accept_disabled > 0) {
+        if (ngx_accept_mutex)
+        {
+            if (ngx_accept_disabled > 0)
+            {
                 ngx_accept_disabled--;
 
-            } else {
+            }
+            else
+            {
                 ngx_accept_mutex_held = 0;
 
-                if (ngx_trylock_accept_mutex(cycle) == NGX_ERROR) {
+                if (ngx_trylock_accept_mutex(cycle) == NGX_ERROR)
+                {
                     return NGX_ERROR;
                 }
 
                 if (ngx_accept_mutex_held == 0
-                    && (timer == NGX_TIMER_INFINITE
-                        || timer > ngx_accept_mutex_delay))
+                        && (timer == NGX_TIMER_INFINITE
+                            || timer > ngx_accept_mutex_delay))
                 {
                     timer = ngx_accept_mutex_delay;
                     expire = 0;
-                } 
+                }
             }
         }
     }
 
-    if (timer == NGX_TIMER_INFINITE) {
+    if (timer == NGX_TIMER_INFINITE)
+    {
         tp = NULL;
         expire = 0;
 
-    } else {
+    }
+    else
+    {
         ts.tv_sec = timer / 1000;
         ts.tv_nsec = (timer % 1000) * 1000000;
         tp = &ts;
@@ -364,15 +406,18 @@ ngx_int_t ngx_rtsig_process_events(ngx_cycle_t *cycle)
 
     signo = sigtimedwait(&set, &si, tp);
 
-    if (signo == -1) {
+    if (signo == -1)
+    {
         err = ngx_errno;
 
         ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle->log, err,
                        "rtsig signo:%d", signo);
 
-        if (err == NGX_EAGAIN) {
+        if (err == NGX_EAGAIN)
+        {
 
-            if (timer == NGX_TIMER_INFINITE) {
+            if (timer == NGX_TIMER_INFINITE)
+            {
                 ngx_accept_mutex_unlock();
                 ngx_log_error(NGX_LOG_ALERT, cycle->log, err,
                               "sigtimedwait() returned EAGAIN without timeout");
@@ -382,7 +427,9 @@ ngx_int_t ngx_rtsig_process_events(ngx_cycle_t *cycle)
             err = 0;
         }
 
-    } else {
+    }
+    else
+    {
         err = 0;
         ngx_log_debug3(NGX_LOG_DEBUG_EVENT, cycle->log, 0,
                        "rtsig signo:%d fd:%d band:%X",
@@ -394,16 +441,18 @@ ngx_int_t ngx_rtsig_process_events(ngx_cycle_t *cycle)
 
     delta = ngx_elapsed_msec;
     ngx_elapsed_msec = (ngx_epoch_msec_t) tv.tv_sec * 1000
-                                          + tv.tv_usec / 1000 - ngx_start_msec;
+                       + tv.tv_usec / 1000 - ngx_start_msec;
 
-    if (err) {
+    if (err)
+    {
         ngx_accept_mutex_unlock();
         ngx_log_error((err == NGX_EINTR) ? NGX_LOG_INFO : NGX_LOG_ALERT,
                       cycle->log, err, "sigtimedwait() failed");
         return NGX_ERROR;
     }
 
-    if (timer != NGX_TIMER_INFINITE) {
+    if (timer != NGX_TIMER_INFINITE)
+    {
         delta = ngx_elapsed_msec - delta;
 
         ngx_log_debug2(NGX_LOG_DEBUG_EVENT, cycle->log, 0,
@@ -412,9 +461,11 @@ ngx_int_t ngx_rtsig_process_events(ngx_cycle_t *cycle)
 
     rtscf = ngx_event_get_conf(ngx_cycle->conf_ctx, ngx_rtsig_module);
 
-    if (signo == rtscf->signo || signo == rtscf->signo + 1) {
+    if (signo == rtscf->signo || signo == rtscf->signo + 1)
+    {
 
-        if (overflow && (ngx_uint_t) si.si_fd > overflow_current) {
+        if (overflow && (ngx_uint_t) si.si_fd > overflow_current)
+        {
             return NGX_OK;
         }
 
@@ -426,7 +477,8 @@ ngx_int_t ngx_rtsig_process_events(ngx_cycle_t *cycle)
 
         rev = c->read;
 
-        if (c->read->instance != instance) {
+        if (c->read->instance != instance)
+        {
 
             /*
              * the stale event from a file descriptor
@@ -441,11 +493,15 @@ ngx_int_t ngx_rtsig_process_events(ngx_cycle_t *cycle)
             return NGX_OK;
         }
 
-        if (si.si_band & (POLLIN|POLLHUP|POLLERR)) {
-            if (rev->active) {
+        if (si.si_band & (POLLIN|POLLHUP|POLLERR))
+        {
+            if (rev->active)
+            {
 
-                if (ngx_threaded && !rev->accept) {
-                    if (ngx_mutex_lock(ngx_posted_events_mutex) == NGX_ERROR) {
+                if (ngx_threaded && !rev->accept)
+                {
+                    if (ngx_mutex_lock(ngx_posted_events_mutex) == NGX_ERROR)
+                    {
                         ngx_accept_mutex_unlock();
                         return NGX_ERROR;
                     }
@@ -455,19 +511,27 @@ ngx_int_t ngx_rtsig_process_events(ngx_cycle_t *cycle)
 
                     ngx_mutex_unlock(ngx_posted_events_mutex);
 
-                } else {
+                }
+                else
+                {
                     rev->ready = 1;
 
-                    if (!ngx_threaded && !ngx_accept_mutex_held) {
+                    if (!ngx_threaded && !ngx_accept_mutex_held)
+                    {
                         rev->event_handler(rev);
 
-                    } else if (rev->accept) {
-                        if (ngx_accept_disabled <= 0) {
+                    }
+                    else if (rev->accept)
+                    {
+                        if (ngx_accept_disabled <= 0)
+                        {
                             rev->event_handler(rev);
                         }
 
-                    } else {
-                        ngx_post_event(rev); 
+                    }
+                    else
+                    {
+                        ngx_post_event(rev);
                     }
                 }
             }
@@ -475,11 +539,15 @@ ngx_int_t ngx_rtsig_process_events(ngx_cycle_t *cycle)
 
         wev = c->write;
 
-        if (si.si_band & (POLLOUT|POLLHUP|POLLERR)) {
-            if (wev->active) {
+        if (si.si_band & (POLLOUT|POLLHUP|POLLERR))
+        {
+            if (wev->active)
+            {
 
-                if (ngx_threaded) {
-                    if (ngx_mutex_lock(ngx_posted_events_mutex) == NGX_ERROR) {
+                if (ngx_threaded)
+                {
+                    if (ngx_mutex_lock(ngx_posted_events_mutex) == NGX_ERROR)
+                    {
                         ngx_accept_mutex_unlock();
                         return NGX_ERROR;
                     }
@@ -489,20 +557,27 @@ ngx_int_t ngx_rtsig_process_events(ngx_cycle_t *cycle)
 
                     ngx_mutex_unlock(ngx_posted_events_mutex);
 
-                } else {
+                }
+                else
+                {
                     wev->ready = 1;
 
-                    if (!ngx_threaded && !ngx_accept_mutex_held) {
+                    if (!ngx_threaded && !ngx_accept_mutex_held)
+                    {
                         wev->event_handler(wev);
 
-                    } else {
+                    }
+                    else
+                    {
                         ngx_post_event(wev);
                     }
                 }
             }
         }
 
-    } else if (signo == SIGIO) {
+    }
+    else if (signo == SIGIO)
+    {
         ngx_accept_mutex_unlock();
 
         ngx_log_error(NGX_LOG_ALERT, cycle->log, 0,
@@ -514,12 +589,14 @@ ngx_int_t ngx_rtsig_process_events(ngx_cycle_t *cycle)
         sa.sa_handler = SIG_DFL;
         sigemptyset(&sa.sa_mask);
 
-        if (sigaction(rtscf->signo, &sa, NULL) == -1) {
+        if (sigaction(rtscf->signo, &sa, NULL) == -1)
+        {
             ngx_log_error(NGX_LOG_ALERT, cycle->log, ngx_errno,
                           "sigaction(%d, SIG_DFL) failed", rtscf->signo);
         }
 
-        if (sigaction(rtscf->signo + 1, &sa, NULL) == -1) {
+        if (sigaction(rtscf->signo + 1, &sa, NULL) == -1)
+        {
             ngx_log_error(NGX_LOG_ALERT, cycle->log, ngx_errno,
                           "sigaction(%d, SIG_DFL) failed", rtscf->signo + 1);
         }
@@ -530,7 +607,9 @@ ngx_int_t ngx_rtsig_process_events(ngx_cycle_t *cycle)
 
         return NGX_ERROR;
 
-    } else if (signo != -1) {
+    }
+    else if (signo != -1)
+    {
         ngx_accept_mutex_unlock();
 
         ngx_log_error(NGX_LOG_ALERT, cycle->log, 0,
@@ -541,22 +620,30 @@ ngx_int_t ngx_rtsig_process_events(ngx_cycle_t *cycle)
 
     ngx_accept_mutex_unlock();
 
-    if (expire && delta) {
+    if (expire && delta)
+    {
         ngx_event_expire_timers((ngx_msec_t) delta);
     }
 
-    if (ngx_posted_events) {
-        if (ngx_threaded) {
+    if (ngx_posted_events)
+    {
+        if (ngx_threaded)
+        {
             ngx_wakeup_worker_thread(cycle);
 
-        } else {
+        }
+        else
+        {
             ngx_event_process_posted(cycle);
         }
     }
 
-    if (signo == -1) {
+    if (signo == -1)
+    {
         return NGX_AGAIN;
-    } else {
+    }
+    else
+    {
         return NGX_OK;
     }
 }
@@ -578,32 +665,39 @@ static ngx_int_t ngx_rtsig_process_overflow(ngx_cycle_t *cycle)
 
     tested = 0;
 
-    for ( ;; ) {
+    for ( ;; )
+    {
 
         n = 0;
-        while (n < rtscf->overflow_events) {
+        while (n < rtscf->overflow_events)
+        {
 
-            if (overflow_current == cycle->connection_n) {
+            if (overflow_current == cycle->connection_n)
+            {
                 break;
             }
 
             c = &cycle->connections[overflow_current++];
 
-            if (c->fd == -1) {
+            if (c->fd == -1)
+            {
                 continue;
             }
 
             events = 0;
 
-            if (c->read->active && c->read->event_handler) {
+            if (c->read->active && c->read->event_handler)
+            {
                 events |= POLLIN;
             }
 
-            if (c->write->active && c->write->event_handler) {
+            if (c->write->active && c->write->event_handler)
+            {
                 events |= POLLOUT;
             }
 
-            if (events == 0) {
+            if (events == 0)
+            {
                 continue;
             }
 
@@ -613,20 +707,24 @@ static ngx_int_t ngx_rtsig_process_overflow(ngx_cycle_t *cycle)
             n++;
         }
 
-        if (n == 0) {
+        if (n == 0)
+        {
             break;
         }
 
-        for ( ;; ) {
+        for ( ;; )
+        {
             ready = poll(overflow_list, n, 0);
 
-            if (ready == -1) {
+            if (ready == -1)
+            {
                 err = ngx_errno;
                 ngx_log_error((err == NGX_EINTR) ? NGX_LOG_INFO : NGX_LOG_ALERT,
                               cycle->log, 0,
                               "poll() failed while the overflow recover");
 
-                if (err == NGX_EINTR) {
+                if (err == NGX_EINTR)
+                {
                     continue;
                 }
             }
@@ -634,63 +732,74 @@ static ngx_int_t ngx_rtsig_process_overflow(ngx_cycle_t *cycle)
             break;
         }
 
-        if (ready <= 0) {
+        if (ready <= 0)
+        {
             continue;
         }
 
-        if (ngx_mutex_lock(ngx_posted_events_mutex) == NGX_ERROR) {
+        if (ngx_mutex_lock(ngx_posted_events_mutex) == NGX_ERROR)
+        {
             return NGX_ERROR;
         }
 
-        for (i = 0; i < n; i++) {
+        for (i = 0; i < n; i++)
+        {
             c = &cycle->connections[overflow_list[i].fd];
 
             rev = c->read;
 
             if (rev->active
-                && !rev->closed
-                && rev->event_handler
-                && (overflow_list[i].revents
-                                          & (POLLIN|POLLERR|POLLHUP|POLLNVAL)))
+                    && !rev->closed
+                    && rev->event_handler
+                    && (overflow_list[i].revents
+                        & (POLLIN|POLLERR|POLLHUP|POLLNVAL)))
             {
                 tested++;
 
-                if (ngx_threaded) {
+                if (ngx_threaded)
+                {
                     rev->posted_ready = 1;
                     ngx_post_event(rev);
 
-                } else {
+                }
+                else
+                {
                     rev->ready = 1;
-                    rev->event_handler(rev); 
+                    rev->event_handler(rev);
                 }
             }
 
             wev = c->write;
 
             if (wev->active
-                && !wev->closed
-                && wev->event_handler
-                && (overflow_list[i].revents
-                                         & (POLLOUT|POLLERR|POLLHUP|POLLNVAL)))
+                    && !wev->closed
+                    && wev->event_handler
+                    && (overflow_list[i].revents
+                        & (POLLOUT|POLLERR|POLLHUP|POLLNVAL)))
             {
                 tested++;
 
-                if (ngx_threaded) {
+                if (ngx_threaded)
+                {
                     wev->posted_ready = 1;
                     ngx_post_event(wev);
 
-                } else {
+                }
+                else
+                {
                     wev->ready = 1;
-                    wev->event_handler(wev); 
+                    wev->event_handler(wev);
                 }
             }
         }
 
         ngx_mutex_unlock(ngx_posted_events_mutex);
 
-        if (tested >= rtscf->overflow_test) {
+        if (tested >= rtscf->overflow_test)
+        {
 
-            if (ngx_linux_rtsig_max) {
+            if (ngx_linux_rtsig_max)
+            {
 
                 /*
                  * Check the current rt queue length to prevent
@@ -726,34 +835,45 @@ static ngx_int_t ngx_rtsig_process_overflow(ngx_cycle_t *cycle)
                  *    /proc/sys/kernel/rtsig-max / rtsig_overflow_threshold
                  */
 
-                if (rtsig_max / rtscf->overflow_threshold < rtsig_nr) {
+                if (rtsig_max / rtscf->overflow_threshold < rtsig_nr)
+                {
                     ngx_log_debug2(NGX_LOG_DEBUG_EVENT, cycle->log, 0,
                                    "rtsig queue state: %d/%d",
                                    rtsig_nr, rtsig_max);
-                    while (ngx_rtsig_process_events(cycle) == NGX_OK) {
+                    while (ngx_rtsig_process_events(cycle) == NGX_OK)
+                    {
                         /* void */
                     }
                 }
 
-            } else {
+            }
+            else
+            {
 
                 /*
                  * Linux has not KERN_RTSIGMAX since 2.6.6-mm2
                  * so drain the rt signal queue unconditionally
                  */
 
-                while (ngx_rtsig_process_events(cycle) == NGX_OK) { /* void */ }
+                while (ngx_rtsig_process_events(cycle) == NGX_OK)
+                {
+                    /* void */
+                }
             }
 
             tested = 0;
         }
     }
 
-    if (ngx_posted_events) {
-        if (ngx_threaded) {
+    if (ngx_posted_events)
+    {
+        if (ngx_threaded)
+        {
             ngx_wakeup_worker_thread(cycle);
 
-        } else {
+        }
+        else
+        {
             ngx_event_process_posted(cycle);
         }
     }
@@ -800,9 +920,10 @@ static char *ngx_rtsig_init_conf(ngx_cycle_t *cycle, void *conf)
 
 
 static char *ngx_check_ngx_overflow_threshold_bounds(ngx_conf_t *cf,
-                                                     void *post, void *data)
+        void *post, void *data)
 {
-    if (ngx_linux_rtsig_max) {
+    if (ngx_linux_rtsig_max)
+    {
         return ngx_conf_check_num_bounds(cf, post, data);
     }
 

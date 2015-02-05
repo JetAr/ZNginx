@@ -80,10 +80,10 @@ xmalloc (size_t size)
 {
     void *res;
 
-	//z 分配对应大小的空间
+    //z 分配对应大小的空间
     res = malloc (size);
     if (!res)
-		//z 如果没有分配成功，返回一个错误。
+        //z 如果没有分配成功，返回一个错误。
         memfatal ("malloc");
 
     return res;
@@ -119,7 +119,7 @@ xstrdup (const char *s)
 
     return s1;
 #else  /* HAVE_STRDUP */
-	//z lib 中已有strdup函数
+    //z lib 中已有strdup函数
     char *s1 = strdup (s);
     if (!s1)
         memfatal ("strdup");
@@ -151,44 +151,44 @@ sepstring (const char *s)
     const char *p;
     int i = 0;
 
-	//z 如果 s 为null或者*s为0，直接返回。
+    //z 如果 s 为null或者*s为0，直接返回。
     if (!s || !*s)
         return NULL;
 
     res = NULL;
-	//z 指针p指向字符串s开头，p指向const char ，确保不会更改字符串内容
+    //z 指针p指向字符串s开头，p指向const char ，确保不会更改字符串内容
     p = s;
 
     while (*s)
     {
-		//z 以 , 作为分隔符。
+        //z 以 , 作为分隔符。
         if (*s == ',')
         {
-			//z 增加这里+2感觉没有多少意义？
+            //z 增加这里+2感觉没有多少意义？
             res = (char **)xrealloc (res, (i + 2) * sizeof (char *));
-			//z heap上创建一份拷贝
+            //z heap上创建一份拷贝
             res[i] = strdupdelim (p, s);
-			//z 最后一个置为NULL
+            //z 最后一个置为NULL
             res[++i] = NULL;
-			//z 下一个
+            //z 下一个
             ++s;
 
             /* Skip the blanks following the ','.  */
-			//z 如果下一个是 space 那么跳过这些个space
+            //z 如果下一个是 space 那么跳过这些个space
             while (ISSPACE (*s))
                 ++s;
             //z 指向下一个开始的字符
-			p = s;
+            p = s;
         }
         else
-			//z 步进
+            //z 步进
             ++s;
     }
 
-	//z 处理最后一个字符串
+    //z 处理最后一个字符串
     res = (char **)xrealloc (res, (i + 2) * sizeof (char *));
     res[i] = strdupdelim (p, s);
-	//z 设置为NULL
+    //z 设置为NULL
     res[i + 1] = NULL;
     return res;
 }
@@ -428,7 +428,7 @@ touch (const char *file, time_t tm)
 {
 #ifdef HAVE_STRUCT_UTIMBUF
     //z 更新 actime 以及 modtime
-	struct utimbuf times;
+    struct utimbuf times;
     times.actime = times.modtime = tm;
 #else
     time_t times[2];
@@ -447,7 +447,7 @@ remove_link (const char *file)
     int err = 0;
     struct stat st;
 
-	//z 文件存在且是link类型
+    //z 文件存在且是link类型
     if (lstat (file, &st) == 0 && S_ISLNK (st.st_mode))
     {
         DEBUGP (("Unlinking %s (symlink).\n", file));
@@ -473,7 +473,7 @@ file_exists_p (const char *filename)
 #ifdef HAVE_ACCESS
     return access (filename, F_OK) >= 0;
 #else
-	struct stat buf;
+    struct stat buf;
     return stat (filename, &buf) >= 0;
 #endif
 }
@@ -506,12 +506,12 @@ unique_name_1 (const char *fileprefix, int count)
     else
         filename = xstrdup (fileprefix);
 
-	//z 如果文件名不存在，返回该文件名
+    //z 如果文件名不存在，返回该文件名
     if (!file_exists_p (filename))
         return filename;
     else
     {
-		//z 文件名存在，返回NULL
+        //z 文件名存在，返回NULL
         free (filename);
         return NULL;
     }
@@ -662,7 +662,7 @@ match_backwards (const char *string, const char *pattern)
 {
     int i, j;
 
-	//z 从后向前匹配
+    //z 从后向前匹配
     for (i = strlen (string), j = strlen (pattern); i >= 0 && j >= 0; i--, j--)
         if (string[i] != pattern[j])
             break;
@@ -743,19 +743,19 @@ read_whole_line (FILE *fp)
 
     i = 0;
     bufsize = 40;
-	//z 预先分配四十个字节
+    //z 预先分配四十个字节
     line = (char *)xmalloc (bufsize);
     /* Construct the line.  */
     while ((c = getc (fp)) != EOF && c != '\n')
     {
-		//z 如果超过了预分配的大小，那么空间扩展一倍
+        //z 如果超过了预分配的大小，那么空间扩展一倍
         if (i > bufsize - 1)
             line = (char *)xrealloc (line, (bufsize <<= 1));
         //z 将字符存入缓冲区
-		line[i++] = c;
+        line[i++] = c;
     }
 
-	//z 如果该行只有EOF，读取的字节数为0。释放分配的缓冲区。
+    //z 如果该行只有EOF，读取的字节数为0。释放分配的缓冲区。
     if (c == EOF && !i)
     {
         free (line);
@@ -764,7 +764,7 @@ read_whole_line (FILE *fp)
     /* Check for overflow at zero-termination (no need to double the
        buffer in this case.  */
     //z 重新分配空间，用于放置结束符
-	if (i == bufsize)
+    if (i == bufsize)
         line = (char *)xrealloc (line, i + 1);
     line[i] = '\0';
     return line;
@@ -836,11 +836,11 @@ merge_vecs (char **v1, char **v2)
     for (j = 0; v2[j]; j++);
 
     /* Reallocate v1.  */
-	//z 分配内存并且拷贝过来
+    //z 分配内存并且拷贝过来
     v1 = (char **)xrealloc (v1, (i + j + 1) * sizeof (char **));
     memcpy (v1 + i, v2, (j + 1) * sizeof (char *));
 
-	//z 释放 v2
+    //z 释放 v2
     free (v2);
     return v1;
 }
@@ -857,56 +857,56 @@ add_slist (slist *l, const char *s, int flags)
     slist *t, *old, *beg;
     int cmp;
 
-	//z 如果字符串不排序
+    //z 如果字符串不排序
     if (flags & NOSORT)
     {
-		//z 如果链表为NULL
+        //z 如果链表为NULL
         if (!l)
         {
-			//z 为链表节点分配空间
+            //z 为链表节点分配空间
             t = (slist *)xmalloc (sizeof (slist));
-			//z 为字符串分配空间
+            //z 为字符串分配空间
             t->string = xstrdup (s);
-			//z 指向结束的部分为NULL
+            //z 指向结束的部分为NULL
             t->next = NULL;
             return t;
         }
 
-		//z 记住链表开始的地方
+        //z 记住链表开始的地方
         beg = l;
         /* Find the last element.  */
-		//z 找到最后一个节点
+        //z 找到最后一个节点
         while (l->next)
             l = l->next;
 
-		//z 分配一个新的节点
+        //z 分配一个新的节点
         t = (slist *)xmalloc (sizeof (slist));
-		//z 将新节点添加到链表结尾的地方
+        //z 将新节点添加到链表结尾的地方
         l->next = t;
-		//z 复制字符串
+        //z 复制字符串
         t->string = xstrdup (s);
-		//z 字符串结束的地方为NULL
+        //z 字符串结束的地方为NULL
         t->next = NULL;
         return beg;
     }
 
-	//z 如果字符串是排序的
+    //z 如果字符串是排序的
     /* Empty list or changing the first element.  */
-	//z 链表为NULL或者比第一个字符串还小
+    //z 链表为NULL或者比第一个字符串还小
     if (!l || (cmp = strcmp (l->string, s)) > 0)
     {
-		//z 将新字符串放在链表开头的地方
+        //z 将新字符串放在链表开头的地方
         t = (slist *)xmalloc (sizeof (slist));
-		//z 分配字符串
+        //z 分配字符串
         t->string = xstrdup (s);
-		//z 指向链表开头的地方
+        //z 指向链表开头的地方
         t->next = l;
         return t;
     }
 
-	//z 链表开头的地方
+    //z 链表开头的地方
     beg = l;
-	//z 如果比较函数为NULL，直接返回beg
+    //z 如果比较函数为NULL，直接返回beg
     if (cmp == 0)
         return beg;
 
@@ -917,7 +917,7 @@ add_slist (slist *l, const char *s, int flags)
         l = l->next;
         cmp = strcmp (s, l->string);
         //z 如果是排序的，找到了相同的不允许重复；找到同样的，那么直接返回
-		if (cmp == 0)             /* no repeating in the list */
+        if (cmp == 0)             /* no repeating in the list */
             return beg;
         else if (cmp > 0)//z 字符串按字典序小于s，那么继续
             continue;
@@ -929,7 +929,7 @@ add_slist (slist *l, const char *s, int flags)
         t->string = xstrdup (s);
         return beg;
     }
-	//z 字符串中所有字符都小于s，插入到字符串链表最后的地方。
+    //z 字符串中所有字符都小于s，插入到字符串链表最后的地方。
     t = (slist *)xmalloc (sizeof (slist));
     t->string = xstrdup (s);
     /* Insert the new element after the last element.  */
@@ -948,12 +948,12 @@ in_slist (slist *l, const char *s)
 
     while (l)
     {
-		//z 比较字符串
+        //z 比较字符串
         cmp = strcmp (l->string, s);
-		//z 找到了
+        //z 找到了
         if (cmp == 0)
             return 1;
-		//z list 是经过排序的
+        //z list 是经过排序的
         else if (cmp > 0)         /* the list is ordered!  */
             return 0;
         l = l->next;
@@ -965,19 +965,19 @@ in_slist (slist *l, const char *s)
 void
 free_slist (slist *l)
 {
-	slist *n;
+    slist *n;
 
-	while (l)
-	{
-		//z 保存下一个节点
-		n = l->next;
-		//z 释放指向的字符串 （malloc而来）
-		free (l->string);
-		//z 释放节点占用的内存
-		free (l);
-		//z 将l指向下一个节点
-		l = n;
-	}
+    while (l)
+    {
+        //z 保存下一个节点
+        n = l->next;
+        //z 释放指向的字符串 （malloc而来）
+        free (l->string);
+        //z 释放节点占用的内存
+        free (l);
+        //z 将l指向下一个节点
+        l = n;
+    }
 }
 
 /* Legible -- return a static pointer to the legibly printed long.  */
@@ -1006,8 +1006,8 @@ legible (long l)
     for (i = 0; i < mod; i++)
         *outptr++ = inptr[i];
 
-	//z 没三个数字之间插入一个分隔符 ','，阅读起来清晰
-	/* Now insert the rest of them, putting separator before every
+    //z 没三个数字之间插入一个分隔符 ','，阅读起来清晰
+    /* Now insert the rest of them, putting separator before every
        third digit.  */
     for (i1 = i, i = 0; inptr[i1]; i++, i1++)
     {
@@ -1040,33 +1040,33 @@ long_to_string (char *buffer, long number)
     char *p;
     int i, l;
 
-	//z 如果number小于0
+    //z 如果number小于0
     if (number < 0)
     {
-		//z 记录下符号
+        //z 记录下符号
         *buffer++ = '-';
-		//z 然后将数变为正数
+        //z 然后将数变为正数
         number = -number;
     }
 
-	//z p指向buffer指向的位置
+    //z p指向buffer指向的位置
     p = buffer;
     /* Print the digits to the string.  */
     do
     {
-		//z 将数字变为对应的字符
+        //z 将数字变为对应的字符
         *p++ = number % 10 + '0';
-		//z 记录的顺序是从低位到高位
+        //z 记录的顺序是从低位到高位
         number /= 10;
     }
     while (number);
 
-	/* And reverse them.  */
-	//z 将数字按从高位到低位存放
+    /* And reverse them.  */
+    //z 将数字按从高位到低位存放
     l = p - buffer - 1;//z p 会多++一次，所以这里减去1
     for (i = l/2; i >= 0; i--)
     {
-		//z 交换两个字符
+        //z 交换两个字符
         char c = buffer[i];
         buffer[i] = buffer[l - i];
         buffer[l - i] = c;

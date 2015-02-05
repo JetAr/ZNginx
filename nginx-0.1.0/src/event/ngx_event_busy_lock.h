@@ -14,7 +14,8 @@
 
 typedef struct ngx_event_busy_lock_ctx_s  ngx_event_busy_lock_ctx_t;
 
-struct ngx_event_busy_lock_ctx_s {
+struct ngx_event_busy_lock_ctx_s
+{
     ngx_event_t                *event;
     ngx_event_handler_pt        handler;
     void                       *data;
@@ -31,7 +32,8 @@ struct ngx_event_busy_lock_ctx_s {
 };
 
 
-typedef struct {
+typedef struct
+{
     u_char                     *md5_mask;
     char                       *md5;
     ngx_uint_t                  cachable;

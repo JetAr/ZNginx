@@ -22,7 +22,7 @@
 #include <ngx_linux_config.h>
 
 
-       /* Solaris */
+/* Solaris */
 #elif defined sun && (defined __svr4__ || defined __SVR4)
 #include <ngx_solaris_config.h>
 

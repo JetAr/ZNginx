@@ -14,7 +14,8 @@ int ngx_http_proxy_parse_status_line(ngx_http_proxy_ctx_t *p)
 {
     u_char   ch;
     u_char  *pos;
-    enum  {
+    enum
+    {
         sw_start = 0,
         sw_H,
         sw_HT,
@@ -34,14 +35,17 @@ int ngx_http_proxy_parse_status_line(ngx_http_proxy_ctx_t *p)
     state = p->parse_state;
     pos = p->header_in->pos;
 
-    while (pos < p->header_in->last && state < sw_done) {
+    while (pos < p->header_in->last && state < sw_done)
+    {
         ch = *pos++;
 
-        switch (state) {
+        switch (state)
+        {
 
         /* "HTTP/" */
         case sw_start:
-            switch (ch) {
+            switch (ch)
+            {
             case 'H':
                 state = sw_H;
                 break;
@@ -51,7 +55,8 @@ int ngx_http_proxy_parse_status_line(ngx_http_proxy_ctx_t *p)
             break;
 
         case sw_H:
-            switch (ch) {
+            switch (ch)
+            {
             case 'T':
                 state = sw_HT;
                 break;
@@ -61,7 +66,8 @@ int ngx_http_proxy_parse_status_line(ngx_http_proxy_ctx_t *p)
             break;
 
         case sw_HT:
-            switch (ch) {
+            switch (ch)
+            {
             case 'T':
                 state = sw_HTT;
                 break;
@@ -71,7 +77,8 @@ int ngx_http_proxy_parse_status_line(ngx_http_proxy_ctx_t *p)
             break;
 
         case sw_HTT:
-            switch (ch) {
+            switch (ch)
+            {
             case 'P':
                 state = sw_HTTP;
                 break;
@@ -81,7 +88,8 @@ int ngx_http_proxy_parse_status_line(ngx_http_proxy_ctx_t *p)
             break;
 
         case sw_HTTP:
-            switch (ch) {
+            switch (ch)
+            {
             case '/':
                 state = sw_first_major_digit;
                 break;
@@ -92,7 +100,8 @@ int ngx_http_proxy_parse_status_line(ngx_http_proxy_ctx_t *p)
 
         /* the first digit of major HTTP version */
         case sw_first_major_digit:
-            if (ch < '1' || ch > '9') {
+            if (ch < '1' || ch > '9')
+            {
                 return NGX_HTTP_PROXY_PARSE_NO_HEADER;
             }
 
@@ -101,12 +110,14 @@ int ngx_http_proxy_parse_status_line(ngx_http_proxy_ctx_t *p)
 
         /* the major HTTP version or dot */
         case sw_major_digit:
-            if (ch == '.') {
+            if (ch == '.')
+            {
                 state = sw_first_minor_digit;
                 break;
             }
 
-            if (ch < '0' || ch > '9') {
+            if (ch < '0' || ch > '9')
+            {
                 return NGX_HTTP_PROXY_PARSE_NO_HEADER;
             }
 
@@ -114,7 +125,8 @@ int ngx_http_proxy_parse_status_line(ngx_http_proxy_ctx_t *p)
 
         /* the first digit of minor HTTP version */
         case sw_first_minor_digit:
-            if (ch < '0' || ch > '9') {
+            if (ch < '0' || ch > '9')
+            {
                 return NGX_HTTP_PROXY_PARSE_NO_HEADER;
             }
 
@@ -123,12 +135,14 @@ int ngx_http_proxy_parse_status_line(ngx_http_proxy_ctx_t *p)
 
         /* the minor HTTP version or the end of the request line */
         case sw_minor_digit:
-            if (ch == ' ') {
+            if (ch == ' ')
+            {
                 state = sw_status;
                 break;
             }
 
-            if (ch < '0' || ch > '9') {
+            if (ch < '0' || ch > '9')
+            {
                 return NGX_HTTP_PROXY_PARSE_NO_HEADER;
             }
 
@@ -136,22 +150,25 @@ int ngx_http_proxy_parse_status_line(ngx_http_proxy_ctx_t *p)
 
         /* HTTP status code */
         case sw_status:
-            if (ch < '0' || ch > '9') {
+            if (ch < '0' || ch > '9')
+            {
                 return NGX_HTTP_PROXY_PARSE_NO_HEADER;
             }
 
             p->status = p->status * 10 + ch - '0';
 
-            if (++p->status_count == 3) {
+            if (++p->status_count == 3)
+            {
                 state = sw_space_after_status;
                 p->status_start = pos - 3;
             }
 
             break;
 
-         /* space or end of line */
-         case sw_space_after_status:
-            switch (ch) {
+        /* space or end of line */
+        case sw_space_after_status:
+            switch (ch)
+            {
             case ' ':
                 state = sw_status_text;
                 break;
@@ -168,7 +185,8 @@ int ngx_http_proxy_parse_status_line(ngx_http_proxy_ctx_t *p)
 
         /* any text until end of line */
         case sw_status_text:
-            switch (ch) {
+            switch (ch)
+            {
             case CR:
                 state = sw_almost_done;
 
@@ -182,7 +200,8 @@ int ngx_http_proxy_parse_status_line(ngx_http_proxy_ctx_t *p)
         /* end of request line */
         case sw_almost_done:
             p->status_end = pos - 2;
-            switch (ch) {
+            switch (ch)
+            {
             case LF:
                 state = sw_done;
                 break;
@@ -199,8 +218,10 @@ int ngx_http_proxy_parse_status_line(ngx_http_proxy_ctx_t *p)
 
     p->header_in->pos = pos;
 
-    if (state == sw_done) {
-        if (p->status_end == NULL) {
+    if (state == sw_done)
+    {
+        if (p->status_end == NULL)
+        {
             p->status_end = pos - 1;
         }
 

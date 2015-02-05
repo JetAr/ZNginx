@@ -29,14 +29,16 @@ ssize_t ngx_aio_write(ngx_connection_t *c, u_char *buf, size_t size)
 
     wev = c->write;
 
-    if (!wev->ready) {
+    if (!wev->ready)
+    {
         return NGX_AGAIN;
     }
 
     ngx_log_debug1(NGX_LOG_DEBUG_EVENT, wev->log, 0,
                    "aio: wev->complete: %d", wev->complete);
 
-    if (!wev->complete) {
+    if (!wev->complete)
+    {
         ngx_memzero(&wev->aiocb, sizeof(struct aiocb));
 
         wev->aiocb.aio_fildes = c->fd;
@@ -49,7 +51,8 @@ ssize_t ngx_aio_write(ngx_connection_t *c, u_char *buf, size_t size)
         wev->aiocb.aio_sigevent.sigev_value.sigval_ptr = wev;
 #endif
 
-        if (aio_write(&wev->aiocb) == -1) {
+        if (aio_write(&wev->aiocb) == -1)
+        {
             ngx_log_error(NGX_LOG_CRIT, wev->log, ngx_errno,
                           "aio_write() failed");
             return NGX_ERROR;
@@ -64,15 +67,19 @@ ssize_t ngx_aio_write(ngx_connection_t *c, u_char *buf, size_t size)
     wev->complete = 0;
 
     n = aio_error(&wev->aiocb);
-    if (n == -1) {
+    if (n == -1)
+    {
         ngx_log_error(NGX_LOG_CRIT, wev->log, ngx_errno, "aio_error() failed");
         wev->error = 1;
         return NGX_ERROR;
     }
 
-    if (n != 0) {
-        if (n == NGX_EINPROGRESS) {
-            if (wev->ready) {
+    if (n != 0)
+    {
+        if (n == NGX_EINPROGRESS)
+        {
+            if (wev->ready)
+            {
                 ngx_log_error(NGX_LOG_ALERT, wev->log, n,
                               "aio_write() still in progress");
                 wev->ready = 0;
@@ -86,7 +93,8 @@ ssize_t ngx_aio_write(ngx_connection_t *c, u_char *buf, size_t size)
 
 #if 1
         n = aio_return(&wev->aiocb);
-        if (n == -1) {
+        if (n == -1)
+        {
             ngx_log_error(NGX_LOG_ALERT, wev->log, ngx_errno,
                           "aio_return() failed");
         }
@@ -98,7 +106,8 @@ ssize_t ngx_aio_write(ngx_connection_t *c, u_char *buf, size_t size)
     }
 
     n = aio_return(&wev->aiocb);
-    if (n == -1) {
+    if (n == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, wev->log, ngx_errno,
                       "aio_return() failed");
 

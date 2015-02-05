@@ -14,7 +14,8 @@ ngx_int_t ngx_strerror_r(int err, char *errstr, size_t size)
 {
     size_t  len;
 
-    if (size == 0) {
+    if (size == 0)
+    {
         return 0;
     }
 
@@ -22,8 +23,10 @@ ngx_int_t ngx_strerror_r(int err, char *errstr, size_t size)
 
     strerror_r(err, errstr, size);
 
-    for (len = 0; len < size; len++) {
-        if (errstr[len] == '\0') {
+    for (len = 0; len < size; len++)
+    {
+        if (errstr[len] == '\0')
+        {
             break;
         }
     }
@@ -40,7 +43,8 @@ ngx_int_t ngx_strerror_r(int err, char *errstr, size_t size)
     char    *str;
     size_t   len;
 
-    if (size == 0) {
+    if (size == 0)
+    {
         return 0;
     }
 
@@ -48,12 +52,15 @@ ngx_int_t ngx_strerror_r(int err, char *errstr, size_t size)
 
     str = strerror_r(err, errstr, size);
 
-    if (str != errstr) {
+    if (str != errstr)
+    {
         return ngx_cpystrn(errstr, str, size) - (u_char *) errstr;
     }
 
-    for (len = 0; len < size; len++) {
-        if (errstr[len] == '\0') {
+    for (len = 0; len < size; len++)
+    {
+        if (errstr[len] == '\0')
+        {
             break;
         }
     }

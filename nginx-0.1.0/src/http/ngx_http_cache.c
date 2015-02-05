@@ -10,7 +10,8 @@
 
 
 
-static ngx_http_module_t  ngx_http_cache_module_ctx = {
+static ngx_http_module_t  ngx_http_cache_module_ctx =
+{
     NULL,                                  /* pre conf */
 
     NULL,                                  /* create main configuration */
@@ -24,7 +25,8 @@ static ngx_http_module_t  ngx_http_cache_module_ctx = {
 };
 
 
-ngx_module_t  ngx_http_cache_module = {
+ngx_module_t  ngx_http_cache_module =
+{
     NGX_MODULE,
     &ngx_http_cache_module_ctx,            /* module context */
     NULL,                                  /* module directives */
@@ -45,17 +47,20 @@ ngx_http_cache_t *ngx_http_cache_get(ngx_http_cache_hash_t *hash,
 
     c = hash->elts + *crc % hash->hash * hash->nelts;
 
-    if (ngx_mutex_lock(&hash->mutex) == NGX_ERROR) {
+    if (ngx_mutex_lock(&hash->mutex) == NGX_ERROR)
+    {
         return (void *) NGX_ERROR;
     }
 
-    for (i = 0; i < hash->nelts; i++) {
+    for (i = 0; i < hash->nelts; i++)
+    {
         if (c[i].crc == *crc
-            && c[i].key.len == key->len
-            && ngx_rstrncmp(c[i].key.data, key->data, key->len) == 0)
+                && c[i].key.len == key->len
+                && ngx_rstrncmp(c[i].key.data, key->data, key->len) == 0)
         {
 #if 0
-            if (c[i].expired) {
+            if (c[i].expired)
+            {
                 ngx_mutex_unlock(&hash->mutex);
                 return (void *) NGX_AGAIN;
             }
@@ -64,14 +69,15 @@ ngx_http_cache_t *ngx_http_cache_get(ngx_http_cache_hash_t *hash,
             c[i].refs++;
 
             if ((!(c[i].notify && (ngx_event_flags & NGX_HAVE_KQUEUE_EVENT)))
-                && (ngx_cached_time - c[i].updated >= hash->update))
+                    && (ngx_cached_time - c[i].updated >= hash->update))
             {
                 c[i].expired = 1;
             }
 
             ngx_mutex_unlock(&hash->mutex);
 
-            if (cleanup) {
+            if (cleanup)
+            {
                 cleanup->data.cache.hash = hash;
                 cleanup->data.cache.cache = &c[i];
                 cleanup->valid = 1;
@@ -102,21 +108,26 @@ ngx_http_cache_t *ngx_http_cache_alloc(ngx_http_cache_hash_t *hash,
 
     c = hash->elts + crc % hash->hash * hash->nelts;
 
-    if (ngx_mutex_lock(&hash->mutex) == NGX_ERROR) {
+    if (ngx_mutex_lock(&hash->mutex) == NGX_ERROR)
+    {
         return (void *) NGX_ERROR;
     }
 
-    if (cache == NULL) {
+    if (cache == NULL)
+    {
 
         /* allocate a new entry */
 
-        for (i = 0; i < hash->nelts; i++) {
-            if (c[i].refs > 0) {
+        for (i = 0; i < hash->nelts; i++)
+        {
+            if (c[i].refs > 0)
+            {
                 /* a busy entry */
                 continue;
             }
 
-            if (c[i].key.len == 0) {
+            if (c[i].key.len == 0)
+            {
                 /* a free entry is found */
                 cache = &c[i];
                 break;
@@ -124,23 +135,27 @@ ngx_http_cache_t *ngx_http_cache_alloc(ngx_http_cache_hash_t *hash,
 
             /* looking for the oldest cache entry */
 
-            if (old > c[i].accessed) {
+            if (old > c[i].accessed)
+            {
 
                 old = c[i].accessed;
                 cache = &c[i];
             }
         }
 
-        if (cache == NULL) {
+        if (cache == NULL)
+        {
             ngx_mutex_unlock(&hash->mutex);
             return NULL;
         }
 
         ngx_http_cache_free(cache, key, value, log);
 
-        if (cache->key.data == NULL) {
+        if (cache->key.data == NULL)
+        {
             cache->key.data = ngx_alloc(key->len, log);
-            if (cache->key.data == NULL) {
+            if (cache->key.data == NULL)
+            {
                 ngx_http_cache_free(cache, NULL, NULL, log);
                 ngx_mutex_unlock(&hash->mutex);
                 return NULL;
@@ -150,14 +165,19 @@ ngx_http_cache_t *ngx_http_cache_alloc(ngx_http_cache_hash_t *hash,
         cache->key.len = key->len;
         ngx_memcpy(cache->key.data, key->data, key->len);
 
-    } else if (value) {
+    }
+    else if (value)
+    {
         ngx_http_cache_free(cache, key, value, log);
     }
 
-    if (value) {
-        if (cache->data.value.data == NULL) {
+    if (value)
+    {
+        if (cache->data.value.data == NULL)
+        {
             cache->data.value.data = ngx_alloc(value->len, log);
-            if (cache->data.value.data == NULL) {
+            if (cache->data.value.data == NULL)
+            {
                 ngx_http_cache_free(cache, NULL, NULL, log);
                 ngx_mutex_unlock(&hash->mutex);
                 return NULL;
@@ -180,7 +200,8 @@ ngx_http_cache_t *ngx_http_cache_alloc(ngx_http_cache_hash_t *hash,
     cache->mmap = 0;
     cache->notify = 0;
 
-    if (cleanup) {
+    if (cleanup)
+    {
         cleanup->data.cache.hash = hash;
         cleanup->data.cache.cache = cache;
         cleanup->valid = 1;
@@ -196,9 +217,10 @@ ngx_http_cache_t *ngx_http_cache_alloc(ngx_http_cache_hash_t *hash,
 void ngx_http_cache_free(ngx_http_cache_t *cache,
                          ngx_str_t *key, ngx_str_t *value, ngx_log_t *log)
 {
-    if (cache->memory) {
+    if (cache->memory)
+    {
         if (cache->data.value.data
-            && (value == NULL || value->len > cache->data.value.len))
+                && (value == NULL || value->len > cache->data.value.len))
         {
             ngx_free(cache->data.value.data);
             cache->data.value.data = NULL;
@@ -209,12 +231,14 @@ void ngx_http_cache_free(ngx_http_cache_t *cache,
 
     cache->data.value.len = 0;
 
-    if (cache->fd != NGX_INVALID_FILE) {
+    if (cache->fd != NGX_INVALID_FILE)
+    {
 
         ngx_log_debug1(NGX_LOG_DEBUG_HTTP, log, 0,
                        "http cache close fd: %d", cache->fd);
 
-        if (ngx_close_file(cache->fd) == NGX_FILE_ERROR) {
+        if (ngx_close_file(cache->fd) == NGX_FILE_ERROR)
+        {
             ngx_log_error(NGX_LOG_ALERT, log, ngx_errno,
                           ngx_close_file_n " \"%s\" failed",
                           cache->key.data);
@@ -223,7 +247,8 @@ void ngx_http_cache_free(ngx_http_cache_t *cache,
         cache->fd = NGX_INVALID_FILE;
     }
 
-    if (cache->key.data && (key == NULL || key->len > cache->key.len)) {
+    if (cache->key.data && (key == NULL || key->len > cache->key.len))
+    {
         ngx_free(cache->key.data);
         cache->key.data = NULL;
     }
@@ -236,7 +261,8 @@ void ngx_http_cache_free(ngx_http_cache_t *cache,
 
 void ngx_http_cache_lock(ngx_http_cache_hash_t *hash, ngx_http_cache_t *cache)
 {
-    if (ngx_mutex_lock(&hash->mutex) == NGX_ERROR) {
+    if (ngx_mutex_lock(&hash->mutex) == NGX_ERROR)
+    {
         return;
     }
 }
@@ -245,13 +271,15 @@ void ngx_http_cache_lock(ngx_http_cache_hash_t *hash, ngx_http_cache_t *cache)
 void ngx_http_cache_unlock(ngx_http_cache_hash_t *hash,
                            ngx_http_cache_t *cache, ngx_log_t *log)
 {
-    if (ngx_mutex_lock(&hash->mutex) == NGX_ERROR) {
+    if (ngx_mutex_lock(&hash->mutex) == NGX_ERROR)
+    {
         return;
     }
 
     cache->refs--;
 
-    if (cache->refs == 0 && cache->deleted) {
+    if (cache->refs == 0 && cache->deleted)
+    {
         ngx_http_cache_free(cache, NULL, NULL, log);
     }
 
@@ -270,10 +298,10 @@ ngx_http_cache_add_file_event(ngx_http_cache_hash_t *hash,
     ev = &ngx_cycle->read_events[fd];
     ngx_memzero(ev, sizeof(ngx_event_t);
 
-    ev->data = data;
-    ev->event_handler = ngx_http_cache_invalidate;
+                ev->data = data;
+                ev->event_handler = ngx_http_cache_invalidate;
 
-    return ngx_add_event(ev, NGX_VNODE_EVENT, 0);
+                return ngx_add_event(ev, NGX_VNODE_EVENT, 0);
 }
 
 
@@ -288,11 +316,13 @@ void ngx_http_cache_invalidate(ngx_event_t *ev)
     if (ctx->cache->refs == 0)
         ngx_http_cache_free(ctx->cache, NULL, NULL, ctx->log);
 
-    } else {
-        ctx->cache->deleted = 1;
-    }
+}
+else
+{
+    ctx->cache->deleted = 1;
+}
 
-    ngx_http_cache_unlock(&ctx->hash->mutex);
+ngx_http_cache_unlock(&ctx->hash->mutex);
 }
 
 #endif
@@ -314,23 +344,27 @@ ngx_int_t ngx_http_send_cached(ngx_http_request_t *r)
     r->headers_out.content_length_n = r->cache->data.size;
     r->headers_out.last_modified_time = r->cache->last_modified;
 
-    if (ngx_http_set_content_type(r) != NGX_OK) {
+    if (ngx_http_set_content_type(r) != NGX_OK)
+    {
         return NGX_HTTP_INTERNAL_SERVER_ERROR;
     }
 
     /* we need to allocate all before the header would be sent */
 
-    if (!(h = ngx_pcalloc(r->pool, sizeof(ngx_hunk_t)))) {
+    if (!(h = ngx_pcalloc(r->pool, sizeof(ngx_hunk_t))))
+    {
         return NGX_HTTP_INTERNAL_SERVER_ERROR;
     }
 
-    if (!(h->file = ngx_pcalloc(r->pool, sizeof(ngx_file_t)))) {
+    if (!(h->file = ngx_pcalloc(r->pool, sizeof(ngx_file_t))))
+    {
         return NGX_HTTP_INTERNAL_SERVER_ERROR;
     }
 
     rc = ngx_http_send_header(r);
 
-    if (rc == NGX_ERROR || rc > NGX_OK || r->header_only) {
+    if (rc == NGX_ERROR || rc > NGX_OK || r->header_only)
+    {
         return rc;
     }
 
@@ -359,11 +393,13 @@ char *ngx_http_set_cache_slot(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
     ngx_http_cache_hash_t  *ch, **chp;
 
     chp = (ngx_http_cache_hash_t **) (p + cmd->offset);
-    if (*chp) {
+    if (*chp)
+    {
         return "is duplicate";
     }
 
-    if (!(ch = ngx_pcalloc(cf->pool, sizeof(ngx_http_cache_hash_t)))) {
+    if (!(ch = ngx_pcalloc(cf->pool, sizeof(ngx_http_cache_hash_t))))
+    {
         return NGX_CONF_ERROR;
     }
     *chp = ch;
@@ -373,24 +409,29 @@ char *ngx_http_set_cache_slot(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 
     value = cf->args->elts;
 
-    for (i = 1; i < cf->args->nelts; i++) {
+    for (i = 1; i < cf->args->nelts; i++)
+    {
 
-        if (value[i].data[1] != '=') {
+        if (value[i].data[1] != '=')
+        {
             ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
-                           "invalid value \"%s\"", value[i].data);
+                               "invalid value \"%s\"", value[i].data);
             return NGX_CONF_ERROR;
         }
 
-        switch (value[i].data[0]) {
+        switch (value[i].data[0])
+        {
 
         case 'h':
-            if (ch->hash) {
+            if (ch->hash)
+            {
                 dup = 1;
                 break;
             }
 
             ch->hash = ngx_atoi(value[i].data + 2, value[i].len - 2);
-            if (ch->hash == (size_t)  NGX_ERROR || ch->hash == 0) {
+            if (ch->hash == (size_t)  NGX_ERROR || ch->hash == 0)
+            {
                 invalid = 1;
                 break;
             }
@@ -398,13 +439,15 @@ char *ngx_http_set_cache_slot(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
             continue;
 
         case 'n':
-            if (ch->nelts) {
+            if (ch->nelts)
+            {
                 dup = 1;
                 break;
             }
 
             ch->nelts = ngx_atoi(value[i].data + 2, value[i].len - 2);
-            if (ch->nelts == (size_t) NGX_ERROR || ch->nelts == 0) {
+            if (ch->nelts == (size_t) NGX_ERROR || ch->nelts == 0)
+            {
                 invalid = 1;
                 break;
             }
@@ -412,7 +455,8 @@ char *ngx_http_set_cache_slot(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
             continue;
 
         case 'l':
-            if (ch->life) {
+            if (ch->life)
+            {
                 dup = 1;
                 break;
             }
@@ -421,7 +465,8 @@ char *ngx_http_set_cache_slot(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
             line.data = value[i].data + 2;
 
             ch->life = ngx_parse_time(&line, 1);
-            if (ch->life == NGX_ERROR || ch->life == 0) {
+            if (ch->life == NGX_ERROR || ch->life == 0)
+            {
                 invalid = 1;
                 break;
             }
@@ -429,7 +474,8 @@ char *ngx_http_set_cache_slot(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
             continue;
 
         case 'u':
-            if (ch->update) {
+            if (ch->update)
+            {
                 dup = 1;
                 break;
             }
@@ -438,7 +484,8 @@ char *ngx_http_set_cache_slot(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
             line.data = value[i].data + 2;
 
             ch->update = ngx_parse_time(&line, 1);
-            if (ch->update == NGX_ERROR || ch->update == 0) {
+            if (ch->update == NGX_ERROR || ch->update == 0)
+            {
                 invalid = 1;
                 break;
             }
@@ -449,13 +496,15 @@ char *ngx_http_set_cache_slot(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
             invalid = 1;
         }
 
-        if (dup) {
+        if (dup)
+        {
             ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
                                "duplicate value \"%s\"", value[i].data);
             return NGX_CONF_ERROR;
         }
 
-        if (invalid) {
+        if (invalid)
+        {
             ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
                                "invalid value \"%s\"", value[i].data);
             return NGX_CONF_ERROR;
@@ -464,14 +513,17 @@ char *ngx_http_set_cache_slot(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 
     ch->elts = ngx_pcalloc(cf->pool,
                            ch->hash * ch->nelts * sizeof(ngx_http_cache_t));
-    if (ch->elts == NULL) {
+    if (ch->elts == NULL)
+    {
         return NGX_CONF_ERROR;
     }
 
-    for (i = 0; i < (ngx_int_t) ch->hash; i++) {
+    for (i = 0; i < (ngx_int_t) ch->hash; i++)
+    {
         c = ch->elts + i * ch->nelts;
 
-        for (j = 0; j < (ngx_int_t) ch->nelts; j++) {
+        for (j = 0; j < (ngx_int_t) ch->nelts; j++)
+        {
             c[j].fd = NGX_INVALID_FILE;
         }
     }

@@ -14,12 +14,13 @@
 
 typedef struct ngx_rbtree_s  ngx_rbtree_t;
 
-struct ngx_rbtree_s {
-   ngx_int_t       key;
-   ngx_rbtree_t   *left;
-   ngx_rbtree_t   *right;
-   ngx_rbtree_t   *parent;
-   char            color;
+struct ngx_rbtree_s
+{
+    ngx_int_t       key;
+    ngx_rbtree_t   *left;
+    ngx_rbtree_t   *right;
+    ngx_rbtree_t   *parent;
+    char            color;
 };
 
 
@@ -30,13 +31,14 @@ void ngx_rbtree_delete(ngx_rbtree_t **root, ngx_rbtree_t *sentinel,
 
 
 ngx_inline static ngx_rbtree_t *ngx_rbtree_min(ngx_rbtree_t *node,
-                                               ngx_rbtree_t *sentinel)
+        ngx_rbtree_t *sentinel)
 {
-   while (node->left != sentinel) {
-       node = node->left;
-   }
+    while (node->left != sentinel)
+    {
+        node = node->left;
+    }
 
-   return node;
+    return node;
 }
 
 

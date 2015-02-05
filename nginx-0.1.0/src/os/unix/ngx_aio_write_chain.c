@@ -25,16 +25,19 @@ ngx_chain_t *ngx_aio_write_chain(ngx_connection_t *c, ngx_chain_t *in,
     sent = 0;
     cl = in;
 
-    while (cl) {
+    while (cl)
+    {
 
-        if (cl->buf->pos == cl->buf->last) {
+        if (cl->buf->pos == cl->buf->last)
+        {
             cl = cl->next;
             continue;
         }
 
         /* we can post the single aio operation only */
 
-        if (!c->write->ready) {
+        if (!c->write->ready)
+        {
             return cl;
         }
 
@@ -44,14 +47,17 @@ ngx_chain_t *ngx_aio_write_chain(ngx_connection_t *c, ngx_chain_t *in,
 
         /* coalesce the neighbouring bufs */
 
-        while (cl && prev == cl->buf->pos && send < limit) {
-            if (ngx_buf_special(cl->buf)) {
+        while (cl && prev == cl->buf->pos && send < limit)
+        {
+            if (ngx_buf_special(cl->buf))
+            {
                 continue;
             }
 
             size = cl->buf->last - cl->buf->pos;
 
-            if (send + size > limit) {
+            if (send + size > limit)
+            {
                 size = limit - send;
             }
 
@@ -65,11 +71,13 @@ ngx_chain_t *ngx_aio_write_chain(ngx_connection_t *c, ngx_chain_t *in,
 
         ngx_log_debug1(NGX_LOG_DEBUG_EVENT, c->log, 0, "aio_write: %d", n);
 
-        if (n == NGX_ERROR) {
+        if (n == NGX_ERROR)
+        {
             return NGX_CHAIN_ERROR;
         }
 
-        if (n > 0) {
+        if (n > 0)
+        {
             sent += n;
             c->sent += n;
         }
@@ -77,9 +85,11 @@ ngx_chain_t *ngx_aio_write_chain(ngx_connection_t *c, ngx_chain_t *in,
         ngx_log_debug1(NGX_LOG_DEBUG_EVENT, c->log, 0,
                        "aio_write sent: " OFF_T_FMT, c->sent);
 
-        for (cl = in; cl; cl = cl->next) {
+        for (cl = in; cl; cl = cl->next)
+        {
 
-            if (sent >= cl->buf->last - cl->buf->pos) {
+            if (sent >= cl->buf->last - cl->buf->pos)
+            {
                 sent -= cl->buf->last - cl->buf->pos;
                 cl->buf->pos = cl->buf->last;
 

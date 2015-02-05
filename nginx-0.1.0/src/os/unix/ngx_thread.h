@@ -46,12 +46,14 @@ typedef pthread_key_t                ngx_tls_key_t;
 
 #define NGX_MUTEX_LIGHT     0
 
-typedef struct {
+typedef struct
+{
     pthread_mutex_t   mutex;
     ngx_log_t        *log;
 } ngx_mutex_t;
 
-typedef struct {
+typedef struct
+{
     pthread_cond_t    cond;
     ngx_tid_t         tid;
     ngx_log_t        *log;
@@ -76,7 +78,8 @@ ngx_int_t ngx_mutex_unlock(ngx_mutex_t *m);
 #define ngx_thread_volatile   volatile
 
 
-typedef struct {
+typedef struct
+{
     ngx_tid_t    tid;
     ngx_cond_t  *cv;
     ngx_uint_t   state;

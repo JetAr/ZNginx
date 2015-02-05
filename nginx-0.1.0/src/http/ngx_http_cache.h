@@ -19,14 +19,16 @@
  */
 #define NGX_HTTP_CACHE_LAZY_ALLOCATION_BITS  3
 
-typedef struct {
+typedef struct
+{
     uint32_t         crc;
     ngx_str_t        key;
     time_t           accessed;
 
     unsigned         refs:20;    /* 1048576 references */
 
-    unsigned         count:NGX_HTTP_CACHE_LAZY_ALLOCATION_BITS;
+unsigned         count:
+    NGX_HTTP_CACHE_LAZY_ALLOCATION_BITS;
 
     unsigned         deleted:1;
     unsigned         expired:1;
@@ -41,14 +43,16 @@ typedef struct {
     time_t           last_modified;
     time_t           updated;
 
-    union {
+    union
+    {
         off_t        size;
         ngx_str_t    value;
     } data;
 } ngx_http_cache_t;
 
 
-typedef struct {
+typedef struct
+{
     time_t       expires;
     time_t       last_modified;
     time_t       date;
@@ -61,7 +65,8 @@ typedef struct {
 #define NGX_HTTP_CACHE_HASH   7
 #define NGX_HTTP_CACHE_NELTS  4
 
-typedef struct {
+typedef struct
+{
     ngx_http_cache_t         *elts;
     size_t                    hash;
     size_t                    nelts;
@@ -74,7 +79,8 @@ typedef struct {
 } ngx_http_cache_hash_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_http_cache_hash_t    *hash;
     ngx_http_cache_t         *cache;
     ngx_file_t                file;
@@ -123,7 +129,7 @@ int ngx_http_send_cached(ngx_http_request_t *r);
 
 
 int ngx_garbage_collector_http_cache_handler(ngx_gc_t *gc, ngx_str_t *name,
-                                             ngx_dir_t *dir);
+        ngx_dir_t *dir);
 
 char *ngx_http_set_cache_slot(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
 

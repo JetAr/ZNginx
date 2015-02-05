@@ -8,7 +8,8 @@
 #define _NGX_INET_H_INCLUDED_
 
 
-typedef struct {
+typedef struct
+{
     in_addr_t  addr;
     in_addr_t  mask;
 } ngx_inet_cidr_t;

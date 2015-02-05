@@ -15,7 +15,8 @@ void *ngx_alloc(size_t size, ngx_log_t *log)
 {
     void  *p;
 
-    if (!(p = malloc(size))) {
+    if (!(p = malloc(size)))
+    {
         ngx_log_error(NGX_LOG_EMERG, log, ngx_errno,
                       "malloc() " SIZE_T_FMT " bytes failed", size);
     }
@@ -33,7 +34,8 @@ void *ngx_calloc(size_t size, ngx_log_t *log)
 
     p = ngx_alloc(size, log);
 
-    if (p) {
+    if (p)
+    {
         ngx_memzero(p, size);
     }
 
@@ -47,7 +49,8 @@ void *ngx_memalign(size_t alignment, size_t size, ngx_log_t *log)
 {
     void  *p;
 
-    if (posix_memalign(&p, alignment, size) == -1) {
+    if (posix_memalign(&p, alignment, size) == -1)
+    {
         ngx_log_error(NGX_LOG_EMERG, log, ngx_errno,
                       "posix_memalign() " SIZE_T_FMT " bytes aligned to "
                       SIZE_T_FMT " failed", size, alignment);
@@ -65,7 +68,8 @@ void *ngx_memalign(size_t alignment, size_t size, ngx_log_t *log)
 {
     void  *p;
 
-    if (!(p = memalign(alignment, size))) {
+    if (!(p = memalign(alignment, size)))
+    {
         ngx_log_error(NGX_LOG_EMERG, log, ngx_errno,
                       "memalign() " SIZE_T_FMT " bytes aligned to "
                       SIZE_T_FMT " failed", size, alignment);

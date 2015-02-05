@@ -43,7 +43,8 @@
 typedef size_t  (*ngx_log_handler_pt) (void *ctx, char *buf, size_t len);
 
 
-struct ngx_log_s {
+struct ngx_log_s
+{
     //z 记录日志的层级
     ngx_uint_t           log_level;
     ngx_open_file_t     *file;//z 文件名以及文件描述符

@@ -11,14 +11,16 @@
 
 /* AF_INET only */
 
-typedef struct {
+typedef struct
+{
     in_addr_t     mask;
     in_addr_t     addr;
     unsigned      deny;
 } ngx_http_access_rule_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_array_t  *rules;     /* array of ngx_http_access_rule_t */
 } ngx_http_access_loc_conf_t;
 
@@ -28,32 +30,38 @@ static char *ngx_http_access_rule(ngx_conf_t *cf, ngx_command_t *cmd,
                                   void *conf);
 static void *ngx_http_access_create_loc_conf(ngx_conf_t *cf);
 static char *ngx_http_access_merge_loc_conf(ngx_conf_t *cf,
-                                            void *parent, void *child);
+        void *parent, void *child);
 static ngx_int_t ngx_http_access_init(ngx_cycle_t *cycle);
 
 
-static ngx_command_t  ngx_http_access_commands[] = {
+static ngx_command_t  ngx_http_access_commands[] =
+{
 
-    { ngx_string("allow"),
-      NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
-      ngx_http_access_rule,
-      NGX_HTTP_LOC_CONF_OFFSET,
-      0,
-      NULL },
+    {
+        ngx_string("allow"),
+        NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
+        ngx_http_access_rule,
+        NGX_HTTP_LOC_CONF_OFFSET,
+        0,
+        NULL
+    },
 
-    { ngx_string("deny"),
-      NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
-      ngx_http_access_rule,
-      NGX_HTTP_LOC_CONF_OFFSET,
-      0,
-      NULL },
+    {
+        ngx_string("deny"),
+        NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
+        ngx_http_access_rule,
+        NGX_HTTP_LOC_CONF_OFFSET,
+        0,
+        NULL
+    },
 
-      ngx_null_command
+    ngx_null_command
 };
 
 
 
-ngx_http_module_t  ngx_http_access_module_ctx = {
+ngx_http_module_t  ngx_http_access_module_ctx =
+{
     NULL,                                  /* pre conf */
 
     NULL,                                  /* create main configuration */
@@ -67,7 +75,8 @@ ngx_http_module_t  ngx_http_access_module_ctx = {
 };
 
 
-ngx_module_t  ngx_http_access_module = {
+ngx_module_t  ngx_http_access_module =
+{
     NGX_MODULE,
     &ngx_http_access_module_ctx,           /* module context */
     ngx_http_access_commands,              /* module directives */
@@ -86,7 +95,8 @@ static ngx_int_t ngx_http_access_handler(ngx_http_request_t *r)
 
     alcf = ngx_http_get_module_loc_conf(r, ngx_http_access_module);
 
-    if (alcf->rules == NULL) {
+    if (alcf->rules == NULL)
+    {
         return NGX_OK;
     }
 
@@ -95,13 +105,16 @@ static ngx_int_t ngx_http_access_handler(ngx_http_request_t *r)
     addr_in = (struct sockaddr_in *) r->connection->sockaddr;
 
     rule = alcf->rules->elts;
-    for (i = 0; i < alcf->rules->nelts; i++) {
+    for (i = 0; i < alcf->rules->nelts; i++)
+    {
 
-ngx_log_debug3(NGX_LOG_DEBUG_HTTP, r->connection->log, 0, "%08X %08X %08X",
-               addr_in->sin_addr.s_addr, rule[i].mask, rule[i].addr);
+        ngx_log_debug3(NGX_LOG_DEBUG_HTTP, r->connection->log, 0, "%08X %08X %08X",
+                       addr_in->sin_addr.s_addr, rule[i].mask, rule[i].addr);
 
-        if ((addr_in->sin_addr.s_addr & rule[i].mask) == rule[i].addr) {
-            if (rule[i].deny) {
+        if ((addr_in->sin_addr.s_addr & rule[i].mask) == rule[i].addr)
+        {
+            if (rule[i].deny)
+            {
                 ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
                               "access forbidden by rule");
 
@@ -125,15 +138,18 @@ static char *ngx_http_access_rule(ngx_conf_t *cf, ngx_command_t *cmd,
     ngx_inet_cidr_t          in_cidr;
     ngx_http_access_rule_t  *rule;
 
-    if (alcf->rules == NULL) {
+    if (alcf->rules == NULL)
+    {
         alcf->rules = ngx_create_array(cf->pool, 5,
                                        sizeof(ngx_http_access_rule_t));
-        if (alcf->rules == NULL) {
+        if (alcf->rules == NULL)
+        {
             return NGX_CONF_ERROR;
         }
     }
 
-    if (!(rule = ngx_push_array(alcf->rules))) {
+    if (!(rule = ngx_push_array(alcf->rules)))
+    {
         return NGX_CONF_ERROR;
     }
 
@@ -141,7 +157,8 @@ static char *ngx_http_access_rule(ngx_conf_t *cf, ngx_command_t *cmd,
 
     rule->deny = (value[0].data[0] == 'd') ? 1 : 0;
 
-    if (value[1].len == 3 && ngx_strcmp(value[1].data, "all") == 0) {
+    if (value[1].len == 3 && ngx_strcmp(value[1].data, "all") == 0)
+    {
         rule->mask = 0;
         rule->addr = 0;
 
@@ -150,13 +167,15 @@ static char *ngx_http_access_rule(ngx_conf_t *cf, ngx_command_t *cmd,
 
     rule->addr = inet_addr((char *) value[1].data);
 
-    if (rule->addr != INADDR_NONE) {
+    if (rule->addr != INADDR_NONE)
+    {
         rule->mask = 0xffffffff;
 
         return NGX_CONF_OK;
     }
 
-    if (ngx_ptocidr(&value[1], &in_cidr) == NGX_ERROR) {
+    if (ngx_ptocidr(&value[1], &in_cidr) == NGX_ERROR)
+    {
         ngx_conf_log_error(NGX_LOG_EMERG, cf, 0, "invalid paramter \"%s\"",
                            value[1].data);
         return NGX_CONF_ERROR;
@@ -173,7 +192,8 @@ static void *ngx_http_access_create_loc_conf(ngx_conf_t *cf)
 {
     ngx_http_access_loc_conf_t  *conf;
 
-    if (!(conf = ngx_pcalloc(cf->pool, sizeof(ngx_http_access_loc_conf_t)))) {
+    if (!(conf = ngx_pcalloc(cf->pool, sizeof(ngx_http_access_loc_conf_t))))
+    {
         return NGX_CONF_ERROR;
     }
 
@@ -182,12 +202,13 @@ static void *ngx_http_access_create_loc_conf(ngx_conf_t *cf)
 
 
 static char *ngx_http_access_merge_loc_conf(ngx_conf_t *cf,
-                                            void *parent, void *child)
+        void *parent, void *child)
 {
     ngx_http_access_loc_conf_t  *prev = parent;
     ngx_http_access_loc_conf_t  *conf = child;
 
-    if (conf->rules == NULL) {
+    if (conf->rules == NULL)
+    {
         conf->rules = prev->rules;
     }
 
@@ -203,7 +224,8 @@ static ngx_int_t ngx_http_access_init(ngx_cycle_t *cycle)
     cmcf = ngx_http_cycle_get_module_main_conf(cycle, ngx_http_core_module);
 
     h = ngx_push_array(&cmcf->phases[NGX_HTTP_ACCESS_PHASE].handlers);
-    if (h == NULL) {
+    if (h == NULL)
+    {
         return NGX_ERROR;
     }
 

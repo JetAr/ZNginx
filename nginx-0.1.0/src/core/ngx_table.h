@@ -14,7 +14,8 @@
 
 typedef ngx_array_t  ngx_table_t;
 
-typedef struct {
+typedef struct
+{
     ngx_str_t  key;
     ngx_str_t  value;
 } ngx_table_elt_t;

@@ -59,16 +59,17 @@ ngx_thread_volatile ngx_str_t  ngx_cached_http_log_time;
 
 
 static u_char  cached_err_log_time[NGX_TIME_SLOTS]
-                                               [sizeof("1970/09/28 12:00:00")];
+[sizeof("1970/09/28 12:00:00")];
 static u_char  cached_http_time[NGX_TIME_SLOTS]
-                                     [sizeof("Mon, 28 Sep 1970 06:00:00 GMT")];
+[sizeof("Mon, 28 Sep 1970 06:00:00 GMT")];
 static u_char  cached_http_log_time[NGX_TIME_SLOTS]
-                                        [sizeof("28/Sep/1970:12:00:00 +0600")];
+[sizeof("28/Sep/1970:12:00:00 +0600")];
 
 
 static char  *week[] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 static char  *months[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                         };
 
 
 void ngx_time_init()
@@ -106,7 +107,8 @@ void ngx_time_init()
 
 ngx_int_t ngx_time_mutex_init(ngx_log_t *log)
 {
-    if (!(ngx_time_mutex = ngx_mutex_init(log, NGX_MUTEX_LIGHT))) {
+    if (!(ngx_time_mutex = ngx_mutex_init(log, NGX_MUTEX_LIGHT)))
+    {
         return NGX_ERROR;
     }
 
@@ -121,19 +123,24 @@ void ngx_time_update(time_t s)
     u_char    *p;
     ngx_tm_t   tm;
 
-    if (ngx_time() == s) {
+    if (ngx_time() == s)
+    {
         return;
     }
 
 #if (NGX_THREADS)
 
-    if (ngx_mutex_trylock(ngx_time_mutex) != NGX_OK) {
+    if (ngx_mutex_trylock(ngx_time_mutex) != NGX_OK)
+    {
         return;
     }
 
-    if (slot == NGX_TIME_SLOTS) {
+    if (slot == NGX_TIME_SLOTS)
+    {
         slot = 0;
-    } else {
+    }
+    else
+    {
         slot++;
     }
 
@@ -219,14 +226,14 @@ size_t ngx_http_time(u_char *buf, time_t t)
     ngx_gmtime(t, &tm);
 
     return ngx_snprintf((char *) buf, sizeof("Mon, 28 Sep 1970 06:00:00 GMT"),
-                                      "%s, %02d %s %4d %02d:%02d:%02d GMT",
-                                      week[tm.ngx_tm_wday],
-                                      tm.ngx_tm_mday,
-                                      months[tm.ngx_tm_mon - 1],
-                                      tm.ngx_tm_year,
-                                      tm.ngx_tm_hour,
-                                      tm.ngx_tm_min,
-                                      tm.ngx_tm_sec);
+                        "%s, %02d %s %4d %02d:%02d:%02d GMT",
+                        week[tm.ngx_tm_wday],
+                        tm.ngx_tm_mday,
+                        months[tm.ngx_tm_mon - 1],
+                        tm.ngx_tm_year,
+                        tm.ngx_tm_hour,
+                        tm.ngx_tm_min,
+                        tm.ngx_tm_sec);
 }
 
 
@@ -241,28 +248,31 @@ size_t ngx_http_cookie_time(u_char *buf, time_t t)
      * 2-digit years more than "37"
      */
 
-    if (tm.ngx_tm_year > 2037) {
+    if (tm.ngx_tm_year > 2037)
+    {
         return ngx_snprintf((char *) buf,
-                                      sizeof("Mon, 28-Sep-1970 06:00:00 GMT"),
-                                      "%s, %02d-%s-%d %02d:%02d:%02d GMT",
-                                      week[tm.ngx_tm_wday],
-                                      tm.ngx_tm_mday,
-                                      months[tm.ngx_tm_mon - 1],
-                                      tm.ngx_tm_year,
-                                      tm.ngx_tm_hour,
-                                      tm.ngx_tm_min,
-                                      tm.ngx_tm_sec);
-    } else {
+                            sizeof("Mon, 28-Sep-1970 06:00:00 GMT"),
+                            "%s, %02d-%s-%d %02d:%02d:%02d GMT",
+                            week[tm.ngx_tm_wday],
+                            tm.ngx_tm_mday,
+                            months[tm.ngx_tm_mon - 1],
+                            tm.ngx_tm_year,
+                            tm.ngx_tm_hour,
+                            tm.ngx_tm_min,
+                            tm.ngx_tm_sec);
+    }
+    else
+    {
         return ngx_snprintf((char *) buf,
-                                      sizeof("Mon, 28-Sep-70 06:00:00 GMT"),
-                                      "%s, %02d-%s-%02d %02d:%02d:%02d GMT",
-                                      week[tm.ngx_tm_wday],
-                                      tm.ngx_tm_mday,
-                                      months[tm.ngx_tm_mon - 1],
-                                      tm.ngx_tm_year % 100,
-                                      tm.ngx_tm_hour,
-                                      tm.ngx_tm_min,
-                                      tm.ngx_tm_sec);
+                            sizeof("Mon, 28-Sep-70 06:00:00 GMT"),
+                            "%s, %02d-%s-%02d %02d:%02d:%02d GMT",
+                            week[tm.ngx_tm_wday],
+                            tm.ngx_tm_mday,
+                            months[tm.ngx_tm_mon - 1],
+                            tm.ngx_tm_year % 100,
+                            tm.ngx_tm_hour,
+                            tm.ngx_tm_min,
+                            tm.ngx_tm_sec);
     }
 }
 
@@ -294,7 +304,8 @@ void ngx_gmtime(time_t t, ngx_tm_t *tp)
 
     mon += 2;
 
-    if (yday >= 306) {
+    if (yday >= 306)
+    {
 
         /*
          * there is no "yday" in Win32 SYSTEMTIME
@@ -305,35 +316,42 @@ void ngx_gmtime(time_t t, ngx_tm_t *tp)
         year++;
         mon -= 12;
 
-        if (mday == 0) {
+        if (mday == 0)
+        {
             /* Jaunary 31 */
             mon = 1;
             mday = 31;
 
-        } else if (mon == 2) {
+        }
+        else if (mon == 2)
+        {
 
-            if ((year % 4 == 0) && (year % 100 || (year % 400 == 0))) {
-                if (mday > 29) {
+            if ((year % 4 == 0) && (year % 100 || (year % 400 == 0)))
+            {
+                if (mday > 29)
+                {
                     mon = 3;
                     mday -= 29;
                 }
 
-            } else if (mday > 28) {
+            }
+            else if (mday > 28)
+            {
                 mon = 3;
                 mday -= 28;
             }
         }
 
-/*
- *  there is no "yday" in Win32 SYSTEMTIME
- *
- *  } else {
- *      yday += 31 + 28;
- *
- *      if ((year % 4 == 0) && (year % 100 || (year % 400 == 0))) {
- *           yday++;
- *      }
- */
+        /*
+         *  there is no "yday" in Win32 SYSTEMTIME
+         *
+         *  } else {
+         *      yday += 31 + 28;
+         *
+         *      if ((year % 4 == 0) && (year % 100 || (year % 400 == 0))) {
+         *           yday++;
+         *      }
+         */
     }
 
     tp->ngx_tm_sec = (ngx_tm_sec_t) sec;

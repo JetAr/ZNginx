@@ -16,7 +16,8 @@ void *ngx_create_shared_memory(size_t size, ngx_log_t *log)
 
     p = mmap(NULL, size, PROT_READ|PROT_WRITE, MAP_ANON|MAP_SHARED, -1, 0);
 
-    if (p == MAP_FAILED) {
+    if (p == MAP_FAILED)
+    {
         ngx_log_error(NGX_LOG_ALERT, log, ngx_errno,
                       "mmap(MAP_ANON|MAP_SHARED, " SIZE_T_FMT ") failed",
                       size);
@@ -35,7 +36,8 @@ void *ngx_create_shared_memory(size_t size, ngx_log_t *log)
 
     fd = open("/dev/zero", O_RDWR);
 
-    if (fd == -1) {
+    if (fd == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, log, ngx_errno,
                       "open(/dev/zero) failed");
         return NULL;
@@ -43,14 +45,16 @@ void *ngx_create_shared_memory(size_t size, ngx_log_t *log)
 
     p = mmap(NULL, size, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
 
-    if (p == MAP_FAILED) {
+    if (p == MAP_FAILED)
+    {
         ngx_log_error(NGX_LOG_ALERT, log, ngx_errno,
                       "mmap(/dev/zero, MAP_SHARED, " SIZE_T_FMT ") failed",
                       size);
         p = NULL;
     }
 
-    if (close(fd) == -1) {
+    if (close(fd) == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, log, ngx_errno, "close() failed");
     }
 
@@ -70,7 +74,8 @@ void *ngx_create_shared_memory(size_t size, ngx_log_t *log)
 
     id = shmget(IPC_PRIVATE, size, (SHM_R|SHM_W|IPC_CREAT));
 
-    if (id == -1) {
+    if (id == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, log, ngx_errno,
                       "shmget(" SIZE_T_FMT ") failed", size);
         return NULL;
@@ -80,12 +85,14 @@ void *ngx_create_shared_memory(size_t size, ngx_log_t *log)
 
     p = shmat(id, NULL, 0);
 
-    if (p == (void *) -1) {
+    if (p == (void *) -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, log, ngx_errno, "shmat() failed");
         p = NULL;
     }
 
-    if (shmctl(id, IPC_RMID, NULL) == -1) {
+    if (shmctl(id, IPC_RMID, NULL) == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, log, ngx_errno, "shmctl(IPC_RMID) failed");
         p = NULL;
     }

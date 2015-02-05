@@ -19,7 +19,8 @@
 #define NGX_CMD_REOPEN         5
 
 
-typedef struct {
+typedef struct
+{
     int           argc;
     char *const  *argv;
 } ngx_master_ctx_t;

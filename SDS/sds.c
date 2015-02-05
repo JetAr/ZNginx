@@ -55,7 +55,7 @@
 sds sdsnewlen(const void *init, size_t initlen)
 {
     struct sdshdr *sh;
-    
+
     //z 如果 init 不为 NULL
     if (init)
     {
@@ -264,7 +264,7 @@ void sdsIncrLen(sds s, int incr)
     sh->free -= incr;
     //z 与前面assert重复？
     assert(sh->free >= 0);
-    
+
     s[sh->len] = '\0';
 }
 

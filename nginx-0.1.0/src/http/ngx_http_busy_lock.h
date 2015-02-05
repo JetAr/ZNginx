@@ -14,7 +14,8 @@
 #include <ngx_http.h>
 
 
-typedef struct {
+typedef struct
+{
     u_char             *md5_mask;
     char               *md5;
     int                 cachable;
@@ -31,7 +32,8 @@ typedef struct {
 } ngx_http_busy_lock_t;
 
 
-typedef struct {
+typedef struct
+{
     time_t         time;
     ngx_event_t   *event;
     void         (*event_handler)(ngx_event_t *ev);

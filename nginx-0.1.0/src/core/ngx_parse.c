@@ -17,7 +17,8 @@ ngx_int_t ngx_parse_size(ngx_str_t *line)
     len = line->len;
     last = line->data[len - 1];
 
-    switch (last) {
+    switch (last)
+    {
     case 'K':
     case 'k':
         len--;
@@ -35,7 +36,8 @@ ngx_int_t ngx_parse_size(ngx_str_t *line)
     }
 
     size = ngx_atoi(line->data, len);
-    if (size == NGX_ERROR) {
+    if (size == NGX_ERROR)
+    {
         return NGX_ERROR;
     }
 
@@ -51,7 +53,8 @@ ngx_int_t ngx_parse_time(ngx_str_t *line, ngx_int_t sec)
     u_char     *start, last;
     ngx_int_t   value, total, scale;
     ngx_uint_t  max, i;
-    enum {
+    enum
+    {
         st_start = 0,
         st_year,
         st_month,
@@ -70,29 +73,36 @@ ngx_int_t ngx_parse_time(ngx_str_t *line, ngx_int_t sec)
     total = 0;
     step = sec ? st_start : st_month;
 
-    for (i = 0; /* void */ ; i++) {
+    for (i = 0; /* void */ ; i++)
+    {
 
-        if (i < line->len) {
-            if (line->data[i] != ' ') {
+        if (i < line->len)
+        {
+            if (line->data[i] != ' ')
+            {
                 len++;
                 continue;
             }
 
-            if (line->data[i] == ' ' && len == 0) {
+            if (line->data[i] == ' ' && len == 0)
+            {
                 start = &line->data[i + 1];
                 continue;
             }
         }
 
-        if (len == 0) {
+        if (len == 0)
+        {
             break;
         }
 
         last = line->data[i - 1];
 
-        switch (last) {
+        switch (last)
+        {
         case 'y':
-            if (step > st_start) {
+            if (step > st_start)
+            {
                 return NGX_ERROR;
             }
             step = st_year;
@@ -102,7 +112,8 @@ ngx_int_t ngx_parse_time(ngx_str_t *line, ngx_int_t sec)
             break;
 
         case 'M':
-            if (step > st_year) {
+            if (step > st_year)
+            {
                 return NGX_ERROR;
             }
             step = st_month;
@@ -112,7 +123,8 @@ ngx_int_t ngx_parse_time(ngx_str_t *line, ngx_int_t sec)
             break;
 
         case 'w':
-            if (step > st_month) {
+            if (step > st_month)
+            {
                 return NGX_ERROR;
             }
             step = st_week;
@@ -122,7 +134,8 @@ ngx_int_t ngx_parse_time(ngx_str_t *line, ngx_int_t sec)
             break;
 
         case 'd':
-            if (step > st_week) {
+            if (step > st_week)
+            {
                 return NGX_ERROR;
             }
             step = st_day;
@@ -132,7 +145,8 @@ ngx_int_t ngx_parse_time(ngx_str_t *line, ngx_int_t sec)
             break;
 
         case 'h':
-            if (step > st_day) {
+            if (step > st_day)
+            {
                 return NGX_ERROR;
             }
             step = st_hour;
@@ -142,7 +156,8 @@ ngx_int_t ngx_parse_time(ngx_str_t *line, ngx_int_t sec)
             break;
 
         case 'm':
-            if (step > st_hour) {
+            if (step > st_hour)
+            {
                 return NGX_ERROR;
             }
             step = st_min;
@@ -154,8 +169,10 @@ ngx_int_t ngx_parse_time(ngx_str_t *line, ngx_int_t sec)
         case 's':
             len--;
 
-            if (line->data[i - 2] == 'm') {
-                if (sec || step > st_sec) {
+            if (line->data[i - 2] == 'm')
+            {
+                if (sec || step > st_sec)
+                {
                     return NGX_ERROR;
                 }
                 step = st_msec;
@@ -165,7 +182,8 @@ ngx_int_t ngx_parse_time(ngx_str_t *line, ngx_int_t sec)
                 break;
             }
 
-            if (step > st_min) {
+            if (step > st_min)
+            {
                 return NGX_ERROR;
             }
 
@@ -181,26 +199,31 @@ ngx_int_t ngx_parse_time(ngx_str_t *line, ngx_int_t sec)
         }
 
         value = ngx_atoi(start, len);
-        if (value == NGX_ERROR) {
+        if (value == NGX_ERROR)
+        {
             return NGX_ERROR;
         }
 
-        if (step != st_msec && !sec) {
+        if (step != st_msec && !sec)
+        {
             scale *= 1000;
             max /= 1000;
         }
 
-        if ((u_int) value > max) {
+        if ((u_int) value > max)
+        {
             return NGX_PARSE_LARGE_TIME;
         }
 
         total += value * scale;
 
-        if ((u_int) total > 2147483647) {
+        if ((u_int) total > 2147483647)
+        {
             return NGX_PARSE_LARGE_TIME;
         }
 
-        if (i >= line->len) {
+        if (i >= line->len)
+        {
             break;
         }
 

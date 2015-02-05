@@ -1057,7 +1057,7 @@ ftp_retrieve_list (struct urlinfo *u, struct fileinfo *f, ccon *con)
     struct fileinfo *orig;
     long local_size;
     time_t tml;
-    int dlthis; 
+    int dlthis;
 
     /* Increase the depth.  */
     ++depth;

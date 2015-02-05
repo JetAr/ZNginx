@@ -491,7 +491,7 @@ cmd_boolean (const char *com, const char *val, void *closure)
 {
     int bool_value;
 
-	//z 根据 val 的值设置 bool_value 的值
+    //z 根据 val 的值设置 bool_value 的值
     if (!strcasecmp (val, "on")
             || (*val == '1' && !*(val + 1)))
         bool_value = 1;
@@ -500,18 +500,18 @@ cmd_boolean (const char *com, const char *val, void *closure)
         bool_value = 0;
     else
     {
-		//z 否则出错
+        //z 否则出错
         fprintf (stderr, _("%s: %s: Please specify on or off.\n"),
                  exec_name, com);
 
-		//z 失败，返回0
+        //z 失败，返回0
         return 0;
     }
 
-	//z 接收设置之后的值
+    //z 接收设置之后的值
     *(int *)closure = bool_value;
 
-	//z 成功，返回1
+    //z 成功，返回1
     return 1;
 }
 
@@ -916,14 +916,14 @@ check_user_specified_header (const char *s)
 {
     const char *p;
 
-	for (p = s; *p && *p != ':' && !ISSPACE (*p); p++);
+    for (p = s; *p && *p != ':' && !ISSPACE (*p); p++);
     /* The header MUST contain `:' preceded by at least one
        non-whitespace character.  */
 
-	if (*p != ':' || p == s)
+    if (*p != ':' || p == s)
         return 0;
     /* The header MUST NOT contain newlines.  */
-	//z 不可以包含 '\n'
+    //z 不可以包含 '\n'
     if (strchr (s, '\n'))
         return 0;
     return 1;

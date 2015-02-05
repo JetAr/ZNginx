@@ -70,8 +70,8 @@ make_connection (int *sock, char *hostname, unsigned short port)
        storehostaddress is better since it caches calls to
        gethostbyname.  */
 #if 1
-	//z 将host保存到Host list 中去
-	//z 使用 store_hostaddress 相对要更好一些，因为其 cache 了 gethostbyname 的结果
+    //z 将host保存到Host list 中去
+    //z 使用 store_hostaddress 相对要更好一些，因为其 cache 了 gethostbyname 的结果
     if (!store_hostaddress ((unsigned char *)&sock_name.sin_addr, hostname))
         return HOSTERR;
 #else  /* never */

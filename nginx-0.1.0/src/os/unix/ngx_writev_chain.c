@@ -26,13 +26,15 @@ ngx_chain_t *ngx_writev_chain(ngx_connection_t *c, ngx_chain_t *in, off_t limit)
 
     wev = c->write;
 
-    if (!wev->ready) {
+    if (!wev->ready)
+    {
         return in;
     }
 
 #if (HAVE_KQUEUE)
 
-    if ((ngx_event_flags & NGX_HAVE_KQUEUE_EVENT) && wev->pending_eof) {
+    if ((ngx_event_flags & NGX_HAVE_KQUEUE_EVENT) && wev->pending_eof)
+    {
         ngx_log_error(NGX_LOG_INFO, c->log, wev->kq_errno,
                       "kevent() reported about an closed connection");
 
@@ -50,7 +52,8 @@ ngx_chain_t *ngx_writev_chain(ngx_connection_t *c, ngx_chain_t *in, off_t limit)
     vec.nalloc = NGX_IOVS;
     vec.pool = c->pool;
 
-    for ( ;; ) {
+    for ( ;; )
+    {
         prev = NULL;
         iov = NULL;
         eintr = 0;
@@ -62,21 +65,27 @@ ngx_chain_t *ngx_writev_chain(ngx_connection_t *c, ngx_chain_t *in, off_t limit)
 
         for (cl = in; cl && vec.nelts < IOV_MAX && send < limit; cl = cl->next)
         {
-            if (ngx_buf_special(cl->buf)) {
+            if (ngx_buf_special(cl->buf))
+            {
                 continue;
             }
 
             size = cl->buf->last - cl->buf->pos;
 
-            if (send + size > limit) {
+            if (send + size > limit)
+            {
                 size = limit - send;
             }
 
-            if (prev == cl->buf->pos) {
+            if (prev == cl->buf->pos)
+            {
                 iov->iov_len += size;
 
-            } else {
-                if (!(iov = ngx_array_push(&vec))) {
+            }
+            else
+            {
+                if (!(iov = ngx_array_push(&vec)))
+                {
                     return NGX_CHAIN_ERROR;
                 }
 
@@ -90,18 +99,23 @@ ngx_chain_t *ngx_writev_chain(ngx_connection_t *c, ngx_chain_t *in, off_t limit)
 
         n = writev(c->fd, vec.elts, vec.nelts);
 
-        if (n == -1) {
+        if (n == -1)
+        {
             err = ngx_errno;
 
-            if (err == NGX_EAGAIN || err == NGX_EINTR) {
-                if (err == NGX_EINTR) {
+            if (err == NGX_EAGAIN || err == NGX_EINTR)
+            {
+                if (err == NGX_EINTR)
+                {
                     eintr = 1;
                 }
 
                 ngx_log_debug0(NGX_LOG_DEBUG_EVENT, c->log, err,
                                "writev() not ready");
 
-            } else {
+            }
+            else
+            {
                 wev->error = 1;
                 ngx_connection_error(c, err, "writev() failed");
                 return NGX_CHAIN_ERROR;
@@ -113,24 +127,29 @@ ngx_chain_t *ngx_writev_chain(ngx_connection_t *c, ngx_chain_t *in, off_t limit)
         ngx_log_debug1(NGX_LOG_DEBUG_EVENT, c->log, 0,
                        "writev: " OFF_T_FMT, sent);
 
-        if (send - sprev == sent) {
+        if (send - sprev == sent)
+        {
             complete = 1;
         }
 
         c->sent += sent;
 
-        for (cl = in; cl && sent > 0; cl = cl->next) {
-            if (ngx_buf_special(cl->buf)) {
+        for (cl = in; cl && sent > 0; cl = cl->next)
+        {
+            if (ngx_buf_special(cl->buf))
+            {
                 continue;
             }
 
-            if (sent == 0) {
+            if (sent == 0)
+            {
                 break;
             }
 
             size = cl->buf->last - cl->buf->pos;
 
-            if (sent >= size) {
+            if (sent >= size)
+            {
                 sent -= size;
                 cl->buf->pos = cl->buf->last;
 
@@ -142,16 +161,19 @@ ngx_chain_t *ngx_writev_chain(ngx_connection_t *c, ngx_chain_t *in, off_t limit)
             break;
         }
 
-        if (eintr) {
+        if (eintr)
+        {
             continue;
         }
 
-        if (!complete) {
+        if (!complete)
+        {
             wev->ready = 0;
             return cl;
         }
 
-        if (send >= limit || cl == NULL) {
+        if (send >= limit || cl == NULL)
+        {
             return cl;
         }
 

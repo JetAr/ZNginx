@@ -26,13 +26,15 @@
 
 typedef struct ngx_pool_large_s  ngx_pool_large_t;
 
-struct ngx_pool_large_s {
+struct ngx_pool_large_s
+{
     ngx_pool_large_t  *next;
     void              *alloc;
 };
 
 
-struct ngx_pool_s {
+struct ngx_pool_s
+{
     char              *last;
     char              *end;
     ngx_pool_t        *next;

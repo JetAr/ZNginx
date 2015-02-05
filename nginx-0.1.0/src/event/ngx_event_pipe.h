@@ -16,12 +16,13 @@
 typedef struct ngx_event_pipe_s  ngx_event_pipe_t;
 
 typedef ngx_int_t (*ngx_event_pipe_input_filter_pt)(ngx_event_pipe_t *p,
-                                                    ngx_buf_t *buf);
+        ngx_buf_t *buf);
 typedef ngx_int_t (*ngx_event_pipe_output_filter_pt)(void *data,
-                                                     ngx_chain_t *chain);
+        ngx_chain_t *chain);
 
 
-struct ngx_event_pipe_s {
+struct ngx_event_pipe_s
+{
     ngx_connection_t  *upstream;
     ngx_connection_t  *downstream;
 

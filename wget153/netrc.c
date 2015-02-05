@@ -62,10 +62,10 @@ search_netrc (const char *host, const char **acc, const char **passwd,
               int slack_default)
 {
     acc_t *l;
-	//z 默认
+    //z 默认
     static int processed_netrc;
 
-	//z 是否使用 netrc
+    //z 是否使用 netrc
     if (!opt.netrc)
         return;
 

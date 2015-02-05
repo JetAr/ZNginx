@@ -10,7 +10,7 @@
 
 
 static int ngx_event_busy_lock_look_cachable(ngx_event_busy_lock_t *bl,
-                                             ngx_event_busy_lock_ctx_t *ctx);
+        ngx_event_busy_lock_ctx_t *ctx);
 static void ngx_event_busy_lock_handler(ngx_event_t *ev);
 static void ngx_event_busy_lock_posted_handler(ngx_event_t *ev);
 
@@ -28,7 +28,8 @@ ngx_int_t ngx_event_busy_lock(ngx_event_busy_lock_t *bl,
 {
     ngx_int_t  rc;
 
-    if (ngx_mutex_lock(bl->mutex) == NGX_ERROR) {
+    if (ngx_mutex_lock(bl->mutex) == NGX_ERROR)
+    {
         return NGX_ERROR;
     }
 
@@ -36,19 +37,25 @@ ngx_int_t ngx_event_busy_lock(ngx_event_busy_lock_t *bl,
                    "event busy lock: b:%d mb:%d",
                    bl->busy, bl->max_busy);
 
-    if (bl->busy < bl->max_busy) {
+    if (bl->busy < bl->max_busy)
+    {
         bl->busy++;
         rc = NGX_OK;
 
-    } else if (ctx->timer && bl->waiting < bl->max_waiting) {
+    }
+    else if (ctx->timer && bl->waiting < bl->max_waiting)
+    {
         bl->waiting++;
         ngx_add_timer(ctx->event, ctx->timer);
         ctx->event->event_handler = ngx_event_busy_lock_handler;
 
-        if (bl->events) {
+        if (bl->events)
+        {
             bl->last->next = ctx;
 
-        } else {
+        }
+        else
+        {
             bl->events = ctx;
         }
 
@@ -56,7 +63,9 @@ ngx_int_t ngx_event_busy_lock(ngx_event_busy_lock_t *bl,
 
         rc = NGX_AGAIN;
 
-    } else {
+    }
+    else
+    {
         rc = NGX_BUSY;
     }
 
@@ -71,7 +80,8 @@ ngx_int_t ngx_event_busy_lock_cachable(ngx_event_busy_lock_t *bl,
 {
     ngx_int_t  rc;
 
-    if (ngx_mutex_lock(bl->mutex) == NGX_ERROR) {
+    if (ngx_mutex_lock(bl->mutex) == NGX_ERROR)
+    {
         return NGX_ERROR;
     }
 
@@ -87,21 +97,28 @@ ngx_int_t ngx_event_busy_lock_cachable(ngx_event_busy_lock_t *bl,
      * NGX_AGAIN:  the same request is processing
      */
 
-    if (rc == NGX_AGAIN) {
+    if (rc == NGX_AGAIN)
+    {
 
-        if (ctx->timer && bl->waiting < bl->max_waiting) {
+        if (ctx->timer && bl->waiting < bl->max_waiting)
+        {
             bl->waiting++;
             ngx_add_timer(ctx->event, ctx->timer);
             ctx->event->event_handler = ngx_event_busy_lock_handler;
 
-            if (bl->events == NULL) {
+            if (bl->events == NULL)
+            {
                 bl->events = ctx;
-            } else {
+            }
+            else
+            {
                 bl->last->next = ctx;
             }
             bl->last = ctx;
 
-        } else {
+        }
+        else
+        {
             rc = NGX_BUSY;
         }
     }
@@ -118,15 +135,19 @@ ngx_int_t ngx_event_busy_unlock(ngx_event_busy_lock_t *bl,
     ngx_event_t                *ev;
     ngx_event_busy_lock_ctx_t  *wakeup;
 
-    if (ngx_mutex_lock(bl->mutex) == NGX_ERROR) {
+    if (ngx_mutex_lock(bl->mutex) == NGX_ERROR)
+    {
         return NGX_ERROR;
     }
 
-    if (bl->events) {
+    if (bl->events)
+    {
         wakeup = bl->events;
         bl->events = bl->events->next;
 
-    } else {
+    }
+    else
+    {
         wakeup = NULL;
         bl->busy--;
     }
@@ -136,14 +157,18 @@ ngx_int_t ngx_event_busy_unlock(ngx_event_busy_lock_t *bl,
      *     each ctx has pid to wake up
      */
 
-    if (wakeup == NULL) {
+    if (wakeup == NULL)
+    {
         ngx_mutex_unlock(bl->mutex);
         return NGX_OK;
     }
 
-    if (ctx->md5) {
-        for (wakeup = bl->events; wakeup; wakeup = wakeup->next) {
-            if (wakeup->md5 == NULL || wakeup->slot != ctx->slot) {
+    if (ctx->md5)
+    {
+        for (wakeup = bl->events; wakeup; wakeup = wakeup->next)
+        {
+            if (wakeup->md5 == NULL || wakeup->slot != ctx->slot)
+            {
                 continue;
             }
 
@@ -152,7 +177,8 @@ ngx_int_t ngx_event_busy_unlock(ngx_event_busy_lock_t *bl,
 
             ev = wakeup->event;
 
-            if (ngx_mutex_lock(ngx_posted_events_mutex) == NGX_ERROR) {
+            if (ngx_mutex_lock(ngx_posted_events_mutex) == NGX_ERROR)
+            {
                 return NGX_ERROR;
             }
 
@@ -163,7 +189,9 @@ ngx_int_t ngx_event_busy_unlock(ngx_event_busy_lock_t *bl,
 
         ngx_mutex_unlock(bl->mutex);
 
-    } else {
+    }
+    else
+    {
         bl->waiting--;
 
         ngx_mutex_unlock(bl->mutex);
@@ -173,11 +201,13 @@ ngx_int_t ngx_event_busy_unlock(ngx_event_busy_lock_t *bl,
 
         ev = wakeup->event;
 
-        if (ev->timer_set) {
+        if (ev->timer_set)
+        {
             ngx_del_timer(ev);
         }
 
-        if (ngx_mutex_lock(ngx_posted_events_mutex) == NGX_ERROR) {
+        if (ngx_mutex_lock(ngx_posted_events_mutex) == NGX_ERROR)
+        {
             return NGX_ERROR;
         }
 
@@ -195,19 +225,25 @@ ngx_int_t ngx_event_busy_lock_cancel(ngx_event_busy_lock_t *bl,
 {
     ngx_event_busy_lock_ctx_t  *c, *p;
 
-    if (ngx_mutex_lock(bl->mutex) == NGX_ERROR) {
+    if (ngx_mutex_lock(bl->mutex) == NGX_ERROR)
+    {
         return NGX_ERROR;
     }
 
     bl->waiting--;
 
-    if (ctx == bl->events) {
+    if (ctx == bl->events)
+    {
         bl->events = ctx->next;
 
-    } else {
+    }
+    else
+    {
         p = bl->events;
-        for (c = bl->events->next; c; c = c->next) {
-            if (c == ctx) {
+        for (c = bl->events->next; c; c = c->next)
+        {
+            if (c == ctx)
+            {
                 p->next = ctx->next;
                 break;
             }
@@ -222,7 +258,7 @@ ngx_int_t ngx_event_busy_lock_cancel(ngx_event_busy_lock_t *bl,
 
 
 static int ngx_event_busy_lock_look_cachable(ngx_event_busy_lock_t *bl,
-                                             ngx_event_busy_lock_ctx_t *ctx)
+        ngx_event_busy_lock_ctx_t *ctx)
 {
     ngx_int_t    free;
     ngx_uint_t   i, bit, cachable, mask;
@@ -235,26 +271,34 @@ static int ngx_event_busy_lock_look_cachable(ngx_event_busy_lock_t *bl,
     mask = 0;
 #endif
 
-    for (i = 0; i < bl->max_busy; i++) {
+    for (i = 0; i < bl->max_busy; i++)
+    {
 
-        if ((bit & 7) == 0) {
+        if ((bit & 7) == 0)
+        {
             mask = bl->md5_mask[i / 8];
         }
 
-        if (mask & 1) {
-            if (ngx_memcmp(&bl->md5[i * 16], ctx->md5, 16) == 0) {
+        if (mask & 1)
+        {
+            if (ngx_memcmp(&bl->md5[i * 16], ctx->md5, 16) == 0)
+            {
                 ctx->waiting = 1;
                 ctx->slot = i;
                 return NGX_AGAIN;
             }
             cachable++;
 
-        } else if (free == -1) {
+        }
+        else if (free == -1)
+        {
             free = i;
         }
 
-        if (cachable == bl->cachable) {
-            if (free == -1 && cachable < bl->max_busy) {
+        if (cachable == bl->cachable)
+        {
+            if (free == -1 && cachable < bl->max_busy)
+            {
                 free = i + 1;
             }
 
@@ -265,12 +309,14 @@ static int ngx_event_busy_lock_look_cachable(ngx_event_busy_lock_t *bl,
         bit++;
     }
 
-    if (free == -1) {
+    if (free == -1)
+    {
         return NGX_BUSY;
     }
 
 #if 0
-    if (bl->busy == bl->max_busy) {
+    if (bl->busy == bl->max_busy)
+    {
         return NGX_BUSY;
     }
 #endif
@@ -288,7 +334,8 @@ static int ngx_event_busy_lock_look_cachable(ngx_event_busy_lock_t *bl,
 
 static void ngx_event_busy_lock_handler(ngx_event_t *ev)
 {
-    if (ngx_mutex_lock(ngx_posted_events_mutex) == NGX_ERROR) {
+    if (ngx_mutex_lock(ngx_posted_events_mutex) == NGX_ERROR)
+    {
         return;
     }
 

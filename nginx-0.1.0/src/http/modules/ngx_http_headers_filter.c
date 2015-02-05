@@ -9,7 +9,8 @@
 #include <ngx_http.h>
 
 
-typedef struct {
+typedef struct
+{
     time_t  expires;
 } ngx_http_headers_conf_t;
 
@@ -22,24 +23,28 @@ typedef struct {
 static ngx_int_t ngx_http_headers_filter_init(ngx_cycle_t *cycle);
 static void *ngx_http_headers_create_conf(ngx_conf_t *cf);
 static char *ngx_http_headers_merge_conf(ngx_conf_t *cf,
-                                         void *parent, void *child);
+        void *parent, void *child);
 char *ngx_http_headers_expires(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
 
 
-static ngx_command_t  ngx_http_headers_filter_commands[] = {
+static ngx_command_t  ngx_http_headers_filter_commands[] =
+{
 
-    { ngx_string("expires"),
-      NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
-      ngx_http_headers_expires,
-      NGX_HTTP_LOC_CONF_OFFSET,
-      0,
-      NULL},
+    {
+        ngx_string("expires"),
+        NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
+        ngx_http_headers_expires,
+        NGX_HTTP_LOC_CONF_OFFSET,
+        0,
+        NULL
+    },
 
-      ngx_null_command
+    ngx_null_command
 };
 
 
-static ngx_http_module_t  ngx_http_headers_filter_module_ctx = {
+static ngx_http_module_t  ngx_http_headers_filter_module_ctx =
+{
     NULL,                                  /* pre conf */
 
     NULL,                                  /* create main configuration */
@@ -53,7 +58,8 @@ static ngx_http_module_t  ngx_http_headers_filter_module_ctx = {
 };
 
 
-ngx_module_t  ngx_http_headers_filter_module = {
+ngx_module_t  ngx_http_headers_filter_module =
+{
     NGX_MODULE,
     &ngx_http_headers_filter_module_ctx,   /* module context */
     ngx_http_headers_filter_commands,      /* module directives */
@@ -72,21 +78,25 @@ static ngx_int_t ngx_http_headers_filter(ngx_http_request_t *r)
     ngx_table_elt_t          *expires, *cc;
     ngx_http_headers_conf_t  *conf;
 
-    if (r->headers_out.status != NGX_HTTP_OK) {
+    if (r->headers_out.status != NGX_HTTP_OK)
+    {
         return ngx_http_next_header_filter(r);
     }
 
     conf = ngx_http_get_module_loc_conf(r, ngx_http_headers_filter_module);
 
-    if (conf->expires != NGX_HTTP_EXPIRES_OFF) {
+    if (conf->expires != NGX_HTTP_EXPIRES_OFF)
+    {
 
-        if (!(expires = ngx_list_push(&r->headers_out.headers))) {
+        if (!(expires = ngx_list_push(&r->headers_out.headers)))
+        {
             return NGX_ERROR;
         }
 
         r->headers_out.expires = expires;
 
-        if (!(cc = ngx_list_push(&r->headers_out.headers))) {
+        if (!(cc = ngx_list_push(&r->headers_out.headers)))
+        {
             return NGX_ERROR;
         }
 
@@ -101,43 +111,54 @@ static ngx_int_t ngx_http_headers_filter(ngx_http_request_t *r)
         cc->key.len = sizeof("Cache-Control") - 1;
         cc->key.data = (u_char *) "Cache-Control";
 
-        if (conf->expires == NGX_HTTP_EXPIRES_EPOCH) {
+        if (conf->expires == NGX_HTTP_EXPIRES_EPOCH)
+        {
             expires->value.data = (u_char *) "Thu, 01 Jan 1970 00:00:01 GMT";
 
             cc->value.len = sizeof("no-cache") - 1;
             cc->value.data = (u_char *) "no-cache";
 
-        } else {
+        }
+        else
+        {
             expires->value.data = ngx_palloc(r->pool, len);
-            if (expires->value.data == NULL) {
+            if (expires->value.data == NULL)
+            {
                 return NGX_ERROR;
             }
 
-            if (conf->expires == 0) {
+            if (conf->expires == 0)
+            {
                 ngx_memcpy(expires->value.data, ngx_cached_http_time.data,
                            ngx_cached_http_time.len + 1);
 
                 cc->value.len = sizeof("max-age=0") - 1;
                 cc->value.data = (u_char *) "max-age=0";
 
-            } else {
+            }
+            else
+            {
                 ngx_http_time(expires->value.data, ngx_time() + conf->expires);
 
-                if (conf->expires < 0) {
+                if (conf->expires < 0)
+                {
                     cc->value.len = sizeof("no-cache") - 1;
                     cc->value.data = (u_char *) "no-cache";
 
-                } else {
+                }
+                else
+                {
                     cc->value.data = ngx_palloc(r->pool,
-                                          sizeof("max-age=") + TIME_T_LEN + 1);
-                    if (cc->value.data == NULL) {
+                                                sizeof("max-age=") + TIME_T_LEN + 1);
+                    if (cc->value.data == NULL)
+                    {
                         return NGX_ERROR;
                     }
 
                     cc->value.len = ngx_snprintf((char *) cc->value.data,
-                                               sizeof("max-age=") + TIME_T_LEN,
-                                               "max-age=" TIME_T_FMT,
-                                               conf->expires);
+                                                 sizeof("max-age=") + TIME_T_LEN,
+                                                 "max-age=" TIME_T_FMT,
+                                                 conf->expires);
                 }
             }
         }
@@ -157,10 +178,11 @@ static ngx_int_t ngx_http_headers_filter_init(ngx_cycle_t *cycle)
 
 
 static void *ngx_http_headers_create_conf(ngx_conf_t *cf)
-{   
+{
     ngx_http_headers_conf_t  *conf;
 
-    if (!(conf = ngx_palloc(cf->pool, sizeof(ngx_http_headers_conf_t)))) {
+    if (!(conf = ngx_palloc(cf->pool, sizeof(ngx_http_headers_conf_t))))
+    {
         return NGX_CONF_ERROR;
     }
 
@@ -171,14 +193,15 @@ static void *ngx_http_headers_create_conf(ngx_conf_t *cf)
 
 
 static char *ngx_http_headers_merge_conf(ngx_conf_t *cf,
-                                         void *parent, void *child)
+        void *parent, void *child)
 {
     ngx_http_headers_conf_t *prev = parent;
     ngx_http_headers_conf_t *conf = child;
 
-    if (conf->expires == NGX_HTTP_EXPIRES_UNSET) {
+    if (conf->expires == NGX_HTTP_EXPIRES_UNSET)
+    {
         conf->expires = (prev->expires == NGX_HTTP_EXPIRES_UNSET) ?
-                                          NGX_HTTP_EXPIRES_OFF : prev->expires;
+                        NGX_HTTP_EXPIRES_OFF : prev->expires;
     }
 
     return NGX_CONF_OK;
@@ -192,46 +215,57 @@ char *ngx_http_headers_expires(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
     ngx_uint_t   minus;
     ngx_str_t   *value;
 
-    if (hcf->expires != NGX_HTTP_EXPIRES_UNSET) {
+    if (hcf->expires != NGX_HTTP_EXPIRES_UNSET)
+    {
         return "is duplicate";
     }
 
     value = cf->args->elts;
 
-    if (ngx_strcmp(value[1].data, "epoch") == 0) {
+    if (ngx_strcmp(value[1].data, "epoch") == 0)
+    {
         hcf->expires = NGX_HTTP_EXPIRES_EPOCH;
         return NGX_CONF_OK;
     }
 
-    if (ngx_strcmp(value[1].data, "off") == 0) {
+    if (ngx_strcmp(value[1].data, "off") == 0)
+    {
         hcf->expires = NGX_HTTP_EXPIRES_OFF;
         return NGX_CONF_OK;
     }
 
-    if (value[1].data[0] == '+') {
+    if (value[1].data[0] == '+')
+    {
         value[1].data++;
         value[1].len--;
         minus = 0;
 
-    } else if (value[1].data[0] == '-') {
+    }
+    else if (value[1].data[0] == '-')
+    {
         value[1].data++;
         value[1].len--;
         minus = 1;
 
-    } else {
+    }
+    else
+    {
         minus = 0;
     }
 
     hcf->expires = ngx_parse_time(&value[1], 1);
-    if (hcf->expires == NGX_ERROR) {
+    if (hcf->expires == NGX_ERROR)
+    {
         return "invalid value";
     }
-    
-    if (hcf->expires == NGX_PARSE_LARGE_TIME) {
+
+    if (hcf->expires == NGX_PARSE_LARGE_TIME)
+    {
         return "value must be less than 68 years";
     }
 
-    if (minus) {
+    if (minus)
+    {
         hcf->expires = - hcf->expires;
     }
 

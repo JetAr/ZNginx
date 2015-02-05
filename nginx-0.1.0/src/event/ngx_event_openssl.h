@@ -15,7 +15,8 @@
 #include <openssl/err.h>
 
 
-typedef struct {
+typedef struct
+{
     SSL                   *ssl;
     ngx_buf_t             *buf;
     ngx_event_handler_pt   saved_handler;

@@ -12,7 +12,8 @@
 static ngx_int_t ngx_http_chunked_filter_init(ngx_cycle_t *cycle);
 
 
-static ngx_http_module_t  ngx_http_chunked_filter_module_ctx = {
+static ngx_http_module_t  ngx_http_chunked_filter_module_ctx =
+{
     NULL,                                  /* pre conf */
 
     NULL,                                  /* create main configuration */
@@ -26,7 +27,8 @@ static ngx_http_module_t  ngx_http_chunked_filter_module_ctx = {
 };
 
 
-ngx_module_t  ngx_http_chunked_filter_module = {
+ngx_module_t  ngx_http_chunked_filter_module =
+{
     NGX_MODULE,
     &ngx_http_chunked_filter_module_ctx,   /* module context */
     NULL,                                  /* module directives */
@@ -42,15 +44,20 @@ static ngx_http_output_body_filter_pt    ngx_http_next_body_filter;
 
 static ngx_int_t ngx_http_chunked_header_filter(ngx_http_request_t *r)
 {
-    if (r->headers_out.status == NGX_HTTP_NOT_MODIFIED) {
+    if (r->headers_out.status == NGX_HTTP_NOT_MODIFIED)
+    {
         return ngx_http_next_header_filter(r);
     }
 
-    if (r->headers_out.content_length_n == -1) {
-        if (r->http_version < NGX_HTTP_VERSION_11) {
+    if (r->headers_out.content_length_n == -1)
+    {
+        if (r->http_version < NGX_HTTP_VERSION_11)
+        {
             r->keepalive = 0;
 
-        } else {
+        }
+        else
+        {
             r->chunked = 1;
         }
     }
@@ -60,14 +67,15 @@ static ngx_int_t ngx_http_chunked_header_filter(ngx_http_request_t *r)
 
 
 static ngx_int_t ngx_http_chunked_body_filter(ngx_http_request_t *r,
-                                              ngx_chain_t *in)
+        ngx_chain_t *in)
 {
     u_char       *chunk;
     size_t        size, len;
     ngx_buf_t    *b;
     ngx_chain_t   out, tail, *cl, *tl, **ll;
 
-    if (in == NULL || !r->chunked) {
+    if (in == NULL || !r->chunked)
+    {
         return ngx_http_next_body_filter(r, in);
     }
 
@@ -77,7 +85,8 @@ static ngx_int_t ngx_http_chunked_body_filter(ngx_http_request_t *r,
     size = 0;
     cl = in;
 
-    for ( ;; ) {
+    for ( ;; )
+    {
         ngx_log_debug1(NGX_LOG_DEBUG_HTTP, r->connection->log, 0,
                        "http chunk: %d", ngx_buf_size(cl->buf));
 
@@ -88,14 +97,16 @@ static ngx_int_t ngx_http_chunked_body_filter(ngx_http_request_t *r,
         *ll = tl;
         ll = &tl->next;
 
-        if (cl->next == NULL) {
+        if (cl->next == NULL)
+        {
             break;
         }
 
         cl = cl->next;
     }
 
-    if (size) {
+    if (size)
+    {
         ngx_test_null(chunk, ngx_palloc(r->pool, 11), NGX_ERROR);
         len = ngx_snprintf((char *) chunk, 11, SIZE_T_X_FMT CRLF, size);
 
@@ -107,7 +118,8 @@ static ngx_int_t ngx_http_chunked_body_filter(ngx_http_request_t *r,
         out.buf = b;
     }
 
-    if (cl->buf->last_buf) {
+    if (cl->buf->last_buf)
+    {
         ngx_test_null(b, ngx_calloc_buf(r->pool), NGX_ERROR);
         b->memory = 1;
         b->last_buf = 1;
@@ -116,7 +128,8 @@ static ngx_int_t ngx_http_chunked_body_filter(ngx_http_request_t *r,
 
         cl->buf->last_buf = 0;
 
-        if (size == 0) {
+        if (size == 0)
+        {
             b->pos += 2;
             out.buf = b;
             out.next = NULL;
@@ -124,8 +137,11 @@ static ngx_int_t ngx_http_chunked_body_filter(ngx_http_request_t *r,
             return ngx_http_next_body_filter(r, &out);
         }
 
-    } else {
-        if (size == 0) {
+    }
+    else
+    {
+        if (size == 0)
+        {
             *ll = NULL;
             return ngx_http_next_body_filter(r, out.next);
         }

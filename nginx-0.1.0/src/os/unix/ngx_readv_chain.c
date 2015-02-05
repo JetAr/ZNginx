@@ -20,22 +20,26 @@ ssize_t ngx_readv_chain(ngx_connection_t *c, ngx_chain_t *chain)
     ngx_event_t   *rev;
     struct iovec  *iov;
 
-    rev = c->read; 
+    rev = c->read;
 
-    if (ngx_event_flags & NGX_HAVE_KQUEUE_EVENT) {
+    if (ngx_event_flags & NGX_HAVE_KQUEUE_EVENT)
+    {
         ngx_log_debug3(NGX_LOG_DEBUG_EVENT, c->log, 0,
                        "readv: eof:%d, avail:%d, err:%d",
                        rev->pending_eof, rev->available, rev->kq_errno);
 
-        if (rev->available == 0) {
-            if (rev->pending_eof) {
+        if (rev->available == 0)
+        {
+            if (rev->pending_eof)
+            {
                 rev->ready = 0;
                 rev->eof = 1;
 
                 ngx_log_error(NGX_LOG_INFO, c->log, rev->kq_errno,
                               "kevent() reported about an closed connection");
 
-                if (rev->kq_errno) {
+                if (rev->kq_errno)
+                {
                     rev->error = 1;
                     ngx_set_socket_errno(rev->kq_errno);
                     return NGX_ERROR;
@@ -43,7 +47,9 @@ ssize_t ngx_readv_chain(ngx_connection_t *c, ngx_chain_t *chain)
 
                 return 0;
 
-            } else {
+            }
+            else
+            {
                 return NGX_AGAIN;
             }
         }
@@ -57,11 +63,15 @@ ssize_t ngx_readv_chain(ngx_connection_t *c, ngx_chain_t *chain)
 
     /* coalesce the neighbouring bufs */
 
-    while (chain) {
-        if (prev == chain->buf->last) {
+    while (chain)
+    {
+        if (prev == chain->buf->last)
+        {
             iov->iov_len += chain->buf->end - chain->buf->last;
 
-        } else {
+        }
+        else
+        {
             ngx_test_null(iov, ngx_push_array(&io), NGX_ERROR);
             iov->iov_base = (void *) chain->buf->last;
             iov->iov_len = chain->buf->end - chain->buf->last;
@@ -77,11 +87,14 @@ ssize_t ngx_readv_chain(ngx_connection_t *c, ngx_chain_t *chain)
 
     rev = c->read;
 
-    do {
+    do
+    {
         n = readv(c->fd, (struct iovec *) io.elts, io.nelts);
 
-        if (n >= 0) {
-            if (ngx_event_flags & NGX_HAVE_KQUEUE_EVENT) {
+        if (n >= 0)
+        {
+            if (ngx_event_flags & NGX_HAVE_KQUEUE_EVENT)
+            {
                 rev->available -= n;
 
                 /*
@@ -89,12 +102,15 @@ ssize_t ngx_readv_chain(ngx_connection_t *c, ngx_chain_t *chain)
                  * bytes can be received between kevent() and recv()
                  */
 
-                if (rev->available <= 0) {
-                    if (!rev->pending_eof) {
+                if (rev->available <= 0)
+                {
+                    if (!rev->pending_eof)
+                    {
                         rev->ready = 0;
                     }
 
-                    if (rev->available < 0) {
+                    if (rev->available < 0)
+                    {
                         rev->available = 0;
                     }
                 }
@@ -102,11 +118,13 @@ ssize_t ngx_readv_chain(ngx_connection_t *c, ngx_chain_t *chain)
                 return n;
             }
 
-            if (n < size) {
+            if (n < size)
+            {
                 rev->ready = 0;
             }
 
-            if (n == 0) {
+            if (n == 0)
+            {
                 rev->eof = 1;
             }
 
@@ -115,21 +133,26 @@ ssize_t ngx_readv_chain(ngx_connection_t *c, ngx_chain_t *chain)
 
         err = ngx_socket_errno;
 
-        if (err == NGX_EAGAIN || err == NGX_EINTR) {
+        if (err == NGX_EAGAIN || err == NGX_EINTR)
+        {
             ngx_log_debug0(NGX_LOG_DEBUG_EVENT, c->log, err,
                            "readv() not ready");
             n = NGX_AGAIN;
 
-        } else {
+        }
+        else
+        {
             n = ngx_connection_error(c, err, "readv() failed");
             break;
         }
 
-    } while (err == NGX_EINTR);
+    }
+    while (err == NGX_EINTR);
 
     rev->ready = 0;
 
-    if (n == NGX_ERROR){
+    if (n == NGX_ERROR)
+    {
         c->read->error = 1;
     }
 
@@ -155,11 +178,15 @@ ssize_t ngx_readv_chain(ngx_connection_t *c, ngx_chain_t *chain)
 
     /* coalesce the neighbouring bufs */
 
-    while (chain) {
-        if (prev == chain->buf->last) {
+    while (chain)
+    {
+        if (prev == chain->buf->last)
+        {
             iov->iov_len += chain->buf->end - chain->buf->last;
 
-        } else {
+        }
+        else
+        {
             ngx_test_null(iov, ngx_push_array(&io), NGX_ERROR);
             iov->iov_base = chain->buf->last;
             iov->iov_len = chain->buf->end - chain->buf->last;
@@ -175,18 +202,23 @@ ssize_t ngx_readv_chain(ngx_connection_t *c, ngx_chain_t *chain)
 
     rev = c->read;
 
-    do {
+    do
+    {
         n = readv(c->fd, (struct iovec *) io.elts, io.nelts);
 
-        if (n == 0) {
+        if (n == 0)
+        {
             rev->ready = 0;
             rev->eof = 1;
 
             return n;
 
-        } else if (n > 0) {
+        }
+        else if (n > 0)
+        {
 
-            if (n < size && !(ngx_event_flags & NGX_HAVE_GREEDY_EVENT)) {
+            if (n < size && !(ngx_event_flags & NGX_HAVE_GREEDY_EVENT))
+            {
                 rev->ready = 0;
             }
 
@@ -195,21 +227,26 @@ ssize_t ngx_readv_chain(ngx_connection_t *c, ngx_chain_t *chain)
 
         err = ngx_socket_errno;
 
-        if (err == NGX_EAGAIN || err == NGX_EINTR) {
+        if (err == NGX_EAGAIN || err == NGX_EINTR)
+        {
             ngx_log_debug0(NGX_LOG_DEBUG_EVENT, c->log, err,
                            "readv() not ready");
             n = NGX_AGAIN;
 
-        } else {
+        }
+        else
+        {
             n = ngx_connection_error(c, err, "readv() failed");
             break;
         }
 
-    } while (err == NGX_EINTR);
+    }
+    while (err == NGX_EINTR);
 
     rev->ready = 0;
 
-    if (n == NGX_ERROR){
+    if (n == NGX_ERROR)
+    {
         c->read->error = 1;
     }
 

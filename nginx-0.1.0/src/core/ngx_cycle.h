@@ -12,7 +12,8 @@
 #include <ngx_core.h>
 
 
-struct ngx_cycle_s {
+struct ngx_cycle_s
+{
     void           ****conf_ctx;
     ngx_pool_t        *pool;
 
@@ -35,28 +36,30 @@ struct ngx_cycle_s {
 };
 
 
-typedef struct {
-     ngx_flag_t  daemon;
-     ngx_flag_t  master;
+typedef struct
+{
+    ngx_flag_t  daemon;
+    ngx_flag_t  master;
 
-     ngx_int_t   worker_processes;
+    ngx_int_t   worker_processes;
 
-     ngx_uid_t   user;
-     ngx_gid_t   group;
+    ngx_uid_t   user;
+    ngx_gid_t   group;
 
-     ngx_str_t   pid;
-     ngx_str_t   newpid;
+    ngx_str_t   pid;
+    ngx_str_t   newpid;
 
 #if (NGX_THREADS)
-     ngx_int_t   worker_threads;
-     size_t      thread_stack_size;
+    ngx_int_t   worker_threads;
+    size_t      thread_stack_size;
 #endif
 
 } ngx_core_conf_t;
 
 
-typedef struct {
-     ngx_pool_t  *pool;   /* pcre's malloc() pool */
+typedef struct
+{
+    ngx_pool_t  *pool;   /* pcre's malloc() pool */
 } ngx_core_tls_t;
 
 

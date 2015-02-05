@@ -22,7 +22,8 @@ static int ngx_aio_del_connection(ngx_connection_t *c, u_int flags);
 static int ngx_aio_process_events(ngx_cycle_t *cycle);
 
 
-ngx_os_io_t ngx_os_aio = {
+ngx_os_io_t ngx_os_aio =
+{
     ngx_aio_read,
     ngx_aio_read_chain,
     ngx_aio_write,
@@ -33,7 +34,8 @@ ngx_os_io_t ngx_os_aio = {
 
 static ngx_str_t      aio_name = ngx_string("aio");
 
-ngx_event_module_t  ngx_aio_module_ctx = {
+ngx_event_module_t  ngx_aio_module_ctx =
+{
     &aio_name,
     NULL,                                  /* create configuration */
     NULL,                                  /* init configuration */
@@ -53,7 +55,8 @@ ngx_event_module_t  ngx_aio_module_ctx = {
 
 };
 
-ngx_module_t  ngx_aio_module = {
+ngx_module_t  ngx_aio_module =
+{
     NGX_MODULE,
     &ngx_aio_module_ctx,                   /* module context */
     NULL,                                  /* module directives */
@@ -68,7 +71,8 @@ ngx_module_t  ngx_aio_module = {
 
 static int ngx_aio_init(ngx_cycle_t *cycle)
 {
-    if (ngx_kqueue_module_ctx.actions.init(cycle) == NGX_ERROR) {
+    if (ngx_kqueue_module_ctx.actions.init(cycle) == NGX_ERROR)
+    {
         return NGX_ERROR;
     }
 
@@ -106,7 +110,8 @@ static int ngx_aio_del_connection(ngx_connection_t *c, u_int flags)
 {
     int  rc;
 
-    if (c->read->active == 0 && c->write->active == 0) {
+    if (c->read->active == 0 && c->write->active == 0)
+    {
         return NGX_OK;
     }
 
@@ -114,25 +119,29 @@ static int ngx_aio_del_connection(ngx_connection_t *c, u_int flags)
 
     ngx_log_debug1(NGX_LOG_DEBUG_EVENT, c->log, 0, "aio_cancel: %d", rc);
 
-    if (rc == AIO_CANCELED) {
+    if (rc == AIO_CANCELED)
+    {
         c->read->active = c->write->active = 0;
         return NGX_OK;
     }
 
-    if (rc == AIO_ALLDONE) {
+    if (rc == AIO_ALLDONE)
+    {
         c->read->active = c->write->active = 0;
         ngx_log_error(NGX_LOG_ALERT, c->log, 0,
                       "aio_cancel() returned AIO_ALLDONE");
         return NGX_OK;
     }
 
-    if (rc == -1) {
+    if (rc == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, c->log, ngx_errno,
                       "aio_cancel() failed");
         return NGX_ERROR;
     }
 
-    if (rc == AIO_NOTCANCELED) {
+    if (rc == AIO_NOTCANCELED)
+    {
         ngx_log_error(NGX_LOG_ALERT, c->log, 0,
                       "aio_cancel() returned AIO_NOTCANCELED");
 
@@ -178,9 +187,9 @@ int ngx_posix_aio_process_events(ngx_log_t *log)
     if (ngx_socket_errno == NGX_EINTR)
         look listen
         select()/accept() nb listen sockets
-    else
-        aio
-}
+        else
+            aio
+        }
 
 /* 3 */
 int ngx_posix_aio_process_events(ngx_log_t *log)
@@ -199,7 +208,7 @@ int ngx_posix_aio_process_events(ngx_log_t *log)
 
     if (ngx_socket_errno == NGX_EINTR)
         look ready array
-}
+    }
 
 void aio_sig_handler(int signo, siginfo_t *siginfo, void *context)
 {

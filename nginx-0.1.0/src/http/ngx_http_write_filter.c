@@ -10,7 +10,8 @@
 #include <ngx_http.h>
 
 
-typedef struct {
+typedef struct
+{
     ngx_chain_t  *out;
 } ngx_http_write_filter_ctx_t;
 
@@ -18,7 +19,8 @@ typedef struct {
 static ngx_int_t ngx_http_write_filter_init(ngx_cycle_t *cycle);
 
 
-ngx_http_module_t  ngx_http_write_filter_module_ctx = {
+ngx_http_module_t  ngx_http_write_filter_module_ctx =
+{
     NULL,                                  /* pre conf */
 
     NULL,                                  /* create main configuration */
@@ -32,7 +34,8 @@ ngx_http_module_t  ngx_http_write_filter_module_ctx = {
 };
 
 
-ngx_module_t  ngx_http_write_filter_module = {
+ngx_module_t  ngx_http_write_filter_module =
+{
     NGX_MODULE,
     &ngx_http_write_filter_module_ctx,     /* module context */
     NULL,                                  /* module directives */
@@ -54,7 +57,8 @@ ngx_int_t ngx_http_write_filter(ngx_http_request_t *r, ngx_chain_t *in)
     ctx = ngx_http_get_module_ctx(r->main ? r->main : r,
                                   ngx_http_write_filter_module);
 
-    if (ctx == NULL) {
+    if (ctx == NULL)
+    {
         ngx_http_create_ctx(r, ctx, ngx_http_write_filter_module,
                             sizeof(ngx_http_write_filter_ctx_t), NGX_ERROR);
     }
@@ -66,34 +70,40 @@ ngx_int_t ngx_http_write_filter(ngx_http_request_t *r, ngx_chain_t *in)
 
     /* find the size, the flush point and the last link of the saved chain */
 
-    for (cl = ctx->out; cl; cl = cl->next) {
+    for (cl = ctx->out; cl; cl = cl->next)
+    {
         ll = &cl->next;
 
         size += ngx_buf_size(cl->buf);
 
-        if (cl->buf->flush || cl->buf->recycled) {
+        if (cl->buf->flush || cl->buf->recycled)
+        {
             flush = size;
         }
 
-        if (cl->buf->last_buf) {
+        if (cl->buf->last_buf)
+        {
             last = 1;
         }
     }
 
     /* add the new chain to the existent one */
 
-    for (ln = in; ln; ln = ln->next) {
+    for (ln = in; ln; ln = ln->next)
+    {
         ngx_alloc_link_and_set_buf(cl, ln->buf, r->pool, NGX_ERROR);
         *ll = cl;
         ll = &cl->next;
 
         size += ngx_buf_size(cl->buf);
 
-        if (cl->buf->flush || cl->buf->recycled) {
+        if (cl->buf->flush || cl->buf->recycled)
+        {
             flush = size;
         }
 
-        if (cl->buf->last_buf) {
+        if (cl->buf->last_buf)
+        {
             last = 1;
         }
     }
@@ -113,16 +123,20 @@ ngx_int_t ngx_http_write_filter(ngx_http_request_t *r, ngx_chain_t *in)
      * is smaller than "postpone_output" directive
      */
 
-    if (!last && flush == 0 && in && size < (off_t) clcf->postpone_output) {
+    if (!last && flush == 0 && in && size < (off_t) clcf->postpone_output)
+    {
         return NGX_OK;
     }
 
-    if (c->write->delayed) {
+    if (c->write->delayed)
+    {
         return NGX_AGAIN;
     }
 
-    if (size == 0 && !c->buffered) {
-        if (!last) {
+    if (size == 0 && !c->buffered)
+    {
+        if (!last)
+        {
             ngx_log_error(NGX_LOG_ALERT, r->connection->log, 0,
                           "the http output chain is empty");
         }
@@ -137,20 +151,23 @@ ngx_int_t ngx_http_write_filter(ngx_http_request_t *r, ngx_chain_t *in)
     ngx_log_debug1(NGX_LOG_DEBUG_HTTP, c->log, 0,
                    "http write filter %X", chain);
 
-    if (clcf->limit_rate) {
+    if (clcf->limit_rate)
+    {
         sent = c->sent - sent;
         c->write->delayed = 1;
         ngx_add_timer(r->connection->write,
                       (ngx_msec_t) (sent * 1000 / clcf->limit_rate));
     }
 
-    if (chain == NGX_CHAIN_ERROR) {
+    if (chain == NGX_CHAIN_ERROR)
+    {
         return NGX_ERROR;
     }
 
     ctx->out = chain;
 
-    if (chain || c->buffered) {
+    if (chain || c->buffered)
+    {
         return NGX_AGAIN;
     }
 

@@ -29,7 +29,8 @@ ssize_t ngx_aio_read(ngx_connection_t *c, u_char *buf, size_t size)
 
     rev = c->read;
 
-    if (!rev->ready) {
+    if (!rev->ready)
+    {
         ngx_log_error(NGX_LOG_ALERT, c->log, 0, "second aio post");
         return NGX_AGAIN;
     }
@@ -39,7 +40,8 @@ ssize_t ngx_aio_read(ngx_connection_t *c, u_char *buf, size_t size)
     ngx_log_debug1(NGX_LOG_DEBUG_EVENT, c->log, 0,
                    "aio size: %d", size);
 
-    if (!rev->complete) {
+    if (!rev->complete)
+    {
         ngx_memzero(&rev->aiocb, sizeof(struct aiocb));
 
         rev->aiocb.aio_fildes = c->fd;
@@ -52,7 +54,8 @@ ssize_t ngx_aio_read(ngx_connection_t *c, u_char *buf, size_t size)
         rev->aiocb.aio_sigevent.sigev_value.sigval_ptr = rev;
 #endif
 
-        if (aio_read(&rev->aiocb) == -1) {
+        if (aio_read(&rev->aiocb) == -1)
+        {
             ngx_log_error(NGX_LOG_CRIT, rev->log, ngx_errno,
                           "aio_read() failed");
             rev->error = 1;
@@ -69,15 +72,19 @@ ssize_t ngx_aio_read(ngx_connection_t *c, u_char *buf, size_t size)
     rev->complete = 0;
 
     n = aio_error(&rev->aiocb);
-    if (n == -1) {
+    if (n == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, c->log, ngx_errno, "aio_error() failed");
         rev->error = 1;
         return NGX_ERROR;
     }
 
-    if (n != 0) {
-        if (n == NGX_EINPROGRESS) {
-            if (rev->ready) {
+    if (n != 0)
+    {
+        if (n == NGX_EINPROGRESS)
+        {
+            if (rev->ready)
+            {
                 ngx_log_error(NGX_LOG_ALERT, c->log, n,
                               "aio_read() still in progress");
                 rev->ready = 0;
@@ -92,7 +99,8 @@ ssize_t ngx_aio_read(ngx_connection_t *c, u_char *buf, size_t size)
     }
 
     n = aio_return(&rev->aiocb);
-    if (n == -1) {
+    if (n == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, c->log, ngx_errno,
                       "aio_return() failed");
 
@@ -104,10 +112,13 @@ ssize_t ngx_aio_read(ngx_connection_t *c, u_char *buf, size_t size)
     ngx_log_debug2(NGX_LOG_DEBUG_EVENT, rev->log, 0,
                    "aio_read: #%d %d", c->fd, n);
 
-    if (n == 0) {
+    if (n == 0)
+    {
         rev->eof = 1;
         rev->ready = 0;
-    } else {
+    }
+    else
+    {
         rev->ready = 1;
     }
 

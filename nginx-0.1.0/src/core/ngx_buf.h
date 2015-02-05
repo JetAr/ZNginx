@@ -16,7 +16,8 @@ typedef void *            ngx_buf_tag_t;
 
 typedef struct ngx_buf_s  ngx_buf_t;
 
-struct ngx_buf_s {
+struct ngx_buf_s
+{
     u_char          *pos;
     u_char          *last;
     off_t            file_pos;
@@ -58,13 +59,15 @@ struct ngx_buf_s {
 
 typedef struct ngx_chain_s       ngx_chain_t;
 
-struct ngx_chain_s {
+struct ngx_chain_s
+{
     ngx_buf_t    *buf;
     ngx_chain_t  *next;
 };
 
 
-typedef struct {
+typedef struct
+{
     ngx_int_t    num;
     size_t       size;
 } ngx_bufs_t;
@@ -72,7 +75,8 @@ typedef struct {
 
 typedef int  (*ngx_output_chain_filter_pt)(void *ctx, ngx_chain_t *out);
 
-typedef struct {
+typedef struct
+{
     ngx_buf_t                   *buf;
     ngx_chain_t                 *in;
     ngx_chain_t                 *free;
@@ -92,7 +96,8 @@ typedef struct {
 } ngx_output_chain_ctx_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_chain_t                 *out;
     ngx_chain_t                **last;
     ngx_connection_t            *connection;

@@ -35,10 +35,13 @@ ngx_regex_t *ngx_regex_compile(ngx_str_t *pattern, ngx_int_t options,
     tls = NULL;
 #endif
 
-    if (ngx_threaded) {
+    if (ngx_threaded)
+    {
         tls = ngx_thread_get_tls(ngx_core_tls_key);
         tls->pool = pool;
-    } else {
+    }
+    else
+    {
         ngx_pcre_pool = pool;
     }
 
@@ -51,24 +54,31 @@ ngx_regex_t *ngx_regex_compile(ngx_str_t *pattern, ngx_int_t options,
     re = pcre_compile((const char *) pattern->data, (int) options,
                       &errstr, &erroff, NULL);
 
-    if (re == NULL) {
-       if ((size_t) erroff == pattern->len) {
-           ngx_snprintf((char *) err->data, err->len - 1,
-                        "pcre_compile() failed: %s in \"%s\"",
-                        errstr, pattern->data);
-        } else {
-           ngx_snprintf((char *) err->data, err->len - 1,
-                        "pcre_compile() failed: %s in \"%s\" at \"%s\"",
-                        errstr, pattern->data, pattern->data + erroff);
+    if (re == NULL)
+    {
+        if ((size_t) erroff == pattern->len)
+        {
+            ngx_snprintf((char *) err->data, err->len - 1,
+                         "pcre_compile() failed: %s in \"%s\"",
+                         errstr, pattern->data);
+        }
+        else
+        {
+            ngx_snprintf((char *) err->data, err->len - 1,
+                         "pcre_compile() failed: %s in \"%s\" at \"%s\"",
+                         errstr, pattern->data, pattern->data + erroff);
         }
     }
 
     /* ensure that there is no current pool */
 
 #if (NGX_THREADS)
-    if (ngx_threaded) {
+    if (ngx_threaded)
+    {
         tls->pool = NULL;
-    } else {
+    }
+    else
+    {
         ngx_pcre_pool = NULL;
     }
 #else
@@ -87,7 +97,8 @@ ngx_int_t ngx_regex_exec(ngx_regex_t *re, ngx_str_t *s,
     rc = pcre_exec(re, NULL, (const char *) s->data, s->len, 0, 0,
                    matches, size);
 
-    if (rc == -1) {
+    if (rc == -1)
+    {
         return NGX_DECLINED;
     }
 
@@ -101,17 +112,21 @@ static void *ngx_regex_malloc(size_t size)
 #if (NGX_THREADS)
     ngx_core_tls_t  *tls;
 
-    if (ngx_threaded) {
+    if (ngx_threaded)
+    {
         tls = ngx_thread_get_tls(ngx_core_tls_key);
         pool = tls->pool;
-    } else {
+    }
+    else
+    {
         pool = ngx_pcre_pool;
     }
 #else
     pool = ngx_pcre_pool;
 #endif
 
-    if (pool) {
+    if (pool)
+    {
         return ngx_palloc(pool, size);
     }
 

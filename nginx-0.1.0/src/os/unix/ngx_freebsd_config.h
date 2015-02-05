@@ -73,7 +73,7 @@
 #include <poll.h>
 #endif
 
-       /* FreeBSD aio supported via kqueue */
+/* FreeBSD aio supported via kqueue */
 
 #if (__FreeBSD__ == 4 && __FreeBSD_version >= 430000) \
     || __FreeBSD_version >= 500014

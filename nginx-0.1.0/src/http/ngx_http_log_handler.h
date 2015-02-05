@@ -22,38 +22,44 @@ typedef u_char *(*ngx_http_log_op_pt) (ngx_http_request_t *r, u_char *buf,
 #define NGX_HTTP_LOG_ARG         (u_int) -1
 
 
-typedef struct {
+typedef struct
+{
     size_t               len;
     ngx_http_log_op_pt   op;
     uintptr_t            data;
 } ngx_http_log_op_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_str_t            name;
     ngx_array_t         *ops;        /* array of ngx_http_log_op_t */
 } ngx_http_log_fmt_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_str_t            name;
     size_t               len;
     ngx_http_log_op_pt   op;
 } ngx_http_log_op_name_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_array_t          formats;    /* array of ngx_http_log_fmt_t */
 } ngx_http_log_main_conf_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_open_file_t     *file;
     ngx_array_t         *ops;        /* array of ngx_http_log_op_t */
 } ngx_http_log_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_array_t         *logs;       /* array of ngx_http_log_t */
     ngx_uint_t           off;        /* unsigned  off:1 */
 } ngx_http_log_loc_conf_t;

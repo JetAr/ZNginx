@@ -17,10 +17,13 @@ void ngx_spinlock(ngx_atomic_t *lock, ngx_uint_t spin)
 
     tries = 0;
 
-    for ( ;; ) {
+    for ( ;; )
+    {
 
-        if (*lock) {
-            if (ngx_ncpu > 1 && tries++ < spin) {
+        if (*lock)
+        {
+            if (ngx_ncpu > 1 && tries++ < spin)
+            {
                 continue;
             }
 
@@ -28,8 +31,11 @@ void ngx_spinlock(ngx_atomic_t *lock, ngx_uint_t spin)
 
             tries = 0;
 
-        } else {
-            if (ngx_atomic_cmp_set(lock, 0, 1)) {
+        }
+        else
+        {
+            if (ngx_atomic_cmp_set(lock, 0, 1))
+            {
                 return;
             }
         }

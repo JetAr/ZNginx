@@ -25,7 +25,8 @@ typedef pid_t  ngx_tid_t;
 
 #define NGX_MUTEX_LOCK_BUSY  0x80000000
 
-typedef volatile struct {
+typedef volatile struct
+{
     ngx_atomic_t  lock;
     ngx_log_t    *log;
     int           semid;
@@ -34,7 +35,8 @@ typedef volatile struct {
 
 #define NGX_CV_SIGNAL        64
 
-typedef struct {
+typedef struct
+{
     int           signo;
     int           kq;
     ngx_tid_t     tid;
@@ -60,7 +62,8 @@ static inline int ngx_gettid()
 {
     char  *sp;
 
-    if (ngx_thread_stack_size == 0) {
+    if (ngx_thread_stack_size == 0)
+    {
         return 0;
     }
 
@@ -99,8 +102,9 @@ ngx_int_t ngx_thread_set_tls(ngx_tls_key_t key, void *value);
 
 
 static void *ngx_thread_get_tls(ngx_tls_key_t key)
-{   
-    if (key >= NGX_THREAD_KEYS_MAX) {
+{
+    if (key >= NGX_THREAD_KEYS_MAX)
+    {
         return NULL;
     }
 

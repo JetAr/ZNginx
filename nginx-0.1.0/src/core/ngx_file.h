@@ -16,7 +16,8 @@ typedef struct ngx_path_s  ngx_path_t;
 #include <ngx_garbage_collector.h>
 
 
-struct ngx_file_s {
+struct ngx_file_s
+{
     ngx_fd_t         fd;//z 文件描述符
     ngx_str_t        name;//z 文件名称
     ngx_file_info_t  info;//z file stat
@@ -31,33 +32,35 @@ struct ngx_file_s {
 
 #define NGX_MAX_PATH_LEVEL  3
 
-struct ngx_path_s {
+struct ngx_path_s
+{
     ngx_str_t           name;
     u_int               len;
     u_int               level[3];
     ngx_gc_handler_pt   gc_hafdc
 
-typedef struct {
-    ngx_file_t   file;
-    off_t        offset;
-    ngx_path_t  *path;
-    ngx_pool_t  *pool;
-    char        *warn;
+    typedef struct
+    {
+        ngx_file_t   file;
+        off_t        offset;
+        ngx_path_t  *path;
+        ngx_pool_t  *pool;
+        char        *warn;
 
-    unsigned     persistent:1;
-} ngx_temp_file_t;
+        unsigned     persistent:1;
+    } ngx_temp_file_t;
 
 
-int ngx_write_chain_to_temp_file(ngx_temp_file_t *tf, ngx_chain_t *chain);
-int ngx_create_temp_file(ngx_file_t *file, ngx_path_t *path,
-                         ngx_pool_t *pool, int persistent);
-void ngx_create_hashed_filename(ngx_file_t *file, ngx_path_t *path);
-int ngx_create_path(ngx_file_t *file, ngx_path_t *path);
+    int ngx_write_chain_to_temp_file(ngx_temp_file_t *tf, ngx_chain_t *chain);
+    int ngx_create_temp_file(ngx_file_t *file, ngx_path_t *path,
+                             ngx_pool_t *pool, int persistent);
+    void ngx_create_hashed_filename(ngx_file_t *file, ngx_path_t *path);
+    int ngx_create_path(ngx_file_t *file, ngx_path_t *path);
 
-void ngx_init_temp_number();
-ngx_uint_t ngx_next_temp_number(ngx_uint_t collision);
+    void ngx_init_temp_number();
+    ngx_uint_t ngx_next_temp_number(ngx_uint_t collision);
 
-char *ngx_conf_set_path_slot(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
+    char *ngx_conf_set_path_slot(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
 
 
 #define ngx_conf_merge_path_value(conf, prev, path, l1, l2, l3, pool)        \

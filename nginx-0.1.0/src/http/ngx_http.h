@@ -32,7 +32,8 @@ typedef struct ngx_http_cleanup_s  ngx_http_cleanup_t;
 #endif
 
 
-typedef struct {
+typedef struct
+{
     u_int     connection;
 
     /*

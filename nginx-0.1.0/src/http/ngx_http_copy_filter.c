@@ -9,31 +9,36 @@
 #include <ngx_http.h>
 
 
-typedef struct {
+typedef struct
+{
     ngx_bufs_t  bufs;
 } ngx_http_copy_filter_conf_t;
 
 
 static void *ngx_http_copy_filter_create_conf(ngx_conf_t *cf);
 static char *ngx_http_copy_filter_merge_conf(ngx_conf_t *cf,
-                                             void *parent, void *child);
+        void *parent, void *child);
 static ngx_int_t ngx_http_copy_filter_init(ngx_cycle_t *cycle);
 
 
-static ngx_command_t  ngx_http_copy_filter_commands[] = {
+static ngx_command_t  ngx_http_copy_filter_commands[] =
+{
 
-    {ngx_string("output_buffers"),
-     NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_TAKE2,
-     ngx_conf_set_bufs_slot,
-     NGX_HTTP_LOC_CONF_OFFSET,
-     offsetof(ngx_http_copy_filter_conf_t, bufs),
-     NULL},
+    {
+        ngx_string("output_buffers"),
+        NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_TAKE2,
+        ngx_conf_set_bufs_slot,
+        NGX_HTTP_LOC_CONF_OFFSET,
+        offsetof(ngx_http_copy_filter_conf_t, bufs),
+        NULL
+    },
 
     ngx_null_command
 };
 
 
-static ngx_http_module_t  ngx_http_copy_filter_module_ctx = {
+static ngx_http_module_t  ngx_http_copy_filter_module_ctx =
+{
     NULL,                                  /* pre conf */
 
     NULL,                                  /* create main configuration */
@@ -47,7 +52,8 @@ static ngx_http_module_t  ngx_http_copy_filter_module_ctx = {
 };
 
 
-ngx_module_t  ngx_http_copy_filter_module = {
+ngx_module_t  ngx_http_copy_filter_module =
+{
     NGX_MODULE,
     &ngx_http_copy_filter_module_ctx,      /* module context */
     ngx_http_copy_filter_commands,         /* module directives */
@@ -65,14 +71,16 @@ ngx_int_t ngx_http_copy_filter(ngx_http_request_t *r, ngx_chain_t *in)
     ngx_output_chain_ctx_t       *ctx;
     ngx_http_copy_filter_conf_t  *conf;
 
-    if (r->connection->write->error) {
+    if (r->connection->write->error)
+    {
         return NGX_ERROR;
     }
 
     ctx = ngx_http_get_module_ctx(r->main ? r->main : r,
-                                            ngx_http_copy_filter_module);
+                                  ngx_http_copy_filter_module);
 
-    if (ctx == NULL) {
+    if (ctx == NULL)
+    {
         conf = ngx_http_get_module_loc_conf(r->main ? r->main : r,
                                             ngx_http_copy_filter_module);
 
@@ -111,7 +119,7 @@ static void *ngx_http_copy_filter_create_conf(ngx_conf_t *cf)
 
 
 static char *ngx_http_copy_filter_merge_conf(ngx_conf_t *cf,
-                                             void *parent, void *child)
+        void *parent, void *child)
 {
     ngx_http_copy_filter_conf_t *prev = parent;
     ngx_http_copy_filter_conf_t *conf = child;

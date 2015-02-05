@@ -13,7 +13,8 @@
 #include <ngx_http.h>
 
 
-typedef struct {
+typedef struct
+{
     in_addr_t  addr;
     in_port_t  port;
     int        family;
@@ -24,7 +25,8 @@ typedef struct {
 } ngx_http_listen_t;
 
 
-typedef enum {
+typedef enum
+{
     NGX_HTTP_REWRITE_PHASE = 0,
 
     NGX_HTTP_FIND_CONFIG_PHASE,
@@ -36,13 +38,15 @@ typedef enum {
 } ngx_http_phases;
 
 
-typedef struct {
+typedef struct
+{
     ngx_array_t          handlers;
     ngx_int_t            type;                /* NGX_OK, NGX_DECLINED */
 } ngx_http_phase_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_array_t       servers;         /* array of ngx_http_core_srv_conf_t */
 
     ngx_http_phase_t  phases[NGX_HTTP_LAST_PHASE];
@@ -52,7 +56,8 @@ typedef struct {
 } ngx_http_core_main_conf_t;
 
 
-typedef struct {
+typedef struct
+{
     /*
      * array of ngx_http_core_loc_conf_t, used in the translation handler
      * and in the merge phase
@@ -83,14 +88,16 @@ typedef struct {
 
 /* list of structures to find core_srv_conf quickly at run time */
 
-typedef struct {
+typedef struct
+{
     in_port_t     port;
     ngx_str_t     port_text;
     ngx_array_t   addrs;       /* array of ngx_http_in_addr_t */
 } ngx_http_in_port_t;
 
 
-typedef struct {
+typedef struct
+{
     in_addr_t                  addr;
     ngx_array_t                names;     /* array of ngx_http_server_name_t */
     ngx_http_core_srv_conf_t  *core_srv_conf;  /* default server conf
@@ -100,7 +107,8 @@ typedef struct {
 } ngx_http_in_addr_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_str_t                  name;
     ngx_http_core_srv_conf_t  *core_srv_conf; /* virtual name server conf */
 } ngx_http_server_name_t;
@@ -117,13 +125,15 @@ typedef struct {
             key %= NGX_HTTP_TYPES_HASH_PRIME;                               \
         }
 
-typedef struct {
+typedef struct
+{
     ngx_str_t  exten;
     ngx_str_t  type;
 } ngx_http_type_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_int_t  status;
     ngx_int_t  overwrite;
     ngx_str_t  uri;
@@ -132,7 +142,8 @@ typedef struct {
 
 typedef struct ngx_http_core_loc_conf_s  ngx_http_core_loc_conf_t;
 
-struct ngx_http_core_loc_conf_s {
+struct ngx_http_core_loc_conf_s
+{
     ngx_str_t     name;          /* location name */
 
 #if (HAVE_PCRE)
@@ -204,7 +215,7 @@ ngx_int_t ngx_http_internal_redirect(ngx_http_request_t *r,
 
 typedef ngx_int_t (*ngx_http_output_header_filter_pt)(ngx_http_request_t *r);
 typedef ngx_int_t (*ngx_http_output_body_filter_pt)
-                                   (ngx_http_request_t *r, ngx_chain_t *chain);
+(ngx_http_request_t *r, ngx_chain_t *chain);
 
 
 ngx_int_t ngx_http_output_filter(ngx_http_request_t *r, ngx_chain_t *chain);

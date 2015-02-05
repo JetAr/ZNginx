@@ -12,7 +12,8 @@
 #include <ngx_core.h>
 
 //z 看leveldb中也实现了个类似的 slice 。
-typedef struct {
+typedef struct
+{
     size_t    len;
     u_char   *data;
 } ngx_str_t;

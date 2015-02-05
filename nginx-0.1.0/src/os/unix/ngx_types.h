@@ -15,7 +15,8 @@ typedef int            ngx_fd_t;
 typedef struct stat    ngx_file_info_t;
 typedef ino_t          ngx_file_uniq_t;
 
-typedef struct {
+typedef struct
+{
     DIR              *dir;
     struct dirent    *de;
     struct stat       info;

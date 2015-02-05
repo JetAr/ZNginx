@@ -19,7 +19,8 @@ ssize_t ngx_read_file(ngx_file_t *file, u_char *buf, size_t size, off_t offset)
 
     n = pread(file->fd, buf, size, offset);
 
-    if (n == -1) {
+    if (n == -1)
+    {
         ngx_log_error(NGX_LOG_CRIT, file->log, ngx_errno,
                       "pread() failed, file \"%s\"", file->name.data);
         return NGX_ERROR;
@@ -27,8 +28,10 @@ ssize_t ngx_read_file(ngx_file_t *file, u_char *buf, size_t size, off_t offset)
 
 #else
 
-    if (file->sys_offset != offset) {
-        if (lseek(file->fd, offset, SEEK_SET) == -1) {
+    if (file->sys_offset != offset)
+    {
+        if (lseek(file->fd, offset, SEEK_SET) == -1)
+        {
             ngx_log_error(NGX_LOG_CRIT, file->log, ngx_errno, "lseek() failed");
             return NGX_ERROR;
         }
@@ -38,7 +41,8 @@ ssize_t ngx_read_file(ngx_file_t *file, u_char *buf, size_t size, off_t offset)
 
     n = read(file->fd, buf, size);
 
-    if (n == -1) {
+    if (n == -1)
+    {
         ngx_log_error(NGX_LOG_CRIT, file->log, ngx_errno, "read() failed");
         return NGX_ERROR;
     }
@@ -61,12 +65,14 @@ ssize_t ngx_write_file(ngx_file_t *file, u_char *buf, size_t size, off_t offset)
 
     n = pwrite(file->fd, buf, size, offset);
 
-    if (n == -1) {
+    if (n == -1)
+    {
         ngx_log_error(NGX_LOG_CRIT, file->log, ngx_errno, "pwrite() failed");
         return NGX_ERROR;
     }
 
-    if ((size_t) n != size) {
+    if ((size_t) n != size)
+    {
         ngx_log_error(NGX_LOG_CRIT, file->log, 0,
                       "pwrite() has written only %d of %d", n, size);
         return NGX_ERROR;
@@ -74,8 +80,10 @@ ssize_t ngx_write_file(ngx_file_t *file, u_char *buf, size_t size, off_t offset)
 
 #else
 
-    if (file->sys_offset != offset) {
-        if (lseek(file->fd, offset, SEEK_SET) == -1) {
+    if (file->sys_offset != offset)
+    {
+        if (lseek(file->fd, offset, SEEK_SET) == -1)
+        {
             ngx_log_error(NGX_LOG_CRIT, file->log, ngx_errno, "lseek() failed");
             return NGX_ERROR;
         }
@@ -85,12 +93,14 @@ ssize_t ngx_write_file(ngx_file_t *file, u_char *buf, size_t size, off_t offset)
 
     n = write(file->fd, buf, size);
 
-    if (n == -1) {
+    if (n == -1)
+    {
         ngx_log_error(NGX_LOG_CRIT, file->log, ngx_errno, "write() failed");
         return NGX_ERROR;
     }
 
-    if ((size_t) n != size) {
+    if ((size_t) n != size)
+    {
         ngx_log_error(NGX_LOG_CRIT, file->log, 0,
                       "write() has written only %d of %d", n, size);
         return NGX_ERROR;
@@ -112,7 +122,8 @@ int ngx_open_tempfile(u_char *name, ngx_uint_t persistent)
 
     fd = open((const char *) name, O_CREAT|O_EXCL|O_RDWR, 0600);
 
-    if (fd != -1 && !persistent) {
+    if (fd != -1 && !persistent)
+    {
         unlink((const char *) name);
     }
 
@@ -132,7 +143,8 @@ ssize_t ngx_write_chain_to_file(ngx_file_t *file, ngx_chain_t *cl,
 
     /* use pwrite() if there's the only buf in a chain */
 
-    if (cl->next == NULL) {
+    if (cl->next == NULL)
+    {
         return ngx_write_file(file, cl->buf->pos,
                               (size_t) (cl->buf->last - cl->buf->pos),
                               offset);
@@ -146,11 +158,15 @@ ssize_t ngx_write_chain_to_file(ngx_file_t *file, ngx_chain_t *cl,
 
     /* create the iovec and coalesce the neighbouring bufs */
 
-    while (cl) {
-        if (prev == cl->buf->pos) {
+    while (cl)
+    {
+        if (prev == cl->buf->pos)
+        {
             iov->iov_len += cl->buf->last - cl->buf->pos;
 
-        } else {
+        }
+        else
+        {
             ngx_test_null(iov, ngx_push_array(&io), NGX_ERROR);
             iov->iov_base = (void *) cl->buf->pos;
             iov->iov_len = cl->buf->last - cl->buf->pos;
@@ -163,14 +179,17 @@ ssize_t ngx_write_chain_to_file(ngx_file_t *file, ngx_chain_t *cl,
 
     /* use pwrite() if there's the only iovec buffer */
 
-    if (io.nelts == 1) {
+    if (io.nelts == 1)
+    {
         iov = io.elts;
         return ngx_write_file(file, (u_char *) iov[0].iov_base, iov[0].iov_len,
                               offset);
     }
 
-    if (file->sys_offset != offset) {
-        if (lseek(file->fd, offset, SEEK_SET) == -1) {
+    if (file->sys_offset != offset)
+    {
+        if (lseek(file->fd, offset, SEEK_SET) == -1)
+        {
             ngx_log_error(NGX_LOG_CRIT, file->log, ngx_errno, "lseek() failed");
             return NGX_ERROR;
         }
@@ -180,12 +199,14 @@ ssize_t ngx_write_chain_to_file(ngx_file_t *file, ngx_chain_t *cl,
 
     n = writev(file->fd, io.elts, io.nelts);
 
-    if (n == -1) {
+    if (n == -1)
+    {
         ngx_log_error(NGX_LOG_CRIT, file->log, ngx_errno, "writev() failed");
         return NGX_ERROR;
     }
 
-    if ((size_t) n != size) {
+    if ((size_t) n != size)
+    {
         ngx_log_error(NGX_LOG_CRIT, file->log, 0,
                       "writev() has written only %d of %d", n, size);
         return NGX_ERROR;
@@ -202,7 +223,8 @@ int ngx_open_dir(ngx_str_t *name, ngx_dir_t *dir)
 {
     dir->dir = opendir((const char *) name->data);
 
-    if (dir->dir == NULL) {
+    if (dir->dir == NULL)
+    {
         return NGX_ERROR;
     }
 
@@ -216,7 +238,8 @@ int ngx_open_dir(ngx_str_t *name, ngx_dir_t *dir)
 
 ssize_t ngx_read_file(ngx_file_t *file, char *buf, size_t size, off_t offset)
 {
-    if (!file->read->ready) {
+    if (!file->read->ready)
+    {
 
         ngx_memzero(&file->iocb, sizeof(iocb));
         file->iocb.aio_fildes = file->fd;
@@ -236,33 +259,36 @@ ssize_t ngx_read_file(ngx_file_t *file, char *buf, size_t size, off_t offset)
 #endif
 #endif
 
-        if (aio_read(&file->iocb) == -1) {
+        if (aio_read(&file->iocb) == -1)
+        {
             ngx_log_error(NGX_LOG_ERR, file->log, ngx_errno,
                           "aio_read() failed");
             return NGX_ERROR;
 
-        n = aio_error(&file->iocb);
-        if (n == EINPROGRESS)
-            return NGX_AGAIN;
+            n = aio_error(&file->iocb);
+            if (n == EINPROGRESS)
+                return NGX_AGAIN;
 
-        if (n == -1) {
-            ngx_log_error(NGX_LOG_ERR, file->log, ngx_errno,
-                          "aio_read() failed");
-            return NGX_ERROR;
+            if (n == -1)
+            {
+                ngx_log_error(NGX_LOG_ERR, file->log, ngx_errno,
+                              "aio_read() failed");
+                return NGX_ERROR;
+            }
         }
-    }
 
-    ngx_assert(file->iocb.aio_buf == buf), return NGX_ERROR,
-               "ngx_aio_read_file: another buffer is passed");
+        ngx_assert(file->iocb.aio_buf == buf), return NGX_ERROR,
+                "ngx_aio_read_file: another buffer is passed");
 
-    n = aio_return(&file->iocb);
-    if (n == -1) {
+        n = aio_return(&file->iocb);
+        if (n == -1)
+    {
         ngx_log_error(NGX_LOG_ERR, file->log, ngx_errno,
                       "aio_read() failed");
-        return NGX_ERROR;
-    }
+            return NGX_ERROR;
+        }
 
-    return n;
-}
+        return n;
+    }
 
 #endif

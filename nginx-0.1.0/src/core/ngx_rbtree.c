@@ -35,7 +35,8 @@ void ngx_rbtree_insert(ngx_rbtree_t **root, ngx_rbtree_t *sentinel,
 
     /* a binary tree insert */
 
-    if (*root == sentinel) {
+    if (*root == sentinel)
+    {
         node->parent = NULL;
         node->left = sentinel;
         node->right = sentinel;
@@ -47,9 +48,12 @@ void ngx_rbtree_insert(ngx_rbtree_t **root, ngx_rbtree_t *sentinel,
 
     temp = *root;
 
-    for ( ;; ) {
-        if (node->key < temp->key) {
-            if (temp->left == sentinel) {
+    for ( ;; )
+    {
+        if (node->key < temp->key)
+        {
+            if (temp->left == sentinel)
+            {
                 temp->left = node;
                 break;
             }
@@ -58,7 +62,8 @@ void ngx_rbtree_insert(ngx_rbtree_t **root, ngx_rbtree_t *sentinel,
             continue;
         }
 
-        if (temp->right == sentinel) {
+        if (temp->right == sentinel)
+        {
             temp->right = node;
             break;
         }
@@ -76,19 +81,25 @@ void ngx_rbtree_insert(ngx_rbtree_t **root, ngx_rbtree_t *sentinel,
 
     ngx_rbt_red(node);
 
-    while (node != *root && ngx_rbt_is_red(node->parent)) {
+    while (node != *root && ngx_rbt_is_red(node->parent))
+    {
 
-        if (node->parent == node->parent->parent->left) {
+        if (node->parent == node->parent->parent->left)
+        {
             temp = node->parent->parent->right;
 
-            if (ngx_rbt_is_red(temp)) {
+            if (ngx_rbt_is_red(temp))
+            {
                 ngx_rbt_black(node->parent);
                 ngx_rbt_black(temp);
                 ngx_rbt_red(node->parent->parent);
                 node = node->parent->parent;
 
-            } else {
-                if (node == node->parent->right) {
+            }
+            else
+            {
+                if (node == node->parent->right)
+                {
                     node = node->parent;
                     ngx_rbtree_left_rotate(root, sentinel, node);
                 }
@@ -98,17 +109,23 @@ void ngx_rbtree_insert(ngx_rbtree_t **root, ngx_rbtree_t *sentinel,
                 ngx_rbtree_right_rotate(root, sentinel, node->parent->parent);
             }
 
-        } else {
+        }
+        else
+        {
             temp = node->parent->parent->left;
 
-            if (ngx_rbt_is_red(temp)) {
+            if (ngx_rbt_is_red(temp))
+            {
                 ngx_rbt_black(node->parent);
                 ngx_rbt_black(temp);
                 ngx_rbt_red(node->parent->parent);
                 node = node->parent->parent;
 
-            } else {
-                if (node == node->parent->left) {
+            }
+            else
+            {
+                if (node == node->parent->left)
+                {
                     node = node->parent;
                     ngx_rbtree_right_rotate(root, sentinel, node);
                 }
@@ -133,25 +150,34 @@ void ngx_rbtree_delete(ngx_rbtree_t **root, ngx_rbtree_t *sentinel,
 
     /* a binary tree delete */
 
-    if (node->left == sentinel) {
+    if (node->left == sentinel)
+    {
         temp = node->right;
         subst = node;
 
-    } else if (node->right == sentinel) {
+    }
+    else if (node->right == sentinel)
+    {
         temp = node->left;
         subst = node;
 
-    } else {
+    }
+    else
+    {
         subst = ngx_rbtree_min(node->right, sentinel);
 
-        if (subst->left != sentinel) {
+        if (subst->left != sentinel)
+        {
             temp = subst->left;
-        } else {
+        }
+        else
+        {
             temp = subst->right;
         }
     }
 
-    if (subst == *root) {
+    if (subst == *root)
+    {
         *root = temp;
         ngx_rbt_black(temp);
 
@@ -166,23 +192,32 @@ void ngx_rbtree_delete(ngx_rbtree_t **root, ngx_rbtree_t *sentinel,
 
     is_red = ngx_rbt_is_red(subst);
 
-    if (subst == subst->parent->left) {
+    if (subst == subst->parent->left)
+    {
         subst->parent->left = temp;
 
-    } else {
+    }
+    else
+    {
         subst->parent->right = temp;
     }
 
-    if (subst == node) {
+    if (subst == node)
+    {
 
         temp->parent = subst->parent;
 
-    } else {
+    }
+    else
+    {
 
-        if (subst->parent == node) {
+        if (subst->parent == node)
+        {
             temp->parent = subst;
 
-        } else {
+        }
+        else
+        {
             temp->parent = subst->parent;
         }
 
@@ -191,22 +226,30 @@ void ngx_rbtree_delete(ngx_rbtree_t **root, ngx_rbtree_t *sentinel,
         subst->parent = node->parent;
         ngx_rbt_copy_color(subst, node);
 
-        if (node == *root) {
+        if (node == *root)
+        {
             *root = subst;
 
-        } else {
-            if (node == node->parent->left) {
+        }
+        else
+        {
+            if (node == node->parent->left)
+            {
                 node->parent->left = subst;
-            } else {
+            }
+            else
+            {
                 node->parent->right = subst;
             }
         }
 
-        if (subst->left != sentinel) {
+        if (subst->left != sentinel)
+        {
             subst->left->parent = subst;
         }
 
-        if (subst->right != sentinel) {
+        if (subst->right != sentinel)
+        {
             subst->right->parent = subst;
         }
 
@@ -217,30 +260,38 @@ void ngx_rbtree_delete(ngx_rbtree_t **root, ngx_rbtree_t *sentinel,
         node->key = 0;
     }
 
-    if (is_red) {
+    if (is_red)
+    {
         return;
     }
 
     /* a delete fixup */
 
-    while (temp != *root && ngx_rbt_is_black(temp)) {
+    while (temp != *root && ngx_rbt_is_black(temp))
+    {
 
-        if (temp == temp->parent->left) {
+        if (temp == temp->parent->left)
+        {
             w = temp->parent->right;
 
-            if (ngx_rbt_is_red(w)) {
+            if (ngx_rbt_is_red(w))
+            {
                 ngx_rbt_black(w);
                 ngx_rbt_red(temp->parent);
                 ngx_rbtree_left_rotate(root, sentinel, temp->parent);
                 w = temp->parent->right;
             }
 
-            if (ngx_rbt_is_black(w->left) && ngx_rbt_is_black(w->right)) {
+            if (ngx_rbt_is_black(w->left) && ngx_rbt_is_black(w->right))
+            {
                 ngx_rbt_red(w);
                 temp = temp->parent;
 
-            } else {
-                if (ngx_rbt_is_black(w->right)) {
+            }
+            else
+            {
+                if (ngx_rbt_is_black(w->right))
+                {
                     ngx_rbt_black(w->left);
                     ngx_rbt_red(w);
                     ngx_rbtree_right_rotate(root, sentinel, w);
@@ -254,22 +305,29 @@ void ngx_rbtree_delete(ngx_rbtree_t **root, ngx_rbtree_t *sentinel,
                 temp = *root;
             }
 
-        } else {
+        }
+        else
+        {
             w = temp->parent->left;
 
-            if (ngx_rbt_is_red(w)) {
+            if (ngx_rbt_is_red(w))
+            {
                 ngx_rbt_black(w);
                 ngx_rbt_red(temp->parent);
                 ngx_rbtree_right_rotate(root, sentinel, temp->parent);
                 w = temp->parent->left;
             }
 
-            if (ngx_rbt_is_black(w->left) && ngx_rbt_is_black(w->right)) {
+            if (ngx_rbt_is_black(w->left) && ngx_rbt_is_black(w->right))
+            {
                 ngx_rbt_red(w);
                 temp = temp->parent;
 
-            } else {
-                if (ngx_rbt_is_black(w->left)) {
+            }
+            else
+            {
+                if (ngx_rbt_is_black(w->left))
+                {
                     ngx_rbt_black(w->right);
                     ngx_rbt_red(w);
                     ngx_rbtree_left_rotate(root, sentinel, w);
@@ -298,19 +356,25 @@ ngx_inline void ngx_rbtree_left_rotate(ngx_rbtree_t **root,
     temp = node->right;
     node->right = temp->left;
 
-    if (temp->left != sentinel) {
+    if (temp->left != sentinel)
+    {
         temp->left->parent = node;
     }
 
     temp->parent = node->parent;
 
-    if (node == *root) {
+    if (node == *root)
+    {
         *root = temp;
 
-    } else if (node == node->parent->left) {
+    }
+    else if (node == node->parent->left)
+    {
         node->parent->left = temp;
 
-    } else {
+    }
+    else
+    {
         node->parent->right = temp;
     }
 
@@ -328,19 +392,25 @@ ngx_inline void ngx_rbtree_right_rotate(ngx_rbtree_t **root,
     temp = node->left;
     node->left = temp->right;
 
-    if (temp->right != sentinel) {
+    if (temp->right != sentinel)
+    {
         temp->right->parent = node;
     }
 
     temp->parent = node->parent;
 
-    if (node == *root) {
+    if (node == *root)
+    {
         *root = temp;
 
-    } else if (node == node->parent->right) {
+    }
+    else if (node == node->parent->right)
+    {
         node->parent->right = temp;
 
-    } else {
+    }
+    else
+    {
         node->parent->left = temp;
     }
 

@@ -31,14 +31,16 @@
 #define EPOLL_CTL_DEL  2
 #define EPOLL_CTL_MOD  3
 
-typedef union epoll_data {
+typedef union epoll_data
+{
     void         *ptr;
     int           fd;
     uint32_t      u32;
     uint64_t      u64;
 } epoll_data_t;
 
-struct epoll_event {
+struct epoll_event
+{
     uint32_t      events;
     epoll_data_t  data;
 };
@@ -65,7 +67,8 @@ int epoll_wait(int epfd, struct epoll_event *events, int nevents, int timeout)
 #endif
 
 
-typedef struct {
+typedef struct
+{
     u_int  events;
 } ngx_epoll_conf_t;
 
@@ -88,20 +91,24 @@ static u_int                nevents;
 
 static ngx_str_t      epoll_name = ngx_string("epoll");
 
-static ngx_command_t  ngx_epoll_commands[] = {
+static ngx_command_t  ngx_epoll_commands[] =
+{
 
-    {ngx_string("epoll_events"),
-     NGX_EVENT_CONF|NGX_CONF_TAKE1,
-     ngx_conf_set_num_slot,
-     0,
-     offsetof(ngx_epoll_conf_t, events),
-     NULL},
+    {
+        ngx_string("epoll_events"),
+        NGX_EVENT_CONF|NGX_CONF_TAKE1,
+        ngx_conf_set_num_slot,
+        0,
+        offsetof(ngx_epoll_conf_t, events),
+        NULL
+    },
 
     ngx_null_command
 };
 
 
-ngx_event_module_t  ngx_epoll_module_ctx = {
+ngx_event_module_t  ngx_epoll_module_ctx =
+{
     &epoll_name,
     ngx_epoll_create_conf,               /* create configuration */
     ngx_epoll_init_conf,                 /* init configuration */
@@ -120,7 +127,8 @@ ngx_event_module_t  ngx_epoll_module_ctx = {
     }
 };
 
-ngx_module_t  ngx_epoll_module = {
+ngx_module_t  ngx_epoll_module =
+{
     NGX_MODULE,
     &ngx_epoll_module_ctx,               /* module context */
     ngx_epoll_commands,                  /* module directives */
@@ -140,24 +148,29 @@ static int ngx_epoll_init(ngx_cycle_t *cycle)
 
     epcf = ngx_event_get_conf(cycle->conf_ctx, ngx_epoll_module);
 
-    if (ep == -1) {
+    if (ep == -1)
+    {
         ep = epoll_create(ecf->connections / 2);
 
-        if (ep == -1) {
+        if (ep == -1)
+        {
             ngx_log_error(NGX_LOG_EMERG, cycle->log, ngx_errno,
                           "epoll_create() failed");
             return NGX_ERROR;
         }
     }
 
-    if (nevents < epcf->events) {
-        if (event_list) {
+    if (nevents < epcf->events)
+    {
+        if (event_list)
+        {
             ngx_free(event_list);
         }
 
         event_list = ngx_alloc(sizeof(struct epoll_event) * epcf->events,
                                cycle->log);
-        if (event_list == NULL) {
+        if (event_list == NULL)
+        {
             return NGX_ERROR;
         }
     }
@@ -182,7 +195,8 @@ static int ngx_epoll_init(ngx_cycle_t *cycle)
 
 static void ngx_epoll_done(ngx_cycle_t *cycle)
 {
-    if (close(ep) == -1) {
+    if (close(ep) == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, cycle->log, ngx_errno,
                       "epoll close() failed");
     }
@@ -205,14 +219,17 @@ static int ngx_epoll_add_event(ngx_event_t *ev, int event, u_int flags)
 
     c = ev->data;
 
-    if (event == NGX_READ_EVENT) {
+    if (event == NGX_READ_EVENT)
+    {
         e = c->write;
         prev = EPOLLOUT;
 #if (NGX_READ_EVENT != EPOLLIN)
         event = EPOLLIN;
 #endif
 
-    } else {
+    }
+    else
+    {
         e = c->read;
         prev = EPOLLIN;
 #if (NGX_WRITE_EVENT != EPOLLOUT)
@@ -220,11 +237,14 @@ static int ngx_epoll_add_event(ngx_event_t *ev, int event, u_int flags)
 #endif
     }
 
-    if (e->active) {
+    if (e->active)
+    {
         op = EPOLL_CTL_MOD;
         event |= prev;
 
-    } else {
+    }
+    else
+    {
         op = EPOLL_CTL_ADD;
     }
 
@@ -235,7 +255,8 @@ static int ngx_epoll_add_event(ngx_event_t *ev, int event, u_int flags)
                    "epoll add event: fd:%d op:%d ev:%08X",
                    c->fd, op, ee.events);
 
-    if (epoll_ctl(ep, op, c->fd, &ee) == -1) {
+    if (epoll_ctl(ep, op, c->fd, &ee) == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, ev->log, ngx_errno,
                       "epoll_ctl(%d, %d) failed", op, c->fd);
         return NGX_ERROR;
@@ -263,28 +284,35 @@ static int ngx_epoll_del_event(ngx_event_t *ev, int event, u_int flags)
      * before the closing the file descriptor
      */
 
-    if (flags & NGX_CLOSE_EVENT) {
+    if (flags & NGX_CLOSE_EVENT)
+    {
         ev->active = 0;
         return NGX_OK;
     }
 
     c = ev->data;
 
-    if (event == NGX_READ_EVENT) {
+    if (event == NGX_READ_EVENT)
+    {
         e = c->write;
         prev = EPOLLOUT;
 
-    } else {
+    }
+    else
+    {
         e = c->read;
         prev = EPOLLIN;
     }
 
-    if (e->active) {
+    if (e->active)
+    {
         op = EPOLL_CTL_MOD;
         ee.events = prev | flags;
         ee.data.ptr = (void *) ((uintptr_t) c | ev->instance);
 
-    } else {
+    }
+    else
+    {
         op = EPOLL_CTL_DEL;
         ee.events = 0;
         ee.data.ptr = NULL;
@@ -294,7 +322,8 @@ static int ngx_epoll_del_event(ngx_event_t *ev, int event, u_int flags)
                    "epoll del event: fd:%d op:%d ev:%08X",
                    c->fd, op, ee.events);
 
-    if (epoll_ctl(ep, op, c->fd, &ee) == -1) {
+    if (epoll_ctl(ep, op, c->fd, &ee) == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, ev->log, ngx_errno,
                       "epoll_ctl(%d, %d) failed", op, c->fd);
         return NGX_ERROR;
@@ -316,7 +345,8 @@ static int ngx_epoll_add_connection(ngx_connection_t *c)
     ngx_log_debug2(NGX_LOG_DEBUG_EVENT, c->log, 0,
                    "epoll add connection: fd:%d ev:%08X", c->fd, ee.events);
 
-    if (epoll_ctl(ep, EPOLL_CTL_ADD, c->fd, &ee) == -1) {
+    if (epoll_ctl(ep, EPOLL_CTL_ADD, c->fd, &ee) == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, c->log, ngx_errno,
                       "epoll_ctl(EPOLL_CTL_ADD, %d) failed", c->fd);
         return NGX_ERROR;
@@ -340,7 +370,8 @@ static int ngx_epoll_del_connection(ngx_connection_t *c, u_int flags)
      * before the closing the file descriptor
      */
 
-    if (flags & NGX_CLOSE_EVENT) {
+    if (flags & NGX_CLOSE_EVENT)
+    {
         c->read->active = 0;
         c->write->active = 0;
         return NGX_OK;
@@ -353,7 +384,8 @@ static int ngx_epoll_del_connection(ngx_connection_t *c, u_int flags)
     ee.events = 0;
     ee.data.ptr = NULL;
 
-    if (epoll_ctl(ep, op, c->fd, &ee) == -1) {
+    if (epoll_ctl(ep, op, c->fd, &ee) == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, c->log, ngx_errno,
                       "epoll_ctl(%d, %d) failed", op, c->fd);
         return NGX_ERROR;
@@ -380,23 +412,27 @@ int ngx_epoll_process_events(ngx_cycle_t *cycle)
     ngx_connection_t  *c;
     ngx_epoch_msec_t   delta;
 
-    for ( ;; ) { 
+    for ( ;; )
+    {
         timer = ngx_event_find_timer();
 
 #if (NGX_THREADS)
 
-        if (timer == NGX_TIMER_ERROR) {
+        if (timer == NGX_TIMER_ERROR)
+        {
             return NGX_ERROR;
         }
 
-        if (timer == NGX_TIMER_INFINITE || timer > 500) {
+        if (timer == NGX_TIMER_INFINITE || timer > 500)
+        {
             timer = 500;
             break;
         }
 
 #endif
 
-        if (timer != 0) {
+        if (timer != 0)
+        {
             break;
         }
 
@@ -404,39 +440,50 @@ int ngx_epoll_process_events(ngx_cycle_t *cycle)
                        "epoll expired timer");
 
         ngx_event_expire_timers((ngx_msec_t)
-                                    (ngx_elapsed_msec - ngx_old_elapsed_msec));
+                                (ngx_elapsed_msec - ngx_old_elapsed_msec));
 
-        if (ngx_posted_events && ngx_threaded) {
+        if (ngx_posted_events && ngx_threaded)
+        {
             ngx_wakeup_worker_thread(cycle);
         }
     }
 
     /* NGX_TIMER_INFINITE == INFTIM */
 
-    if (timer == NGX_TIMER_INFINITE) {
+    if (timer == NGX_TIMER_INFINITE)
+    {
         expire = 0;
 
-    } else {
+    }
+    else
+    {
         expire = 1;
     }
 
     ngx_old_elapsed_msec = ngx_elapsed_msec;
     accept_lock = 0;
 
-    if (ngx_accept_mutex) {
-        if (ngx_accept_disabled > 0) {
+    if (ngx_accept_mutex)
+    {
+        if (ngx_accept_disabled > 0)
+        {
             ngx_accept_disabled--;
 
-        } else {
-            if (ngx_trylock_accept_mutex(cycle) == NGX_ERROR) {
+        }
+        else
+        {
+            if (ngx_trylock_accept_mutex(cycle) == NGX_ERROR)
+            {
                 return NGX_ERROR;
             }
 
-            if (ngx_accept_mutex_held) {
+            if (ngx_accept_mutex_held)
+            {
                 accept_lock = 1;
 
-            } else if (timer == NGX_TIMER_INFINITE
-                       || timer > ngx_accept_mutex_delay)
+            }
+            else if (timer == NGX_TIMER_INFINITE
+                     || timer > ngx_accept_mutex_delay)
             {
                 timer = ngx_accept_mutex_delay;
                 expire = 0;
@@ -449,9 +496,12 @@ int ngx_epoll_process_events(ngx_cycle_t *cycle)
 
     events = epoll_wait(ep, event_list, nevents, timer);
 
-    if (events == -1) {
+    if (events == -1)
+    {
         err = ngx_errno;
-    } else {
+    }
+    else
+    {
         err = 0;
     }
 
@@ -460,15 +510,19 @@ int ngx_epoll_process_events(ngx_cycle_t *cycle)
 
     delta = ngx_elapsed_msec;
     ngx_elapsed_msec = (ngx_epoch_msec_t) tv.tv_sec * 1000
-                                          + tv.tv_usec / 1000 - ngx_start_msec;
+                       + tv.tv_usec / 1000 - ngx_start_msec;
 
-    if (timer != NGX_TIMER_INFINITE) {
+    if (timer != NGX_TIMER_INFINITE)
+    {
         delta = ngx_elapsed_msec - delta;
 
         ngx_log_debug2(NGX_LOG_DEBUG_EVENT, cycle->log, 0,
                        "epoll timer: %d, delta: %d", timer, (int) delta);
-    } else {
-        if (events == 0) {
+    }
+    else
+    {
+        if (events == 0)
+        {
             ngx_log_error(NGX_LOG_ALERT, cycle->log, 0,
                           "epoll_wait() returned no events without timeout");
             ngx_accept_mutex_unlock();
@@ -476,28 +530,34 @@ int ngx_epoll_process_events(ngx_cycle_t *cycle)
         }
     }
 
-    if (err) {
+    if (err)
+    {
         ngx_log_error((err == NGX_EINTR) ? NGX_LOG_INFO : NGX_LOG_ALERT,
                       cycle->log, err, "epoll_wait() failed");
         ngx_accept_mutex_unlock();
         return NGX_ERROR;
     }
 
-    if (events > 0) {
-        if (ngx_mutex_lock(ngx_posted_events_mutex) == NGX_ERROR) {
+    if (events > 0)
+    {
+        if (ngx_mutex_lock(ngx_posted_events_mutex) == NGX_ERROR)
+        {
             ngx_accept_mutex_unlock();
             return NGX_ERROR;
-        } 
+        }
 
         lock = 1;
 
-    } else {
+    }
+    else
+    {
         lock =0;
     }
 
     log = cycle->log;
 
-    for (i = 0; i < events; i++) {
+    for (i = 0; i < events; i++)
+    {
         c = event_list[i].data.ptr;
 
         instance = (uintptr_t) c & 1;
@@ -505,7 +565,8 @@ int ngx_epoll_process_events(ngx_cycle_t *cycle)
 
         rev = c->read;
 
-        if (c->fd == -1 || rev->instance != instance) {
+        if (c->fd == -1 || rev->instance != instance)
+        {
 
             /*
              * the stale event from a file descriptor
@@ -525,13 +586,15 @@ int ngx_epoll_process_events(ngx_cycle_t *cycle)
                        "epoll: fd:%d ev:%04X d:" PTR_FMT,
                        c->fd, event_list[i].events, event_list[i].data);
 
-        if (event_list[i].events & (EPOLLERR|EPOLLHUP)) {
+        if (event_list[i].events & (EPOLLERR|EPOLLHUP))
+        {
             ngx_log_debug2(NGX_LOG_DEBUG_EVENT, log, 0,
                            "epoll_wait() error on fd:%d ev:%04X",
                            c->fd, event_list[i].events);
         }
 
-        if (event_list[i].events & ~(EPOLLIN|EPOLLOUT|EPOLLERR|EPOLLHUP)) {
+        if (event_list[i].events & ~(EPOLLIN|EPOLLOUT|EPOLLERR|EPOLLHUP))
+        {
             ngx_log_error(NGX_LOG_ALERT, log, 0,
                           "strange epoll_wait() events fd:%d ev:%04X",
                           c->fd, event_list[i].events);
@@ -540,19 +603,25 @@ int ngx_epoll_process_events(ngx_cycle_t *cycle)
         wev = c->write;
 
         if ((event_list[i].events & (EPOLLOUT|EPOLLERR|EPOLLHUP))
-            && wev->active)
+                && wev->active)
         {
-            if (ngx_threaded) {
+            if (ngx_threaded)
+            {
                 wev->posted_ready = 1;
                 ngx_post_event(wev);
 
-            } else {
+            }
+            else
+            {
                 wev->ready = 1;
 
-                if (!ngx_accept_mutex_held) {
+                if (!ngx_accept_mutex_held)
+                {
                     wev->event_handler(wev);
 
-                } else {
+                }
+                else
+                {
                     ngx_post_event(wev);
                 }
             }
@@ -565,9 +634,10 @@ int ngx_epoll_process_events(ngx_cycle_t *cycle)
          */
 
         if ((event_list[i].events & (EPOLLIN|EPOLLERR|EPOLLHUP))
-            && rev->active)
+                && rev->active)
         {
-            if (ngx_threaded && !rev->accept) {
+            if (ngx_threaded && !rev->accept)
+            {
                 rev->posted_ready = 1;
 
                 ngx_post_event(rev);
@@ -577,30 +647,39 @@ int ngx_epoll_process_events(ngx_cycle_t *cycle)
 
             rev->ready = 1;
 
-            if (!ngx_threaded && !ngx_accept_mutex_held) {
+            if (!ngx_threaded && !ngx_accept_mutex_held)
+            {
                 rev->event_handler(rev);
 
-            } else if (!rev->accept) {
+            }
+            else if (!rev->accept)
+            {
                 ngx_post_event(rev);
 
-            } else if (ngx_accept_disabled <= 0) {
+            }
+            else if (ngx_accept_disabled <= 0)
+            {
 
                 ngx_mutex_unlock(ngx_posted_events_mutex);
 
                 rev->event_handler(rev);
 
-                if (ngx_accept_disabled > 0) {
+                if (ngx_accept_disabled > 0)
+                {
                     ngx_accept_mutex_unlock();
                     accept_lock = 0;
                 }
 
-                if (i + 1 == events) {
+                if (i + 1 == events)
+                {
                     lock = 0;
                     break;
                 }
 
-                if (ngx_mutex_lock(ngx_posted_events_mutex) == NGX_ERROR) {
-                    if (accept_lock) {
+                if (ngx_mutex_lock(ngx_posted_events_mutex) == NGX_ERROR)
+                {
+                    if (accept_lock)
+                    {
                         ngx_accept_mutex_unlock();
                     }
                     return NGX_ERROR;
@@ -609,23 +688,30 @@ int ngx_epoll_process_events(ngx_cycle_t *cycle)
         }
     }
 
-    if (accept_lock) {
+    if (accept_lock)
+    {
         ngx_accept_mutex_unlock();
     }
 
-    if (lock) {
+    if (lock)
+    {
         ngx_mutex_unlock(ngx_posted_events_mutex);
     }
 
-    if (expire && delta) {
+    if (expire && delta)
+    {
         ngx_event_expire_timers((ngx_msec_t) delta);
     }
 
-    if (ngx_posted_events) {
-        if (ngx_threaded) {
+    if (ngx_posted_events)
+    {
+        if (ngx_threaded)
+        {
             ngx_wakeup_worker_thread(cycle);
 
-        } else {
+        }
+        else
+        {
             ngx_event_process_posted(cycle);
         }
     }

@@ -26,17 +26,23 @@ ngx_pid_t ngx_spawn_process(ngx_cycle_t *cycle,
     ngx_pid_t  pid;
     ngx_int_t  s;
 
-    if (respawn >= 0) {
+    if (respawn >= 0)
+    {
         s = respawn;
 
-    } else {
-        for (s = 0; s < ngx_last_process; s++) {
-            if (ngx_processes[s].pid == -1) {
+    }
+    else
+    {
+        for (s = 0; s < ngx_last_process; s++)
+        {
+            if (ngx_processes[s].pid == -1)
+            {
                 break;
             }
         }
 
-        if (s == NGX_MAX_PROCESSES) {
+        if (s == NGX_MAX_PROCESSES)
+        {
             ngx_log_error(NGX_LOG_ALERT, cycle->log, 0,
                           "no more than %d processes can be spawned",
                           NGX_MAX_PROCESSES);
@@ -45,7 +51,8 @@ ngx_pid_t ngx_spawn_process(ngx_cycle_t *cycle,
     }
 
 
-    if (respawn != NGX_PROCESS_DETACHED) {
+    if (respawn != NGX_PROCESS_DETACHED)
+    {
 
         /* Solaris 9 still has no AF_LOCAL */
 
@@ -61,7 +68,8 @@ ngx_pid_t ngx_spawn_process(ngx_cycle_t *cycle,
                        ngx_processes[s].channel[0],
                        ngx_processes[s].channel[1]);
 
-        if (ngx_nonblocking(ngx_processes[s].channel[0]) == -1) {
+        if (ngx_nonblocking(ngx_processes[s].channel[0]) == -1)
+        {
             ngx_log_error(NGX_LOG_ALERT, cycle->log, ngx_errno,
                           ngx_nonblocking_n " failed while spawning \"%s\"",
                           name);
@@ -69,7 +77,8 @@ ngx_pid_t ngx_spawn_process(ngx_cycle_t *cycle,
             return NGX_ERROR;
         }
 
-        if (ngx_nonblocking(ngx_processes[s].channel[1]) == -1) {
+        if (ngx_nonblocking(ngx_processes[s].channel[1]) == -1)
+        {
             ngx_log_error(NGX_LOG_ALERT, cycle->log, ngx_errno,
                           ngx_nonblocking_n " failed while spawning \"%s\"",
                           name);
@@ -78,39 +87,45 @@ ngx_pid_t ngx_spawn_process(ngx_cycle_t *cycle,
         }
 
         on = 1;
-        if (ioctl(ngx_processes[s].channel[0], FIOASYNC, &on) == -1) {
+        if (ioctl(ngx_processes[s].channel[0], FIOASYNC, &on) == -1)
+        {
             ngx_log_error(NGX_LOG_ALERT, cycle->log, ngx_errno,
                           "ioctl(FIOASYNC) failed while spawning \"%s\"", name);
             ngx_close_channel(ngx_processes[s].channel, cycle->log);
             return NGX_ERROR;
         }
 
-        if (fcntl(ngx_processes[s].channel[0], F_SETOWN, ngx_pid) == -1) {
+        if (fcntl(ngx_processes[s].channel[0], F_SETOWN, ngx_pid) == -1)
+        {
             ngx_log_error(NGX_LOG_ALERT, cycle->log, ngx_errno,
                           "fcntl(F_SETOWN) failed while spawning \"%s\"", name);
             ngx_close_channel(ngx_processes[s].channel, cycle->log);
             return NGX_ERROR;
         }
 
-        if (fcntl(ngx_processes[s].channel[0], F_SETFD, FD_CLOEXEC) == -1) {
+        if (fcntl(ngx_processes[s].channel[0], F_SETFD, FD_CLOEXEC) == -1)
+        {
             ngx_log_error(NGX_LOG_ALERT, cycle->log, ngx_errno,
                           "fcntl(FD_CLOEXEC) failed while spawning \"%s\"",
-                           name);
+                          name);
             ngx_close_channel(ngx_processes[s].channel, cycle->log);
             return NGX_ERROR;
         }
 
-        if (fcntl(ngx_processes[s].channel[1], F_SETFD, FD_CLOEXEC) == -1) {
+        if (fcntl(ngx_processes[s].channel[1], F_SETFD, FD_CLOEXEC) == -1)
+        {
             ngx_log_error(NGX_LOG_ALERT, cycle->log, ngx_errno,
                           "fcntl(FD_CLOEXEC) failed while spawning \"%s\"",
-                           name);
+                          name);
             ngx_close_channel(ngx_processes[s].channel, cycle->log);
             return NGX_ERROR;
         }
 
         ngx_channel = ngx_processes[s].channel[1];
 
-    } else {
+    }
+    else
+    {
         ngx_processes[s].channel[0] = -1;
         ngx_processes[s].channel[1] = -1;
     }
@@ -120,7 +135,8 @@ ngx_pid_t ngx_spawn_process(ngx_cycle_t *cycle,
 
     pid = fork();
 
-    switch (pid) {
+    switch (pid)
+    {
 
     case -1:
         ngx_log_error(NGX_LOG_ALERT, cycle->log, ngx_errno,
@@ -143,7 +159,8 @@ ngx_pid_t ngx_spawn_process(ngx_cycle_t *cycle,
     ngx_processes[s].pid = pid;
     ngx_processes[s].exited = 0;
 
-    if (respawn >= 0) {
+    if (respawn >= 0)
+    {
         return pid;
     }
 
@@ -152,7 +169,8 @@ ngx_pid_t ngx_spawn_process(ngx_cycle_t *cycle,
     ngx_processes[s].name = name;
     ngx_processes[s].exiting = 0;
 
-    switch (respawn) {
+    switch (respawn)
+    {
 
     case NGX_PROCESS_RESPAWN:
         ngx_processes[s].respawn = 1;
@@ -173,7 +191,8 @@ ngx_pid_t ngx_spawn_process(ngx_cycle_t *cycle,
         break;
     }
 
-    if (s == ngx_last_process) {
+    if (s == ngx_last_process)
+    {
         ngx_last_process++;
     }
 
@@ -192,7 +211,8 @@ static void ngx_execute_proc(ngx_cycle_t *cycle, void *data)
 {
     ngx_exec_ctx_t  *ctx = data;
 
-    if (execve(ctx->path, ctx->argv, ctx->envp) == -1) {
+    if (execve(ctx->path, ctx->argv, ctx->envp) == -1)
+    {
         ngx_log_error(NGX_LOG_ALERT, cycle->log, ngx_errno,
                       "execve() failed while executing %s \"%s\"",
                       ctx->name, ctx->path);
@@ -213,21 +233,26 @@ void ngx_process_get_status()
     struct timeval   tv;
     one = 0;
 
-    for ( ;; ) {
+    for ( ;; )
+    {
         pid = waitpid(-1, &status, WNOHANG);
 
-        if (pid == 0) {
+        if (pid == 0)
+        {
             return;
         }
 
-        if (pid == -1) {
+        if (pid == -1)
+        {
             err = ngx_errno;
 
-            if (err == NGX_EINTR) {
+            if (err == NGX_EINTR)
+            {
                 continue;
             }
 
-            if (err == NGX_ECHILD && one) {
+            if (err == NGX_ECHILD && one)
+            {
                 return;
             }
 
@@ -237,7 +262,8 @@ void ngx_process_get_status()
         }
 
 
-        if (ngx_accept_mutex_ptr) {
+        if (ngx_accept_mutex_ptr)
+        {
 
             /*
              * unlock the accept mutex if the abnormally exited process
@@ -251,8 +277,10 @@ void ngx_process_get_status()
         one = 1;
         process = "unknown process";
 
-        for (i = 0; i < ngx_last_process; i++) {
-            if (ngx_processes[i].pid == pid) {
+        for (i = 0; i < ngx_last_process; i++)
+        {
+            if (ngx_processes[i].pid == pid)
+            {
                 ngx_processes[i].status = status;
                 ngx_processes[i].exited = 1;
                 process = ngx_processes[i].name;
@@ -260,19 +288,23 @@ void ngx_process_get_status()
             }
         }
 
-        if (WTERMSIG(status)) {
+        if (WTERMSIG(status))
+        {
             ngx_log_error(NGX_LOG_ALERT, ngx_cycle->log, 0,
                           "%s " PID_T_FMT " exited on signal %d%s",
                           process, pid, WTERMSIG(status),
                           WCOREDUMP(status) ? " (core dumped)" : "");
 
-        } else {
+        }
+        else
+        {
             ngx_log_error(NGX_LOG_INFO, ngx_cycle->log, 0,
                           "%s " PID_T_FMT " exited with code %d",
                           process, pid, WEXITSTATUS(status));
         }
 
-        if (WEXITSTATUS(status) == 2 && ngx_processes[i].respawn) {
+        if (WEXITSTATUS(status) == 2 && ngx_processes[i].respawn)
+        {
             ngx_log_error(NGX_LOG_ALERT, ngx_cycle->log, 0,
                           "%s " PID_T_FMT
                           " exited with fatal code %d and could not respawn",

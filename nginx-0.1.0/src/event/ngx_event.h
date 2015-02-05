@@ -17,7 +17,8 @@
 
 #if (HAVE_IOCP)
 
-typedef struct {
+typedef struct
+{
     WSAOVERLAPPED    ovlp;
     ngx_event_t     *event;
     int              error;
@@ -26,7 +27,8 @@ typedef struct {
 #endif
 
 
-typedef struct {
+typedef struct
+{
     ngx_uint_t       lock;
 
     ngx_event_t     *events;
@@ -34,7 +36,8 @@ typedef struct {
 } ngx_event_mutex_t;
 
 
-struct ngx_event_s {
+struct ngx_event_s
+{
     void            *data;
 
     unsigned         write:1;
@@ -197,7 +200,8 @@ struct ngx_event_s {
 };
 
 
-typedef struct {
+typedef struct
+{
     ngx_int_t  (*add)(ngx_event_t *ev, int event, u_int flags);
     ngx_int_t  (*del)(ngx_event_t *ev, int event, u_int flags);
 
@@ -403,7 +407,8 @@ extern ngx_event_actions_t   ngx_event_actions;
 #define NGX_EVENT_CONF        0x02000000
 
 
-typedef struct {
+typedef struct
+{
     ngx_uint_t    connections;
     ngx_uint_t    use;
 
@@ -420,7 +425,8 @@ typedef struct {
 } ngx_event_conf_t;
 
 
-typedef struct {
+typedef struct
+{
     ngx_str_t              *name;
 
     void                 *(*create_conf)(ngx_cycle_t *cycle);
@@ -495,26 +501,32 @@ int ngx_event_post_acceptex(ngx_listening_t *ls, int n);
 
 ngx_inline static int ngx_handle_read_event(ngx_event_t *rev, u_int flags)
 {
-    if (ngx_event_flags & NGX_USE_CLEAR_EVENT) {
+    if (ngx_event_flags & NGX_USE_CLEAR_EVENT)
+    {
 
         /* kqueue */
 
-        if (!rev->active && !rev->ready) {
+        if (!rev->active && !rev->ready)
+        {
             if (ngx_add_event(rev, NGX_READ_EVENT, NGX_CLEAR_EVENT)
-                                                                == NGX_ERROR) {
+                    == NGX_ERROR)
+            {
                 return NGX_ERROR;
             }
         }
 
         return NGX_OK;
 
-    } else if (ngx_event_flags & NGX_USE_LEVEL_EVENT) {
+    }
+    else if (ngx_event_flags & NGX_USE_LEVEL_EVENT)
+    {
 
         /* select, poll, /dev/poll */
 
-        if (!rev->active && !rev->ready) {
+        if (!rev->active && !rev->ready)
+        {
             if (ngx_add_event(rev, NGX_READ_EVENT, NGX_LEVEL_EVENT)
-                                                                  == NGX_ERROR)
+                    == NGX_ERROR)
             {
                 return NGX_ERROR;
             }
@@ -522,8 +534,10 @@ ngx_inline static int ngx_handle_read_event(ngx_event_t *rev, u_int flags)
             return NGX_OK;
         }
 
-        if (rev->active && (rev->ready || (flags & NGX_CLOSE_EVENT))) {
-            if (ngx_del_event(rev, NGX_READ_EVENT, flags) == NGX_ERROR) {
+        if (rev->active && (rev->ready || (flags & NGX_CLOSE_EVENT)))
+        {
+            if (ngx_del_event(rev, NGX_READ_EVENT, flags) == NGX_ERROR)
+            {
                 return NGX_ERROR;
             }
 
@@ -539,10 +553,12 @@ ngx_inline static int ngx_handle_read_event(ngx_event_t *rev, u_int flags)
 
 ngx_inline static int ngx_handle_level_read_event(ngx_event_t *rev)
 {
-    if (ngx_event_flags & NGX_USE_LEVEL_EVENT) {
-        if (!rev->active && !rev->ready) {
+    if (ngx_event_flags & NGX_USE_LEVEL_EVENT)
+    {
+        if (!rev->active && !rev->ready)
+        {
             if (ngx_add_event(rev, NGX_READ_EVENT, NGX_LEVEL_EVENT)
-                                                                  == NGX_ERROR)
+                    == NGX_ERROR)
             {
                 return NGX_ERROR;
             }
@@ -550,8 +566,10 @@ ngx_inline static int ngx_handle_level_read_event(ngx_event_t *rev)
             return NGX_OK;
         }
 
-        if (rev->active && rev->ready) {
-            if (ngx_del_event(rev, NGX_READ_EVENT, 0) == NGX_ERROR) {
+        if (rev->active && rev->ready)
+        {
+            if (ngx_del_event(rev, NGX_READ_EVENT, 0) == NGX_ERROR)
+            {
                 return NGX_ERROR;
             }
 
@@ -565,13 +583,15 @@ ngx_inline static int ngx_handle_level_read_event(ngx_event_t *rev)
 
 ngx_inline static int ngx_handle_write_event(ngx_event_t *wev, u_int flags)
 {
-    if (ngx_event_flags & NGX_USE_CLEAR_EVENT) {
+    if (ngx_event_flags & NGX_USE_CLEAR_EVENT)
+    {
 
         /* kqueue */
 
-        if (!wev->active && !wev->ready) {
+        if (!wev->active && !wev->ready)
+        {
             if (ngx_add_event(wev, NGX_WRITE_EVENT, NGX_CLEAR_EVENT|flags)
-                                                                  == NGX_ERROR)
+                    == NGX_ERROR)
             {
                 return NGX_ERROR;
             }
@@ -579,13 +599,16 @@ ngx_inline static int ngx_handle_write_event(ngx_event_t *wev, u_int flags)
 
         return NGX_OK;
 
-    } else if (ngx_event_flags & NGX_USE_LEVEL_EVENT) {
+    }
+    else if (ngx_event_flags & NGX_USE_LEVEL_EVENT)
+    {
 
         /* select, poll, /dev/poll */
 
-        if (!wev->active && !wev->ready) {
+        if (!wev->active && !wev->ready)
+        {
             if (ngx_add_event(wev, NGX_WRITE_EVENT, NGX_LEVEL_EVENT)
-                                                                  == NGX_ERROR)
+                    == NGX_ERROR)
             {
                 return NGX_ERROR;
             }
@@ -593,8 +616,10 @@ ngx_inline static int ngx_handle_write_event(ngx_event_t *wev, u_int flags)
             return NGX_OK;
         }
 
-        if (wev->active && wev->ready) {
-            if (ngx_del_event(wev, NGX_WRITE_EVENT, 0) == NGX_ERROR) {
+        if (wev->active && wev->ready)
+        {
+            if (ngx_del_event(wev, NGX_WRITE_EVENT, 0) == NGX_ERROR)
+            {
                 return NGX_ERROR;
             }
 
@@ -610,10 +635,12 @@ ngx_inline static int ngx_handle_write_event(ngx_event_t *wev, u_int flags)
 
 ngx_inline static int ngx_handle_level_write_event(ngx_event_t *wev)
 {
-    if (ngx_event_flags & NGX_USE_LEVEL_EVENT) {
-        if (!wev->active && !wev->ready) {
+    if (ngx_event_flags & NGX_USE_LEVEL_EVENT)
+    {
+        if (!wev->active && !wev->ready)
+        {
             if (ngx_add_event(wev, NGX_WRITE_EVENT, NGX_LEVEL_EVENT)
-                                                                  == NGX_ERROR)
+                    == NGX_ERROR)
             {
                 return NGX_ERROR;
             }
@@ -621,8 +648,10 @@ ngx_inline static int ngx_handle_level_write_event(ngx_event_t *wev)
             return NGX_OK;
         }
 
-        if (wev->active && wev->ready) {
-            if (ngx_del_event(wev, NGX_WRITE_EVENT, 0) == NGX_ERROR) {
+        if (wev->active && wev->ready)
+        {
+            if (ngx_del_event(wev, NGX_WRITE_EVENT, 0) == NGX_ERROR)
+            {
                 return NGX_ERROR;
             }
 

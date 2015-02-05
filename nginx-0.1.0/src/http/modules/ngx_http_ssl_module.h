@@ -13,7 +13,8 @@
 #include <ngx_http.h>
 
 
-typedef struct {
+typedef struct
+{
     ngx_flag_t      enable;
     ngx_str_t       certificate;
     ngx_str_t       certificate_key;

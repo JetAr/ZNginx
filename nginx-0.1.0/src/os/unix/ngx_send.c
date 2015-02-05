@@ -19,7 +19,8 @@ ssize_t ngx_unix_send(ngx_connection_t *c, u_char *buf, size_t size)
 
 #if (HAVE_KQUEUE)
 
-    if ((ngx_event_flags & NGX_HAVE_KQUEUE_EVENT) && wev->pending_eof) {
+    if ((ngx_event_flags & NGX_HAVE_KQUEUE_EVENT) && wev->pending_eof)
+    {
         ngx_log_error(NGX_LOG_INFO, c->log, wev->kq_errno,
                       "kevent() reported about an closed connection");
 
@@ -29,14 +30,17 @@ ssize_t ngx_unix_send(ngx_connection_t *c, u_char *buf, size_t size)
 
 #endif
 
-    for ( ;; ) {
+    for ( ;; )
+    {
         n = send(c->fd, buf, size, 0);
 
         ngx_log_debug3(NGX_LOG_DEBUG_EVENT, c->log, 0,
                        "send: fd:%d %d of %d", c->fd, n, size);
 
-        if (n > 0) {
-            if (n < (ssize_t) size) {
+        if (n > 0)
+        {
+            if (n < (ssize_t) size)
+            {
                 wev->ready = 0;
             }
 
@@ -45,23 +49,28 @@ ssize_t ngx_unix_send(ngx_connection_t *c, u_char *buf, size_t size)
 
         err = ngx_socket_errno;
 
-        if (n == 0) {
+        if (n == 0)
+        {
             ngx_log_error(NGX_LOG_ALERT, c->log, err, "send() returned zero");
             wev->ready = 0;
             return n;
         }
 
-        if (err == NGX_EAGAIN || err == NGX_EINTR) {
+        if (err == NGX_EAGAIN || err == NGX_EINTR)
+        {
             wev->ready = 0;
 
             ngx_log_debug0(NGX_LOG_DEBUG_EVENT, c->log, err,
                            "send() not ready");
 
-            if (err == NGX_EAGAIN) {
+            if (err == NGX_EAGAIN)
+            {
                 return NGX_AGAIN;
             }
 
-        } else {
+        }
+        else
+        {
             wev->error = 1;
             ngx_connection_error(c, err, "recv() failed");
             return NGX_ERROR;

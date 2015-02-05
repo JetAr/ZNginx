@@ -13,7 +13,7 @@
 
 
 ngx_chain_t *ngx_solaris_sendfilev_chain(ngx_connection_t *c, ngx_chain_t *in,
-                                         off_t limit)
+        off_t limit)
 {
     int             fd;
     u_char         *prev;
@@ -28,7 +28,8 @@ ngx_chain_t *ngx_solaris_sendfilev_chain(ngx_connection_t *c, ngx_chain_t *in,
 
     wev = c->write;
 
-    if (!wev->ready) {
+    if (!wev->ready)
+    {
         return in;
     }
 
@@ -40,7 +41,8 @@ ngx_chain_t *ngx_solaris_sendfilev_chain(ngx_connection_t *c, ngx_chain_t *in,
     vec.nalloc = NGX_SENDFILEVECS;
     vec.pool = c->pool;
 
-    for ( ;; ) {
+    for ( ;; )
+    {
         fd = SFV_FD_SELF;
         prev = NULL;
         fprev = 0;
@@ -55,24 +57,31 @@ ngx_chain_t *ngx_solaris_sendfilev_chain(ngx_connection_t *c, ngx_chain_t *in,
 
         for (cl = in; cl && vec.nelts < IOV_MAX && send < limit; cl = cl->next)
         {
-            if (ngx_buf_special(cl->buf)) {
+            if (ngx_buf_special(cl->buf))
+            {
                 continue;
             }
 
-            if (ngx_buf_in_memory_only(cl->buf)) {
+            if (ngx_buf_in_memory_only(cl->buf))
+            {
                 fd = SFV_FD_SELF;
 
                 size = cl->buf->last - cl->buf->pos;
 
-                if (send + size > limit) {
+                if (send + size > limit)
+                {
                     size = limit - send;
                 }
 
-                if (prev == cl->buf->pos) {
+                if (prev == cl->buf->pos)
+                {
                     sfv->sfv_len += size;
 
-                } else {
-                    if (!(sfv = ngx_array_push(&vec))) {
+                }
+                else
+                {
+                    if (!(sfv = ngx_array_push(&vec)))
+                    {
                         return NGX_CHAIN_ERROR;
                     }
 
@@ -85,27 +94,35 @@ ngx_chain_t *ngx_solaris_sendfilev_chain(ngx_connection_t *c, ngx_chain_t *in,
                 prev = cl->buf->pos + size;
                 send += size;
 
-            } else {
+            }
+            else
+            {
                 prev = NULL;
 
                 size = (size_t) (cl->buf->file_last - cl->buf->file_pos);
 
-                if (send + size > limit) {
+                if (send + size > limit)
+                {
                     size = limit - send;
 
                     aligned = (cl->buf->file_pos + size + ngx_pagesize - 1)
-                                                      & ~(ngx_pagesize - 1);
+                              & ~(ngx_pagesize - 1);
 
-                    if (aligned <= cl->buf->file_last) {
+                    if (aligned <= cl->buf->file_last)
+                    {
                         size = aligned - cl->buf->file_pos;
                     }
                 }
 
-                if (fd == cl->buf->file->fd && fprev == cl->buf->file_pos) {
+                if (fd == cl->buf->file->fd && fprev == cl->buf->file_pos)
+                {
                     sfv->sfv_len += size;
 
-                } else {
-                    if (!(sfv = ngx_array_push(&vec))) {
+                }
+                else
+                {
+                    if (!(sfv = ngx_array_push(&vec)))
+                    {
                         return NGX_CHAIN_ERROR;
                     }
 
@@ -123,19 +140,24 @@ ngx_chain_t *ngx_solaris_sendfilev_chain(ngx_connection_t *c, ngx_chain_t *in,
 
         n = sendfilev(c->fd, vec.elts, vec.nelts, &sent);
 
-        if (n == -1) {
+        if (n == -1)
+        {
             err = ngx_errno;
 
-            if (err == NGX_EAGAIN || err == NGX_EINTR) {
-                if (err == NGX_EINTR) {
+            if (err == NGX_EAGAIN || err == NGX_EINTR)
+            {
+                if (err == NGX_EINTR)
+                {
                     eintr = 1;
                 }
 
                 ngx_log_debug1(NGX_LOG_DEBUG_EVENT, c->log, err,
-                              "sendfilev() sent only " SIZE_T_FMT " bytes",
-                              sent);
+                               "sendfilev() sent only " SIZE_T_FMT " bytes",
+                               sent);
 
-            } else {
+            }
+            else
+            {
                 wev->error = 1;
                 ngx_connection_error(c, err, "sendfilev() failed");
                 return NGX_CHAIN_ERROR;
@@ -145,59 +167,71 @@ ngx_chain_t *ngx_solaris_sendfilev_chain(ngx_connection_t *c, ngx_chain_t *in,
         ngx_log_debug2(NGX_LOG_DEBUG_EVENT, c->log, 0,
                        "sendfilev: %d " SIZE_T_FMT, n, sent);
 
-        if (send - sprev == sent) {
+        if (send - sprev == sent)
+        {
             complete = 1;
         }
 
         c->sent += sent;
 
-        for (cl = in; cl; cl = cl->next) {
+        for (cl = in; cl; cl = cl->next)
+        {
 
-            if (ngx_buf_special(cl->buf)) {
-                continue; 
+            if (ngx_buf_special(cl->buf))
+            {
+                continue;
             }
 
-            if (sent == 0) {
+            if (sent == 0)
+            {
                 break;
             }
 
             size = ngx_buf_size(cl->buf);
 
-            if (sent >= size) {
+            if (sent >= size)
+            {
                 sent -= size;
 
-                if (ngx_buf_in_memory(cl->buf)) {
+                if (ngx_buf_in_memory(cl->buf))
+                {
                     cl->buf->pos = cl->buf->last;
                 }
 
-                if (cl->buf->in_file) {
+                if (cl->buf->in_file)
+                {
                     cl->buf->file_pos = cl->buf->file_last;
                 }
 
                 continue;
             }
 
-            if (ngx_buf_in_memory(cl->buf)) {
+            if (ngx_buf_in_memory(cl->buf))
+            {
                 cl->buf->pos += sent;
             }
 
-            if (cl->buf->in_file) {
+            if (cl->buf->in_file)
+            {
                 cl->buf->file_pos += sent;
             }
 
             break;
         }
 
-        if (eintr) {
+        if (eintr)
+        {
             continue;
         }
 
-        if (!complete) {
+        if (!complete)
+        {
             wev->ready = 0;
             return cl;
         }
 
-        if (send >= limit || cl == NULL) {
+        if (send >= limit || cl == NULL)
+        {
             return cl;
         }
 

@@ -51,13 +51,15 @@ ngx_chain_t *ngx_freebsd_sendfile_chain(ngx_connection_t *c, ngx_chain_t *in,
 
     wev = c->write;
 
-    if (!wev->ready) {
+    if (!wev->ready)
+    {
         return in;
     }
 
 #if (HAVE_KQUEUE)
 
-    if ((ngx_event_flags & NGX_HAVE_KQUEUE_EVENT) && wev->pending_eof) {
+    if ((ngx_event_flags & NGX_HAVE_KQUEUE_EVENT) && wev->pending_eof)
+    {
         ngx_log_error(NGX_LOG_INFO, c->log, wev->kq_errno,
                       "kevent() reported about an closed connection");
 
@@ -80,7 +82,8 @@ ngx_chain_t *ngx_freebsd_sendfile_chain(ngx_connection_t *c, ngx_chain_t *in,
     trailer.nalloc = NGX_TRAILERS;
     trailer.pool = c->pool;
 
-    for ( ;; ) {
+    for ( ;; )
+    {
         file = NULL;
         fsize = 0;
         hsize = 0;
@@ -97,28 +100,35 @@ ngx_chain_t *ngx_freebsd_sendfile_chain(ngx_connection_t *c, ngx_chain_t *in,
         iov = NULL;
 
         for (cl = in;
-             cl && header.nelts < IOV_MAX && send < limit;
-             cl = cl->next)
+                cl && header.nelts < IOV_MAX && send < limit;
+                cl = cl->next)
         {
-            if (ngx_buf_special(cl->buf)) {
+            if (ngx_buf_special(cl->buf))
+            {
                 continue;
             }
 
-            if (!ngx_buf_in_memory_only(cl->buf)) {
+            if (!ngx_buf_in_memory_only(cl->buf))
+            {
                 break;
             }
 
             size = cl->buf->last - cl->buf->pos;
 
-            if (send + size > limit) {
+            if (send + size > limit)
+            {
                 size = limit - send;
             }
 
-            if (prev == cl->buf->pos) {
+            if (prev == cl->buf->pos)
+            {
                 iov->iov_len += size;
 
-            } else {
-                if (!(iov = ngx_array_push(&header))) {
+            }
+            else
+            {
+                if (!(iov = ngx_array_push(&header)))
+                {
                     return NGX_CHAIN_ERROR;
                 }
 
@@ -133,21 +143,25 @@ ngx_chain_t *ngx_freebsd_sendfile_chain(ngx_connection_t *c, ngx_chain_t *in,
 
         /* get the file buf */
 
-        if (cl && cl->buf->in_file && send < limit) {
+        if (cl && cl->buf->in_file && send < limit)
+        {
             file = cl->buf;
 
             /* coalesce the neighbouring file bufs */
 
-            do {
+            do
+            {
                 size = (size_t) (cl->buf->file_last - cl->buf->file_pos);
 
-                if (send + size > limit) {
+                if (send + size > limit)
+                {
                     size = limit - send;
 
                     aligned = (cl->buf->file_pos + size + ngx_pagesize - 1)
-                                                      & ~(ngx_pagesize - 1);
+                              & ~(ngx_pagesize - 1);
 
-                    if (aligned <= cl->buf->file_last) {
+                    if (aligned <= cl->buf->file_last)
+                    {
                         size = aligned - cl->buf->file_pos;
                     }
                 }
@@ -157,42 +171,51 @@ ngx_chain_t *ngx_freebsd_sendfile_chain(ngx_connection_t *c, ngx_chain_t *in,
                 fprev = cl->buf->file_pos + size;
                 cl = cl->next;
 
-            } while (cl
-                     && cl->buf->in_file
-                     && send < limit
-                     && file->file->fd == cl->buf->file->fd
-                     && fprev == cl->buf->file_pos);
+            }
+            while (cl
+                    && cl->buf->in_file
+                    && send < limit
+                    && file->file->fd == cl->buf->file->fd
+                    && fprev == cl->buf->file_pos);
         }
 
-        if (file) {
+        if (file)
+        {
             /* create the tailer iovec and coalesce the neighbouring bufs */
 
             prev = NULL;
             iov = NULL;
 
             for (/* void */;
-                 cl && header.nelts < IOV_MAX && send < limit;
-                 cl = cl->next)
+                           cl && header.nelts < IOV_MAX && send < limit;
+                           cl = cl->next)
             {
-                if (ngx_buf_special(cl->buf)) {
+                if (ngx_buf_special(cl->buf))
+                {
                     continue;
                 }
 
-                if (!ngx_buf_in_memory_only(cl->buf)) {
+                if (!ngx_buf_in_memory_only(cl->buf))
+                {
                     break;
                 }
 
                 size = cl->buf->last - cl->buf->pos;
 
-                if (send + size > limit) {
+                if (send + size > limit)
+                {
                     size = limit - send;
                 }
 
-                if (prev == cl->buf->pos) {
+                if (prev == cl->buf->pos)
+                {
                     iov->iov_len += size;
 
-                } else {
-                    if (!(iov = ngx_array_push(&trailer))) {
+                }
+                else
+                {
+                    if (!(iov = ngx_array_push(&trailer)))
+                    {
                         return NGX_CHAIN_ERROR;
                     }
 
@@ -205,13 +228,15 @@ ngx_chain_t *ngx_freebsd_sendfile_chain(ngx_connection_t *c, ngx_chain_t *in,
             }
         }
 
-        if (file) {
+        if (file)
+        {
 
             if (ngx_freebsd_use_tcp_nopush
-                && c->tcp_nopush == NGX_TCP_NOPUSH_UNSET)
+                    && c->tcp_nopush == NGX_TCP_NOPUSH_UNSET)
             {
 
-                if (ngx_tcp_nopush(c->fd) == NGX_ERROR) {
+                if (ngx_tcp_nopush(c->fd) == NGX_ERROR)
+                {
                     err = ngx_errno;
 
                     /*
@@ -219,14 +244,17 @@ ngx_chain_t *ngx_freebsd_sendfile_chain(ngx_connection_t *c, ngx_chain_t *in,
                      * we continue a processing without the TCP_NOPUSH
                      */
 
-                    if (err != NGX_EINTR) {
+                    if (err != NGX_EINTR)
+                    {
                         wev->error = 1;
                         ngx_connection_error(c, err,
                                              ngx_tcp_nopush_n " failed");
                         return NGX_CHAIN_ERROR;
                     }
 
-                } else {
+                }
+                else
+                {
                     c->tcp_nopush = NGX_TCP_NOPUSH_SET;
 
                     ngx_log_debug0(NGX_LOG_DEBUG_EVENT, c->log, 0,
@@ -244,7 +272,8 @@ ngx_chain_t *ngx_freebsd_sendfile_chain(ngx_connection_t *c, ngx_chain_t *in,
              * http://www.freebsd.org/cgi/query-pr.cgi?pr=33771
              */
 
-            if (ngx_freebsd_sendfile_nbytes_bug == 0) {
+            if (ngx_freebsd_sendfile_nbytes_bug == 0)
+            {
                 hsize = 0;
             }
 
@@ -253,14 +282,19 @@ ngx_chain_t *ngx_freebsd_sendfile_chain(ngx_connection_t *c, ngx_chain_t *in,
             rc = sendfile(file->file->fd, c->fd, file->file_pos,
                           fsize + hsize, &hdtr, &sent, 0);
 
-            if (rc == -1) {
+            if (rc == -1)
+            {
                 err = ngx_errno;
 
-                if (err == NGX_EAGAIN || err == NGX_EINTR) {
-                    if (err == NGX_EINTR) {
+                if (err == NGX_EAGAIN || err == NGX_EINTR)
+                {
+                    if (err == NGX_EINTR)
+                    {
                         eintr = 1;
 
-                    } else {
+                    }
+                    else
+                    {
                         eagain = 1;
                     }
 
@@ -268,7 +302,9 @@ ngx_chain_t *ngx_freebsd_sendfile_chain(ngx_connection_t *c, ngx_chain_t *in,
                                    "sendfile() sent only " OFF_T_FMT " bytes",
                                    sent);
 
-                } else {
+                }
+                else
+                {
                     wev->error = 1;
                     ngx_connection_error(c, err, "sendfile() failed");
                     return NGX_CHAIN_ERROR;
@@ -279,24 +315,31 @@ ngx_chain_t *ngx_freebsd_sendfile_chain(ngx_connection_t *c, ngx_chain_t *in,
                            "sendfile: %d, @" OFF_T_FMT " " OFF_T_FMT ":%d",
                            rc, file->file_pos, sent, fsize + hsize);
 
-        } else {
+        }
+        else
+        {
             rc = writev(c->fd, header.elts, header.nelts);
 
             ngx_log_debug2(NGX_LOG_DEBUG_EVENT, c->log, 0,
                            "writev: %d of " SIZE_T_FMT, rc, hsize);
 
-            if (rc == -1) {
+            if (rc == -1)
+            {
                 err = ngx_errno;
 
-                if (err == NGX_EAGAIN || err == NGX_EINTR) {
-                    if (err == NGX_EINTR) {
+                if (err == NGX_EAGAIN || err == NGX_EINTR)
+                {
+                    if (err == NGX_EINTR)
+                    {
                         eintr = 1;
                     }
 
                     ngx_log_debug0(NGX_LOG_DEBUG_EVENT, c->log, err,
                                    "writev() not ready");
 
-                } else {
+                }
+                else
+                {
                     wev->error = 1;
                     ngx_connection_error(c, err, "writev() failed");
                     return NGX_CHAIN_ERROR;
@@ -306,50 +349,60 @@ ngx_chain_t *ngx_freebsd_sendfile_chain(ngx_connection_t *c, ngx_chain_t *in,
             sent = rc > 0 ? rc : 0;
         }
 
-        if (send - sprev == sent) {
+        if (send - sprev == sent)
+        {
             complete = 1;
         }
 
         c->sent += sent;
 
-        for (cl = in; cl; cl = cl->next) {
+        for (cl = in; cl; cl = cl->next)
+        {
 
-            if (ngx_buf_special(cl->buf)) {
+            if (ngx_buf_special(cl->buf))
+            {
                 continue;
             }
 
-            if (sent == 0) {
+            if (sent == 0)
+            {
                 break;
             }
 
             size = ngx_buf_size(cl->buf);
 
-            if (sent >= size) {
+            if (sent >= size)
+            {
                 sent -= size;
 
-                if (ngx_buf_in_memory(cl->buf)) {
+                if (ngx_buf_in_memory(cl->buf))
+                {
                     cl->buf->pos = cl->buf->last;
                 }
 
-                if (cl->buf->in_file) {
+                if (cl->buf->in_file)
+                {
                     cl->buf->file_pos = cl->buf->file_last;
                 }
 
                 continue;
             }
 
-            if (ngx_buf_in_memory(cl->buf)) {
+            if (ngx_buf_in_memory(cl->buf))
+            {
                 cl->buf->pos += sent;
             }
 
-            if (cl->buf->in_file) {
+            if (cl->buf->in_file)
+            {
                 cl->buf->file_pos += sent;
             }
 
             break;
         }
 
-        if (eagain) {
+        if (eagain)
+        {
 
             /*
              * sendfile() can return EAGAIN even if it has sent
@@ -362,16 +415,19 @@ ngx_chain_t *ngx_freebsd_sendfile_chain(ngx_connection_t *c, ngx_chain_t *in,
             return cl;
         }
 
-        if (eintr) {
+        if (eintr)
+        {
             continue;
         }
 
-        if (!complete) {
+        if (!complete)
+        {
             wev->ready = 0;
             return cl;
         }
 
-        if (send >= limit || cl == NULL) {
+        if (send >= limit || cl == NULL)
+        {
             return cl;
         }
 
