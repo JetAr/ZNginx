@@ -356,7 +356,7 @@ same_host (const char *u1, const char *u2)
     char *real1, *real2;
 
     /* Skip protocol, if present.  */
-    u1 += skip_url (u1);
+    u1 += skip_url (u1);//z 跳过 URL: 以及紧随气候的空白符
     u2 += skip_url (u2);
     u1 += skip_proto (u1);
     u2 += skip_proto (u2);

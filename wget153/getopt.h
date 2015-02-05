@@ -53,6 +53,7 @@ extern int opterr;
 
 extern int optopt;
 
+//z 描述了长名称的选项
 /* Describe the long-named options requested by the application.
    The LONG_OPTIONS argument to getopt_long or getopt_long_only is a vector
    of `struct option' terminated by an element containing a name which is

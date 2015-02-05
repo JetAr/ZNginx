@@ -80,10 +80,12 @@ version that doesn't.  */
 /* Is a directory ".."?  */
 #define DDOTP(x) ((*(x) == '.') && (*(x + 1) == '.') && (!*(x + 2)))
 
+//z 能够识别的协议；识别不等于就是支持，目前支持的协议只有 http 以及 ftp 协议。
 /* NULL-terminated list of strings to be recognized as prototypes (URL
 schemes).  Note that recognized doesn't mean supported -- only HTTP
 and FTP are currently supported.
 
+//z 一个字符串如果不包含数组中的任何字符串，那么被视作相对URL
  However, a string that does not match anything in the list will be
  considered a relative URL.  Thus it's important that this list has
  anything anyone could think of being legal.
@@ -858,14 +860,17 @@ findurl (const char *buf, int howmuch, int *count)
     char **prot;
     const char *s1, *s2;
 
+	//z 挨个字符串向后遍历
     for (s1 = buf; howmuch; s1++, howmuch--)
     {
+		//z 比对协议
         for (prot = protostrings; *prot; prot++)
         {
             if (howmuch <= strlen (*prot))
                 continue;
-            else if (!strncasecmp (*prot, s1, strlen (*prot)))
+            else if (!strncasecmp (*prot, s1, strlen (*prot)))//z 如果发现任何 proto 信息
             {
+				//z 这里是发现了协议之后，向后移动计数，直到发现任何分隔符或者空白符
                 for (s2 = s1, *count = 0;
                         howmuch && *s2 && *s2 >= 32 && *s2 < 127 && !ISSPACE (*s2) &&
                         !strchr (URL_SEPARATOR, *s2);

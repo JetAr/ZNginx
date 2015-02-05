@@ -491,6 +491,7 @@ cmd_boolean (const char *com, const char *val, void *closure)
 {
     int bool_value;
 
+	//z 根据 val 的值设置 bool_value 的值
     if (!strcasecmp (val, "on")
             || (*val == '1' && !*(val + 1)))
         bool_value = 1;
@@ -499,12 +500,18 @@ cmd_boolean (const char *com, const char *val, void *closure)
         bool_value = 0;
     else
     {
+		//z 否则出错
         fprintf (stderr, _("%s: %s: Please specify on or off.\n"),
                  exec_name, com);
+
+		//z 失败，返回0
         return 0;
     }
 
+	//z 接收设置之后的值
     *(int *)closure = bool_value;
+
+	//z 成功，返回1
     return 1;
 }
 
