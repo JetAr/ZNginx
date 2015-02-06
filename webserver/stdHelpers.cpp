@@ -1,7 +1,7 @@
-/* 
+ï»¿/*
    stdHelpers.cpp
 
-   Copyright (C) 2002-2004 René Nyffenegger
+   Copyright (C) 2002-2004 RenÃ© Nyffenegger
 
    This source code is provided 'as-is', without any express or implied
    warranty. In no event will the author be held liable for any damages
@@ -21,34 +21,38 @@
 
    3. This notice may not be removed or altered from any source distribution.
 
-   René Nyffenegger rene.nyffenegger@adp-gmbh.ch
+   RenÃ© Nyffenegger rene.nyffenegger@adp-gmbh.ch
 */
 
 #include "stdHelpers.h"
 #include <algorithm>
 #include <cctype>
 
-std::string ReplaceInStr(const std::string& in, const std::string& search_for, const std::string& replace_with) {
+std::string ReplaceInStr(const std::string& in, const std::string& search_for, const std::string& replace_with)
+{
 
-  std::string ret = in;
+    std::string ret = in;
 
-  std::string::size_type pos = ret.find(search_for);
+    std::string::size_type pos = ret.find(search_for);
 
-  while (pos != std::string::npos) {
-    ret = ret.replace(pos, search_for.size(), replace_with);
+    while (pos != std::string::npos)
+    {
+        ret = ret.replace(pos, search_for.size(), replace_with);
 
-    pos =  pos - search_for.size() + replace_with.size() + 1;
+        pos =  pos - search_for.size() + replace_with.size() + 1;
 
-    pos = ret.find(search_for, pos);
-  }
+        pos = ret.find(search_for, pos);
+    }
 
-  return ret;
+    return ret;
 }
 
-void ToUpper(std::string& s) {
-  std::transform(s.begin(), s.end(), s.begin(), toupper);
+void ToUpper(std::string& s)
+{
+    std::transform(s.begin(), s.end(), s.begin(), toupper);
 }
 
-void ToLower(std::string& s) {
-  std::transform(s.begin(), s.end(), s.begin(), tolower);
+void ToLower(std::string& s)
+{
+    std::transform(s.begin(), s.end(), s.begin(), tolower);
 }

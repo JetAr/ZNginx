@@ -1,7 +1,7 @@
-/* 
+ï»¿/*
    Tracer.h
 
-   Copyright (C) 2002-2004 René Nyffenegger
+   Copyright (C) 2002-2004 RenÃ© Nyffenegger
 
    This source code is provided 'as-is', without any express or implied
    warranty. In no event will the author be held liable for any damages
@@ -21,13 +21,13 @@
 
    3. This notice may not be removed or altered from any source distribution.
 
-   René Nyffenegger rene.nyffenegger@adp-gmbh.ch
+   RenÃ© Nyffenegger rene.nyffenegger@adp-gmbh.ch
 */
 
 #ifndef __TRACER_H__
 #define __TRACER_H__
 
-#ifdef DO_TRACE 
+#ifdef DO_TRACE
 
 #include <string>
 #include <sstream>
@@ -39,44 +39,47 @@
 #define TraceFunc(x)     TraceFunc_ dummy_____for_trace_func______(x)
 #define TraceFunc2(x,y)  TraceFunc_ dummy_____for_trace_func______(x,y)
 
-class TraceFunc_ {
-  std::string func_name_;
-  public:
+class TraceFunc_
+{
+    std::string func_name_;
+public:
     TraceFunc_(std::string const&);
     TraceFunc_(std::string const&, std::string const&);
-   ~TraceFunc_();
+    ~TraceFunc_();
 
     static void StartTrace_(std::string const& file_name);
 
     template <typename T>
-    void Trace_(T const& t) {
-      DWORD d;
-      std::string indent_s;
-      std::stringstream s;
+    void Trace_(T const& t)
+    {
+        DWORD d;
+        std::string indent_s;
+        std::stringstream s;
 
-      s << t;
-  
-      for (int i=0; i< indent; i++) indent_s += " ";
-  
-      ::WriteFile(trace_file_,indent_s.c_str(), indent_s.size(), &d, 0);
-      ::WriteFile(trace_file_, s.str().c_str(), s.str().size() ,&d, 0);
-      ::WriteFile(trace_file_,"\x0a",1,&d,0);
+        s << t;
+
+        for (int i=0; i< indent; i++) indent_s += " ";
+
+        ::WriteFile(trace_file_,indent_s.c_str(), indent_s.size(), &d, 0);
+        ::WriteFile(trace_file_, s.str().c_str(), s.str().size() ,&d, 0);
+        ::WriteFile(trace_file_,"\x0a",1,&d,0);
     }
 
     template <class T, class U>
-    void Trace_(T const& t, U const& u) {
-      DWORD d;
-      std::string indent_s;
-      std::stringstream s;
+    void Trace_(T const& t, U const& u)
+    {
+        DWORD d;
+        std::string indent_s;
+        std::stringstream s;
 
-      s << t;
-      s << u;
-  
-      for (int i=0; i< indent; i++) indent_s += " ";
-  
-      ::WriteFile(trace_file_,indent_s.c_str(), indent_s.size(), &d, 0);
-      ::WriteFile(trace_file_, s.str().c_str(), s.str().size() ,&d, 0);
-      ::WriteFile(trace_file_,"\x0a",1,&d,0);
+        s << t;
+        s << u;
+
+        for (int i=0; i< indent; i++) indent_s += " ";
+
+        ::WriteFile(trace_file_,indent_s.c_str(), indent_s.size(), &d, 0);
+        ::WriteFile(trace_file_, s.str().c_str(), s.str().size() ,&d, 0);
+        ::WriteFile(trace_file_,"\x0a",1,&d,0);
     }
 
     static int    indent;
