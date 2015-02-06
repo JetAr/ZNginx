@@ -28,6 +28,10 @@
 
 #include "Socket.h"
 
+#if _MSC_VER > 1300
+#include <errno.h>
+#endif
+
 using namespace std;
 
 int Socket::nofSockets_= 0;
