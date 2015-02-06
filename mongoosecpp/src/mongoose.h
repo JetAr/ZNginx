@@ -1,4 +1,4 @@
-// Copyright (c) 2004-2011 Sergey Lyubka
+﻿// Copyright (c) 2004-2011 Sergey Lyubka
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,33 +32,36 @@ struct mg_connection;  // Handle for the individual connection
 
 
 // This structure contains information about the HTTP request.
-struct mg_request_info {
-  void *user_data;       // User-defined pointer passed to mg_start()
-  char *request_method;  // "GET", "POST", etc
-  char *uri;             // URL-decoded URI
-  char *http_version;    // E.g. "1.0", "1.1"
-  char *query_string;    // URL part after '?' (not including '?') or NULL
-  char *remote_user;     // Authenticated user, or NULL if no auth used
-  char *log_message;     // Mongoose error log message, MG_EVENT_LOG only
-  long remote_ip;        // Client's IP address
-  int remote_port;       // Client's port
-  int status_code;       // HTTP reply status code, e.g. 200
-  int is_ssl;            // 1 if SSL-ed, 0 if not
-  int num_headers;       // Number of headers
-  struct mg_header {
-    char *name;          // HTTP header name
-    char *value;         // HTTP header value
-  } http_headers[64];    // Maximum 64 headers
+struct mg_request_info
+{
+    void *user_data;       // User-defined pointer passed to mg_start()
+    char *request_method;  // "GET", "POST", etc
+    char *uri;             // URL-decoded URI
+    char *http_version;    // E.g. "1.0", "1.1"
+    char *query_string;    // URL part after '?' (not including '?') or NULL
+    char *remote_user;     // Authenticated user, or NULL if no auth used
+    char *log_message;     // Mongoose error log message, MG_EVENT_LOG only
+    long remote_ip;        // Client's IP address
+    int remote_port;       // Client's port
+    int status_code;       // HTTP reply status code, e.g. 200
+    int is_ssl;            // 1 if SSL-ed, 0 if not
+    int num_headers;       // Number of headers
+    struct mg_header
+    {
+        char *name;          // HTTP header name
+        char *value;         // HTTP header value
+    } http_headers[64];    // Maximum 64 headers
 };
 
 // Various events on which user-defined function is called by Mongoose.
-enum mg_event {
-  MG_NEW_REQUEST,   // New HTTP request has arrived from the client
-  MG_HTTP_ERROR,    // HTTP error must be returned to the client
-  MG_EVENT_LOG,     // Mongoose logs an event, request_info.log_message
-  MG_INIT_SSL,      // Mongoose initializes SSL. Instead of mg_connection *,
-                    // SSL context is passed to the callback function.
-  MG_REQUEST_COMPLETE  // Mongoose has finished handling the request
+enum mg_event
+{
+    MG_NEW_REQUEST,   // New HTTP request has arrived from the client
+    MG_HTTP_ERROR,    // HTTP error must be returned to the client
+    MG_EVENT_LOG,     // Mongoose logs an event, request_info.log_message
+    MG_INIT_SSL,      // Mongoose initializes SSL. Instead of mg_connection *,
+    // SSL context is passed to the callback function.
+    MG_REQUEST_COMPLETE  // Mongoose has finished handling the request
 };
 
 // Prototype for the user-defined function. Mongoose calls this function
@@ -169,7 +172,7 @@ __attribute__((format(printf, 2, 3)))
 
 // added prototype by Diego to allow printf wrapping. should remove that in the future
 int mg_vsnprintf(struct mg_connection *conn, char *buf, size_t buflen,
-                        const char *fmt, va_list ap);
+                 const char *fmt, va_list ap);
 
 
 // Send contents of the entire file together with HTTP headers.
