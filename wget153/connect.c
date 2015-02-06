@@ -101,6 +101,11 @@ make_connection (int *sock, char *hostname, unsigned short port)
     return NOCONERROR;
 }
 
+/*z
+绑定到本地端口 PORT，完成所有所需的工作（创建socket，在其上设置SO_REUSEADDR选项），然后调用bind以及listen
+如果*port为0，那么随机选择一个端口，并将其值存回*PORT。内部值MPORT设置为确保master socket的值。
+调用 acceptport 来阻止并接受一个连接
+*/
 /* Bind the local port PORT.  This does all the necessary work, which
    is creating a socket, setting SO_REUSEADDR option on it, then
    calling bind() and listen().  If *PORT is 0, a random port is
@@ -115,32 +120,42 @@ bindport (unsigned short *port)
 
     msock = -1;
     addr = (struct sockaddr *) &srv;
+	//z 创建 socket
     if ((msock = socket (AF_INET, SOCK_STREAM, 0)) < 0)
         return CONSOCKERR;
-    if (setsockopt (msock, SOL_SOCKET, SO_REUSEADDR,
+    //z 设置 msock 选项。设置 SO_REUSEADDR
+	if (setsockopt (msock, SOL_SOCKET, SO_REUSEADDR,
                     (char *)&optval, sizeof (optval)) < 0)
         return CONSOCKERR;
     srv.sin_family = AF_INET;
     srv.sin_addr.s_addr = htonl (INADDR_ANY);
     srv.sin_port = htons (*port);
+
+	//z bind socket 到 addr （这种细节函数看看UNP）
     if (bind (msock, addr, sizeof (struct sockaddr_in)) < 0)
     {
+		//z 绑定失败，关闭socket
         CLOSE (msock);
         msock = -1;
         return BINDERR;
     }
     DEBUGP (("Master socket fd %d bound.\n", msock));
-    if (!*port)
+    
+	//z 如果*port为0
+	if (!*port)
     {
         size_t addrlen = sizeof (struct sockaddr_in);
+		//z The getsockname function retrieves the local name for a socket.
         if (getsockname (msock, addr, (int *)&addrlen) < 0)
         {
             CLOSE (msock);
             msock = -1;
             return CONPORTERR;
         }
+		//z 如果传入端口号为0，将随机分配的端口号存储回port中去。
         *port = ntohs (srv.sin_port);
     }
+	//z 在msock上进行侦听
     if (listen (msock, 1) < 0)
     {
         CLOSE (msock);
