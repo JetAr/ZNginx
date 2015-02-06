@@ -52,6 +52,11 @@ extern int h_errno;
 char ftp_last_respline[128];
 
 
+/*z
+得到 ftp server 的响应
+<CR> 以及 <LF> 从 line 中 stripped 了。以0作为字符串结束符。
+最后一行不做响应。在RFC959中详细描述了如何判断是最后一行
+*/
 /* Get the response of FTP server and allocate enough room to handle
    it.  <CR> and <LF> characters are stripped from the line, and the
    line is 0-terminated.  All the response lines but the last one are
@@ -60,6 +65,7 @@ uerr_t
 ftp_response (struct rbuf *rbuf, char **line)
 {
     int i;
+	//z 初始分配40，为啥不是类似32这样的数字了？
     int bufsize = 40;
 
     *line = (char *)xmalloc (bufsize);
@@ -68,9 +74,11 @@ ftp_response (struct rbuf *rbuf, char **line)
         for (i = 0; 1; i++)
         {
             int res;
+			//z 如果 i 已经越界，那么将对应的空间增加一倍
             if (i > bufsize - 1)
                 *line = (char *)xrealloc (*line, (bufsize <<= 1));
-            res = RBUF_READCHAR (rbuf, *line + i);
+            //z 从 rbuf 中读取下一个字符串
+			res = RBUF_READCHAR (rbuf, *line + i);
             /* RES is number of bytes read.  */
             if (res == 1)
             {
@@ -107,17 +115,22 @@ ftp_request (const char *command, const char *value)
     char *res = (char *)xmalloc (strlen (command)
                                  + (value ? (1 + strlen (value)) : 0)
                                  + 2 + 1);
-    sprintf (res, "%s%s%s\r\n", command, value ? " " : "", value ? value : "");
+
+    //z 格式要求。比如说 pass 可能是 "pass pass" 或者在密码为空的情况下，命令为 "pass"
+	sprintf (res, "%s%s%s\r\n", command, value ? " " : "", value ? value : "");
+	
+	//z 是否记录服务器响应？
     if (opt.server_response)
     {
         /* Hack: don't print out password.  */
+		//z 如果当前命令为 pass，那么不记入日志
         if (strncmp (res, "PASS", 4) != 0)
             logprintf (LOG_ALWAYS, "--> %s\n", res);
         else
             logputs (LOG_ALWAYS, "--> PASS Turtle Power!\n");
     }
     else
-        DEBUGP (("\n--> %s\n", res));
+        DEBUGP (("\n--> %s\n", res));//z 否则只记录
     return res;
 }
 
@@ -125,6 +138,7 @@ ftp_request (const char *command, const char *value)
 const char *calculate_skey_response PARAMS ((int, const char *, const char *));
 #endif
 
+//z 发送USER以及PASS命令到server，在 control connection socket csock 上
 /* Sends the USER and PASS commands to the server, to control
    connection socket csock.  */
 uerr_t

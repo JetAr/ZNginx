@@ -21,7 +21,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 #define RBUF_H
 
 /* Retrieval stream */
-struct 4f
+struct rbuf
 {
     int fd;
     char buffer[4096];		/* the input buffer */
@@ -30,6 +30,11 @@ struct 4f
 				   buffer_left = buffer_end - buffer_pos */
     int internal_dont_touch_this;	/* used by RBUF_READCHAR macro */
 };
+
+/*
+从 RBUF 读取一个字符，如果buffer中有任何东西，字符串将从buffer中返回。否则再次填充buffr并返回第一个character。
+返回值和 read(2) 同，
+*/
 
 /* Read a character from RBUF.  If there is anything in the buffer,
    the character is returned from the buffer.  Otherwise, refill the
