@@ -228,12 +228,20 @@ closeport (int sock)
 unsigned char *
 conaddr (int fd)
 {
-    static unsigned char res[4];
+    //z 本程序中很喜欢使用这种函数内的 static buffer 了。
+	//z pros : 很快
+	//z cons : 不可重入
+	//z 查询了下英文资料 reentrant 以及 non-reentrant
+	//z 还有个概念是 thread-safe 
+	//z 函数可重入，那么需要没有使用static buffer，而且不得调用不可重入的函数
+	//z 不可重入的函数一般几乎不可能使之成为 thread-safe 的
+	static unsigned char res[4];
     struct sockaddr_in mysrv;
     struct sockaddr *myaddr;
     size_t addrlen = sizeof (mysrv);
 
     myaddr = (struct sockaddr *) (&mysrv);
+	//z 还是多看看UNP这样子了。
     if (getsockname (fd, myaddr, (int *)&addrlen) < 0)
         return NULL;
     memcpy (res, &mysrv.sin_addr, 4);
