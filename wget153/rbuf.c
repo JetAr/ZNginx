@@ -56,19 +56,24 @@ rbuf_readchar (struct rbuf *rbuf, char *store)
 #endif
 
 /* Like rbuf_readchar(), only don't move the buffer position.  */
+//z 从buffer中读取一个字符串，但是不移动buffer的位置
+//z 注意，调用该函数可能变更buf中的内容
 int
 rbuf_peek (struct rbuf *rbuf, char *store)
 {
+	//z buf 中是否还有剩下的字符串，如果无，那么从fd中读取的。
     if (!rbuf->buffer_left)
     {
         int res;
         rbuf->buffer_pos = rbuf->buffer;
         rbuf->buffer_left = 0;
         res = iread (rbuf->fd, rbuf->buffer, sizeof (rbuf->buffer));
+		//z 从 fd 中读取的字节数为0；无更多。
         if (res <= 0)
             return res;
         rbuf->buffer_left = res;
     }
+	//z 返回指向的字符串
     *store = *rbuf->buffer_pos;
     return 1;
 }

@@ -172,6 +172,7 @@ bindport (unsigned short *port)
 
    Returns 1 if FD is accessible, 0 for timeout and -1 for error in
    select().  */
+//z 等待 fd 变成 readable， MAXTIME 为超时时间，以秒为单位。如果writep不为0，那么检查FD是否为writable的。
 static int
 select_fd (int fd, int maxtime, int writep)
 {
@@ -182,7 +183,8 @@ select_fd (int fd, int maxtime, int writep)
     FD_SET (fd, &fds);
     FD_ZERO (&exceptfds);
     FD_SET (fd, &exceptfds);
-    timeout.tv_sec = maxtime;
+    
+	timeout.tv_sec = maxtime;
     timeout.tv_usec = 0;
     /* HPUX reportedly warns here.  What is the correct incantation?  */
     return select (fd + 1, writep ? NULL : &fds, writep ? &fds : NULL,
@@ -261,6 +263,7 @@ iread (int fd, char *buf, int len)
     do
     {
 #ifdef HAVE_SELECT
+		//z 是否考虑超时
         if (opt.timeout)
         {
             do
