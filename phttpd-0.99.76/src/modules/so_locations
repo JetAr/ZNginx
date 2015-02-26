@@ -1,0 +1,64 @@
+file.so \
+		:st = .text 0x000003ffbfff0000, 0x0000000000010000:\
+		:st = .data 0x000003ffffff0000, 0x0000000000010000:\
+
+dir.so \
+		:st = .text 0x000003ffbffe0000, 0x0000000000010000:\
+		:st = .data 0x000003fffffe0000, 0x0000000000010000:\
+
+cgi.so \
+		:st = .text 0x000003ffbffd0000, 0x0000000000010000:\
+		:st = .data 0x000003fffffd0000, 0x0000000000010000:\
+
+isproxy.so \
+		:st = .text 0x000003ffbffc0000, 0x0000000000010000:\
+		:st = .data 0x000003fffffc0000, 0x0000000000010000:\
+
+config.so \
+		:st = .text 0x000003ffbffb0000, 0x0000000000010000:\
+		:st = .data 0x000003fffffb0000, 0x0000000000010000:\
+
+map.so \
+		:st = .text 0x000003ffbffa0000, 0x0000000000010000:\
+		:st = .data 0x000003fffffa0000, 0x0000000000010000:\
+
+ph.so \
+		:st = .text 0x000003ffbff90000, 0x0000000000010000:\
+		:st = .data 0x000003fffff90000, 0x0000000000010000:\
+
+ncsa-html.so \
+		:st = .text 0x000003ffbff80000, 0x0000000000010000:\
+		:st = .data 0x000003fffff80000, 0x0000000000010000:\
+
+mbox.so \
+		:st = .text 0x000003ffbff70000, 0x0000000000010000:\
+		:st = .data 0x000003fffff70000, 0x0000000000010000:\
+
+asis.so \
+		:st = .text 0x000003ffbff60000, 0x0000000000010000:\
+		:st = .data 0x000003fffff60000, 0x0000000000010000:\
+
+http_proxy.so \
+		:st = .text 0x000003ffbff50000, 0x0000000000010000:\
+		:st = .data 0x000003fffff50000, 0x0000000000010000:\
+
+gopher_proxy.so \
+		:st = .text 0x000003ffbff40000, 0x0000000000010000:\
+		:st = .data 0x000003fffff40000, 0x0000000000010000:\
+
+ftp_proxy.so \
+		:st = .text 0x000003ffbff30000, 0x0000000000010000:\
+		:st = .data 0x000003fffff30000, 0x0000000000010000:\
+
+auth_syspwd.so \
+		:st = .text 0x000003ffbff20000, 0x0000000000010000:\
+		:st = .data 0x000003fffff20000, 0x0000000000010000:\
+
+auth_file.so \
+		:st = .text 0x000003ffbff10000, 0x0000000000010000:\
+		:st = .data 0x000003fffff10000, 0x0000000000010000:\
+
+next_proxy.so \
+		:st = .text 0x000003ffbff00000, 0x0000000000010000:\
+		:st = .data 0x000003fffff00000, 0x0000000000010000:\
+

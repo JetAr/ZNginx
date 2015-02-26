@@ -16,15 +16,16 @@
 
 void send_rawip(void)
 {
-	char *packet;
+    char *packet;
 
-	packet = malloc(data_size);
-	if (packet == NULL) {
-		perror("[send_rawip] malloc()");
-		return;
-	}
-	memset(packet, 0, data_size);
-	data_handler(packet, data_size);
-	send_ip_handler(packet, data_size);
-	free(packet);
+    packet = malloc(data_size);
+    if (packet == NULL)
+    {
+        perror("[send_rawip] malloc()");
+        return;
+    }
+    memset(packet, 0, data_size);
+    data_handler(packet, data_size);
+    send_ip_handler(packet, data_size);
+    free(packet);
 }

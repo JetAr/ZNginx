@@ -16,25 +16,27 @@
  */
 int strisnum(char *s)
 {
-	int digits = 0; /* used to return false if there aren't digits */
+    int digits = 0; /* used to return false if there aren't digits */
 
-	while(isspace(*s))
-		s++; /* skip initial spaces */
-	if (*s == '-') /* negative number? */
-		s++;
-	while(*s) {
-		if (isspace(*s)) { /* skip spaces in the tail */
-			while(isspace(*s))
-				s++;
-			if (*s) return 0; /* but don't allow other tail chars */
-			return digits ? 1 : 0;
-		}
-		if (!isdigit(*s))
-			return 0;
-		s++;
-		digits++;
-	}
-	return digits ? 1 : 0;
+    while(isspace(*s))
+        s++; /* skip initial spaces */
+    if (*s == '-') /* negative number? */
+        s++;
+    while(*s)
+    {
+        if (isspace(*s))   /* skip spaces in the tail */
+        {
+            while(isspace(*s))
+                s++;
+            if (*s) return 0; /* but don't allow other tail chars */
+            return digits ? 1 : 0;
+        }
+        if (!isdigit(*s))
+            return 0;
+        s++;
+        digits++;
+    }
+    return digits ? 1 : 0;
 }
 
 /* function similar to strtok() more convenient when we know the
@@ -52,29 +54,36 @@ int strisnum(char *s)
  */
 size_t strftok(char *sep, char *str, char **tptrs, size_t nptrs)
 {
-	size_t seplen = strlen(sep);
-	size_t i, j = 0;
-	int inside = 0;
+    size_t seplen = strlen(sep);
+    size_t i, j = 0;
+    int inside = 0;
 
-	while(*str) {
-		for(i = 0; i < seplen; i++) {
-			if (sep[i] == *str)
-				break;
-		}
-		if (i == seplen) { /* no match */
-			if (!inside) {
-				tptrs[j++] = str;
-				inside = 1;
-			}
-		} else { /* match */
-			if (inside) {
-				*str = '\0';
-				if (j == nptrs)
-					return j;
-				inside = 0;
-			}
-		}
-		str++;
-	}
-	return j;
+    while(*str)
+    {
+        for(i = 0; i < seplen; i++)
+        {
+            if (sep[i] == *str)
+                break;
+        }
+        if (i == seplen)   /* no match */
+        {
+            if (!inside)
+            {
+                tptrs[j++] = str;
+                inside = 1;
+            }
+        }
+        else     /* match */
+        {
+            if (inside)
+            {
+                *str = '\0';
+                if (j == nptrs)
+                    return j;
+                inside = 0;
+            }
+        }
+        str++;
+    }
+    return j;
 }

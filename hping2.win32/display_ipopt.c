@@ -53,89 +53,93 @@
 
 void display_ipopt(char* buf)
 {
-int i,j;
-unsigned long l;
-static int old_rrlen;
-static char old_rr[MAX_IPOPTLEN];
-unsigned char* cp;
-int hlen;
-struct myiphdr *ip;
-struct in_addr in;
+    int i,j;
+    unsigned long l;
+    static int old_rrlen;
+    static char old_rr[MAX_IPOPTLEN];
+    unsigned char* cp;
+    int hlen;
+    struct myiphdr *ip;
+    struct in_addr in;
 
 
-	ip = (struct myiphdr *)buf;
-	hlen = ip->ihl * 4;
-	
-	cp = (u_char *)buf + sizeof(struct myiphdr);
+    ip = (struct myiphdr *)buf;
+    hlen = ip->ihl * 4;
 
-	for (; hlen > (int)sizeof(struct myiphdr); --hlen, ++cp)
-		switch (*cp) {
-		case IPOPT_EOL:
-			hlen = 0;
-			break;
-		case IPOPT_LSRR:
-			(void)printf("LSRR: ");
-			hlen -= 2;
-			j = *++cp;
-			++cp;
-			if (j > IPOPT_MINOFF)
-				for (;;) {
-					l = *++cp;
-					l = (l<<8) + *++cp;
-					l = (l<<8) + *++cp;
-					l = (l<<8) + *++cp;
-				in.s_addr=htonl(l);
-				printf("\t%s",inet_ntoa(in));
-				hlen -= 4;
-				j -= 4;
-				if (j <= IPOPT_MINOFF)
-					break;
-				(void)putchar('\n');
-			}
-			break;
-		case IPOPT_RR:
-			j = *++cp;		/* get length */
-			i = *++cp;		/* and pointer */
-			hlen -= 2;
-			if (i > j)
-				i = j;
-			i -= IPOPT_MINOFF;
-			if (i <= 0)
-				continue;
-			if (i == old_rrlen
-			    && cp == (u_char *)buf + sizeof(struct myiphdr) + 2
-			    && !memcmp((char *)cp, old_rr, i)) {
-				(void)printf("\t(same route)\n");
-				i = ((i + 3) / 4) * 4;
-				hlen -= i;
-				cp += i;
-				break;
-			}
-			old_rrlen = i;
-			memcpy(old_rr, cp, i);
-			(void)printf("RR: ");
-			for (;;) {
-				l = *++cp;
-				l = (l<<8) + *++cp;
-				l = (l<<8) + *++cp;
-				l = (l<<8) + *++cp;
-				in.s_addr=htonl(l);
-				printf("\t%s",inet_ntoa(in));
-				hlen -= 4;
-				i -= 4;
-				if (i <= 0)
-					break;
-				(void)putchar('\n');
-			}
-			putchar('\n');
-			
-			break;
-		case IPOPT_NOP:
-			(void)printf("NOP\n");
-			break;
-		default:
-			(void)printf("unknown option %x\n", *cp);
-			break;
-		}
+    cp = (u_char *)buf + sizeof(struct myiphdr);
+
+    for (; hlen > (int)sizeof(struct myiphdr); --hlen, ++cp)
+        switch (*cp)
+        {
+        case IPOPT_EOL:
+            hlen = 0;
+            break;
+        case IPOPT_LSRR:
+            (void)printf("LSRR: ");
+            hlen -= 2;
+            j = *++cp;
+            ++cp;
+            if (j > IPOPT_MINOFF)
+                for (;;)
+                {
+                    l = *++cp;
+                    l = (l<<8) + *++cp;
+                    l = (l<<8) + *++cp;
+                    l = (l<<8) + *++cp;
+                    in.s_addr=htonl(l);
+                    printf("\t%s",inet_ntoa(in));
+                    hlen -= 4;
+                    j -= 4;
+                    if (j <= IPOPT_MINOFF)
+                        break;
+                    (void)putchar('\n');
+                }
+            break;
+        case IPOPT_RR:
+            j = *++cp;		/* get length */
+            i = *++cp;		/* and pointer */
+            hlen -= 2;
+            if (i > j)
+                i = j;
+            i -= IPOPT_MINOFF;
+            if (i <= 0)
+                continue;
+            if (i == old_rrlen
+                    && cp == (u_char *)buf + sizeof(struct myiphdr) + 2
+                    && !memcmp((char *)cp, old_rr, i))
+            {
+                (void)printf("\t(same route)\n");
+                i = ((i + 3) / 4) * 4;
+                hlen -= i;
+                cp += i;
+                break;
+            }
+            old_rrlen = i;
+            memcpy(old_rr, cp, i);
+            (void)printf("RR: ");
+            for (;;)
+            {
+                l = *++cp;
+                l = (l<<8) + *++cp;
+                l = (l<<8) + *++cp;
+                l = (l<<8) + *++cp;
+                in.s_addr=htonl(l);
+                printf("\t%s",inet_ntoa(in));
+                hlen -= 4;
+                i -= 4;
+                if (i <= 0)
+                    break;
+                (void)putchar('\n');
+            }
+            putchar('\n');
+
+            break;
+        case IPOPT_NOP:
+            (void)printf("NOP\n");
+            break;
+        default:
+            (void)printf("unknown option %x\n", *cp);
+            break;
+        }
 
 }

@@ -1,12 +1,12 @@
-/* 
- * $smu-mark$ 
- * $name: hcmp.h$ 
- * $author: Salvatore Sanfilippo <antirez@invece.org>$ 
- * $copyright: Copyright (C) 1999 by Salvatore Sanfilippo$ 
- * $license: This software is under GPL version 2 of license$ 
- * $date: Fri Nov  5 11:55:47 MET 1999$ 
- * $rev: 9$ 
- */ 
+/*
+ * $smu-mark$
+ * $name: hcmp.h$
+ * $author: Salvatore Sanfilippo <antirez@invece.org>$
+ * $copyright: Copyright (C) 1999 by Salvatore Sanfilippo$
+ * $license: This software is under GPL version 2 of license$
+ * $date: Fri Nov  5 11:55:47 MET 1999$
+ * $rev: 9$
+ */
 
 /* Hping Control Message Protocol */
 
@@ -17,10 +17,10 @@
 
 struct hcmphdr
 {
-	__u8	type;
-	union
-	{
-		__u16 seqnum;
-		__u32 usec;
-	} typedep;
+    __u8	type;
+    union
+    {
+        __u16 seqnum;
+        __u32 usec;
+    } typedep;
 };

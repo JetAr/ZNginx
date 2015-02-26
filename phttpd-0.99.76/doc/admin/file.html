@@ -1,0 +1,68 @@
+<HTML>
+<HEAD>
+<TITLE>
+Phttpd: FILE
+</TITLE>
+</HEAD>
+<BODY>
+<H2 ALIGN=CENTER>
+The FILE module
+</H2>
+
+This module transmits normal, unparsed, document files. Depending on
+the configuration file it tags the returned document with the correct
+MIME types and encodings, and also provides the correct length of the
+document.
+
+<H3>Configuration options (file.conf)</H3>
+
+<DL>
+
+<DT><B>content-types</B> (table)
+<DD>Table of MIME types to use for different file suffixes.
+
+<P><DT><B>content-encodings</B> (table)
+<DD>Table of MIME encodings to use for different file suffixes.
+
+<P><DT><B>default-type</B> (string)
+<DD>The default MIME type to use if not found in the <B>content-types</B>
+	table. Defaults to "unknown".
+
+</DL>
+
+<H3>Example configuration file</H3>
+<PRE>
+	# file.conf
+	default-type = text/plain
+
+	content-encodings = {
+		.Z		x-compress
+		.gz		x-gzip
+	}
+	
+	
+	content-types = {
+		.html		text/html
+		.txt		text/plain
+		.tsv		text/tab-separated-values
+		.gif		image/gif
+		.jpeg		image/jpeg
+		.tiff		image/tiff
+		.xbm		image/x-xbitmap
+		.ps		application/postscript
+		.eps		application/postscript
+		.rtf		application/rtf
+		.mif		application/x-mif
+		.dvi		application/x-dvi
+		.man		application/x-troff-man
+		.tar		application/x-tar
+		.au		audio/basic
+		.snd		audio/basic
+		.mpeg		video/mpeg
+		.qt		video/quicktime
+	}
+</PRE>
+
+</BODY>
+</HTML>
+

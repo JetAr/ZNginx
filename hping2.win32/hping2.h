@@ -7,7 +7,7 @@
  * $date: Fri Nov  5 11:55:48 MET 1999$
  * $rev: 9$
  */
- 
+
 /* $Id: hping2.h,v 1.19 2003/08/07 23:55:55 antirez Exp $ */
 
 /*
@@ -276,59 +276,62 @@ typedef int                    int_32_t;
 /*
  * IP header
  */
-struct myiphdr {
+struct myiphdr
+{
 #if defined(__LITTLE_ENDIAN_BITFIELD)
-        __u8    ihl:4,
-                version:4;
+    __u8    ihl:4,
+            version:4;
 #elif defined (__BIG_ENDIAN_BITFIELD)
-        __u8    version:4,
-                ihl:4;
+    __u8    version:4,
+            ihl:4;
 #else
 #error  "Please, edit Makefile and add -D__(LITTLE|BIG)_ENDIAN_BITFIEND"
 #endif
-        __u8    tos;
-        __u16   tot_len;
-        __u16   id;
-        __u16   frag_off;
-        __u8    ttl;
-        __u8    protocol;
-        __u16   check;
-        __u32   saddr;
-        __u32   daddr;
+    __u8    tos;
+    __u16   tot_len;
+    __u16   id;
+    __u16   frag_off;
+    __u8    ttl;
+    __u8    protocol;
+    __u16   check;
+    __u32   saddr;
+    __u32   daddr;
 };
 
 /*
  * UDP header
  */
-struct myudphdr {
-	__u16 uh_sport;     /* source port */
-	__u16 uh_dport;     /* destination port */
-	__u16 uh_ulen;      /* udp length */
-	__u16 uh_sum;       /* udp checksum */
+struct myudphdr
+{
+    __u16 uh_sport;     /* source port */
+    __u16 uh_dport;     /* destination port */
+    __u16 uh_ulen;      /* udp length */
+    __u16 uh_sum;       /* udp checksum */
 };
 
 /*
  * TCP header.
  * Per RFC 793, September, 1981.
  */
-struct mytcphdr {
-	__u16	th_sport;               /* source port */
-	__u16	th_dport;               /* destination port */
-	__u32	th_seq;                 /* sequence number */
-	__u32	th_ack;                 /* acknowledgement number */
+struct mytcphdr
+{
+    __u16	th_sport;               /* source port */
+    __u16	th_dport;               /* destination port */
+    __u32	th_seq;                 /* sequence number */
+    __u32	th_ack;                 /* acknowledgement number */
 #if defined (__LITTLE_ENDIAN_BITFIELD)
-	__u8    th_x2:4,                /* (unused) */
-		th_off:4;               /* data offset */
+    __u8    th_x2:4,                /* (unused) */
+            th_off:4;               /* data offset */
 #elif defined (__BIG_ENDIAN_BITFIELD)
-	__u8    th_off:4,               /* data offset */
-		th_x2:4;                /* (unused) */
+    __u8    th_off:4,               /* data offset */
+            th_x2:4;                /* (unused) */
 #else
 #error  "Please, edit Makefile and add -D__(LITTLE|BIG)_ENDIAN_BITFIEND"
 #endif
-	__u8    th_flags;
-	__u16   th_win;                 /* window */
-	__u16   th_sum;                 /* checksum */
-	__u16   th_urp;                 /* urgent pointer */
+    __u8    th_flags;
+    __u16   th_win;                 /* window */
+    __u16   th_sum;                 /* checksum */
+    __u16   th_urp;                 /* urgent pointer */
 };
 
 /*
@@ -336,24 +339,25 @@ struct mytcphdr {
  */
 struct myicmphdr
 {
-	__u8          type;
-	__u8          code;
-	__u16         checksum;
-	union
-	{
-		struct
-		{
-			__u16   id;
-			__u16   sequence;
-		} echo;
-		__u32   gateway;
-	} un;
+    __u8          type;
+    __u8          code;
+    __u16         checksum;
+    union
+    {
+        struct
+        {
+            __u16   id;
+            __u16   sequence;
+        } echo;
+        __u32   gateway;
+    } un;
 };
 
-struct icmp_tstamp_data {
-	__u32 orig;
-	__u32 recv;
-	__u32 tran;
+struct icmp_tstamp_data
+{
+    __u32 orig;
+    __u32 recv;
+    __u32 tran;
 };
 
 /*
@@ -362,11 +366,11 @@ struct icmp_tstamp_data {
  */
 struct pseudohdr
 {
-	__u32 saddr;
-	__u32 daddr;
-	__u8  zero;
-	__u8  protocol;
-	__u16 lenght;
+    __u32 saddr;
+    __u32 daddr;
+    __u8  zero;
+    __u8  protocol;
+    __u16 lenght;
 };
 
 #ifdef WIN32
@@ -378,16 +382,17 @@ struct pseudohdr
 /*
  * hping replies delay table
  */
-struct delaytable_element {
-	int seq;
-	int src;
-	time_t sec;
+struct delaytable_element
+{
+    int seq;
+    int src;
+    time_t sec;
 #ifndef WIN32
-  time_t usec;
+    time_t usec;
 #else
-  short msec;
+    short msec;
 #endif
-	int status;
+    int status;
 };
 
 volatile struct delaytable_element delaytable[TABLESIZE];
@@ -412,7 +417,7 @@ void	send_udp(void);
 void	send_icmp(void);
 void	send_hcmp(__u8 type, __u32 arg);	/* send hcmp packets */
 void	send_ip (char*, char*, char*, unsigned int, int, unsigned short,
-		 char*, char);
+                 char*, char);
 void	send_ip_handler(char *packet, unsigned int size); /* fragmentation
                                                              handler */
 void	wait_packet(void);			/* handle incoming packets */

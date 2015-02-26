@@ -1,0 +1,92 @@
+<HTML>
+<HEAD>
+<TITLE>Phttpd - Command line interface</TITLE>
+</HEAD>
+<BODY>
+<H2>Command line interface</H2>
+
+The command line syntax for <EM>Phttpd</EM> is:
+
+<PRE>
+	phttpd <I>[options] [database-directory]</I>
+</PRE>
+
+Both the options and the database directory are optional, and if not
+specified are taken from the <TT>/etc/phttpd.conf</TT> configuration file,
+or from the built in defaults if not specified. The command line arguments
+have priority if specified though.
+
+<P>
+
+The options available are:
+
+<DL>
+
+<P><DT><B>-b</B><I>&lt;backlog&gt;</I>
+<DD>Specify the TCP/IP connection backlog parameter.
+
+<P><DT><B>-d</B><I>[&lt;level&gt;]</I>
+<DD>Enable debug mode. This option causes the server to print various levels
+    of debugging output to the standard error output. Another side effect is
+    that the daemon won't disasociate itself from the controlling tty, nor
+    will it put itself into the background. Debug level -1 is kind of special
+    in that it won't cause any debugging output to be printed. The default
+    debug level if not specified is level 1.
+
+<P><DT><B>-f</B><I>&lt;config-file&gt;</I>
+<DD>Read a specific configuration file.
+
+<P><DT><B>-g</B><I>&lt;group&gt;</I>
+<DD>Run the server as the specified group id.
+
+<P><DT><B>-G</B><I>&lt;time&gt;</I><B>/</B><I>&lt;sleep&gt;</I>
+<DD>Control the connection garbage collector parameters. The time and sleep
+    parameters are specified in seconds and control which when a connection
+    should be terminated and how often the daemon should check for such
+    hanging connections.
+
+<P><DT><B>-L</B><I>[&lt;log-file&gt;]</I>
+<DD>Enable HTTP request logging on the file specified. The default file
+    used if omitted is <TT>/var/log/phttpd/requests</TT>. This file is in
+    the <EM>CERN</EM> standard request log file format.
+
+    
+<P><DT><B>-o</B><I>&lt;descriptors&gt;</I>
+<DD>Specify the maximum number of concurrently open file descriptors. The
+    default if this option is not used is the set it to the largest value
+    that the system allows.
+
+<P><DT><B>-p</B><I>&lt;port&gt;</I>
+<DD>Force the server to listen to a specific <EM>TCP/IP</EM> port instead of
+    the default port 80.
+
+<P><DT><B>-P</B><I>[&lt;pid-file&gt;]</I>
+<DD>Keep the specified file updated with the <EM>pid</EM> of the active
+    <EM>Phttpd</EM> servers. The default file used if omitted is
+    <TT>/var/log/phttpd/pid</TT>.
+
+<P><DT><B>-T</B><I>[&lt;timeout&gt;]</I>
+<DD>Specify the maximum number of seconds to wait for incoming data on
+    a socket before assuming it to be dead. If the argument is missing
+    it disables the timeout limit completely.
+
+<P><DT><B>-u</B><I>&lt;user&gt;</I>
+<DD>Run the server as the specified user id. The group id is also set to
+    the default group as specified for the user in the password file.
+
+<P><DT><B>-w</B><I>[&lt;timeout&gt;]</I>
+<DD>The server is started from the <EM>Inetd</EM> superserver. To do this
+    add the following line to the <TT>/etc/inetd.conf</TT> file:
+<PRE>
+www stream tcp wait root /opt/www/sbin/phttpd phttpd -w
+</PRE>
+   And then send the <EM>Inetd</EM> server the <EM>HUP</EM> signal to force
+   it to reread the <TT>/etc/inetd.conf</TT> file. The optional timeout
+   argument is how long the server should stay active before self-terminating.
+
+</DL>
+</BODY>
+</HTML>
+
+
+

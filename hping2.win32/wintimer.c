@@ -23,22 +23,24 @@ UINT      wTimerID = 0;         // timer ID
  */
 void initPeriod(void)
 {
-  TIMECAPS  timecaps;     // needed by timeGetDevCaps
+    TIMECAPS  timecaps;     // needed by timeGetDevCaps
 
-  // get max & min of sys timer
-  if ( timeGetDevCaps( &timecaps, sizeof( TIMECAPS ) ) != TIMERR_NOERROR ) {
-    printf("timeGetDevCaps failed: %d\n", GetLastError());
-    exit(1);
-  }
+    // get max & min of sys timer
+    if ( timeGetDevCaps( &timecaps, sizeof( TIMECAPS ) ) != TIMERR_NOERROR )
+    {
+        printf("timeGetDevCaps failed: %d\n", GetLastError());
+        exit(1);
+    }
 
-  // get optimal resolution
-  wTimerRes = max( timecaps.wPeriodMin, TIMER_RESOLUTION );
+    // get optimal resolution
+    wTimerRes = max( timecaps.wPeriodMin, TIMER_RESOLUTION );
 
-  // set minimal res for our timer
-  if ( timeBeginPeriod( wTimerRes ) != TIMERR_NOERROR ) {
-    fprintf(stderr, "timeBeginPeriod failed: %d\n", GetLastError());
-    exit(1);
-  }
+    // set minimal res for our timer
+    if ( timeBeginPeriod( wTimerRes ) != TIMERR_NOERROR )
+    {
+        fprintf(stderr, "timeBeginPeriod failed: %d\n", GetLastError());
+        exit(1);
+    }
 }
 
 /*
@@ -49,17 +51,18 @@ void initPeriod(void)
 void setTimer(void CALLBACK(*func)(UINT, UINT, ULONG, ULONG, ULONG),
               UINT time_delay, UINT event)
 {
-  // Now, run the timer
-  wTimerID = timeSetEvent(time_delay,       // delay in miliseconds
-			                    wTimerRes,        // resolution
-			                    func,             // callback function
-			                    0,                // user data
-			                    event );          // timer event
+    // Now, run the timer
+    wTimerID = timeSetEvent(time_delay,       // delay in miliseconds
+                            wTimerRes,        // resolution
+                            func,             // callback function
+                            0,                // user data
+                            event );          // timer event
 
-  if ( wTimerID == 0 ) {
-    fprintf(stderr, "timeSetEvent failed: %d\n", GetLastError());
-    exit(1);
-  }
+    if ( wTimerID == 0 )
+    {
+        fprintf(stderr, "timeSetEvent failed: %d\n", GetLastError());
+        exit(1);
+    }
 }
 
 /*
@@ -67,9 +70,9 @@ void setTimer(void CALLBACK(*func)(UINT, UINT, ULONG, ULONG, ULONG),
  */
 void killPeriod(void)
 {
-  // kill the timer
-  // timeKillEvent( wTimerID );
+    // kill the timer
+    // timeKillEvent( wTimerID );
 
-  // return previous settings
-  timeEndPeriod( wTimerRes );
+    // return previous settings
+    timeEndPeriod( wTimerRes );
 }

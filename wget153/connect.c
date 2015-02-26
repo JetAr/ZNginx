@@ -120,42 +120,42 @@ bindport (unsigned short *port)
 
     msock = -1;
     addr = (struct sockaddr *) &srv;
-	//z 创建 socket
+    //z 创建 socket
     if ((msock = socket (AF_INET, SOCK_STREAM, 0)) < 0)
         return CONSOCKERR;
     //z 设置 msock 选项。设置 SO_REUSEADDR
-	if (setsockopt (msock, SOL_SOCKET, SO_REUSEADDR,
+    if (setsockopt (msock, SOL_SOCKET, SO_REUSEADDR,
                     (char *)&optval, sizeof (optval)) < 0)
         return CONSOCKERR;
     srv.sin_family = AF_INET;
     srv.sin_addr.s_addr = htonl (INADDR_ANY);
     srv.sin_port = htons (*port);
 
-	//z bind socket 到 addr （这种细节函数看看UNP）
+    //z bind socket 到 addr （这种细节函数看看UNP）
     if (bind (msock, addr, sizeof (struct sockaddr_in)) < 0)
     {
-		//z 绑定失败，关闭socket
+        //z 绑定失败，关闭socket
         CLOSE (msock);
         msock = -1;
         return BINDERR;
     }
     DEBUGP (("Master socket fd %d bound.\n", msock));
-    
-	//z 如果*port为0
-	if (!*port)
+
+    //z 如果*port为0
+    if (!*port)
     {
         size_t addrlen = sizeof (struct sockaddr_in);
-		//z The getsockname function retrieves the local name for a socket.
+        //z The getsockname function retrieves the local name for a socket.
         if (getsockname (msock, addr, (int *)&addrlen) < 0)
         {
             CLOSE (msock);
             msock = -1;
             return CONPORTERR;
         }
-		//z 如果传入端口号为0，将随机分配的端口号存储回port中去。
+        //z 如果传入端口号为0，将随机分配的端口号存储回port中去。
         *port = ntohs (srv.sin_port);
     }
-	//z 在msock上进行侦听
+    //z 在msock上进行侦听
     if (listen (msock, 1) < 0)
     {
         CLOSE (msock);
@@ -183,8 +183,8 @@ select_fd (int fd, int maxtime, int writep)
     FD_SET (fd, &fds);
     FD_ZERO (&exceptfds);
     FD_SET (fd, &exceptfds);
-    
-	timeout.tv_sec = maxtime;
+
+    timeout.tv_sec = maxtime;
     timeout.tv_usec = 0;
     /* HPUX reportedly warns here.  What is the correct incantation?  */
     return select (fd + 1, writep ? NULL : &fds, writep ? &fds : NULL,
@@ -231,19 +231,19 @@ unsigned char *
 conaddr (int fd)
 {
     //z 本程序中很喜欢使用这种函数内的 static buffer 了。
-	//z pros : 很快
-	//z cons : 不可重入
-	//z 查询了下英文资料 reentrant 以及 non-reentrant
-	//z 还有个概念是 thread-safe 
-	//z 函数可重入，那么需要没有使用static buffer，而且不得调用不可重入的函数
-	//z 不可重入的函数一般几乎不可能使之成为 thread-safe 的
-	static unsigned char res[4];
+    //z pros : 很快
+    //z cons : 不可重入
+    //z 查询了下英文资料 reentrant 以及 non-reentrant
+    //z 还有个概念是 thread-safe
+    //z 函数可重入，那么需要没有使用static buffer，而且不得调用不可重入的函数
+    //z 不可重入的函数一般几乎不可能使之成为 thread-safe 的
+    static unsigned char res[4];
     struct sockaddr_in mysrv;
     struct sockaddr *myaddr;
     size_t addrlen = sizeof (mysrv);
 
     myaddr = (struct sockaddr *) (&mysrv);
-	//z 还是多看看UNP这样子了。
+    //z 还是多看看UNP这样子了。
     if (getsockname (fd, myaddr, (int *)&addrlen) < 0)
         return NULL;
     memcpy (res, &mysrv.sin_addr, 4);
@@ -263,7 +263,7 @@ iread (int fd, char *buf, int len)
     do
     {
 #ifdef HAVE_SELECT
-		//z 是否考虑超时
+        //z 是否考虑超时
         if (opt.timeout)
         {
             do

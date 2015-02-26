@@ -1,0 +1,176 @@
+		INSTALLATION INSTRUCTIONS FOR PHTTPD 0.99.*
+	--------------------------------------------------------
+
+	 Copyright (c) 1994-1995 Peter Eriksson <pen@signum.se>
+
+
+
+REQUIREMENTS
+--------------------------------------------------------------------------
+Operating system:
+
+	Solaris 2.4:
+		Please read the section "KERNEL MODIFICATIONS" below about
+		how to up the kernel backlog limit. The default limit
+		of 5 is *much* too low for busy servers! It will cause
+		long accept() syscall delays, and possibly denied
+		connection requests occasionally!
+
+	Solaris 2.3:
+		You _must_ apply patches 102110-01 (or later), or the
+		daemon won't even start (except in debug mode!). There
+		are so many other bugs/problems with this OS that I
+		_really_ urge you to upgrade to 2.4 ...
+
+		I suppose you also should do something like the
+		kernel modifications outline for Solaris 2.4, but I
+		don't know anything about how to do that for 2.3
+
+
+	UnixWare 2:
+		You must add "-DUNIXWARE" to the "COMCFLAGS" line.
+
+
+Machines/hardware:
+
+	PC's	Make sure you specify a large enough "stack-size" in the
+		/etc/phttpd.conf file or Phttpd will crash in mysterious
+		ways. 'stack-size = 128k' seems to be OK. Only seen on
+		Solaris.
+
+
+Compilers:
+
+	GCC (Gnu C Compiler)	(tested with version 2.6.3)
+	SunSoft's SPARCompiler	(tested with version 3.0.1)
+	Apogee's C Compiler	(tested with version 3.0)
+
+ 
+        Make sure you are *NOT* linking with Gnu 'ld' - it won't
+        build working shared libraries! You'll notice this error
+        (or something similar) when starting Phttpd if you do:
+ 
+           ld.so.1: /public/www/sbin/phttpd: fatal: relocation error:
+           symbol not found: debug: referenced in /public/www/modules/dir.so
+ 
+
+
+COMPILATION
+--------------------------------------------------------------------------
+
+	First, make sure you have the latest version of Phttpd. (See
+	the README file for sites distributing Phttpd).
+
+	Second, modify the top level Makefile so it fits your compilation
+	environment (there are sample settings for GCC, Sun's CC and Apogee).
+
+	You may also want to change the installation root directory
+	(default = /opt/phttpd/) to something else.
+
+	Then type "make".
+
+
+
+INSTALLATION
+--------------------------------------------------------------------------
+
+	Here you can choose between "install" and "install.all". The
+	difference is that "install.all" should _only_ be used when
+	doing a first-time installation since it overwrites the daemons
+	configuration file (/opt/phttpd/etc/phttpd.conf) and the system startup
+	script (/etc/init.d/phttpd) so any changes you've made to them
+	will be lost. So:
+
+	o Use "make install.all" the first time you compile and install
+	  the daemon.
+
+	o Use "make install" all other times.
+
+	If you wish to install in a non-standard location other than
+	the default (/opt/phttpd) add "INSTROOT=/your/own/dest/dir" to the
+	"make install"/"make install.all" command. For example:
+
+		make INSTROOT=/usr/local/www install
+
+	You'll then need to modify the configuration file
+	(/opt/phttpd/etc/phttpd.conf) to point the daemon to the new directory.
+
+	If you want the daemon to automatically start at system boot time,
+	add a symbolic link from /etc/rc3.d/S99phttpd to /etc/init.d/phttpd
+	like this:
+
+		ln -s /etc/init.d/phttp /etc/rc3.d/S99phttpd
+
+	Check the configuration file (/opt/phttpd/etc/phttpd.conf) for any
+	other parameters you may want to change/enable.
+
+	Then you can manually start the daemon by issuing (as "root") the
+	command:
+
+		sh /etc/init.d/phttpd start
+
+
+	If you want to be extra sure that the daemon is always running,
+	and automatically restarted in case it crasches for some reason,
+	then you can use the "ackpfd" controlling daemon for this purpose.
+	Modify the /etc/init.d/phttpd script to start Phttpd like this:
+
+  	 /opt/phttpd/sbin/ackpfd /opt/phttpd/sbin/phttpd -w <other options>
+
+
+
+KERNEL PATCHES:
+
+	I recommend that you apply atleast the following patches:
+
+	SPARC/Solaris 2.4:
+		102752-01	(thread.h Patch)
+		102741-01	(libm SEGV patch)
+		101945-45	(Kernel Jumbo Patch)
+		101973-24	(Libnsl and ypbind Jumbo Patch)
+
+	x86/Solaris 2.4:
+		101946-39	(Kernel Jumbo Patch)
+		101974-24	(Libnsl and ypbind Jumbo Patch)
+
+	SPARC/Solaris 2.5:
+		103093-08	(Kernel Jumbo Patch)
+		103164-06	(Libthread Patch)
+		103187-11	(Libnsl and ypbind Jumbo Patch)
+
+	SPARC/Solaris 2.5.1:
+		103640-05	(Kernel Patch)
+		103612-07	(Libnsl and ypbind Jumbo Patch)
+
+	In gerneral I recommend that you use Solaris 2.5.1, since
+	that version is *much* faster than the older versions.
+
+
+KERNEL MODIFICATIONS:
+
+	The default Solaris 2.4 kernel has a listen() backlog limit
+	of just 5 connections. This is much too low for a normally
+	busy WWW server, and it is WAY to low for a busy server....
+
+	I recommend that you use a limit of 32 on a normal server
+	(up to 1 request/second)
+
+	On a very busy server (more than 1 request/second) use
+	something like 512 or so...
+
+	However, note that upping the limit to 512 will increase the
+	kernel memory usage!
+
+
+	You can up this limit to a maximum of 32 by doing (as root):
+
+		ndd -set /dev/tcp tcp_conn_req_max 32
+
+	If you need to set it even higher then you must use script
+	'etc/backlog-bumper.sh'. With that script you can up the
+	limit up to 1024 (which is the default limit in Solaris 2.5).
+	(You must also run this at reboot time of course. This script
+	is not normally installed automatically).
+
+			- Peter Eriksson <pen@signum.se>, 28 Feb 1997
+

@@ -7,10 +7,10 @@
  * $date: Fri Nov  5 11:55:48 MET 1999$
  * $rev: 2$
  */
- 
+
 /*
- * Revised for Windows: Rob Turpin <rgturpin@epop3.com> 
- *                      7/03/2004          
+ * Revised for Windows: Rob Turpin <rgturpin@epop3.com>
+ *                      7/03/2004
  */
 
 #ifndef WIN32
@@ -21,8 +21,8 @@
 int memlockall(void)
 {
 #ifdef _POSIX_MEMLOCK
-	return ( mlockall(MCL_CURRENT|MCL_FUTURE) );
+    return ( mlockall(MCL_CURRENT|MCL_FUTURE) );
 #endif
-	return (-1);
+    return (-1);
 }
 

@@ -1,0 +1,67 @@
+<HTML>
+<HEAD>
+<TITLE>
+Phttpd: CGI
+</TITLE>
+</HEAD>
+<BODY>
+<H2 ALIGN=CENTER>
+The CGI module
+</H2>
+
+This module enables the use of
+<A HREF="http://www.w3.org/hypertext/WWW/CGI/">
+CGI (Common Gateway Interface)
+</A>
+compliant programs and scripts to be executed.
+
+<H3>Example file (test.cgi)</H3>
+<PRE>
+	#!/bin/sh
+
+	echo "Content-Type: text/html"
+	echo ""
+	echo "Hello, World"
+
+	exit 0
+</PRE>
+
+<H3>System issues</H3>
+
+Causes the server to close Keep-Alive sockets after the file has been
+sent (since it can't depend on the "Content-Length" header being
+present and/or correct).
+
+<H3>Configuration options (cgi.conf)</H3>
+
+<DL>
+
+<DT><B>default-user</B> (string)
+<DD>The user name or number to run global CGI scripts as. Defaults to
+	user number -1 (normally "nobody"). Also sets the <B>default-group</B>
+	option to the group found in the Passwd database.
+
+<P><DT><B>default-group</B> (string)
+<DD>The group name or number to run global CGI scripts as. Defaults to
+	group number -1 (normally "nobody").
+
+<P><DT><B>allow-user-cgi</B> (boolean)
+<DD>If set to "false", will disable the possibilty for normal users
+	to have CGI scripts in their local home pages directory.
+
+<P><DT><B>path</B> (string)
+<DD>The PATH to use for CGI scripts. Defaults to "/bin:/usr/bin".
+
+</DL>
+
+<H3>Example configuration file</H3>
+<PRE>
+	# cgi.conf
+
+	default-user = nobody
+	path         = /bin:/usr/ucb:/usr/local/bin
+</PRE>
+
+</BODY>
+</HTML>
+

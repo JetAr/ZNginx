@@ -176,147 +176,165 @@
 #define ARS_ICMP_EXC_FRAGTIME		1       /* TTL exceeded reassembling */
 
 /* The IP header structure */
-struct ars_iphdr {
+struct ars_iphdr
+{
 #if defined(BYTE_ORDER_LITTLE_ENDIAN)
-        __u8    ihl:4,
-                version:4;
+    __u8    ihl:4,
+            version:4;
 #elif defined (BYTE_ORDER_BIG_ENDIAN)
-        __u8    version:4,
-                ihl:4;
+    __u8    version:4,
+            ihl:4;
 #else
 #error  "Please, edit Makefile and add -DBYTE_ORDER_(BIG|LITTLE)_ENDIAN"
 #endif
-        __u8    tos;
-        __u16   tot_len;
-        __u16   id;
-        __u16   frag_off;
-        __u8    ttl;
-        __u8    protocol;
-        __u16   check;
-        __u32   saddr;
-        __u32   daddr;
+    __u8    tos;
+    __u16   tot_len;
+    __u16   id;
+    __u16   frag_off;
+    __u8    ttl;
+    __u8    protocol;
+    __u16   check;
+    __u32   saddr;
+    __u32   daddr;
 };
 
 /* The IP options structure */
-struct ars_ipopt {
-	u_int8_t kind;
-	u_int8_t len;
-	union {
-		struct {
-			u_int16_t s;
-			u_int16_t c;
-			u_int16_t h;
-			u_int8_t tcc[3];
-		} sec;		/* security */
-		struct {
-			u_int8_t ptr;
-			u_int8_t data[37];
-		} src;		/* loose and strinct source routing */
-		struct {
-			u_int8_t ptr;
-			u_int8_t data[37];
-		} rr;		/* record route */
-		struct {
-			u_int16_t id;
-		} sid;		/* stream id */
-		struct {
-			u_int8_t ptr;
-			u_int8_t flags;
-			u_int8_t data[36];
-		} tstamp;	/* timestamp */
-	} un;
+struct ars_ipopt
+{
+    u_int8_t kind;
+    u_int8_t len;
+    union
+    {
+        struct
+        {
+            u_int16_t s;
+            u_int16_t c;
+            u_int16_t h;
+            u_int8_t tcc[3];
+        } sec;		/* security */
+        struct
+        {
+            u_int8_t ptr;
+            u_int8_t data[37];
+        } src;		/* loose and strinct source routing */
+        struct
+        {
+            u_int8_t ptr;
+            u_int8_t data[37];
+        } rr;		/* record route */
+        struct
+        {
+            u_int16_t id;
+        } sid;		/* stream id */
+        struct
+        {
+            u_int8_t ptr;
+            u_int8_t flags;
+            u_int8_t data[36];
+        } tstamp;	/* timestamp */
+    } un;
 };
 
 /* The UDP header structure */
-struct ars_udphdr { 
-	__u16 uh_sport;     /* source port */
-	__u16 uh_dport;     /* destination port */
-	__u16 uh_ulen;      /* udp length */
-	__u16 uh_sum;       /* udp checksum */
+struct ars_udphdr
+{
+    __u16 uh_sport;     /* source port */
+    __u16 uh_dport;     /* destination port */
+    __u16 uh_ulen;      /* udp length */
+    __u16 uh_sum;       /* udp checksum */
 };
 
 /* The TCP header structure */
-struct ars_tcphdr {
-	__u16	th_sport;               /* source port */
-	__u16	th_dport;               /* destination port */
-	__u32	th_seq;                 /* sequence number */
-	__u32	th_ack;                 /* acknowledgement number */
+struct ars_tcphdr
+{
+    __u16	th_sport;               /* source port */
+    __u16	th_dport;               /* destination port */
+    __u32	th_seq;                 /* sequence number */
+    __u32	th_ack;                 /* acknowledgement number */
 #if defined (BYTE_ORDER_LITTLE_ENDIAN)
-	__u8    th_x2:4,                /* (unused) */
-		th_off:4;               /* data offset */
+    __u8    th_x2:4,                /* (unused) */
+            th_off:4;               /* data offset */
 #elif defined (BYTE_ORDER_BIG_ENDIAN)
-	__u8    th_off:4,               /* data offset */
-		th_x2:4;                /* (unused) */
+    __u8    th_off:4,               /* data offset */
+            th_x2:4;                /* (unused) */
 #else
 #error  "Please, edit Makefile and add -DBYTE_ORDER_(BIG|LITTLE)_ENDIAN"
 #endif
-	__u8    th_flags;
-	__u16   th_win;                 /* window */
-	__u16   th_sum;                 /* checksum */
-	__u16   th_urp;                 /* urgent pointer */
+    __u8    th_flags;
+    __u16   th_win;                 /* window */
+    __u16   th_sum;                 /* checksum */
+    __u16   th_urp;                 /* urgent pointer */
 };
 
 /* The TCP options structure */
-struct ars_tcpopt {
-	u_int8_t kind;
-	u_int8_t len;
-	union {
-		struct {
-			u_int16_t size;
-		} mss;
-		struct {
-			u_int8_t shift;
-		} win;
-		struct {
-			u_int16_t origin;
-			u_int16_t size;
-		} sack[10]; /* 10 SACK blocks in 44 bytes of space */
-		struct {
-			u_int8_t info[4];
-		} echo;
-		struct {
-			u_int8_t tsval[4];
-			u_int8_t tsecr[4];
-		} timestamp;
-	} un;
+struct ars_tcpopt
+{
+    u_int8_t kind;
+    u_int8_t len;
+    union
+    {
+        struct
+        {
+            u_int16_t size;
+        } mss;
+        struct
+        {
+            u_int8_t shift;
+        } win;
+        struct
+        {
+            u_int16_t origin;
+            u_int16_t size;
+        } sack[10]; /* 10 SACK blocks in 44 bytes of space */
+        struct
+        {
+            u_int8_t info[4];
+        } echo;
+        struct
+        {
+            u_int8_t tsval[4];
+            u_int8_t tsecr[4];
+        } timestamp;
+    } un;
 };
 
 /* The ICMP header structure */
 struct ars_icmphdr
 {
-	__u8          type;
-	__u8          code;
-	__u16         checksum;
-	union
-	{
-		struct
-		{
-			__u16   id;
-			__u16   sequence;
-		} echo; /* called echo since it's the most used */
-		__u32   gateway;
-	} un;
+    __u8          type;
+    __u8          code;
+    __u16         checksum;
+    union
+    {
+        struct
+        {
+            __u16   id;
+            __u16   sequence;
+        } echo; /* called echo since it's the most used */
+        __u32   gateway;
+    } un;
 };
 
 /* TCP/UDP pseudo header used to compute the checksum */
 struct ars_pseudohdr
 {
-	__u32 saddr;
-	__u32 daddr;
-	__u8  zero;
-	__u8  protocol;
-	__u16 lenght;
+    __u32 saddr;
+    __u32 daddr;
+    __u8  zero;
+    __u8  protocol;
+    __u16 lenght;
 };
 
 struct ars_packet; /* forward declaration */
 
 /* ARS layer */
-struct ars_layer {
-	int l_type;
-	int l_size;
-	int l_flags;
-	void *l_data;
-	struct ars_packet *l_packet;
+struct ars_layer
+{
+    int l_type;
+    int l_size;
+    int l_flags;
+    void *l_data;
+    struct ars_packet *l_packet;
 };
 
 #define ARS_MAX_LAYER 16
@@ -333,12 +351,13 @@ struct ars_layer {
 #define ARS_TYPE_DATA		31
 
 /* ARS packet context */
-struct ars_packet {
-	char *p_error;
-	int p_layer_nr;
-	struct ars_layer p_layer[ARS_MAX_LAYER];
-	void *p_default[ARS_TYPE_SIZE];
-	int aux; /* Auxiliar variable for data exchange between functions */
+struct ars_packet
+{
+    char *p_error;
+    int p_layer_nr;
+    struct ars_layer p_layer[ARS_MAX_LAYER];
+    void *p_default[ARS_TYPE_SIZE];
+    int aux; /* Auxiliar variable for data exchange between functions */
 };
 
 /* Facility to check for flags */
@@ -373,18 +392,20 @@ struct ars_packet {
 #define ARS_MC_UPDATE   1
 #define ARS_MC_FINAL    2
 
-struct mc_context {
-	u_int32_t oddbyte_flag;
-	u_int32_t old;
-	u_int8_t oddbyte;
-	u_int8_t pad;
+struct mc_context
+{
+    u_int32_t oddbyte_flag;
+    u_int32_t old;
+    u_int8_t oddbyte;
+    u_int8_t pad;
 };
 
 /* ARS layer info structure */
-struct ars_layer_info {
-	char *li_name; /* NULL = unused slot */
-	int (*li_compiler) (struct ars_packet *pkt, int layer); /* NULL = NOP */
-	int layer_id;
+struct ars_layer_info
+{
+    char *li_name; /* NULL = unused slot */
+    int (*li_compiler) (struct ars_packet *pkt, int layer); /* NULL = NOP */
+    int layer_id;
 };
 
 /* ARS layer info table */
@@ -401,12 +422,13 @@ struct ars_layer_info ars_linfo[ARS_TYPE_SIZE];
 #define ARS_IF_NAME_SIZE	32
 
 /* iface type are obtained using libpcap to avoid efforts duplication */
-struct ars_iface {
-	char if_name[ARS_IF_NAME_SIZE];
-	int if_mtu;
-	int if_flags;
-	char if_ipv4addr[ARS_INET_ADDRSTRLEN];
-	char if_ipv6addr[ARS_INET6_ADDRSTRLEN];
+struct ars_iface
+{
+    char if_name[ARS_IF_NAME_SIZE];
+    int if_mtu;
+    int if_flags;
+    char if_ipv4addr[ARS_INET_ADDRSTRLEN];
+    char if_ipv6addr[ARS_INET6_ADDRSTRLEN];
 };
 
 /* Flags for packet splitting */

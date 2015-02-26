@@ -1,0 +1,132 @@
+Configuring the TCP Listen Backlog for Web Servers in Solaris 2.4
+
+Bob Gilligan
+SunSoft Internet Engineering Group
+Gilligan@eng.sun.com
+
+May 31, 1995
+
+
+
+SUMMARY
+
+In order to avoid a performance bottleneck, it is necessary to increase
+the TCP listen backlog above the system default value on Web server
+machines that are expected to handle a load of greater than a few TCP
+connections per second.  This is a two-step process.  First, the server
+program must call the "listen()" function with a backlog parameter of at
+least 32, for example:
+
+	listen(s, 32);
+
+See the listen(3N) man page for more details about the function.
+
+Second, the system-wide maximum listen backlog must be increased.  This
+can be done with the command:
+
+	/usr/sbin/ndd -set /dev/tcp tcp_conn_req_max 32
+
+The command must be run by root.  This command should be added to the
+end of the system startup script "/etc/rc2.d/S69inet" so that it will
+take affect every time the system is re-booted.
+
+See the ndd(1M) for more information about the "ndd" command.
+
+
+DETAILED EXPLANATION
+
+The "backlog" parameter to listen() controls maximum number of
+connections in the process of being accepted that TCP will queue up for
+a particular listening socket.  The system imposes a limit on the
+backlog that an application can use.  In Solaris 2.4, by default, the
+maximum backlog is 5.  If an application request a backlog larger than
+this value, the backlog is limited to 5.  The system administrator can
+increase this maximum to 32 by using the "ndd" command to change the
+parameter "tcp_conn_req_max" in the driver "/dev/tcp".  In Solaris 2.5,
+the default value is still 5, but the administrator can increase it to
+1024.
+
+The backlog has an affect on the maximum rate at which an server can
+accept TCP connections.  The rate is a function of the backlog and the
+time that connections stay on the queue of partially open connections.
+That time is related to the round-trip time of the path between the
+clients and the server, and the amount of time that the client takes to
+process one stage of the TCP three-way open handshake.
+
+TCP's three-way open handshake looks something like this:
+
+	Client			Server
+	------			------
+	Send SYN  -->
+			    -->	Receive SYN      
+
+			    <--	Send SYN|ACK	(1)
+	Receive SYN|ACK <--
+
+	Send ACK -->
+			    -->	Receive ACK	(2)
+
+
+An incomming connection occupies a slot on the accept queue between the
+time that the server receives the initial SYN packet from the client,
+and the time that the server receives the ACK of its own SYN.  These
+times are marked (1) and (2) above.
+
+The time between points (1) and (2) can be viewed as having two
+components.  First, there is the time it take for the SYN|ACK packet to
+travel from the server to the client, plus the time it takes the ACK
+packet to travel from the client back to the server.  This component is
+equivalent to the path round trip time.  The second component is the
+time it takes the client to process the received SYN|ACK and respond
+with an ACK.
+
+After the server receives the ACK, the connection remains on the listen
+queue for an additional period of time until the accept() function
+returns the open socket to the application.
+
+So, the time that a connection resides on the listen queue is
+approximately:
+
+	T(listen queue) = T(path round-trip) +
+			  T(client SYN|ACK processing) +
+			  T(accept delay)
+
+If T(listen queue) were a constant value, the maximum rate at which a
+server could accept connections would be:
+
+	R = (listen backlog) / T(listen queue)
+
+In practice, T(listen queue) is not constant.  It is different for every
+client since the path round trip time varies depending on the Internet
+topology between each client and the server.  In addition, the time it
+takes for each client to process the SYN|ACK depends on a variety of
+factors such as the load on the client and the performance of the client
+implementation.  Also, T(listen queue) will be increased if the server's
+SYN|ACK or the client's ACK packet is lost.  Under overload conditions
+(more clients attempting to connect than the server can handle), the
+average T(listen queue) will be increased disproportionately by slow
+clients and long Internet paths.
+
+To get a rough feel for what the upper limit on the rate at which a web
+server can accept TCP connections might be, consider that round trip
+times for typical Internet paths today can be 500 milliseconds.
+Assuming that T(accept delay) and T(client SYN|ACK processing) are
+negligible compared with this, the upper bound is primarily a function
+of T(path round trip).  Connection rates given some typical listen
+backlogs are:
+
+	R = 5 connections / 500 ms 
+	  = 2.5 connections/sec (Solaris 2.4 using default backlog)
+
+	R = 32 connections / 500 ms 
+	  = 16 connections/sec (Solaris 2.4 using increased backlog)
+
+	R = 1024 connections / 500 ms
+	  = 512 connections/sec (Solaris 2.5 using increased backlog)
+
+Note that these values are just illustrative.  The actual limits will
+depend on a variety of operational factors.  Also note that overall web
+server performance depends on a number of other factors.  Nevertheless,
+it is important to configure web servers with a listen backlog large
+enough for the environment that the server is being used in.
+

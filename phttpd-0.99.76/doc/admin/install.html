@@ -1,0 +1,48 @@
+<HTML>
+<HEAD>
+<TITLE>Phttpd: Compiling and Installing</TITLE>
+</HEAD>
+<BODY>
+<H2 ALIGN=CENTER>Compiling and Installing Phttpd</H2>
+
+Compiling Phttpd is supposed to be very simple. Just follow the
+instructions below:
+<P>
+<OL>
+<LI>Unpack the source distribution in a directory on a disk
+    with sufficient space available (5MB should be OK).
+
+<LI>Modify the top level "Makefile" so it fits your environment.
+    This includes selecting the compiler to use (there are
+    sample settings for GCC, Sun's CC and Apogee) and what installation
+    root directory to use (defaults to /opt/www).
+
+<LI>Type "make" to compile the server and it's helper modules and programs.
+
+</OL>
+
+If all went well during the compilation then you must switch to the
+super user ("root") before continuing, unless your normal user have
+write access to the installation directory (in this case you may wish
+to ignore the error message from "make install.all" about not being able
+to install "/etc/init.d/phttpd") since that is normal in that case).
+
+<P>
+<OL>
+<LI>Type "make install" or "make install.all" depending on if this is an
+    installation over a previous installation, or a first-time installation.
+
+<LI>If you want Phttpd to start automatically at system reboot time, then
+    you need to create a link from /etc/rc3.d/S99phttpd to /etc/init.d/phttpd.
+</OL>
+
+If you want to be extra sure that the daemon is always running,
+and automatically restarted in case it crasches for some reason,
+then you can use the "ackpfd" controlling daemon for this purpose.
+Modify the /etc/init.d/phttpd script to start Phttpd like this:
+<PRE>
+	/opt/www/sbin/ackpfd /opt/www/sbin/phttpd -w <other options>
+</PRE>
+
+</BODY>
+</HTML>

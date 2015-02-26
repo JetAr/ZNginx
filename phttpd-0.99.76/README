@@ -1,0 +1,101 @@
+			README file for PHTTPD 0.99.*
+	--------------------------------------------------------
+
+	 Copyright (c) 1994-1997 Peter Eriksson <pen@signum.se>
+
+
+INSTALLATION
+------------
+See the file "INSTALL" in this directory for installation instructions.
+
+
+
+LATE NEWS
+---------
+Always check out the INFO-PHTTPD mailinglist archives for information
+about bugs/problems found with this release. It can be found at:
+
+	http://www.signum.se/~pen/phttpd-archive.mbox
+
+
+
+DISTRIBUTION SITES
+------------------
+You can always find the latest version of Phttpd at:
+
+		ftp://ftp.signum.se/pub/phttpd/
+
+Other sites (that I know of) that mirror one of the above:
+
+		ftp://sunsite.ucm.edu.pl/pub/www/phttpd/
+		ftp://ftp.netuse.de/pub/phttpd/
+		ftp://ftp.lysator.liu.se/pub/phttpd/
+
+
+
+DOCUMENTATION
+-------------
+The documentation is still being written, but parts of it can
+be found in the "doc/admin" directory. It will be installed
+into the database tree as "/phttpd/doc/admin" when doing an
+install.
+
+
+
+COPYING/USAGE CONDITIONS
+------------------------
+This daemon is copyrighted free software, _not_ public domain
+stuff. You are however free to use it, providing that you follow
+the terms and conditions in the GNU General Public License (GPL).
+
+(See the file "COPYING" in the same directory as you found this file).
+
+
+
+MAILING LISTS
+-------------
+There are two mailing lists related to Phttpd and Phttpd-related
+issues:
+
+   INFO-PHTTPD
+
+	Intended for general discussions about Phttpd. A forum
+	for users of Phttpd to ask questions and perhaps get an
+	answer...
+
+	To subscribe, send an email to:
+
+		info-phttpd-request@signum.se
+
+	and, in the body (not the subject line), write:
+	
+		subscribe
+
+	To submit messages, send to:
+
+		info-phttpd@signum.se
+
+
+   PHTTPD-ANNOUNCE
+
+	Intended for announcements of new releases of Phttpd and
+	related software. There will be *no* discussions on this
+	list. Anything sent to this list will automatically be
+	sent to INFO-PHTTPD also so there is no need to join
+	this list of you join INFO-PHTTPD.
+
+	To subscribe, send an email to:
+
+		phttpd-announce-request@signum.se
+
+	and, in the body (not the subject line), write:
+	
+		subscribe
+
+	To submit messages, send to:
+
+		info-phttpd@signum.se
+
+
+
+			    - Peter Eriksson <pen@signum.se>, 10 Mar 1997

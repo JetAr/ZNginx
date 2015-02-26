@@ -1,0 +1,78 @@
+<HTML>
+<HEAD>
+<TITLE>Phttpd: Command line options</TITLE>
+</HEAD>
+<BODY>
+<H2 ALIGN=CENTER>Command line options for Phttpd</H2>
+
+There are lots of command line options which can be used with Phttpd, 
+but it's often better to set these options in the configuration file
+instead.
+
+<H3>Available options:</H3>
+<DL>
+
+<DT><B>-d</B><I>[&lt;level&gt;]</I>
+<DD>Set the debug level. Also causes the server not to fork-and-detach from
+the controlling TTY. This can be handy when starting it from inside a
+debugger.
+
+<P><DT><B>-p</B><I>&lt;port&gt;</I>
+<DD>The TCP/IP port to bind the server to listen for incoming connections on.
+
+<P><DT><B>-f</B><I>&lt;config-path&gt</I>
+<DD>The configuration file to include. You can include this option
+	multiple times.
+
+<P><DT><B>-A</B><I>[&lt;number&gt;]</I>
+<DD>The number of bound threads listening for new incoming connections.
+
+<P><DT><B>-B</B><I>[&lt;number&gt;]</I>
+<DD>Use bound threads if nonzero.
+
+<P><DT><B>-b</B><I>&lt;backlog&gt;</I>
+<DD>The TCP/IP connection backlog limit.
+
+<P><DT><B>-u</B><I>&lt;user&gt;</I>
+<DD>The user to run the daemon as.
+
+<P><DT><B>-g</B><I>&lt;group&gt;</I>
+<DD>The group to run the daemon as.
+
+<P><DT><B>-H</B>
+<DD>Display a list of available options.
+
+<P><DT><B>-s</B>
+<DD>Don't display the message about the copying information at start-up.
+	(You shouldn't use this option if you're nice :-)
+
+<P><DT><B>-G</B><I>&lt;terminate-time&gt;[</I><B>/</B><I>&lt;check-time&gt;]</I>
+<DD>Connection garbage collect parameters.
+
+<P><DT><B>-L</B><I>&lt;log-path&gt;</I>
+<DD>Path to the request logging file (in CERN Common Log format).
+
+<P><DT><B>-P</B><I>&lt;pid-path&gt;</I>
+<DD>Path to a file where the process id of the daemon will be written.
+
+<P><DT><B>-C</B><I>&lt;counting-path&gt;</I>
+<DD>Path to the NBDM file where the request counters will be stored.
+
+<P><DT><B>-E</B><I>&lt;stderr-path&gt;</I>
+<DD>Path to a file where the <B>stderr</B> output from CGI scripts
+	will be written
+
+<P><DT><B>-T</B><I>&lt;select-timeout&gt;</I>
+<DD>The requests data receive timeout limit.
+
+<P><DT><B>-w</B>
+<DD>Daemon was started from Inetd or Ackpfd. Causes it to use the <I>stdin</I>
+	file descriptor as the socket to listen for new connections on.
+
+<P><DT><B>-t</B><I>&lt;timeout&gt;</I>
+<DD>Selfterminate-timeout limit.
+
+</DL>
+
+</BODY>
+</HTML>

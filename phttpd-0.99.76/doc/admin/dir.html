@@ -1,0 +1,61 @@
+<HTML>
+<HEAD>
+<TITLE>
+Phttpd: DIR
+</TITLE>
+</HEAD>
+<BODY>
+<H2 ALIGN=CENTER>
+The DIR module
+</H2>
+
+This module handles displaying file system directories, either
+by viewing a specific document or by listing the files (and subdirectories)
+in the directory.
+
+<H3>System issues</H3>
+
+Causes the server to close Keep-Alive sockets after the directory
+listing has been sent.
+
+<H3>Configuration options (dir.conf)</H3>
+
+<DL>
+
+<DT><B>index-file-path</B> (string)
+<DD>A colon-separated list of files to try when searching for an index
+	document for a directory. Defaults to "index.html:Welcome.html".
+<P>
+<DT><B>directory-icons</B> (table)
+<DD>A table of HTML constructs to display icons for file entries in
+	the directory listing.
+<P>
+<DT><B>add-href</B> (table)
+<DD>A table of HREF data to be added before the filename, for entries ending
+	with the specified suffix.
+</DL>
+
+<H3>Example configuration file</H3>
+<PRE>
+	# dir.conf
+
+	index-file-path = index.html:Welcome.html
+
+	directory-icons = {
+	 .xbm	&lt;IMG SRC="/icons/image.xbm"  ALT="* " BORDER=0 HSPACE=5&gt;
+	 .gif	&lt;IMG SRC="/icons/image.xbm"  ALT="* " BORDER=0 HSPACE=5&gt;
+	 .html	&lt;IMG SRC="/icons/text.xbm"   ALT="* " BORDER=0 HSPACE=5&gt;
+	 .txt	&lt;IMG SRC="/icons/text.xbm"   ALT="* " BORDER=0 HSPACE=5&gt;
+	 .map	&lt;IMG SRC="/icons/text.xbm"   ALT="* " BORDER=0 HSPACE=5&gt;
+	 .cgi	&lt;IMG SRC="/icons/binary.xbm" ALT="* " BORDER=0 HSPACE=5&gt;
+	}
+
+	add-href = {
+	 .zip	/cgi-bin/WebZip?path=
+	}
+</PRE>
+
+</BODY>
+</HTML>
+
+

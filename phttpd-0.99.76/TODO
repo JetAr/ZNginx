@@ -1,0 +1,77 @@
+Before version 1:
+
+* Remove all usage of rwlocks and semaphores.
+
+* Handle the parsing of CGI POSTed FORMS -> PHTTPD_QUERY_xxx variables,
+  just like in the GET case.
+
+* If a CGI script exits directly, without reading anything from stdin
+  then it just hangs. (isn't that fixed? Checkme)
+
+* Change the on-the-fly loading of modules to simply load them all
+  at startup, and never try to unload them. It simplifies a _lot_
+  of things to not have to bother with this junk...
+
+* Move most(all?) of the utility code in "src/phttpd" to "src/lib"
+  and make the Phttpd main program, and the modules link to it.
+  This should make it easier to catch runtime linking errors in modules.
+
+* At "make install", install the header files and the library into
+	$(INSTROOT)/include and $(INSTROOT)/lib
+
+* Support the Posix threads for SGI IRIX, Digital Unix and Linux.
+
+* NCSA-HTML: The "user" command should only output a clickable link if
+  the user has a "pub" directory. 
+
+* Autoconf/Configure!!
+
+* Finish and clean up the documentation.
+
+
+For version 1.1:
+
+* Implement the ppml language (see src/modules/ppml.txt)
+
+* Implement a FCGI module.
+
+* Move the url rewriting and url->path code into separate
+  modules.
+
+
+For version 2:
+
+* Should use Pthreads natively.
+
+* FSCACHE: Should be key'ed on real path, not virtual URL.
+
+* Error and Access logs.
+
+* Implement an eval loop that "evaluates" an URL path, calling
+  modules as needed. Should support that a called module returns
+  some token that means "continue" evaulation (for example libacl.so
+  should be mounted on "/" and transparently handle every URL, using
+  ".acl" files in each directory (for example).
+
+* Virtual hosts support (using threads, not separate processes).
+
+	o Must be able to define separate document roots for different
+	  local IP addresses.
+
+	o Also the access, authentication & url-rewriting must be
+	  handled separately.
+
+* Output nicer error messages in child_process in the CGI module.
+
+* fd_relay(): Optimize away the unneccessary temp buf[] var
+  (avoids a lot of calls to memcpy().
+
+* Include support for SSL (using Eric Young's SSLeay package)
+
+* Perhaps the modules should register mountpoints at runtime in the
+  base server, ie: remove "url-handlers" from phttpd.conf!
+
+* Some way to handle streams, for example so one can push a
+  streams module to convert all output to BASE64-encoded data,
+  or handle SSL. Or parse HTML output from CGI scripts without
+  having to store it in a temporary file...

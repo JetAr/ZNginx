@@ -1,0 +1,96 @@
+PPML control structs. This is intended as a sort of super-NCSA/Apache SSI.
+
+
+<!--#set var="name" value="value" [type=string|integer]-->
+
+or
+
+<!--#set var="name" [type=string|integer] [scope=local|global]-->
+...value...
+<!--#endset-->
+
+
+<!--#if expr="expression string"-->
+...text...
+<!--#elif expr="expression string"-->
+...text...
+<!--#else-->
+...text...
+<!--#endif-->
+
+
+<!--#for var="name" start=value end=value step=value-->
+...text...
+<!--#next [var="name"]-->
+
+
+<!--#while expr="expression string"-->
+...text...
+<!--#do-->
+
+
+<!--#repeat-->
+...text...
+<!--#until expr="expression string"-->
+
+
+# Generate an HTTP error code in the output
+<!--#status code="value"-->
+
+# Flush (forget about it) all so far generated output
+<!--#flush-->
+
+# Stop parsing the file
+<!--#stop-->
+
+
+# Function definitions. Arguments will be available as local variables.
+<!--#define procedure="name"-->
+<!--#endef-->
+
+
+# To call a function:
+<!--#call procedure="name" [args]-->
+or
+<!--#name [args]-->
+or
+<!--#module:name [args]-->
+
+
+
+# To print a variable:
+<!--#echo var="name"-->
+
+
+# To include another file:
+<!--#include file="fsys path"-->
+<!--#include virtual="url path"-->
+
+<!--#exec cmd="fsys path"-->
+<!--#exec cgi="url path"-->
+
+
+<!--#fsize file="fsys path"-->
+<!--#fsize virtual="url path"-->
+
+<!--#flastmod file="fsys path"-->
+<!--#flastmod virtual="url path"-->
+
+<!--#printenv-->
+
+
+
+
+
+PPML Module Design:
+
+pm_request():
+
+	1. mmap() the file.
+	2. Parse the file include a parse tree (Yacc?)
+	3. Execute the parse tree if error-free. Output should probably
+	   be sent to a temporary file.
+	4. Free the parse tree.
+	5. Send the output temporary file.
+
+The parse tree shoule probably be cached.

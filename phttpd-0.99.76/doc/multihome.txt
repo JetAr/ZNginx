@@ -1,0 +1,44 @@
+To run more that one WWW server on a single machine (for example
+if you are a WWW Hotel Provider) and want it to look like it is
+separate machines then you can use the slave network interface
+feature of Solaris to create this.
+
+Do like this:
+
+	Create one slave network interface for each WWW server you
+	wish to run, for example 3.
+
+	Have separate config files for the WWW servers.
+
+	In the config file, use the "server-addr" to bind each
+	specific server to a specific slave interface.
+
+For example:
+
+	ifconfig le0:1 130.236.254.100 up arp
+	ifconfig le0:2 130.236.254.101 up arp
+	ifconfig le0:3 130.236.254.102 up arp
+
+	cat >/etc/phttpd1.conf <<EOF
+	server-name  = www.foo.com
+	database-dir = /opt/www/db1
+	server-addr  = 130.236.254.100
+	EOF
+
+	cat >/etc/phttpd2.conf <<EOF
+	server-name  = www.bar.com
+	database-dir = /opt/www/db2
+	server-addr  = 130.236.254.101
+	EOF
+
+	cat >/etc/phttpd3.conf <<EOF
+	server-name  = www.fubar.com
+	database-dir = /opt/www/db3
+	server-addr  = 130.236.254.102
+	EOF
+
+	/opt/www/sbin/phttpd -f/etc/phttpd1.conf
+	/opt/www/sbin/phttpd -f/etc/phttpd2.conf
+	/opt/www/sbin/phttpd -f/etc/phttpd3.conf
+
+And Viola!

@@ -1,0 +1,15 @@
+# phttpd.acl
+#
+# The format of this file is simple, first a "key" which can be
+# either "host" or "address", second is a pattern to match against
+# and the last entry is either "allow" or "reject".
+#
+# Currently only the "address" information is available inside the
+# server so you can't use the "host" key for anything useful.
+
+host		laphroaig.*		allow
+
+address		130.236.160.9		reject
+address		130.236.160.*		allow
+address		130.236.*		reject
+

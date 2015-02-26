@@ -65,7 +65,7 @@ uerr_t
 ftp_response (struct rbuf *rbuf, char **line)
 {
     int i;
-	//z 初始分配40，为啥不是类似32这样的数字了？
+    //z 初始分配40，为啥不是类似32这样的数字了？
     int bufsize = 40;
 
     *line = (char *)xmalloc (bufsize);
@@ -74,11 +74,11 @@ ftp_response (struct rbuf *rbuf, char **line)
         for (i = 0; 1; i++)
         {
             int res;
-			//z 如果 i 已经越界，那么将对应的空间增加一倍
+            //z 如果 i 已经越界，那么将对应的空间增加一倍
             if (i > bufsize - 1)
                 *line = (char *)xrealloc (*line, (bufsize <<= 1));
             //z 从 rbuf 中读取下一个字符串
-			res = RBUF_READCHAR (rbuf, *line + i);
+            res = RBUF_READCHAR (rbuf, *line + i);
             /* RES is number of bytes read.  */
             if (res == 1)
             {
@@ -117,13 +117,13 @@ ftp_request (const char *command, const char *value)
                                  + 2 + 1);
 
     //z 格式要求。比如说 pass 可能是 "pass pass" 或者在密码为空的情况下，命令为 "pass"
-	sprintf (res, "%s%s%s\r\n", command, value ? " " : "", value ? value : "");
-	
-	//z 是否记录服务器响应？
+    sprintf (res, "%s%s%s\r\n", command, value ? " " : "", value ? value : "");
+
+    //z 是否记录服务器响应？
     if (opt.server_response)
     {
         /* Hack: don't print out password.  */
-		//z 如果当前命令为 pass，那么不记入日志
+        //z 如果当前命令为 pass，那么不记入日志
         if (strncmp (res, "PASS", 4) != 0)
             logprintf (LOG_ALWAYS, "--> %s\n", res);
         else

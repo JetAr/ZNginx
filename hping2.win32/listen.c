@@ -26,71 +26,77 @@
 
 void listenmain(void)
 {
-	int size, ip_size;
-	int stdoutFD = fileno(stdout);
+    int size, ip_size;
+    int stdoutFD = fileno(stdout);
 #ifndef WIN32
-	char packet[IP_MAX_SIZE+linkhdr_size];
+    char packet[IP_MAX_SIZE+linkhdr_size];
 #endif
-	char *p, *ip_packet;
-	struct myiphdr ip;
-	__u16 id;
-	static __u16 exp_id; /* expected id */
+    char *p, *ip_packet;
+    struct myiphdr ip;
+    __u16 id;
+    static __u16 exp_id; /* expected id */
 
 #ifdef WIN32
-	char *packet;
+    char *packet;
 
-	packet = malloc(sizeof(char) * (IP_MAX_SIZE + linkhdr_size));
-	if (packet == NULL) {
-		fprintf(stderr, "[malloc] failed: %d\n", GetLastError());
-		exit(1);
-	}
+    packet = malloc(sizeof(char) * (IP_MAX_SIZE + linkhdr_size));
+    if (packet == NULL)
+    {
+        fprintf(stderr, "[malloc] failed: %d\n", GetLastError());
+        exit(1);
+    }
 #endif
 
-	exp_id = 1;
+    exp_id = 1;
 
-	while(1) {
-		size = read_packet(packet, IP_MAX_SIZE + linkhdr_size);
-		switch(size) {
-		case 0:
-			continue;
-		case -1:
-			exit(1);
-		}
+    while(1)
+    {
+        size = read_packet(packet, IP_MAX_SIZE + linkhdr_size);
+        switch(size)
+        {
+        case 0:
+            continue;
+        case -1:
+            exit(1);
+        }
 
-		/* Skip truncated packets */
-		if (size < linkhdr_size + IPHDR_SIZE)
-			continue;
-		ip_packet = packet + linkhdr_size;
+        /* Skip truncated packets */
+        if (size < linkhdr_size + IPHDR_SIZE)
+            continue;
+        ip_packet = packet + linkhdr_size;
 
 
-		/* copy the ip header so it will be aligned */
-		memcpy(&ip, ip_packet, sizeof(ip));
-		id = ntohs(ip.id);
-		ip_size = ntohs(ip.tot_len);
-		if (size-linkhdr_size > ip_size)
-			size = ip_size;
-		else
-			size -= linkhdr_size;
+        /* copy the ip header so it will be aligned */
+        memcpy(&ip, ip_packet, sizeof(ip));
+        id = ntohs(ip.id);
+        ip_size = ntohs(ip.tot_len);
+        if (size-linkhdr_size > ip_size)
+            size = ip_size;
+        else
+            size -= linkhdr_size;
 
-		if ((p = memstr(ip_packet, sign, size))) {
-			if (opt_verbose)
-				fprintf(stderr, "packet %d received\n", id);
+        if ((p = memstr(ip_packet, sign, size)))
+        {
+            if (opt_verbose)
+                fprintf(stderr, "packet %d received\n", id);
 
-			if (opt_safe) {
-				if (id == exp_id)
-					exp_id++;
-				else {
-					if (opt_verbose)
-						fprintf(stderr, "packet not in sequence (id %d) received\n", id);
-					send_hcmp(HCMP_RESTART, exp_id);
-					if (opt_verbose)
-						fprintf(stderr, "HCMP restart from %d sent\n", exp_id);
-					continue; /* discard this packet */
-				}
-			}
+            if (opt_safe)
+            {
+                if (id == exp_id)
+                    exp_id++;
+                else
+                {
+                    if (opt_verbose)
+                        fprintf(stderr, "packet not in sequence (id %d) received\n", id);
+                    send_hcmp(HCMP_RESTART, exp_id);
+                    if (opt_verbose)
+                        fprintf(stderr, "HCMP restart from %d sent\n", exp_id);
+                    continue; /* discard this packet */
+                }
+            }
 
-			p+=strlen(sign);
-			write(stdoutFD, p, size-(p-ip_packet));
-		}
-	}
+            p+=strlen(sign);
+            write(stdoutFD, p, size-(p-ip_packet));
+        }
+    }
 }

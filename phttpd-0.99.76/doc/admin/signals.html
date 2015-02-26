@@ -1,0 +1,31 @@
+<HTML>
+<HEAD>
+<TITLE>
+Phttpd: Signals
+</TITLE>
+</HEAD>
+<BODY>
+<H2 ALIGN=CENTER>
+Signals you can send to Phttpd
+</H2>
+
+<DL>
+
+<DT><B>SIGHUP</B>
+<DD>Sending Phttpd a SIGHUP will cause it to close and reload all modules.
+	It will also close and reopen it's logging files.
+
+<P><DT><B>SIGUSR1</B>
+<DD>Increase the debugging level with 1.
+
+<P><DT><B>SIGUSR2</B>
+<DD>Decrease the debugging level with 1.
+
+<P><DT><B>SIGTERM</B>
+<DD>Causes the server to terminate gracefully.
+
+</DL>
+
+</BODY>
+</HTML>
+

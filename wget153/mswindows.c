@@ -56,10 +56,10 @@ read_registry (HKEY hkey, char *subkey, char *valuename, char *buf, int *len)
     HKEY result;
     DWORD size = *len;
     DWORD type = REG_SZ;
-	//z 首先打开 key
+    //z 首先打开 key
     if (RegOpenKeyEx (hkey, subkey, NULL, KEY_READ, &result) != ERROR_SUCCESS)
         return NULL;
-	//z 然后读取值
+    //z 然后读取值
     if (RegQueryValueEx (result, valuename, NULL, &type, buf, &size) != ERROR_SUCCESS)
         buf = NULL;
     *len = size;
@@ -73,7 +73,7 @@ pwd_cuserid (char *where)
 {
     char buf[32], *ptr;
     int len = sizeof (buf);
-	//z 使用了多种方式来获取 user name 。
+    //z 使用了多种方式来获取 user name 。
     if (GetUserName (buf, (LPDWORD) &len) == TRUE)
     {
         ;
@@ -134,16 +134,16 @@ fork_to_background (void)
     /* Whether we arrange our own version of opt.lfilename here.  */
     int changedp = 0;
 
-	//z l 表示日志文件，filename 表示文件名称
+    //z l 表示日志文件，filename 表示文件名称
     if (!opt.lfilename)
     {
-		//z 根据文件前缀生成一个文件名，前缀+数字（数字增大，直到找到一个不存在的文件为止）
+        //z 根据文件前缀生成一个文件名，前缀+数字（数字增大，直到找到一个不存在的文件为止）
         opt.lfilename = unique_name (DEFAULT_LOGFILE);
         changedp = 1;
     }
     printf (_("Continuing in background.\n"));
     //z 成功生成日志记录文件，输出信息
-	if (changedp)
+    if (changedp)
         printf (_("Output will be written to `%s'.\n"), opt.lfilename);
 
     ws_hangup ();
@@ -197,20 +197,20 @@ ws_mypath (void)
     int rrr;
     char *ptr;
 
-	//z 如果 wspathsave 不为NULL，那么直接返回，可以避免不必要的再次计算
+    //z 如果 wspathsave 不为NULL，那么直接返回，可以避免不必要的再次计算
     if (wspathsave)
     {
         return wspathsave;
     }
-	//z 从后向前查找第一个 '\' 的位置
+    //z 从后向前查找第一个 '\' 的位置
     ptr = strrchr (argv0, '\\');
     if (ptr)
     {
-		//z 这样更改了 argv0 的内容了？
+        //z 这样更改了 argv0 的内容了？
         *(ptr + 1) = '\0';
-		//z 分配适当的空间
+        //z 分配适当的空间
         wspathsave = (char*) xmalloc (strlen(argv0)+1);
-		//z 然后拷贝；应该可以直接使用 strdup 之类的吧？
+        //z 然后拷贝；应该可以直接使用 strdup 之类的吧？
         strcpy (wspathsave, argv0);
         return wspathsave;
     }
@@ -258,16 +258,16 @@ ws_startup (void)
     int err;
     OSVERSIONINFO os;
 
-	//z 获取 windows 版本信息
+    //z 获取 windows 版本信息
     if (GetVersionEx (&os) == TRUE
             && os.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS)
         windows_nt_p = 1;
 
-	//z 对 winsock 进行初始化，这里使用的 1.1 版本
+    //z 对 winsock 进行初始化，这里使用的 1.1 版本
     requested = MAKEWORD (1, 1);
     err = WSAStartup (requested, &data);
 
-	//z 调用函数出错；直接结束程序
+    //z 调用函数出错；直接结束程序
     if (err != 0)
     {
         fprintf (stderr, _("%s: Couldn't find usable socket driver.\n"),
@@ -275,7 +275,7 @@ ws_startup (void)
         exit (1);
     }
 
-	//z 未发现可用的 socket driver （发现的版本号小于所需要的）
+    //z 未发现可用的 socket driver （发现的版本号小于所需要的）
     if (LOBYTE (requested) < 1 || (LOBYTE (requested) == 1 &&
                                    HIBYTE (requested) < 1))
     {
@@ -285,8 +285,8 @@ ws_startup (void)
         exit (1);
     }
 
-	//z 在程序结束的时候运行 ws_cleanup 函数
+    //z 在程序结束的时候运行 ws_cleanup 函数
     atexit (ws_cleanup);
-	//z 设置控制台处理程序
+    //z 设置控制台处理程序
     SetConsoleCtrlHandler (ws_handler, TRUE);
 }

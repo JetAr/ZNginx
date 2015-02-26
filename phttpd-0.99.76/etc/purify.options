@@ -1,0 +1,10 @@
+# You should start purified programs with:
+#
+# setenv PURIFYOPTIONS "-max_threads=64"
+
+suppress bsw _mutex_unlock_asm
+suppress umr __bind
+suppress umr bind
+suppress umr listen
+suppress umr accept
+

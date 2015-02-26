@@ -1,0 +1,5 @@
+#!/bin/csh
+
+./ptester -t1000 -p9876 / /phttpd /phttpd/ /phttpd/COPYING.html /icons/
+
+exit 0

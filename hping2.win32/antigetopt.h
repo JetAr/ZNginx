@@ -17,11 +17,12 @@ enum { AGO_EOF=4000, AGO_ALONE, AGO_UNKNOWN, AGO_REQARG, AGO_RESET, AGO_AMBIG };
 #define AGO_LIST_TERM {'\0',NULL,0,AGO_ENDOFLIST}
 
 /* The structure that defines an argument */
-struct ago_optlist {
-	char ao_short;
-	char *ao_long;
-	int ao_id;
-	int ao_flags;
+struct ago_optlist
+{
+    char ao_short;
+    char *ao_long;
+    int ao_id;
+    int ao_flags;
 };
 
 extern char *ago_optarg;

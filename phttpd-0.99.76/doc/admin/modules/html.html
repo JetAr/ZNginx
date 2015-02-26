@@ -1,0 +1,49 @@
+<HTML>
+<HEAD>
+<TITLE>
+Phttpd: HTML
+</TITLE>
+</HEAD>
+<BODY>
+<H2 ALIGN=CENTER>
+The HTML subsystem
+</H2>
+
+<B>Html</B> is a library of good-to-have helper functions.
+
+<H3>Functions:</H3>
+
+<DL>
+<DT><B>int html_href(int fd, const char *href, const char *text)</B>
+<DD>Outputs an HTML HREF tag pointing to <EM>href</EM>, and showing
+	the string <EM>text</EM>. The string are quoted with the
+	<B>html_strquote()</B> function before being written.
+
+<P><DT><B>int html_email(int fd, const char *address)</B>
+<DD>Outputs the string <EM>address</EM> as valid Email HTML HREF tag. The
+	address is quoted with <B>html_strquote</B>
+
+<P><DT><B>char *html_strquote(const char *str, char *buf, int size)</B>
+<DD>Quote a string to be able to display certain special characters. The
+characters quoted are:
+<PRE>
+	"	-&gt; 	&amp;quot;
+	&amp;	-&gt; 	&amp;amp;
+	&lt;	-&gt;	&amp;lp;
+	&gt;	-&gt;	&amp;gt;
+</PRE>
+
+<P><DT><B>void html_sysheader(int fd, const char *htype, const char *format, ...)</B>
+<DD>Outputs a standardized HTML header.
+
+<P><DT><B>void html_sysfooter(int fd)</B>
+<DD>Outputs a standardized HTML footer.
+
+<P><DT><B>void html_error(int fd, const char *type, const char *format, va_list ap)</B>
+<DD>Display a standardized error message.
+
+</DL>
+
+</BODY>
+</HTML>
+

@@ -1,0 +1,102 @@
+Path: news.ifm.liu.se!fizban.solace.mh.se!paladin.american.edu!zombie.ncsc.mil!news.mathworks.com!newsfeed.internetmci.com!in1.uu.net!usc!sdd.hp.com!night.primate.wisc.edu!news.crd.ge.com!usenet
+From: barnett@grymoire.crd.ge.com (Bruce Barnett)
+Newsgroups: comp.unix.solaris,comp.infosystems.www.servers.unix
+Subject: SUMMARY: Tweaking a big Solaris box for WWW service
+Date: 30 Oct 1995 11:31:20 -0500
+Organization: GE Corp. R & D, Schenectady, NY
+Lines: 89
+Distribution: inet
+Message-ID: <yekpwff53xj.fsf@grymoire.crd.ge.com>
+NNTP-Posting-Host: grymoire.crd.ge.com
+Xref: news.ifm.liu.se comp.unix.solaris:57822 comp.infosystems.www.servers.unix:6251
+
+	Here is a summary of what I learned about tweaking a Solaris
+box for high-performance http service. 
+
+1. Use Solaris 2.5. (Solaris 2.5 has been clocked at 520 K hits/hour, 
+   while the same box did ~300 K hits/hour under Solaris 2.4).
+   Solaris 2.3 is slower tha 2.4.
+
+2. Use a threaded server (Commercial Netscape, phttpd, apache)
+
+3. Use a httpd server that supports pre-forked operations
+   (NCSA 1.4 or higher, apachee 0.8 or higher)
+
+4. Increase the number of simultaneous TCP connections.
+
+   Solaris 2.4:
+
+	ndd /dev/tcp tcp_conn_req_max 32
+
+   Solaris 2.5:
+
+	ndd /dev/tcp tcp_conn_req_max 128
+
+   up to
+	
+	ndd /dev/tcp tcp_conn_req_max 1024
+
+   32 is the largest for Solaris 2.4. 1024 is the largest for
+   Solaris 2.5. Check memory usage in Solaris 2.5. Allocating too much
+   may chew up more memory, so only allocate what you need.
+
+
+5. Make sure your servers have a backlog greater than the value 
+   specified in #4 (32 or 1024). This corresponds to the 
+	listen(fd,backlog)
+   library call.
+
+6. Dedicate a disk just to http logging.
+
+7. Don't use NIS+
+
+8. Don't use Automounter
+
+9. If performance still isn't fast enough, it may be neccessary to
+   modify some additional system parameters.  One person has suggested the 
+   following modifications in /etc/system (and then reboot):
+
+   * increase UFS buffers - suggested if you have at LEAST 64 MB of RAM
+   set ncsize = 25000
+   set ufs_ninode = 25000
+   set bufhwm = 15000
+
+   * increase support for WWW connections
+   set nrnode = 1000
+
+   Another suggests a smaller value for bufhwm (4000 - 6000).
+   Caution is suggested, as allocating too much will use up memory
+   without providing additional gain. I suggest you experiment carefully,
+   and monitor performance and memory allocation for optimum usage.
+
+
+Regarding http performance testing, three suggestions have been made:
+
+	1. Use the performance tester for phttpd
+		ftp.lysator.liu.se:/pub/phttpd
+		http://www.signum.se/phttpd/
+
+	2. SPEC's WebPerf benchmark
+		http://performance.netlib.org/performance/html/spec.html
+
+	3. Netperf has a TCP-CRR test to simulate http traffic
+
+		ftp://ftp.cup.hp.com/dist/networking/benchmarks/netperf*
+
+Thanks to
+	Bart.Smaalders@Eng.Sun.COM (Bart Smaalders)
+	Beech Justin <justin@singnet.com.sg>
+	Dean Roth <Dean.Roth@mixcom.com>
+	Johan Magnusson <johan@lysator.liu.se>
+	Prasad.Wagle@Eng.Sun.COM (Prasad Wagle)
+	Rick Jones <raj@hpisrdq.cup.hp.com>
+	Sam Gassel <samg@carpediem.turner.com>
+	Vincent DiBernardo <Vincent_DiBernardo@MBnet.MB.CA>
+	alanc@godzilla.EECS.Berkeley.EDU (Alan Coopersmith)
+	kck@netcom.com (Richard Fox)
+	mukesh@jurassic-248.Eng.Sun.COM (Mukesh Kacker)
+	nash@ucssun1.sdsu.edu (Ron Nash)
+
+-- 
+Bruce Barnett <barnett@crd.ge.com> uunet!crdras!barnett
+
