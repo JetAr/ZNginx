@@ -518,6 +518,7 @@ unique_name_1 (const char *fileprefix, int count)
 }
 
 /* Return a unique file name, based on PREFIX.  */
+//z 根据 prefix 名称，找到一个不存在的文件名，后面使用计数器，形成prefix0,prefix1。。。等等这样的情况。
 char *
 unique_name (const char *prefix)
 {
@@ -544,6 +545,7 @@ make_directory (const char *directory)
 
     /* Make a copy of dir, to be able to write to it.  Otherwise, the
        function is unsafe if called with a read-only char *argument.  */
+	//z 复制一份；这样能写入
     STRDUP_ALLOCA (dir, directory);
 
     /* If the first character of dir is '/', skip it (and thus enable
@@ -552,18 +554,24 @@ make_directory (const char *directory)
     {
         for (; dir[i] && dir[i] != '/'; i++)
             ;
-        if (!dir[i])
+        //z 是否到达了结尾
+		if (!dir[i])
             quit = 1;
-        dir[i] = '\0';
+		dir[i] = '\0';
         /* Check whether the directory already exists.  */
-        if (!file_exists_p (dir))
+        //z 判断此级目录是否存在
+		if (!file_exists_p (dir))
         {
+			//z 如果不存在，那么创建该目录
             if (mkdir (dir, 0777) < 0)
                 return -1;
         }
+
+		//z 如果已经到达目录结尾，那么直接返回
         if (quit)
             break;
         else
+			//z 否则将原来变更为'\0'的位置还原为'/'
             dir[i] = '/';
     }
     return 0;
