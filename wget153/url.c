@@ -702,13 +702,16 @@ parse_uname (const char *url, char **user, char **passwd)
 static char
 process_ftp_type (char *path)
 {
+	//z 得到路径的长度
     int len = strlen (path);
 
+	//z 在长度不小于7时，对path进行比较
     if (len >= 7
             && !memcmp (path + len - 7, ";type=", 6))
     {
-        path[len - 7] = '\0';
-        return path[len - 1];
+		//z 如果结尾的字符中含有 ";type=" 
+        path[len - 7] = '\0';//z 从此处截断
+        return path[len - 1];//z 返回最后一个字符
     }
     else
         return '\0';

@@ -184,6 +184,13 @@ enum
     ACCEPTRANGES  = 0x0010	/* Accept-ranges header was found */
 };
 
+/*z
+That story is nothing but a crock. （俚语）那个故事简直是胡说八道。
+
+utter 作为形容词，有 完全的，彻底的，十足的 等意思
+utter nonsense 十足的废话
+utter darkness 漆黑
+*/
 /* Universal error type -- used almost everywhere.
    This is, of course, utter crock.  */
 typedef enum

@@ -25,12 +25,18 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 #define CLEANDUP(x) (contains_unsafe (x) ? encode_string (x) : xstrdup (x))
 
 /* Structure containing info on a URL.  */
+//z 存储一个 URL 对应的信息
 struct urlinfo
 {
+	//z 未变更的 url 
     char *url;			/* Unchanged URL */
+	//z 各种错误
     uerr_t proto;			/* URL protocol */
-    char *host;			/* Extracted hostname */
+    //z 解出来的 host 名称
+	char *host;			/* Extracted hostname */
+	//z 端口号
     unsigned short port;
+	//z ftp 类型？类似passive 这样？
     char ftp_type;
     char *path, *dir, *file;	/* Path, as well as dir and file
 				   (properly decoded) */

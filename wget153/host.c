@@ -264,7 +264,7 @@ add_hlist (struct host *l, const char *nhost, const char *nreal, int quality)
 
 	如果host在host list 中没有发现。
 	如果失败了（没有发现？），那么使用ip地址，如果仍旧没有发现，将之加入到Host list 中去
-
+	实际是实现了一个简单的缓存？
 */
 /* Determine the "real" name of HOST, as perceived by Wget.  If HOST
    is referenced by more than one name, "real" name is considered to
@@ -284,7 +284,9 @@ realhost (const char *host)
 
     DEBUGP (("Checking for %s.\n", host));
     /* Look for the host, looking by the host name.  */
+	//z 在host list中查找对应的host
     l = search_host (hlist, host);
+
     //z 如果 quality 不为0
     if (l && l->quality)              /* Found it with quality */
     {
@@ -344,6 +346,9 @@ realhost (const char *host)
     return xstrdup (host);
 }
 
+/*
+比较两个 host 是否是同样的host，从url中解析出hostname，查看是否相同；根据option的选项设置可能会进一步比较realhost
+*/
 /* Compare two hostnames (out of URL-s if the arguments are URL-s),
    taking care of aliases.  It uses realhost() to determine a unique
    hostname for each of two hosts.  If simple_check is non-zero, only
@@ -358,37 +363,46 @@ same_host (const char *u1, const char *u2)
     /* Skip protocol, if present.  */
     u1 += skip_url (u1);//z 跳过 URL: 以及紧随气候的空白符
     u2 += skip_url (u2);
+	//z 越过协议名称
     u1 += skip_proto (u1);
     u2 += skip_proto (u2);
 
     /* Skip username ans password, if present.  */
+	//z http://user:pass@www.moo.ui
     u1 += skip_uname (u1);
     u2 += skip_uname (u2);
 
+	//z 步进；直到找到 '/' 或 ':'
     for (s = u1; *u1 && *u1 != '/' && *u1 != ':'; u1++);
-    p1 = strdupdelim (s, u1);
+    p1 = strdupdelim (s, u1);// [ )，在heap上复制一份
     for (s = u2; *u2 && *u2 != '/' && *u2 != ':'; u2++);
-    p2 = strdupdelim (s, u2);
+    p2 = strdupdelim (s, u2);// [ )，在heap上复制一份
     DEBUGP (("Comparing hosts %s and %s...\n", p1, p2));
-    if (strcasecmp (p1, p2) == 0)
+    //z 比较host
+	if (strcasecmp (p1, p2) == 0)//z 如果相等
     {
+		//z p1及p2是在heap上分配的。比较完毕释放
         free (p1);
         free (p2);
         DEBUGP (("They are quite alike.\n"));
         return 1;
     }
-    else if (opt.simple_check)
+    else if (opt.simple_check)//z 是否进行简单比较
     {
         free (p1);
         free (p2);
         DEBUGP (("Since checking is simple, I'd say they are not the same.\n"));
-        return 0;
+        return 0;//z 采用了 simple 比较的形式，那么这就看作是不一样的
     }
+
+	//z 如果不等，且不采用 simple_check 的形式
+	//z 分别根据p1和p2得到其对应的 realhost
     real1 = realhost (p1);
     real2 = realhost (p2);
     free (p1);
     free (p2);
-    if (strcasecmp (real1, real2) == 0)
+    //z 对realhost进行对应的比较
+	if (strcasecmp (real1, real2) == 0)
     {
         DEBUGP (("They are alike, after realhost()->%s.\n", real1));
         free (real1);
