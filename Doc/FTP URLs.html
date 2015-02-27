@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<HEAD>
+<TITLE>FTP URLs</TITLE>
+ <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
+ <link rel="stylesheet" type="text/css"  title="Yucca's style" 
+  href="basic.css">
+</HEAD>
+<BODY>
+<H1>FTP URLs</H1>
+
+<h2>What are FTP URLs and what are they used for?</h2>
+
+<p>One of the possible forms of a
+<a title="general description of URLs especially in HTML context"
+href="HTML3.2/3.5.html">URL</a>
+is an FTP URL, which begins with <code>ftp:</code> as the protocol part.
+Example:<br>
+<span style="margin-left:1em"><code><a href="ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt">ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt</a></code></span>
+<p>
+An FTP URL designates a file or a a directory on an Internet host
+accessible using the FTP protocol,
+(The sample URL above refers to a copy of the FTP protocol specification,
+RFC 959, in one repository of
+<a href="rfc.var">RFCs</a>.
+Note that this specification
+has partly been updated by later RFCs.)</p>
+<p>
+Such URLs are often used in Web documents in order to refer to a
+resource which is downloadable from a public FTP server
+(as in the example above).
+Less importantly, they can also be used to refer to a resource
+on a non-public area, so that a password is required.</p>
+
+<h2>The syntax of FTP URLs</h2>
+
+<p>According to the specification of URL formats,
+<a href="ftp://ftp.funet.fi/pub/doc/rfc/rfc1738.txt">RFC 1738</a>,
+an FTP URL is of the form
+<p>
+<code>ftp://</code><var>user</var><code>:</code><var>password</var><code>@</code><var>host</var><code>:</code><var>port</var><code>/</code><var>path</var>
+<p>
+so that some or all of the parts
+<var>user</var><code>:</code><var>password</var><code>@</code>,
+<code>:</code><var>password</var>,
+<code>:</code><var>port</var>
+and
+<code>/</code><var>path</var>
+may be excluded. Although RFC 1738 has been obsoleted
+as regards to <em>generic</em> URL syntax (now
+defined in
+<a href="http://www.apps.ietf.org/rfc/rfc3986.html"
+>RFC 3986</a>), some of the <em>specific</em> parts, like
+FTP URL syntax, are still in force.</p>
+<p>
+The components obey the following rules:
+<dl>
+  <dt> <var>user</var>
+  <dd> a user name (user id) on the host
+  <dt> <var>password</var>
+  <dd> the password corresponding to the user name;
+       note: if the <var>user</var> and <var>password</var> field in
+       a URL contains character <code>:</code> or <code>@</code> or
+       <code>/</code>, the character must be
+ <a href="./HTML3.2/3.5.html#urlenc">encoded</a>
+  <dt> <var>host</var>
+  <dd> the fully qualified domain name of a network host, or
+       its IP address
+  <dt> <var>port</var>
+  <dd> the port number to connect to; it omitted, defaults to 21
+  <dt> <var>path</var>
+  <dd> path specification of the form
+<br>
+<var>cwd<sub>1</sub></var><code>/</code><var>cwd<sub>2</sub></var><code>/</code><var>...</var><code>/</code><var>cwd<sub>N</sub></var><code>/</code><var>name</var>
+<br>
+(where any occurrence of <code>/</code> or <code>;</code> within
+       a <var>cwd<sub>i</sub></var> or the <var>name</var> must be
+ <a href="./HTML3.2/3.5.html#urlenc">encoded</a>)
+       optionally followed by
+       <br>
+       <code>;type=</code><var>typecode</var>
+<br>
+       where <var>typecode</var> is one of the characters
+       <code>a</code>, <code>i</code>, <code>d</code>
+</dl>
+
+<p>
+Effectively, <code>;type=a</code> means 
+"Ascii mode" (plain text mode) of transfer whereas
+<code>;type=i</code> means image (binary) mode.
+If the <code>;type=</code><var>typecode</var> part of an FTP URL
+is
+   omitted, the client program interpreting the URL must guess the
+   appropriate mode to use. In general, the data content type of a file
+   can only be guessed from the name, e.g., from the suffix of the name;
+   the appropriate type code to be used for transfer of the file can
+   then be deduced from the data content of the file.
+
+<h2>User id and password</h2>
+
+If an FTP URL contains <var>user</var> and <var>password</var> fields,
+they are used in the FTP <code>USER</code> and <code>PASS</code>
+commands after making the connection to the FTP server.
+Otherwise the conventions for "anonymous" FTP are used:
+<ul>
+  <li> the user name <code>anonymous</code> is supplied
+  <li> the Internet e-mail address of the end user is supplied
+       as the password.
+</ul>
+<p>
+However, browsers often fail to conform to these requirements.
+<!--
+For example, Netscape 4.0 (in Win 95) seems to have option
+<code>Send email address as anonymous FTP password</code> off by
+default.-->
+Generally, they cannot have access
+to the user's
+correct E-mail address.
+In practice, browsers may send addresses
+with invented user name parts like
+<code>mozilla</code> or <code>IE30user</code>.
+Such "addresses"
+are syntactically legal
+in the sense of passing some tests made by an FTP server
+(such as checking that there is an <code>@</code> somewhere)
+but, being fancy nonexistent addresses, fail to serve the purpose
+for which FTP servers like to get E-mail addresses.
+(Such purposes may include statistics collection or informing
+users about errors detected in files which they have fetched.)
+In some cases, the address passed is a valid address but
+the address of a proxy or gateway,
+not the
+address of the user.
+<p>
+If the URL supplies <var>user</var> but no <var>password</var> and
+the FTP server requests a password, the program interpreting the
+FTP URL (usually, a Web browser) should request a password from
+the user.
+Typically this takes place in a dialog box in which the password
+will not be visible as you type it (i.e., no echoing).
+However, some browsers (e.g., old versions of IE) do not
+request password from the user; instead,
+the connection fails.
+<p>
+<em>There is no way in the FTP URL syntax
+to ask the user agent to prompt
+for a <strong>user name</strong></em>.
+Either you provide a fixed user name (with or without a password)
+in the URL
+or no user name, in which the user name <code>anonymous</code> is used.
+(<a name="circumvent">Toby Speight</a>
+has suggested the following way of circumventing this
+restriction: Instead of providing directly a link with
+an FTP URL, present an
+<a href="./HTML3.2/5.25.html">HTML form</a>
+which
+asks for the username; make the script which processes the
+form send a 301 (temporarily moved) response, substituting the
+received username into the URL in the
+<code>Location</code> header.
+Cf. to <a href="./forms/getrfc.html"
+><cite>Get RFC by number&nbsp;-
+a demonstration of combined client and server side
+scripting</cite></a>.)</p>
+
+<p>However, <strong>IE 7</strong> (where processing of FTP URLs is
+rather peculiar in many ways), ignores the <em>user</em> and
+<em>password</em> parts if present. It initiates a dialogue where the
+user is prompted for them. Any 
+<em>user</em><code>:</code><em>password</em> data
+seems to trigger this; the data is otherwise discarded but
+taken as a request to use non-anonymous FTP. This can be treated
+as added security, since passing passwords in URLs is risky,
+as URL specifications have always said.</p>
+
+<h2>Path resolution</h2>
+
+<p>
+The <var>path</var> is effectively a pathname of a resource and
+correspongs to a series of FTP commands as follows:
+<ul>
+  <li> Each of the 
+<var>cwd<sub>i</sub></var>
+(       <var>i</var> = 1, ..., <var>N</var> )
+       elements is supplied, sequentially, as the argument to
+       a <code>CWD</code> (change working directory) FTP command.
+(Some Web browsers do a single combined <code>CWD</code> instead.
+       It is unclear whether this deviation has practical implications.)
+  <li> If <var>typecode</var> is <code>d</code>, a <code>NLST</code>
+       (name list) FTP command is performed with <var>name</var>
+       as argument, and the result is interpreted as a file
+       directory listing.
+(On a typical Web browser, the listing is presented so that entries
+       act as links to files or subdirectories, allowing the user
+       to navigate in a directory tree.)
+       Otherwise, a <code>TYPE</code> FTP command is performed with
+       <var>typecode</var> as the argument, and then the file
+       whose name is <var>name</var> is accessed (for example,
+using the <code>RETR</code> (retrieve) FTP command).
+</ul>
+
+<strong>Example</strong>:
+the URL <code>ftp://myname@host.dom/%2Fetc/motd</code> is
+   interpreted by FTP-ing to <code>host.dom</code>, logging in as
+<code>myname</code>
+   (prompting for a password if it is asked for), and then executing
+<code>CWD /etc</code> and then
+<code>RETR motd</code>. This has a different meaning from
+   <code>ftp://myname@host.dom/etc/motd</code> which would
+<code>CWD etc</code> and then
+<code>RETR motd</code>; the initial
+<code>CWD</code> might be executed relative to the
+   default directory for
+<code>myname</code>. On the other hand,
+   <code>ftp://myname@host.dom//etc/motd</code>, would
+<code>CWD</code> with a null
+   argument, then <code>CWD etc</code>, and then <code>RETR motd</code>.
+<p>
+Browsers often
+seem to violate this: they effectively start from the root of the
+file system of the FTP host.
+(I first observed this in IE 4.0 under Win95 and
+Lynx 2.7.1 under Unix.)
+Thus, in order to access file
+<code>.plan</code> in user <code>jkorpela</code>'s home directory on
+<code>alfa.hut.fi</code>, a correct URL would be
+<code>ftp://jkorpela@alfa.hut.fi/.plan</code>
+but this does not work on IE which requires something like
+<code>ftp://jkorpela@alfa.hut.fi/m/fs/lai/lai/LK/lk/jkorpela/.plan</code>
+(which does not work on other browsers).
+Moreover, as mentioned above, some versions of IE are
+ unable to prompt for password, so
+even that URL might not work unless you put the password there.
+
+<h2>Practical remarks</h2>
+
+<em>
+Avoid using FTP URLs for other purposes than referring to resources
+on anonymous FTP servers.
+</em>
+<p>
+If you refer to resources which require a password (in the genuine sense),
+you would have to include the password into the URL or accept the
+fact that (due to IE bugs mentioned above)
+a large portion of users will be unable to access the resource
+even if they know the password.
+<p>
+Moreover, when to tell the password for a user name to some people
+(or perhaps even to the public), you are effectively giving them
+<strong>full access</strong> (read and write) to <strong>all</strong>
+files under the user name. If the host accepts remote logins, which
+is pretty common, they can also login under that user name.
+<p>
+Even if the URL is not in an HTML file (e.g. you type the URL directly
+as input to a Web browser), including a password is a security risk.
+On most browsers,
+it will be visible as you type it, and it will be retained by your
+history file.
+
+<HR>
+Thanks to <a href="http://www.wam.umd.edu/%7Emoshman/">Mosh "LoneWolf" Teitelbaum</a>,
+who has given a lot of comments on and information for this document.
+<P>
+<address>
+<A HREF="personal.html">Jukka Korpela</A>.
+</address>
+<BR>
+Created: 1997-09-18.
+Last update: 2008-04-03.
+</body>
+</html>
