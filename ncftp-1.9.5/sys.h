@@ -1,4 +1,4 @@
-/* Sys.h
+﻿/* Sys.h
  * See the README for details.
  */
 
@@ -16,10 +16,10 @@
 
 #ifdef sun
 #	if !defined(__GNUC__) && !defined(__STDC__) && !defined(SunOverride)
-	/* If you choke here, but you know what you're doing, just
-	 * define SunOverride.
-	 */
-	^^^ "You need to use an ANSI C compiler.  Try using gcc or acc." ^^^
+/* If you choke here, but you know what you're doing, just
+ * define SunOverride.
+ */
+^^^ "You need to use an ANSI C compiler.  Try using gcc or acc." ^^^
 #	endif
 #	ifdef Solaris	/* not predefined. */
 #		ifndef SYSV
@@ -257,7 +257,7 @@ extern int errno;
 #	define Select(a,b,c,d,e) select((a), (int *)(b), (c), (d), (e))
 #endif
 
-#ifdef HPUX 
+#ifdef HPUX
 #	define System "HP-UX"
 #	ifndef _HPUX_SOURCE
 #		define _HPUX_SOURCE 1
@@ -419,7 +419,7 @@ extern int errno;
 #		define HAS_DOMAINNAME 1
 #       include <sys/types.h>
 #       include <sys/param.h>   /* this two for BSD definition */
-				/* to avoid redefinition of it to 1 */
+/* to avoid redefinition of it to 1 */
 #       define HERROR 1
 #	define TERMIOS 1
 #       define HAS_GETCWD 1
@@ -468,7 +468,7 @@ extern int errno;
  * Add -DRINDEX to your SDEFS line if you need to.
  */
 #ifdef RINDEX
-	/* or #include <strings.h> if you have it. */
+/* or #include <strings.h> if you have it. */
 #	define rindex strrchr
 #	define index strchr
 #endif /* RINDEX */
@@ -596,7 +596,7 @@ extern	void    bcopy(char *, char *, size_t);
 extern	void    bzero(char *, size_t);
 #endif
 
-#ifdef SOCKS 
+#ifdef SOCKS
 extern	int     Raccept(int, struct sockaddr *, int *);
 extern	int     Rbind(int, struct sockaddr *, int, unsigned long);
 extern	int     Rconnect(int, struct sockaddr *, int);
@@ -626,7 +626,7 @@ extern	int     socket(int, int, int);
 
 #ifdef LIBMALLOC
 #	if LIBMALLOC != LIBC_MALLOC
-		/* Make sure you use -I to use the malloc.h of choice. */
+/* Make sure you use -I to use the malloc.h of choice. */
 #		include <malloc.h>
 #	endif
 #else

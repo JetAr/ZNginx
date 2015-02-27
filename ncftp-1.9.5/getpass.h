@@ -1,4 +1,4 @@
-/* Getpass.h */
+﻿/* Getpass.h */
 
 #ifndef _getpass_h_
 #define _getpass_h_

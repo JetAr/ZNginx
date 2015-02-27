@@ -535,17 +535,17 @@ parseurl (const char *url, struct urlinfo *u, int strict)
     u->path = (char *)xmalloc (strlen (url + i) + 8);
     strcpy (u->path, url + i);
 
-	/*z
-	Wget also supports the type feature for FTP URLs. By default, FTP documents are retrieved in the binary mode (type ‘i’), which means that they are downloaded unchanged. Another useful mode is the ‘a’ (ASCII) mode, which converts the line delimiters between the different operating systems, and is thus useful for text files. 
-	*/
+    /*z
+    Wget also supports the type feature for FTP URLs. By default, FTP documents are retrieved in the binary mode (type ‘i’), which means that they are downloaded unchanged. Another useful mode is the ‘a’ (ASCII) mode, which converts the line delimiters between the different operating systems, and is thus useful for text files.
+    */
     if (type == URLFTP)
     {
-		//z 获取 ftp type ，传输类型。共有 a i d 三种。
-		//z 其中 a 表示 ascII，b表示image（binary）。
+        //z 获取 ftp type ，传输类型。共有 a i d 三种。
+        //z 其中 a 表示 ascII，b表示image（binary）。
         u->ftp_type = process_ftp_type (u->path);
-        
-		/* #### We don't handle type `d' correctly yet.  */
-		//z 目前不支持 d 这种类型，如果遇到了d类型，那么直接将之当作I类型来处理。
+
+        /* #### We don't handle type `d' correctly yet.  */
+        //z 目前不支持 d 这种类型，如果遇到了d类型，那么直接将之当作I类型来处理。
         if (!u->ftp_type || toupper (u->ftp_type) == 'D')
             u->ftp_type = 'I';
     }
@@ -709,14 +709,14 @@ parse_uname (const char *url, char **user, char **passwd)
 static char
 process_ftp_type (char *path)
 {
-	//z 得到路径的长度
+    //z 得到路径的长度
     int len = strlen (path);
 
-	//z 在长度不小于7时，对path进行比较
+    //z 在长度不小于7时，对path进行比较
     if (len >= 7
             && !memcmp (path + len - 7, ";type=", 6))
     {
-		//z 如果结尾的字符中含有 ";type=" 
+        //z 如果结尾的字符中含有 ";type="
         path[len - 7] = '\0';//z 从此处截断
         return path[len - 1];//z 返回最后一个字符
     }

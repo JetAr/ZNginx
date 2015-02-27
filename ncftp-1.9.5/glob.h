@@ -1,4 +1,4 @@
-/* glob.h */
+﻿/* glob.h */
 
 #ifndef _glob_h_
 #define _glob_h_ 1

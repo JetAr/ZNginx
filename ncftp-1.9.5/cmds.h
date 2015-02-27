@@ -1,4 +1,4 @@
-/* cmds.h */
+﻿/* cmds.h */
 
 #ifndef _cmd_h_
 #define _cmd_h_
@@ -38,33 +38,37 @@
 /*
  * Format of command table.
  */
-struct cmd {
-	char	*c_name;	/* name of command */
-	char	c_conn;		/* must be connected to use command */
-	char	c_hidden;	/* a hidden command or alias (won't show up in help) */
-	int		(*c_handler)(int, char **);	/* function to call */
-	char	*c_help;	/* help string */
-	char	*c_usage;	/* usage string or NULL, to ask the function itself. */
+struct cmd
+{
+    char	*c_name;	/* name of command */
+    char	c_conn;		/* must be connected to use command */
+    char	c_hidden;	/* a hidden command or alias (won't show up in help) */
+    int		(*c_handler)(int, char **);	/* function to call */
+    char	*c_help;	/* help string */
+    char	*c_usage;	/* usage string or NULL, to ask the function itself. */
 };
 
 #define NCMDS ((int) ((sizeof (cmdtab) / sizeof (struct cmd)) - 1))
 
-struct macel {
-	char mac_name[9];	/* macro name */
-	char *mac_start;	/* start of macro in macbuf */
-	char *mac_end;		/* end of macro in macbuf */
+struct macel
+{
+    char mac_name[9];	/* macro name */
+    char *mac_start;	/* start of macro in macbuf */
+    char *mac_end;		/* end of macro in macbuf */
 };
 
-struct types {
-	char	*t_name;
-	char	*t_mode;
-	int		t_type;
-	char	*t_arg;
+struct types
+{
+    char	*t_name;
+    char	*t_mode;
+    int		t_type;
+    char	*t_arg;
 };
 
-struct lslist {
-	char			*string;
-	struct lslist	*next;
+struct lslist
+{
+    char			*string;
+    struct lslist	*next;
 };
 
 int settype(int argc, char **argv);

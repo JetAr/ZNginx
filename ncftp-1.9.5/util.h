@@ -1,4 +1,4 @@
-/* Util.h */
+﻿/* Util.h */
 
 #ifndef _util_h_
 #define _util_h_
@@ -15,18 +15,18 @@ typedef char Hostname[64];
 #ifdef DB_ERRS
 #	ifdef __LINE__
 #		define PERROR(p,e) Perror(p, __LINE__, e)
-		void Perror(char *, int, char *);
+void Perror(char *, int, char *);
 #	else
 #		define PERROR(p,e) Perror(p, e)
-		void Perror(char *, char *);
+void Perror(char *, char *);
 #	endif
 #else
 #	define PERROR(p,e) Perror(e)
-	void Perror(char *);
+void Perror(char *);
 #endif
 
 #ifdef NO_VARARGS
-	extern int debug;
+extern int debug;
 #	define dbprintf if (debug) (void) printf
 #else
 #	ifndef DB_STREAM

@@ -1,4 +1,4 @@
-/* Set.h */
+﻿/* Set.h */
 
 #ifndef _set_h_
 #define _set_h_
@@ -15,13 +15,14 @@
 #define BOOL	4
 
 typedef void (*setvarproc)(char *, int);
-struct var {
-	char			*name;
-	short			nmlen;
-	short			type;
-	short			conn_required;
-	void			*var;
-	setvarproc		proc;
+struct var
+{
+    char			*name;
+    short			nmlen;
+    short			type;
+    short			conn_required;
+    void			*var;
+    setvarproc		proc;
 };
 
 #define VARENTRY(n,t,c,v,p)	{ (n), (short)(sizeof(n) - 1), (t), (c), (v), (setvarproc)(p) }

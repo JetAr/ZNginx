@@ -1,4 +1,4 @@
-/* Copyright.h */
+﻿/* Copyright.h */
 
 /*
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR IMPLIED

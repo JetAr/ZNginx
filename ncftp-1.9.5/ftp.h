@@ -1,4 +1,4 @@
-/* ftp.h */
+﻿/* ftp.h */
 
 #ifndef _ftp_h_
 #define _ftp_h_

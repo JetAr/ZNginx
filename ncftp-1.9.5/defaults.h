@@ -1,4 +1,4 @@
-/* Defaults.h: default values for ftp's common variables */
+﻿/* Defaults.h: default values for ftp's common variables */
 
 /* These are all surrounded by #ifndef blocks so you can just use
  * the -D flag with your compiler (i.e. -DZCAT=\"/usr/local/bin/zcat\").
@@ -17,7 +17,7 @@
 #endif
 
 #ifndef ZCAT					/* Usually "zcat," but use the full pathname */
-								/* if possible. */
+/* if possible. */
 #	ifdef GZCAT					/* If you said you had gnu's zcat, use it
 								 * since it can do .Z files too.
 								 */
@@ -57,7 +57,7 @@
 #endif
 
 #ifndef dPROMPT					/* short: "@Bftp@P>" */
-								/* long: "@B@E @UNcFTP@P @B@M@D@P ->" */
+/* long: "@B@E @UNcFTP@P @B@M@D@P ->" */
 #define dPROMPT "@B@c@Mncftp@P>" /* new two line prompt */
 #endif
 
@@ -78,11 +78,11 @@
 #endif
 
 #ifndef dRECENT_ON				/* Do you want the recent log on? */
-								/* usually 1. */
+/* usually 1. */
 #define dRECENT_ON 1
 #endif
 
-								/* Do you want logging on by default? */
+/* Do you want logging on by default? */
 #ifndef dLOGGING				/* usually 0 */
 #define dLOGGING 0
 #endif

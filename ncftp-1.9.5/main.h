@@ -1,14 +1,15 @@
-/* main.h */
+﻿/* main.h */
 
 #ifndef _main_h_
 #define _main_h_
 
-struct userinfo {
-	str32   username;
-	string  homedir;
-	string  shell;
-	string  hostname;
-	int		uid;
+struct userinfo
+{
+    str32   username;
+    string  homedir;
+    string  shell;
+    string  hostname;
+    int		uid;
 };
 
 void intr SIG_PARAMS;
@@ -26,14 +27,14 @@ void trim_log(void);
 int CheckNewMail(void);
 
 #ifdef CURSES
-	void tcap_put(char *cap);
-	void termcap_init(void);
-	int termcap_get(char **dest, char *attr);
+void tcap_put(char *cap);
+void termcap_init(void);
+int termcap_get(char **dest, char *attr);
 #	ifndef TERMH /* <term.h> would take care of this. */
 #		ifdef NO_CONST
-			extern char *tgetstr(char *, char **);
+extern char *tgetstr(char *, char **);
 #		else
-			extern char *tgetstr(const char *, char **);
+extern char *tgetstr(const char *, char **);
 #		endif
 #	endif	/* TERMH */
 #endif	/* CURSES */

@@ -1,4 +1,4 @@
-/* ftprc.h */
+﻿/* ftprc.h */
 
 #ifndef _ftprc_h_
 #define _ftprc_h_
@@ -14,15 +14,17 @@
 #define RC_DELIM " \n\t,"
 
 typedef struct site *siteptr;
-typedef struct site {
-	char *name;			/* name (or IP address) of site */
-	siteptr next;
+typedef struct site
+{
+    char *name;			/* name (or IP address) of site */
+    siteptr next;
 } site;
 
-typedef struct recentsite {
-	char *name;			/* name (or IP address) of site */
-	char *dir;			/* directory we were in last time we called. */
-	time_t lastcall;	/* when this site was called last. */
+typedef struct recentsite
+{
+    char *name;			/* name (or IP address) of site */
+    char *dir;			/* directory we were in last time we called. */
+    time_t lastcall;	/* when this site was called last. */
 } recentsite;
 
 int thrash_rc(void);

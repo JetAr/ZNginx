@@ -1,4 +1,4 @@
-/* tips.c */
+﻿/* tips.c */
 
 /*  $RCSfile: tips.c,v $
  *  $Revision: 14020.11 $
@@ -17,7 +17,8 @@
  * Always add new tips right above the last one.
  */
 
-static char *tiplist[] = {
+static char *tiplist[] =
+{
     "Have you tried typing 'open' by itself lately?",
 
     "You know what?  You're using obselete software.  Ask your sysadmin \n\
@@ -50,7 +51,7 @@ static char *tiplist[] = {
          get README\n\
          dir\n\
          (blank line to end macro)",
-    
+
     "If you want to keep your .netrc's for ftp and ncftp separate, name\n\
      ncftp's rc to .ncftprc.",
 
@@ -128,20 +129,23 @@ void PrintTip(void)
     int cheap_rn, i, tn;
     string str;
 
-    if (tips && fromatty) {
+    if (tips && fromatty)
+    {
         cheap_rn = (int) getpid() % NTIPS;
-        if (debug) {
+        if (debug)
+        {
             (void) printf("pid: %d;  ntips: %d\n", getpid(), NTIPS);
             (void) Gets("*** Tip# (-1 == all): ", str, sizeof(str));
             tn = atoi(str) - 1;
-			if (tn == -1)
-				tn = 0;
+            if (tn == -1)
+                tn = 0;
             if (tn < -1)
                 for(i=0; i<NTIPS; i++)
                     (void) printf("Tip: %s\n", tiplist[i]);
             else if (tn < NTIPS)
                 (void) printf("Tip: %s\n", tiplist[tn]);
-        } else
+        }
+        else
             (void) printf("Tip: %s\n", tiplist[cheap_rn]);
     }
 #endif  /* NO_TIPS */

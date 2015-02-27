@@ -284,7 +284,7 @@ realhost (const char *host)
 
     DEBUGP (("Checking for %s.\n", host));
     /* Look for the host, looking by the host name.  */
-	//z 在host list中查找对应的host
+    //z 在host list中查找对应的host
     l = search_host (hlist, host);
 
     //z 如果 quality 不为0
@@ -363,25 +363,25 @@ same_host (const char *u1, const char *u2)
     /* Skip protocol, if present.  */
     u1 += skip_url (u1);//z 跳过 URL: 以及紧随气候的空白符
     u2 += skip_url (u2);
-	//z 越过协议名称
+    //z 越过协议名称
     u1 += skip_proto (u1);
     u2 += skip_proto (u2);
 
     /* Skip username ans password, if present.  */
-	//z http://user:pass@www.moo.ui
+    //z http://user:pass@www.moo.ui
     u1 += skip_uname (u1);
     u2 += skip_uname (u2);
 
-	//z 步进；直到找到 '/' 或 ':'
+    //z 步进；直到找到 '/' 或 ':'
     for (s = u1; *u1 && *u1 != '/' && *u1 != ':'; u1++);
     p1 = strdupdelim (s, u1);// [ )，在heap上复制一份
     for (s = u2; *u2 && *u2 != '/' && *u2 != ':'; u2++);
     p2 = strdupdelim (s, u2);// [ )，在heap上复制一份
     DEBUGP (("Comparing hosts %s and %s...\n", p1, p2));
     //z 比较host
-	if (strcasecmp (p1, p2) == 0)//z 如果相等
+    if (strcasecmp (p1, p2) == 0)//z 如果相等
     {
-		//z p1及p2是在heap上分配的。比较完毕释放
+        //z p1及p2是在heap上分配的。比较完毕释放
         free (p1);
         free (p2);
         DEBUGP (("They are quite alike.\n"));
@@ -395,14 +395,14 @@ same_host (const char *u1, const char *u2)
         return 0;//z 采用了 simple 比较的形式，那么这就看作是不一样的
     }
 
-	//z 如果不等，且不采用 simple_check 的形式
-	//z 分别根据p1和p2得到其对应的 realhost
+    //z 如果不等，且不采用 simple_check 的形式
+    //z 分别根据p1和p2得到其对应的 realhost
     real1 = realhost (p1);
     real2 = realhost (p2);
     free (p1);
     free (p2);
     //z 对realhost进行对应的比较
-	if (strcasecmp (real1, real2) == 0)
+    if (strcasecmp (real1, real2) == 0)
     {
         DEBUGP (("They are alike, after realhost()->%s.\n", real1));
         free (real1);

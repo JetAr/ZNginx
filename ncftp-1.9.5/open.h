@@ -1,24 +1,26 @@
-/* open.h */
+﻿/* open.h */
 
 #ifndef _open_h_
 #define _open_h_ 1
 
 /* Variables for Open() that can be changed from the command line. */
-typedef struct OpenOptions {
-	int				openmode;
-	int				ignore_rc;
-	unsigned int	port;
-	int				redial_delay;
-	int				max_dials;
-	int				ftpcat;
-	Hostname		hostname;
-	longstring		cdpath;
-	longstring		colonmodepath;
+typedef struct OpenOptions
+{
+    int				openmode;
+    int				ignore_rc;
+    unsigned int	port;
+    int				redial_delay;
+    int				max_dials;
+    int				ftpcat;
+    Hostname		hostname;
+    longstring		cdpath;
+    longstring		colonmodepath;
 } OpenOptions;
 
-typedef struct RemoteSiteInfo {
-	int				hasSIZE;
-	int				hasMDTM;
+typedef struct RemoteSiteInfo
+{
+    int				hasSIZE;
+    int				hasMDTM;
 } RemoteSiteInfo;
 
 /* Open modes. */
