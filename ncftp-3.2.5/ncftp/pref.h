@@ -1,8 +1,8 @@
-/* pref.h
+﻿/* pref.h
  *
  * Copyright (c) 1992-2004 by Mike Gleason.
  * All rights reserved.
- * 
+ *
  */
 
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
@@ -28,10 +28,11 @@
 #define kOpenSelectedBookmarkFileName		"bm2open"
 
 typedef void (*PrefProc)(const char *const, FILE *const fp);
-typedef struct PrefOpt {
-	const char *varname;
-	PrefProc proc;
-	int visible;
+typedef struct PrefOpt
+{
+    const char *varname;
+    PrefProc proc;
+    int visible;
 } PrefOpt;
 
 #define kPrefOptObselete (-1)

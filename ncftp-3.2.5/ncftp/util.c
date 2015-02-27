@@ -1,8 +1,8 @@
-/* util.c
+﻿/* util.c
  *
  * Copyright (c) 1992-2006 by Mike Gleason.
  * All rights reserved.
- * 
+ *
  */
 
 #include "syshdrs.h"
@@ -37,93 +37,100 @@ void *memmove(void *dst0, void *src0, size_t length);
 
 static const unsigned char B64EncodeTable[64] =
 {
-	'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
-	'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-	'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
-	'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
-	'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
-	'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-	'w', 'x', 'y', 'z', '0', '1', '2', '3',
-	'4', '5', '6', '7', '8', '9', '+', '/'
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+    'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+    'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+    'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
+    'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+    'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+    'w', 'x', 'y', 'z', '0', '1', '2', '3',
+    '4', '5', '6', '7', '8', '9', '+', '/'
 };
 
 static const unsigned char B64DecodeTable[256] =
 {
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 000-007 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 010-017 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 020-027 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 030-037 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 040-047 */
-	'\177', '\177', '\177', '\76', '\177', '\177', '\177', '\77',	/* 050-057 */
-	'\64', '\65', '\66', '\67', '\70', '\71', '\72', '\73',		/* 060-067 */
-	'\74', '\75', '\177', '\177', '\177', '\100', '\177', '\177',	/* 070-077 */
-	'\177', '\0', '\1', '\2', '\3', '\4', '\5', '\6',	/* 100-107 */
-	'\7', '\10', '\11', '\12', '\13', '\14', '\15', '\16',	/* 110-117 */
-	'\17', '\20', '\21', '\22', '\23', '\24', '\25', '\26',		/* 120-127 */
-	'\27', '\30', '\31', '\177', '\177', '\177', '\177', '\177',	/* 130-137 */
-	'\177', '\32', '\33', '\34', '\35', '\36', '\37', '\40',	/* 140-147 */
-	'\41', '\42', '\43', '\44', '\45', '\46', '\47', '\50',		/* 150-157 */
-	'\51', '\52', '\53', '\54', '\55', '\56', '\57', '\60',		/* 160-167 */
-	'\61', '\62', '\63', '\177', '\177', '\177', '\177', '\177',	/* 170-177 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 200-207 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 210-217 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 220-227 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 230-237 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 240-247 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 250-257 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 260-267 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 270-277 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 300-307 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 310-317 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 320-327 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 330-337 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 340-347 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 350-357 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 360-367 */
-	'\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 370-377 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 000-007 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 010-017 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 020-027 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 030-037 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 040-047 */
+    '\177', '\177', '\177', '\76', '\177', '\177', '\177', '\77',	/* 050-057 */
+    '\64', '\65', '\66', '\67', '\70', '\71', '\72', '\73',		/* 060-067 */
+    '\74', '\75', '\177', '\177', '\177', '\100', '\177', '\177',	/* 070-077 */
+    '\177', '\0', '\1', '\2', '\3', '\4', '\5', '\6',	/* 100-107 */
+    '\7', '\10', '\11', '\12', '\13', '\14', '\15', '\16',	/* 110-117 */
+    '\17', '\20', '\21', '\22', '\23', '\24', '\25', '\26',		/* 120-127 */
+    '\27', '\30', '\31', '\177', '\177', '\177', '\177', '\177',	/* 130-137 */
+    '\177', '\32', '\33', '\34', '\35', '\36', '\37', '\40',	/* 140-147 */
+    '\41', '\42', '\43', '\44', '\45', '\46', '\47', '\50',		/* 150-157 */
+    '\51', '\52', '\53', '\54', '\55', '\56', '\57', '\60',		/* 160-167 */
+    '\61', '\62', '\63', '\177', '\177', '\177', '\177', '\177',	/* 170-177 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 200-207 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 210-217 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 220-227 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 230-237 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 240-247 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 250-257 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 260-267 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 270-277 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 300-307 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 310-317 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 320-327 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 330-337 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 340-347 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 350-357 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 360-367 */
+    '\177', '\177', '\177', '\177', '\177', '\177', '\177', '\177',		/* 370-377 */
 };
 
 void
 ToBase64(void *dst0, const void *src0, size_t n, int terminate)
 {
-	unsigned char *dst;
-	const unsigned char *src, *srclim;
-	unsigned int c0, c1, c2;
-	unsigned int ch;
+    unsigned char *dst;
+    const unsigned char *src, *srclim;
+    unsigned int c0, c1, c2;
+    unsigned int ch;
 
-	src = src0;
-	srclim = src + n;
-	dst = dst0;
+    src = src0;
+    srclim = src + n;
+    dst = dst0;
 
-	while (src < srclim) {
-		c0 = *src++;
-		if (src < srclim) {
-			c1 = *src++;
-		} else {
-			c1 = 0;
-		}
-		if (src < srclim) {
-			c2 = *src++;
-		} else {
-			c2 = 0;
-		}
+    while (src < srclim)
+    {
+        c0 = *src++;
+        if (src < srclim)
+        {
+            c1 = *src++;
+        }
+        else
+        {
+            c1 = 0;
+        }
+        if (src < srclim)
+        {
+            c2 = *src++;
+        }
+        else
+        {
+            c2 = 0;
+        }
 
-		ch = c0 >> 2;
-		dst[0] = B64EncodeTable[ch & 077];
+        ch = c0 >> 2;
+        dst[0] = B64EncodeTable[ch & 077];
 
-		ch = ((c0 << 4) & 060) | ((c1 >> 4) & 017);
-		dst[1] = B64EncodeTable[ch & 077];
+        ch = ((c0 << 4) & 060) | ((c1 >> 4) & 017);
+        dst[1] = B64EncodeTable[ch & 077];
 
-		ch = ((c1 << 2) & 074) | ((c2 >> 6) & 03);
-		dst[2] = B64EncodeTable[ch & 077];
+        ch = ((c1 << 2) & 074) | ((c2 >> 6) & 03);
+        dst[2] = B64EncodeTable[ch & 077];
 
-		ch = (c2 & 077);
-		dst[3] = B64EncodeTable[ch & 077];
+        ch = (c2 & 077);
+        dst[3] = B64EncodeTable[ch & 077];
 
-		dst += 4;
-	}
-	if (terminate != 0)
-		*dst = '\0';
+        dst += 4;
+    }
+    if (terminate != 0)
+        *dst = '\0';
 }						       /* ToBase64 */
 
 
@@ -131,46 +138,56 @@ ToBase64(void *dst0, const void *src0, size_t n, int terminate)
 void
 FromBase64(void *dst0, const void *src0, size_t n, int terminate)
 {
-	unsigned char *dst;
-	const unsigned char *src, *srclim;
-	unsigned int c0, c1, c2, c3;
-	unsigned int ch;
+    unsigned char *dst;
+    const unsigned char *src, *srclim;
+    unsigned int c0, c1, c2, c3;
+    unsigned int ch;
 
-	src = src0;
-	srclim = src + n;
-	dst = dst0;
+    src = src0;
+    srclim = src + n;
+    dst = dst0;
 
-	while (src < srclim) {
-		c0 = *src++;
-		if (src < srclim) {
-			c1 = *src++;
-		} else {
-			c1 = 0;
-		}
-		if (src < srclim) {
-			c2 = *src++;
-		} else {
-			c2 = 0;
-		}
-		if (src < srclim) {
-			c3 = *src++;
-		} else {
-			c3 = 0;
-		}
+    while (src < srclim)
+    {
+        c0 = *src++;
+        if (src < srclim)
+        {
+            c1 = *src++;
+        }
+        else
+        {
+            c1 = 0;
+        }
+        if (src < srclim)
+        {
+            c2 = *src++;
+        }
+        else
+        {
+            c2 = 0;
+        }
+        if (src < srclim)
+        {
+            c3 = *src++;
+        }
+        else
+        {
+            c3 = 0;
+        }
 
-		ch = (((unsigned int) B64DecodeTable[c0]) << 2) | (((unsigned int) B64DecodeTable[c1]) >> 4);
-		dst[0] = (unsigned char) ch;
+        ch = (((unsigned int) B64DecodeTable[c0]) << 2) | (((unsigned int) B64DecodeTable[c1]) >> 4);
+        dst[0] = (unsigned char) ch;
 
-		ch = (((unsigned int) B64DecodeTable[c1]) << 4) | (((unsigned int) B64DecodeTable[c2]) >> 2);
-		dst[1] = (unsigned char) ch;
+        ch = (((unsigned int) B64DecodeTable[c1]) << 4) | (((unsigned int) B64DecodeTable[c2]) >> 2);
+        dst[1] = (unsigned char) ch;
 
-		ch = (((unsigned int) B64DecodeTable[c2]) << 6) | (((unsigned int) B64DecodeTable[c3]));
-		dst[2] = (unsigned char) ch;
+        ch = (((unsigned int) B64DecodeTable[c2]) << 6) | (((unsigned int) B64DecodeTable[c3]));
+        dst[2] = (unsigned char) ch;
 
-		dst += 3;
-	}
-	if (terminate != 0)
-		*dst = '\0';
+        dst += 3;
+    }
+    if (terminate != 0)
+        *dst = '\0';
 }						       /* FromBase64 */
 
 /* This should only be called if the program wouldn't function
@@ -179,8 +196,8 @@ FromBase64(void *dst0, const void *src0, size_t n, int terminate)
 void
 OutOfMemory(void)
 {
-	(void) fprintf(stderr, "Out of memory!\n");
-	exit(1);
+    (void) fprintf(stderr, "Out of memory!\n");
+    exit(1);
 }	/* OutOfMemory */
 
 
@@ -188,13 +205,14 @@ OutOfMemory(void)
 void
 MyInetAddr(char *dst, size_t siz, void *src, int i)
 {
-	struct in_addr *ia;
+    struct in_addr *ia;
 
-	(void) Strncpy(dst, "???", siz);
-	if (src != NULL) {
-		ia = ((struct in_addr **) src)[i];
-		InetNtoA(dst, ia, siz);
-	}
+    (void) Strncpy(dst, "???", siz);
+    if (src != NULL)
+    {
+        ia = ((struct in_addr **) src)[i];
+        InetNtoA(dst, ia, siz);
+    }
 }	/* MyInetAddr */
 
 
@@ -203,58 +221,65 @@ MyInetAddr(char *dst, size_t siz, void *src, int i)
 char *
 FileToURL(char *url, size_t urlsize, const char *const fn, const char *const rcwd, const char *const startdir, const char *const user, const char *const pass, const char *const hname, const unsigned int port)
 {
-	size_t ulen, dsize;
-	char *dst, pbuf[32];
-	int isUser;
+    size_t ulen, dsize;
+    char *dst, pbuf[32];
+    int isUser;
 
-	/* //<user>:<password>@<host>:<port>/<url-path> */
-	/* Note that if an absolute path is given,
-	 * you need to escape the first entry, i.e. /pub -> %2Fpub
-	 */
-	(void) Strncpy(url, "ftp://", urlsize);
-	isUser = 0;
-	if ((user != NULL) && (user[0] != '\0') && (strcmp(user, "anonymous") != 0) && (strcmp(user, "ftp") != 0)) {
-		isUser = 1;
-		(void) Strncat(url, user, urlsize);
-		if ((pass != NULL) && (pass[0] != '\0')) {
-			(void) Strncat(url, ":", urlsize);
-			(void) Strncat(url, "PASSWORD", urlsize);
-		}
-		(void) Strncat(url, "@", urlsize);
-	}
-	(void) Strncat(url, hname, urlsize);
-	if ((port != 21) && (port != 0)) {
-		(void) sprintf(pbuf, ":%u", (unsigned int) port);
-		(void) Strncat(url, pbuf, urlsize);
-	}
+    /* //<user>:<password>@<host>:<port>/<url-path> */
+    /* Note that if an absolute path is given,
+     * you need to escape the first entry, i.e. /pub -> %2Fpub
+     */
+    (void) Strncpy(url, "ftp://", urlsize);
+    isUser = 0;
+    if ((user != NULL) && (user[0] != '\0') && (strcmp(user, "anonymous") != 0) && (strcmp(user, "ftp") != 0))
+    {
+        isUser = 1;
+        (void) Strncat(url, user, urlsize);
+        if ((pass != NULL) && (pass[0] != '\0'))
+        {
+            (void) Strncat(url, ":", urlsize);
+            (void) Strncat(url, "PASSWORD", urlsize);
+        }
+        (void) Strncat(url, "@", urlsize);
+    }
+    (void) Strncat(url, hname, urlsize);
+    if ((port != 21) && (port != 0))
+    {
+        (void) sprintf(pbuf, ":%u", (unsigned int) port);
+        (void) Strncat(url, pbuf, urlsize);
+    }
 
-	ulen = strlen(url);
-	dst = url + ulen;
-	dsize = urlsize - ulen;
-	PathCat(dst, dsize, rcwd, fn, 0);
-	if ((startdir != NULL) && (startdir[0] != '\0') && (startdir[1] /* i.e. not "/" */ != '\0')) {
-		if (strncmp(dst, startdir, strlen(startdir)) == 0) {
-			/* Form relative URL. */
-			memmove(dst, dst + strlen(startdir), strlen(dst) - strlen(startdir) + 1);
-		} else if (isUser != 0) {
-			/* Absolute URL, but different from start dir.
-			 * Make sure to use %2f as first slash so that
-			 * the translation uses "/pub" instead of "pub"
-			 * since the / characters are just delimiters.
-			 */
-			dst[dsize - 1] = '\0';
-			dst[dsize - 2] = '\0';
-			dst[dsize - 3] = '\0';
-			dst[dsize - 4] = '\0';
-			memmove(dst + 4, dst + 1, strlen(dst + 1));
-			dst[0] = '/';
-			dst[1] = '%';
-			dst[2] = '2';
-			dst[3] = 'F';
-		}
-	}
+    ulen = strlen(url);
+    dst = url + ulen;
+    dsize = urlsize - ulen;
+    PathCat(dst, dsize, rcwd, fn, 0);
+    if ((startdir != NULL) && (startdir[0] != '\0') && (startdir[1] /* i.e. not "/" */ != '\0'))
+    {
+        if (strncmp(dst, startdir, strlen(startdir)) == 0)
+        {
+            /* Form relative URL. */
+            memmove(dst, dst + strlen(startdir), strlen(dst) - strlen(startdir) + 1);
+        }
+        else if (isUser != 0)
+        {
+            /* Absolute URL, but different from start dir.
+             * Make sure to use %2f as first slash so that
+             * the translation uses "/pub" instead of "pub"
+             * since the / characters are just delimiters.
+             */
+            dst[dsize - 1] = '\0';
+            dst[dsize - 2] = '\0';
+            dst[dsize - 3] = '\0';
+            dst[dsize - 4] = '\0';
+            memmove(dst + 4, dst + 1, strlen(dst + 1));
+            dst[0] = '/';
+            dst[1] = '%';
+            dst[2] = '2';
+            dst[3] = 'F';
+        }
+    }
 
-	return (url);
+    return (url);
 }	/* FileToURL */
 
 
@@ -267,22 +292,28 @@ FileToURL(char *url, size_t urlsize, const char *const fn, const char *const rcw
 void
 AbbrevStr(char *dst, const char *src, size_t max, int mode)
 {
-	int len;
+    int len;
 
-	len = (int) strlen(src);
-	if (len > (int) max) {
-		if (mode == 0) {
-			/* ...Put ellipses at left */
-			(void) strcpy(dst, "...");
-			(void) Strncat(dst, src + len - (int) max + 3, max + 1);
-		} else {
-			/* Put ellipses at right... */
-			(void) Strncpy(dst, src, max + 1);
-			(void) strcpy(dst + max - 3, "...");
-		}
-	} else {
-		(void) Strncpy(dst, src, max + 1);
-	}
+    len = (int) strlen(src);
+    if (len > (int) max)
+    {
+        if (mode == 0)
+        {
+            /* ...Put ellipses at left */
+            (void) strcpy(dst, "...");
+            (void) Strncat(dst, src + len - (int) max + 3, max + 1);
+        }
+        else
+        {
+            /* Put ellipses at right... */
+            (void) Strncpy(dst, src, max + 1);
+            (void) strcpy(dst + max - 3, "...");
+        }
+    }
+    else
+    {
+        (void) Strncpy(dst, src, max + 1);
+    }
 }	/* AbbrevStr */
 
 
@@ -291,9 +322,9 @@ AbbrevStr(char *dst, const char *src, size_t max, int mode)
 char *
 Path(char *const dst, const size_t siz, const char *const parent, const char *const fname)
 {
-	(void) Strncpy(dst, parent, siz);
-	(void) Strncat(dst, LOCAL_PATH_DELIM_STR, siz);
-	return (Strncat(dst, fname, siz));
+    (void) Strncpy(dst, parent, siz);
+    (void) Strncat(dst, LOCAL_PATH_DELIM_STR, siz);
+    return (Strncat(dst, fname, siz));
 }	/* Path */
 
 
@@ -302,7 +333,7 @@ Path(char *const dst, const size_t siz, const char *const parent, const char *co
 char *
 OurDirectoryPath(char *const dst, const size_t siz, const char *const fname)
 {
-	return (Path(dst, siz, gOurDirectoryPath, fname));
+    return (Path(dst, siz, gOurDirectoryPath, fname));
 }	/* OurDirectoryPath */
 
 
@@ -310,7 +341,7 @@ OurDirectoryPath(char *const dst, const size_t siz, const char *const fname)
 char *
 OurInstallationPath(char *const dst, const size_t siz, const char *const fname)
 {
-	return (Path(dst, siz, gOurInstallationPath, fname));
+    return (Path(dst, siz, gOurInstallationPath, fname));
 }	/* OurInstallationPath */
 
 
@@ -323,125 +354,145 @@ void
 InitOurDirectory(void)
 {
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
-	DWORD dwType, dwSize;
-	HKEY hkey;
-	char *cp;
-	int rc;
+    DWORD dwType, dwSize;
+    HKEY hkey;
+    char *cp;
+    int rc;
 
-	ZeroMemory(gOurDirectoryPath, (DWORD) sizeof(gOurDirectoryPath));
-	ZeroMemory(gOurInstallationPath, (DWORD) sizeof(gOurInstallationPath));
+    ZeroMemory(gOurDirectoryPath, (DWORD) sizeof(gOurDirectoryPath));
+    ZeroMemory(gOurInstallationPath, (DWORD) sizeof(gOurInstallationPath));
 
-	if (RegOpenKeyEx(
-		HKEY_LOCAL_MACHINE,
-		"Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\ncftp.exe",
-		(DWORD) 0,
-		KEY_QUERY_VALUE,
-		&hkey) == ERROR_SUCCESS)
-	{
-		dwSize = (DWORD) (sizeof(gOurInstallationPath) - 1);
-		dwType = 0;
-		if (RegQueryValueEx(
-			hkey, 
-			NULL, 
-			(DWORD *) 0, 
-			&dwType, 
-			(LPBYTE) gOurInstallationPath, 
-			&dwSize) == ERROR_SUCCESS)
-		{
-			// This gave us the path to ncftp.exe;
-			// But we use a subdirectory in that directory.
-			//
-			cp = StrRFindLocalPathDelim(gOurInstallationPath);
-			if (cp == NULL)
-				ZeroMemory(gOurInstallationPath, (DWORD) sizeof(gOurInstallationPath));
-			else
-				ZeroMemory(cp, (DWORD) (cp - gOurInstallationPath));
-		}
-		RegCloseKey(hkey);
-	}
-	
-	if (gOurInstallationPath[0] == '\0') {
-		if (GetModuleFileName(NULL, gOurInstallationPath, (DWORD) sizeof(gOurInstallationPath) - 1) <= 0) {
-			ZeroMemory(gOurInstallationPath, (DWORD) sizeof(gOurInstallationPath));
-		} else {
-			// This gave us the path to the current .exe;
-			// But we use a subdirectory in that directory.
-			//
-			cp = StrRFindLocalPathDelim(gOurInstallationPath);
-			if (cp == NULL)
-				ZeroMemory(gOurInstallationPath, (DWORD) sizeof(gOurInstallationPath));
-			else
-				ZeroMemory(cp, (DWORD) (cp - gOurInstallationPath));
-		}
-	}
+    if (RegOpenKeyEx(
+                HKEY_LOCAL_MACHINE,
+                "Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\ncftp.exe",
+                (DWORD) 0,
+                KEY_QUERY_VALUE,
+                &hkey) == ERROR_SUCCESS)
+    {
+        dwSize = (DWORD) (sizeof(gOurInstallationPath) - 1);
+        dwType = 0;
+        if (RegQueryValueEx(
+                    hkey,
+                    NULL,
+                    (DWORD *) 0,
+                    &dwType,
+                    (LPBYTE) gOurInstallationPath,
+                    &dwSize) == ERROR_SUCCESS)
+        {
+            // This gave us the path to ncftp.exe;
+            // But we use a subdirectory in that directory.
+            //
+            cp = StrRFindLocalPathDelim(gOurInstallationPath);
+            if (cp == NULL)
+                ZeroMemory(gOurInstallationPath, (DWORD) sizeof(gOurInstallationPath));
+            else
+                ZeroMemory(cp, (DWORD) (cp - gOurInstallationPath));
+        }
+        RegCloseKey(hkey);
+    }
 
-	if (gOurInstallationPath[0] != '\0') {
-		if ((cp = getenv("NCFTPDIR")) != NULL) {
-			if (*cp == '"')
-				cp++;
-			(void) STRNCPY(gOurDirectoryPath, cp);
-			cp = strrchr(gOurDirectoryPath, '"');
-			if ((cp != NULL) && (cp[1] == '\0'))
-				*cp = '\0';
-		} else if ((cp = getenv("USERPROFILE")) != NULL) {
-			if (*cp == '"')
-				cp++;
-			(void) STRNCPY(gOurDirectoryPath, cp);
-			cp = strrchr(gOurDirectoryPath, '"');
-			if ((cp != NULL) && (cp[1] == '\0'))
-				*cp = '\0';
-			(void) STRNCAT(gOurDirectoryPath, "\\");
-			(void) STRNCAT(gOurDirectoryPath, kOurDirectoryName);
-		} else {
-			STRNCPY(gOurDirectoryPath, gOurInstallationPath);
-			if (gUser[0] == '\0') {
-				STRNCAT(gOurDirectoryPath, "\\Users\\default");
-			} else {
-				STRNCAT(gOurDirectoryPath, "\\Users\\");
-				STRNCAT(gOurDirectoryPath, gUser);
-			}
-		}
-		rc = MkDirs(gOurDirectoryPath, 00755);
-	}
+    if (gOurInstallationPath[0] == '\0')
+    {
+        if (GetModuleFileName(NULL, gOurInstallationPath, (DWORD) sizeof(gOurInstallationPath) - 1) <= 0)
+        {
+            ZeroMemory(gOurInstallationPath, (DWORD) sizeof(gOurInstallationPath));
+        }
+        else
+        {
+            // This gave us the path to the current .exe;
+            // But we use a subdirectory in that directory.
+            //
+            cp = StrRFindLocalPathDelim(gOurInstallationPath);
+            if (cp == NULL)
+                ZeroMemory(gOurInstallationPath, (DWORD) sizeof(gOurInstallationPath));
+            else
+                ZeroMemory(cp, (DWORD) (cp - gOurInstallationPath));
+        }
+    }
+
+    if (gOurInstallationPath[0] != '\0')
+    {
+        if ((cp = getenv("NCFTPDIR")) != NULL)
+        {
+            if (*cp == '"')
+                cp++;
+            (void) STRNCPY(gOurDirectoryPath, cp);
+            cp = strrchr(gOurDirectoryPath, '"');
+            if ((cp != NULL) && (cp[1] == '\0'))
+                *cp = '\0';
+        }
+        else if ((cp = getenv("USERPROFILE")) != NULL)
+        {
+            if (*cp == '"')
+                cp++;
+            (void) STRNCPY(gOurDirectoryPath, cp);
+            cp = strrchr(gOurDirectoryPath, '"');
+            if ((cp != NULL) && (cp[1] == '\0'))
+                *cp = '\0';
+            (void) STRNCAT(gOurDirectoryPath, "\\");
+            (void) STRNCAT(gOurDirectoryPath, kOurDirectoryName);
+        }
+        else
+        {
+            STRNCPY(gOurDirectoryPath, gOurInstallationPath);
+            if (gUser[0] == '\0')
+            {
+                STRNCAT(gOurDirectoryPath, "\\Users\\default");
+            }
+            else
+            {
+                STRNCAT(gOurDirectoryPath, "\\Users\\");
+                STRNCAT(gOurDirectoryPath, gUser);
+            }
+        }
+        rc = MkDirs(gOurDirectoryPath, 00755);
+    }
 
 #else
-	struct stat st;
-	char *cp;
+    struct stat st;
+    char *cp;
 
 #ifdef BINDIR
-	(void) STRNCPY(gOurInstallationPath, BINDIR);
+    (void) STRNCPY(gOurInstallationPath, BINDIR);
 #elif defined(PREFIX_BINDIR)
-	(void) STRNCPY(gOurInstallationPath, PREFIX_BINDIR);
+    (void) STRNCPY(gOurInstallationPath, PREFIX_BINDIR);
 #else
-	memset(gOurInstallationPath, 0, sizeof(gOurInstallationPath));
+    memset(gOurInstallationPath, 0, sizeof(gOurInstallationPath));
 #endif
 
-	cp = getenv("NCFTPDIR");
-	if (cp != NULL) {
-		(void) STRNCPY(gOurDirectoryPath, cp);
-	} else if (STREQ(gHome, "/")) {
-		/* Don't create it if you're root and your home directory
-		 * is the root directory.
-		 *
-		 * If you are root and you want to store your ncftp
-		 * config files, move your home directory somewhere else,
-		 * such as /root or /home/root.
-		 */
-		gOurDirectoryPath[0] = '\0';
-		return;
-	} else {
-		(void) Path(gOurDirectoryPath,
-			sizeof(gOurDirectoryPath),
-			gHome,
-			kOurDirectoryName
-		);
-	}
+    cp = getenv("NCFTPDIR");
+    if (cp != NULL)
+    {
+        (void) STRNCPY(gOurDirectoryPath, cp);
+    }
+    else if (STREQ(gHome, "/"))
+    {
+        /* Don't create it if you're root and your home directory
+         * is the root directory.
+         *
+         * If you are root and you want to store your ncftp
+         * config files, move your home directory somewhere else,
+         * such as /root or /home/root.
+         */
+        gOurDirectoryPath[0] = '\0';
+        return;
+    }
+    else
+    {
+        (void) Path(gOurDirectoryPath,
+                    sizeof(gOurDirectoryPath),
+                    gHome,
+                    kOurDirectoryName
+                   );
+    }
 
-	if (stat(gOurDirectoryPath, &st) < 0) {
-		if (mkdir(gOurDirectoryPath, 00755) < 0) {
-			gOurDirectoryPath[0] = '\0';
-		}
-	}
+    if (stat(gOurDirectoryPath, &st) < 0)
+    {
+        if (mkdir(gOurDirectoryPath, 00755) < 0)
+        {
+            gOurDirectoryPath[0] = '\0';
+        }
+    }
 #endif
 }	/* InitOurDirectory */
 
@@ -451,62 +502,68 @@ void
 InitUserInfo(void)
 {
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
-	DWORD nSize;
-	char *cp;
+    DWORD nSize;
+    char *cp;
 
-	memset(gUser, 0, sizeof(gUser));
-	nSize = sizeof(gUser) - 1;
-	if (! GetUserName(gUser, &nSize))
-		STRNCPY(gUser, "default");
+    memset(gUser, 0, sizeof(gUser));
+    nSize = sizeof(gUser) - 1;
+    if (! GetUserName(gUser, &nSize))
+        STRNCPY(gUser, "default");
 
-	memset(gHome, 0, sizeof(gHome));
-	(void) GetTempPath((DWORD) sizeof(gHome) - 1, gHome);
-	cp = strrchr(gHome, '\\');
-	if ((cp != NULL) && (cp[1] == '\0'))
-		*cp = '\0';
+    memset(gHome, 0, sizeof(gHome));
+    (void) GetTempPath((DWORD) sizeof(gHome) - 1, gHome);
+    cp = strrchr(gHome, '\\');
+    if ((cp != NULL) && (cp[1] == '\0'))
+        *cp = '\0';
 
-	memset(gShell, 0, sizeof(gShell));
+    memset(gShell, 0, sizeof(gShell));
 #else
-	struct passwd *pwptr;
-	char *envp;
+    struct passwd *pwptr;
+    char *envp;
 
-	gUid = geteuid();
-	pwptr = getpwuid(gUid);
+    gUid = geteuid();
+    pwptr = getpwuid(gUid);
 
-	if (pwptr == NULL) {
-		envp = getenv("LOGNAME");
-		if (envp == NULL) {
-			(void) fprintf(stderr, "Who are you?\n");
-			(void) fprintf(stderr, "You have a user id number of %d, but no username associated with it.\n", (int) gUid);
-			(void) STRNCPY(gUser, "unknown");
-		} else {
-			(void) STRNCPY(gUser, envp);
-		}
+    if (pwptr == NULL)
+    {
+        envp = getenv("LOGNAME");
+        if (envp == NULL)
+        {
+            (void) fprintf(stderr, "Who are you?\n");
+            (void) fprintf(stderr, "You have a user id number of %d, but no username associated with it.\n", (int) gUid);
+            (void) STRNCPY(gUser, "unknown");
+        }
+        else
+        {
+            (void) STRNCPY(gUser, envp);
+        }
 
-		envp = getenv("HOME");
-		if (envp == NULL)
-			(void) STRNCPY(gHome, "/");
-		else
-			(void) STRNCPY(gHome, envp);
+        envp = getenv("HOME");
+        if (envp == NULL)
+            (void) STRNCPY(gHome, "/");
+        else
+            (void) STRNCPY(gHome, envp);
 
-		envp = getenv("SHELL");
-		if (envp == NULL)
-			(void) STRNCPY(gShell, "/bin/sh");
-		else
-			(void) STRNCPY(gShell, envp);
-	} else {
-		/* Copy home directory. */
-		(void) STRNCPY(gHome, pwptr->pw_dir);
+        envp = getenv("SHELL");
+        if (envp == NULL)
+            (void) STRNCPY(gShell, "/bin/sh");
+        else
+            (void) STRNCPY(gShell, envp);
+    }
+    else
+    {
+        /* Copy home directory. */
+        (void) STRNCPY(gHome, pwptr->pw_dir);
 
-		/* Copy user name. */
-		(void) STRNCPY(gUser, pwptr->pw_name);
+        /* Copy user name. */
+        (void) STRNCPY(gUser, pwptr->pw_name);
 
-		/* Copy shell. */
-		(void) STRNCPY(gShell, pwptr->pw_shell);
-	}
+        /* Copy shell. */
+        (void) STRNCPY(gShell, pwptr->pw_shell);
+    }
 #endif
 
-	InitOurDirectory();
+    InitOurDirectory();
 }	/* InitUserInfo */
 
 
@@ -514,15 +571,16 @@ InitUserInfo(void)
 char *
 TolowerStr(char *dst)
 {
-	if (dst == NULL)
-		return NULL;
+    if (dst == NULL)
+        return NULL;
 
-	while (*dst != '\0') {
-		if (isupper((int) *dst))
-			*dst = (char) tolower(*dst);
-		dst++;
-	}
-	return (dst);
+    while (*dst != '\0')
+    {
+        if (isupper((int) *dst))
+            *dst = (char) tolower(*dst);
+        dst++;
+    }
+    return (dst);
 }	/* TolowerStr */
 
 
@@ -532,91 +590,99 @@ int
 MayUseFirewall(const char *const hn0, int firewallType, const char *const firewallExceptionList)
 {
 #ifdef HAVE_STRSTR
-	char buf[256];
-	char *tok;
-	char *parse;
+    char buf[256];
+    char *tok;
+    char *parse;
 #endif /* HAVE_STRSTR */
-	char hn[80];
+    char hn[80];
 
-	STRNCPY(hn, hn0);
-	TolowerStr(hn);
+    STRNCPY(hn, hn0);
+    TolowerStr(hn);
 
-	if (firewallType == kFirewallNotInUse)
-		return (0);
+    if (firewallType == kFirewallNotInUse)
+        return (0);
 
-	if (firewallExceptionList[0] == '\0') {
-		if (strchr(hn, '.') == NULL) {
-			/* Unqualified host name,
-			 * assume it is in local domain.
-			 */
-			return (0);
-		} else {
-			return (1);
-		}
-	}
+    if (firewallExceptionList[0] == '\0')
+    {
+        if (strchr(hn, '.') == NULL)
+        {
+            /* Unqualified host name,
+             * assume it is in local domain.
+             */
+            return (0);
+        }
+        else
+        {
+            return (1);
+        }
+    }
 
-	if (strchr(hn, '.') == NULL) {
-		/* Unqualified host name,
-		 * assume it is in local domain.
-		 *
-		 * If "localdomain" is in the exception list,
-		 * do not use the firewall for this host.
-		 */
-		(void) STRNCPY(buf, firewallExceptionList);
-		for (parse = buf; (tok = strtok(parse, ", \n\t\r")) != NULL; parse = NULL) {
-			if (ISTREQ(tok, "localdomain"))
-				return (0);
-		}
-		/* fall through */
-	}
+    if (strchr(hn, '.') == NULL)
+    {
+        /* Unqualified host name,
+         * assume it is in local domain.
+         *
+         * If "localdomain" is in the exception list,
+         * do not use the firewall for this host.
+         */
+        (void) STRNCPY(buf, firewallExceptionList);
+        for (parse = buf; (tok = strtok(parse, ", \n\t\r")) != NULL; parse = NULL)
+        {
+            if (ISTREQ(tok, "localdomain"))
+                return (0);
+        }
+        /* fall through */
+    }
 
 #ifdef HAVE_STRSTR
-	(void) STRNCPY(buf, firewallExceptionList);
-	TolowerStr(buf);
-	for (parse = buf; (tok = strtok(parse, ", \n\t\r")) != NULL; parse = NULL) {
-		/* See if host or domain was from exclusion list
-		 * matches the host to open.
-		 */
-		if (strstr(hn, tok) != NULL)
-			return (0);
-	}
+    (void) STRNCPY(buf, firewallExceptionList);
+    TolowerStr(buf);
+    for (parse = buf; (tok = strtok(parse, ", \n\t\r")) != NULL; parse = NULL)
+    {
+        /* See if host or domain was from exclusion list
+         * matches the host to open.
+         */
+        if (strstr(hn, tok) != NULL)
+            return (0);
+    }
 #endif /* HAVE_STRSTR */
-	return (1);
+    return (1);
 }	/* MayUseFirewall */
 
 
 
-int 
+int
 StrToBool(const char *const s)
 {
-	int c;
-	int result;
-	
-	c = *s;
-	if (isupper(c))
-		c = tolower(c);
-	result = 0;
-	switch (c) {
-		case 'f':			       /* false */
-		case 'n':			       /* no */
-			break;
-		case 'o':			       /* test for "off" and "on" */
-			c = (int) s[1];
-			if (isupper(c))
-				c = tolower(c);
-			if (c == 'f')
-				break;
-			result = 1;
-			break;
-		case 't':			       /* true */
-		case 'y':			       /* yes */
-			result = 1;
-			break;
-		default:			       /* 1, 0, -1, other number? */
-			if (atoi(s) != 0)
-				result = 1;
-	}
-	return result;
+    int c;
+    int result;
+
+    c = *s;
+    if (isupper(c))
+        c = tolower(c);
+    result = 0;
+    switch (c)
+    {
+    case 'f':			       /* false */
+    case 'n':			       /* no */
+        break;
+    case 'o':			       /* test for "off" and "on" */
+        c = (int) s[1];
+        if (isupper(c))
+            c = tolower(c);
+        if (c == 'f')
+            break;
+        result = 1;
+        break;
+    case 't':			       /* true */
+    case 'y':			       /* yes */
+        result = 1;
+        break;
+    default:			       /* 1, 0, -1, other number? */
+        if (atoi(s) != 0)
+            result = 1;
+    }
+    return result;
 }						       /* StrToBool */
 
 
@@ -625,17 +691,23 @@ StrToBool(const char *const s)
 void
 AbsoluteToRelative(char *const dst, const size_t dsize, const char *const dir, const char *const root, const size_t rootlen)
 {
-	*dst = '\0';
-	if (strcmp(dir, root) != 0) {
-		if (strcmp(root, "/") == 0) {
-			(void) Strncpy(dst, dir + 1, dsize);
-		} else if ((strncmp(root, dir, rootlen) == 0) && (dir[rootlen] == '/')) {
-			(void) Strncpy(dst, dir + rootlen + 1, dsize);
-		} else {
-			/* Still absolute. */
-			(void) Strncpy(dst, dir, dsize);
-		}
-	}
+    *dst = '\0';
+    if (strcmp(dir, root) != 0)
+    {
+        if (strcmp(root, "/") == 0)
+        {
+            (void) Strncpy(dst, dir + 1, dsize);
+        }
+        else if ((strncmp(root, dir, rootlen) == 0) && (dir[rootlen] == '/'))
+        {
+            (void) Strncpy(dst, dir + rootlen + 1, dsize);
+        }
+        else
+        {
+            /* Still absolute. */
+            (void) Strncpy(dst, dir, dsize);
+        }
+    }
 }	/* AbsoluteToRelative */
 
 
@@ -649,12 +721,12 @@ static void
 CancelGetHostByName(int sigNum)
 {
 #ifdef ncftp
-	gResolveSig = sigNum;
+    gResolveSig = sigNum;
 #endif
 #ifdef HAVE_SIGSETJMP
-	siglongjmp(gGetHostByNameJmp, (sigNum != 0) ? 1 : 0);
+    siglongjmp(gGetHostByNameJmp, (sigNum != 0) ? 1 : 0);
 #else	/* HAVE_SIGSETJMP */
-	longjmp(gGetHostByNameJmp, (sigNum != 0) ? 1 : 0);
+    longjmp(gGetHostByNameJmp, (sigNum != 0) ? 1 : 0);
 #endif	/* HAVE_SIGSETJMP */
 }	/* CancelGetHostByName */
 
@@ -667,99 +739,108 @@ int
 MyGetHostByName(char *const volatile dst, size_t dsize, const char *const hn, int t)
 {
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
-	struct hostent *hp;
-	struct in_addr ina;
+    struct hostent *hp;
+    struct in_addr ina;
 
-	if (inet_addr(hn) != (unsigned long) 0xFFFFFFFF) {
-		/* Address is an IP address string, which is what we want. */
-		(void) Strncpy(dst, hn, dsize);
-		return (0);
-	}
+    if (inet_addr(hn) != (unsigned long) 0xFFFFFFFF)
+    {
+        /* Address is an IP address string, which is what we want. */
+        (void) Strncpy(dst, hn, dsize);
+        return (0);
+    }
 
-	hp = gethostbyname(hn);
-	if (hp != NULL) {
-		(void) memcpy(&ina.s_addr, hp->h_addr_list[0], (size_t) hp->h_length);
-		InetNtoA(dst, ((struct in_addr **) hp->h_addr_list)[0], dsize);
-		return (0);
-	}
+    hp = gethostbyname(hn);
+    if (hp != NULL)
+    {
+        (void) memcpy(&ina.s_addr, hp->h_addr_list[0], (size_t) hp->h_length);
+        InetNtoA(dst, ((struct in_addr **) hp->h_addr_list)[0], dsize);
+        return (0);
+    }
 
 #else
-	int sj;
-	vsigproc_t osigpipe, osigint, osigalrm;
-	struct hostent *hp;
+    int sj;
+    vsigproc_t osigpipe, osigint, osigalrm;
+    struct hostent *hp;
 #ifdef HAVE_INET_ATON
-	struct in_addr ina;
+    struct in_addr ina;
 #endif
 #ifdef DNSSEC_LOCAL_VALIDATION
-        val_status_t val_status;
+    val_status_t val_status;
 #endif
 
 #ifdef HAVE_INET_ATON
-	if (inet_aton(hn, &ina) != 0) {
-		/* Address is an IP address string, which is what we want. */
-		(void) Strncpy(dst, hn, dsize);
-		return (0);
-	}
+    if (inet_aton(hn, &ina) != 0)
+    {
+        /* Address is an IP address string, which is what we want. */
+        (void) Strncpy(dst, hn, dsize);
+        return (0);
+    }
 #else
-	if (inet_addr(hn) != (unsigned long) 0xFFFFFFFF) {
-		/* Address is an IP address string, which is what we want. */
-		(void) Strncpy(dst, hn, dsize);
-		return (0);
-	}
+    if (inet_addr(hn) != (unsigned long) 0xFFFFFFFF)
+    {
+        /* Address is an IP address string, which is what we want. */
+        (void) Strncpy(dst, hn, dsize);
+        return (0);
+    }
 #endif
 
 #ifdef HAVE_SIGSETJMP
-	osigpipe = osigint = osigalrm = (sigproc_t) 0;
-	sj = sigsetjmp(gGetHostByNameJmp, 1);
+    osigpipe = osigint = osigalrm = (sigproc_t) 0;
+    sj = sigsetjmp(gGetHostByNameJmp, 1);
 #else	/* HAVE_SIGSETJMP */
-	osigpipe = osigint = osigalrm = (sigproc_t) 0;
-	sj = setjmp(gGetHostByNameJmp);
+    osigpipe = osigint = osigalrm = (sigproc_t) 0;
+    sj = setjmp(gGetHostByNameJmp);
 #endif	/* HAVE_SIGSETJMP */
 
-	if (sj != 0) {
-		/* Caught a signal. */
-		(void) alarm(0);
-		(void) NcSignal(SIGPIPE, osigpipe);
-		(void) NcSignal(SIGINT, osigint);
-		(void) NcSignal(SIGALRM, osigalrm);
+    if (sj != 0)
+    {
+        /* Caught a signal. */
+        (void) alarm(0);
+        (void) NcSignal(SIGPIPE, osigpipe);
+        (void) NcSignal(SIGINT, osigint);
+        (void) NcSignal(SIGALRM, osigalrm);
 #ifdef ncftp
-		Trace(0, "Canceled GetHostByName because of signal %d.\n", gResolveSig);
+        Trace(0, "Canceled GetHostByName because of signal %d.\n", gResolveSig);
 #endif
-	} else {
-		osigpipe = NcSignal(SIGPIPE, CancelGetHostByName);
-		osigint = NcSignal(SIGINT, CancelGetHostByName);
-		osigalrm = NcSignal(SIGALRM, CancelGetHostByName);
-		if (t > 0)
-			(void) alarm((unsigned int) t);
+    }
+    else
+    {
+        osigpipe = NcSignal(SIGPIPE, CancelGetHostByName);
+        osigint = NcSignal(SIGINT, CancelGetHostByName);
+        osigalrm = NcSignal(SIGALRM, CancelGetHostByName);
+        if (t > 0)
+            (void) alarm((unsigned int) t);
 #ifndef DNSSEC_LOCAL_VALIDATION
-		hp = gethostbyname(hn);
+        hp = gethostbyname(hn);
 #else
-                hp = val_gethostbyname(NULL, hn, &val_status);
+        hp = val_gethostbyname(NULL, hn, &val_status);
 #endif
-		if (t > 0)
-			(void) alarm(0);
-		(void) NcSignal(SIGPIPE, osigpipe);
-		(void) NcSignal(SIGINT, osigint);
-		(void) NcSignal(SIGALRM, osigalrm);
+        if (t > 0)
+            (void) alarm(0);
+        (void) NcSignal(SIGPIPE, osigpipe);
+        (void) NcSignal(SIGINT, osigint);
+        (void) NcSignal(SIGALRM, osigalrm);
 #ifdef DNSSEC_LOCAL_VALIDATION
-                /*
-                 * It would be nice to pass a little more information back,
-                 * but that would mean an API change to MyGetHostByName.
-                 */
-                if ((hp != NULL) && ! val_istrusted(val_status)) {
-                    *dst = '\0';
-                    return (-2);
-                }
+        /*
+         * It would be nice to pass a little more information back,
+         * but that would mean an API change to MyGetHostByName.
+         */
+        if ((hp != NULL) && ! val_istrusted(val_status))
+        {
+            *dst = '\0';
+            return (-2);
+        }
 #endif
-		if (hp != NULL) {
-			InetNtoA(dst, ((struct in_addr **) hp->h_addr_list)[0], dsize);
-			return (0);
-		}
-	}
+        if (hp != NULL)
+        {
+            InetNtoA(dst, ((struct in_addr **) hp->h_addr_list)[0], dsize);
+            return (0);
+        }
+    }
 #endif	/* !Windows */
 
-	*dst = '\0';
-	return (-1);
+    *dst = '\0';
+    return (-1);
 }	/* MyGetHostByName */
 
 
@@ -769,27 +850,27 @@ MyGetHostByName(char *const volatile dst, size_t dsize, const char *const hn, in
 time_t UnDate(char *dstr)
 {
 #ifndef HAVE_MKTIME
-	return ((time_t) -1);
+    return ((time_t) -1);
 #else
-	struct tm ut;
-	time_t result = (time_t) -1;
+    struct tm ut;
+    time_t result = (time_t) -1;
 
-	(void) Localtime(0, &ut);
+    (void) Localtime(0, &ut);
 
-	/* The time we get back from the server is (should be) in UTC. */
-	if (sscanf(dstr, "%04d%02d%02d%02d%02d%02d",
-		&ut.tm_year,
-		&ut.tm_mon,
-		&ut.tm_mday,
-		&ut.tm_hour,
-		&ut.tm_min,
-		&ut.tm_sec) == 6)
-	{	
-		--ut.tm_mon;
-		ut.tm_year -= 1900;
-		result = mktime(&ut);
-	}
-	return result;
+    /* The time we get back from the server is (should be) in UTC. */
+    if (sscanf(dstr, "%04d%02d%02d%02d%02d%02d",
+               &ut.tm_year,
+               &ut.tm_mon,
+               &ut.tm_mday,
+               &ut.tm_hour,
+               &ut.tm_min,
+               &ut.tm_sec) == 6)
+    {
+        --ut.tm_mon;
+        ut.tm_year -= 1900;
+        result = mktime(&ut);
+    }
+    return result;
 #endif	/* HAVE_MKTIME */
 }	/* UnDate */
 
@@ -818,67 +899,72 @@ typedef	int word;		/* "word" used for optimal copy speed */
 void *
 memmove(void *dst0, void *src0, size_t length)
 {
-	register char *dst = (char *) dst0;
-	register const char *src = (char *) src0;
-	register size_t t;
+    register char *dst = (char *) dst0;
+    register const char *src = (char *) src0;
+    register size_t t;
 
-	if (length == 0 || dst == src)		/* nothing to do */
-		return dst;
+    if (length == 0 || dst == src)		/* nothing to do */
+        return dst;
 
-	/*
-	 * Macros: loop-t-times; and loop-t-times, t>0
-	 */
+    /*
+     * Macros: loop-t-times; and loop-t-times, t>0
+     */
 #define	TLOOP(s) if (t) TLOOP1(s)
 #define	TLOOP1(s) do { s; } while (--t)
 
-	if ((unsigned long)dst < (unsigned long)src) {
-		/*
-		 * Copy forward.
-		 */
-		t = (int)src;	/* only need low bits */
-		if ((t | (int)dst) & wmask) {
-			/*
-			 * Try to align operands.  This cannot be done
-			 * unless the low bits match.
-			 */
-			if ((t ^ (int)dst) & wmask || length < wsize)
-				t = length;
-			else
-				t = wsize - (t & wmask);
-			length -= t;
-			TLOOP1(*dst++ = *src++);
-		}
-		/*
-		 * Copy whole words, then mop up any trailing bytes.
-		 */
-		t = length / wsize;
-		TLOOP(*(word *)dst = *(word *)src; src += wsize; dst += wsize);
-		t = length & wmask;
-		TLOOP(*dst++ = *src++);
-	} else {
-		/*
-		 * Copy backwards.  Otherwise essentially the same.
-		 * Alignment works as before, except that it takes
-		 * (t&wmask) bytes to align, not wsize-(t&wmask).
-		 */
-		src += length;
-		dst += length;
-		t = (int)src;
-		if ((t | (int)dst) & wmask) {
-			if ((t ^ (int)dst) & wmask || length <= wsize)
-				t = length;
-			else
-				t &= wmask;
-			length -= t;
-			TLOOP1(*--dst = *--src);
-		}
-		t = length / wsize;
-		TLOOP(src -= wsize; dst -= wsize; *(word *)dst = *(word *)src);
-		t = length & wmask;
-		TLOOP(*--dst = *--src);
-	}
+    if ((unsigned long)dst < (unsigned long)src)
+    {
+        /*
+         * Copy forward.
+         */
+        t = (int)src;	/* only need low bits */
+        if ((t | (int)dst) & wmask)
+        {
+            /*
+             * Try to align operands.  This cannot be done
+             * unless the low bits match.
+             */
+            if ((t ^ (int)dst) & wmask || length < wsize)
+                t = length;
+            else
+                t = wsize - (t & wmask);
+            length -= t;
+            TLOOP1(*dst++ = *src++);
+        }
+        /*
+         * Copy whole words, then mop up any trailing bytes.
+         */
+        t = length / wsize;
+        TLOOP(*(word *)dst = *(word *)src; src += wsize; dst += wsize);
+        t = length & wmask;
+        TLOOP(*dst++ = *src++);
+    }
+    else
+    {
+        /*
+         * Copy backwards.  Otherwise essentially the same.
+         * Alignment works as before, except that it takes
+         * (t&wmask) bytes to align, not wsize-(t&wmask).
+         */
+        src += length;
+        dst += length;
+        t = (int)src;
+        if ((t | (int)dst) & wmask)
+        {
+            if ((t ^ (int)dst) & wmask || length <= wsize)
+                t = length;
+            else
+                t &= wmask;
+            length -= t;
+            TLOOP1(*--dst = *--src);
+        }
+        t = length / wsize;
+        TLOOP(src -= wsize; dst -= wsize; *(word *)dst = *(word *)src);
+        t = length & wmask;
+        TLOOP(*--dst = *--src);
+    }
 
-	return(dst0);
+    return(dst0);
 }	/* MemMove */
 #endif	/* ! HAVE_MEMMOVE */
 
@@ -889,35 +975,39 @@ memmove(void *dst0, void *src0, size_t length)
 int
 strncoll(const char *a, const char *b, size_t n)
 {
-	int rc;
+    int rc;
 
-	if (n < 511) {
-		char sa[512], sb[512];
+    if (n < 511)
+    {
+        char sa[512], sb[512];
 
-		memset(sa, 0, sizeof(sa));
-		memset(sb, 0, sizeof(sb));
-		(void) strncpy(sa, a, n);
-		(void) strncpy(sb, b, n);
-		rc = (strcoll(sa, sb));
-	} else {
-		char *ma, *mb;
+        memset(sa, 0, sizeof(sa));
+        memset(sb, 0, sizeof(sb));
+        (void) strncpy(sa, a, n);
+        (void) strncpy(sb, b, n);
+        rc = (strcoll(sa, sb));
+    }
+    else
+    {
+        char *ma, *mb;
 
-		n += 5;			/* enough for a 32-bit zero char. */
-		ma = (char *) malloc(n);
-		if (ma == NULL)
-			return (0);	/* panic */
-		mb = (char *) malloc(n);
-		if (mb == NULL) {
-			free(ma);
-			return (0);	/* panic */
-		}
-		(void) strncpy(ma, a, n);
-		(void) strncpy(mb, b, n);
-		rc = (strcoll(ma, mb));
-		free(ma);
-		free(mb);
-	}
-	return (rc);
+        n += 5;			/* enough for a 32-bit zero char. */
+        ma = (char *) malloc(n);
+        if (ma == NULL)
+            return (0);	/* panic */
+        mb = (char *) malloc(n);
+        if (mb == NULL)
+        {
+            free(ma);
+            return (0);	/* panic */
+        }
+        (void) strncpy(ma, a, n);
+        (void) strncpy(mb, b, n);
+        rc = (strcoll(ma, mb));
+        free(ma);
+        free(mb);
+    }
+    return (rc);
 }	/* strncoll */
 #endif
 
@@ -926,34 +1016,35 @@ strncoll(const char *a, const char *b, size_t n)
 
 int
 DecodeDirectoryURL(
-	const FTPCIPtr cip,	/* area pointed to may be modified */
-	char *url,		/* always modified */
-	FTPLineListPtr cdlist,	/* always modified */
-	char *fn,		/* always modified */
-	size_t fnsize
+    const FTPCIPtr cip,	/* area pointed to may be modified */
+    char *url,		/* always modified */
+    FTPLineListPtr cdlist,	/* always modified */
+    char *fn,		/* always modified */
+    size_t fnsize
 )
 {
-	int rc;
-	char urlstr2[256];
-	char *cp;
+    int rc;
+    char urlstr2[256];
+    char *cp;
 
-	/* Add a trailing slash, if needed, i.e., convert
-	 * "ftp://ftp.gnu.org/pub/gnu" to
-	 * "ftp://ftp.gnu.org/pub/gnu/"
-	 *
-	 * We also generalize and assume that if the user specified
-	 * something with a .extension that the user was intending
-	 * to specify a file instead of a directory.
-	 */
-	cp = strrchr(url, '/');
-	if ((cp != NULL) && (cp[1] != '\0') && (strchr(cp, '.') == NULL)) {
+    /* Add a trailing slash, if needed, i.e., convert
+     * "ftp://ftp.gnu.org/pub/gnu" to
+     * "ftp://ftp.gnu.org/pub/gnu/"
+     *
+     * We also generalize and assume that if the user specified
+     * something with a .extension that the user was intending
+     * to specify a file instead of a directory.
+     */
+    cp = strrchr(url, '/');
+    if ((cp != NULL) && (cp[1] != '\0') && (strchr(cp, '.') == NULL))
+    {
 
-		(void) STRNCPY(urlstr2, url);
-		(void) STRNCAT(urlstr2, "/");
-		url = urlstr2;
-	}
-	rc = FTPDecodeURL(cip, url, cdlist, fn, fnsize, NULL, NULL);
-	return (rc);
+        (void) STRNCPY(urlstr2, url);
+        (void) STRNCAT(urlstr2, "/");
+        url = urlstr2;
+    }
+    rc = FTPDecodeURL(cip, url, cdlist, fn, fnsize, NULL, NULL);
+    return (rc);
 }	/* DecodeDirectoryURL */
 
 
@@ -962,20 +1053,20 @@ DecodeDirectoryURL(
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
 void SysPerror(const char *const errMsg)
 {
-	char reason[128];
-	
-	FormatMessage(
-		FORMAT_MESSAGE_FROM_SYSTEM,
-		NULL,
-		GetLastError(),
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-		reason,
-		(DWORD) sizeof(reason),
-		NULL
-		);
+    char reason[128];
 
-	if (reason[strlen(reason) - 1] == '\n')
-		reason[strlen(reason) - 1] = '\0';
-	(void) fprintf(stderr, "%s: %s\n", errMsg, reason);
+    FormatMessage(
+        FORMAT_MESSAGE_FROM_SYSTEM,
+        NULL,
+        GetLastError(),
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+        reason,
+        (DWORD) sizeof(reason),
+        NULL
+    );
+
+    if (reason[strlen(reason) - 1] == '\n')
+        reason[strlen(reason) - 1] = '\0';
+    (void) fprintf(stderr, "%s: %s\n", errMsg, reason);
 }	/* SysPerror */
 #endif

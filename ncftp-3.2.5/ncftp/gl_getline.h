@@ -1,9 +1,9 @@
-/*
+﻿/*
  * gl_getline.h
  *
  * Copyright (C) 1991, 1992, 1993 by Chris Thewalt (thewalt@ce.berkeley.edu)
  *
- * Permission to use, copy, modify, and distribute this software 
+ * Permission to use, copy, modify, and distribute this software
  * for any purpose and without fee is hereby granted, provided
  * that the above copyright notices appear in all copies and that both the
  * copyright notice and this permission notice appear in supporting
@@ -24,8 +24,8 @@
 #ifndef gl_getline_h
 #define gl_getline_h
 
-/* unix systems can #define POSIX to use termios, otherwise 
- * the bsd or sysv interface will be used 
+/* unix systems can #define POSIX to use termios, otherwise
+ * the bsd or sysv interface will be used
  */
 
 #define GL_BUF_SIZE 2048

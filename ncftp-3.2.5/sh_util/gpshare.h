@@ -1,25 +1,26 @@
-/* gpshare.h
+﻿/* gpshare.h
  *
  * Shared routines for ncftpget and ncftpput.
  */
 
-typedef enum ExitStatus {
-	kExitSuccess = 0,
-	kExitOpenFailed = 1,
-	kExitOpenTimedOut,
-	kExitXferFailed,
-	kExitXferTimedOut,
-	kExitChdirFailed,
-	kExitChdirTimedOut,
-	kExitMalformedURL,
-	kExitUsage,
-	kExitBadConfigFile,
-	kExitInitLibraryFailed,
-	kExitInitConnInfoFailed,
-	kExitSpoolFailed,
-	kExitNoMemory,
-	kExitMkdirFailed,
-	kExitGlobNoMatch
+typedef enum ExitStatus
+{
+    kExitSuccess = 0,
+    kExitOpenFailed = 1,
+    kExitOpenTimedOut,
+    kExitXferFailed,
+    kExitXferTimedOut,
+    kExitChdirFailed,
+    kExitChdirTimedOut,
+    kExitMalformedURL,
+    kExitUsage,
+    kExitBadConfigFile,
+    kExitInitLibraryFailed,
+    kExitInitConnInfoFailed,
+    kExitSpoolFailed,
+    kExitNoMemory,
+    kExitMkdirFailed,
+    kExitGlobNoMatch
 } ExitStatus;
 
 #define kKilobyte 1024

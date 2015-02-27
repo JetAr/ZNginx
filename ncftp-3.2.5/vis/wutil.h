@@ -1,5 +1,5 @@
-/* wutil.h */
- 
+﻿/* wutil.h */
+
 #define kNormal		00000
 #define kStandout	00001
 #define kUnderline	00002

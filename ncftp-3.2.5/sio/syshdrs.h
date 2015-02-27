@@ -1,4 +1,4 @@
-/* syshdrs.h
+﻿/* syshdrs.h
  *
  * Copyright (c) 1996-2004 Mike Gleason, NcFTP Software.
  * All rights reserved.
@@ -17,12 +17,12 @@
 #		pragma warning(disable : 4115)	// warning C4115: 'IRpcStubBuffer' : named type definition in parentheses
 #		pragma warning(disable : 4711)	// warning C4711: function selected for automatic inline expansion
 #	endif
-	/* Include "wincfg.h" in place of "config.h" */
+/* Include "wincfg.h" in place of "config.h" */
 #	include "wincfg.h"
-	/* We now try for at least Windows 2000 compatibility (0x0500).
-	 * The code will still work on older systems, though.
-	 * Prior versions used 0x0400 instead.
-	 */
+/* We now try for at least Windows 2000 compatibility (0x0500).
+ * The code will still work on older systems, though.
+ * Prior versions used 0x0400 instead.
+ */
 #	ifndef WINVER
 #		define WINVER 0x0500
 #	endif
@@ -130,7 +130,7 @@
 #	ifdef HAVE_RESOLV_H
 #		include <resolv.h>
 #		ifdef HPUX
-			extern int res_init(void);
+extern int res_init(void);
 #		endif
 #	endif
 

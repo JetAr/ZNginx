@@ -1,8 +1,8 @@
-/* shell.c
+﻿/* shell.c
  *
  * Copyright (c) 1992-2005 by Mike Gleason.
  * All rights reserved.
- * 
+ *
  */
 
 #include "syshdrs.h"
@@ -82,7 +82,7 @@ extern char gStartDir[], gHome[];
 static int
 CommandSortCmp(const CommandPtr a, const CommandPtr b)
 {
-	return (strcmp((*a).name, (*b).name));
+    return (strcmp((*a).name, (*b).name));
 }	/* CommandSortCmp */
 
 
@@ -92,7 +92,7 @@ CommandSortCmp(const CommandPtr a, const CommandPtr b)
 void
 InitCommandList(void)
 {
-	qsort(gCommands, gNumCommands, sizeof(Command), (qsort_proc_t) CommandSortCmp);
+    qsort(gCommands, gNumCommands, sizeof(Command), (qsort_proc_t) CommandSortCmp);
 }	/* InitCommandList */
 
 
@@ -104,7 +104,7 @@ InitCommandList(void)
 static int
 CommandExactSearchCmp(const char *const key, const CommandPtr b)
 {
-	return (strcmp(key, (*b).name));
+    return (strcmp(key, (*b).name));
 }	/* CommandExactSearchCmp */
 
 
@@ -118,17 +118,18 @@ CommandExactSearchCmp(const char *const key, const CommandPtr b)
 static int
 CommandSubSearchCmp(const char *const key, const CommandPtr a)
 {
-	register const char *kcp, *cp;
-	int d;
+    register const char *kcp, *cp;
+    int d;
 
-	for (cp = (*a).name, kcp = key; ; ) {
-		if (*kcp == 0)
-			break;
-		d = *kcp++ - *cp++;
-		if (d)
-			return d;
-	}
-	return (0);
+    for (cp = (*a).name, kcp = key; ; )
+    {
+        if (*kcp == 0)
+            break;
+        d = *kcp++ - *cp++;
+        if (d)
+            return d;
+    }
+    return (0);
 }	/* CommandSubSearchCmp */
 
 
@@ -142,9 +143,9 @@ CommandSubSearchCmp(const char *const key, const CommandPtr a)
 CommandPtr
 GetCommandByIndex(const int i)
 {
-	if ((i < 0) || (i >= (int) gNumCommands))
-		return (kNoCommand);
-	return (&gCommands[i]);
+    if ((i < 0) || (i >= (int) gNumCommands))
+        return (kNoCommand);
+    return (&gCommands[i]);
 }									   /* GetCommandByIndex */
 
 
@@ -158,40 +159,44 @@ GetCommandByIndex(const int i)
 CommandPtr
 GetCommandByName(const char *const name, int wantExactMatch)
 {
-	CommandPtr canp, canp2;
+    CommandPtr canp, canp2;
 
-	/* First check for an exact match.  Otherwise if you if asked for
-	 * 'cd', it would match both 'cd' and 'cdup' and return an
-	 * ambiguous name error, despite having the exact name for 'cd.'
-	 */
-	canp = (CommandPtr) bsearch(name, gCommands, gNumCommands, sizeof(Command), (bsearch_proc_t) CommandExactSearchCmp);
+    /* First check for an exact match.  Otherwise if you if asked for
+     * 'cd', it would match both 'cd' and 'cdup' and return an
+     * ambiguous name error, despite having the exact name for 'cd.'
+     */
+    canp = (CommandPtr) bsearch(name, gCommands, gNumCommands, sizeof(Command), (bsearch_proc_t) CommandExactSearchCmp);
 
-	if (canp == kNoCommand && !wantExactMatch) {
-		/* Now see if the user typed an abbreviation unique enough
-		 * to match only one name in the list.
-		 */
-		canp = (CommandPtr) bsearch(name, gCommands, gNumCommands, sizeof(Command), (bsearch_proc_t) CommandSubSearchCmp);
-		
-		if (canp != kNoCommand) {
-			/* Check the entry above us and see if the name we're looking
-			 * for would match that, too.
-			 */
-			if (canp != &gCommands[0]) {
-				canp2 = canp - 1;
-				if (CommandSubSearchCmp(name, canp2) == 0)
-					return kAmbiguousCommand;
-			}
-			/* Check the entry below us and see if the name we're looking
-			 * for would match that one.
-			 */
-			if (canp != &gCommands[gNumCommands - 1]) {
-				canp2 = canp + 1;
-				if (CommandSubSearchCmp(name, canp2) == 0)
-					return kAmbiguousCommand;
-			}
-		}
-	}
-	return canp;
+    if (canp == kNoCommand && !wantExactMatch)
+    {
+        /* Now see if the user typed an abbreviation unique enough
+         * to match only one name in the list.
+         */
+        canp = (CommandPtr) bsearch(name, gCommands, gNumCommands, sizeof(Command), (bsearch_proc_t) CommandSubSearchCmp);
+
+        if (canp != kNoCommand)
+        {
+            /* Check the entry above us and see if the name we're looking
+             * for would match that, too.
+             */
+            if (canp != &gCommands[0])
+            {
+                canp2 = canp - 1;
+                if (CommandSubSearchCmp(name, canp2) == 0)
+                    return kAmbiguousCommand;
+            }
+            /* Check the entry below us and see if the name we're looking
+             * for would match that one.
+             */
+            if (canp != &gCommands[gNumCommands - 1])
+            {
+                canp2 = canp + 1;
+                if (CommandSubSearchCmp(name, canp2) == 0)
+                    return kAmbiguousCommand;
+            }
+        }
+    }
+    return canp;
 }									   /* GetCommandByName */
 
 
@@ -202,7 +207,7 @@ GetCommandByName(const char *const name, int wantExactMatch)
 void
 PrintCmdHelp(CommandPtr c)
 {
-	(void) printf("%s: %s.\n", c->name, c->help);
+    (void) printf("%s: %s.\n", c->name, c->help);
 }									   /* PrintCmdHelp */
 
 
@@ -212,8 +217,8 @@ PrintCmdHelp(CommandPtr c)
 void
 PrintCmdUsage(CommandPtr c)
 {
-	if (c->usage != NULL)
-		(void) printf("Usage: %s %s\n", c->name, c->usage);
+    if (c->usage != NULL)
+        (void) printf("Usage: %s %s\n", c->name, c->usage);
 }									   /* PrintCmdUsage */
 
 
@@ -223,183 +228,213 @@ PrintCmdUsage(CommandPtr c)
 int
 MakeArgv(char *line, int *cargc, char **cargv, int cargcmax, char *dbuf, size_t dbufsize, int *noglobargv, int readlineHacks, int fromReadln)
 {
-	int c;
-	int retval;
-	char *dlim;
-	char *dcp;
-	char *scp;
-	const char *vcp;
-	char *arg;
-	CommandPtr cmdp;
+    int c;
+    int retval;
+    char *dlim;
+    char *dcp;
+    char *scp;
+    const char *vcp;
+    char *arg;
+    CommandPtr cmdp;
 
-	*cargc = 0;
-	scp = line;
-	dlim = dbuf + dbufsize - 1;
-	dcp = dbuf;
-	(void) memset(dbuf, 0, dbufsize);
+    *cargc = 0;
+    scp = line;
+    dlim = dbuf + dbufsize - 1;
+    dcp = dbuf;
+    (void) memset(dbuf, 0, dbufsize);
 
-	for (*cargc = 0; *cargc < cargcmax; ) {
-		/* Eat preceding junk. */
-		for ( ; ; scp++) {
-			c = (int) *scp;
-			if (c == '\0')
-				goto done;
-			if (isspace(c))
-				continue;
-			if ((c == ';') || (c == '\n')) {
-				scp++;
-				goto done;
-			}
-			break;
-		}
+    for (*cargc = 0; *cargc < cargcmax; )
+    {
+        /* Eat preceding junk. */
+        for ( ; ; scp++)
+        {
+            c = (int) *scp;
+            if (c == '\0')
+                goto done;
+            if (isspace(c))
+                continue;
+            if ((c == ';') || (c == '\n'))
+            {
+                scp++;
+                goto done;
+            }
+            break;
+        }
 
-		arg = dcp;
-		cargv[*cargc] = arg;
-		noglobargv[*cargc] = 0;
-		(*cargc)++;
+        arg = dcp;
+        cargv[*cargc] = arg;
+        noglobargv[*cargc] = 0;
+        (*cargc)++;
 
-		/* Special hack so that "!cmd" is always split into "!" "cmd" */
-		if ((*cargc == 1) && (*scp == '!')) {
-			if (scp[1] == '!') {
-				scp[1] = '\0';
-			} else if ((scp[1] != '\0') && (!isspace((int) scp[1]))) {
-				if (dcp >= dlim)
-					goto toolong;
-				*dcp++ = *scp++;	/* '!' */
-				if (dcp >= dlim)
-					goto toolong;
-				*dcp++ = '\0';
-				continue;
-			}
-		}
+        /* Special hack so that "!cmd" is always split into "!" "cmd" */
+        if ((*cargc == 1) && (*scp == '!'))
+        {
+            if (scp[1] == '!')
+            {
+                scp[1] = '\0';
+            }
+            else if ((scp[1] != '\0') && (!isspace((int) scp[1])))
+            {
+                if (dcp >= dlim)
+                    goto toolong;
+                *dcp++ = *scp++;	/* '!' */
+                if (dcp >= dlim)
+                    goto toolong;
+                *dcp++ = '\0';
+                continue;
+            }
+        }
 
-		/* Tilde expansion for this user -- local or remote as needed. */
-		if ((*cargc > 1) && (fromReadln == 0) && (scp[0] == '~') && ((scp[1] == '\0') || (scp[1] == '/') || isspace((int) scp[1]))) {
-			scp++;
-			vcp = NULL;
-			cmdp = GetCommandByName(cargv[0], 0);
-			if ((cmdp != kAmbiguousCommand) && (cmdp != kNoCommand)) {
-				if (((cmdp->flags & (kCompleteRemoteFile|kCompleteRemoteDir)) != 0) && (gStartDir[0] != '\0')) {
-					vcp = gStartDir;
-				} else if (((cmdp->flags & (kCompleteLocalFile|kCompleteLocalDir)) != 0) && (gHome[0] != '\0')) {
-					vcp = gHome;
-				}
-			}
-			if (vcp != NULL) {
-				while (*vcp != '\0') {
-					if (dcp >= dlim)
-						goto toolong;
-					*dcp++ = *vcp++;
-				}
-			}
-		}
+        /* Tilde expansion for this user -- local or remote as needed. */
+        if ((*cargc > 1) && (fromReadln == 0) && (scp[0] == '~') && ((scp[1] == '\0') || (scp[1] == '/') || isspace((int) scp[1])))
+        {
+            scp++;
+            vcp = NULL;
+            cmdp = GetCommandByName(cargv[0], 0);
+            if ((cmdp != kAmbiguousCommand) && (cmdp != kNoCommand))
+            {
+                if (((cmdp->flags & (kCompleteRemoteFile|kCompleteRemoteDir)) != 0) && (gStartDir[0] != '\0'))
+                {
+                    vcp = gStartDir;
+                }
+                else if (((cmdp->flags & (kCompleteLocalFile|kCompleteLocalDir)) != 0) && (gHome[0] != '\0'))
+                {
+                    vcp = gHome;
+                }
+            }
+            if (vcp != NULL)
+            {
+                while (*vcp != '\0')
+                {
+                    if (dcp >= dlim)
+                        goto toolong;
+                    *dcp++ = *vcp++;
+                }
+            }
+        }
 
-		/* Add characters to the new argument. */
-		for ( ; ; ) {
-			c = *scp;
-			if (c == '\0')
-				break;
-			if (isspace(c))
-				break;
-			if ((c == ';') || (c == '\n')) {
-				break;
-			}
+        /* Add characters to the new argument. */
+        for ( ; ; )
+        {
+            c = *scp;
+            if (c == '\0')
+                break;
+            if (isspace(c))
+                break;
+            if ((c == ';') || (c == '\n'))
+            {
+                break;
+            }
 
-			scp++;
+            scp++;
 
-			if (c == '\'') {
-				for ( ; ; ) {
-					c = *scp++;
-					if (c == '\0') {
-						if (readlineHacks != 0)
-							break;
-						/* Syntax error */
-						(void) fprintf(stderr, "Error: Unbalanced quotes.\n");
-						return (-1);
-					}
-					if (c == '\'')
-						break;
+            if (c == '\'')
+            {
+                for ( ; ; )
+                {
+                    c = *scp++;
+                    if (c == '\0')
+                    {
+                        if (readlineHacks != 0)
+                            break;
+                        /* Syntax error */
+                        (void) fprintf(stderr, "Error: Unbalanced quotes.\n");
+                        return (-1);
+                    }
+                    if (c == '\'')
+                        break;
 
-					/* Add char. */
-					if (dcp >= dlim)
-						goto toolong;
-					*dcp++ = c;
+                    /* Add char. */
+                    if (dcp >= dlim)
+                        goto toolong;
+                    *dcp++ = c;
 
-					if (strchr(kGlobChars, c) != NULL) {
-						/* User quoted glob characters,
-						 * so mark this argument for
-						 * noglob.
-						 */
-						noglobargv[*cargc - 1] = 1;
-					}
-				}
-			} else if (c == '"') {
-				for ( ; ; ) {
-					c = *scp++;
-					if (c == '\0') {
-						if (readlineHacks != 0)
-							break;
-						/* Syntax error */
-						(void) fprintf(stderr, "Error: Unbalanced quotes.\n");
-						return (-1);
-					}
-					if (c == '"')
-						break;
+                    if (strchr(kGlobChars, c) != NULL)
+                    {
+                        /* User quoted glob characters,
+                         * so mark this argument for
+                         * noglob.
+                         */
+                        noglobargv[*cargc - 1] = 1;
+                    }
+                }
+            }
+            else if (c == '"')
+            {
+                for ( ; ; )
+                {
+                    c = *scp++;
+                    if (c == '\0')
+                    {
+                        if (readlineHacks != 0)
+                            break;
+                        /* Syntax error */
+                        (void) fprintf(stderr, "Error: Unbalanced quotes.\n");
+                        return (-1);
+                    }
+                    if (c == '"')
+                        break;
 
-					/* Add char. */
-					if (dcp >= dlim)
-						goto toolong;
-					*dcp++ = c;
+                    /* Add char. */
+                    if (dcp >= dlim)
+                        goto toolong;
+                    *dcp++ = c;
 
-					if (strchr(kGlobChars, c) != NULL) {
-						/* User quoted glob characters,
-						 * so mark this argument for
-						 * noglob.
-						 */
-						noglobargv[*cargc - 1] = 1;
-					}
-				}
-			} else
+                    if (strchr(kGlobChars, c) != NULL)
+                    {
+                        /* User quoted glob characters,
+                         * so mark this argument for
+                         * noglob.
+                         */
+                        noglobargv[*cargc - 1] = 1;
+                    }
+                }
+            }
+            else
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
-				if (c == '|') {
+                if (c == '|')
+                {
 #else
-				if (c == '\\') {
+                if (c == '\\')
+                {
 #endif
-				/* Add next character, verbatim. */
-				c = *scp++;
-				if (c == '\0')
-					break;
+                    /* Add next character, verbatim. */
+                    c = *scp++;
+                    if (c == '\0')
+                        break;
 
-				/* Add char. */
-				if (dcp >= dlim)
-					goto toolong;
-				*dcp++ = c;
-			} else {
-				/* Add char. */
-				if (dcp >= dlim)
-					goto toolong;
-				*dcp++ = c;
-			}
-		}
+                    /* Add char. */
+                    if (dcp >= dlim)
+                        goto toolong;
+                    *dcp++ = c;
+                }
+                else
+                {
+                    /* Add char. */
+                    if (dcp >= dlim)
+                        goto toolong;
+                    *dcp++ = c;
+                }
+        }
 
-		*dcp++ = '\0';
-	}
+        *dcp++ = '\0';
+    }
 
-	(void) fprintf(stderr, "Error: Argument list too long.\n");
-	*cargc = 0;
-	cargv[*cargc] = NULL;
-	return (-1);
+    (void) fprintf(stderr, "Error: Argument list too long.\n");
+    *cargc = 0;
+    cargv[*cargc] = NULL;
+    return (-1);
 
 done:
-	retval = (int) (scp - line);
-	cargv[*cargc] = NULL;
-	return (retval);
+    retval = (int) (scp - line);
+    cargv[*cargc] = NULL;
+    return (retval);
 
 toolong:
-	(void) fprintf(stderr, "Error: Line too long.\n");
-	*cargc = 0;
-	cargv[*cargc] = NULL;
-	return (-1);
+    (void) fprintf(stderr, "Error: Line too long.\n");
+    *cargc = 0;
+    cargv[*cargc] = NULL;
+    return (-1);
 }	/* MakeArgv */
 
 
@@ -408,35 +443,47 @@ toolong:
 static int
 DoCommand(const ArgvInfoPtr aip)
 {
-	CommandPtr cmdp;
-	int flags;
-	int cargc, cargcm1;
+    CommandPtr cmdp;
+    int flags;
+    int cargc, cargcm1;
 
-	cmdp = GetCommandByName(aip->cargv[0], 0);
-	if (cmdp == kAmbiguousCommand) {
-		(void) printf("%s: ambiguous command name.\n", aip->cargv[0]);
-		return (-1);
-	} else if (cmdp == kNoCommand) {
-		(void) printf("%s: no such command.\n", aip->cargv[0]);
-		return (-1);
-	}
+    cmdp = GetCommandByName(aip->cargv[0], 0);
+    if (cmdp == kAmbiguousCommand)
+    {
+        (void) printf("%s: ambiguous command name.\n", aip->cargv[0]);
+        return (-1);
+    }
+    else if (cmdp == kNoCommand)
+    {
+        (void) printf("%s: no such command.\n", aip->cargv[0]);
+        return (-1);
+    }
 
-	cargc = aip->cargc;
-	cargcm1 = cargc - 1;
-	flags = cmdp->flags;
+    cargc = aip->cargc;
+    cargcm1 = cargc - 1;
+    flags = cmdp->flags;
 
-	if (((flags & kCmdMustBeConnected) != 0) && (gConn.connected == 0)) {
-		(void) printf("%s: must be connected to do that.\n", aip->cargv[0]);
-	} else if (((flags & kCmdMustBeDisconnected) != 0) && (gConn.connected != 0)) {
-		(void) printf("%s: must be disconnected to do that.\n", aip->cargv[0]);
-	} else if ((cmdp->minargs != kNoMin) && (cmdp->minargs > cargcm1)) {
-		PrintCmdUsage(cmdp);
-	} else if ((cmdp->maxargs != kNoMax) && (cmdp->maxargs < cargcm1)) {
-		PrintCmdUsage(cmdp);
-	} else {
-		(*cmdp->proc)(cargc, aip->cargv, cmdp, aip);
-	}
-	return (0);
+    if (((flags & kCmdMustBeConnected) != 0) && (gConn.connected == 0))
+    {
+        (void) printf("%s: must be connected to do that.\n", aip->cargv[0]);
+    }
+    else if (((flags & kCmdMustBeDisconnected) != 0) && (gConn.connected != 0))
+    {
+        (void) printf("%s: must be disconnected to do that.\n", aip->cargv[0]);
+    }
+    else if ((cmdp->minargs != kNoMin) && (cmdp->minargs > cargcm1))
+    {
+        PrintCmdUsage(cmdp);
+    }
+    else if ((cmdp->maxargs != kNoMax) && (cmdp->maxargs < cargcm1))
+    {
+        PrintCmdUsage(cmdp);
+    }
+    else
+    {
+        (*cmdp->proc)(cargc, aip->cargv, cmdp, aip);
+    }
+    return (0);
 }	/* DoCommand */
 
 
@@ -446,28 +493,30 @@ DoCommand(const ArgvInfoPtr aip)
 void
 XferCanceller(int sigNum)
 {
-	gGotSig = sigNum;
-	if (gConn.cancelXfer > 0) {
+    gGotSig = sigNum;
+    if (gConn.cancelXfer > 0)
+    {
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
-		signal(SIGINT, SIG_DFL);
+        signal(SIGINT, SIG_DFL);
 #else
-		/* User already tried it once, they
-		 * must think it's locked up.
-		 *
-		 * Jump back to the top, and
-		 * close down the current session.
-		 */
-		gCancelCtrl = 1;
-		if (gMayBackToTopJmp > 0) {
+        /* User already tried it once, they
+         * must think it's locked up.
+         *
+         * Jump back to the top, and
+         * close down the current session.
+         */
+        gCancelCtrl = 1;
+        if (gMayBackToTopJmp > 0)
+        {
 #ifdef HAVE_SIGSETJMP
-			siglongjmp(gBackToTopJmp, 1);
+            siglongjmp(gBackToTopJmp, 1);
 #else	/* HAVE_SIGSETJMP */
-			longjmp(gBackToTopJmp, 1);
+            longjmp(gBackToTopJmp, 1);
 #endif	/* HAVE_SIGSETJMP */
-		}
+        }
 #endif
-	}
-	gConn.cancelXfer++;
+    }
+    gConn.cancelXfer++;
 }	/* XferCanceller */
 
 
@@ -479,26 +528,33 @@ XferCanceller(int sigNum)
 void
 BackToTop(int sigNum)
 {
-	gGotSig = sigNum;
-	if (sigNum == SIGPIPE) {
-		if (gRunningCommand == 1) {
-			(void) fprintf(stderr, "Unexpected broken pipe.\n");
-			gRunningCommand = 0;
-		} else {
-			SetXtermTitle("RESTORE");
-			exit(1);
-		}
-	} else if (sigNum == SIGINT) {
-		if (gRunningCommand == 0)
-			gDoneApplication = 1;
-	}
-	if (gMayBackToTopJmp > 0) {
+    gGotSig = sigNum;
+    if (sigNum == SIGPIPE)
+    {
+        if (gRunningCommand == 1)
+        {
+            (void) fprintf(stderr, "Unexpected broken pipe.\n");
+            gRunningCommand = 0;
+        }
+        else
+        {
+            SetXtermTitle("RESTORE");
+            exit(1);
+        }
+    }
+    else if (sigNum == SIGINT)
+    {
+        if (gRunningCommand == 0)
+            gDoneApplication = 1;
+    }
+    if (gMayBackToTopJmp > 0)
+    {
 #ifdef HAVE_SIGSETJMP
-		siglongjmp(gBackToTopJmp, 1);
+        siglongjmp(gBackToTopJmp, 1);
 #else	/* HAVE_SIGSETJMP */
-		longjmp(gBackToTopJmp, 1);
+        longjmp(gBackToTopJmp, 1);
 #endif	/* HAVE_SIGSETJMP */
-	}
+    }
 }	/* BackToTop */
 
 
@@ -508,15 +564,16 @@ BackToTop(int sigNum)
 void
 Cancel(int sigNum)
 {
-	if (gMayCancelJmp != 0) {
-		gGotSig = sigNum;
-		gMayCancelJmp = 0;
+    if (gMayCancelJmp != 0)
+    {
+        gGotSig = sigNum;
+        gMayCancelJmp = 0;
 #ifdef HAVE_SIGSETJMP
-		siglongjmp(gCancelJmp, 1);
+        siglongjmp(gCancelJmp, 1);
 #else	/* HAVE_SIGSETJMP */
-		longjmp(gCancelJmp, 1);
+        longjmp(gCancelJmp, 1);
 #endif	/* HAVE_SIGSETJMP */
-	}
+    }
 }	/* Cancel */
 
 #endif
@@ -526,126 +583,140 @@ Cancel(int sigNum)
 void
 CommandShell(void)
 {
-	int tUsed, bUsed;
-	ArgvInfo ai;
-	char prompt[64];
-	char *lineRead, *l2;
-	size_t llen;
+    int tUsed, bUsed;
+    ArgvInfo ai;
+    char prompt[64];
+    char *lineRead, *l2;
+    size_t llen;
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
 #else
-	int sj;
+    int sj;
 #endif
-	time_t cmdStop;
-	int oldcount;
+    time_t cmdStop;
+    int oldcount;
 
-	/* Execution may jump back to this point to restart the shell. */
+    /* Execution may jump back to this point to restart the shell. */
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
 
 #elif defined(HAVE_SIGSETJMP)
-	sj = sigsetjmp(gBackToTopJmp, 1);
+    sj = sigsetjmp(gBackToTopJmp, 1);
 #else	/* HAVE_SIGSETJMP */
-	sj = setjmp(gBackToTopJmp);
+    sj = setjmp(gBackToTopJmp);
 #endif	/* HAVE_SIGSETJMP */
 
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
 #else
-	if (sj != 0) {
-		Trace(0, "Caught signal %d, back at top.\n", gGotSig);
-		if (gGotSig == SIGALRM) {
-			(void) printf("\nRemote host was not responding, closing down the session.");
-			FTPShutdownHost(&gConn);
-		} else{
-			(void) printf("\nInterrupted.\n");
-			if (gCancelCtrl != 0) {
-				gCancelCtrl = 0;
-				(void) printf("Closing down the current FTP session: ");
-				FTPShutdownHost(&gConn);
-				(void) sleep(1);
-				(void) printf("done.\n");
-			}
-		}
-	}
+    if (sj != 0)
+    {
+        Trace(0, "Caught signal %d, back at top.\n", gGotSig);
+        if (gGotSig == SIGALRM)
+        {
+            (void) printf("\nRemote host was not responding, closing down the session.");
+            FTPShutdownHost(&gConn);
+        }
+        else
+        {
+            (void) printf("\nInterrupted.\n");
+            if (gCancelCtrl != 0)
+            {
+                gCancelCtrl = 0;
+                (void) printf("Closing down the current FTP session: ");
+                FTPShutdownHost(&gConn);
+                (void) sleep(1);
+                (void) printf("done.\n");
+            }
+        }
+    }
 
-	gMayBackToTopJmp = 1;
+    gMayBackToTopJmp = 1;
 #endif
 
 
-	++gEventNumber;
+    ++gEventNumber;
 
-	while (gDoneApplication == 0) {
+    while (gDoneApplication == 0)
+    {
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
 #else
-		(void) NcSignal(SIGINT, BackToTop);
-		(void) NcSignal(SIGPIPE, BackToTop);
-		(void) NcSignal(SIGALRM, BackToTop);
+        (void) NcSignal(SIGINT, BackToTop);
+        (void) NcSignal(SIGPIPE, BackToTop);
+        (void) NcSignal(SIGALRM, BackToTop);
 #endif
 
-		MakePrompt(prompt, sizeof(prompt));
+        MakePrompt(prompt, sizeof(prompt));
 
-		if (gConn.connected == 0) {
-			SetXtermTitle("DEFAULT");
-		} else {
-			SetXtermTitle("%s - NcFTP", gConn.host);
-		}
+        if (gConn.connected == 0)
+        {
+            SetXtermTitle("DEFAULT");
+        }
+        else
+        {
+            SetXtermTitle("%s - NcFTP", gConn.host);
+        }
 
-		lineRead = Readline(prompt);
-		if (lineRead == NULL) {
-			/* EOF, Control-D */
-			(void) printf("\n");
-			break;
-		}
-		if ((lineRead[0] == '.') || (lineRead[0] == '/')) {
-			llen = strlen(lineRead) + 1;
-			l2 = malloc(llen + /* strlen("cd ") = */ 3 + 1);
-			if (l2 == NULL)
-				break;
-			memcpy(l2, "cd ", 4);
-			memcpy(l2 + 3, lineRead, llen);
-			free(lineRead);
-			lineRead = l2;
-		}
-		Trace(0, "> %s\n", lineRead);
-		oldcount = gUserTypedSensitiveInfoAtShellSoDoNotSaveItToDisk;
-		for (tUsed = 0;;) {
-			(void) memset(&ai, 0, sizeof(ai));
-			bUsed = MakeArgv(lineRead + tUsed, &ai.cargc, ai.cargv,
-				(int) (sizeof(ai.cargv) / sizeof(char *)),
-				ai.argbuf, sizeof(ai.argbuf),
-				ai.noglobargv, 0, 0);
-			if (bUsed <= 0)
-				break;
-			tUsed += bUsed;	
-			if (ai.cargc == 0)
-				continue;
-			gRunningCommand = 1;
-			(void) time(&gCmdStart);
-			if (DoCommand(&ai) < 0) {
-				(void) time(&cmdStop);
-				gRunningCommand = 0;
-				break;
-			}
-			(void) time(&cmdStop);
-			gRunningCommand = 0;
-			if ((cmdStop - gCmdStart) > kBeepAfterCmdTime) {
-				/* Let the user know that a time-consuming
-				 * operation has completed.
-				 */
+        lineRead = Readline(prompt);
+        if (lineRead == NULL)
+        {
+            /* EOF, Control-D */
+            (void) printf("\n");
+            break;
+        }
+        if ((lineRead[0] == '.') || (lineRead[0] == '/'))
+        {
+            llen = strlen(lineRead) + 1;
+            l2 = malloc(llen + /* strlen("cd ") = */ 3 + 1);
+            if (l2 == NULL)
+                break;
+            memcpy(l2, "cd ", 4);
+            memcpy(l2 + 3, lineRead, llen);
+            free(lineRead);
+            lineRead = l2;
+        }
+        Trace(0, "> %s\n", lineRead);
+        oldcount = gUserTypedSensitiveInfoAtShellSoDoNotSaveItToDisk;
+        for (tUsed = 0;;)
+        {
+            (void) memset(&ai, 0, sizeof(ai));
+            bUsed = MakeArgv(lineRead + tUsed, &ai.cargc, ai.cargv,
+                             (int) (sizeof(ai.cargv) / sizeof(char *)),
+                             ai.argbuf, sizeof(ai.argbuf),
+                             ai.noglobargv, 0, 0);
+            if (bUsed <= 0)
+                break;
+            tUsed += bUsed;
+            if (ai.cargc == 0)
+                continue;
+            gRunningCommand = 1;
+            (void) time(&gCmdStart);
+            if (DoCommand(&ai) < 0)
+            {
+                (void) time(&cmdStop);
+                gRunningCommand = 0;
+                break;
+            }
+            (void) time(&cmdStop);
+            gRunningCommand = 0;
+            if ((cmdStop - gCmdStart) > kBeepAfterCmdTime)
+            {
+                /* Let the user know that a time-consuming
+                 * operation has completed.
+                 */
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
-				MessageBeep(MB_OK);
+                MessageBeep(MB_OK);
 #else
-				(void) fprintf(stderr, "\007");
+                (void) fprintf(stderr, "\007");
 #endif
-			}
-			++gEventNumber;
-		}
+            }
+            ++gEventNumber;
+        }
 
-		if (oldcount == gUserTypedSensitiveInfoAtShellSoDoNotSaveItToDisk)
-			AddHistory(lineRead);
-		else
-			AddHistory("(line omitted from history because it contained sensitive information)");
-		free(lineRead);
-	}
+        if (oldcount == gUserTypedSensitiveInfoAtShellSoDoNotSaveItToDisk)
+            AddHistory(lineRead);
+        else
+            AddHistory("(line omitted from history because it contained sensitive information)");
+        free(lineRead);
+    }
 
-	CloseHost();
-	gMayBackToTopJmp = 0;
+    CloseHost();
+    gMayBackToTopJmp = 0;
 }	/* Shell */

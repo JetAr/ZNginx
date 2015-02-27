@@ -1,8 +1,8 @@
-/* progress.h
+﻿/* progress.h
  *
  * Copyright (c) 1992-2004 by Mike Gleason.
  * All rights reserved.
- * 
+ *
  */
 
 #define kKilobyte 1024

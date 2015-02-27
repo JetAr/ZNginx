@@ -1,16 +1,17 @@
-/* shell.h
+﻿/* shell.h
  *
  * Copyright (c) 1992-2004 by Mike Gleason.
  * All rights reserved.
- * 
+ *
  */
 
-typedef struct ArgvInfo {
-	char *cargv[255];
-	int cargc;
-	int noglobargv[255];
-	int reserved;
-	char argbuf[2048];
+typedef struct ArgvInfo
+{
+    char *cargv[255];
+    int cargc;
+    int noglobargv[255];
+    int reserved;
+    char argbuf[2048];
 } ArgvInfo, *ArgvInfoPtr;
 
 /* How often to no-op the remote site if the user is idle, in seconds. */
@@ -39,12 +40,13 @@ typedef void (*CmdProc)(const int argc, char **const argv, const CommandPtr cmdp
  * table, so each command doesn't have to check the number of
  * arguments and print it's own usage messages if it doesn't want to.
  */
-typedef struct Command {
-	const char *name;
-	CmdProc proc;
-	const char *usage, *help;
-	int flags;
-	int minargs, maxargs;
+typedef struct Command
+{
+    const char *name;
+    CmdProc proc;
+    const char *usage, *help;
+    int flags;
+    int minargs, maxargs;
 } Command;
 
 /* Parameter to GetCommandOrMacro(). */

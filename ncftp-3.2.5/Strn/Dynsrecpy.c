@@ -1,4 +1,4 @@
-#include "syshdrs.h"
+﻿#include "syshdrs.h"
 #ifdef PRAGMA_HDRSTOP
 #	pragma hdrstop
 #endif
@@ -44,70 +44,82 @@
 char *
 Dynsrecpy(char **dst, ...)
 {
-	va_list ap;
-	const char *src;
-	char *newdst, *dcp;
-	size_t catLen, srcLen;
-	int recursive;
-	if (dst == (char **) 0)
-		return NULL;
+    va_list ap;
+    const char *src;
+    char *newdst, *dcp;
+    size_t catLen, srcLen;
+    int recursive;
+    if (dst == (char **) 0)
+        return NULL;
 
-	recursive = 0;
-	catLen = 0;
-	va_start(ap, dst);
-	src = va_arg(ap, char *);
-	while (src != NULL) {
-		if (src == *dst) {
-			recursive = 1;
-		}
-		catLen += strlen(src);
-		src = va_arg(ap, char *);
-	}
-	va_end(ap);
+    recursive = 0;
+    catLen = 0;
+    va_start(ap, dst);
+    src = va_arg(ap, char *);
+    while (src != NULL)
+    {
+        if (src == *dst)
+        {
+            recursive = 1;
+        }
+        catLen += strlen(src);
+        src = va_arg(ap, char *);
+    }
+    va_end(ap);
 
-	if (recursive == 0) {
-		if (*dst == NULL) {
-			newdst = malloc(catLen + 2);
-		} else if ((catLen + 2) > (strlen(*dst) + 1)) {
-			newdst = realloc(*dst, catLen + 2);
-		} else {
-			/* Don't need to make it bigger */
-			newdst = *dst;
-		}
-		if (newdst == NULL)
-			return NULL;
+    if (recursive == 0)
+    {
+        if (*dst == NULL)
+        {
+            newdst = malloc(catLen + 2);
+        }
+        else if ((catLen + 2) > (strlen(*dst) + 1))
+        {
+            newdst = realloc(*dst, catLen + 2);
+        }
+        else
+        {
+            /* Don't need to make it bigger */
+            newdst = *dst;
+        }
+        if (newdst == NULL)
+            return NULL;
 
-		dcp = newdst;
-		va_start(ap, dst);
-		src = va_arg(ap, char *);
-		while (src != NULL) {
-			srcLen = strlen(src);
-			memcpy(dcp, src, srcLen);
-			dcp += srcLen;
-			src = va_arg(ap, char *);
-		}
-		va_end(ap);
-		*dcp = '\0';
-	} else {
-		newdst = malloc(catLen + 2);
-		if (newdst == NULL)
-			return NULL;
+        dcp = newdst;
+        va_start(ap, dst);
+        src = va_arg(ap, char *);
+        while (src != NULL)
+        {
+            srcLen = strlen(src);
+            memcpy(dcp, src, srcLen);
+            dcp += srcLen;
+            src = va_arg(ap, char *);
+        }
+        va_end(ap);
+        *dcp = '\0';
+    }
+    else
+    {
+        newdst = malloc(catLen + 2);
+        if (newdst == NULL)
+            return NULL;
 
-		dcp = newdst;
-		va_start(ap, dst);
-		src = va_arg(ap, char *);
-		while (src != NULL) {
-			srcLen = strlen(src);
-			memcpy(dcp, src, srcLen);
-			dcp += srcLen;
-			src = va_arg(ap, char *);
-		}
-		va_end(ap);
-		*dcp = '\0';
+        dcp = newdst;
+        va_start(ap, dst);
+        src = va_arg(ap, char *);
+        while (src != NULL)
+        {
+            srcLen = strlen(src);
+            memcpy(dcp, src, srcLen);
+            dcp += srcLen;
+            src = va_arg(ap, char *);
+        }
+        va_end(ap);
+        *dcp = '\0';
 
-		if (*dst != NULL)
-			free(*dst);
-	}
-	*dst = newdst;
-	return (newdst);
+        if (*dst != NULL)
+            free(*dst);
+    }
+    *dst = newdst;
+    return (newdst);
 }	/* Dynsrecpy */

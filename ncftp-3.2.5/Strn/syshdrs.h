@@ -1,4 +1,4 @@
-/* syshdrs.h
+﻿/* syshdrs.h
  *
  * Copyright (c) 1996-2004 Mike Gleason, NcFTP Software.
  * All rights reserved.
@@ -16,10 +16,10 @@
 #		pragma warning(disable : 4214)	// warning C4214: nonstandard extension used : bit field types other than int
 #		pragma warning(disable : 4115)	// warning C4115: 'IRpcStubBuffer' : named type definition in parentheses
 #	endif
-	/* We now try for at least Windows 2000 compatibility (0x0500).
-	 * The code will still work on older systems, though.
-	 * Prior versions used 0x0400 instead.
-	 */
+/* We now try for at least Windows 2000 compatibility (0x0500).
+ * The code will still work on older systems, though.
+ * Prior versions used 0x0400 instead.
+ */
 #	ifndef WINVER
 #		define WINVER 0x0500
 #	endif

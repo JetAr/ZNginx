@@ -1,4 +1,4 @@
-// bmed.h : main header file for the BMED application
+﻿// bmed.h : main header file for the BMED application
 //
 
 #if !defined(AFX_BMED_H__3C180D65_7355_11D3_9CCB_00400543CD04__INCLUDED_)
@@ -9,7 +9,7 @@
 #endif // _MSC_VER > 1000
 
 #ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
+#error include 'stdafx.h' before including this file for PCH
 #endif
 
 #include "resource.h"		// main symbols
@@ -25,34 +25,40 @@
 class CBmedApp : public CWinApp
 {
 public:
-	CBmedApp();
+    CBmedApp();
 
 protected:
-	CString m_selectedBookmarkName;
-	BOOL m_dirty;
+    CString m_selectedBookmarkName;
+    BOOL m_dirty;
 
 public:
-	void SetSelectedBookmark(LPCSTR s) { m_selectedBookmarkName = s; }
-	void SetDirty(BOOL b = TRUE) { m_dirty = b; }
+    void SetSelectedBookmark(LPCSTR s)
+    {
+        m_selectedBookmarkName = s;
+    }
+    void SetDirty(BOOL b = TRUE)
+    {
+        m_dirty = b;
+    }
 
 protected:
-	void SendSelectedBookmarkToNcFTP(void);
+    void SendSelectedBookmarkToNcFTP(void);
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CBmedApp)
-	public:
-	virtual BOOL InitInstance();
-	virtual int ExitInstance();
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CBmedApp)
+public:
+    virtual BOOL InitInstance();
+    virtual int ExitInstance();
+    //}}AFX_VIRTUAL
 
 // Implementation
 
-	//{{AFX_MSG(CBmedApp)
-		// NOTE - the ClassWizard will add and remove member functions here.
-		//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    //{{AFX_MSG(CBmedApp)
+    // NOTE - the ClassWizard will add and remove member functions here.
+    //    DO NOT EDIT what you see in these blocks of generated code !
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 extern CBmedApp theApp;

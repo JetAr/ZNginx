@@ -1,8 +1,8 @@
-/* syshdrs.h
+﻿/* syshdrs.h
  *
  * Copyright (c) 1992-2004 by Mike Gleason.
  * All rights reserved.
- * 
+ *
  */
 
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
@@ -28,10 +28,10 @@
 #	define HAVE_STRSTR 1
 #	define HAVE_MEMMOVE 1
 #	define HAVE_LONG_FILE_NAMES 1
-	/* We now try for at least Windows 2000 compatibility (0x0500).
-	 * The code will still work on older systems, though.
-	 * Prior versions used 0x0400 instead.
-	 */
+/* We now try for at least Windows 2000 compatibility (0x0500).
+ * The code will still work on older systems, though.
+ * Prior versions used 0x0400 instead.
+ */
 #	ifndef WINVER
 #		define WINVER 0x0500
 #	endif
@@ -190,12 +190,12 @@
 #	ifdef NEED_GETOPT_H
 #		include <getopt.h>
 #	elif defined(NEED_GETOPT_EXTERN_DECLS)
-		extern int optind, opterr, optopt;
-		extern char *optarg;
+extern int optind, opterr, optopt;
+extern char *optarg;
 #	endif
 #	ifdef HAVE_GETCWD
 #		ifndef HAVE_UNISTD_H
-			extern char *getcwd();
+extern char *getcwd();
 #		endif
 #	else
 #		ifdef HAVE_GETWD
@@ -203,7 +203,7 @@
 #			ifndef MAXPATHLEN
 #				define MAXPATHLEN 1024
 #			endif
-			extern char *getwd(char *);
+extern char *getwd(char *);
 #		endif
 #	endif
 

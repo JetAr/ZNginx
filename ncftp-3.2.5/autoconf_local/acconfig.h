@@ -1,4 +1,4 @@
-/* acconfig.h
+﻿/* acconfig.h
    This file is in the public domain.
 
    Descriptive text for the C preprocessor macros that
@@ -343,7 +343,7 @@
 
 /* Format string for the scanf() family for 64 bit unsigned integers. */
 #undef SCANF_ULONG_LONG
-  
+
 /* Define to the type of arg1 for select(). */
 #undef SELECT_TYPE_ARG1
 

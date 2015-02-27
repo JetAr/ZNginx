@@ -1,4 +1,4 @@
-/* wgets.c
+﻿/* wgets.c
  *
  * Copyright (c) 1993-2005 Mike Gleason, NcFTP Software.
  * All rights reserved.
@@ -107,34 +107,39 @@ static FTPLinePtr gCurHistLine = 0;
 static void
 wg_SetCursorPos(char *newPos)
 {
-	if (newPos > gWinEndPtr) {
-		/* Shift window right.
-		 * (Text will appear to shift to the left.)
-		 */
-		gWinStartPtr = newPos;
-		if (gWindowWidth > 7)
-			gWinStartPtr -= gWindowWidth * 2 / 10;
-		else if (gWindowWidth > 1)
-			gWinStartPtr -= 1;
-		gBufPtr = newPos;
-		gWinEndPtr = gWinStartPtr + gWindowWidth - 1;
-	} else if (newPos < gWinStartPtr) {
-		/* Shift window left.
-		 * (Text will appear to shift to the right.)
-		 */
-		gWinStartPtr = newPos;
-		if (gWindowWidth > 7)
-			gWinStartPtr -= gWindowWidth * 2 / 10;
-		else if (gWindowWidth > 1)
-			gWinStartPtr -= 1;
-		if (gWinStartPtr < gDst)
-			gWinStartPtr = gDst;
-		gBufPtr = newPos;
-		gWinEndPtr = gWinStartPtr + gWindowWidth - 1;
-	} else {
-		/* Can just move cursor without shifting window. */
-		gBufPtr = newPos;
-	}
+    if (newPos > gWinEndPtr)
+    {
+        /* Shift window right.
+         * (Text will appear to shift to the left.)
+         */
+        gWinStartPtr = newPos;
+        if (gWindowWidth > 7)
+            gWinStartPtr -= gWindowWidth * 2 / 10;
+        else if (gWindowWidth > 1)
+            gWinStartPtr -= 1;
+        gBufPtr = newPos;
+        gWinEndPtr = gWinStartPtr + gWindowWidth - 1;
+    }
+    else if (newPos < gWinStartPtr)
+    {
+        /* Shift window left.
+         * (Text will appear to shift to the right.)
+         */
+        gWinStartPtr = newPos;
+        if (gWindowWidth > 7)
+            gWinStartPtr -= gWindowWidth * 2 / 10;
+        else if (gWindowWidth > 1)
+            gWinStartPtr -= 1;
+        if (gWinStartPtr < gDst)
+            gWinStartPtr = gDst;
+        gBufPtr = newPos;
+        gWinEndPtr = gWinStartPtr + gWindowWidth - 1;
+    }
+    else
+    {
+        /* Can just move cursor without shifting window. */
+        gBufPtr = newPos;
+    }
 }	/* wg_SetCursorPos */
 
 
@@ -143,33 +148,39 @@ wg_SetCursorPos(char *newPos)
 static void
 wg_AddCh(int c)
 {
-	size_t n;
-	char *limit;
+    size_t n;
+    char *limit;
 
-	if (gBufLen < gDstSize) {
-		limit = gDst + gBufLen;
-		if (gBufPtr == limit) {
-			/* Just add a character to the end.  No need to do
-			 * a memory move for this.
-			 */
-			*gBufPtr = c;
-			gBufLen++;
-			wg_SetCursorPos(gBufPtr + 1);
-		} else {
-			/* Have to move characters after the cursor over one
-			 * position so we can insert a character.
-			 */
-			n = limit - gBufPtr;
-			MEMMOVE(gBufPtr + 1, gBufPtr, n);
-			*gBufPtr = c;
-			gBufLen++;
-			wg_SetCursorPos(gBufPtr + 1);
-		}
-		gNeedUpdate = 1;
-		gChanged = 1;
-	} else {
-		BEEP(1);
-	}
+    if (gBufLen < gDstSize)
+    {
+        limit = gDst + gBufLen;
+        if (gBufPtr == limit)
+        {
+            /* Just add a character to the end.  No need to do
+             * a memory move for this.
+             */
+            *gBufPtr = c;
+            gBufLen++;
+            wg_SetCursorPos(gBufPtr + 1);
+        }
+        else
+        {
+            /* Have to move characters after the cursor over one
+             * position so we can insert a character.
+             */
+            n = limit - gBufPtr;
+            MEMMOVE(gBufPtr + 1, gBufPtr, n);
+            *gBufPtr = c;
+            gBufLen++;
+            wg_SetCursorPos(gBufPtr + 1);
+        }
+        gNeedUpdate = 1;
+        gChanged = 1;
+    }
+    else
+    {
+        BEEP(1);
+    }
 }	/* wg_AddCh */
 
 
@@ -178,74 +189,84 @@ wg_AddCh(int c)
 static void
 wg_KillCh(int count)
 {
-	size_t n;
-	char *limit;
+    size_t n;
+    char *limit;
 
-	if (count > gBufPtr - gDst)
-		count = (int) (gBufPtr - gDst);
-	if (count) {
-		limit = gDst + gBufLen;
-		if (gBufPtr != limit) {
-			/* Delete the characters before the character under the
-			 * cursor, and move everything after it back one.
-			 */
-			n = limit - gBufPtr;
-			memcpy(gBufPtr - count, gBufPtr, n);
-		}
-		gBufLen -= count;
-		wg_SetCursorPos(gBufPtr - count);	/* Does a --gBufPtr. */
-		gNeedUpdate = 1;
-		gChanged = 1;
-	} else {
-		BEEP(1);
-	}
+    if (count > gBufPtr - gDst)
+        count = (int) (gBufPtr - gDst);
+    if (count)
+    {
+        limit = gDst + gBufLen;
+        if (gBufPtr != limit)
+        {
+            /* Delete the characters before the character under the
+             * cursor, and move everything after it back one.
+             */
+            n = limit - gBufPtr;
+            memcpy(gBufPtr - count, gBufPtr, n);
+        }
+        gBufLen -= count;
+        wg_SetCursorPos(gBufPtr - count);	/* Does a --gBufPtr. */
+        gNeedUpdate = 1;
+        gChanged = 1;
+    }
+    else
+    {
+        BEEP(1);
+    }
 }	/* wg_KillCh */
 
 static int
 IsWordChar(char c)
 {
-	return ((!isspace((int) c)) && (c != '/'));
+    return ((!isspace((int) c)) && (c != '/'));
 }
 
 static void
 wg_KillWord(void)
 {
-	int count;
-	int off = (int) (gBufPtr - gDst) - 1;
-	count = off;
+    int count;
+    int off = (int) (gBufPtr - gDst) - 1;
+    count = off;
 
-	/* Find the end of the previous word */
-	while (off >= 0 && !IsWordChar(gDst[off]))
-		off--;
-	/* Find the start of the word */
-	while (off >= 0 && IsWordChar(gDst[off]))
-		off--;
-	count = count - off;
-	wg_KillCh(count);
+    /* Find the end of the previous word */
+    while (off >= 0 && !IsWordChar(gDst[off]))
+        off--;
+    /* Find the start of the word */
+    while (off >= 0 && IsWordChar(gDst[off]))
+        off--;
+    count = count - off;
+    wg_KillCh(count);
 }	/* wg_KillWord */
 
 
 static void
 wg_ForwardKillCh(void)
 {
-	size_t n;
-	char *limit;
+    size_t n;
+    char *limit;
 
-	if (gBufLen != 0) {
-		limit = gDst + gBufLen;
-		if (gBufPtr == limit) {
-			/* Nothing in front to delete. */
-			BEEP(1);
-		} else {
-			n = limit - gBufPtr - 1;
-			memcpy(gBufPtr, gBufPtr + 1, n);
-			--gBufLen;
-			gNeedUpdate = 1;
-			gChanged = 1;
-		}
-	} else {
-		BEEP(1);
-	}
+    if (gBufLen != 0)
+    {
+        limit = gDst + gBufLen;
+        if (gBufPtr == limit)
+        {
+            /* Nothing in front to delete. */
+            BEEP(1);
+        }
+        else
+        {
+            n = limit - gBufPtr - 1;
+            memcpy(gBufPtr, gBufPtr + 1, n);
+            --gBufLen;
+            gNeedUpdate = 1;
+            gChanged = 1;
+        }
+    }
+    else
+    {
+        BEEP(1);
+    }
 }	/* wg_ForwardKillCh */
 
 
@@ -253,13 +274,16 @@ wg_ForwardKillCh(void)
 static void
 wg_GoLeft(void)
 {
-	if (gBufPtr > gDst) {
-		wg_SetCursorPos(gBufPtr - 1);	/* Does a --gBufPtr. */
-		gNeedUpdate = 1;
-		gMoved = 1;
-	} else {
-		BEEP(1);
-	}
+    if (gBufPtr > gDst)
+    {
+        wg_SetCursorPos(gBufPtr - 1);	/* Does a --gBufPtr. */
+        gNeedUpdate = 1;
+        gMoved = 1;
+    }
+    else
+    {
+        BEEP(1);
+    }
 }	/* wg_GoLeft */
 
 
@@ -268,13 +292,16 @@ wg_GoLeft(void)
 static void
 wg_GoRight(void)
 {
-	if (gBufPtr < (gDst + gBufLen)) {
-		wg_SetCursorPos(gBufPtr + 1);	/* Does a ++gBufPtr. */
-		gNeedUpdate = 1;
-		gMoved = 1;
-	} else {
-		BEEP(1);
-	}
+    if (gBufPtr < (gDst + gBufLen))
+    {
+        wg_SetCursorPos(gBufPtr + 1);	/* Does a ++gBufPtr. */
+        gNeedUpdate = 1;
+        gMoved = 1;
+    }
+    else
+    {
+        BEEP(1);
+    }
 }	/* wg_GoRight */
 
 
@@ -282,9 +309,9 @@ wg_GoRight(void)
 static void
 wg_GoLineStart(void)
 {
-	wg_SetCursorPos(gDst);
-	gNeedUpdate = 1;
-	gMoved = 1;
+    wg_SetCursorPos(gDst);
+    gNeedUpdate = 1;
+    gMoved = 1;
 }	/* wg_GoLineStart */
 
 
@@ -293,9 +320,9 @@ wg_GoLineStart(void)
 static void
 wg_GoLineEnd(void)
 {
-	wg_SetCursorPos(gDst + gBufLen);
-	gNeedUpdate = 1;
-	gMoved = 1;
+    wg_SetCursorPos(gDst + gBufLen);
+    gNeedUpdate = 1;
+    gMoved = 1;
 }	/* wg_GoLineEnd */
 
 
@@ -304,22 +331,22 @@ wg_GoLineEnd(void)
 static void
 wg_LineKill(void)
 {
-	gBufPtr = gDst;
-	gWinStartPtr = gBufPtr;
-	gWinEndPtr = gWinStartPtr + gWindowWidth - 1;
-	gBufPtr[gDstSize] = '\0';
-	gBufLen = 0;
-	gNeedUpdate = 1;
+    gBufPtr = gDst;
+    gWinStartPtr = gBufPtr;
+    gWinEndPtr = gWinStartPtr + gWindowWidth - 1;
+    gBufPtr[gDstSize] = '\0';
+    gBufLen = 0;
+    gNeedUpdate = 1;
 
-	/* Reset this so it acts as a new line.  We want them to be able to
-	 * hit ^D until they do something with this line.
-	 */
-	gMoved = 0;
+    /* Reset this so it acts as a new line.  We want them to be able to
+     * hit ^D until they do something with this line.
+     */
+    gMoved = 0;
 
-	/* We now have an empty string.  If we originally had something in the
-	 * buffer, then mark it as changed since we just erased that.
-	 */
-	gChanged = gHadStartingString;
+    /* We now have an empty string.  If we originally had something in the
+     * buffer, then mark it as changed since we just erased that.
+     */
+    gChanged = gHadStartingString;
 }	/* wg_LineKill */
 
 
@@ -327,37 +354,43 @@ wg_LineKill(void)
 static void
 wg_HistoryUp(void)
 {
-	if (gHistory == wg_NoHistory) {
-		/* Not using history. */
-		BEEP(1);
-		return;
-	}
+    if (gHistory == wg_NoHistory)
+    {
+        /* Not using history. */
+        BEEP(1);
+        return;
+    }
 
-	if (gCurHistLine != NULL) {
-		/* If not null, then the user had already scrolled up and was
-		 * editing a line in the history.
-		 */
-		gCurHistLine = gCurHistLine->prev;
-	} else {
-		/* Was on original line to edit, but wants to go back one. */
-		gCurHistLine = gHistory->last;
-		if (gCurHistLine == NULL) {
-			/* No lines at all in the history. */
-			BEEP(1);
-			return;
-		}
-	}
+    if (gCurHistLine != NULL)
+    {
+        /* If not null, then the user had already scrolled up and was
+         * editing a line in the history.
+         */
+        gCurHistLine = gCurHistLine->prev;
+    }
+    else
+    {
+        /* Was on original line to edit, but wants to go back one. */
+        gCurHistLine = gHistory->last;
+        if (gCurHistLine == NULL)
+        {
+            /* No lines at all in the history. */
+            BEEP(1);
+            return;
+        }
+    }
 
-	wg_LineKill();
-	if (gCurHistLine != NULL) {
-		Strncpy(gDst, gCurHistLine->line, gDstSize);
-		gBufLen = strlen(gDst);
-		wg_GoLineEnd();
-	}
-	/* Otherwise, was on the first line in the history, but went "up" from here
-	 * which wraps around to the bottom.  This last line is the new line
-	 * to edit.
-	 */
+    wg_LineKill();
+    if (gCurHistLine != NULL)
+    {
+        Strncpy(gDst, gCurHistLine->line, gDstSize);
+        gBufLen = strlen(gDst);
+        wg_GoLineEnd();
+    }
+    /* Otherwise, was on the first line in the history, but went "up" from here
+     * which wraps around to the bottom.  This last line is the new line
+     * to edit.
+     */
 }	/* wg_HistoryUp */
 
 
@@ -365,38 +398,44 @@ wg_HistoryUp(void)
 static void
 wg_HistoryDown(void)
 {
-	if (gHistory == wg_NoHistory) {
-		/* Not using history. */
-		BEEP(1);
-		return;
-	}
+    if (gHistory == wg_NoHistory)
+    {
+        /* Not using history. */
+        BEEP(1);
+        return;
+    }
 
-	if (gCurHistLine != NULL) {
-		/* If not null, then the user had already scrolled up and was
-		 * editing a line in the history.
-		 */
-		gCurHistLine = gCurHistLine->next;
-	} else {
-		/* Was on original line to edit, but wants to go down one.
-		 * We'll wrap around and go to the very first line.
-		 */
-		gCurHistLine = gHistory->first;
-		if (gCurHistLine == NULL) {
-			/* No lines at all in the history. */
-			BEEP(1);
-			return;
-		}
-	}
-	
-	wg_LineKill();
-	if (gCurHistLine != NULL) {
-		Strncpy(gDst, gCurHistLine->line, gDstSize);
-		gBufLen = strlen(gDst);
-		wg_GoLineEnd();
-	}
-	/* Otherwise, was on the last line in the history, but went down from here
-	 * which means we should resume editing a fresh line.
-	 */
+    if (gCurHistLine != NULL)
+    {
+        /* If not null, then the user had already scrolled up and was
+         * editing a line in the history.
+         */
+        gCurHistLine = gCurHistLine->next;
+    }
+    else
+    {
+        /* Was on original line to edit, but wants to go down one.
+         * We'll wrap around and go to the very first line.
+         */
+        gCurHistLine = gHistory->first;
+        if (gCurHistLine == NULL)
+        {
+            /* No lines at all in the history. */
+            BEEP(1);
+            return;
+        }
+    }
+
+    wg_LineKill();
+    if (gCurHistLine != NULL)
+    {
+        Strncpy(gDst, gCurHistLine->line, gDstSize);
+        gBufLen = strlen(gDst);
+        wg_GoLineEnd();
+    }
+    /* Otherwise, was on the last line in the history, but went down from here
+     * which means we should resume editing a fresh line.
+     */
 }	/* wg_HistoryDown */
 
 
@@ -405,39 +444,47 @@ wg_HistoryDown(void)
 static void
 wg_Update(void)
 {
-	char *lastCharPtr;
-	char *cp;
+    char *lastCharPtr;
+    char *cp;
 
-	wmove(gW, gSy, gSx);
-	lastCharPtr = gDst + gBufLen;
-	*lastCharPtr = '\0';
-	if (gEchoMode == wg_RegularEcho) {
-		for (cp = gWinStartPtr; cp < lastCharPtr; cp++) {
-			if (cp > gWinEndPtr)
-				goto xx;
-			waddch(gW, (unsigned char) *cp);
-		}
-	} else if (gEchoMode == wg_BulletEcho) {
-		for (cp = gWinStartPtr; cp < lastCharPtr; cp++) {
-			if (cp > gWinEndPtr)
-				goto xx;
-			waddch(gW, wg_Bullet);
-		}
-	} else /* if (gEchoMode == wg_NoEcho) */ {
-		for (cp = gWinStartPtr; cp < lastCharPtr; cp++) {
-			if (cp > gWinEndPtr)
-				goto xx;
-			waddch(gW, ' ');
-		}
-	}
+    wmove(gW, gSy, gSx);
+    lastCharPtr = gDst + gBufLen;
+    *lastCharPtr = '\0';
+    if (gEchoMode == wg_RegularEcho)
+    {
+        for (cp = gWinStartPtr; cp < lastCharPtr; cp++)
+        {
+            if (cp > gWinEndPtr)
+                goto xx;
+            waddch(gW, (unsigned char) *cp);
+        }
+    }
+    else if (gEchoMode == wg_BulletEcho)
+    {
+        for (cp = gWinStartPtr; cp < lastCharPtr; cp++)
+        {
+            if (cp > gWinEndPtr)
+                goto xx;
+            waddch(gW, wg_Bullet);
+        }
+    }
+    else /* if (gEchoMode == wg_NoEcho) */
+    {
+        for (cp = gWinStartPtr; cp < lastCharPtr; cp++)
+        {
+            if (cp > gWinEndPtr)
+                goto xx;
+            waddch(gW, ' ');
+        }
+    }
 
-	/* Rest of display window is empty, so write out spaces. */
-	for ( ; cp <= gWinEndPtr; cp++)
-		waddch(gW, ' ');
+    /* Rest of display window is empty, so write out spaces. */
+    for ( ; cp <= gWinEndPtr; cp++)
+        waddch(gW, ' ');
 xx:
-	wmove(gW, gSy, gSx + (int) (gBufPtr - gWinStartPtr));
-	wrefresh(gW);
-	gNeedUpdate = 0;
+    wmove(gW, gSy, gSx + (int) (gBufPtr - gWinStartPtr));
+    wrefresh(gW);
+    gNeedUpdate = 0;
 } /* wg_Update */
 
 
@@ -446,277 +493,305 @@ xx:
 int
 wg_Gets(WGetsParamPtr wgpp)
 {
-	int c, result;
-	int lineKill;
-	int maxx, maxy;
+    int c, result;
+    int lineKill;
+    int maxx, maxy;
 #ifdef WG_DEBUG
-	FILE *trace;
+    FILE *trace;
 #endif
 
-	/* Sanity checks. */
-	if (wgpp == NULL)
-		return (wg_BadParamBlock);
+    /* Sanity checks. */
+    if (wgpp == NULL)
+        return (wg_BadParamBlock);
 
-	if (wgpp->dstSize < 2)
-		return (wg_DstSizeTooSmall);
-	gDstSize = wgpp->dstSize - 1;	/* Leave room for nul. */
-	
-	if (wgpp->fieldLen < 1)
-		return (wg_WindowTooSmall);
-	gWindowWidth = wgpp->fieldLen;
+    if (wgpp->dstSize < 2)
+        return (wg_DstSizeTooSmall);
+    gDstSize = wgpp->dstSize - 1;	/* Leave room for nul. */
 
-	if (wgpp->w == NULL)
-		return (wg_BadCursesWINDOW);
-	gW = wgpp->w;
+    if (wgpp->fieldLen < 1)
+        return (wg_WindowTooSmall);
+    gWindowWidth = wgpp->fieldLen;
 
-	getmaxyx(gW, maxy, maxx);
-	if ((wgpp->sy < 0) || (wgpp->sy > maxy))
-		return (wg_BadCoordinates);
-	gSy = wgpp->sy;
+    if (wgpp->w == NULL)
+        return (wg_BadCursesWINDOW);
+    gW = wgpp->w;
 
-	if ((wgpp->sx < 0) || (wgpp->sx > maxx))
-		return (wg_BadCoordinates);
-	gSx = wgpp->sx;
+    getmaxyx(gW, maxy, maxx);
+    if ((wgpp->sy < 0) || (wgpp->sy > maxy))
+        return (wg_BadCoordinates);
+    gSy = wgpp->sy;
 
-	if (wgpp->dst == NULL)
-		return (wg_BadBufferPointer);
-	gDst = wgpp->dst;
+    if ((wgpp->sx < 0) || (wgpp->sx > maxx))
+        return (wg_BadCoordinates);
+    gSx = wgpp->sx;
 
-	gHistory = wgpp->history;	/* Will be NULL if not using history. */
-	gCurHistLine = NULL;		/* Means we haven't scrolled into history. */
+    if (wgpp->dst == NULL)
+        return (wg_BadBufferPointer);
+    gDst = wgpp->dst;
 
-	gEchoMode = wgpp->echoMode;
-	gChanged = 0;
-	gMoved = 0;
-	
-	result = 0;
-	wmove(gW, gSy, gSx);
-	wrefresh(gW);
+    gHistory = wgpp->history;	/* Will be NULL if not using history. */
+    gCurHistLine = NULL;		/* Means we haven't scrolled into history. */
+
+    gEchoMode = wgpp->echoMode;
+    gChanged = 0;
+    gMoved = 0;
+
+    result = 0;
+    wmove(gW, gSy, gSx);
+    wrefresh(gW);
 
 #ifdef WG_DEBUG
-	trace = fopen(wg_TraceFileName, FOPEN_APPEND_TEXT);
-	if (trace != NULL) {
-		fprintf(trace, "<START>\n");
-	}
+    trace = fopen(wg_TraceFileName, FOPEN_APPEND_TEXT);
+    if (trace != NULL)
+    {
+        fprintf(trace, "<START>\n");
+    }
 #endif
 
-	cbreak();
-	/* Should already have echo turned off. */
-	/* noecho(); */
-	nodelay(gW, FALSE);
-	keypad(gW, TRUE);
+    cbreak();
+    /* Should already have echo turned off. */
+    /* noecho(); */
+    nodelay(gW, FALSE);
+    keypad(gW, TRUE);
 #ifdef HAVE_NOTIMEOUT
-	notimeout(gW, TRUE);
+    notimeout(gW, TRUE);
 #endif
 
-	lineKill = (int) killchar();
+    lineKill = (int) killchar();
 
-	gNeedUpdate = 1;
-	gBufPtr = gDst;
-	gWinStartPtr = gBufPtr;
-	gWinEndPtr = gWinStartPtr + gWindowWidth - 1;
-	gBufPtr[gDstSize] = '\0';
-	gHadStartingString = 0;
-	if (wgpp->useCurrentContents) {
-		gBufLen = strlen(gBufPtr);
-		if (gBufLen != 0)
-			gHadStartingString = 1;
-	} else {
-		gBufLen = 0;
-	}
+    gNeedUpdate = 1;
+    gBufPtr = gDst;
+    gWinStartPtr = gBufPtr;
+    gWinEndPtr = gWinStartPtr + gWindowWidth - 1;
+    gBufPtr[gDstSize] = '\0';
+    gHadStartingString = 0;
+    if (wgpp->useCurrentContents)
+    {
+        gBufLen = strlen(gBufPtr);
+        if (gBufLen != 0)
+            gHadStartingString = 1;
+    }
+    else
+    {
+        gBufLen = 0;
+    }
 
-	for (;;) {
-		if (gNeedUpdate) 
-			wg_Update();
+    for (;;)
+    {
+        if (gNeedUpdate)
+            wg_Update();
 
-		c = wgetch(gW);
+        c = wgetch(gW);
 #ifdef WG_DEBUG
-		if (trace != NULL) {
-			switch (c) {
-				case '\r': fprintf(trace, "(\\r)\n"); break;
-				case '\n': fprintf(trace, "(\\n)\n"); break;
+        if (trace != NULL)
+        {
+            switch (c)
+            {
+            case '\r':
+                fprintf(trace, "(\\r)\n");
+                break;
+            case '\n':
+                fprintf(trace, "(\\n)\n");
+                break;
 #ifdef KEY_ENTER
-				case KEY_ENTER: fprintf(trace, "(KEY_ENTER)\n"); break;
+            case KEY_ENTER:
+                fprintf(trace, "(KEY_ENTER)\n");
+                break;
 #endif
-				default: fprintf(trace, "[%c] = 0x%X\n", c, c);
-			}
-		}
+            default:
+                fprintf(trace, "[%c] = 0x%X\n", c, c);
+            }
+        }
 #endif
-		switch (c) {
-			case '\r':
-			case '\n':
+        switch (c)
+        {
+        case '\r':
+        case '\n':
 #ifdef KEY_ENTER
-			case KEY_ENTER:
+        case KEY_ENTER:
 #endif
-				goto done;			
+            goto done;
 
-			case '\b':
+        case '\b':
 #ifdef KEY_BACKSPACE
-			case KEY_BACKSPACE:
+        case KEY_BACKSPACE:
 #endif
-			case 0x7f:
-				wg_KillCh(1);
-				break;
+        case 0x7f:
+            wg_KillCh(1);
+            break;
 
 #ifdef KEY_FWDDEL		/* Need to find a real symbol for forward delete. */
-			case KEY_FWDDEL:
-				wg_ForwardKillCh();
-				break;
+        case KEY_FWDDEL:
+            wg_ForwardKillCh();
+            break;
 #endif
 
 #ifdef KEY_EXIT
-			case KEY_EXIT:
+        case KEY_EXIT:
 #endif
 #ifdef KEY_CLOSE
-			case KEY_CLOSE:
+        case KEY_CLOSE:
 #endif
 #ifdef KEY_CANCEL
-			case KEY_CANCEL:
+        case KEY_CANCEL:
 #endif
-			case 0x04:		/* Control-D */
-				/* If we haven't changed the buffer, and the cursor has
-				 * not moved from the first position, return EOF.
-				 */
-				if (!gChanged && !gMoved) {
-					result = wg_EOF;
-					goto done;
-				}
-				if (gBufPtr == gDst + gBufLen) {
+        case 0x04:		/* Control-D */
+            /* If we haven't changed the buffer, and the cursor has
+             * not moved from the first position, return EOF.
+             */
+            if (!gChanged && !gMoved)
+            {
+                result = wg_EOF;
+                goto done;
+            }
+            if (gBufPtr == gDst + gBufLen)
+            {
 #if 0
-					wg_AddCh('*'); wg_Update();
-					CompleteOptions(gDst, gBufPtr-gDst-1);
-					wg_KillCh(1);
+                wg_AddCh('*');
+                wg_Update();
+                CompleteOptions(gDst, gBufPtr-gDst-1);
+                wg_KillCh(1);
 #endif
-				} else {
-					wg_ForwardKillCh();		/* Emacs ^D */
-				}
-				break;
+            }
+            else
+            {
+                wg_ForwardKillCh();		/* Emacs ^D */
+            }
+            break;
 #ifdef KEY_DC
-			case KEY_DC:
+        case KEY_DC:
 #endif
-				if (gBufPtr == gDst + gBufLen) {
+            if (gBufPtr == gDst + gBufLen)
+            {
 #if 0
-					wg_AddCh('*'); wg_Update();
-					CompleteOptions(gDst, gBufPtr-gDst-1);
-					wg_KillCh(1);
+                wg_AddCh('*');
+                wg_Update();
+                CompleteOptions(gDst, gBufPtr-gDst-1);
+                wg_KillCh(1);
 #endif
-				} else {
-					wg_ForwardKillCh();		/* Emacs ^D */
-				}
-				break;
+            }
+            else
+            {
+                wg_ForwardKillCh();		/* Emacs ^D */
+            }
+            break;
 
 #ifdef KEY_CLEAR
-			case KEY_CLEAR:
+        case KEY_CLEAR:
 #endif
-			case 0x0C:		/* Control-L */
-				touchwin(curscr);
-				wrefresh(curscr);
-				break;
+        case 0x0C:		/* Control-L */
+            touchwin(curscr);
+            wrefresh(curscr);
+            break;
 
 #ifdef KEY_LEFT
-			case KEY_LEFT:
+        case KEY_LEFT:
 #endif
-			case 0x02:		/* Control-F */
-				wg_GoLeft();
-				break;
+        case 0x02:		/* Control-F */
+            wg_GoLeft();
+            break;
 
 #ifdef KEY_RIGHT
-			case KEY_RIGHT:
+        case KEY_RIGHT:
 #endif
-			case 0x06:		/* Control-B */
-				wg_GoRight();
-				break;
+        case 0x06:		/* Control-B */
+            wg_GoRight();
+            break;
 
 #ifdef KEY_UP
-			case KEY_UP:
+        case KEY_UP:
 #endif
-			case 0x10:		/* Control-P */
-				wg_HistoryUp();
-				break;
+        case 0x10:		/* Control-P */
+            wg_HistoryUp();
+            break;
 
 #ifdef KEY_DOWN
-			case KEY_DOWN:
+        case KEY_DOWN:
 #endif
-			case 0x0E:		/* Control-N */
-				wg_HistoryDown();
-				break;
+        case 0x0E:		/* Control-N */
+            wg_HistoryDown();
+            break;
 
 #ifdef KEY_HOME
-			case KEY_HOME:
+        case KEY_HOME:
 #endif
-			case 0x01:		/* Control-A */
-				wg_GoLineStart();
-				break;
+        case 0x01:		/* Control-A */
+            wg_GoLineStart();
+            break;
 #ifdef KEY_END
-			case KEY_END:
+        case KEY_END:
 #endif
-			case 0x05:		/* Control-E */
-				wg_GoLineEnd();
-				break;
+        case 0x05:		/* Control-E */
+            wg_GoLineEnd();
+            break;
 #ifdef KEY_EOL
-			case KEY_EOL:
+        case KEY_EOL:
 #endif
-			case 0x0B:
-				while ((gBufLen != 0) && (gBufPtr < gDst + gBufLen))
-					wg_ForwardKillCh();     /* Emacs ^K */
-				break;
+        case 0x0B:
+            while ((gBufLen != 0) && (gBufPtr < gDst + gBufLen))
+                wg_ForwardKillCh();     /* Emacs ^K */
+            break;
 
-			case -1:
-				/* This can happen if getch() was interrupted by a
-				 * signal like ^Z.
-				 */
-				break;
+        case -1:
+            /* This can happen if getch() was interrupted by a
+             * signal like ^Z.
+             */
+            break;
 
-			case 23:  /* ^W */
-				wg_KillWord();
-				break;
+        case 23:  /* ^W */
+            wg_KillWord();
+            break;
 
-			case '\t': {
+        case '\t':
+        {
 #if 0
-				int i;
-				char *comp;
-				char *tmp;
-				for (i=0;i<3;i++)
-					wg_AddCh('.');
-				wg_Update();
-				comp = CompleteGet(gDst, gBufPtr-gDst-3);
-				wg_KillCh(3);
-				gDst[gBufLen] = '\0';
-				if (comp) {
-					for (tmp = comp; *tmp; tmp++)
-						wg_AddCh(*tmp);
-					free(comp);
-				}
+            int i;
+            char *comp;
+            char *tmp;
+            for (i=0; i<3; i++)
+                wg_AddCh('.');
+            wg_Update();
+            comp = CompleteGet(gDst, gBufPtr-gDst-3);
+            wg_KillCh(3);
+            gDst[gBufLen] = '\0';
+            if (comp)
+            {
+                for (tmp = comp; *tmp; tmp++)
+                    wg_AddCh(*tmp);
+                free(comp);
+            }
 #endif
-				break;
-			}
-				
-			default:
-				if (c < 0400) {
-					if (c == lineKill)
-						wg_LineKill();
-					else
-						wg_AddCh(c);
-				}
-		}
-	}
+            break;
+        }
+
+        default:
+            if (c < 0400)
+            {
+                if (c == lineKill)
+                    wg_LineKill();
+                else
+                    wg_AddCh(c);
+            }
+        }
+    }
 
 done:
-	nocbreak();
+    nocbreak();
 
-	gDst[gBufLen] = '\0';
-	wgpp->changed = gChanged;
-	wgpp->dstLen = (int) gBufLen;
-	if ((gHistory != wg_NoHistory) && (gBufLen != 0))
-		AddLine(wgpp->history, gDst);
-	
+    gDst[gBufLen] = '\0';
+    wgpp->changed = gChanged;
+    wgpp->dstLen = (int) gBufLen;
+    if ((gHistory != wg_NoHistory) && (gBufLen != 0))
+        AddLine(wgpp->history, gDst);
+
 #ifdef WG_DEBUG
-		if (trace != NULL) {
-			fprintf(trace, "<DONE>\n");
-			fclose(trace);
-		}
+    if (trace != NULL)
+    {
+        fprintf(trace, "<DONE>\n");
+        fclose(trace);
+    }
 #endif
-	return (result);
+    return (result);
 }	/* wg_Gets */
 
 /* eof */

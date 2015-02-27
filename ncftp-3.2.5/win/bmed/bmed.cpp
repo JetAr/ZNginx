@@ -1,4 +1,4 @@
-// bmed.cpp : Defines the class behaviors for the application.
+﻿// bmed.cpp : Defines the class behaviors for the application.
 //
 
 #include "stdafx.h"
@@ -16,20 +16,20 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 extern "C" {
-	extern int gNumBookmarks;
-	extern BookmarkPtr gBookmarkTable;
-	extern char gOurInstallationPath[260];
+    extern int gNumBookmarks;
+    extern BookmarkPtr gBookmarkTable;
+    extern char gOurInstallationPath[260];
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // CBmedApp
 
 BEGIN_MESSAGE_MAP(CBmedApp, CWinApp)
-	//{{AFX_MSG_MAP(CBmedApp)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG
-	ON_COMMAND(ID_HELP, CWinApp::OnHelp)
+    //{{AFX_MSG_MAP(CBmedApp)
+    // NOTE - the ClassWizard will add and remove mapping macros here.
+    //    DO NOT EDIT what you see in these blocks of generated code!
+    //}}AFX_MSG
+    ON_COMMAND(ID_HELP, CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -37,9 +37,9 @@ END_MESSAGE_MAP()
 
 CBmedApp::CBmedApp()
 {
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
-	m_dirty = FALSE;
+    // TODO: add construction code here,
+    // Place all significant initialization in InitInstance
+    m_dirty = FALSE;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -52,37 +52,38 @@ CBmedApp theApp;
 
 BOOL CBmedApp::InitInstance()
 {
-	AfxEnableControlContainer();
+    AfxEnableControlContainer();
 
-	// Standard initialization
-	// If you are not using these features and wish to reduce the size
-	//  of your final executable, you should remove from the following
-	//  the specific initialization routines you do not need.
+    // Standard initialization
+    // If you are not using these features and wish to reduce the size
+    //  of your final executable, you should remove from the following
+    //  the specific initialization routines you do not need.
 
 #ifdef _AFXDLL
-	// Supposedly, this is no longer required, according to VS2008
-	// Enable3dControls();			// Call this when using MFC in a shared DLL
+    // Supposedly, this is no longer required, according to VS2008
+    // Enable3dControls();			// Call this when using MFC in a shared DLL
 #else
-	// Enable3dControlsStatic();	// Call this when linking to MFC statically
+    // Enable3dControlsStatic();	// Call this when linking to MFC statically
 #endif
 
-	AfxGetApp()->m_pszAppName = "NcFTP Bookmarks";
+    AfxGetApp()->m_pszAppName = "NcFTP Bookmarks";
 
-	::InitUserInfo();
-	::InitOurDirectory();
+    ::InitUserInfo();
+    ::InitOurDirectory();
 
-	if (::LoadBookmarkTable() < 0) {
-		AfxMessageBox("Could not initialize bookmark table.");
-		return FALSE;
-	}
+    if (::LoadBookmarkTable() < 0)
+    {
+        AfxMessageBox("Could not initialize bookmark table.");
+        return FALSE;
+    }
 
-	CBmedDlg dlg;
-	m_pMainWnd = &dlg;
-	(void) dlg.DoModal();
+    CBmedDlg dlg;
+    m_pMainWnd = &dlg;
+    (void) dlg.DoModal();
 
-	// Since the dialog has been closed, return FALSE so that we exit the
-	//  application, rather than start the application's message pump.
-	return FALSE;
+    // Since the dialog has been closed, return FALSE so that we exit the
+    //  application, rather than start the application's message pump.
+    return FALSE;
 }	// InitInstance
 
 
@@ -90,94 +91,105 @@ BOOL CBmedApp::InitInstance()
 
 void CBmedApp::SendSelectedBookmarkToNcFTP(void)
 {
-	HANDLE hMailSlot;
-	char str[kNcFTPBookmarksMailslotMsgSize];
-	DWORD dwWrote;
-	DWORD err = 0;
-	BOOL rc;
-	const char *prog;
-	char path[MAX_PATH];
-	int winExecResult;
+    HANDLE hMailSlot;
+    char str[kNcFTPBookmarksMailslotMsgSize];
+    DWORD dwWrote;
+    DWORD err = 0;
+    BOOL rc;
+    const char *prog;
+    char path[MAX_PATH];
+    int winExecResult;
 
-	hMailSlot = ::CreateFile(
-         kNcFTPBookmarksMailslot,
-         GENERIC_WRITE, 
-         FILE_SHARE_READ,// share with other readers
-         NULL,           // no security attributes
-         OPEN_EXISTING,  // opens existing pipe 
-         0,              // default attributes 
-         NULL);          // no template file 
+    hMailSlot = ::CreateFile(
+                    kNcFTPBookmarksMailslot,
+                    GENERIC_WRITE,
+                    FILE_SHARE_READ,// share with other readers
+                    NULL,           // no security attributes
+                    OPEN_EXISTING,  // opens existing pipe
+                    0,              // default attributes
+                    NULL);          // no template file
 
-	// Prepare the bookmark name to send.
-	//
-	strncpy(str, (LPCSTR) m_selectedBookmarkName, sizeof(str));
-	str[sizeof(str) - 1] = '\0';
+    // Prepare the bookmark name to send.
+    //
+    strncpy(str, (LPCSTR) m_selectedBookmarkName, sizeof(str));
+    str[sizeof(str) - 1] = '\0';
 
-	if ((hMailSlot == INVALID_HANDLE_VALUE) || (hMailSlot == NULL)) {
-		err = ::GetLastError();
-	} else {
-		// Note that it is okay to send NcFTP an empty string,
-		// since that would mean that no bookmark was selected.
-		// We still have to do that since NcFTP is waiting for
-		// a message!
-		//
-		dwWrote = 0;
-		rc = ::WriteFile(
-			hMailSlot,
-			str,
-			sizeof(str),
-			&dwWrote,
-			NULL
-			);
+    if ((hMailSlot == INVALID_HANDLE_VALUE) || (hMailSlot == NULL))
+    {
+        err = ::GetLastError();
+    }
+    else
+    {
+        // Note that it is okay to send NcFTP an empty string,
+        // since that would mean that no bookmark was selected.
+        // We still have to do that since NcFTP is waiting for
+        // a message!
+        //
+        dwWrote = 0;
+        rc = ::WriteFile(
+                 hMailSlot,
+                 str,
+                 sizeof(str),
+                 &dwWrote,
+                 NULL
+             );
 
-		if (!rc) {
-			// Perhaps NcFTP was terminated in between the time we opened
-			// the mailslot and now?
-			//
-			err = ::GetLastError();
-		}
-		::CloseHandle(hMailSlot);
-	}
+        if (!rc)
+        {
+            // Perhaps NcFTP was terminated in between the time we opened
+            // the mailslot and now?
+            //
+            err = ::GetLastError();
+        }
+        ::CloseHandle(hMailSlot);
+    }
 
-	if ((err != 0) && (m_selectedBookmarkName.IsEmpty() == FALSE)) {
-		// Odds are if we get here that we were run in stand-alone
-		// mode.  Since the user chose a bookmark, we must now
-		// launch NcFTP and specify a bookmark on the command-line.
-		//
-		prog = "ncftp.exe";
-		if (gOurInstallationPath[0] == '\0') {
-			AfxMessageBox("Could not find path to NcFTP.exe.  Please re-run Setup.");
-		} else {
-			OurInstallationPath(path, sizeof(path), prog);
-			STRNCAT(path, " ");
-			STRNCAT(path, str); 
-			
-			winExecResult = WinExec(path, SW_SHOWNORMAL);
-			if (winExecResult <= 31) {
-				AfxMessageBox("Could not launch NcFTP.exe.");
-			}
-		}
-	}
+    if ((err != 0) && (m_selectedBookmarkName.IsEmpty() == FALSE))
+    {
+        // Odds are if we get here that we were run in stand-alone
+        // mode.  Since the user chose a bookmark, we must now
+        // launch NcFTP and specify a bookmark on the command-line.
+        //
+        prog = "ncftp.exe";
+        if (gOurInstallationPath[0] == '\0')
+        {
+            AfxMessageBox("Could not find path to NcFTP.exe.  Please re-run Setup.");
+        }
+        else
+        {
+            OurInstallationPath(path, sizeof(path), prog);
+            STRNCAT(path, " ");
+            STRNCAT(path, str);
+
+            winExecResult = WinExec(path, SW_SHOWNORMAL);
+            if (winExecResult <= 31)
+            {
+                AfxMessageBox("Could not launch NcFTP.exe.");
+            }
+        }
+    }
 }	// SendSelectedBookmarkToNcFTP
 
 
 
 
-int CBmedApp::ExitInstance() 
+int CBmedApp::ExitInstance()
 {
-	if (m_dirty) {
-		SaveBookmarkTable();
-		m_dirty = FALSE;
-	}
+    if (m_dirty)
+    {
+        SaveBookmarkTable();
+        m_dirty = FALSE;
+    }
 
-	// It's important that we always send the message back to NcFTP,
-	// since NcFTP waits for a message until we exit.
-	//
-	SendSelectedBookmarkToNcFTP();
+    // It's important that we always send the message back to NcFTP,
+    // since NcFTP waits for a message until we exit.
+    //
+    SendSelectedBookmarkToNcFTP();
 
-	if (gBookmarkTable != NULL) {
-		free(gBookmarkTable);
-		gBookmarkTable = NULL;
-	}
-	return CWinApp::ExitInstance();
+    if (gBookmarkTable != NULL)
+    {
+        free(gBookmarkTable);
+        gBookmarkTable = NULL;
+    }
+    return CWinApp::ExitInstance();
 }	// ExitInstance

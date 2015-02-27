@@ -1,8 +1,8 @@
-/* trace.c
+﻿/* trace.c
  *
  * Copyright (c) 1992-2005 by Mike Gleason.
  * All rights reserved.
- * 
+ *
  */
 
 #include "syshdrs.h"
@@ -36,33 +36,36 @@ extern int gUserTypedSensitiveInfoAtShellSoDoNotSaveItToDisk;
 void
 Trace(const int level, const char *const fmt, ...)
 {
-	va_list ap;
-	char buf[512];
-	struct tm lt, *ltp;
+    va_list ap;
+    char buf[512];
+    struct tm lt, *ltp;
 
-	if ((gDebug >= level) || (level > 8)) {
-		va_start(ap, fmt);
+    if ((gDebug >= level) || (level > 8))
+    {
+        va_start(ap, fmt);
 #ifdef HAVE_VSNPRINTF
-		(void) vsnprintf(buf, sizeof(buf) - 1, fmt, ap);
-		buf[sizeof(buf) - 1] = '\0';
+        (void) vsnprintf(buf, sizeof(buf) - 1, fmt, ap);
+        buf[sizeof(buf) - 1] = '\0';
 #else
-		(void) vsprintf(buf, fmt, ap);
+        (void) vsprintf(buf, fmt, ap);
 #endif
-		va_end(ap);
+        va_end(ap);
 
-		ltp = Localtime(time(&gTraceTime), &lt);
-		if ((gTraceFile != NULL) && (ltp != NULL)) {
-			(void) fprintf(gTraceFile , "%02d:%02d:%02d  %s",
-				lt.tm_hour,
-				lt.tm_min,
-				lt.tm_sec,
-				buf
-			);
-		}
-		if (gDebug > level) {
-			(void) fprintf(stdout, "%s", buf);
-		}
-	}
+        ltp = Localtime(time(&gTraceTime), &lt);
+        if ((gTraceFile != NULL) && (ltp != NULL))
+        {
+            (void) fprintf(gTraceFile , "%02d:%02d:%02d  %s",
+                           lt.tm_hour,
+                           lt.tm_min,
+                           lt.tm_sec,
+                           buf
+                          );
+        }
+        if (gDebug > level)
+        {
+            (void) fprintf(stdout, "%s", buf);
+        }
+    }
 }	/* Trace */
 
 
@@ -71,10 +74,10 @@ Trace(const int level, const char *const fmt, ...)
 void
 ErrorHook(const FTPCIPtr UNUSED(cipUnused), char *msg)
 {
-	LIBNCFTP_USE_VAR(cipUnused);		/* shut up gcc */
+    LIBNCFTP_USE_VAR(cipUnused);		/* shut up gcc */
 
-	/* Will also get Trace'd. */
-	(void) fprintf(stdout, "%s", msg);
+    /* Will also get Trace'd. */
+    (void) fprintf(stdout, "%s", msg);
 }	/* ErrorHook */
 
 
@@ -83,8 +86,8 @@ ErrorHook(const FTPCIPtr UNUSED(cipUnused), char *msg)
 void
 DebugHook(const FTPCIPtr UNUSED(cipUnused), char *msg)
 {
-	LIBNCFTP_USE_VAR(cipUnused);		/* shut up gcc */
-	Trace(0, "%s", msg);
+    LIBNCFTP_USE_VAR(cipUnused);		/* shut up gcc */
+    Trace(0, "%s", msg);
 }	/* DebugHook */
 
 
@@ -93,7 +96,7 @@ DebugHook(const FTPCIPtr UNUSED(cipUnused), char *msg)
 void
 SetDebug(int i)
 {
-	gDebug = i;
+    gDebug = i;
 }	/* SetDebug */
 
 
@@ -102,10 +105,10 @@ SetDebug(int i)
 void
 UseTrace(void)
 {
-	gConn.debugLogProc = DebugHook;
-	gConn.debugLog = NULL;
-	gConn.errLogProc = ErrorHook;
-	gConn.errLog = NULL;
+    gConn.debugLogProc = DebugHook;
+    gConn.debugLog = NULL;
+    gConn.errLogProc = ErrorHook;
+    gConn.errLog = NULL;
 }	/* UseTrace */
 
 
@@ -114,48 +117,50 @@ UseTrace(void)
 void
 OpenTrace(void)
 {
-	FILE *tfp;
-	char pathName[256];
-	char tName[32];
-	char timeStr[128];
-	int pid;
-	const char *term_cp;
+    FILE *tfp;
+    char pathName[256];
+    char tName[32];
+    char timeStr[128];
+    int pid;
+    const char *term_cp;
 
-	if (gOurDirectoryPath[0] == '\0')
-		return;		/* Don't create in root directory. */
+    if (gOurDirectoryPath[0] == '\0')
+        return;		/* Don't create in root directory. */
 
-	(void) sprintf(tName, "trace.%u", (unsigned int) (pid = getpid()));
-	(void) OurDirectoryPath(pathName, sizeof(pathName), tName);
+    (void) sprintf(tName, "trace.%u", (unsigned int) (pid = getpid()));
+    (void) OurDirectoryPath(pathName, sizeof(pathName), tName);
 
-	tfp = fopen(pathName, FOPEN_WRITE_TEXT);
-	if (tfp != NULL) {
+    tfp = fopen(pathName, FOPEN_WRITE_TEXT);
+    if (tfp != NULL)
+    {
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
 #else
-		(void) chmod(pathName, 00600);
+        (void) chmod(pathName, 00600);
 #endif
 #ifdef HAVE_SETVBUF
-		(void) setvbuf(tfp, gTraceLBuf, _IOLBF, sizeof(gTraceLBuf));
+        (void) setvbuf(tfp, gTraceLBuf, _IOLBF, sizeof(gTraceLBuf));
 #endif	/* HAVE_SETVBUF */
-		/* Opened the trace file. */
-		(void) time(&gTraceTime);
-		memset(timeStr, 0, sizeof(timeStr));
-		(void) strftime(timeStr, sizeof(timeStr) - 1, "%Y-%m-%d %H:%M:%S %Z %z", localtime(&gTraceTime));
-		(void) fprintf(tfp, "SESSION STARTED at:  %s\n", timeStr);
-		(void) fprintf(tfp, "Program Version:     %s compiled for %s\n", gVersion + 5, gOS);
-		if (gOS[0] != '\0') {
-			(void) fprintf(tfp, "Compiled for:        %s\n", gOS);
-		}
-		(void) fprintf(tfp, "Process ID:          %u\n", pid);
+        /* Opened the trace file. */
+        (void) time(&gTraceTime);
+        memset(timeStr, 0, sizeof(timeStr));
+        (void) strftime(timeStr, sizeof(timeStr) - 1, "%Y-%m-%d %H:%M:%S %Z %z", localtime(&gTraceTime));
+        (void) fprintf(tfp, "SESSION STARTED at:  %s\n", timeStr);
+        (void) fprintf(tfp, "Program Version:     %s compiled for %s\n", gVersion + 5, gOS);
+        if (gOS[0] != '\0')
+        {
+            (void) fprintf(tfp, "Compiled for:        %s\n", gOS);
+        }
+        (void) fprintf(tfp, "Process ID:          %u\n", pid);
 
-		if (gGetOurHostNameResult == 100)
-			gGetOurHostNameResult = GetOurHostName(gOurHostName, sizeof(gOurHostName));
-		(void) fprintf(tfp, "Hostname:            %s  (rc=%d)\n", gOurHostName, gGetOurHostNameResult);
-		term_cp = (const char *) getenv("TERM");
-		if (term_cp == NULL)
-			term_cp = "unknown?";
-		(void) fprintf(tfp, "Terminal:            %s\n", term_cp);
-		gTraceFile = tfp;
-	}
+        if (gGetOurHostNameResult == 100)
+            gGetOurHostNameResult = GetOurHostName(gOurHostName, sizeof(gOurHostName));
+        (void) fprintf(tfp, "Hostname:            %s  (rc=%d)\n", gOurHostName, gGetOurHostNameResult);
+        term_cp = (const char *) getenv("TERM");
+        if (term_cp == NULL)
+            term_cp = "unknown?";
+        (void) fprintf(tfp, "Terminal:            %s\n", term_cp);
+        gTraceFile = tfp;
+    }
 }	/* OpenTrace */
 
 
@@ -164,29 +169,32 @@ OpenTrace(void)
 void
 CloseTrace(void)
 {
-	char pathName[256];
-	char pathName2[256];
-	char tName[32];
+    char pathName[256];
+    char pathName2[256];
+    char tName[32];
 
-	if ((gOurDirectoryPath[0] == '\0') || (gTraceFile == NULL))
-		return;
+    if ((gOurDirectoryPath[0] == '\0') || (gTraceFile == NULL))
+        return;
 
-	(void) sprintf(tName, "trace.%u", (unsigned int) getpid());
-	(void) OurDirectoryPath(pathName, sizeof(pathName), tName);
-	(void) OurDirectoryPath(pathName2, sizeof(pathName2), kTraceFileName);
+    (void) sprintf(tName, "trace.%u", (unsigned int) getpid());
+    (void) OurDirectoryPath(pathName, sizeof(pathName), tName);
+    (void) OurDirectoryPath(pathName2, sizeof(pathName2), kTraceFileName);
 
-	(void) time(&gTraceTime);
-	(void) fprintf(gTraceFile, "SESSION ENDED at:    %s", ctime(&gTraceTime));
-	(void) fclose(gTraceFile);
+    (void) time(&gTraceTime);
+    (void) fprintf(gTraceFile, "SESSION ENDED at:    %s", ctime(&gTraceTime));
+    (void) fclose(gTraceFile);
 
-	(void) unlink(pathName2);
+    (void) unlink(pathName2);
 #ifdef ncftp
-	if (gUserTypedSensitiveInfoAtShellSoDoNotSaveItToDisk != 0) {
-		(void) unlink(pathName);
-	} else {
-		(void) rename(pathName, pathName2);
-	}
+    if (gUserTypedSensitiveInfoAtShellSoDoNotSaveItToDisk != 0)
+    {
+        (void) unlink(pathName);
+    }
+    else
+    {
+        (void) rename(pathName, pathName2);
+    }
 #else
-	(void) rename(pathName, pathName2);
+    (void) rename(pathName, pathName2);
 #endif
 }	/* CloseTrace */

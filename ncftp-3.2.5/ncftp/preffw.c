@@ -1,8 +1,8 @@
-/* preffw.c
+﻿/* preffw.c
  *
  * Copyright (c) 1992-2005 by Mike Gleason.
  * All rights reserved.
- * 
+ *
  */
 
 #include "syshdrs.h"
@@ -47,32 +47,32 @@ extern const char gVersion[];
 void
 WriteDefaultFirewallPrefs(FILE *fp)
 {
-	char *cp;
-	time_t now;
+    char *cp;
+    time_t now;
 
-	if (gGetOurHostNameResult == 100)
-		gGetOurHostNameResult = GetOurHostName(gOurHostName, sizeof(gOurHostName));
-	cp = strchr(gOurHostName, '.');
+    if (gGetOurHostNameResult == 100)
+        gGetOurHostNameResult = GetOurHostName(gOurHostName, sizeof(gOurHostName));
+    cp = strchr(gOurHostName, '.');
 
-	(void) fprintf(fp, "%s", "\
+    (void) fprintf(fp, "%s", "\
 # NcFTP firewall preferences\n\
 # ==========================\n\
 #\n\
 ");
 
-	(void) fprintf(fp, "%s", "\
+    (void) fprintf(fp, "%s", "\
 # If you need to use a proxy for FTP, you can configure it below.\n\
 # If you do not need one, leave the ``firewall-type'' variable set\n\
 # to 0.  Any line that does not begin with the ``#'' character is\n\
 # considered a configuration command line.\n\
 ");
-	(void) fprintf(fp, "%s", "\
+    (void) fprintf(fp, "%s", "\
 #\n\
 # NOTE:  NcFTP does NOT support HTTP proxies that do FTP, such as \"squid\"\n\
 #        or Netscape Proxy Server.  Why?  Because you have to communicate with\n\
 #        them using HTTP, and this is a FTP only program.\n\
 ");
-	(void) fprintf(fp, "%s", "\
+    (void) fprintf(fp, "%s", "\
 #\n\
 # Types of firewalls:\n\
 # ------------------\n\
@@ -80,7 +80,7 @@ WriteDefaultFirewallPrefs(FILE *fp)
 #    type 1:  Connect to firewall host, but send \"USER user@real.host.name\"\n\
 #\n\
 ");
-	(void) fprintf(fp, "%s", "\
+    (void) fprintf(fp, "%s", "\
 #    type 2:  Connect to firewall, login with \"USER fwuser\" and\n\
 #             \"PASS fwpassword\", and then \"USER user@real.host.name\"\n\
 #\n\
@@ -88,7 +88,7 @@ WriteDefaultFirewallPrefs(FILE *fp)
 #             \"SITE real.host.name\", followed by the regular USER and PASS.\n\
 #\n\
 ");
-	(void) fprintf(fp, "%s", "\
+    (void) fprintf(fp, "%s", "\
 #    type 4:  Connect to and login to firewall, and then use\n\
 #             \"OPEN real.host.name\", followed by the regular USER and PASS.\n\
 #\n\
@@ -97,7 +97,7 @@ WriteDefaultFirewallPrefs(FILE *fp)
 #             \"PASS pass@fwpass\" to login.\n\
 #\n\
 ");
-	(void) fprintf(fp, "%s", "\
+    (void) fprintf(fp, "%s", "\
 #    type 6:  Connect to firewall host, but send\n\
 #             \"USER fwuser@real.host.name\" and\n\
 #             \"PASS fwpass\" followed by a regular\n\
@@ -105,20 +105,20 @@ WriteDefaultFirewallPrefs(FILE *fp)
 #             \"PASS pass\" to complete the login.\n\
 #\n\
 ");
-	(void) fprintf(fp, "%s", "\
+    (void) fprintf(fp, "%s", "\
 #    type 7:  Connect to firewall host, but send\n\
 #             \"USER user@real.host.name fwuser\" and\n\
 #             \"PASS pass\" followed by\n\
 #             \"ACCT fwpass\" to complete the login.\n\
 #\n\
 ");
-	(void) fprintf(fp, "%s", "\
+    (void) fprintf(fp, "%s", "\
 #    type 8:  Connect to firewall host, but send \"USER user@real.host.name:port\"\n\
 #\n\
 #    type 9:  Connect to firewall host, but send \"USER user@real.host.name port\"\n\
 #\n\
 ");
-	(void) fprintf(fp, "%s", "\
+    (void) fprintf(fp, "%s", "\
 #    type 0:  Do NOT use a firewall (most users will choose this).\n\
 #\n\
 firewall-type=0\n\
@@ -126,19 +126,22 @@ firewall-type=0\n\
 #\n\
 #\n\
 ");
-	(void) fprintf(fp, "%s", "\
+    (void) fprintf(fp, "%s", "\
 # The ``firewall-host'' variable should be the IP address or hostname of\n\
 # your firewall server machine.\n\
 #\n\
 ");
 
-	if (cp == NULL) {
-		(void) fprintf(fp, "firewall-host=firewall.domain.com\n");
-	} else {
-		(void) fprintf(fp, "firewall-host=firewall%s\n", cp);
-	}
+    if (cp == NULL)
+    {
+        (void) fprintf(fp, "firewall-host=firewall.domain.com\n");
+    }
+    else
+    {
+        (void) fprintf(fp, "firewall-host=firewall%s\n", cp);
+    }
 
-	(void) fprintf(fp, "%s", "\
+    (void) fprintf(fp, "%s", "\
 #\n\
 #\n\
 #\n\
@@ -146,8 +149,8 @@ firewall-type=0\n\
 # when it logs in to the firewall before connecting to the outside world.\n\
 #\n\
 ");
-	(void) fprintf(fp, "firewall-user=%s\n", gUser);
-	(void) fprintf(fp, "%s", "\
+    (void) fprintf(fp, "firewall-user=%s\n", gUser);
+    (void) fprintf(fp, "%s", "\
 #\n\
 #\n\
 #\n\
@@ -157,7 +160,7 @@ firewall-type=0\n\
 # see your password.  You may also leave this commented out, and then\n\
 # NcFTP will prompt you each time for the password.\n\
 ");
-	(void) fprintf(fp, "%s", "\
+    (void) fprintf(fp, "%s", "\
 #\n\
 firewall-password=fwpass\n\
 #\n\
@@ -168,7 +171,7 @@ firewall-password=fwpass\n\
 #\n\
 firewall-port=21\n\
 ");
-	(void) fprintf(fp, "%s", "\
+    (void) fprintf(fp, "%s", "\
 #\n\
 #\n\
 #\n\
@@ -178,7 +181,7 @@ firewall-port=21\n\
 # domain was ``probe.net'' you could set this to ``.probe.net''.\n\
 #\n\
 ");
-	(void) fprintf(fp, "%s", "\
+    (void) fprintf(fp, "%s", "\
 # If you leave this commented out, the default behavior is to attempt to\n\
 # lookup the current domain, and exclude hosts for it.  Otherwise, set it\n\
 # to a list of comma-delimited domains or hostnames.  The special token\n\
@@ -188,13 +191,16 @@ firewall-port=21\n\
 #\n\
 ");
 
-	if (cp != NULL) {
-		(void) fprintf(fp, "firewall-exception-list=%s,localhost,localdomain\n", cp);
-	} else {
-		(void) fprintf(fp, "firewall-exception-list=.probe.net,localhost,foo.bar.com,localdomain\n");
-	}
+    if (cp != NULL)
+    {
+        (void) fprintf(fp, "firewall-exception-list=%s,localhost,localdomain\n", cp);
+    }
+    else
+    {
+        (void) fprintf(fp, "firewall-exception-list=.probe.net,localhost,foo.bar.com,localdomain\n");
+    }
 
-	(void) fprintf(fp, "%s", "\
+    (void) fprintf(fp, "%s", "\
 #\n\
 #\n\
 #\n\
@@ -205,23 +211,23 @@ firewall-port=21\n\
 #\n\
 #passive=on\n");
 
-	time(&now);
-	(void) fprintf(fp, "\
+    time(&now);
+    (void) fprintf(fp, "\
 #\n\
 #\n\
 #\n\
 # NOTE:  This file was created for you on %s\
 #        by NcFTP %.5s.  Removing this file will cause the next run of NcFTP\n\
 #        to generate a new one, possibly with more configurable options.\n",
-	ctime(&now),
-	gVersion + 11);
-	(void) fprintf(fp, "\
+                   ctime(&now),
+                   gVersion + 11);
+    (void) fprintf(fp, "\
 #\n\
 # ALSO:  A %s file, if present, is processed before this file,\n\
 #        and a %s file, if present, is processed after.\n",
-		kGlobalFirewallPrefFileName,
-		kGlobalFixedFirewallPrefFileName
-	);
+                   kGlobalFirewallPrefFileName,
+                   kGlobalFixedFirewallPrefFileName
+                  );
 }	/* CreateDefaultFirewallPrefs */
 
 
@@ -230,49 +236,72 @@ firewall-port=21\n\
 void
 ProcessFirewallPrefFile(FILE *fp)
 {
-	char line[256];
-	char *tok1, *tok2;
-	int n;
+    char line[256];
+    char *tok1, *tok2;
+    int n;
 
-	/* Opened the firewall preferences file. */
-	line[sizeof(line) - 1] = '\0';
-	while (fgets(line, sizeof(line) - 1, fp) != NULL) {
-		tok1 = strtok(line, " =\t\r\n");
-		if ((tok1 == NULL) || (tok1[0] == '#'))
-			continue;
-		tok2 = strtok(NULL, "\r\n");
-		if (tok2 == NULL)
-			continue;
-		if (ISTREQ(tok1, "firewall-type")) {
-			n = atoi(tok2);
-			if ((n > 0) && (n <= kFirewallLastType))
-				gFirewallType = n;
-		} else if (ISTREQ(tok1, "firewall-host")) {
-			(void) STRNCPY(gFirewallHost, tok2);
-		} else if (ISTREQ(tok1, "firewall-port")) {
-			n = atoi(tok2);
-			if (n > 0)
-				gFirewallPort = (unsigned int) n;
-		} else if (ISTREQ(tok1, "firewall-user")) {
-			(void) STRNCPY(gFirewallUser, tok2);
-		} else if (ISTREQ(tok1, "firewall-pass")) {
-			(void) STRNCPY(gFirewallPass, tok2);
-		} else if (ISTREQ(tok1, "firewall-password")) {
-			(void) STRNCPY(gFirewallPass, tok2);
-		} else if (ISTREQ(tok1, "firewall-exception-list")) {
-			(void) STRNCPY(gFirewallExceptionList, tok2);
-		} else if (ISTREQ(tok1, "passive")) {
-			if (ISTREQ(tok2, "optional")) {
-				gDataPortMode = gFwDataPortMode = kFallBackToSendPortMode;
-			} else if (ISTREQ(tok2, "on")) {
-				gDataPortMode = gFwDataPortMode = kPassiveMode;
-			} else if (ISTREQ(tok2, "off")) {
-				gDataPortMode = gFwDataPortMode = kSendPortMode;
-			} else if ((int) isdigit((int) tok2[0])) {
-				gDataPortMode = gFwDataPortMode = atoi(tok2);
-			}
-		}
-	}
+    /* Opened the firewall preferences file. */
+    line[sizeof(line) - 1] = '\0';
+    while (fgets(line, sizeof(line) - 1, fp) != NULL)
+    {
+        tok1 = strtok(line, " =\t\r\n");
+        if ((tok1 == NULL) || (tok1[0] == '#'))
+            continue;
+        tok2 = strtok(NULL, "\r\n");
+        if (tok2 == NULL)
+            continue;
+        if (ISTREQ(tok1, "firewall-type"))
+        {
+            n = atoi(tok2);
+            if ((n > 0) && (n <= kFirewallLastType))
+                gFirewallType = n;
+        }
+        else if (ISTREQ(tok1, "firewall-host"))
+        {
+            (void) STRNCPY(gFirewallHost, tok2);
+        }
+        else if (ISTREQ(tok1, "firewall-port"))
+        {
+            n = atoi(tok2);
+            if (n > 0)
+                gFirewallPort = (unsigned int) n;
+        }
+        else if (ISTREQ(tok1, "firewall-user"))
+        {
+            (void) STRNCPY(gFirewallUser, tok2);
+        }
+        else if (ISTREQ(tok1, "firewall-pass"))
+        {
+            (void) STRNCPY(gFirewallPass, tok2);
+        }
+        else if (ISTREQ(tok1, "firewall-password"))
+        {
+            (void) STRNCPY(gFirewallPass, tok2);
+        }
+        else if (ISTREQ(tok1, "firewall-exception-list"))
+        {
+            (void) STRNCPY(gFirewallExceptionList, tok2);
+        }
+        else if (ISTREQ(tok1, "passive"))
+        {
+            if (ISTREQ(tok2, "optional"))
+            {
+                gDataPortMode = gFwDataPortMode = kFallBackToSendPortMode;
+            }
+            else if (ISTREQ(tok2, "on"))
+            {
+                gDataPortMode = gFwDataPortMode = kPassiveMode;
+            }
+            else if (ISTREQ(tok2, "off"))
+            {
+                gDataPortMode = gFwDataPortMode = kSendPortMode;
+            }
+            else if ((int) isdigit((int) tok2[0]))
+            {
+                gDataPortMode = gFwDataPortMode = atoi(tok2);
+            }
+        }
+    }
 }	/* ProcessFirewallPrefFile */
 
 
@@ -285,77 +314,85 @@ ProcessFirewallPrefFile(FILE *fp)
 void
 LoadFirewallPrefs(int forceReload)
 {
-	FILE *fp, *fp2;
-	char pathName[256];
-	char *cp;
-	int userFile = 0;
-	int sysFile = 0;
+    FILE *fp, *fp2;
+    char pathName[256];
+    char *cp;
+    int userFile = 0;
+    int sysFile = 0;
 
-	if ((gFirewallPrefsLoaded != 0) && (forceReload == 0))
-		return;
-	gFirewallPrefsLoaded = 1;
-	pathName[0] = '\0';
+    if ((gFirewallPrefsLoaded != 0) && (forceReload == 0))
+        return;
+    gFirewallPrefsLoaded = 1;
+    pathName[0] = '\0';
 
-	/* Set default values. */
-	gFirewallType = kFirewallNotInUse;
-	gFirewallPort = 0;
-	gFirewallHost[0] = '\0';
-	gFirewallUser[0] = '\0';
-	gFirewallPass[0] = '\0';
-	gFirewallExceptionList[0] = '\0';
+    /* Set default values. */
+    gFirewallType = kFirewallNotInUse;
+    gFirewallPort = 0;
+    gFirewallHost[0] = '\0';
+    gFirewallUser[0] = '\0';
+    gFirewallPass[0] = '\0';
+    gFirewallExceptionList[0] = '\0';
 
-	fp2 = fopen(kGlobalFirewallPrefFileName, FOPEN_READ_TEXT);
-	if (fp2 != NULL) {
-		/* Initialize to system-wide defaults. */
-		ProcessFirewallPrefFile(fp2);
-		(void) fclose(fp2);
-		sysFile++;
-	}
+    fp2 = fopen(kGlobalFirewallPrefFileName, FOPEN_READ_TEXT);
+    if (fp2 != NULL)
+    {
+        /* Initialize to system-wide defaults. */
+        ProcessFirewallPrefFile(fp2);
+        (void) fclose(fp2);
+        sysFile++;
+    }
 
-	if (gOurDirectoryPath[0] != '\0') {
-		(void) OurDirectoryPath(pathName, sizeof(pathName), kFirewallPrefFileName);
-		fp = fopen(pathName, FOPEN_READ_TEXT);
-		if (fp != NULL) {
-			/* Do user's firewall file. */
-			ProcessFirewallPrefFile(fp);
-			(void) fclose(fp);
-			userFile = 1;
-		}
-	}
+    if (gOurDirectoryPath[0] != '\0')
+    {
+        (void) OurDirectoryPath(pathName, sizeof(pathName), kFirewallPrefFileName);
+        fp = fopen(pathName, FOPEN_READ_TEXT);
+        if (fp != NULL)
+        {
+            /* Do user's firewall file. */
+            ProcessFirewallPrefFile(fp);
+            (void) fclose(fp);
+            userFile = 1;
+        }
+    }
 
-	fp2 = fopen(kGlobalFixedFirewallPrefFileName, FOPEN_READ_TEXT);
-	if (fp2 != NULL) {
-		/* Override with system-wide settings. */
-		ProcessFirewallPrefFile(fp2);
-		(void) fclose(fp2);
-		sysFile++;
-	}
+    fp2 = fopen(kGlobalFixedFirewallPrefFileName, FOPEN_READ_TEXT);
+    if (fp2 != NULL)
+    {
+        /* Override with system-wide settings. */
+        ProcessFirewallPrefFile(fp2);
+        (void) fclose(fp2);
+        sysFile++;
+    }
 
-	if ((userFile == 0) && (sysFile == 0) && (pathName[0] != '\0')) {
-		/* Create a blank one, if there were no system-wide files,
-		 * and if the user's $HOME is not the root directory.
-		 */
-		fp = fopen(pathName, FOPEN_WRITE_TEXT);
-		if (fp != NULL) {
-			WriteDefaultFirewallPrefs(fp);
-			(void) fclose(fp);
+    if ((userFile == 0) && (sysFile == 0) && (pathName[0] != '\0'))
+    {
+        /* Create a blank one, if there were no system-wide files,
+         * and if the user's $HOME is not the root directory.
+         */
+        fp = fopen(pathName, FOPEN_WRITE_TEXT);
+        if (fp != NULL)
+        {
+            WriteDefaultFirewallPrefs(fp);
+            (void) fclose(fp);
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
 #else
-			(void) chmod(pathName, 00600);
+            (void) chmod(pathName, 00600);
 #endif
-			gNumProgramRuns = 1;
-		}
-	}
+            gNumProgramRuns = 1;
+        }
+    }
 
-	if (gFirewallExceptionList[0] == '\0') {
-		if (gGetOurHostNameResult == 100)
-			gGetOurHostNameResult = GetOurHostName(gOurHostName, sizeof(gOurHostName));
+    if (gFirewallExceptionList[0] == '\0')
+    {
+        if (gGetOurHostNameResult == 100)
+            gGetOurHostNameResult = GetOurHostName(gOurHostName, sizeof(gOurHostName));
 
-		cp = strchr(gOurHostName, '.');
+        cp = strchr(gOurHostName, '.');
 
-		if (cp != NULL) {
-			(void) STRNCPY(gFirewallExceptionList, cp);
-			(void) STRNCAT(gFirewallExceptionList, ",localdomain");
-		}
-	}
+        if (cp != NULL)
+        {
+            (void) STRNCPY(gFirewallExceptionList, cp);
+            (void) STRNCAT(gFirewallExceptionList, ",localdomain");
+        }
+    }
 }	/* LoadFirewallPrefs */

@@ -1,32 +1,33 @@
-/* bookmark.h
+﻿/* bookmark.h
  *
  * Copyright (c) 1992-2002 by Mike Gleason.
  * All rights reserved.
- * 
+ *
  */
 
 typedef struct Bookmark *BookmarkPtr;
-typedef struct Bookmark {
-	char				bookmarkName[16];
-	char				name[64];
-	char				user[64];
-	char				pass[64];
-	char				acct[64];
-	char				dir[160];
-	char				ldir[160];
-	int				xferType;
-	unsigned int			port;
-	time_t				lastCall;
-	int				hasSIZE;
-	int				hasMDTM;
-	int				hasPASV;
-	int				isUnix;
-	char				lastIP[32];
-	char				comment[128];
-	int				xferMode;
-	int				hasUTIME;
+typedef struct Bookmark
+{
+    char				bookmarkName[16];
+    char				name[64];
+    char				user[64];
+    char				pass[64];
+    char				acct[64];
+    char				dir[160];
+    char				ldir[160];
+    int				xferType;
+    unsigned int			port;
+    time_t				lastCall;
+    int				hasSIZE;
+    int				hasMDTM;
+    int				hasPASV;
+    int				isUnix;
+    char				lastIP[32];
+    char				comment[128];
+    int				xferMode;
+    int				hasUTIME;
 
-	int				deleted;
+    int				deleted;
 } Bookmark;
 
 #define kBookmarkVersion		8

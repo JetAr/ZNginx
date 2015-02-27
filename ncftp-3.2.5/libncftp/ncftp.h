@@ -1,4 +1,4 @@
-/* ncftp.h
+﻿/* ncftp.h
  *
  * Copyright (c) 1996-2011 Mike Gleason, NcFTP Software.
  * All rights reserved.
@@ -19,7 +19,7 @@ extern "C"
 #define kLibraryMagic "LibNcFTP 3.2.5"
 
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
-	/* Includes for Windows */
+/* Includes for Windows */
 #	pragma once
 #	ifndef __MINGW32__
 #		pragma warning(disable : 4127)	// warning C4127: conditional expression is constant
@@ -31,10 +31,10 @@ extern "C"
 #		pragma warning(disable : 4115)	// warning C4115: 'IRpcStubBuffer' : named type definition in parentheses
 #		pragma warning(disable : 4711)	// warning C4711: function selected for automatic inline expansion
 #	endif
-	/* We now try for at least Windows 2000 compatibility (0x0500).
-	 * The code will still work on older systems, though.
-	 * Prior versions used 0x0400 instead.
-	 */
+/* We now try for at least Windows 2000 compatibility (0x0500).
+ * The code will still work on older systems, though.
+ * Prior versions used 0x0400 instead.
+ */
 #	ifndef WINVER
 #		define WINVER 0x0500
 #	endif
@@ -170,7 +170,7 @@ extern "C"
 #		define snprintf _snprintf
 #	endif
 #else
-	/* Includes for UNIX */
+/* Includes for UNIX */
 #	include <unistd.h>
 #	include <sys/types.h>
 #	include <sys/stat.h>
@@ -217,46 +217,51 @@ extern "C"
 typedef void (*FTPSigProc)(int);
 
 typedef struct FTPLine *FTPLinePtr;
-typedef struct FTPLine {
-	FTPLinePtr prev, next;
-	char *line;
+typedef struct FTPLine
+{
+    FTPLinePtr prev, next;
+    char *line;
 } FTPLine;
 
-typedef struct FTPLineList {
-	FTPLinePtr first, last;
-	int nLines;
+typedef struct FTPLineList
+{
+    FTPLinePtr first, last;
+    int nLines;
 } FTPLineList, *FTPLineListPtr;
 
-typedef struct Response {
-	FTPLineList msg;
-	int codeType;
-	int code;
-	int printMode;
-	int eofOkay;
-	int hadEof;
+typedef struct Response
+{
+    FTPLineList msg;
+    int codeType;
+    int code;
+    int printMode;
+    int eofOkay;
+    int hadEof;
 } Response, *ResponsePtr;
 
 #if USE_SIO && !defined(_SReadlineInfo_)
 #define _SReadlineInfo_ 1
-typedef struct SReadlineInfo {
-	char *buf;		/* Pointer to beginning of buffer. */
-	char *bufPtr;		/* Pointer to current position in buffer. */
-	char *bufLim;		/* Pointer to end of buffer. */
-	size_t bufSize;		/* Current size of buffer block. */
-	size_t bufSizeMax;	/* Maximum size available for buffer. */
-	int malloc;		/* If non-zero, malloc() was used for buf. */
-	int fd;			/* File descriptor to use for I/O. */
-	int timeoutLen;		/* Timeout to use, in seconds. */
-	int requireEOLN;	/* When buffer is full, continue reading and discarding until \n? */
+typedef struct SReadlineInfo
+{
+    char *buf;		/* Pointer to beginning of buffer. */
+    char *bufPtr;		/* Pointer to current position in buffer. */
+    char *bufLim;		/* Pointer to end of buffer. */
+    size_t bufSize;		/* Current size of buffer block. */
+    size_t bufSizeMax;	/* Maximum size available for buffer. */
+    int malloc;		/* If non-zero, malloc() was used for buf. */
+    int fd;			/* File descriptor to use for I/O. */
+    int timeoutLen;		/* Timeout to use, in seconds. */
+    int requireEOLN;	/* When buffer is full, continue reading and discarding until \n? */
 } SReadlineInfo;
 #endif
 
-typedef struct FTPLibraryInfo {
-	char magic[16];				/* Don't modify this field. */
-	int init;				/* Don't modify this field. */
-	int socksInit;				/* Don't modify this field. */
-	unsigned int defaultPort;		/* Don't modify this field. */
-	char defaultAnonPassword[80];		/* You may set this after init. */
+typedef struct FTPLibraryInfo
+{
+    char magic[16];				/* Don't modify this field. */
+    int init;				/* Don't modify this field. */
+    int socksInit;				/* Don't modify this field. */
+    unsigned int defaultPort;		/* Don't modify this field. */
+    char defaultAnonPassword[80];		/* You may set this after init. */
 } FTPLibraryInfo, *FTPLIPtr;
 
 typedef struct FTPConnectionInfo *FTPCIPtr;
@@ -268,219 +273,223 @@ typedef void (*FTPRedialStatusProc)(const FTPCIPtr, int, int);
 typedef void (*FTPPrintResponseProc)(const FTPCIPtr, ResponsePtr);
 typedef void (*FTPGetPassphraseProc)(const FTPCIPtr, FTPLineListPtr pwPrompt, char *pass, size_t dsize);
 
-typedef struct FTPConnectionInfo {
-	char magic[16];				/* Don't modify this field. */
-	
-	char host[128];				/* REQUIRED input parameter. */
-	char user[128];				/* OPTIONAL input parameter. */
-	char pass[256];				/* OPTIONAL input parameter. */
-	char acct[64];				/* OPTIONAL input parameter. */
-	unsigned int passIsEmpty;		/* OPTIONAL input parameter. */
-	unsigned int port;			/* OPTIONAL input parameter. */
+typedef struct FTPConnectionInfo
+{
+    char magic[16];				/* Don't modify this field. */
 
-	int errNo;				/* You may modify this if you want. */
-	char lastFTPCmdResultStr[128];		/* You may modify this if you want. */
-	FTPLineList lastFTPCmdResultLL;		/* Use, but do not modify. */
-	int lastFTPCmdResultNum;		/* You may modify this if you want. */
+    char host[128];				/* REQUIRED input parameter. */
+    char user[128];				/* OPTIONAL input parameter. */
+    char pass[256];				/* OPTIONAL input parameter. */
+    char acct[64];				/* OPTIONAL input parameter. */
+    unsigned int passIsEmpty;		/* OPTIONAL input parameter. */
+    unsigned int port;			/* OPTIONAL input parameter. */
 
-	FILE *debugLog;				/* OPTIONAL input parameter. */
-	int debugTimestamping;			/* OPTIONAL input parameter. */
-	FTPLogProc debugLogProc;		/* OPTIONAL input parameter. */
+    int errNo;				/* You may modify this if you want. */
+    char lastFTPCmdResultStr[128];		/* You may modify this if you want. */
+    FTPLineList lastFTPCmdResultLL;		/* Use, but do not modify. */
+    int lastFTPCmdResultNum;		/* You may modify this if you want. */
 
-	unsigned int xferTimeout;		/* OPTIONAL input parameter. */
-	unsigned int connTimeout;		/* OPTIONAL input parameter. */
-	unsigned int ctrlTimeout;		/* OPTIONAL input parameter. */
-	unsigned int abortTimeout;		/* OPTIONAL input parameter. */
+    FILE *debugLog;				/* OPTIONAL input parameter. */
+    int debugTimestamping;			/* OPTIONAL input parameter. */
+    FTPLogProc debugLogProc;		/* OPTIONAL input parameter. */
 
-	int maxDials;				/* OPTIONAL input parameter. */
-	int redialDelay;			/* OPTIONAL input parameter. */
+    unsigned int xferTimeout;		/* OPTIONAL input parameter. */
+    unsigned int connTimeout;		/* OPTIONAL input parameter. */
+    unsigned int ctrlTimeout;		/* OPTIONAL input parameter. */
+    unsigned int abortTimeout;		/* OPTIONAL input parameter. */
 
-	int dataPortMode;			/* OPTIONAL input parameter. */
+    int maxDials;				/* OPTIONAL input parameter. */
+    int redialDelay;			/* OPTIONAL input parameter. */
 
-	int firewallType;			/* OPTIONAL input parameter. */
-	char firewallHost[64];			/* OPTIONAL input parameter. */
-	char firewallUser[64];			/* OPTIONAL input parameter. */
-	char firewallPass[64];			/* OPTIONAL input parameter. */
-	unsigned int firewallPort;		/* OPTIONAL input parameter. */
+    int dataPortMode;			/* OPTIONAL input parameter. */
 
-	size_t ctrlSocketRBufSize;		/* OPTIONAL input parameter. */
-	size_t ctrlSocketSBufSize;		/* OPTIONAL input parameter. */
-	size_t dataSocketRBufSize;		/* OPTIONAL input parameter. */
-	size_t dataSocketSBufSize;		/* OPTIONAL input parameter. */
+    int firewallType;			/* OPTIONAL input parameter. */
+    char firewallHost[64];			/* OPTIONAL input parameter. */
+    char firewallUser[64];			/* OPTIONAL input parameter. */
+    char firewallPass[64];			/* OPTIONAL input parameter. */
+    unsigned int firewallPort;		/* OPTIONAL input parameter. */
 
-	const char *asciiFilenameExtensions;	/* OPTIONAL input parameter. */
-	int shutdownUnusedSideOfSockets;	/* OPTIONAL input parameter. */
+    size_t ctrlSocketRBufSize;		/* OPTIONAL input parameter. */
+    size_t ctrlSocketSBufSize;		/* OPTIONAL input parameter. */
+    size_t dataSocketRBufSize;		/* OPTIONAL input parameter. */
+    size_t dataSocketSBufSize;		/* OPTIONAL input parameter. */
 
-	unsigned short ephemLo;			/* OPTIONAL input parameter. */
-	unsigned short ephemHi;			/* OPTIONAL input parameter. */
+    const char *asciiFilenameExtensions;	/* OPTIONAL input parameter. */
+    int shutdownUnusedSideOfSockets;	/* OPTIONAL input parameter. */
 
-	FTPConnectMessageProc onConnectMsgProc; /* OPTIONAL input parameter. */
-	FTPRedialStatusProc redialStatusProc;	/* OPTIONAL input parameter. */
-	FTPPrintResponseProc printResponseProc; /* OPTIONAL input parameter. */
-	FTPLoginMessageProc onLoginMsgProc;	/* OPTIONAL input parameter. */
+    unsigned short ephemLo;			/* OPTIONAL input parameter. */
+    unsigned short ephemHi;			/* OPTIONAL input parameter. */
 
-	FTPGetPassphraseProc passphraseProc;	/* OPTIONAL input parameter. */
+    FTPConnectMessageProc onConnectMsgProc; /* OPTIONAL input parameter. */
+    FTPRedialStatusProc redialStatusProc;	/* OPTIONAL input parameter. */
+    FTPPrintResponseProc printResponseProc; /* OPTIONAL input parameter. */
+    FTPLoginMessageProc onLoginMsgProc;	/* OPTIONAL input parameter. */
 
-	/* Used during transfers; valid during progress meter updates. */
-	FTPProgressMeterProc progress;		/* OPTIONAL input parameter. */
-	longest_int bytesTransferred;		/* Do not modify this field. */
-	int useProgressMeter;			/* Used internally. */
-	struct timeval t0;			/* Do not modify this field. */
-	double sec;				/* Do not modify this field. */
-	double secLeft;				/* Do not modify this field. */
-	double kBytesPerSec;			/* Do not modify this field. */
-	double percentCompleted;		/* Do not modify this field. */
-	longest_int expectedSize;		/* Do not modify this field. */
-	time_t mdtm;				/* Do not modify this field. */
-	time_t nextProgressUpdate;		/* Do not modify this field. */
-	const char *rname;			/* Do not modify this field. */
-	const char *lname;			/* Do not modify this field. */
-	int stalled;				/* Do not modify this field. */
-	int dataTimedOut;			/* Do not modify this field. */
-	int cancelXfer;				/* You may modify this. */
-	int canceling;				/* Use, but do not modify. */
-	int canceled;				/* Use, but do not modify. */
+    FTPGetPassphraseProc passphraseProc;	/* OPTIONAL input parameter. */
 
-	char actualHost[64];			/* Do not modify this field. */
-	char ip[32];				/* Do not modify this field. */
+    /* Used during transfers; valid during progress meter updates. */
+    FTPProgressMeterProc progress;		/* OPTIONAL input parameter. */
+    longest_int bytesTransferred;		/* Do not modify this field. */
+    int useProgressMeter;			/* Used internally. */
+    struct timeval t0;			/* Do not modify this field. */
+    double sec;				/* Do not modify this field. */
+    double secLeft;				/* Do not modify this field. */
+    double kBytesPerSec;			/* Do not modify this field. */
+    double percentCompleted;		/* Do not modify this field. */
+    longest_int expectedSize;		/* Do not modify this field. */
+    time_t mdtm;				/* Do not modify this field. */
+    time_t nextProgressUpdate;		/* Do not modify this field. */
+    const char *rname;			/* Do not modify this field. */
+    const char *lname;			/* Do not modify this field. */
+    int stalled;				/* Do not modify this field. */
+    int dataTimedOut;			/* Do not modify this field. */
+    int cancelXfer;				/* You may modify this. */
+    int canceling;				/* Use, but do not modify. */
+    int canceled;				/* Use, but do not modify. */
 
-	char *startingWorkingDirectory;		/* Use, but do not modify. */
+    char actualHost[64];			/* Do not modify this field. */
+    char ip[32];				/* Do not modify this field. */
 
-	int connected;				/* Do not modify this field. */
-	int loggedIn;				/* Do not modify this field. */
-	int curTransferType;			/* Do not modify this field. */
-	longest_int startPoint;			/* Do not modify this field. */
-	FILE *errLog;				/* DEPRECATED input parameter. */
-	FTPLogProc errLogProc;			/* DEPRECATED input parameter. */
-	FTPLIPtr lip;				/* Do not modify this field. */
+    char *startingWorkingDirectory;		/* Use, but do not modify. */
 
-	int hasPASV;				/* Do not modify this field. */
-	int hasSIZE;				/* Do not modify this field. */
-	int hasMDTM;				/* Do not modify this field. */
-	int hasMDTM_set;			/* Do not modify this field. */
-	int hasMFMT;				/* Do not modify this field. */
-	int hasMFF;				/* Do not modify this field. */
-	int hasREST;				/* Do not modify this field. */
-	int hasNLST_a;				/* Do not modify this field. */
-	int hasNLST_d;				/* Do not modify this field. */
-	int hasFEAT;				/* Do not modify this field. */
-	int hasMLSD;				/* Do not modify this field. */
-	int hasMLST;				/* Do not modify this field. */
-	int usedMLS;				/* Do not modify this field. */
-	int hasCLNT;				/* Do not modify this field. */
-	int hasHELP_SITE;			/* Do not modify this field. */
-	int hasSITE_UTIME;			/* Do not modify this field. */
-	int hasSITE_RETRBUFSIZE;		/* Do not modify this field. */
-	int hasSITE_RBUFSIZ;			/* Do not modify this field. */
-	int hasSITE_RBUFSZ;			/* Do not modify this field. */
-	int hasSITE_STORBUFSIZE;		/* Do not modify this field. */
-	int hasSITE_SBUFSIZ;			/* Do not modify this field. */
-	int hasSITE_SBUFSZ;			/* Do not modify this field. */
-	int hasSITE_BUFSIZE;			/* Do not modify this field. */
-	int hasRETR_tar;			/* Do not modify this field. */
-	int mlsFeatures;			/* Do not modify this field. */
-	int STATfileParamWorks;			/* Do not modify this field. */
-	int NLSTfileParamWorks;			/* Do not modify this field. */
+    int connected;				/* Do not modify this field. */
+    int loggedIn;				/* Do not modify this field. */
+    int curTransferType;			/* Do not modify this field. */
+    longest_int startPoint;			/* Do not modify this field. */
+    FILE *errLog;				/* DEPRECATED input parameter. */
+    FTPLogProc errLogProc;			/* DEPRECATED input parameter. */
+    FTPLIPtr lip;				/* Do not modify this field. */
 
-	struct sockaddr_in servCtlAddr;		/* Do not modify this field. */
-	struct sockaddr_in servDataAddr;	/* Do not modify this field. */
-	struct sockaddr_in ourCtlAddr;		/* Do not modify this field. */
-	struct sockaddr_in ourDataAddr;		/* Do not modify this field. */
-	int netMode;				/* Do not use or modify. */
-	char *buf;				/* Do not modify this field. */
-	size_t bufSize;				/* Do not modify this field. */
-	int doAllocBuf;				/* Do not modify this field. */
-	FILE *cin;				/* Do not use or modify. */
-	FILE *cout;				/* Do not use or modify. */
-	int ctrlSocketR;			/* You may use but not modify/close. */
-	int ctrlSocketW;			/* You may use but not modify/close. */
-	int dataSocket;				/* You may use but not modify/close. */
-	int dataSocketConnected;		/* Do not use or modify. */
-	int leavePass;				/* You may modify this. */
-	int eofOkay;				/* Do not use or modify. */
-	int require20;				/* You may modify this. */
-	int allowProxyForPORT;			/* You may modify this. */
-	int usingTAR;				/* Use, but do not modify. */
-	int serverType;				/* Do not use or modify. */
-	int ietfCompatLevel;			/* Do not use or modify. */
+    int hasPASV;				/* Do not modify this field. */
+    int hasSIZE;				/* Do not modify this field. */
+    int hasMDTM;				/* Do not modify this field. */
+    int hasMDTM_set;			/* Do not modify this field. */
+    int hasMFMT;				/* Do not modify this field. */
+    int hasMFF;				/* Do not modify this field. */
+    int hasREST;				/* Do not modify this field. */
+    int hasNLST_a;				/* Do not modify this field. */
+    int hasNLST_d;				/* Do not modify this field. */
+    int hasFEAT;				/* Do not modify this field. */
+    int hasMLSD;				/* Do not modify this field. */
+    int hasMLST;				/* Do not modify this field. */
+    int usedMLS;				/* Do not modify this field. */
+    int hasCLNT;				/* Do not modify this field. */
+    int hasHELP_SITE;			/* Do not modify this field. */
+    int hasSITE_UTIME;			/* Do not modify this field. */
+    int hasSITE_RETRBUFSIZE;		/* Do not modify this field. */
+    int hasSITE_RBUFSIZ;			/* Do not modify this field. */
+    int hasSITE_RBUFSZ;			/* Do not modify this field. */
+    int hasSITE_STORBUFSIZE;		/* Do not modify this field. */
+    int hasSITE_SBUFSIZ;			/* Do not modify this field. */
+    int hasSITE_SBUFSZ;			/* Do not modify this field. */
+    int hasSITE_BUFSIZE;			/* Do not modify this field. */
+    int hasRETR_tar;			/* Do not modify this field. */
+    int mlsFeatures;			/* Do not modify this field. */
+    int STATfileParamWorks;			/* Do not modify this field. */
+    int NLSTfileParamWorks;			/* Do not modify this field. */
 
-	int numDials;				/* Do not modify. */
-	int totalDials;				/* Do not modify. */
-	struct timeval initTime;		/* Do not modify. */
-	struct timeval startTime;		/* Do not modify. */
-	struct timeval connectTime;		/* Do not modify. */
-	struct timeval loginTime;		/* Do not modify. */
-	struct timeval disconnectTime;		/* Do not modify. */
-	struct timeval lastCmdStart;		/* Do not modify. */
-	struct timeval lastCmdFinish;		/* Do not modify. */
-	int numDownloads;			/* Do not modify. */
-	int numUploads;				/* Do not modify. */
-	int numListings;			/* Do not modify. */
+    struct sockaddr_in servCtlAddr;		/* Do not modify this field. */
+    struct sockaddr_in servDataAddr;	/* Do not modify this field. */
+    struct sockaddr_in ourCtlAddr;		/* Do not modify this field. */
+    struct sockaddr_in ourDataAddr;		/* Do not modify this field. */
+    int netMode;				/* Do not use or modify. */
+    char *buf;				/* Do not modify this field. */
+    size_t bufSize;				/* Do not modify this field. */
+    int doAllocBuf;				/* Do not modify this field. */
+    FILE *cin;				/* Do not use or modify. */
+    FILE *cout;				/* Do not use or modify. */
+    int ctrlSocketR;			/* You may use but not modify/close. */
+    int ctrlSocketW;			/* You may use but not modify/close. */
+    int dataSocket;				/* You may use but not modify/close. */
+    int dataSocketConnected;		/* Do not use or modify. */
+    int leavePass;				/* You may modify this. */
+    int eofOkay;				/* Do not use or modify. */
+    int require20;				/* You may modify this. */
+    int allowProxyForPORT;			/* You may modify this. */
+    int usingTAR;				/* Use, but do not modify. */
+    int serverType;				/* Do not use or modify. */
+    int ietfCompatLevel;			/* Do not use or modify. */
 
-	int doNotGetStartingWorkingDirectory;	/* You may modify this. */
-	char textEOLN[4];			/* Set automatically per platform. */
-	int asciiTranslationMode;		/* You may modify this. */
-	const char *manualOverrideFeatures;	/* You may modify this. */
+    int numDials;				/* Do not modify. */
+    int totalDials;				/* Do not modify. */
+    struct timeval initTime;		/* Do not modify. */
+    struct timeval startTime;		/* Do not modify. */
+    struct timeval connectTime;		/* Do not modify. */
+    struct timeval loginTime;		/* Do not modify. */
+    struct timeval disconnectTime;		/* Do not modify. */
+    struct timeval lastCmdStart;		/* Do not modify. */
+    struct timeval lastCmdFinish;		/* Do not modify. */
+    int numDownloads;			/* Do not modify. */
+    int numUploads;				/* Do not modify. */
+    int numListings;			/* Do not modify. */
 
-	/* Only set the following field if all the following are true:
-	 *   Your client FTP program is running on a private network (e.g. 192.168.1.0); and
-	 *   You are accessing a server outside your network (e.g., on the Internet); and
-	 *   Your network's firewall does NOT fix private addresses in PORT for you; and
-	 *   You know what your external IP address is.
-	 */
-	struct sockaddr_in clientKnownExternalAddr;	
+    int doNotGetStartingWorkingDirectory;	/* You may modify this. */
+    char textEOLN[4];			/* Set automatically per platform. */
+    int asciiTranslationMode;		/* You may modify this. */
+    const char *manualOverrideFeatures;	/* You may modify this. */
 
-	struct sockaddr_in preferredLocalAddr;	/* You may modify this. */
-	int maxNumberOfSuccessivePASVAttempts;	/* You may modify this. */
+    /* Only set the following field if all the following are true:
+     *   Your client FTP program is running on a private network (e.g. 192.168.1.0); and
+     *   You are accessing a server outside your network (e.g., on the Internet); and
+     *   Your network's firewall does NOT fix private addresses in PORT for you; and
+     *   You know what your external IP address is.
+     */
+    struct sockaddr_in clientKnownExternalAddr;
+
+    struct sockaddr_in preferredLocalAddr;	/* You may modify this. */
+    int maxNumberOfSuccessivePASVAttempts;	/* You may modify this. */
 
 #if USE_SIO
-	char srlBuf[768];
-	SReadlineInfo ctrlSrl;			/* Do not use or modify. */
+    char srlBuf[768];
+    SReadlineInfo ctrlSrl;			/* Do not use or modify. */
 #endif
-	int iUser;				/* Scratch integer field you can use. */
-	void *pUser;				/* Scratch pointer field you can use. */
-	longest_int llUser;			/* Scratch long long field you can use. */
-	int reserved[32];			/* Do not use or modify. */
+    int iUser;				/* Scratch integer field you can use. */
+    void *pUser;				/* Scratch pointer field you can use. */
+    longest_int llUser;			/* Scratch long long field you can use. */
+    int reserved[32];			/* Do not use or modify. */
 } FTPConnectionInfo;
 
 typedef struct FTPFileInfo *FTPFileInfoPtr, **FTPFileInfoVec;
-typedef struct FTPFileInfo {
-	FTPFileInfoPtr prev, next;
-	char *relname;
-	char *rname;
-	char *rlinkto;
-	char *lname;
-	char *plug;	/* permissions, links, user, group */
-	int type;
-	time_t mdtm;
-	longest_int size;
-	size_t relnameLen;
-	int mode;	/* Only set by UnMlsD() */
+typedef struct FTPFileInfo
+{
+    FTPFileInfoPtr prev, next;
+    char *relname;
+    char *rname;
+    char *rlinkto;
+    char *lname;
+    char *plug;	/* permissions, links, user, group */
+    int type;
+    time_t mdtm;
+    longest_int size;
+    size_t relnameLen;
+    int mode;	/* Only set by UnMlsD() */
 } FTPFileInfo;
 
-typedef struct FTPFileInfoList {
-	FTPFileInfoPtr first, last;
-	FTPFileInfoVec vec;
-	size_t maxFileLen;
-	size_t maxPlugLen;
-	int nFileInfos;
-	int sortKey;
-	int sortOrder;
+typedef struct FTPFileInfoList
+{
+    FTPFileInfoPtr first, last;
+    FTPFileInfoVec vec;
+    size_t maxFileLen;
+    size_t maxPlugLen;
+    int nFileInfos;
+    int sortKey;
+    int sortOrder;
 } FTPFileInfoList, *FTPFileInfoListPtr;
 
 /* Used with UnMlsT() */
-typedef struct MLstItem{
-	char fname[512];
-	char linkto[512];
-	int ftype;
-	longest_int fsize;
-	time_t ftime;
-	int mode;		/* "UNIX.mode" fact */
-	int uid;		/* "UNIX.uid" fact */
-	int gid;		/* "UNIX.gid" fact */
-	char perm[16];		/* "perm" fact */
-	char owner[16];		/* "UNIX.owner" fact */
-	char group[16];		/* "UNIX.group" fact */
+typedef struct MLstItem
+{
+    char fname[512];
+    char linkto[512];
+    int ftype;
+    longest_int fsize;
+    time_t ftime;
+    int mode;		/* "UNIX.mode" fact */
+    int uid;		/* "UNIX.uid" fact */
+    int gid;		/* "UNIX.gid" fact */
+    char perm[16];		/* "perm" fact */
+    char owner[16];		/* "UNIX.owner" fact */
+    char group[16];		/* "UNIX.group" fact */
 } MLstItem, *MLstItemPtr;
 
 /* Messages we pass to the current progress meter function. */
@@ -536,7 +545,7 @@ typedef struct MLstItem{
 /* Suggested timeout values, in seconds, if you use timeouts. */
 #define kSuggestedDefaultXferTimeout	600
 #define kSuggestedDefaultConnTimeout	10
-#define kSuggestedDefaultCtrlTimeout	135	/* 2*MSL, + slop */ 
+#define kSuggestedDefaultCtrlTimeout	135	/* 2*MSL, + slop */
 #define kSuggestedAbortTimeout		10
 
 #define kDefaultMaxDials		3
@@ -577,7 +586,7 @@ typedef struct MLstItem{
 #define kTarNo				0
 
 #define FTP_UNIMPLEMENTED_CMD(a)	((a == 500) || (a == 502) || (a == 504))
-#define FTP_SYNTAX_ERROR_IN_PARAMETERS(a)	(a == 501)	
+#define FTP_SYNTAX_ERROR_IN_PARAMETERS(a)	(a == 501)
 
 /* Possible values returned by GetDateAndTime. */
 #define kSizeUnknown			((longest_int) (-1))
@@ -635,25 +644,25 @@ typedef struct MLstItem{
 #define kConfirmResumeProcSaidCancel 6
 
 typedef int (*FTPConfirmResumeDownloadProc)(
-	const FTPCIPtr cip,
-	const char **localpath,
-	longest_int localsize,
-	time_t localmtime,
-	const char *remotepath,
-	longest_int remotesize,
-	time_t remotetime,
-	longest_int *startPoint
+    const FTPCIPtr cip,
+    const char **localpath,
+    longest_int localsize,
+    time_t localmtime,
+    const char *remotepath,
+    longest_int remotesize,
+    time_t remotetime,
+    longest_int *startPoint
 );
 
 typedef int (*FTPConfirmResumeUploadProc)(
-	const FTPCIPtr cip,
-	const char *localpath,
-	longest_int localsize,
-	time_t localmtime,
-	const char **remotepath,
-	longest_int remotesize,
-	time_t remotetime,
-	longest_int *startPoint
+    const FTPCIPtr cip,
+    const char *localpath,
+    longest_int localsize,
+    time_t localmtime,
+    const char **remotepath,
+    longest_int remotesize,
+    time_t remotetime,
+    longest_int *startPoint
 );
 
 #define kNoFTPConfirmResumeDownloadProc	((FTPConfirmResumeDownloadProc) 0)
@@ -696,9 +705,9 @@ typedef int (*FTPConfirmResumeUploadProc)(
 #define kAsciiTranslationModeDefault	kAsciiTranslationModeFixEOLNs
 
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
-	/* Windows has separate functions to close and ioctl sockets. */
+/* Windows has separate functions to close and ioctl sockets. */
 #else
-	/* UNIX uses close() and ioctl() for all types of descriptors */
+/* UNIX uses close() and ioctl() for all types of descriptors */
 #	define closesocket close
 #	define ioctlsocket ioctl
 #endif
@@ -735,32 +744,35 @@ typedef int (*FTPConfirmResumeUploadProc)(
 #endif
 
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
-typedef struct dirent {
-	char d_name[MAX_PATH];
+typedef struct dirent
+{
+    char d_name[MAX_PATH];
 } dirent;
 
-typedef struct DIR {
-	HANDLE searchHandle;
-	char *dirpath;
-	WIN32_FIND_DATA ffd;
-	dirent dent;
+typedef struct DIR
+{
+    HANDLE searchHandle;
+    char *dirpath;
+    WIN32_FIND_DATA ffd;
+    dirent dent;
 } DIR;
 
 /* Identical in declaration to struct _stati64.
  * Unfortunately, we don't get _stati64 unless we're on an IA-64
  */
-struct WinStat64 {
-	_dev_t st_dev;
-	_ino_t st_ino;
-	unsigned short st_mode;
-	short st_nlink;
-	short st_uid;
-	short st_gid;
-	_dev_t st_rdev;
-	__int64 st_size;
-	time_t st_atime;
-	time_t st_mtime;
-	time_t st_ctime;
+struct WinStat64
+{
+    _dev_t st_dev;
+    _ino_t st_ino;
+    unsigned short st_mode;
+    short st_nlink;
+    short st_uid;
+    short st_gid;
+    _dev_t st_rdev;
+    __int64 st_size;
+    time_t st_atime;
+    time_t st_mtime;
+    time_t st_ctime;
 };
 
 int WinFStat64(const int h0, struct WinStat64 *const stp);
@@ -789,48 +801,50 @@ typedef struct FtwInfo *FtwInfoPtr;
 
 typedef int (*FtwProc)(const FtwInfoPtr ftwip);
 
-typedef struct FtwInfo {
-	unsigned int init;
-	FtwProc proc;
-	char *curPath;
-	size_t curPathLen;
-	size_t curPathAllocSize;
-	size_t startPathLen;
-	char *curFile;
-	size_t curFileLen;
-	int curType;
-	struct Stat curStat;
-	int noAutoMallocAndFree;
-	int dirSeparator;
-	char rootDir[4];
-	int autoGrow;
-	size_t depth;
-	size_t maxDepth;
-	size_t numDirs;
-	size_t numFiles;
-	size_t numLinks;
-	const char *rlinkto;	/* only valid during FTPFtw() */
-	size_t direntbufSize;
-	void *direntbuf;
-	void *cip;		/* only valid during FTPFtw() */
-	void *userdata;
+typedef struct FtwInfo
+{
+    unsigned int init;
+    FtwProc proc;
+    char *curPath;
+    size_t curPathLen;
+    size_t curPathAllocSize;
+    size_t startPathLen;
+    char *curFile;
+    size_t curFileLen;
+    int curType;
+    struct Stat curStat;
+    int noAutoMallocAndFree;
+    int dirSeparator;
+    char rootDir[4];
+    int autoGrow;
+    size_t depth;
+    size_t maxDepth;
+    size_t numDirs;
+    size_t numFiles;
+    size_t numLinks;
+    const char *rlinkto;	/* only valid during FTPFtw() */
+    size_t direntbufSize;
+    void *direntbuf;
+    void *cip;		/* only valid during FTPFtw() */
+    void *userdata;
 } FtwInfo;
 
-typedef struct GetoptInfo {
-	unsigned int init;	/* When properly initialized, set to 0xF123456F */
-	int err;	/* if error message should be printed */
-	int ind;	/* index into parent argv vector */
-	int opt;	/* character checked for validity */
-	char *arg;	/* argument associated with option */
-	char *place;	/* saved position in an arg */
+typedef struct GetoptInfo
+{
+    unsigned int init;	/* When properly initialized, set to 0xF123456F */
+    int err;	/* if error message should be printed */
+    int ind;	/* index into parent argv vector */
+    int opt;	/* character checked for validity */
+    char *arg;	/* argument associated with option */
+    char *place;	/* saved position in an arg */
 } GetoptInfo, *GetoptInfoPtr;
 
 #if (defined(__APPLE_CC__)) || (defined(MACOSX))
 #else
-	/* These definitions are here to preserve backwards-compatibility
-	 * with code which was designed using an earlier version of the
-	 * library.
-	 */
+/* These definitions are here to preserve backwards-compatibility
+ * with code which was designed using an earlier version of the
+ * library.
+ */
 #	define Line FTPLine
 #	define LinePtr FTPLinePtr
 #	define LineList FTPLineList

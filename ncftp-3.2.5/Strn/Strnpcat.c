@@ -1,4 +1,4 @@
-#include "syshdrs.h"
+﻿#include "syshdrs.h"
 #ifdef PRAGMA_HDRSTOP
 #	pragma hdrstop
 #endif
@@ -16,40 +16,43 @@
 char *
 Strnpcat(char *const dst, const char *const src, size_t n)
 {
-	register size_t i;
-	register char *d;
-	register const char *s;
-	register char c;
-	char *ret;
+    register size_t i;
+    register char *d;
+    register const char *s;
+    register char c;
+    char *ret;
 
-	if (n != 0 && ((i = strlen(dst)) < (n - 1))) {
-		d = dst + i;
-		s = src;
-		/* If they specified a maximum of n characters, use n - 1 chars to
-		 * hold the copy, and the last character in the array as a NUL.
-		 * This is the difference between the regular strncpy routine.
-		 * strncpy doesn't guarantee that your new string will have a
-		 * NUL terminator, but this routine does.
-		 */
-		for (++i; i<n; i++) {
-			c = *s++;
-			if (c == '\0') {
-				ret = d;	/* Return ptr to end byte. */
-				*d++ = c;
+    if (n != 0 && ((i = strlen(dst)) < (n - 1)))
+    {
+        d = dst + i;
+        s = src;
+        /* If they specified a maximum of n characters, use n - 1 chars to
+         * hold the copy, and the last character in the array as a NUL.
+         * This is the difference between the regular strncpy routine.
+         * strncpy doesn't guarantee that your new string will have a
+         * NUL terminator, but this routine does.
+         */
+        for (++i; i<n; i++)
+        {
+            c = *s++;
+            if (c == '\0')
+            {
+                ret = d;	/* Return ptr to end byte. */
+                *d++ = c;
 #if (STRNP_ZERO_PAD == 1)
-				/* Pad with zeros. */
-				for (; i<n; i++)
-					*d++ = 0;
+                /* Pad with zeros. */
+                for (; i<n; i++)
+                    *d++ = 0;
 #endif	/* STRNP_ZERO_PAD */
-				return ret;
-			}
-			*d++ = c;
-		}
-		/* If we get here, then we have a full string, with n - 1 characters,
-		 * so now we NUL terminate it and go home.
-		 */
-		*d = 0;
-		return (d);	/* Return ptr to end byte. */
-	}
-	return (dst);
+                return ret;
+            }
+            *d++ = c;
+        }
+        /* If we get here, then we have a full string, with n - 1 characters,
+         * so now we NUL terminate it and go home.
+         */
+        *d = 0;
+        return (d);	/* Return ptr to end byte. */
+    }
+    return (dst);
 }	/* Strnpcat */

@@ -1,8 +1,8 @@
-/* util.h
+﻿/* util.h
  *
  * Copyright (c) 2001 by Mike Gleason.
  * All rights reserved.
- * 
+ *
  */
 
 typedef int (*qsort_proc_t)(const void *, const void *);

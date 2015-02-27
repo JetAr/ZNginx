@@ -1,8 +1,8 @@
-/* ls.c
+﻿/* ls.c
  *
  * Copyright (c) 1992-2005 by Mike Gleason.
  * All rights reserved.
- * 
+ *
  */
 
 #include "syshdrs.h"
@@ -39,8 +39,8 @@ extern int gScreenColumns;
 void
 InitLsCache(void)
 {
-	(void) memset(gLsCache, 0, sizeof(gLsCache));
-	gOldestLsCacheItem = 0;
+    (void) memset(gLsCache, 0, sizeof(gLsCache));
+    gOldestLsCacheItem = 0;
 }	/* InitLsCache */
 
 
@@ -50,18 +50,19 @@ InitLsCache(void)
  */
 void InitLsMonths(void)
 {
-	struct tm lt;
-	int i;
+    struct tm lt;
+    int i;
 
-	memset(gLsMon, 0, sizeof(gLsMon));
-	(void) Localtime(0, &lt);
-	lt.tm_mday = 15;
-	lt.tm_hour = 12;
-	for (i=0; i<12; i++) {
-		lt.tm_mon = i;
-		(void) strftime(gLsMon[i], sizeof(gLsMon[i]) - 1, "%b", &lt);
-	}
-	(void) strcpy(gLsMon[i], "BUG");
+    memset(gLsMon, 0, sizeof(gLsMon));
+    (void) Localtime(0, &lt);
+    lt.tm_mday = 15;
+    lt.tm_hour = 12;
+    for (i=0; i<12; i++)
+    {
+        lt.tm_mon = i;
+        (void) strftime(gLsMon[i], sizeof(gLsMon[i]) - 1, "%b", &lt);
+    }
+    (void) strcpy(gLsMon[i], "BUG");
 }	/* InitLsMonths */
 
 
@@ -69,8 +70,8 @@ void InitLsMonths(void)
 
 void InitLs(void)
 {
-	InitLsCache();
-	InitLsMonths();
+    InitLsCache();
+    InitLsMonths();
 }	/* InitLs */
 
 
@@ -80,12 +81,12 @@ void InitLs(void)
 static void
 FlushLsCacheItem(int i)
 {
-	Trace(1, "flush ls cache item: %s\n", gLsCache[i].itempath);
-	if (gLsCache[i].itempath != NULL)
-		free(gLsCache[i].itempath);
-	gLsCache[i].itempath = NULL;
-	gLsCache[i].expiration = (time_t) 0;
-	DisposeFileInfoListContents(&gLsCache[i].fil);
+    Trace(1, "flush ls cache item: %s\n", gLsCache[i].itempath);
+    if (gLsCache[i].itempath != NULL)
+        free(gLsCache[i].itempath);
+    gLsCache[i].itempath = NULL;
+    gLsCache[i].expiration = (time_t) 0;
+    DisposeFileInfoListContents(&gLsCache[i].fil);
 }	/* FlushLsCacheItem */
 
 
@@ -95,13 +96,15 @@ FlushLsCacheItem(int i)
 void
 FlushLsCache(void)
 {
-	int i;
+    int i;
 
-	for (i=0; i<kLsCacheSize; i++) {
-		if (gLsCache[i].expiration != (time_t) 0) {
-			FlushLsCacheItem(i);
-		}
-	}
+    for (i=0; i<kLsCacheSize; i++)
+    {
+        if (gLsCache[i].expiration != (time_t) 0)
+        {
+            FlushLsCacheItem(i);
+        }
+    }
 }	/* FlushLsCache */
 
 
@@ -111,26 +114,30 @@ FlushLsCache(void)
 int
 LsCacheLookup(const char *const itempath)
 {
-	int i, j;
-	time_t now;
+    int i, j;
+    time_t now;
 
-	(void) time(&now);
-	for (i=0, j=gOldestLsCacheItem; i<kLsCacheSize; i++) {
-		if (--j < 0)
-			j = kLsCacheSize - 1;
-		if ((gLsCache[j].expiration != (time_t) 0) && (gLsCache[j].itempath != NULL)) {
-			if (strcmp(itempath, gLsCache[j].itempath) == 0) {
-				if (now > gLsCache[j].expiration) {
-					/* Found it, but it was expired. */
-					FlushLsCacheItem(j);
-					return (-1);
-				}
-				gLsCache[j].hits++;
-				return (j);
-			}
-		}
-	}
-	return (-1);
+    (void) time(&now);
+    for (i=0, j=gOldestLsCacheItem; i<kLsCacheSize; i++)
+    {
+        if (--j < 0)
+            j = kLsCacheSize - 1;
+        if ((gLsCache[j].expiration != (time_t) 0) && (gLsCache[j].itempath != NULL))
+        {
+            if (strcmp(itempath, gLsCache[j].itempath) == 0)
+            {
+                if (now > gLsCache[j].expiration)
+                {
+                    /* Found it, but it was expired. */
+                    FlushLsCacheItem(j);
+                    return (-1);
+                }
+                gLsCache[j].hits++;
+                return (j);
+            }
+        }
+    }
+    return (-1);
 }	/* LsCacheLookup */
 
 
@@ -140,40 +147,41 @@ LsCacheLookup(const char *const itempath)
 static void
 LsCacheAdd(const char *const itempath, FTPFileInfoListPtr files)
 {
-	char *cp;
-	int j;
+    char *cp;
+    int j;
 
-	/* Never cache empty listings in case of errors */
-	if (files->nFileInfos == 0)
-		return;
+    /* Never cache empty listings in case of errors */
+    if (files->nFileInfos == 0)
+        return;
 
-	j = LsCacheLookup(itempath);
-	if (j >= 0) {
-		/* Directory was already in there;
-		 * Replace it with the new
-		 * contents.
-		 */
-		FlushLsCacheItem(j);
-	}
+    j = LsCacheLookup(itempath);
+    if (j >= 0)
+    {
+        /* Directory was already in there;
+         * Replace it with the new
+         * contents.
+         */
+        FlushLsCacheItem(j);
+    }
 
-	cp = StrDup(itempath);
-	if (cp == NULL)
-		return;
+    cp = StrDup(itempath);
+    if (cp == NULL)
+        return;
 
-	j = gOldestLsCacheItem;
-	(void) memcpy(&gLsCache[j].fil, files, sizeof(FTPFileInfoList));
-	(void) time(&gLsCache[j].expiration);
-	gLsCache[j].expiration += gLsCacheItemLifetime;
-	gLsCache[j].hits = 0;
-	gLsCache[j].itempath = cp;
-	Trace(1, "ls cache add: %s\n", itempath);
+    j = gOldestLsCacheItem;
+    (void) memcpy(&gLsCache[j].fil, files, sizeof(FTPFileInfoList));
+    (void) time(&gLsCache[j].expiration);
+    gLsCache[j].expiration += gLsCacheItemLifetime;
+    gLsCache[j].hits = 0;
+    gLsCache[j].itempath = cp;
+    Trace(1, "ls cache add: %s\n", itempath);
 
-	/* Increment the pointer.  This is a circular array, so if it
-	 * hits the end it wraps over to the other side.
-	 */
-	gOldestLsCacheItem++;
-	if (gOldestLsCacheItem >= kLsCacheSize)
-		gOldestLsCacheItem = 0;
+    /* Increment the pointer.  This is a circular array, so if it
+     * hits the end it wraps over to the other side.
+     */
+    gOldestLsCacheItem++;
+    if (gOldestLsCacheItem >= kLsCacheSize)
+        gOldestLsCacheItem = 0;
 }	/* LsCacheAdd */
 
 
@@ -183,66 +191,72 @@ LsCacheAdd(const char *const itempath, FTPFileInfoListPtr files)
 static void
 LsC(FTPFileInfoListPtr dirp, int endChars, FILE *stream)
 {
-	char buf[400];
-	char buf2[400];
-	int ncol, nrow;
-	int i, j, k, l;
-	int colw;
-	int n;
-	FTPFileInfoVec itemv;
-	FTPFileInfoPtr itemp;
-	char *cp1, *cp2, *lim;
-	int screenColumns;
+    char buf[400];
+    char buf2[400];
+    int ncol, nrow;
+    int i, j, k, l;
+    int colw;
+    int n;
+    FTPFileInfoVec itemv;
+    FTPFileInfoPtr itemp;
+    char *cp1, *cp2, *lim;
+    int screenColumns;
 
-	screenColumns = gScreenColumns;
-	if (screenColumns > 400)
-		screenColumns = 400;
-	ncol = (screenColumns - 1) / ((int) dirp->maxFileLen + 2 + /*1or0*/ endChars);
-	if (ncol < 1)
-		ncol = 1;
-	colw = (screenColumns - 1) / ncol; 
-	n = dirp->nFileInfos;
-	nrow = n / ncol;
-	if ((n % ncol) != 0)
-		nrow++;
+    screenColumns = gScreenColumns;
+    if (screenColumns > 400)
+        screenColumns = 400;
+    ncol = (screenColumns - 1) / ((int) dirp->maxFileLen + 2 + /*1or0*/ endChars);
+    if (ncol < 1)
+        ncol = 1;
+    colw = (screenColumns - 1) / ncol;
+    n = dirp->nFileInfos;
+    nrow = n / ncol;
+    if ((n % ncol) != 0)
+        nrow++;
 
-	for (i=0; i<(int) sizeof(buf2); i++)
-		buf2[i] = ' ';
+    for (i=0; i<(int) sizeof(buf2); i++)
+        buf2[i] = ' ';
 
-	itemv = dirp->vec;
+    itemv = dirp->vec;
 
-	for (j=0; j<nrow; j++) {
-		(void) memcpy(buf, buf2, sizeof(buf));
-		for (i=0, k=j, l=0; i<ncol; i++, k += nrow, l += colw) {
-			if (k >= n)
-				continue;
-			itemp = itemv[k];
-			cp1 = buf + l;
-			lim = cp1 + (int) (itemp->relnameLen);
-			cp2 = itemp->relname;
-			while (cp1 < lim)
-				*cp1++ = *cp2++;
-			if (endChars != 0) {
-				if (itemp->type == 'l') {
-					/* Regular ls always uses @
-					 * for a symlink tail, even if
-					 * the linked item is a directory.
-					 */
-					*cp1++ = '@';
-				} else if (itemp->type == 'd') {
-					*cp1++ = '/';
-				}
-			}
-		}
-		cp1 = buf;
-		cp1 += sizeof(buf) - 1;
-		while (*--cp1 == ' ') {}
-		++cp1;
-		*cp1++ = '\n';
-		*cp1 = '\0';
-		(void) fprintf(stream, "%s", buf);
-		Trace(0, "%s", buf);
-	}
+    for (j=0; j<nrow; j++)
+    {
+        (void) memcpy(buf, buf2, sizeof(buf));
+        for (i=0, k=j, l=0; i<ncol; i++, k += nrow, l += colw)
+        {
+            if (k >= n)
+                continue;
+            itemp = itemv[k];
+            cp1 = buf + l;
+            lim = cp1 + (int) (itemp->relnameLen);
+            cp2 = itemp->relname;
+            while (cp1 < lim)
+                *cp1++ = *cp2++;
+            if (endChars != 0)
+            {
+                if (itemp->type == 'l')
+                {
+                    /* Regular ls always uses @
+                     * for a symlink tail, even if
+                     * the linked item is a directory.
+                     */
+                    *cp1++ = '@';
+                }
+                else if (itemp->type == 'd')
+                {
+                    *cp1++ = '/';
+                }
+            }
+        }
+        cp1 = buf;
+        cp1 += sizeof(buf) - 1;
+        while (*--cp1 == ' ') {}
+        ++cp1;
+        *cp1++ = '\n';
+        *cp1 = '\0';
+        (void) fprintf(stream, "%s", buf);
+        Trace(0, "%s", buf);
+    }
 }	/* LsC */
 
 
@@ -253,40 +267,45 @@ LsC(FTPFileInfoListPtr dirp, int endChars, FILE *stream)
 void
 LsDate(char *dstr, size_t dsiz, time_t ts)
 {
-	struct tm t;
+    struct tm t;
 
-	if (ts == kModTimeUnknown) {
-		(void) Strncpy(dstr, "            ", dsiz);
-		return;
-	}
-	if (Localtime(ts, &t) == NULL) {
-		(void) Strncpy(dstr, "Jan  0  1900", dsiz);
-		return;
-	}
-	if ((ts > gNowPlus1Hr) || (ts < gNowMinus6Mon)) {
+    if (ts == kModTimeUnknown)
+    {
+        (void) Strncpy(dstr, "            ", dsiz);
+        return;
+    }
+    if (Localtime(ts, &t) == NULL)
+    {
+        (void) Strncpy(dstr, "Jan  0  1900", dsiz);
+        return;
+    }
+    if ((ts > gNowPlus1Hr) || (ts < gNowMinus6Mon))
+    {
 #ifdef HAVE_SNPRINTF
-		(void) snprintf(dstr, dsiz,
+        (void) snprintf(dstr, dsiz,
 #else
-		(void) sprintf(dstr,
+        (void) sprintf(dstr,
 #endif
-			"%s %2d  %4d",
-			gLsMon[t.tm_mon],
-			t.tm_mday,
-			t.tm_year + 1900
-		);
-	} else {
+                        "%s %2d  %4d",
+                        gLsMon[t.tm_mon],
+                        t.tm_mday,
+                        t.tm_year + 1900
+                       );
+    }
+    else
+    {
 #ifdef HAVE_SNPRINTF
-		(void) snprintf(dstr, dsiz,
+        (void) snprintf(dstr, dsiz,
 #else
-		(void) sprintf(dstr,
+        (void) sprintf(dstr,
 #endif
-			"%s %2d %02d:%02d",
-			gLsMon[t.tm_mon],
-			t.tm_mday,
-			t.tm_hour,
-			t.tm_min
-		);
-	}
+                        "%s %2d %02d:%02d",
+                        gLsMon[t.tm_mon],
+                        t.tm_mday,
+                        t.tm_hour,
+                        t.tm_min
+                       );
+    }
 }	/* LsDate */
 
 
@@ -296,130 +315,144 @@ LsDate(char *dstr, size_t dsiz, time_t ts)
 void
 LsL(FTPFileInfoListPtr dirp, int endChars, int linkedTo, FILE *stream)
 {
-	FTPFileInfoPtr diritemp;
-	FTPFileInfoVec diritemv;
-	int i;
-	char fTail[2];
-	int fType;
-	const char *l1, *l2;
-	char datestr[32];
-	char sizestr[32];
-	char plugspec[16];
-	char plugstr[64];
-	const char *expad;
+    FTPFileInfoPtr diritemp;
+    FTPFileInfoVec diritemv;
+    int i;
+    char fTail[2];
+    int fType;
+    const char *l1, *l2;
+    char datestr[32];
+    char sizestr[32];
+    char plugspec[16];
+    char plugstr[64];
+    const char *expad;
 
-	fTail[0] = '\0';
-	fTail[1] = '\0';
+    fTail[0] = '\0';
+    fTail[1] = '\0';
 
-	(void) time(&gNowPlus1Hr);
-	gNowMinus6Mon = gNowPlus1Hr - 15552000;
-	gNowPlus1Hr += 3600;
+    (void) time(&gNowPlus1Hr);
+    gNowMinus6Mon = gNowPlus1Hr - 15552000;
+    gNowPlus1Hr += 3600;
 
-	diritemv = dirp->vec;
+    diritemv = dirp->vec;
 #ifdef HAVE_SNPRINTF
-	(void) snprintf(
-		plugspec,
-		sizeof(plugspec) - 1,
+    (void) snprintf(
+        plugspec,
+        sizeof(plugspec) - 1,
 #else
-	(void) sprintf(
-		plugspec,
+    (void) sprintf(
+        plugspec,
 #endif
-		"%%-%ds",
-		(int) dirp->maxPlugLen
-	);
+        "%%-%ds",
+        (int) dirp->maxPlugLen
+    );
 
-	if (dirp->maxPlugLen < 29) {
-		/* We have some extra space to work with,
-		 * so we can space out the columns a little.
-		 */
-		expad = "  ";
-	} else {
-		expad = "";
-	}
+    if (dirp->maxPlugLen < 29)
+    {
+        /* We have some extra space to work with,
+         * so we can space out the columns a little.
+         */
+        expad = "  ";
+    }
+    else
+    {
+        expad = "";
+    }
 
-	for (i=0; ; i++) {
-		diritemp = diritemv[i];
-		if (diritemp == NULL)
-			break;
+    for (i=0; ; i++)
+    {
+        diritemp = diritemv[i];
+        if (diritemp == NULL)
+            break;
 
-		fType = (int) diritemp->type;
-		if (endChars != 0) {
-			if (fType == 'd')
-				fTail[0] = '/';
-			else
-				fTail[0] = '\0';
-		}
+        fType = (int) diritemp->type;
+        if (endChars != 0)
+        {
+            if (fType == 'd')
+                fTail[0] = '/';
+            else
+                fTail[0] = '\0';
+        }
 
-		if (diritemp->rlinkto != NULL) {
-			if (linkedTo != 0) {
-				l1 = "";
-				l2 = "";
-			} else {
-				l1 = " -> ";
-				l2 = diritemp->rlinkto;
-			}
-		} else {
-			l1 = "";
-			l2 = "";
-		}
+        if (diritemp->rlinkto != NULL)
+        {
+            if (linkedTo != 0)
+            {
+                l1 = "";
+                l2 = "";
+            }
+            else
+            {
+                l1 = " -> ";
+                l2 = diritemp->rlinkto;
+            }
+        }
+        else
+        {
+            l1 = "";
+            l2 = "";
+        }
 
-		LsDate(datestr, sizeof(datestr), diritemp->mdtm);
+        LsDate(datestr, sizeof(datestr), diritemp->mdtm);
 
-		if (diritemp->size == kSizeUnknown) {
-			*sizestr = '\0';
-		} else {
+        if (diritemp->size == kSizeUnknown)
+        {
+            *sizestr = '\0';
+        }
+        else
+        {
 #ifdef HAVE_SNPRINTF
-			(void) snprintf(
-				sizestr,
-				sizeof(sizestr) - 1,
+            (void) snprintf(
+                sizestr,
+                sizeof(sizestr) - 1,
 #else
-			(void) sprintf(
-				sizestr,
+            (void) sprintf(
+                sizestr,
 #endif
 #if defined(HAVE_LONG_LONG) && defined(PRINTF_LONG_LONG)
-				PRINTF_LONG_LONG,
+                PRINTF_LONG_LONG,
 #else
-				"%ld",
+                "%ld",
 #endif
-				(longest_int) diritemp->size
-			);
-		}
+                (longest_int) diritemp->size
+            );
+        }
 
 #ifdef HAVE_SNPRINTF
-		(void) snprintf(
-			plugstr,
-			sizeof(plugstr) - 1,
+        (void) snprintf(
+            plugstr,
+            sizeof(plugstr) - 1,
 #else
-		(void) sprintf(
-			plugstr,
+        (void) sprintf(
+            plugstr,
 #endif
-			plugspec,
-			diritemp->plug
-		);
+            plugspec,
+            diritemp->plug
+        );
 
-		(void) fprintf(stream, "%s %12s %s%s %s%s%s%s%s\n",
-			plugstr,
-			sizestr,
-			expad,
-			datestr,
-			expad,
-			diritemp->relname,
-			l1,
-			l2,
-			fTail
-		);
-		Trace(0, "%s %12s %s%s %s%s%s%s%s\n",
-			plugstr,
-			sizestr,
-			expad,
-			datestr,
-			expad,
-			diritemp->relname,
-			l1,
-			l2,
-			fTail
-		);
-	}
+        (void) fprintf(stream, "%s %12s %s%s %s%s%s%s%s\n",
+                       plugstr,
+                       sizestr,
+                       expad,
+                       datestr,
+                       expad,
+                       diritemp->relname,
+                       l1,
+                       l2,
+                       fTail
+                      );
+        Trace(0, "%s %12s %s%s %s%s%s%s%s\n",
+              plugstr,
+              sizestr,
+              expad,
+              datestr,
+              expad,
+              diritemp->relname,
+              l1,
+              l2,
+              fTail
+             );
+    }
 }	/* LsL */
 
 
@@ -431,39 +464,41 @@ LsL(FTPFileInfoListPtr dirp, int endChars, int linkedTo, FILE *stream)
 void
 Ls1(FTPFileInfoListPtr dirp, int endChars, FILE *stream)
 {
-	char fTail[2];
-	int i;
-	int fType;
-	FTPFileInfoVec diritemv;
-	FTPFileInfoPtr diritemp;
+    char fTail[2];
+    int i;
+    int fType;
+    FTPFileInfoVec diritemv;
+    FTPFileInfoPtr diritemp;
 
-	fTail[0] = '\0';
-	fTail[1] = '\0';
-	diritemv = dirp->vec;
+    fTail[0] = '\0';
+    fTail[1] = '\0';
+    diritemv = dirp->vec;
 
-	for (i=0; ; i++) {
-		diritemp = diritemv[i];
-		if (diritemp == NULL)
-			break;
+    for (i=0; ; i++)
+    {
+        diritemp = diritemv[i];
+        if (diritemp == NULL)
+            break;
 
-		fType = (int) diritemp->type;
-		if (endChars != 0) {
-			if (fType == 'd')
-				fTail[0] = '/';
-			else
-				fTail[0] = '\0';
-		}
+        fType = (int) diritemp->type;
+        if (endChars != 0)
+        {
+            if (fType == 'd')
+                fTail[0] = '/';
+            else
+                fTail[0] = '\0';
+        }
 
-		(void) fprintf(stream, "%s%s\n",
-			diritemp->relname,
-			fTail
-		);
+        (void) fprintf(stream, "%s%s\n",
+                       diritemp->relname,
+                       fTail
+                      );
 
-		Trace(0, "%s%s\n",
-			diritemp->relname,
-			fTail
-		);
-	}
+        Trace(0, "%s%s\n",
+              diritemp->relname,
+              fTail
+             );
+    }
 }	/* Ls1 */
 
 
@@ -477,181 +512,203 @@ Ls1(FTPFileInfoListPtr dirp, int endChars, FILE *stream)
 void
 Ls(const char *const item, int listmode, const char *const options, FILE *stream)
 {
-	char itempath[512];
-	FTPFileInfoList fil;
-	FTPFileInfoListPtr filp;
-	FTPLinePtr linePtr, nextLinePtr;
-	FTPLineList dirContents;
-	int parsed;
-	int linkedTo;
-	int endChars;
-	int rlisted;
-	int opt;
-	const char *cp;
-	int sortBy;
-	int sortOrder;
-	int unknownOpts;
-	char optstr[32];
-	char unoptstr[32];
-	int doNotUseCache;
-	int wasInCache;
-	int mlsd;
-	int ci;
+    char itempath[512];
+    FTPFileInfoList fil;
+    FTPFileInfoListPtr filp;
+    FTPLinePtr linePtr, nextLinePtr;
+    FTPLineList dirContents;
+    int parsed;
+    int linkedTo;
+    int endChars;
+    int rlisted;
+    int opt;
+    const char *cp;
+    int sortBy;
+    int sortOrder;
+    int unknownOpts;
+    char optstr[32];
+    char unoptstr[32];
+    int doNotUseCache;
+    int wasInCache;
+    int mlsd;
+    int ci;
 
-	InitLineList(&dirContents);
-	InitFileInfoList(&fil);
+    InitLineList(&dirContents);
+    InitFileInfoList(&fil);
 
-	sortBy = 'n';		/* Sort by filename. */
-	sortOrder = 'a';	/* Sort in ascending order. */
-	linkedTo = 0;
-	endChars = (listmode == 'C') ? 1 : 0;
-	unknownOpts = 0;
-	memset(unoptstr, 0, sizeof(unoptstr));
-	unoptstr[0] = '-';
-	doNotUseCache = 0;
-	rlisted = 0;
+    sortBy = 'n';		/* Sort by filename. */
+    sortOrder = 'a';	/* Sort in ascending order. */
+    linkedTo = 0;
+    endChars = (listmode == 'C') ? 1 : 0;
+    unknownOpts = 0;
+    memset(unoptstr, 0, sizeof(unoptstr));
+    unoptstr[0] = '-';
+    doNotUseCache = 0;
+    rlisted = 0;
 
-	for (cp = options; *cp != '\0'; cp++) {
-		opt = *cp;
-		switch (opt) {
-			case 't':
-				sortBy = 't';		/* Sort by modification time. */
-				break;
-			case 'S':
-				sortBy = 's';		/* Sort by size. */
-				break;
-			case 'r':
-				sortOrder = 'd';	/* descending order */
-				break;
-			case 'L':
-				linkedTo = 1;
-				break;
-			case 'f':
-				doNotUseCache = 1;
-				break;
-			case 'F':
-			case 'p':
-				endChars = 1;
-				break;
-			case '1':
-			case 'C':
-			case 'l':
-				listmode = opt;
-				break;
-			case '-':
-				break;
-			default:
-				if (unknownOpts < ((int) sizeof(unoptstr) - 2))
-					unoptstr[unknownOpts + 1] = opt;
-				unknownOpts++;
-				break;
-		}
-	}
+    for (cp = options; *cp != '\0'; cp++)
+    {
+        opt = *cp;
+        switch (opt)
+        {
+        case 't':
+            sortBy = 't';		/* Sort by modification time. */
+            break;
+        case 'S':
+            sortBy = 's';		/* Sort by size. */
+            break;
+        case 'r':
+            sortOrder = 'd';	/* descending order */
+            break;
+        case 'L':
+            linkedTo = 1;
+            break;
+        case 'f':
+            doNotUseCache = 1;
+            break;
+        case 'F':
+        case 'p':
+            endChars = 1;
+            break;
+        case '1':
+        case 'C':
+        case 'l':
+            listmode = opt;
+            break;
+        case '-':
+            break;
+        default:
+            if (unknownOpts < ((int) sizeof(unoptstr) - 2))
+                unoptstr[unknownOpts + 1] = opt;
+            unknownOpts++;
+            break;
+        }
+    }
 
-	/* Create a possibly relative path into an absolute path. */
-	PathCat(itempath, sizeof(itempath), gRemoteCWD,
-		(item == NULL) ? "." : item, gServerUsesMSDOSPaths);
+    /* Create a possibly relative path into an absolute path. */
+    PathCat(itempath, sizeof(itempath), gRemoteCWD,
+            (item == NULL) ? "." : item, gServerUsesMSDOSPaths);
 
-	if (unknownOpts > 0) {
-		/* Can't handle these -- pass them through
-		 * to the server.
-		 */
+    if (unknownOpts > 0)
+    {
+        /* Can't handle these -- pass them through
+         * to the server.
+         */
 
-		Trace(0, "ls caching not used because of ls flags: %s\n", unoptstr);
-		optstr[0] = '-';
-		optstr[1] = listmode;
-		optstr[2] = '\0';
-		(void) STRNCAT(optstr, options);
-		if ((FTPListToMemory2(&gConn, (item == NULL) ? "" : item, &dirContents, optstr, 1, 0)) < 0) {
-			if (stream != NULL)
-				(void) fprintf(stderr, "List failed.\n");
-			return;
-		}
+        Trace(0, "ls caching not used because of ls flags: %s\n", unoptstr);
+        optstr[0] = '-';
+        optstr[1] = listmode;
+        optstr[2] = '\0';
+        (void) STRNCAT(optstr, options);
+        if ((FTPListToMemory2(&gConn, (item == NULL) ? "" : item, &dirContents, optstr, 1, 0)) < 0)
+        {
+            if (stream != NULL)
+                (void) fprintf(stderr, "List failed.\n");
+            return;
+        }
 
-		rlisted = 1;
-		parsed = -1;
-		wasInCache = 0;
-		filp = NULL;
-	} else if ((doNotUseCache != 0) || ((ci = LsCacheLookup(itempath)) < 0)) {
-		/* Not in cache. */
-		wasInCache = 0;
+        rlisted = 1;
+        parsed = -1;
+        wasInCache = 0;
+        filp = NULL;
+    }
+    else if ((doNotUseCache != 0) || ((ci = LsCacheLookup(itempath)) < 0))
+    {
+        /* Not in cache. */
+        wasInCache = 0;
 
-		mlsd = 1;
-		if ((FTPListToMemory2(&gConn, (item == NULL) ? "" : item, &dirContents, "-l", 1, &mlsd)) < 0) {
-			if (stream != NULL)
-				(void) fprintf(stderr, "List failed.\n");
-			return;
-		}
+        mlsd = 1;
+        if ((FTPListToMemory2(&gConn, (item == NULL) ? "" : item, &dirContents, "-l", 1, &mlsd)) < 0)
+        {
+            if (stream != NULL)
+                (void) fprintf(stderr, "List failed.\n");
+            return;
+        }
 
-		rlisted = 1;
-		filp = &fil;
-		if (mlsd != 0) {
-			parsed = UnMlsD(&gConn, filp, &dirContents);
-			if (parsed < 0) {
-				Trace(0, "UnMlsD: %d\n", parsed);
-			}
-		} else {
-			parsed = UnLslR(&gConn, filp, &dirContents, gConn.serverType);
-			if (parsed < 0) {
-				Trace(0, "UnLslR: %d\n", parsed);
-			}
-		}
-		if (parsed >= 0) {
-			VectorizeFileInfoList(filp);
-			if (filp->vec == NULL) {
-				if (stream != NULL)
-					(void) fprintf(stderr, "List processing failed.\n");
-				return;
-			}
-		}
-	} else {
-		filp = &gLsCache[ci].fil;
-		wasInCache = 1;
-		parsed = 1;
-		Trace(0, "ls cache hit: %s\n", itempath);
-	}
+        rlisted = 1;
+        filp = &fil;
+        if (mlsd != 0)
+        {
+            parsed = UnMlsD(&gConn, filp, &dirContents);
+            if (parsed < 0)
+            {
+                Trace(0, "UnMlsD: %d\n", parsed);
+            }
+        }
+        else
+        {
+            parsed = UnLslR(&gConn, filp, &dirContents, gConn.serverType);
+            if (parsed < 0)
+            {
+                Trace(0, "UnLslR: %d\n", parsed);
+            }
+        }
+        if (parsed >= 0)
+        {
+            VectorizeFileInfoList(filp);
+            if (filp->vec == NULL)
+            {
+                if (stream != NULL)
+                    (void) fprintf(stderr, "List processing failed.\n");
+                return;
+            }
+        }
+    }
+    else
+    {
+        filp = &gLsCache[ci].fil;
+        wasInCache = 1;
+        parsed = 1;
+        Trace(0, "ls cache hit: %s\n", itempath);
+    }
 
-	if (rlisted != 0) {
-		Trace(0, "Remote listing contents {\n");	
-		for (linePtr = dirContents.first;
-			linePtr != NULL;
-			linePtr = nextLinePtr)
-		{
-			nextLinePtr = linePtr->next;
-			Trace(0, "    %s\n", linePtr->line);	
-		}
-		Trace(0, "}\n");	
-	}
+    if (rlisted != 0)
+    {
+        Trace(0, "Remote listing contents {\n");
+        for (linePtr = dirContents.first;
+                linePtr != NULL;
+                linePtr = nextLinePtr)
+        {
+            nextLinePtr = linePtr->next;
+            Trace(0, "    %s\n", linePtr->line);
+        }
+        Trace(0, "}\n");
+    }
 
-	if (parsed >= 0) {
-		SortFileInfoList(filp, sortBy, sortOrder);
-		if (stream != NULL) {
-			if (listmode == 'l')
-				LsL(filp, endChars, linkedTo, stream);
-			else if (listmode == '1')
-				Ls1(filp, endChars, stream);
-			else
-				LsC(filp, endChars, stream);
-		}
-		if (wasInCache == 0) {
-			LsCacheAdd(itempath, filp);
-		}
-	} else if (stream != NULL) {
-		for (linePtr = dirContents.first;
-			linePtr != NULL;
-			linePtr = nextLinePtr)
-		{
-			nextLinePtr = linePtr->next;
-			(void) fprintf(stream, "%s\n", linePtr->line);	
-			Trace(0, "    %s\n", linePtr->line);	
-		}
-	}
+    if (parsed >= 0)
+    {
+        SortFileInfoList(filp, sortBy, sortOrder);
+        if (stream != NULL)
+        {
+            if (listmode == 'l')
+                LsL(filp, endChars, linkedTo, stream);
+            else if (listmode == '1')
+                Ls1(filp, endChars, stream);
+            else
+                LsC(filp, endChars, stream);
+        }
+        if (wasInCache == 0)
+        {
+            LsCacheAdd(itempath, filp);
+        }
+    }
+    else if (stream != NULL)
+    {
+        for (linePtr = dirContents.first;
+                linePtr != NULL;
+                linePtr = nextLinePtr)
+        {
+            nextLinePtr = linePtr->next;
+            (void) fprintf(stream, "%s\n", linePtr->line);
+            Trace(0, "    %s\n", linePtr->line);
+        }
+    }
 
-	DisposeLineListContents(&dirContents);
+    DisposeLineListContents(&dirContents);
 }	/* Ls */
 
-	
-	
+
+
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
 /* Prints a local directory listing in the specified format on the specified
  * output stream.
@@ -659,134 +716,147 @@ Ls(const char *const item, int listmode, const char *const options, FILE *stream
 void
 LLs(const char *const item, int listmode, const char *const options, FILE *stream)
 {
-	char itempath[512];
-	int linkedTo;
-	int endChars;
-	int opt;
-	const char *cp;
-	int sortBy;
-	int sortOrder;
-	int unknownOpts;
-	char unoptstr[32];
-	FTPLineList ll;
-	FTPFileInfoPtr fip, fip2;
-	FTPFileInfoList fil;
-	struct Stat st;
-	int result;
-	size_t len;
+    char itempath[512];
+    int linkedTo;
+    int endChars;
+    int opt;
+    const char *cp;
+    int sortBy;
+    int sortOrder;
+    int unknownOpts;
+    char unoptstr[32];
+    FTPLineList ll;
+    FTPFileInfoPtr fip, fip2;
+    FTPFileInfoList fil;
+    struct Stat st;
+    int result;
+    size_t len;
 
-	InitLineList(&ll);
-	InitFileInfoList(&fil);
+    InitLineList(&ll);
+    InitFileInfoList(&fil);
 
-	sortBy = 'n';		/* Sort by filename. */
-	sortOrder = 'a';	/* Sort in ascending order. */
-	linkedTo = 0;
-	endChars = (listmode == 'C') ? 1 : 0;
-	unknownOpts = 0;
-	memset(unoptstr, 0, sizeof(unoptstr));
-	unoptstr[0] = '-';
+    sortBy = 'n';		/* Sort by filename. */
+    sortOrder = 'a';	/* Sort in ascending order. */
+    linkedTo = 0;
+    endChars = (listmode == 'C') ? 1 : 0;
+    unknownOpts = 0;
+    memset(unoptstr, 0, sizeof(unoptstr));
+    unoptstr[0] = '-';
 
-	for (cp = options; *cp != '\0'; cp++) {
-		opt = *cp;
-		switch (opt) {
-			case 't':
-				sortBy = 't';		/* Sort by modification time. */
-				break;
-			case 'S':
-				sortBy = 's';		/* Sort by size. */
-				break;
-			case 'r':
-				sortOrder = 'd';	/* descending order */
-				break;
-			case 'L':
-				linkedTo = 1;
-				break;
-			case 'f':
-				break;
-			case 'F':
-			case 'p':
-				endChars = 1;
-				break;
-			case '1':
-			case 'C':
-			case 'l':
-				listmode = opt;
-				break;
-			case '-':
-				break;
-			default:
-				if (unknownOpts < ((int) sizeof(unoptstr) - 2))
-					unoptstr[unknownOpts + 1] = opt;
-				unknownOpts++;
-				break;
-		}
-	}
+    for (cp = options; *cp != '\0'; cp++)
+    {
+        opt = *cp;
+        switch (opt)
+        {
+        case 't':
+            sortBy = 't';		/* Sort by modification time. */
+            break;
+        case 'S':
+            sortBy = 's';		/* Sort by size. */
+            break;
+        case 'r':
+            sortOrder = 'd';	/* descending order */
+            break;
+        case 'L':
+            linkedTo = 1;
+            break;
+        case 'f':
+            break;
+        case 'F':
+        case 'p':
+            endChars = 1;
+            break;
+        case '1':
+        case 'C':
+        case 'l':
+            listmode = opt;
+            break;
+        case '-':
+            break;
+        default:
+            if (unknownOpts < ((int) sizeof(unoptstr) - 2))
+                unoptstr[unknownOpts + 1] = opt;
+            unknownOpts++;
+            break;
+        }
+    }
 
-	if ((item == NULL) || (strcmp(item, ".") == 0))
-		STRNCPY(itempath, "*.*");
-	else {
-		STRNCPY(itempath, item);
-		if (strpbrk(itempath, "*?") == NULL)
-			STRNCAT(itempath, "\\*.*");
-	}
-	
-	InitLineList(&ll);
-	result = FTPLocalGlob(&gConn, &ll, itempath, kGlobYes);
-	if (result < 0) {
-		FTPPerror(&gConn, result, kErrGlobFailed, "local glob", itempath);
-		DisposeLineListContents(&ll);
-		return;
-	}
-	if (LineListToFileInfoList(&ll, &fil) < 0)
-		return;
-	DisposeLineListContents(&ll);
-	
-	for (fip = fil.first; fip != NULL; fip = fip2) {
-		fip2 = fip->next;
-		if (Stat(fip->relname, &st) < 0) {
-			fip2 = RemoveFileInfo(&fil, fip);
-			continue;
-		}
-		cp = StrRFindLocalPathDelim(fip->relname);
-		if (cp != NULL) {
-			/* FTPLocalGlob will tack on the pathnames too,
-			 * which we don't want for this hack.
-			 */
-			cp++;
-			len = strlen(cp);
-			memmove(fip->relname, cp, len + 1);
-		} else {
-			len = strlen(fip->relname);
-		}
-		if (len > fil.maxFileLen)
-			fil.maxFileLen = len;
-		fip->relnameLen = len;
-		fip->rname = StrDup(fip->relname);
-		fip->lname = StrDup(fip->relname);
-		fip->plug = StrDup("----------   1 user  group");
-		if (S_ISDIR(st.st_mode)) {
-			fip->type = 'd';
-			fip->plug[0] = 'd';
-		} else {
-			fip->type = '-';
-			fip->size = st.st_size;
-		}
-		fip->mdtm = st.st_mtime;
-	}
-	fil.maxPlugLen = strlen("----------   1 user  group");
+    if ((item == NULL) || (strcmp(item, ".") == 0))
+        STRNCPY(itempath, "*.*");
+    else
+    {
+        STRNCPY(itempath, item);
+        if (strpbrk(itempath, "*?") == NULL)
+            STRNCAT(itempath, "\\*.*");
+    }
 
-	VectorizeFileInfoList(&fil);
-	SortFileInfoList(&fil, sortBy, sortOrder);
-	if (stream != NULL) {
-		if (listmode == 'l')
-			LsL(&fil, endChars, linkedTo, stream);
-		else if (listmode == '1')
-			Ls1(&fil, endChars, stream);
-		else
-			LsC(&fil, endChars, stream);
-	}
-	
-	DisposeFileInfoListContents(&fil);
+    InitLineList(&ll);
+    result = FTPLocalGlob(&gConn, &ll, itempath, kGlobYes);
+    if (result < 0)
+    {
+        FTPPerror(&gConn, result, kErrGlobFailed, "local glob", itempath);
+        DisposeLineListContents(&ll);
+        return;
+    }
+    if (LineListToFileInfoList(&ll, &fil) < 0)
+        return;
+    DisposeLineListContents(&ll);
+
+    for (fip = fil.first; fip != NULL; fip = fip2)
+    {
+        fip2 = fip->next;
+        if (Stat(fip->relname, &st) < 0)
+        {
+            fip2 = RemoveFileInfo(&fil, fip);
+            continue;
+        }
+        cp = StrRFindLocalPathDelim(fip->relname);
+        if (cp != NULL)
+        {
+            /* FTPLocalGlob will tack on the pathnames too,
+             * which we don't want for this hack.
+             */
+            cp++;
+            len = strlen(cp);
+            memmove(fip->relname, cp, len + 1);
+        }
+        else
+        {
+            len = strlen(fip->relname);
+        }
+        if (len > fil.maxFileLen)
+            fil.maxFileLen = len;
+        fip->relnameLen = len;
+        fip->rname = StrDup(fip->relname);
+        fip->lname = StrDup(fip->relname);
+        fip->plug = StrDup("----------   1 user  group");
+        if (S_ISDIR(st.st_mode))
+        {
+            fip->type = 'd';
+            fip->plug[0] = 'd';
+        }
+        else
+        {
+            fip->type = '-';
+            fip->size = st.st_size;
+        }
+        fip->mdtm = st.st_mtime;
+    }
+    fil.maxPlugLen = strlen("----------   1 user  group");
+
+    VectorizeFileInfoList(&fil);
+    SortFileInfoList(&fil, sortBy, sortOrder);
+    if (stream != NULL)
+    {
+        if (listmode == 'l')
+            LsL(&fil, endChars, linkedTo, stream);
+        else if (listmode == '1')
+            Ls1(&fil, endChars, stream);
+        else
+            LsC(&fil, endChars, stream);
+    }
+
+    DisposeFileInfoListContents(&fil);
 }	/* LLs */
 #endif
 

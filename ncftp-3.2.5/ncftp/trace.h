@@ -1,8 +1,8 @@
-/* trace.h
+﻿/* trace.h
  *
  * Copyright (c) 1992-2004 by Mike Gleason.
  * All rights reserved.
- * 
+ *
  */
 
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)

@@ -1,4 +1,4 @@
-/* u_slash.c
+﻿/* u_slash.c
  *
  * Copyright (c) 1996-2005 Mike Gleason, NcFTP Software.
  * All rights reserved.
@@ -14,20 +14,23 @@
 char *
 FGets(char *str, size_t size, FILE *fp)
 {
-	char *cp, *nlptr;
-	
-	cp = fgets(str, ((int) size) - 1, fp);
-	if (cp != NULL) {
-		cp[((int) size) - 1] = '\0';	/* ensure terminator */
-		nlptr = cp + strlen(cp) - 1;
-		if (*nlptr == '\n')
-			*nlptr-- = '\0';
-		if (*nlptr == '\r')
-			*nlptr = '\0';
-	} else {
-		memset(str, 0, size);
-	}
-	return cp;
+    char *cp, *nlptr;
+
+    cp = fgets(str, ((int) size) - 1, fp);
+    if (cp != NULL)
+    {
+        cp[((int) size) - 1] = '\0';	/* ensure terminator */
+        nlptr = cp + strlen(cp) - 1;
+        if (*nlptr == '\n')
+            *nlptr-- = '\0';
+        if (*nlptr == '\r')
+            *nlptr = '\0';
+    }
+    else
+    {
+        memset(str, 0, size);
+    }
+    return cp;
 }	/* FGets */
 
 
@@ -36,11 +39,11 @@ FGets(char *str, size_t size, FILE *fp)
 void
 StrRemoveTrailingSlashes(char *dst)
 {
-	char *cp;
+    char *cp;
 
-	/* Note: Do not destroy a path of "/" */
-	cp = dst + strlen(dst);
-	--cp;
-	while ((cp > dst) && (*cp == '/'))
-		*cp-- = '\0';
+    /* Note: Do not destroy a path of "/" */
+    cp = dst + strlen(dst);
+    --cp;
+    while ((cp > dst) && (*cp == '/'))
+        *cp-- = '\0';
 }	/* StrRemoveTrailingSlashes */

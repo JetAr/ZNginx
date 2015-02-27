@@ -1,4 +1,4 @@
-/* Strn.h */
+﻿/* Strn.h */
 
 #ifndef _Strn_h_
 #define _Strn_h_ 1
@@ -55,13 +55,14 @@ char *Strncat_NoZeroPad(char *const, const char *const, const size_t);
 char *Strncpy_NoZeroPad(char *const, const char *const, const size_t);
 
 #ifndef _DStrInternal_h_
-typedef struct DStr {
-	/* All of these structure fields are read-only; do not modify
-	 * them directly.
-	 */
-	char *s;
-	size_t len;
-	size_t allocSize;
+typedef struct DStr
+{
+    /* All of these structure fields are read-only; do not modify
+     * them directly.
+     */
+    char *s;
+    size_t len;
+    size_t allocSize;
 } DStr, *DStrPtr;
 #endif
 

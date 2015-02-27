@@ -1,4 +1,4 @@
-/* bmed.h */
+﻿/* bmed.h */
 
 #define kControl_L	12
 

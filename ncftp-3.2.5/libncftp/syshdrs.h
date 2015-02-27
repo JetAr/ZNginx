@@ -1,4 +1,4 @@
-/* syshdrs.h
+﻿/* syshdrs.h
  *
  * Copyright (c) 1996-2005 Mike Gleason, NcFTP Software.
  * All rights reserved.
@@ -17,12 +17,12 @@
 #		pragma warning(disable : 4214)	// warning C4214: nonstandard extension used : bit field types other than int
 #		pragma warning(disable : 4115)	// warning C4115: 'IRpcStubBuffer' : named type definition in parentheses
 #	endif
-	/* Include "wincfg.h" in place of "config.h" */
+/* Include "wincfg.h" in place of "config.h" */
 #	include "wincfg.h"
-	/* We now try for at least Windows 2000 compatibility (0x0500).
-	 * The code will still work on older systems, though.
-	 * Prior versions used 0x0400 instead.
-	 */
+/* We now try for at least Windows 2000 compatibility (0x0500).
+ * The code will still work on older systems, though.
+ * Prior versions used 0x0400 instead.
+ */
 #	ifndef WINVER
 #		define WINVER 0x0500
 #	endif
@@ -188,12 +188,15 @@
 #	elif defined(HAVE_SYS_UTIME_H)
 #		include <sys/utime.h>
 #	else
-		struct utimbuf { time_t actime, modtime; };
+struct utimbuf
+{
+    time_t actime, modtime;
+};
 #	endif
 
 #	ifdef HAVE_GETCWD
 #		ifndef HAVE_UNISTD_H
-			extern char *getcwd();
+extern char *getcwd();
 #		endif
 #	else
 #		ifdef HAVE_GETWD
@@ -201,7 +204,7 @@
 #			ifndef MAXPATHLEN
 #				define MAXPATHLEN 1024
 #			endif
-			extern char *getwd(char *);
+extern char *getwd(char *);
 #		endif
 #	endif
 
@@ -340,7 +343,7 @@ extern ssize_t nsendmsg(int, const struct msghdr *, int);
 #	ifndef USE_SIO
 #		define USE_SIO 0
 #	endif
-	/* #undef NO_SIGNALS */
+/* #undef NO_SIGNALS */
 #endif
 
 #if USE_SIO

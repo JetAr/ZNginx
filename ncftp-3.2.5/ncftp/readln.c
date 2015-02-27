@@ -1,4 +1,4 @@
-/* rdline.c
+﻿/* rdline.c
  *
  * Copyright (c) 1992-2005 by Mike Gleason.
  * All rights reserved.
@@ -6,7 +6,7 @@
  * Note: It should still be simple to backport the old GNU Readline
  * support in here.  Feel free to do that if you hate NcFTP's built-in
  * implementation.
- * 
+ *
  */
 
 #include "syshdrs.h"
@@ -33,13 +33,13 @@ int gXtermTitle;	/* Idea by forsberg@lysator.liu.se */
 char gCurXtermTitleStr[256];
 
 #if ( (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__) ) && defined(_CONSOLE)
-	char gSavedConsoleTitle[64];
-	static WORD GetConsoleTextAttribute(HANDLE Console)
-	{
-		CONSOLE_SCREEN_BUFFER_INFO	ConsoleInfo;
-		GetConsoleScreenBufferInfo(Console, &ConsoleInfo);
-		return ConsoleInfo.wAttributes;
-	}
+char gSavedConsoleTitle[64];
+static WORD GetConsoleTextAttribute(HANDLE Console)
+{
+    CONSOLE_SCREEN_BUFFER_INFO	ConsoleInfo;
+    GetConsoleScreenBufferInfo(Console, &ConsoleInfo);
+    return ConsoleInfo.wAttributes;
+}
 #endif
 
 extern int gMaySetXtermTitle;
@@ -64,86 +64,92 @@ void
 GetScreenColumns(void)
 {
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
 
-	if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
-		gScreenColumns = (int) csbi.dwSize.X;
-		if (gScreenColumns < 80)
-			gScreenColumns = 80;
-	}
+    if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi))
+    {
+        gScreenColumns = (int) csbi.dwSize.X;
+        if (gScreenColumns < 80)
+            gScreenColumns = 80;
+    }
 #else	/* Unix */
 #ifdef BINDIR
-	char ncftpbookmarks[256];
-	FILE *infp;
-	sigproc_t osigpipe;
-	int columns;
+    char ncftpbookmarks[256];
+    FILE *infp;
+    sigproc_t osigpipe;
+    int columns;
 #endif	/* BINDIR */
-	char *cp;
+    char *cp;
 
-	if ((cp = (char *) getenv("COLUMNS")) == NULL) {
-		gScreenColumns = 80;
-	} else {
-		gScreenColumns = atoi(cp);
-		return;
-	}
+    if ((cp = (char *) getenv("COLUMNS")) == NULL)
+    {
+        gScreenColumns = 80;
+    }
+    else
+    {
+        gScreenColumns = atoi(cp);
+        return;
+    }
 
 #ifdef TIOCGWINSZ
-	{
-		struct winsize felix;
+    {
+        struct winsize felix;
 
-		memset(&felix, 0, sizeof(felix));
-		if (ioctl(0, TIOCGWINSZ, &felix) == 0) {
-			columns = felix.ws_col;
-			if ((columns > 0) && (columns < GL_BUF_SIZE))
-				gScreenColumns = columns;
-			else
-				gScreenColumns = 80;
-			return;
-		}
-	}
+        memset(&felix, 0, sizeof(felix));
+        if (ioctl(0, TIOCGWINSZ, &felix) == 0)
+        {
+            columns = felix.ws_col;
+            if ((columns > 0) && (columns < GL_BUF_SIZE))
+                gScreenColumns = columns;
+            else
+                gScreenColumns = 80;
+            return;
+        }
+    }
 #endif
 
 #ifdef BINDIR
-	/* Don't run things as root unless really necessary. */
-	if (gUid == 0)
-		return;
+    /* Don't run things as root unless really necessary. */
+    if (gUid == 0)
+        return;
 
-	/* This is a brutal hack where we've hacked a
-	 * special command line option into ncftp_bookmarks
-	 * (which is linked with curses) so that it computes
-	 * the screen size and prints it to stdout.
-	 *
-	 * This function runs ncftp_bookmarks and gets
-	 * that information.  The reason we do this is that
-	 * we may or may not have a sane installation of
-	 * curses/termcap, and we don't want to increase
-	 * NcFTP's complexity by the curses junk just to
-	 * get the screen size.  Instead, we delegate this
-	 * to ncftp_bookmarks which already deals with the
-	 * ugliness of curses.
-	 */
+    /* This is a brutal hack where we've hacked a
+     * special command line option into ncftp_bookmarks
+     * (which is linked with curses) so that it computes
+     * the screen size and prints it to stdout.
+     *
+     * This function runs ncftp_bookmarks and gets
+     * that information.  The reason we do this is that
+     * we may or may not have a sane installation of
+     * curses/termcap, and we don't want to increase
+     * NcFTP's complexity by the curses junk just to
+     * get the screen size.  Instead, we delegate this
+     * to ncftp_bookmarks which already deals with the
+     * ugliness of curses.
+     */
 
-	STRNCPY(ncftpbookmarks, BINDIR);
-	STRNCAT(ncftpbookmarks, "/");
-	STRNCAT(ncftpbookmarks, "ncftpbookmarks");
+    STRNCPY(ncftpbookmarks, BINDIR);
+    STRNCAT(ncftpbookmarks, "/");
+    STRNCAT(ncftpbookmarks, "ncftpbookmarks");
 
-	if (access(ncftpbookmarks, X_OK) < 0)
-		return;
+    if (access(ncftpbookmarks, X_OK) < 0)
+        return;
 
-	STRNCAT(ncftpbookmarks, " --dimensions-terse");
+    STRNCAT(ncftpbookmarks, " --dimensions-terse");
 
-	osigpipe = NcSignal(SIGPIPE, SIG_IGN);
-	infp = popen(ncftpbookmarks, "r");
-	if (infp != NULL) {
-		columns = 0;
-		(void) fscanf(infp, "%d", &columns);
-		while (getc(infp) != EOF) {}
-		(void) pclose(infp);
+    osigpipe = NcSignal(SIGPIPE, SIG_IGN);
+    infp = popen(ncftpbookmarks, "r");
+    if (infp != NULL)
+    {
+        columns = 0;
+        (void) fscanf(infp, "%d", &columns);
+        while (getc(infp) != EOF) {}
+        (void) pclose(infp);
 
-		if ((columns > 0) && (columns < GL_BUF_SIZE))
-			gScreenColumns = columns;
-	}
-	(void) NcSignal(SIGPIPE, (sigproc_t) osigpipe);
+        if ((columns > 0) && (columns < GL_BUF_SIZE))
+            gScreenColumns = columns;
+    }
+    (void) NcSignal(SIGPIPE, (sigproc_t) osigpipe);
 #endif	/* BINDIR */
 #endif	/* Windows */
 }	/* GetScreenColumns */
@@ -157,59 +163,64 @@ void
 InitTermcap(void)
 {
 #if ( (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__) ) && defined(_CONSOLE)
-	gXterm = gXtermTitle = 0;
-	gCurXtermTitleStr[0] = '\0';
+    gXterm = gXtermTitle = 0;
+    gCurXtermTitleStr[0] = '\0';
 
-	tcap_normal = "\033[0m";       /* Default ANSI escapes */
-	tcap_boldface = "\033[1m";
-	tcap_underline = "";
-	tcap_reverse = "";
+    tcap_normal = "\033[0m";       /* Default ANSI escapes */
+    tcap_boldface = "\033[1m";
+    tcap_underline = "";
+    tcap_reverse = "";
 
-	gTerm = "MS-DOS Prompt";
-	ZeroMemory(gSavedConsoleTitle, (DWORD) sizeof(gSavedConsoleTitle));
-	GetConsoleTitle(gSavedConsoleTitle, (DWORD) sizeof(gSavedConsoleTitle) - 1);
-	SetConsoleTitle("NcFTP");
-	gXterm = gXtermTitle = 1;
+    gTerm = "MS-DOS Prompt";
+    ZeroMemory(gSavedConsoleTitle, (DWORD) sizeof(gSavedConsoleTitle));
+    GetConsoleTitle(gSavedConsoleTitle, (DWORD) sizeof(gSavedConsoleTitle) - 1);
+    SetConsoleTitle("NcFTP");
+    gXterm = gXtermTitle = 1;
 #else
-	const char *term;
-	
-	gXterm = gXtermTitle = 0;
-	gCurXtermTitleStr[0] = '\0';
+    const char *term;
 
-	if ((gTerm = getenv("TERM")) == NULL) {
-		tcap_normal = "";
-		tcap_boldface = "";
-		tcap_underline = "";
-		tcap_reverse = "";
-		return;
-	}
+    gXterm = gXtermTitle = 0;
+    gCurXtermTitleStr[0] = '\0';
 
-	term = gTerm;
-	if (	(strstr(term, "xterm") != NULL) ||
-		(strstr(term, "rxvt") != NULL) ||
-		(strstr(term, "dtterm") != NULL) ||
-		(ISTRCMP(term, "scoterm") == 0)
-	) {
-		gXterm = gXtermTitle = 1;
-	}
+    if ((gTerm = getenv("TERM")) == NULL)
+    {
+        tcap_normal = "";
+        tcap_boldface = "";
+        tcap_underline = "";
+        tcap_reverse = "";
+        return;
+    }
 
-	if (	(gXterm != 0) ||
-		(strcmp(term, "vt100") == 0) ||
-		(strcmp(term, "linux") == 0) ||
-		(strcmp(term, "vt220") == 0) ||
-		(strcmp(term, "cons25") == 0) ||
-		(strcmp(term, "vt102") == 0)
-	) {
-		tcap_normal = "\033[0m";       /* Default ANSI escapes */
-		tcap_boldface = "\033[1m";
-		tcap_underline = "\033[4m";
-		tcap_reverse = "\033[7m";
-	} else {
-		tcap_normal = "";
-		tcap_boldface = "";
-		tcap_underline = "";
-		tcap_reverse = "";
-	}
+    term = gTerm;
+    if (	(strstr(term, "xterm") != NULL) ||
+            (strstr(term, "rxvt") != NULL) ||
+            (strstr(term, "dtterm") != NULL) ||
+            (ISTRCMP(term, "scoterm") == 0)
+       )
+    {
+        gXterm = gXtermTitle = 1;
+    }
+
+    if (	(gXterm != 0) ||
+            (strcmp(term, "vt100") == 0) ||
+            (strcmp(term, "linux") == 0) ||
+            (strcmp(term, "vt220") == 0) ||
+            (strcmp(term, "cons25") == 0) ||
+            (strcmp(term, "vt102") == 0)
+       )
+    {
+        tcap_normal = "\033[0m";       /* Default ANSI escapes */
+        tcap_boldface = "\033[1m";
+        tcap_underline = "\033[4m";
+        tcap_reverse = "\033[7m";
+    }
+    else
+    {
+        tcap_normal = "";
+        tcap_boldface = "";
+        tcap_underline = "";
+        tcap_reverse = "";
+    }
 #endif
 }	/* InitTermcap */
 
@@ -219,60 +230,80 @@ InitTermcap(void)
 static char *
 FindStartOfCurrentCommand(void)
 {
-	char *scp;
-	char *start;
-	int qc;
+    char *scp;
+    char *start;
+    int qc;
 
-	for (scp = gl_buf;;) {
-		start = scp;
-		for (;;) {
-			if (*scp == '\0')
-				goto done;
-			if (!isspace((int) *scp))
-				break;
-			scp++;
-		}
-		start = scp;
+    for (scp = gl_buf;;)
+    {
+        start = scp;
+        for (;;)
+        {
+            if (*scp == '\0')
+                goto done;
+            if (!isspace((int) *scp))
+                break;
+            scp++;
+        }
+        start = scp;
 
-		for (;;) {
-			if (*scp == '\0') {
-				goto done;
-			} else if ((*scp == '"') || (*scp == '\'')) {
-				qc = *scp++;
+        for (;;)
+        {
+            if (*scp == '\0')
+            {
+                goto done;
+            }
+            else if ((*scp == '"') || (*scp == '\''))
+            {
+                qc = *scp++;
 
-				for (;;) {
-					if (*scp == '\0') {
-						goto done;
-					} else if (*scp == '\\') {
-						scp++;
-						if (*scp == '\0')
-							goto done;
-						scp++;
-					} else if (*scp == qc) {
-						scp++;
-						break;
-					} else {
-						scp++;
-					}
-				}
-			} else if (*scp == '\\') {
-				scp++;
-				if (*scp == '\0')
-					goto done;
-				scp++;
-			} else if ((*scp == ';') || (*scp == '\n')) {
-				/* command ended */
-				scp++;
-				if (*scp == '\0')
-					goto done;
-				break;
-			} else {
-				scp++;
-			}
-		}
-	}
+                for (;;)
+                {
+                    if (*scp == '\0')
+                    {
+                        goto done;
+                    }
+                    else if (*scp == '\\')
+                    {
+                        scp++;
+                        if (*scp == '\0')
+                            goto done;
+                        scp++;
+                    }
+                    else if (*scp == qc)
+                    {
+                        scp++;
+                        break;
+                    }
+                    else
+                    {
+                        scp++;
+                    }
+                }
+            }
+            else if (*scp == '\\')
+            {
+                scp++;
+                if (*scp == '\0')
+                    goto done;
+                scp++;
+            }
+            else if ((*scp == ';') || (*scp == '\n'))
+            {
+                /* command ended */
+                scp++;
+                if (*scp == '\0')
+                    goto done;
+                break;
+            }
+            else
+            {
+                scp++;
+            }
+        }
+    }
 done:
-	return (start);
+    return (start);
 }	/* FindStartOfCurrentCommand */
 
 
@@ -280,27 +311,28 @@ done:
 static FTPFileInfoListPtr
 GetLsCacheFileList(const char *const item)
 {
-	int ci;
-	int sortBy;
-	int sortOrder;
-	FTPFileInfoListPtr filp;
+    int ci;
+    int sortBy;
+    int sortOrder;
+    FTPFileInfoListPtr filp;
 
-	ci = LsCacheLookup(item);
-	if (ci < 0) {
-		/* This dir was not in the
-		 * cache -- go get it.
-		 */
-		Ls(item, 'l', "", NULL);
-		ci = LsCacheLookup(item);
-		if (ci < 0)
-			return NULL;
-	}
+    ci = LsCacheLookup(item);
+    if (ci < 0)
+    {
+        /* This dir was not in the
+         * cache -- go get it.
+         */
+        Ls(item, 'l', "", NULL);
+        ci = LsCacheLookup(item);
+        if (ci < 0)
+            return NULL;
+    }
 
-	sortBy = 'n';		/* Sort by filename. */
-	sortOrder = 'a';	/* Sort in ascending order. */
-	filp = &gLsCache[ci].fil;
-	SortFileInfoList(filp, sortBy, sortOrder);
-	return filp;
+    sortBy = 'n';		/* Sort by filename. */
+    sortOrder = 'a';	/* Sort in ascending order. */
+    filp = &gLsCache[ci].fil;
+    SortFileInfoList(filp, sortBy, sortOrder);
+    return filp;
 }	/* GetLsCacheFileList */
 
 
@@ -309,95 +341,115 @@ GetLsCacheFileList(const char *const item)
 static char *
 RemoteCompletionFunction(const char *text, int state, int fTypeFilter)
 {
-	char rpath[256];
-	char *cp;
-	char *cp2;
-	const char *textbasename;
-	int fType;
-	FTPFileInfoPtr diritemp;
-	FTPFileInfoListPtr filp;
-	int textdirlen;
-	size_t tbnlen;
-	size_t flen, mlen;
-	static FTPFileInfoVec diritemv;
-	static int i;
+    char rpath[256];
+    char *cp;
+    char *cp2;
+    const char *textbasename;
+    int fType;
+    FTPFileInfoPtr diritemp;
+    FTPFileInfoListPtr filp;
+    int textdirlen;
+    size_t tbnlen;
+    size_t flen, mlen;
+    static FTPFileInfoVec diritemv;
+    static int i;
 
-	textbasename = strrchr(text, '/');
-	if (textbasename == NULL) {
-		textbasename = text;
-		textdirlen = -1;
-	} else {
-		textdirlen = (int) (textbasename - text);
-		textbasename++;
-	}
-	tbnlen = strlen(textbasename);
+    textbasename = strrchr(text, '/');
+    if (textbasename == NULL)
+    {
+        textbasename = text;
+        textdirlen = -1;
+    }
+    else
+    {
+        textdirlen = (int) (textbasename - text);
+        textbasename++;
+    }
+    tbnlen = strlen(textbasename);
 
-	if (state == 0) {
-		if (text[0] == '\0') {
-			/* Special case when they do "get <TAB><TAB> " */
-			STRNCPY(rpath, gRemoteCWD);
-		} else {
-			PathCat(rpath, sizeof(rpath), gRemoteCWD, text, gServerUsesMSDOSPaths);
-			if (text[strlen(text) - 1] == '/') {
-				/* Special case when they do "get /dir1/dir2/<TAB><TAB>" */
-				STRNCAT(rpath, "/");
-			}
-			cp2 = strrchr(rpath, '/');
-			if (cp2 == NULL) {
-				return NULL;
-			} else if (cp2 == rpath) {
-				/* Item in root directory. */
-				cp2++;
-			}
-			*cp2 = '\0';
-		}
+    if (state == 0)
+    {
+        if (text[0] == '\0')
+        {
+            /* Special case when they do "get <TAB><TAB> " */
+            STRNCPY(rpath, gRemoteCWD);
+        }
+        else
+        {
+            PathCat(rpath, sizeof(rpath), gRemoteCWD, text, gServerUsesMSDOSPaths);
+            if (text[strlen(text) - 1] == '/')
+            {
+                /* Special case when they do "get /dir1/dir2/<TAB><TAB>" */
+                STRNCAT(rpath, "/");
+            }
+            cp2 = strrchr(rpath, '/');
+            if (cp2 == NULL)
+            {
+                return NULL;
+            }
+            else if (cp2 == rpath)
+            {
+                /* Item in root directory. */
+                cp2++;
+            }
+            *cp2 = '\0';
+        }
 
-		filp = GetLsCacheFileList(rpath);
-		if (filp == NULL)
-			return NULL;
+        filp = GetLsCacheFileList(rpath);
+        if (filp == NULL)
+            return NULL;
 
-		diritemv = filp->vec;
-		if (diritemv == NULL)
-			return NULL;
+        diritemv = filp->vec;
+        if (diritemv == NULL)
+            return NULL;
 
-		i = 0;
-	}
+        i = 0;
+    }
 
-	for ( ; ; ) {
-		diritemp = diritemv[i];
-		if (diritemp == NULL)
-			break;
+    for ( ; ; )
+    {
+        diritemp = diritemv[i];
+        if (diritemp == NULL)
+            break;
 
-		i++;
-		fType = (int) diritemp->type;
-		if ((fTypeFilter == 0) || (fType == fTypeFilter) || (fType == /* symlink */ 'l')) {
-			if (strncmp(textbasename, diritemp->relname, tbnlen) == 0) {
-				flen = strlen(diritemp->relname);
-				if (textdirlen < 0) {
-					mlen = flen + 2;
-					cp = (char *) malloc(mlen);
-					if (cp == NULL)
-						return (NULL);
-					(void) memcpy(cp, diritemp->relname, mlen);
-				} else {
-					mlen = textdirlen + 1 + flen + 2;
-					cp = (char *) malloc(mlen);
-					if (cp == NULL)
-						return (NULL);
-					(void) memcpy(cp, text, (size_t) textdirlen);
-					cp[textdirlen] = '/';
-					(void) strcpy(cp + textdirlen + 1, diritemp->relname);
-				}
-				if (fType == 'd') {
-					gl_completion_exact_match_extra_char = '/';
-				} else {
-					gl_completion_exact_match_extra_char = ' ';
-				}
-				return cp;
-			}
-		}
-	}
-	return NULL;
+        i++;
+        fType = (int) diritemp->type;
+        if ((fTypeFilter == 0) || (fType == fTypeFilter) || (fType == /* symlink */ 'l'))
+        {
+            if (strncmp(textbasename, diritemp->relname, tbnlen) == 0)
+            {
+                flen = strlen(diritemp->relname);
+                if (textdirlen < 0)
+                {
+                    mlen = flen + 2;
+                    cp = (char *) malloc(mlen);
+                    if (cp == NULL)
+                        return (NULL);
+                    (void) memcpy(cp, diritemp->relname, mlen);
+                }
+                else
+                {
+                    mlen = textdirlen + 1 + flen + 2;
+                    cp = (char *) malloc(mlen);
+                    if (cp == NULL)
+                        return (NULL);
+                    (void) memcpy(cp, text, (size_t) textdirlen);
+                    cp[textdirlen] = '/';
+                    (void) strcpy(cp + textdirlen + 1, diritemp->relname);
+                }
+                if (fType == 'd')
+                {
+                    gl_completion_exact_match_extra_char = '/';
+                }
+                else
+                {
+                    gl_completion_exact_match_extra_char = ' ';
+                }
+                return cp;
+            }
+        }
+    }
+    return NULL;
 }	/* RemoteCompletionFunction */
 
 
@@ -406,10 +458,10 @@ RemoteCompletionFunction(const char *text, int state, int fTypeFilter)
 static char *
 RemoteFileCompletionFunction(const char *text, int state)
 {
-	char *cp;
+    char *cp;
 
-	cp = RemoteCompletionFunction(text, state, 0);
-	return cp;
+    cp = RemoteCompletionFunction(text, state, 0);
+    return cp;
 }	/* RemoteFileCompletionFunction */
 
 
@@ -418,10 +470,10 @@ RemoteFileCompletionFunction(const char *text, int state)
 static char *
 RemoteDirCompletionFunction(const char *text, int state)
 {
-	char *cp;
+    char *cp;
 
-	cp = RemoteCompletionFunction(text, state, 'd');
-	return cp;
+    cp = RemoteCompletionFunction(text, state, 'd');
+    return cp;
 }	/* RemoteDirCompletionFunction */
 
 
@@ -430,29 +482,35 @@ RemoteDirCompletionFunction(const char *text, int state)
 static char *
 BookmarkCompletionFunction(const char *text, int state)
 {
-	char *cp;
-	size_t textlen;
-	int i, matches;
+    char *cp;
+    size_t textlen;
+    int i, matches;
 
-	if ((gBookmarkTable == NULL) || (state >= gNumBookmarks))
-		return (NULL);
+    if ((gBookmarkTable == NULL) || (state >= gNumBookmarks))
+        return (NULL);
 
-	textlen = strlen(text);
-	if (textlen == 0) {
-		cp = StrDup(gBookmarkTable[state].bookmarkName);
-	} else {
-		cp = NULL;
-		for (i=0, matches=0; i<gNumBookmarks; i++) {
-			if (ISTRNCMP(gBookmarkTable[i].bookmarkName, text, textlen) == 0) {
-				if (matches >= state) {
-					cp = StrDup(gBookmarkTable[i].bookmarkName);
-					break;
-				}
-				matches++;
-			}
-		}
-	}
-	return cp;
+    textlen = strlen(text);
+    if (textlen == 0)
+    {
+        cp = StrDup(gBookmarkTable[state].bookmarkName);
+    }
+    else
+    {
+        cp = NULL;
+        for (i=0, matches=0; i<gNumBookmarks; i++)
+        {
+            if (ISTRNCMP(gBookmarkTable[i].bookmarkName, text, textlen) == 0)
+            {
+                if (matches >= state)
+                {
+                    cp = StrDup(gBookmarkTable[i].bookmarkName);
+                    break;
+                }
+                matches++;
+            }
+        }
+    }
+    return cp;
 }	/* BookmarkCompletionFunction */
 
 
@@ -461,30 +519,36 @@ BookmarkCompletionFunction(const char *text, int state)
 static char *
 CommandCompletionFunction(const char *text, int state)
 {
-	char *cp;
-	size_t textlen;
-	int i, matches;
-	CommandPtr cmdp;
+    char *cp;
+    size_t textlen;
+    int i, matches;
+    CommandPtr cmdp;
 
-	textlen = strlen(text);
-	if (textlen == 0) {
-		cp = NULL;
-	} else {
-		cp = NULL;
-		for (i=0, matches=0; ; i++) {
-			cmdp = GetCommandByIndex(i);
-			if (cmdp == kNoCommand)
-				break;
-			if (ISTRNCMP(cmdp->name, text, textlen) == 0) {
-				if (matches >= state) {
-					cp = StrDup(cmdp->name);
-					break;
-				}
-				matches++;
-			}
-		}
-	}
-	return cp;
+    textlen = strlen(text);
+    if (textlen == 0)
+    {
+        cp = NULL;
+    }
+    else
+    {
+        cp = NULL;
+        for (i=0, matches=0; ; i++)
+        {
+            cmdp = GetCommandByIndex(i);
+            if (cmdp == kNoCommand)
+                break;
+            if (ISTRNCMP(cmdp->name, text, textlen) == 0)
+            {
+                if (matches >= state)
+                {
+                    cp = StrDup(cmdp->name);
+                    break;
+                }
+                matches++;
+            }
+        }
+    }
+    return cp;
 }	/* CommandCompletionFunction */
 
 
@@ -493,29 +557,35 @@ CommandCompletionFunction(const char *text, int state)
 static char *
 PrefOptCompletionFunction(const char *text, int state)
 {
-	char *cp;
-	size_t textlen;
-	int i, matches;
+    char *cp;
+    size_t textlen;
+    int i, matches;
 
-	if (state >= gNumPrefOpts)
-		return (NULL);
+    if (state >= gNumPrefOpts)
+        return (NULL);
 
-	textlen = strlen(text);
-	if (textlen == 0) {
-		cp = StrDup(gPrefOpts[state].varname);
-	} else {
-		cp = NULL;
-		for (i=0, matches=0; i<gNumPrefOpts; i++) {
-			if (ISTRNCMP(gPrefOpts[i].varname, text, textlen) == 0) {
-				if (matches >= state) {
-					cp = StrDup(gPrefOpts[i].varname);
-					break;
-				}
-				matches++;
-			}
-		}
-	}
-	return cp;
+    textlen = strlen(text);
+    if (textlen == 0)
+    {
+        cp = StrDup(gPrefOpts[state].varname);
+    }
+    else
+    {
+        cp = NULL;
+        for (i=0, matches=0; i<gNumPrefOpts; i++)
+        {
+            if (ISTRNCMP(gPrefOpts[i].varname, text, textlen) == 0)
+            {
+                if (matches >= state)
+                {
+                    cp = StrDup(gPrefOpts[i].varname);
+                    break;
+                }
+                matches++;
+            }
+        }
+    }
+    return cp;
 }	/* PrefOptCompletionFunction */
 
 
@@ -524,7 +594,7 @@ PrefOptCompletionFunction(const char *text, int state)
 void
 ReCacheBookmarks(void)
 {
-	(void) LoadBookmarkTable();
+    (void) LoadBookmarkTable();
 }
 
 
@@ -532,12 +602,13 @@ ReCacheBookmarks(void)
 static int
 HaveCommandNameOnly(char *cmdstart)
 {
-	char *cp;
-	for (cp = cmdstart; *cp != '\0'; cp++) {
-		if (isspace((int) *cp))
-			return (0);	/* At least one argument in progress. */
-	}
-	return (1);
+    char *cp;
+    for (cp = cmdstart; *cp != '\0'; cp++)
+    {
+        if (isspace((int) *cp))
+            return (0);	/* At least one argument in progress. */
+    }
+    return (1);
 }	/* HaveCommandNameOnly */
 
 
@@ -546,68 +617,83 @@ HaveCommandNameOnly(char *cmdstart)
 static char *
 CompletionFunction(const char *text, int state)
 {
-	char *cp;
-	char *cmdstart;
-	ArgvInfo ai;
-	int bUsed;
-	CommandPtr cmdp;
-	static int flags;
+    char *cp;
+    char *cmdstart;
+    ArgvInfo ai;
+    int bUsed;
+    CommandPtr cmdp;
+    static int flags;
 
-	if (state == 0) {
-		flags = -1;
-		cmdstart = FindStartOfCurrentCommand();
-		if (cmdstart == NULL)
-			return NULL;
-		if (HaveCommandNameOnly(cmdstart)) {
-			flags = -2;	/* special case */
-			cp = CommandCompletionFunction(text, state);
-			return cp;
-		}
+    if (state == 0)
+    {
+        flags = -1;
+        cmdstart = FindStartOfCurrentCommand();
+        if (cmdstart == NULL)
+            return NULL;
+        if (HaveCommandNameOnly(cmdstart))
+        {
+            flags = -2;	/* special case */
+            cp = CommandCompletionFunction(text, state);
+            return cp;
+        }
 
-		(void) memset(&ai, 0, sizeof(ai));
-		bUsed = MakeArgv(cmdstart, &ai.cargc, ai.cargv,
-			(int) (sizeof(ai.cargv) / sizeof(char *)),
-			ai.argbuf, sizeof(ai.argbuf),
-			ai.noglobargv, 1, 1);
-		if (bUsed <= 0)
-			return NULL;
-		if (ai.cargc == 0)
-			return NULL;
+        (void) memset(&ai, 0, sizeof(ai));
+        bUsed = MakeArgv(cmdstart, &ai.cargc, ai.cargv,
+                         (int) (sizeof(ai.cargv) / sizeof(char *)),
+                         ai.argbuf, sizeof(ai.argbuf),
+                         ai.noglobargv, 1, 1);
+        if (bUsed <= 0)
+            return NULL;
+        if (ai.cargc == 0)
+            return NULL;
 
-		cmdp = GetCommandByName(ai.cargv[0], 0);
-		if (cmdp == kAmbiguousCommand) {
-			return NULL;
-		} else if (cmdp == kNoCommand) {
-			return NULL;
-		}
-		flags = cmdp->flags;
-	}
-	if (flags == (-2)) {
-		cp = CommandCompletionFunction(text, state);
-		return cp;
-	}
-	if (flags < 0)
-		return NULL;
-	if ((flags & (kCompleteLocalFile|kCompleteLocalDir)) != 0) {
-		cp = gl_local_filename_completion_proc(text, state);
-		return cp;
-	} else if ((flags & kCompleteRemoteFile) != 0) {
-		gl_filename_quoting_desired = 1;
-		cp = RemoteFileCompletionFunction(text, state);
-		return cp;
-	} else if ((flags & kCompleteRemoteDir) != 0) {
-		gl_filename_quoting_desired = 1;
-		cp = RemoteDirCompletionFunction(text, state);
-		return cp;
-	} else if ((flags & kCompleteBookmark) != 0) {
-		gl_filename_quoting_desired = 1;
-		cp = BookmarkCompletionFunction(text, state);
-		return cp;
-	} else if ((flags & kCompletePrefOpt) != 0) {
-		cp = PrefOptCompletionFunction(text, state);
-		return cp;
-	}	
-	return NULL;
+        cmdp = GetCommandByName(ai.cargv[0], 0);
+        if (cmdp == kAmbiguousCommand)
+        {
+            return NULL;
+        }
+        else if (cmdp == kNoCommand)
+        {
+            return NULL;
+        }
+        flags = cmdp->flags;
+    }
+    if (flags == (-2))
+    {
+        cp = CommandCompletionFunction(text, state);
+        return cp;
+    }
+    if (flags < 0)
+        return NULL;
+    if ((flags & (kCompleteLocalFile|kCompleteLocalDir)) != 0)
+    {
+        cp = gl_local_filename_completion_proc(text, state);
+        return cp;
+    }
+    else if ((flags & kCompleteRemoteFile) != 0)
+    {
+        gl_filename_quoting_desired = 1;
+        cp = RemoteFileCompletionFunction(text, state);
+        return cp;
+    }
+    else if ((flags & kCompleteRemoteDir) != 0)
+    {
+        gl_filename_quoting_desired = 1;
+        cp = RemoteDirCompletionFunction(text, state);
+        return cp;
+    }
+    else if ((flags & kCompleteBookmark) != 0)
+    {
+        gl_filename_quoting_desired = 1;
+        cp = BookmarkCompletionFunction(text, state);
+        return cp;
+    }
+    else if ((flags & kCompletePrefOpt) != 0)
+    {
+        cp = PrefOptCompletionFunction(text, state);
+        return cp;
+    }
+    return NULL;
 }	/* CompletionFunction */
 
 
@@ -616,13 +702,13 @@ CompletionFunction(const char *text, int state)
 void
 LoadHistory(void)
 {
-	char pathName[256];
+    char pathName[256];
 
-	if (gOurDirectoryPath[0] == '\0')
-		return;
-	(void) OurDirectoryPath(pathName, sizeof(pathName), kHistoryFileName);
+    if (gOurDirectoryPath[0] == '\0')
+        return;
+    (void) OurDirectoryPath(pathName, sizeof(pathName), kHistoryFileName);
 
-	gl_histloadfile(pathName);
+    gl_histloadfile(pathName);
 }	/* LoadHistory */
 
 
@@ -630,18 +716,19 @@ LoadHistory(void)
 static size_t
 Vt100VisibleStrlen(const char *src)
 {
-	const char *cp;
-	size_t esc;
+    const char *cp;
+    size_t esc;
 
-	for (esc = 0, cp = src; *cp != '\0'; cp++) {
-		if (*cp == '\033')
-			esc++;
-	}
+    for (esc = 0, cp = src; *cp != '\0'; cp++)
+    {
+        if (*cp == '\033')
+            esc++;
+    }
 
-	/* The VT100 escape codes we use are all in the form "\033[7m"
-	 * These aren't visible, so subtract them from the count.
-	 */
-	return ((size_t) (cp - src) - (esc * 4));
+    /* The VT100 escape codes we use are all in the form "\033[7m"
+     * These aren't visible, so subtract them from the count.
+     */
+    return ((size_t) (cp - src) - (esc * 4));
 }	/* Vt100VisibleStrlen */
 
 
@@ -652,16 +739,16 @@ Vt100VisibleStrlen(const char *src)
 void
 SaveHistory(void)
 {
-	char pathName[256];
+    char pathName[256];
 
-	if (gOurDirectoryPath[0] == '\0')
-		return;		/* Don't create in root directory. */
-	(void) OurDirectoryPath(pathName, sizeof(pathName), kHistoryFileName);
+    if (gOurDirectoryPath[0] == '\0')
+        return;		/* Don't create in root directory. */
+    (void) OurDirectoryPath(pathName, sizeof(pathName), kHistoryFileName);
 
-	gl_histsavefile(pathName);
+    gl_histsavefile(pathName);
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
 #else
-	(void) chmod(pathName, 00600);
+    (void) chmod(pathName, 00600);
 #endif
 }	/* SaveHistory */
 
@@ -671,11 +758,11 @@ SaveHistory(void)
 void
 InitReadline(void)
 {
-	gl_completion_proc = CompletionFunction;
-	gl_setwidth(gScreenColumns);
-	gl_strlen = Vt100VisibleStrlen;
-	LoadHistory();
-	ReCacheBookmarks();
+    gl_completion_proc = CompletionFunction;
+    gl_setwidth(gScreenColumns);
+    gl_strlen = Vt100VisibleStrlen;
+    LoadHistory();
+    ReCacheBookmarks();
 }	/* InitReadline */
 
 
@@ -684,42 +771,48 @@ InitReadline(void)
 char *
 Readline(char *prompt)
 {
-	char *linecopy, *line, *cp;
-	static char *lbuf = NULL;
+    char *linecopy, *line, *cp;
+    static char *lbuf = NULL;
 
-	forever {
-		if (gIsTTYr) {
-			line = gl_getline(prompt);
-		} else {
-			if (lbuf == NULL) {
-				lbuf = calloc((size_t) 512, (size_t) 1);
-				if (lbuf == NULL)
-					return NULL;
-			}
-			line = fgets(lbuf, (size_t) (512 - 1), stdin);
-			if (line != NULL) {
-				cp = line + strlen(line) - 1;
-				if (*cp == '\n')
-					*cp = '\0';
-			}
-		}
+    forever
+    {
+        if (gIsTTYr)
+        {
+            line = gl_getline(prompt);
+        }
+        else
+        {
+            if (lbuf == NULL)
+            {
+                lbuf = calloc((size_t) 512, (size_t) 1);
+                if (lbuf == NULL)
+                    return NULL;
+            }
+            line = fgets(lbuf, (size_t) (512 - 1), stdin);
+            if (line != NULL)
+            {
+                cp = line + strlen(line) - 1;
+                if (*cp == '\n')
+                    *cp = '\0';
+            }
+        }
 
-		if (line == NULL)
-			return NULL;	/* fgets EOF */
+        if (line == NULL)
+            return NULL;	/* fgets EOF */
 
-		/* If we have a non-empty line, we're done. */
-		if (line[0] != '\0')
-			break;
+        /* If we have a non-empty line, we're done. */
+        if (line[0] != '\0')
+            break;
 
-		if (gl_get_result() == GL_EOF)
-			return NULL;	/* gl_getline EOF */
+        if (gl_get_result() == GL_EOF)
+            return NULL;	/* gl_getline EOF */
 
-		/* Otherwise a signal was received.  Start over. */
-	}
+        /* Otherwise a signal was received.  Start over. */
+    }
 
-	linecopy = StrDup(line);
-	line = linecopy;
-	return (line);
+    linecopy = StrDup(line);
+    line = linecopy;
+    return (line);
 }	/* Readline */
 
 
@@ -727,7 +820,7 @@ Readline(char *prompt)
 void
 AddHistory(const char *const line)
 {
-	gl_histadd(line);
+    gl_histadd(line);
 }	/* AddHistory */
 
 
@@ -735,8 +828,8 @@ AddHistory(const char *const line)
 void
 DisposeReadline(void)
 {
-	SaveHistory();
-	gl_dispose();
+    SaveHistory();
+    gl_dispose();
 }	/* DisposeReadline */
 
 
@@ -747,39 +840,47 @@ DisposeReadline(void)
 void
 SetXtermTitle(const char *const fmt, ...)
 {
-	va_list ap;
-	char buf[256];
+    va_list ap;
+    char buf[256];
 
-	if ((gXtermTitle != 0) && (gMaySetXtermTitle != 0)) {
-		if ((fmt == NULL) || (ISTRCMP(fmt, "RESTORE") == 0)) {
+    if ((gXtermTitle != 0) && (gMaySetXtermTitle != 0))
+    {
+        if ((fmt == NULL) || (ISTRCMP(fmt, "RESTORE") == 0))
+        {
 #if ( (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__) ) && defined(_CONSOLE)
-			STRNCPY(buf, gSavedConsoleTitle);
+            STRNCPY(buf, gSavedConsoleTitle);
 #else
-			STRNCPY(buf, gTerm);
+            STRNCPY(buf, gTerm);
 #endif
-		} else if (ISTRCMP(fmt, "DEFAULT") == 0) {
-			(void) Strncpy(buf, gVersion + 5, 12);
-		} else {
-			va_start(ap, fmt);
+        }
+        else if (ISTRCMP(fmt, "DEFAULT") == 0)
+        {
+            (void) Strncpy(buf, gVersion + 5, 12);
+        }
+        else
+        {
+            va_start(ap, fmt);
 #ifdef HAVE_VSNPRINTF
-			(void) vsnprintf(buf, sizeof(buf) - 1, fmt, ap);
-			buf[sizeof(buf) - 1] = '\0';
+            (void) vsnprintf(buf, sizeof(buf) - 1, fmt, ap);
+            buf[sizeof(buf) - 1] = '\0';
 #else
-			(void) vsprintf(buf, fmt, ap);
+            (void) vsprintf(buf, fmt, ap);
 #endif
-			va_end(ap);
-		}
-		if (buf[0] != '\0') {
+            va_end(ap);
+        }
+        if (buf[0] != '\0')
+        {
 #if ( (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__) ) && defined(_CONSOLE)
-			SetConsoleTitle(buf);
+            SetConsoleTitle(buf);
 #else
-			if (strcmp(gCurXtermTitleStr, buf) != 0) {
-				fprintf(stderr, "\033]0;%s\007", buf);
-				STRNCPY(gCurXtermTitleStr, buf);
-			}
+            if (strcmp(gCurXtermTitleStr, buf) != 0)
+            {
+                fprintf(stderr, "\033]0;%s\007", buf);
+                STRNCPY(gCurXtermTitleStr, buf);
+            }
 #endif
-		}
-	}
+        }
+    }
 }	/* SetXtermTitle */
 
 
@@ -788,64 +889,65 @@ SetXtermTitle(const char *const fmt, ...)
 void
 PrintStartupBanner(void)
 {
-	char v[80], *cp;
-	char vdate[32];
+    char v[80], *cp;
+    char vdate[32];
 
-	/* Print selected information from the version ID. */
-	vdate[0] = '\0';
-	(void) STRNCPY(v, gVersion + 5);
-	cp = strchr(v, ',');
-	if (cp != NULL) {
-		*cp = '\0';
-		cp[-5] = '\0';
-		(void) STRNCPY(vdate, " (");
-		(void) STRNCAT(vdate, v + 16);
-		(void) STRNCAT(vdate, ", ");
-		(void) STRNCAT(vdate, cp - 4);
-		(void) STRNCAT(vdate, ")");
-	}
+    /* Print selected information from the version ID. */
+    vdate[0] = '\0';
+    (void) STRNCPY(v, gVersion + 5);
+    cp = strchr(v, ',');
+    if (cp != NULL)
+    {
+        *cp = '\0';
+        cp[-5] = '\0';
+        (void) STRNCPY(vdate, " (");
+        (void) STRNCAT(vdate, v + 16);
+        (void) STRNCAT(vdate, ", ");
+        (void) STRNCAT(vdate, cp - 4);
+        (void) STRNCAT(vdate, ")");
+    }
 
 #if ( (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__) ) && defined(_CONSOLE)
-	{
-		HANDLE Console = GetStdHandle(STD_OUTPUT_HANDLE);
-		WORD Attribute = GetConsoleTextAttribute(Console);
-		Attribute |= FOREGROUND_INTENSITY;
-		SetConsoleTextAttribute(Console, Attribute);
+    {
+        HANDLE Console = GetStdHandle(STD_OUTPUT_HANDLE);
+        WORD Attribute = GetConsoleTextAttribute(Console);
+        Attribute |= FOREGROUND_INTENSITY;
+        SetConsoleTextAttribute(Console, Attribute);
 #if defined(BETA) && (BETA > 0)
-		(void) fprintf(stdout, "%.11s beta %d",
-			gVersion + 5,
-			BETA
-		);
+        (void) fprintf(stdout, "%.11s beta %d",
+                       gVersion + 5,
+                       BETA
+                      );
 #else
-		(void) fprintf(stdout, "%.11s",
-			gVersion + 5
-		);
+        (void) fprintf(stdout, "%.11s",
+                       gVersion + 5
+                      );
 #endif
-		Attribute &= ~FOREGROUND_INTENSITY;
-		SetConsoleTextAttribute(Console, Attribute);
-		(void) fprintf(stdout, "%s by Mike Gleason (http://www.NcFTP.com/contact/).\n",
-			vdate
-		);
-	}
+        Attribute &= ~FOREGROUND_INTENSITY;
+        SetConsoleTextAttribute(Console, Attribute);
+        (void) fprintf(stdout, "%s by Mike Gleason (http://www.NcFTP.com/contact/).\n",
+                       vdate
+                      );
+    }
 #else
 #if defined(BETA) && (BETA > 0)
-	(void) fprintf(stdout, "%s%.11s beta %d%s%s by Mike Gleason (http://www.NcFTP.com/contact/).\n",
-		tcap_boldface,
-		gVersion + 5,
-		BETA,
-		tcap_normal,
-		vdate
-	);
+    (void) fprintf(stdout, "%s%.11s beta %d%s%s by Mike Gleason (http://www.NcFTP.com/contact/).\n",
+                   tcap_boldface,
+                   gVersion + 5,
+                   BETA,
+                   tcap_normal,
+                   vdate
+                  );
 #else
-	(void) fprintf(stdout, "%s%.11s%s%s by Mike Gleason (http://www.NcFTP.com/contact/).\n",
-		tcap_boldface,
-		gVersion + 5,
-		tcap_normal,
-		vdate
-	);
+    (void) fprintf(stdout, "%s%.11s%s%s by Mike Gleason (http://www.NcFTP.com/contact/).\n",
+                   tcap_boldface,
+                   gVersion + 5,
+                   tcap_normal,
+                   vdate
+                  );
 #endif
 #endif
-	(void) fflush(stdout);
+    (void) fflush(stdout);
 }	/* PrintStartupBanner */
 
 
@@ -855,31 +957,35 @@ PrintStartupBanner(void)
 void
 MakePrompt(char *dst, size_t dsize)
 {
-	char acwd[64];
+    char acwd[64];
 
 #	ifdef HAVE_SNPRINTF
-	if (gConn.loggedIn != 0) {
-		AbbrevStr(acwd, gRemoteCWD, 25, 0);
-		snprintf(dst, dsize, "%sncftp%s %s %s>%s ",
-			tcap_boldface, tcap_normal, acwd,
-			tcap_boldface, tcap_normal);
-	} else {
-		snprintf(dst, dsize, "%sncftp%s> ",
-			tcap_boldface, tcap_normal);
-	}
+    if (gConn.loggedIn != 0)
+    {
+        AbbrevStr(acwd, gRemoteCWD, 25, 0);
+        snprintf(dst, dsize, "%sncftp%s %s %s>%s ",
+                 tcap_boldface, tcap_normal, acwd,
+                 tcap_boldface, tcap_normal);
+    }
+    else
+    {
+        snprintf(dst, dsize, "%sncftp%s> ",
+                 tcap_boldface, tcap_normal);
+    }
 #	else	/* HAVE_SNPRINTF */
-	(void) Strncpy(dst, tcap_boldface, dsize);
-	(void) Strncat(dst, "ncftp", dsize);
-	(void) Strncat(dst, tcap_normal, dsize);
-	if (gConn.loggedIn != 0) {
-		AbbrevStr(acwd, gRemoteCWD, 25, 0);
-		(void) Strncat(dst, " ", dsize);
-		(void) Strncat(dst, acwd, dsize);
-		(void) Strncat(dst, " ", dsize);
-	}
-	(void) Strncat(dst, tcap_boldface, dsize);
-	(void) Strncat(dst, ">", dsize);
-	(void) Strncat(dst, tcap_normal, dsize);
-	(void) Strncat(dst, " ", dsize);
+    (void) Strncpy(dst, tcap_boldface, dsize);
+    (void) Strncat(dst, "ncftp", dsize);
+    (void) Strncat(dst, tcap_normal, dsize);
+    if (gConn.loggedIn != 0)
+    {
+        AbbrevStr(acwd, gRemoteCWD, 25, 0);
+        (void) Strncat(dst, " ", dsize);
+        (void) Strncat(dst, acwd, dsize);
+        (void) Strncat(dst, " ", dsize);
+    }
+    (void) Strncat(dst, tcap_boldface, dsize);
+    (void) Strncat(dst, ">", dsize);
+    (void) Strncat(dst, tcap_normal, dsize);
+    (void) Strncat(dst, " ", dsize);
 #	endif	/* HAVE_SNPRINTF */
 }	/* MakePrompt */

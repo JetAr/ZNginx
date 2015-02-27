@@ -1,4 +1,4 @@
-/* FTP.h
+﻿/* FTP.h
  *
  * Copyright (c) 1996-2005 Mike Gleason, NcFTP Software.
  * All rights reserved.

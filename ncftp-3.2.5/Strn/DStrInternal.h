@@ -1,4 +1,4 @@
-/* DStrInternal.h */
+﻿/* DStrInternal.h */
 
 #ifndef _DStrInternal_h_
 #define _DStrInternal_h_ 1
@@ -8,10 +8,11 @@ extern "C"
 {
 #endif	/* __cplusplus */
 
-typedef struct DStr {
-	char *s;
-	size_t len;
-	size_t allocSize;
+typedef struct DStr
+{
+    char *s;
+    size_t len;
+    size_t allocSize;
 } DStr, *DStrPtr;
 
 

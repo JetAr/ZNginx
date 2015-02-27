@@ -1,4 +1,4 @@
-#include "syshdrs.h"
+﻿#include "syshdrs.h"
 #ifdef PRAGMA_HDRSTOP
 #	pragma hdrstop
 #endif
@@ -34,43 +34,46 @@
 char *
 Dynscpy(char **dst, ...)
 {
-	va_list ap;
-	const char *src;
-	char *newdst, *dcp;
-	size_t curLen, catLen, srcLen;
+    va_list ap;
+    const char *src;
+    char *newdst, *dcp;
+    size_t curLen, catLen, srcLen;
 
-	if (dst == (char **) 0)
-		return NULL;
+    if (dst == (char **) 0)
+        return NULL;
 
-	catLen = 0;
-	va_start(ap, dst);
-	src = va_arg(ap, char *);
-	while (src != NULL) {
-		catLen += strlen(src);
-		src = va_arg(ap, char *);
-	}
-	va_end(ap);
+    catLen = 0;
+    va_start(ap, dst);
+    src = va_arg(ap, char *);
+    while (src != NULL)
+    {
+        catLen += strlen(src);
+        src = va_arg(ap, char *);
+    }
+    va_end(ap);
 
-	curLen = 0;
+    curLen = 0;
 
-	newdst = malloc(curLen + catLen + 2);
-	if (newdst == NULL) {
-		*dst = NULL;
-		return NULL;
-	}
+    newdst = malloc(curLen + catLen + 2);
+    if (newdst == NULL)
+    {
+        *dst = NULL;
+        return NULL;
+    }
 
-	dcp = newdst + curLen;
-	va_start(ap, dst);
-	src = va_arg(ap, char *);
-	while (src != NULL) {
-		srcLen = strlen(src);
-		memcpy(dcp, src, srcLen);
-		dcp += srcLen;
-		src = va_arg(ap, char *);
-	}
-	va_end(ap);
-	*dcp = '\0';
+    dcp = newdst + curLen;
+    va_start(ap, dst);
+    src = va_arg(ap, char *);
+    while (src != NULL)
+    {
+        srcLen = strlen(src);
+        memcpy(dcp, src, srcLen);
+        dcp += srcLen;
+        src = va_arg(ap, char *);
+    }
+    va_end(ap);
+    *dcp = '\0';
 
-	*dst = newdst;
-	return (newdst);
+    *dst = newdst;
+    return (newdst);
 }	/* Dynscpy */

@@ -1,4 +1,4 @@
-/* usio.h */
+﻿/* usio.h */
 
 #ifndef _usio_h_
 #define _usio_h_ 1

@@ -1,4 +1,4 @@
-/* config.h.  Generated automatically by configure.  */
+﻿/* config.h.  Generated automatically by configure.  */
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
 
 /* #define alarm_time_t unsigned int */ /* leave undefined */
@@ -35,7 +35,7 @@
 /* #undef HAVE_SOCKADDR_UN_SUN_LEN */
 
 /* #define HAVE_STRUCT_CMSGDHR 1 */
-  
+
 /* Define to the type of arg1 for select(). */
 #define SELECT_TYPE_ARG1 int
 

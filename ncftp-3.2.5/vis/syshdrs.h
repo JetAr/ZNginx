@@ -1,8 +1,8 @@
-/* syshdrs.h
- * 
+﻿/* syshdrs.h
+ *
  * Copyright (c) 1996-2004 Mike Gleason, NcFTP Software.
  * All rights reserved.
- * 
+ *
  */
 
 #ifdef HAVE_CONFIG_H
@@ -101,8 +101,8 @@
 #ifdef NEED_GETOPT_H
 #	include <getopt.h>
 #elif defined(NEED_GETOPT_EXTERN_DECLS)
-	extern int optind, opterr, optopt;
-	extern char *optarg;
+extern int optind, opterr, optopt;
+extern char *optarg;
 #endif
 
 #ifdef __CYGWIN__

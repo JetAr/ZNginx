@@ -1,4 +1,4 @@
-/* sio.h 
+﻿/* sio.h
  *
  * Copyright 1992-2011 Mike Gleason, NcFTP Software.  All Rights Reserved.
  *
@@ -14,26 +14,28 @@ extern "C"
 {
 #endif	/* __cplusplus */
 
-typedef struct SelectSet {
-	fd_set fds;
-	struct timeval timeout;
-	int maxfd;
-	int numfds;
+typedef struct SelectSet
+{
+    fd_set fds;
+    struct timeval timeout;
+    int maxfd;
+    int numfds;
 } SelectSet, *SelectSetPtr;
 
 /* For SReadline */
 #ifndef _SReadlineInfo_
 #define _SReadlineInfo_ 1
-typedef struct SReadlineInfo {
-	char *buf;		/* Pointer to beginning of buffer. */
-	char *bufPtr;		/* Pointer to current position in buffer. */
-	char *bufLim;		/* Pointer to end of buffer. */
-	size_t bufSize;		/* Current size of buffer block. */
-	size_t bufSizeMax;	/* Maximum size available for buffer. */
-	int malloc;		/* If non-zero, malloc() was used for buf. */
-	int fd;			/* File descriptor to use for I/O. */
-	int timeoutLen;		/* Timeout to use, in seconds. */
-	int requireEOLN;	/* When buffer is full, continue reading and discarding until \n? */
+typedef struct SReadlineInfo
+{
+    char *buf;		/* Pointer to beginning of buffer. */
+    char *bufPtr;		/* Pointer to current position in buffer. */
+    char *bufLim;		/* Pointer to end of buffer. */
+    size_t bufSize;		/* Current size of buffer block. */
+    size_t bufSizeMax;	/* Maximum size available for buffer. */
+    int malloc;		/* If non-zero, malloc() was used for buf. */
+    int fd;			/* File descriptor to use for I/O. */
+    int timeoutLen;		/* Timeout to use, in seconds. */
+    int requireEOLN;	/* When buffer is full, continue reading and discarding until \n? */
 } SReadlineInfo;
 #endif
 
@@ -115,9 +117,9 @@ typedef struct SReadlineInfo {
 #endif
 
 #if (defined(WIN32) || defined(_WINDOWS)) && !defined(__CYGWIN__)
-	/* Windows has separate functions to close and ioctl sockets. */
+/* Windows has separate functions to close and ioctl sockets. */
 #else
-	/* UNIX uses close() and ioctl() for all types of descriptors */
+/* UNIX uses close() and ioctl() for all types of descriptors */
 #	define closesocket close
 #	define ioctlsocket ioctl
 #endif

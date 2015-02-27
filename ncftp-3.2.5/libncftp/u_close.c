@@ -1,4 +1,4 @@
-/* u_close.c
+﻿/* u_close.c
  *
  * Copyright (c) 1996-2005 Mike Gleason, NcFTP Software.
  * All rights reserved.
@@ -14,9 +14,10 @@
 void
 CloseFile(FILE **f)
 {
-	if (*f != NULL) {
-		if ((*f != stdout) && (*f != stdin) && (*f != stderr))
-			(void) fclose(*f);
-		*f = NULL;
-	}
+    if (*f != NULL)
+    {
+        if ((*f != stdout) && (*f != stdin) && (*f != stderr))
+            (void) fclose(*f);
+        *f = NULL;
+    }
 }	/* CloseFile */

@@ -1,4 +1,4 @@
-#include "syshdrs.h"
+﻿#include "syshdrs.h"
 #ifdef PRAGMA_HDRSTOP
 #	pragma hdrstop
 #endif
@@ -17,7 +17,7 @@
  * strtok 4=[402] length=3
  * strtok 5=[573] length=3
  * strtok 6=[1000] length=4
- * 
+ *
  * (Strtok:)
  * Strtok 1=[] length=0
  * Strtok 2=[] length=0
@@ -34,27 +34,33 @@
 char *
 Strtok(char *buf, const char *delims)
 {
-	static char *p = NULL;
-	char *start, *end;
+    static char *p = NULL;
+    char *start, *end;
 
-	if (buf != NULL) {
-		p = buf;
-	} else {
-		if (p == NULL)
-			return (NULL);		/* No more tokens. */
-	}
-	for (start = p, end = p; ; end++) {
-		if (*end == '\0') {
-			p = NULL;		/* This is the last token. */
-			break;
-		}
-		if (strchr(delims, (int) *end) != NULL) {
-			*end++ = '\0';
-			p = end; 
-			break;
-		}
-	}
-	return (start);
+    if (buf != NULL)
+    {
+        p = buf;
+    }
+    else
+    {
+        if (p == NULL)
+            return (NULL);		/* No more tokens. */
+    }
+    for (start = p, end = p; ; end++)
+    {
+        if (*end == '\0')
+        {
+            p = NULL;		/* This is the last token. */
+            break;
+        }
+        if (strchr(delims, (int) *end) != NULL)
+        {
+            *end++ = '\0';
+            p = end;
+            break;
+        }
+    }
+    return (start);
 }	/* Strtok */
 
 
@@ -79,47 +85,54 @@ Strtok(char *buf, const char *delims)
 int
 Strntok(char *dstTokenStart, size_t tokenSize, char *buf, const char *delims)
 {
-	static char *p = NULL;
-	char *end;
-	char *lim;
-	char *dst;
-	int len;
+    static char *p = NULL;
+    char *end;
+    char *lim;
+    char *dst;
+    int len;
 
-	dst = dstTokenStart;
-	lim = dst + tokenSize - 1;		/* Leave room for nul byte. */
+    dst = dstTokenStart;
+    lim = dst + tokenSize - 1;		/* Leave room for nul byte. */
 
-	if (buf != NULL) {
-		p = buf;
-	} else {
-		if (p == NULL) {
-			*dst = '\0';
-			return (-1);		/* No more tokens. */
-		}
-	}
+    if (buf != NULL)
+    {
+        p = buf;
+    }
+    else
+    {
+        if (p == NULL)
+        {
+            *dst = '\0';
+            return (-1);		/* No more tokens. */
+        }
+    }
 
-	for (end = p; ; end++) {
-		if (*end == '\0') {
-			p = NULL;		/* This is the last token. */
-			break;
-		}
-		if (strchr(delims, (int) *end) != NULL) {
-			++end;
-			p = end; 
-			break;
-		}
-		if (dst < lim)			/* Don't overrun token size. */
-			*dst++ = *end;
-	}
-	*dst = '\0';
-	len = (int) (dst - dstTokenStart);		/* Return length of token. */
+    for (end = p; ; end++)
+    {
+        if (*end == '\0')
+        {
+            p = NULL;		/* This is the last token. */
+            break;
+        }
+        if (strchr(delims, (int) *end) != NULL)
+        {
+            ++end;
+            p = end;
+            break;
+        }
+        if (dst < lim)			/* Don't overrun token size. */
+            *dst++ = *end;
+    }
+    *dst = '\0';
+    len = (int) (dst - dstTokenStart);		/* Return length of token. */
 
 #if (STRN_ZERO_PAD == 1)
-	/* Pad with zeros. */
-	for (++dst; dst <= lim; )
-		*dst++ = 0;
+    /* Pad with zeros. */
+    for (++dst; dst <= lim; )
+        *dst++ = 0;
 #endif	/* STRN_ZERO_PAD */
 
-	return (len);
+    return (len);
 }	/* Strntok */
 
 
@@ -130,50 +143,57 @@ Strntok(char *dstTokenStart, size_t tokenSize, char *buf, const char *delims)
 void
 main(int argc, char **argv)
 {
-	char buf[256];
-	int i;
-	char *t;
-	char token[8];
-	int tokenLen;
+    char buf[256];
+    int i;
+    char *t;
+    char token[8];
+    int tokenLen;
 
-	if (argc < 3) {
-		fprintf(stderr, "Usage: test \"buffer,with,delims\" <delimiters>\n");
-		exit(1);
-	}
-	strcpy(buf, argv[1]);
-	i = 1;
-	t = strtok(buf, argv[2]);
-	if (t == NULL)
-		exit(0);
-	do {
-		printf("strtok %d=[%s] length=%d\n", i, t, (int) strlen(t));
-		t = strtok(NULL, argv[2]);
-		++i;
-	} while (t != NULL);
+    if (argc < 3)
+    {
+        fprintf(stderr, "Usage: test \"buffer,with,delims\" <delimiters>\n");
+        exit(1);
+    }
+    strcpy(buf, argv[1]);
+    i = 1;
+    t = strtok(buf, argv[2]);
+    if (t == NULL)
+        exit(0);
+    do
+    {
+        printf("strtok %d=[%s] length=%d\n", i, t, (int) strlen(t));
+        t = strtok(NULL, argv[2]);
+        ++i;
+    }
+    while (t != NULL);
 
-	printf("------------------------------------------------\n");
-	strcpy(buf, argv[1]);
-	i = 1;
-	t = Strtok(buf, argv[2]);
-	if (t == NULL)
-		exit(0);
-	do {
-		printf("Strtok %d=[%s] length=%d\n", i, t, (int) strlen(t));
-		t = Strtok(NULL, argv[2]);
-		++i;
-	} while (t != NULL);
+    printf("------------------------------------------------\n");
+    strcpy(buf, argv[1]);
+    i = 1;
+    t = Strtok(buf, argv[2]);
+    if (t == NULL)
+        exit(0);
+    do
+    {
+        printf("Strtok %d=[%s] length=%d\n", i, t, (int) strlen(t));
+        t = Strtok(NULL, argv[2]);
+        ++i;
+    }
+    while (t != NULL);
 
-	printf("------------------------------------------------\n");
-	strcpy(buf, argv[1]);
-	i = 1;
-	tokenLen = Strntok(token, sizeof(token), buf, argv[2]);
-	if (tokenLen < 0)
-		exit(0);
-	do {
-		printf("Strntok %d=[%s] length=%d\n", i, token, tokenLen);
-		tokenLen = Strntok(token, sizeof(token), NULL, argv[2]);
-		++i;
-	} while (tokenLen >= 0);
-	exit(0);
+    printf("------------------------------------------------\n");
+    strcpy(buf, argv[1]);
+    i = 1;
+    tokenLen = Strntok(token, sizeof(token), buf, argv[2]);
+    if (tokenLen < 0)
+        exit(0);
+    do
+    {
+        printf("Strntok %d=[%s] length=%d\n", i, token, tokenLen);
+        tokenLen = Strntok(token, sizeof(token), NULL, argv[2]);
+        ++i;
+    }
+    while (tokenLen >= 0);
+    exit(0);
 }
 #endif

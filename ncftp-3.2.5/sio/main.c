@@ -1,4 +1,4 @@
-#include "syshdrs.h"
+﻿#include "syshdrs.h"
 #ifdef PRAGMA_HDRSTOP
 #	pragma hdrstop
 #endif
@@ -13,7 +13,7 @@ int sio_sigpipe_ignored_already = 0;
 void
 SIOPipeSignalIsBeingIgnoredGloballyByApplication(int value)
 {
-	sio_sigpipe_ignored_already = value;
+    sio_sigpipe_ignored_already = value;
 }	/* SIOPipeSignalIsBeingIgnoredGloballyByApplication */
 
 
@@ -31,9 +31,9 @@ Sjmp_buf gPipeJmp;
 void
 SIOHandler(int sigNum)
 {
-	if (sigNum == SIGPIPE)
-		SLongjmp(gPipeJmp, 1);
-	SLongjmp(gNetTimeoutJmp, 1);
+    if (sigNum == SIGPIPE)
+        SLongjmp(gPipeJmp, 1);
+    SLongjmp(gNetTimeoutJmp, 1);
 }	/* SIOHandler */
 
 
@@ -42,25 +42,28 @@ SIOHandler(int sigNum)
 void (*SSignal(int signum, void (*handler)(int)))(int)
 {
 #ifdef HAVE_SIGACTION
-	struct sigaction sa, osa;
+    struct sigaction sa, osa;
 
-	(void) sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sa.sa_handler = handler;
-	if (signum == SIGALRM) {
+    (void) sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0;
+    sa.sa_handler = handler;
+    if (signum == SIGALRM)
+    {
 #ifdef SA_INTERRUPT
-		sa.sa_flags |= SA_INTERRUPT;
+        sa.sa_flags |= SA_INTERRUPT;
 #endif
-	} else {
+    }
+    else
+    {
 #ifdef SA_RESTART
-		sa.sa_flags |= SA_RESTART;
+        sa.sa_flags |= SA_RESTART;
 #endif
-	}
-	if (sigaction(signum, &sa, &osa) < 0)
-		return (SIG_ERR);
-	return (osa.sa_handler);
+    }
+    if (sigaction(signum, &sa, &osa) < 0)
+        return (SIG_ERR);
+    return (osa.sa_handler);
 #else
-	return SSignal(signum, handler);
+    return SSignal(signum, handler);
 #endif	/* HAVE_SIGACTION */
 }
 

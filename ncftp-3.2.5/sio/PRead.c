@@ -1,4 +1,4 @@
-#include "syshdrs.h"
+﻿#include "syshdrs.h"
 #ifdef PRAGMA_HDRSTOP
 #	pragma hdrstop
 #endif
@@ -17,45 +17,53 @@
 int
 PRead(int sfd, char *const buf0, size_t size, int retry)
 {
-	read_return_t nread;
-	read_size_t nleft;
-	char *buf = buf0;
-	DECL_SIGPIPE_VARS
-	
-	if ((buf == NULL) || (size == 0)) {
-		errno = EINVAL;
-		return (-1);
-	}
-	
-	IGNORE_SIGPIPE
-	errno = 0;
-	nleft = (read_size_t) size;
-	forever {
-		nread = read(sfd, buf, nleft);
-		if (nread <= 0) {
-			if (nread == 0) {
-				/* EOF */
-				nread = (read_return_t) size - (read_return_t) nleft;
-				goto done;
-			} else if (errno != EINTR) {
-				nread = (read_return_t) size - (read_return_t) nleft;
-				if (nread == 0)
-					nread = (read_return_t) -1;
-				goto done;
-			} else {
-				errno = 0;
-				nread = 0;
-				/* Try again. */
-			}
-		}
-		nleft -= (read_size_t) nread;
-		if ((nleft == 0) || (retry == 0))
-			break;
-		buf += nread;
-	}
-	nread = (read_return_t) size - (read_return_t) nleft;
+    read_return_t nread;
+    read_size_t nleft;
+    char *buf = buf0;
+    DECL_SIGPIPE_VARS
+
+    if ((buf == NULL) || (size == 0))
+    {
+        errno = EINVAL;
+        return (-1);
+    }
+
+    IGNORE_SIGPIPE
+    errno = 0;
+    nleft = (read_size_t) size;
+    forever
+    {
+        nread = read(sfd, buf, nleft);
+        if (nread <= 0)
+        {
+            if (nread == 0)
+            {
+                /* EOF */
+                nread = (read_return_t) size - (read_return_t) nleft;
+                goto done;
+            }
+            else if (errno != EINTR)
+            {
+                nread = (read_return_t) size - (read_return_t) nleft;
+                if (nread == 0)
+                    nread = (read_return_t) -1;
+                goto done;
+            }
+            else
+            {
+                errno = 0;
+                nread = 0;
+                /* Try again. */
+            }
+        }
+        nleft -= (read_size_t) nread;
+        if ((nleft == 0) || (retry == 0))
+            break;
+        buf += nread;
+    }
+    nread = (read_return_t) size - (read_return_t) nleft;
 
 done:
-	RESTORE_SIGPIPE
-	return ((int) nread);
+    RESTORE_SIGPIPE
+    return ((int) nread);
 }	/* PRead */

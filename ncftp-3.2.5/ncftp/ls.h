@@ -1,17 +1,18 @@
-/* ls.h
+﻿/* ls.h
  *
  * Copyright (c) 1992-2004 by Mike Gleason.
  * All rights reserved.
- * 
+ *
  */
 
 #define kLsCacheItemLifetime 900	/* seconds */
 
-typedef struct LsCacheItem {
-	char *itempath;
-	FTPFileInfoList fil;
-	time_t expiration;
-	int hits;
+typedef struct LsCacheItem
+{
+    char *itempath;
+    FTPFileInfoList fil;
+    time_t expiration;
+    int hits;
 } LsCacheItem;
 
 #define kLsCacheSize 32

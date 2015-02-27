@@ -1,4 +1,4 @@
-/* #define alarm_time_t unsigned int */ /* leave undefined */
+﻿/* #define alarm_time_t unsigned int */ /* leave undefined */
 #define gethost_addrptr_t const char *
 #define gethostname_size_t int
 #define listen_backlog_t int

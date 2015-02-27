@@ -1,4 +1,4 @@
-/* Util.h
+﻿/* Util.h
  *
  * Copyright (c) 1996-2005 Mike Gleason, NcFTP Software.
  * All rights reserved.
@@ -98,31 +98,31 @@ void FTPSetUploadSocketBufferSize(const FTPCIPtr cip);
 /* io_get.c, io_put.c */
 int
 FTPGetOneF(
-	const FTPCIPtr cip,
-	const char *const file,
-	const char *dstfile,
-	int xtype,
-	const int fdtouse,
-	longest_int expectedSize,
-	time_t mdtm,
-	const int resumeflag,
-	const int appendflag,
-	const int deleteflag,
-	const FTPConfirmResumeDownloadProc resumeProc);
+    const FTPCIPtr cip,
+    const char *const file,
+    const char *dstfile,
+    int xtype,
+    const int fdtouse,
+    longest_int expectedSize,
+    time_t mdtm,
+    const int resumeflag,
+    const int appendflag,
+    const int deleteflag,
+    const FTPConfirmResumeDownloadProc resumeProc);
 
 int
 FTPPutOneF(
-	const FTPCIPtr cip,
-	const char *const file,
-	const char *volatile dstfile,
-	int xtype,
-	const int fdtouse,
-	const int appendflag,
-	const char *volatile tmppfx,
-	const char *volatile tmpsfx,
-	const int resumeflag,
-	const int deleteflag,
-	const FTPConfirmResumeUploadProc resumeProc);
+    const FTPCIPtr cip,
+    const char *const file,
+    const char *volatile dstfile,
+    int xtype,
+    const int fdtouse,
+    const int appendflag,
+    const char *volatile tmppfx,
+    const char *volatile tmpsfx,
+    const int resumeflag,
+    const int deleteflag,
+    const FTPConfirmResumeUploadProc resumeProc);
 
 int FTPGetOneTarF(const FTPCIPtr cip, const char *file, const char *const dstdir);
 

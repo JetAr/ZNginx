@@ -1,4 +1,4 @@
-/* WGets.h */
+﻿/* WGets.h */
 
 #ifndef _wgets_h_
 #define _wgets_h_ 1
@@ -21,17 +21,18 @@
 
 #define wg_NoHistory	((FTPLineListPtr) 0)
 
-typedef struct WGetsParams {
-	WINDOW *w;				/* in */
-	int sy, sx;				/* in */
-	char *dst;				/* in, out */
-	int fieldLen;			/* in */
-	size_t dstSize;			/* in */
-	int useCurrentContents;	/* in */
-	int echoMode;			/* in */
-	int changed;			/* out */
-	int dstLen;				/* out */
-	FTPLineListPtr history;	/* in, out */
+typedef struct WGetsParams
+{
+    WINDOW *w;				/* in */
+    int sy, sx;				/* in */
+    char *dst;				/* in, out */
+    int fieldLen;			/* in */
+    size_t dstSize;			/* in */
+    int useCurrentContents;	/* in */
+    int echoMode;			/* in */
+    int changed;			/* out */
+    int dstLen;				/* out */
+    FTPLineListPtr history;	/* in, out */
 } WGetsParams, *WGetsParamPtr;
 
 int wg_Gets(WGetsParamPtr wgpp);

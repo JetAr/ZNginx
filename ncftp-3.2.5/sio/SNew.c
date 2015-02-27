@@ -1,4 +1,4 @@
-#include "syshdrs.h"
+﻿#include "syshdrs.h"
 #ifdef PRAGMA_HDRSTOP
 #	pragma hdrstop
 #endif
@@ -6,13 +6,13 @@
 int
 SNewStreamClient(void)
 {
-	int sfd;
+    int sfd;
 
-	sfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (sfd < 0)
-		return kSNewFailed;
+    sfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sfd < 0)
+        return kSNewFailed;
 
-	return (sfd);
+    return (sfd);
 }	/* SNewStreamClient */
 
 
@@ -21,13 +21,13 @@ SNewStreamClient(void)
 int
 SNewDatagramClient(void)
 {
-	int sfd;
+    int sfd;
 
-	sfd = socket(AF_INET, SOCK_DGRAM, 0);
-	if (sfd < 0)
-		return kSNewFailed;
+    sfd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sfd < 0)
+        return kSNewFailed;
 
-	return (sfd);
+    return (sfd);
 }	/* SNewDatagramClient */
 
 
@@ -36,28 +36,30 @@ SNewDatagramClient(void)
 int
 SNewStreamServer(const int port, const int nTries, const int reuseFlag, int listenQueueSize)
 {
-	int oerrno;
-	int sfd;
+    int oerrno;
+    int sfd;
 
-	sfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (sfd < 0)
-		return kSNewFailed;
+    sfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sfd < 0)
+        return kSNewFailed;
 
-	if (SBind(sfd, port, nTries, reuseFlag) < 0) {
-		oerrno = errno;
-		(void) closesocket(sfd);
-		errno = oerrno;
-		return kSBindFailed;
-	}
+    if (SBind(sfd, port, nTries, reuseFlag) < 0)
+    {
+        oerrno = errno;
+        (void) closesocket(sfd);
+        errno = oerrno;
+        return kSBindFailed;
+    }
 
-	if (SListen(sfd, listenQueueSize) < 0) {
-		oerrno = errno;
-		(void) closesocket(sfd);
-		errno = oerrno;
-		return kSListenFailed;
-	}
+    if (SListen(sfd, listenQueueSize) < 0)
+    {
+        oerrno = errno;
+        (void) closesocket(sfd);
+        errno = oerrno;
+        return kSListenFailed;
+    }
 
-	return (sfd);
+    return (sfd);
 }	/* SNewStreamServer */
 
 
@@ -66,19 +68,20 @@ SNewStreamServer(const int port, const int nTries, const int reuseFlag, int list
 int
 SNewDatagramServer(const int port, const int nTries, const int reuseFlag)
 {
-	int oerrno;
-	int sfd;
+    int oerrno;
+    int sfd;
 
-	sfd = socket(AF_INET, SOCK_DGRAM, 0);
-	if (sfd < 0)
-		return kSNewFailed;
+    sfd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sfd < 0)
+        return kSNewFailed;
 
-	if (SBind(sfd, port, nTries, reuseFlag) < 0) {
-		oerrno = errno;
-		(void) closesocket(sfd);
-		errno = oerrno;
-		return kSBindFailed;
-	}
+    if (SBind(sfd, port, nTries, reuseFlag) < 0)
+    {
+        oerrno = errno;
+        (void) closesocket(sfd);
+        errno = oerrno;
+        return kSBindFailed;
+    }
 
-	return (sfd);
+    return (sfd);
 }	/* SNewDatagramServer */
