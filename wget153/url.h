@@ -49,6 +49,7 @@ struct urlinfo
 				   document */
 };
 
+//z 采用了ENUM，bit位，每位表示一个含义
 enum uflags
 {
     URELATIVE     = 0x0001,      /* Is URL relative? */

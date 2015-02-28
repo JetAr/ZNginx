@@ -166,6 +166,7 @@ char *xstrdup PARAMS ((const char *));
 } while (0)
 
 /* Free FOO if it is non-NULL.  */
+//z 释放前先检测是否为NULL
 #define FREE_MAYBE(foo) do { if (foo) free (foo); } while (0)
 
 /* #### Hack: OPTIONS_DEFINED_HERE is defined in main.c.  */

@@ -893,6 +893,10 @@ findurl (const char *buf, int howmuch, int *count)
     return NULL;
 }
 
+/*z
+	扫描文件寻找 URL-s 。
+	采用的方式：首先寻找 proto 标识符作为起始的地方，然后查找对应的结束的地方
+*/
 /* Scans the file for signs of URL-s.  Returns a vector of pointers,
  each pointer representing a URL string.  The file is *not* assumed
  to be HTML.  */
@@ -907,10 +911,12 @@ get_urls_file (const char *file)
     int size;
     urlpos *first, *current, *old;
 
-    // 打开文件
+    // 打开文件，并且检测文件名不是"选项"
     if (file && !HYPHENP (file))
     {
+		//z 打开文件
         fp = fopen (file, "rb");
+		//z 未能成功打开
         if (!fp)
         {
             logprintf (LOG_NOTQUIET, "%s: %s\n", file, strerror (errno));
@@ -925,37 +931,49 @@ get_urls_file (const char *file)
 
     /* Load the file.  */
     // 载入文件到 buff 中去
+	//z 将文件全部载入到 buf 中去
     load_file (fp, &buf, &nread);
 
+	//z 在此种情况下关闭文件
     if (file && !HYPHENP (file))
         fclose (fp);
 
+	//z 载入的文件名以及大小
     DEBUGP (("Loaded %s (size %ld).\n", file, nread));
 
     first = current = NULL;
 
     /* Fill the linked list with URLs.  */
     // 将 buf 中的 url 存放到 linked list 中去
+	//z 首先找到 proto 起始的地方，然后寻找结束符：任何结束符或者空白符的出现。
     for (pbuf = buf; (pbuf = findurl (pbuf, nread - (pbuf - buf), &size)); pbuf += size)
     {
-        /* Allocate the space.  */
+        /* Allocate the space. */
+		//z 分配一个urlpos结构，并设置各个对应变量；然后加入链表。
         old = current;
         current = (urlpos *)xmalloc (sizeof (urlpos));
 
         if (old)
             old->next = current;
 
+		//z 先全部初始化为0。
         memset (current, 0, sizeof (*current));
+		//z 感觉这里就没有必要再次设置next为NULL了，前一句不是已经设置了么。
         current->next = NULL;
+		//z 分配对应的url。
         current->url = (char *)xmalloc (size + 1);
+		//z 将url 从pbuf中拷贝到 current->url 中去。
         memcpy (current->url, pbuf, size);
+		//z 设置其结束符。
         current->url[size] = '\0';
 
+		//z 如果first 为NULL，当前字符串为第一个。
         if (!first)
             first = current;
     }
 
     /* Free the buffer.  */
+	//z 在scan完毕之后，释放对应的空间。
     free (buf);
 
     return first;
@@ -1174,15 +1192,18 @@ get_urls_html (const char *file, const char *this_url, int silent)
 
 
 /* Free the linked list of urlpos. */
+//z 释放 urlpos 链表。
 void
 free_urlpos (urlpos *l)
 {
     while (l)
     {
+		//z 之所以使用了 free 和 FREE_MAYBE 可能是出于效率的考虑；如果知道必不为NULL，那么就没有必要进行检测。
         urlpos *next = l->next;
         free (l->url);
         FREE_MAYBE (l->local_name);
         free (l);
+		//z 这是一个链表结构；遍历找到下一个。
         l = next;
     }
 }
@@ -1192,6 +1213,10 @@ void
 rotate_backups(const char *fname)
 {
     int maxlen = strlen (fname) + 1 + numdigit (opt.backups) + 1;
+	//z 看到这种做法比较奇怪；习惯了malloc的内存是要free的。但是alloca不一样
+	//z alloca 会在stack上申请和分配内存
+	//z RETURN VALUE The alloca() function returns a pointer to the beginning of the allocated space. If the allocation causes stack overflow, program behaviour is undefined.
+	//z 基于上述理由，不鼓励使用该函数；基于stack分配的话，有可能速度更快一点儿？
     char *from = (char *)alloca (maxlen);
     char *to = (char *)alloca (maxlen);
     struct stat sb;
@@ -1205,19 +1230,21 @@ rotate_backups(const char *fname)
         }
     }
 
-    for (i = opt.backups; i > 1; i--)
-    {
-        sprintf (from, "%s.%d", fname, i - 1);
-        sprintf (to, "%s.%d", fname, i);
+	//z 文件名+计数，统一向后递增。
+	for (i = opt.backups; i > 1; i--)
+	{
+		sprintf (from, "%s.%d", fname, i - 1);
+		sprintf (to, "%s.%d", fname, i);
 
-        /* #### This will fail on machines without the rename() system
-        call.  */
-        rename (from, to);
-    }
+		/* #### This will fail on machines without the rename() system
+		call.  */
+		rename (from, to);
+	}
 
-    sprintf (to, "%s.%d", fname, 1);
+	//z 这意思最新的总是%d这样
+	sprintf (to, "%s.%d", fname, 1);
 
-    rename(fname, to);
+	rename(fname, to);
 }
 
 /* Create all the necessary directories for PATH (a file).  Calls

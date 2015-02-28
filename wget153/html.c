@@ -155,7 +155,7 @@ htmlfindurl(const char *buf, int bufsize, int *size, int init)
             p = buf;
 
             /* Find the tag end.  */
-            //z 直到找到空格或者找到>，或者找到=，或者到达结尾。
+            //z 直到找到空格或者找到 >，或者找到 =，或者到达结尾。
             for (; bufsize && !ISSPACE (*buf) && *buf != '>' && *buf != '=';
                     ++buf, --bufsize);
 

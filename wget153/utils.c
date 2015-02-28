@@ -1031,6 +1031,7 @@ legible (long l)
 
 /* Count the digits in a (long) integer.  */
 //z 计数数中有多少个数字，即共有多少位
+//z 感觉挺有用的了；2015-02-28 10:06，以前在TL中实现过一个同样功能的函数。
 int
 numdigit (long a)
 {

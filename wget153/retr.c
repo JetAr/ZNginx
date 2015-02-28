@@ -459,6 +459,9 @@ again:
     return result;
 }
 
+//z 从文件中查找URL-S，并针对其中的每一个都调用 retrieve_url()
+//z 如果HTML非0，将文件当作HTML，然后构建对应的URL-s
+//z 如果 opt.recursive 被设置了，为每一个文件调用 recursive_retrive 
 /* Find the URL-s in the file and call retrieve_url() for each of
 them.  If HTML is non-zero, treat the file as HTML, and construct
 the URL-s accordingly.
@@ -472,6 +475,8 @@ retrieve_from_file (const char *file, int html, int *count)
 
     /* If spider-mode is on, we do not want get_urls_html barfing
     errors on baseless links.  */
+	//z 如果 spider-mode 开启了，不希望 get_urls_html 呕吐无根据的链接。
+	//z 从文本文件或者html文件中获取url
     url_list = (html ? get_urls_html (file, NULL, opt.spider)
                 : get_urls_file (file));
 
