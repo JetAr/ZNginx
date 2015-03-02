@@ -84,14 +84,18 @@ rbuf_peek (struct rbuf *rbuf, char *store)
 int
 rbuf_flush (struct rbuf *rbuf, char *where, int maxsize)
 {
+	//z 如果 buffer_left 为0
     if (!rbuf->buffer_left)
         return 0;
     else
     {
+		//z 最大也只出来 maxsize
         int howmuch = MINVAL (rbuf->buffer_left, maxsize);
 
+		//z 拷贝到 where 。
         if (where)
             memcpy (where, rbuf->buffer_pos, howmuch);
+		
         rbuf->buffer_left -= howmuch;
         rbuf->buffer_pos += howmuch;
         return howmuch;

@@ -56,6 +56,13 @@ enum spflags { SP_NONE, SP_INIT, SP_FINISH };
 
 static int show_progress PARAMS ((long, long, enum spflags));
 
+/*
+从文件描述符FD读取内容，除非其被关闭或有错误发生。
+数据以8K chunks进行读取，并且保存到stream fp中，该fp应该已被打开用于写入。
+如果buf非空并且文件描述符与FD同，将RBUF内容首先flush（写入硬盘）
+
+该函数将不使用 rbuf_ 系列函数
+*/
 /* Reads the contents of file descriptor FD, until it is closed, or a
 read error occurs.  The data is read in 8K chunks, and stored to
 stream fp, which should have been open for writing.  If BUF is
@@ -83,6 +90,7 @@ get_contents (int fd, FILE *fp, long *len, long restval, long expected,
 {
     int res;
 
+	//z 定义了一个8K的buff
     static char c[8192];
 
     *len = restval;
