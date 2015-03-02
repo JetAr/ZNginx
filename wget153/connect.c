@@ -192,6 +192,12 @@ select_fd (int fd, int maxtime, int writep)
 }
 #endif /* HAVE_SELECT */
 
+/*
+	在MSOCK上调用 accept()，将结果储存到*SOCK中去。假设bindport()用于初始化MSOCK为一个合适正确的值。
+	这阻塞了调用者直到一个连接建立起来。
+
+	如果在OPT.TIMEOUT秒内没有建立任何连接，函数将会返回一个错误状态码。
+*/
 /* Call accept() on MSOCK and store the result to *SOCK.  This assumes
    that bindport() has been used to initialize MSOCK to a correct
    value.  It blocks the caller until a connection is established.  If
@@ -202,10 +208,13 @@ acceptport (int *sock)
 {
     int addrlen = sizeof (struct sockaddr_in);
 
+	//z 设置错误状态码
 #ifdef HAVE_SELECT
+	//z 设置超时值
     if (select_fd (msock, opt.timeout, 0) <= 0)
         return ACCEPTERR;
 #endif
+	//z accept 返回的值。
     if ((*sock = accept (msock, addr, &addrlen)) < 0)
         return ACCEPTERR;
     DEBUGP (("Created socket fd %d.\n", *sock));
