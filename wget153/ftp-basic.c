@@ -106,6 +106,8 @@ ftp_response (struct rbuf *rbuf, char **line)
     return FTPOK;
 }
 
+//z 为 FTP 请求分配一块内存，<CR><LF>结束。如果value为空，结果变为 command<CR><LF>
+//z 如果 value 不为 NULL， 那么成为 command value<CR><LF>
 /* Returns the malloc-ed FTP request, ending with <CR><LF>, printing
    it if printing is required.  If VALUE is NULL, just use
    command<CR><LF>.  */
@@ -374,6 +376,7 @@ ftp_type (struct rbuf *rbuf, int type)
     stype[0] = type;
     stype[1] = 0;
     /* Send TYPE request.  */
+	//z 为type命令分配一份空间，存放对应的命令以及其value；
     request = ftp_request ("TYPE", stype);
     nwritten = iwrite (RBUF_FD (rbuf), request, strlen (request));
     if (nwritten < 0)
