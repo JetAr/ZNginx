@@ -60,6 +60,7 @@ struct rbuf
 	*((char *) (store)) = *(rbuf)->buffer_pos++,			\
 	1))))
 
+//z 2015-03-11 09:53 返回RBUF的文件描述符。
 /* Return the file descriptor of RBUF.  */
 #define RBUF_FD(rbuf) ((rbuf)->fd)
 

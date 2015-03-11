@@ -299,6 +299,10 @@ iread (int fd, char *buf, int len)
     return res;
 }
 
+/*
+	从BUF中写入Len字节到FD中去。这类似于iread，但不烦用 select()。
+	不同于iread()，其确保BUF中的内容实际写入到FD中，调用者不需要检查返回值是否与LEN同。只需要检查返回值是否为-1。
+*/
 /* Write LEN bytes from BUF to FD.  This is similar to iread(), but
    doesn't bother with select().  Unlike iread(), it makes sure that
    all of BUF is actually written to FD, so callers needn't bother
@@ -309,6 +313,9 @@ iwrite (int fd, char *buf, int len)
 {
     int res = 0;
 
+	/*z
+		write 可能写入的少于LEN字节数，外循环将持续尝试直至所有内容已经写入，或直至有错误发生。
+	*/
     /* `write' may write less than LEN bytes, thus the outward loop
        keeps trying it until all was written, or an error occurred.  The
        inner loop is reserved for the usual EINTR f*kage, and the
@@ -318,6 +325,7 @@ iwrite (int fd, char *buf, int len)
         do
         {
 #ifdef HAVE_SELECT
+			//z 等待fd可写
             if (opt.timeout)
             {
                 do
@@ -335,6 +343,10 @@ iwrite (int fd, char *buf, int len)
                 }
             }
 #endif
+
+			//z #define READ(fd, buf, cnt) recv ((fd), (buf), (cnt), 0)
+			//z #define WRITE(fd, buf, cnt) send ((fd), (buf), (cnt), 0)
+			//z 向fd写入（发送）buf内的内容。
             res = WRITE (fd, buf, len);
             OutputDebugString(buf);
         }

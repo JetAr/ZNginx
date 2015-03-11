@@ -378,6 +378,7 @@ ftp_type (struct rbuf *rbuf, int type)
     /* Send TYPE request.  */
 	//z 为type命令分配一份空间，存放对应的命令以及其value；
     request = ftp_request ("TYPE", stype);
+	//z RBUF_FD 返回rbuf结构中的文件描述符。
     nwritten = iwrite (RBUF_FD (rbuf), request, strlen (request));
     if (nwritten < 0)
     {
