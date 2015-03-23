@@ -1,0 +1,12 @@
+WCP_NS                          - WCP namespace name. Default value is 'wcp'.
+WCP_FORCE_DBG                   - Forces WCP to compile debug messages both in the debug and release modes.
+WCP_DEBUG_TID                   - Forces WCP to show thread id in debug messages. Usefull in multithreaded apps.
+WCP_DEBUG_XML                   - Enable XML debug output.
+WCP_SHOW_WINDOWS_ERROR_CODE     - Shows an error code information in Windows exceptions.
+WCP_SYNC_DELAY                  - Defines a default delay (in milliseconds) of major synchronization actions. Too low number 
+                                  may cause extra CPU time consuming for idle threads, and too high number may cause idle 
+                                  threads to respond slower. Default value is 50.
+WCP_DEFAULT_MONITOR_DELAY       - Delay value in milliseconds for a wcp::monitor class. Default value is WCP_SYNC_DELAY.
+WCP_FORCE_USE_WINHTTP_HANDLES   - Force WCP to support WinHTTP handles instead of WinINet.
+WCP_THREADPOOL_IDLE_DELAY       - Delay (in milliseconds) of threadpool idle threads. 
+WCP_THREADPOOL_DEFAULT_THREADS_PER_CPU  - Specifies avarage number of threads per processor in threadpool.

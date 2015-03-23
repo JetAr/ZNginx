@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsoleCtrlHandler", "ConsoleCtrlHandler\ConsoleCtrlHandler.vcproj", "{EC440E1C-9DD5-4B8D-83E4-273B4B17599C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsoleKbdHandler", "ConsoleKbdHandler\ConsoleKbdHandler.vcproj", "{CE1349FC-B749-4863-AD42-AB40CE250AF1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UserAccountInfo", "UserAccountInfo\UserAccountInfo.vcproj", "{81D340D3-C9D0-4CEF-A637-B1BAE4244C23}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Serialization", "Serialization\Serialization.vcproj", "{7095F7CD-2404-4905-85F6-241EB1358A40}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EC440E1C-9DD5-4B8D-83E4-273B4B17599C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EC440E1C-9DD5-4B8D-83E4-273B4B17599C}.Debug|Win32.Build.0 = Debug|Win32
+		{EC440E1C-9DD5-4B8D-83E4-273B4B17599C}.Release|Win32.ActiveCfg = Release|Win32
+		{EC440E1C-9DD5-4B8D-83E4-273B4B17599C}.Release|Win32.Build.0 = Release|Win32
+		{CE1349FC-B749-4863-AD42-AB40CE250AF1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CE1349FC-B749-4863-AD42-AB40CE250AF1}.Debug|Win32.Build.0 = Debug|Win32
+		{CE1349FC-B749-4863-AD42-AB40CE250AF1}.Release|Win32.ActiveCfg = Release|Win32
+		{CE1349FC-B749-4863-AD42-AB40CE250AF1}.Release|Win32.Build.0 = Release|Win32
+		{81D340D3-C9D0-4CEF-A637-B1BAE4244C23}.Debug|Win32.ActiveCfg = Debug|Win32
+		{81D340D3-C9D0-4CEF-A637-B1BAE4244C23}.Debug|Win32.Build.0 = Debug|Win32
+		{81D340D3-C9D0-4CEF-A637-B1BAE4244C23}.Release|Win32.ActiveCfg = Release|Win32
+		{81D340D3-C9D0-4CEF-A637-B1BAE4244C23}.Release|Win32.Build.0 = Release|Win32
+		{7095F7CD-2404-4905-85F6-241EB1358A40}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7095F7CD-2404-4905-85F6-241EB1358A40}.Debug|Win32.Build.0 = Debug|Win32
+		{7095F7CD-2404-4905-85F6-241EB1358A40}.Release|Win32.ActiveCfg = Release|Win32
+		{7095F7CD-2404-4905-85F6-241EB1358A40}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
