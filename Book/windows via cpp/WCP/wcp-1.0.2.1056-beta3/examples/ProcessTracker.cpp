@@ -1,4 +1,4 @@
-/// Process tracker. WCP library usage example.
+﻿/// Process tracker. WCP library usage example.
 ///
 /// The program is a short example of how efficient and concise programs can be
 /// when WCP, STL and Windows API are combined. Note: A project can be compiled
@@ -10,10 +10,10 @@
 ///
 /// Copyright (c) 2009-2010
 /// ILYNS. http://www.ilyns.com
-/// 
+///
 /// Copyright (c) 2009-2010
 /// Alexander Stoyan
-/// 
+///
 /// Follow WCP at:
 ///      http://wcp.codeplex.com/ - latest releases
 ///      http://alexander-stoyan.blogspot.com/ - blog about WCP and related stuff
@@ -124,7 +124,7 @@ typedef std::map<wcp::uint_t, wcp::dword_t> tracker_process_assoc_t;
 // Map of tracker-process assiciations
 static tracker_process_assoc_t gTrackerAssocs;
 
-// Tracker threadpool 
+// Tracker threadpool
 static wcp::threadpool gTrackerThreadPool;
 
 // Process information map
@@ -138,30 +138,32 @@ static processe_map_t gProcesseMap;
 static void PrintUsage()
 {
     std::tcout <<TEXT("Process Tracking Console. WCP case study. http://wcp.codeplex.com\r\n")
-                 TEXT("Copyright (C), ILYNS. 2010. http://www.ilyns.com\r\n\r\n")
-                 TEXT("Console commands (command are case-insensitive):\r\n\r\n")
-                 TEXT("\thelp|?\r\n\t - Print this screen.\r\n\r\n")
-                 TEXT("\tlist|* [by-name|bi-pid]\r\n\t - Print process list and sort by process id or name.\r\n\r\n")
-                 TEXT("\ttrack|+ pid timeout [alert|command] {parameters}\r\n\t - Add a new process tracker (max 10 trackers available):\r\n")
-                 TEXT("\t\tpid\t- Process id to track;\r\n")
-                 TEXT("\t\ttimeout\t- Tracker timeout in milliseconds;\r\n")
-                 TEXT("\t\talert\t- Show alert dialog;\r\n")
-                 TEXT("\t\tcommand\t- Execute command line.\r\n")
-                 TEXT("\t\tparameters\t- Depending on tracker action, either alert message or command line.\r\n\r\n")
-                 TEXT("\tstop-track|- tracker_id\r\n\t - Stop a process tracker:\r\n")
-                 TEXT("\t\ttracker_id\t- Pracker id to stop.\r\n\r\n")
-                 TEXT("\ttrackers|% [pid]\r\n\t - List registered trackers:\r\n")
-                 TEXT("\t\tpid\t- Optional. Process id to list trackers for.\r\n\r\n")
-                 TEXT("\trun|@ {command_line}\r\n\t - Run command line.\r\n\r\n")
-                 TEXT("\texit\r\n\t- exit application.")
-                 <<std::endl;
+               TEXT("Copyright (C), ILYNS. 2010. http://www.ilyns.com\r\n\r\n")
+               TEXT("Console commands (command are case-insensitive):\r\n\r\n")
+               TEXT("\thelp|?\r\n\t - Print this screen.\r\n\r\n")
+               TEXT("\tlist|* [by-name|bi-pid]\r\n\t - Print process list and sort by process id or name.\r\n\r\n")
+               TEXT("\ttrack|+ pid timeout [alert|command] {parameters}\r\n\t - Add a new process tracker (max 10 trackers available):\r\n")
+               TEXT("\t\tpid\t- Process id to track;\r\n")
+               TEXT("\t\ttimeout\t- Tracker timeout in milliseconds;\r\n")
+               TEXT("\t\talert\t- Show alert dialog;\r\n")
+               TEXT("\t\tcommand\t- Execute command line.\r\n")
+               TEXT("\t\tparameters\t- Depending on tracker action, either alert message or command line.\r\n\r\n")
+               TEXT("\tstop-track|- tracker_id\r\n\t - Stop a process tracker:\r\n")
+               TEXT("\t\ttracker_id\t- Pracker id to stop.\r\n\r\n")
+               TEXT("\ttrackers|% [pid]\r\n\t - List registered trackers:\r\n")
+               TEXT("\t\tpid\t- Optional. Process id to list trackers for.\r\n\r\n")
+               TEXT("\trun|@ {command_line}\r\n\t - Run command line.\r\n\r\n")
+               TEXT("\texit\r\n\t- exit application.")
+               <<std::endl;
 }
 
 //------------------------------------------------------------------------------
 
 // Prints out an error message
 static void ReportError(const wcp::tchar_t* pmsg)
-{ std::tcout <<"Error: " <<pmsg <<std::endl <<std::endl; }
+{
+    std::tcout <<"Error: " <<pmsg <<std::endl <<std::endl;
+}
 
 //------------------------------------------------------------------------------
 
@@ -221,11 +223,11 @@ void TrackerProcedure(tracker_list_t::value_type pti)
         timeout -= __min(timeout, WaitTimeout);
         waitStatus = WaitForSingleObject(ti.hTrackedProcess, WaitTimeout);
     }
-    while(waitStatus == WAIT_TIMEOUT 
-        && !ti.stop_track 
-        && timeout != 0
-        //&& !thread.get_stop_flag()
-        );
+    while(waitStatus == WAIT_TIMEOUT
+            && !ti.stop_track
+            && timeout != 0
+            //&& !thread.get_stop_flag()
+         );
 
     // If a tracked process is fihished, perform tracker action
     if(waitStatus == WAIT_OBJECT_0)
@@ -242,16 +244,18 @@ void TrackerProcedure(tracker_list_t::value_type pti)
 
                 std::tstring message;
                 wcp::format_string(message, TEXT("Process tracker #{0} alert.\n")
-                    TEXT("Process '{1}' [{2}] has stopped work.\n\nMessage:\n\t{3}"),
-                    strid.c_str(), pti->pinfo->szExeFile, strpid.c_str(), 
-                    pti->actionData.c_str());
-                MessageBox(NULL, message.c_str(), TEXT("Process Tracker"), 
-                    MB_ICONINFORMATION | MB_SYSTEMMODAL | MB_NOFOCUS);
+                                   TEXT("Process '{1}' [{2}] has stopped work.\n\nMessage:\n\t{3}"),
+                                   strid.c_str(), pti->pinfo->szExeFile, strpid.c_str(),
+                                   pti->actionData.c_str());
+                MessageBox(NULL, message.c_str(), TEXT("Process Tracker"),
+                           MB_ICONINFORMATION | MB_SYSTEMMODAL | MB_NOFOCUS);
             }
 
             // Executes command line
             static void command(tracker_list_t::value_type pti)
-            { _tsystem(pti->actionData.c_str()); }
+            {
+                _tsystem(pti->actionData.c_str());
+            }
         };
 
         // Execute tracker action
@@ -273,7 +277,7 @@ void TrackerProcedure(tracker_list_t::value_type pti)
         wcp::dword_t pid = ti.pinfo->th32ProcessID;
         tracker_map_t::value_type::second_type& list = (*gTrackerMap)[pid];
         for(tracker_list_t::iterator iter = list.begin();
-            iter != list.end(); ++iter)
+                iter != list.end(); ++iter)
         {
             if((**iter).id == ti.id)
             {
@@ -302,8 +306,8 @@ void TrackerProcedure(tracker_list_t::value_type pti)
 
 // 'help' command handler.
 static command_error_t oncmd_help(const strings_t&)
-{ 
-    PrintUsage(); 
+{
+    PrintUsage();
     return CommandOk;
 }
 
@@ -315,9 +319,9 @@ static command_error_t oncmd_help(const strings_t&)
 //      - by-name   - [optional] Sort processes by name
 //      - by-pid    - [optional] Sort processes by PID
 static command_error_t OnCommand_List(const strings_t& args)
-{ 
+{
     // Process sort order
-    enum 
+    enum
     {
         SortByName,
         SortByPID,
@@ -347,12 +351,16 @@ static command_error_t OnCommand_List(const strings_t& args)
         // '<' operator for process names
         static bool pe_name_less(const processinfo_ptr_t& lhs,
                                  const processinfo_ptr_t& rhs)
-        { return _tcsicmp(lhs->szExeFile, rhs->szExeFile) < 0; }
+        {
+            return _tcsicmp(lhs->szExeFile, rhs->szExeFile) < 0;
+        }
 
         // '<' operator for process PIDs
         static bool pe_PID_less(const processinfo_ptr_t& lhs,
                                 const processinfo_ptr_t& rhs)
-        { return lhs->th32ProcessID < rhs->th32ProcessID; }
+        {
+            return lhs->th32ProcessID < rhs->th32ProcessID;
+        }
     };
 
     // Refresh processes
@@ -363,13 +371,13 @@ static command_error_t OnCommand_List(const strings_t& args)
     process_list_t processes;
 
     for(processe_map_t::const_iterator iter = gProcesseMap.begin(),
-        end = gProcesseMap.end(); iter != end; ++iter)
-    { 
+            end = gProcesseMap.end(); iter != end; ++iter)
+    {
         processes.push_back((*iter).second);
     }
 
     // Sort process list by a sort order specified
-    bool(*sortPredicate)(const processinfo_ptr_t&, 
+    bool(*sortPredicate)(const processinfo_ptr_t&,
                          const processinfo_ptr_t&);
     switch(sortBy)
     {
@@ -387,8 +395,8 @@ static command_error_t OnCommand_List(const strings_t& args)
     std::tcout <<processes.size() <<TEXT(" processes found.") <<std::endl <<std::endl
                <<TEXT("PID\t\tName/Path") <<std::endl
                <<std::tstring(80, TEXT('-')) <<std::endl;
-    for(process_list_t::const_iterator iter = processes.begin(), 
-        end = processes.end(); iter != end; ++iter)
+    for(process_list_t::const_iterator iter = processes.begin(),
+            end = processes.end(); iter != end; ++iter)
     {
         std::tcout <<(*iter)->th32ProcessID <<TEXT("\t\t")
                    <<(*iter)->szExeFile <<std::endl;
@@ -407,7 +415,7 @@ static command_error_t OnCommand_List(const strings_t& args)
 //      - action        - [required] Either 'msg' or 'sys'.
 //      - parameters    - [at least 1 required] Either alert text, or command line command.
 static command_error_t OnCommand_Track(const strings_t& args)
-{ 
+{
     // Check if can add a new tracker
     if(gTrackerThreadPool.number_of_tasks() == gTrackerThreadPool.get_max_threads())
         throw wcp::exception(TEXT("Cannot create more trackers."));
@@ -487,10 +495,10 @@ static command_error_t OnCommand_Track(const strings_t& args)
             // Start tracker thread
             gTrackerThreadPool.enqueue_task(wcp::safe_task(TrackerProcedure, list.back()));
 
-            std::tcout <<TEXT("\tProcess tracker #") <<gNextTrackerId 
+            std::tcout <<TEXT("\tProcess tracker #") <<gNextTrackerId
                        <<TEXT(" was successfully set for process '")
-                       <<ti.pinfo->szExeFile <<TEXT("' [") 
-                       <<ti.pinfo->th32ProcessID <<TEXT("].") 
+                       <<ti.pinfo->szExeFile <<TEXT("' [")
+                       <<ti.pinfo->th32ProcessID <<TEXT("].")
                        <<std::endl;
         }
         catch(...)
@@ -512,7 +520,7 @@ static command_error_t OnCommand_Track(const strings_t& args)
 //
 //  - tracker_id    - [required] Tracked identifier.
 static command_error_t OnCommand_StopStrack(const strings_t& args)
-{ 
+{
     if(args.size() != 2)
         return CommandInvalidArgs;
 
@@ -532,8 +540,8 @@ static command_error_t OnCommand_StopStrack(const strings_t& args)
         // Find a tracker by its idenfier in the list of thrackers
         // for the tracked process. Set stop flag for the tracker.
         tracker_map_t::iterator plist = (*gTrackerMap).find((*ppid).second);
-        for(tracker_list_t::iterator iter = (*plist).second.begin(), 
-            end = (*plist).second.end(); iter != end; ++iter)
+        for(tracker_list_t::iterator iter = (*plist).second.begin(),
+                end = (*plist).second.end(); iter != end; ++iter)
         {
             if((*iter)->id == trackerId)
             {
@@ -542,7 +550,7 @@ static command_error_t OnCommand_StopStrack(const strings_t& args)
             }
         }
 
-        std::tcout <<TEXT("\tTracker #") <<trackerId 
+        std::tcout <<TEXT("\tTracker #") <<trackerId
                    <<TEXT(" has been removed.") <<std::endl;
     }
 
@@ -580,9 +588,9 @@ static command_error_t OnCommand_ListTrackers(const strings_t& args)
                 static void tracker(const tracker_info_ptr_t& pti)
                 {
                     const tracker_info_t& ti = *pti;
-                    std::tcout <<TEXT("\t#") <<ti.id <<(ti.action == TrackerActionShowAlert 
-                        ? TEXT("\t\tAlert: \"") : TEXT("\t\tCommand: \""))
-                        <<ti.actionData <<TEXT("\"") <<std::endl;
+                    std::tcout <<TEXT("\t#") <<ti.id <<(ti.action == TrackerActionShowAlert
+                                                        ? TEXT("\t\tAlert: \"") : TEXT("\t\tCommand: \""))
+                               <<ti.actionData <<TEXT("\"") <<std::endl;
                 }
 
                 // Prints out a list of thrackers
@@ -599,11 +607,11 @@ static command_error_t OnCommand_ListTrackers(const strings_t& args)
                 tracker_map_t::iterator iter = (*gTrackerMap).find(pid);
                 if(iter == (*gTrackerMap).end())
                     throw wcp::exception(TEXT("Unknown process identifier."));
-                
+
                 // Print out process information
                 const PROCESSENTRY32& pe = *gProcesseMap[(*iter).first];
                 std::tcout <<TEXT("Process '") <<pe.szExeFile <<TEXT("' [")
-                    <<pe.th32ProcessID <<TEXT("]") <<std::endl;
+                           <<pe.th32ProcessID <<TEXT("]") <<std::endl;
 
                 // Print out a list of process trackers
                 print::tracker_list((*iter).second);
@@ -612,12 +620,12 @@ static command_error_t OnCommand_ListTrackers(const strings_t& args)
             {
                 // Enumerate trackers
                 for(tracker_map_t::iterator iter = (*gTrackerMap).begin(),
-                    end = (*gTrackerMap).end(); iter != end; ++iter)
+                        end = (*gTrackerMap).end(); iter != end; ++iter)
                 {
                     // Print out process information
                     const PROCESSENTRY32& pe = *gProcesseMap[(*iter).first];
                     std::tcout <<TEXT("Process '") <<pe.szExeFile <<TEXT("' [")
-                        <<pe.th32ProcessID <<TEXT("]") <<std::endl;
+                               <<pe.th32ProcessID <<TEXT("]") <<std::endl;
 
                     // Print out a list of process trackers
                     print::tracker_list((*iter).second);
@@ -675,19 +683,23 @@ bool RunTaskHandleExceptions(wcp::task task)
         succeded = true;
     }
     catch(const wcp::exception& we)
-    { ReportError(we.what().c_str()); }
+    {
+        ReportError(we.what().c_str());
+    }
     catch(const std::exception& e)
-    { 
+    {
 #ifdef UNICODE
         std::wstring ws;
         wcp::mbs2wcs(e.what(), ws);
-        ReportError(ws.c_str()); 
+        ReportError(ws.c_str());
 #else
-        ReportError(e.what()); 
+        ReportError(e.what());
 #endif
     }
     catch(...)
-    { ReportError(TEXT("Undefined error has occured.")); }
+    {
+        ReportError(TEXT("Undefined error has occured."));
+    }
 
     return succeded;
 }
@@ -700,19 +712,19 @@ void CommandLoop(bool& breakLoop)
     // Command handlers information
     static const command_info_t commandSet[] =
     {
-        { TEXT("help"), oncmd_help, 0 }, 
+        { TEXT("help"), oncmd_help, 0 },
         { TEXT("?"), oncmd_help, 0 },
-        
-        { TEXT("list"), OnCommand_List, -1 }, 
+
+        { TEXT("list"), OnCommand_List, -1 },
         { TEXT("*"), OnCommand_List, -1 },
-        
-        { TEXT("track"), OnCommand_Track, -1 }, 
+
+        { TEXT("track"), OnCommand_Track, -1 },
         { TEXT("+"), OnCommand_Track, -1 },
-        
-        { TEXT("stop-track"), OnCommand_StopStrack, 1 }, 
+
+        { TEXT("stop-track"), OnCommand_StopStrack, 1 },
         { TEXT("-"), OnCommand_StopStrack, 1 },
-        
-        { TEXT("trackers"), OnCommand_ListTrackers, -1 }, 
+
+        { TEXT("trackers"), OnCommand_ListTrackers, -1 },
         { TEXT("%"), OnCommand_ListTrackers, -1 },
 
         { TEXT("run"), OnCommand_Run, -1 },
@@ -754,8 +766,8 @@ void CommandLoop(bool& breakLoop)
 
     // Check if 'exit' command is invoked
     if(commandError == CommandUnknown
-        && args.size() == 1
-        && command == TEXT("exit"))
+            && args.size() == 1
+            && command == TEXT("exit"))
     {
         breakLoop = true;
         commandError = CommandOk;
@@ -766,12 +778,12 @@ void CommandLoop(bool& breakLoop)
     switch(commandError)
     {
     case CommandUnknown:
-        wcp::format_string(errorMessage, TEXT("Unknown command name '{0}'."), 
-            command.c_str());
+        wcp::format_string(errorMessage, TEXT("Unknown command name '{0}'."),
+                           command.c_str());
         break;
     case CommandInvalidArgs:
-        wcp::format_string(errorMessage, TEXT("Invalid arguments in '{0}'."), 
-            cmdl.c_str());
+        wcp::format_string(errorMessage, TEXT("Invalid arguments in '{0}'."),
+                           cmdl.c_str());
         break;
     }
 

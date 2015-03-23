@@ -1,11 +1,11 @@
-/// Console keyboard handling. WCP library usage example.
+﻿/// Console keyboard handling. WCP library usage example.
 ///
 /// Copyright (c) 2009-2010
 /// ILYNS. http://www.ilyns.com
-/// 
+///
 /// Copyright (c) 2009-2010
 /// Alexander Stoyan
-/// 
+///
 /// Follow WCP at:
 ///      http://wcp.codeplex.com/ - latest releases
 ///      http://alexander-stoyan.blogspot.com/ - blog about WCP and related stuff
@@ -27,7 +27,7 @@ class ConsoleManager : public wcp::singleton<ConsoleManager>
 {
     friend class wcp::singleton<ConsoleManager>;
 
-    ConsoleManager() throw() { } 
+    ConsoleManager() throw() { }
 
 public:
 
@@ -70,18 +70,18 @@ public:
 
     // Constructs a handler object
     explicit ConsoleKbdHandler(const wcp::tchar_t* name)
-        : name(name) 
-    { 
+        : name(name)
+    {
         // Subscribe OnChar method to receiving console keyboard events
         ConsoleManager::instance().KeyboardEvent += ConsoleManager::kbd_event_t
-            ::delegate_t(*this, &ConsoleKbdHandler::OnChar);
+                ::delegate_t(*this, &ConsoleKbdHandler::OnChar);
     }
 
     ~ConsoleKbdHandler()
     {
         // Unsubscribe OnChar method from receiving console keyboard events
         ConsoleManager::instance().KeyboardEvent -= ConsoleManager::kbd_event_t
-            ::delegate_t(*this, &ConsoleKbdHandler::OnChar);
+                ::delegate_t(*this, &ConsoleKbdHandler::OnChar);
     }
 
     // Receives console keyboard events
@@ -110,8 +110,8 @@ public:
 int _tmain(int argc, TCHAR* argv[])
 {
     std::tcout <<TEXT("Press any button to test multicast event handlings.\r\n")
-        TEXT("Press Escape to test event cancelation.\r\n")
-        TEXT("Press Ctrl+Break to exit application.") <<std::endl;
+               TEXT("Press Escape to test event cancelation.\r\n")
+               TEXT("Press Ctrl+Break to exit application.") <<std::endl;
 
     // Create 3 named console keyboard event handlers
     ConsoleKbdHandler handler1(TEXT("event subscriber #1"));

@@ -1,4 +1,4 @@
-#ifdef ___DEBUG_H_CYCLE__
+﻿#ifdef ___DEBUG_H_CYCLE__
 #error Cyclic dependency discovered: debug.h
 #endif
 
@@ -12,75 +12,75 @@
 
 /////////////////////////////////////////////////////////////////////////////////
 ///
-///           ----------- WCP (Windows via C++) v.1.0.2.1056 ---------- 
+///           ----------- WCP (Windows via C++) v.1.0.2.1056 ----------
 ///                                     Beta 3.
-/// 
-/// 
+///
+///
 ///                       Microsoft Public License (Ms-PL)
-/// 
-/// 
+///
+///
 /// This license governs use of the accompanying software. If you use the software,
-///   you accept this license. If you do not accept the license, do not use the 
+///   you accept this license. If you do not accept the license, do not use the
 ///                                     software.
-/// 
+///
 /// Definitions
-/// 
+///
 /// The  terms  "reproduce,"  "reproduction," "derivative works," and "distribution"
 /// have  the same meaning here as under U.S. copyright law. A "contribution" is the
 /// original  software, or any additions or changes to the software. A "contributor"
 /// is  any  person  that distributes its contribution under this license. "Licensed
 /// patents"   are   a  contributor`s  patent  claims  that  read  directly  on  its
 /// contribution.
-/// 
+///
 /// Grant of Rights
-/// 
+///
 /// (A) Copyright Grant- Subject to the terms of this license, including the license
 /// conditions  and  limitations  in  section  3,  each  contributor  grants  you  a
 /// non-exclusive,  worldwide,  royalty-free  copyright  license  to  reproduce  its
 /// contribution,  prepare  derivative works of its contribution, and distribute its
-/// contribution  or any derivative works that you create. 
+/// contribution  or any derivative works that you create.
 /// (B) Patent Grant- Subject
 /// to  the  terms of this license, including the license conditions and limitations
 /// in   section   3,  each  contributor  grants  you  a  non-exclusive,  worldwide,
 /// royalty-free  license  under its licensed patents to make, have made, use, sell,
 /// offer  for  sale,  import,  and/or  otherwise dispose of its contribution in the
 /// software or derivative works of the contribution in the software.
-/// 
+///
 /// Conditions and Limitations
-/// 
+///
 /// (A)  No  Trademark  License-  This  license does not grant you rights to use any
-/// contributors' name, logo, or trademarks. 
+/// contributors' name, logo, or trademarks.
 /// (B) If you bring a patent claim against
 /// any  contributor over patents that you claim are infringed by the software, your
-/// patent  license from such contributor to the software ends automatically. 
+/// patent  license from such contributor to the software ends automatically.
 /// (C) If
 /// you  distribute  any  portion  of  the  software, you must retain all copyright,
-/// patent, trademark, and attribution notices that are present in the software. 
+/// patent, trademark, and attribution notices that are present in the software.
 /// (D)
 /// If you distribute any portion of the software in source code form, you may do so
 /// only  under  this license by including a complete copy of this license with your
 /// distribution.  If  you  distribute  any  portion  of the software in compiled or
 /// object  code  form,  you  may only do so under a license that complies with this
-/// license.  
+/// license.
 /// (E)  The  software is licensed "as-is." You bear the risk of using it.
 /// The  contributors give no express warranties, guarantees, or conditions. You may
 /// have  additional consumer rights under your local laws which this license cannot
 /// change.  To the extent permitted under your local laws, the contributors exclude
 /// the  implied warranties of merchantability, fitness for a particular purpose and
 /// non-infringement.
-/// 
-/// 
-/// 
-/// 
+///
+///
+///
+///
 /// This   source  code  was compiled and tested in Microsoft Visual Studio 2008. If
 /// you found any bug in this source code, please e-mail me to admin@ilyns.com.
-/// 
+///
 /// Copyright (c) 2009-2010
 /// ILYNS. http://www.ilyns.com
-/// 
+///
 /// Copyright (c) 2009-2010
 /// Alexander Stoyan
-/// 
+///
 /// Follow WCP at:
 ///      http://wcp.codeplex.com/ - latest releases
 ///      http://alexander-stoyan.blogspot.com/ - blog about WCP and related stuff
@@ -111,7 +111,7 @@
 
 
 
-namespace WCP_NS 
+namespace WCP_NS
 {
 
 //-----------------------------------------------------------------------------
@@ -134,7 +134,7 @@ namespace WCP_NS
 /// </summary>
 /// <remarks>
 /// <b>Example:</b>
-/// <code><pre class='_code'> 
+/// <code><pre class='_code'>
 ///     // Compile with: /D "WCP_DEBUG_XML"
 /// &nbsp;
 ///     wcp::uint_t fibonachi(wcp::uint_t v)
@@ -162,7 +162,7 @@ namespace WCP_NS
 ///     }
 /// </pre></code>
 /// debug output is:
-/// <code><pre class='_code'> 
+/// <code><pre class='_code'>
 ///     &lt;WCPDebugLog wcp-version="1.0"&gt;
 ///     &lt;Debug function="main2" line="47" file="d:\devel\root\devel\wcp\wcp.cpp" /&gt;
 ///     &lt;Message&gt;&lt;![CDATA[ HEX Fibonachi: 0x00000004 ]]&gt;&lt;/Message&gt;
@@ -277,7 +277,7 @@ namespace WCP_NS
 /// </summary>
 /// <remarks>
 /// <b>Example:</b>
-/// <code><pre class='_code'> 
+/// <code><pre class='_code'>
 ///     int i = 0;
 ///     DBGE("Error code: " &lt;&lt;GetLastError())
 /// </pre></code>
@@ -299,37 +299,37 @@ namespace WCP_NS
 
 #ifdef WCP_DEBUG
 
-    /// <summary>
-    /// Sets a %thread name visible only for Visual Studio C++ debugger.
-    /// Helps to distinct threads in a %thread list in Visual Studio C++ debugger.
-    /// </summary>
-    /// <param name='thread_name'>Thread name.</param>
-    /// <param name='dwThreadID'>Thread identifier. 
-    /// By default a calling thread identifier is used.</param>
-    inline void set_thread_name(const char* thread_name, 
-                                DWORD dwThreadID = GetCurrentThreadId())
+/// <summary>
+/// Sets a %thread name visible only for Visual Studio C++ debugger.
+/// Helps to distinct threads in a %thread list in Visual Studio C++ debugger.
+/// </summary>
+/// <param name='thread_name'>Thread name.</param>
+/// <param name='dwThreadID'>Thread identifier.
+/// By default a calling thread identifier is used.</param>
+inline void set_thread_name(const char* thread_name,
+                            DWORD dwThreadID = GetCurrentThreadId())
+{
+    __try
     {
-        __try
-        {
 #include <pshpack8.h>
 
-            struct threadname_info_t
-            {
-               dword_t type;        // Must be 0x1000.
-               const char* name;    // Pointer to name (in user addr space).
-               dword_t tid;         // Thread ID (-1=caller thread).
-               dword_t reserved;    // Reserved for future use, must be zero.
+        struct threadname_info_t
+        {
+            dword_t type;        // Must be 0x1000.
+            const char* name;    // Pointer to name (in user addr space).
+            dword_t tid;         // Thread ID (-1=caller thread).
+            dword_t reserved;    // Reserved for future use, must be zero.
 
-            } info = { 0x1000, thread_name, dwThreadID, 0 };
+        } info = { 0x1000, thread_name, dwThreadID, 0 };
 
 #include <poppack.h>
 
-            RaiseException(0x406D1388 /*MS_VC_EXCEPTION*/, 0, 
-                sizeof(info)/sizeof(ULONG_PTR), (ULONG_PTR*)&info );
-        }
-        __except(EXCEPTION_EXECUTE_HANDLER)
-        { }
+        RaiseException(0x406D1388 /*MS_VC_EXCEPTION*/, 0,
+                       sizeof(info)/sizeof(ULONG_PTR), (ULONG_PTR*)&info );
     }
+    __except(EXCEPTION_EXECUTE_HANDLER)
+    { }
+}
 
 #endif /*WCP_DEBUG*/
 

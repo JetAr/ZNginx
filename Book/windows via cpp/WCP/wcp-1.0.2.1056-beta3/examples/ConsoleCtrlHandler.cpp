@@ -1,11 +1,11 @@
-/// Console control handling. WCP library usage example.
+﻿/// Console control handling. WCP library usage example.
 ///
 /// Copyright (c) 2009-2010
 /// ILYNS. http://www.ilyns.com
-/// 
+///
 /// Copyright (c) 2009-2010
 /// Alexander Stoyan
-/// 
+///
 /// Follow WCP at:
 ///      http://wcp.codeplex.com/ - latest releases
 ///      http://alexander-stoyan.blogspot.com/ - blog about WCP and related stuff
@@ -65,14 +65,14 @@ public:
             };
 
             // Print out console event information
-            std::tcout <<TEXT("OnCtrlCode[\"") <<name <<TEXT("\"]: ") 
-                <<eventNames[code] <<std::endl;
+            std::tcout <<TEXT("OnCtrlCode[\"") <<name <<TEXT("\"]: ")
+                       <<eventNames[code] <<std::endl;
 
             // Determine if application is being shutted down
-            appShutdown = 
-                !(code == CTRL_C_EVENT 
-                || code == CTRL_BREAK_EVENT 
-                || code == CTRL_CLOSE_EVENT);
+            appShutdown =
+                !(code == CTRL_C_EVENT
+                  || code == CTRL_BREAK_EVENT
+                  || code == CTRL_CLOSE_EVENT);
         }
 
         return true;
@@ -94,8 +94,8 @@ public:
         for(int i = 0; i <= 100; ++i)
         {
             wcp::tchar_t progressSym = progressSyms[i % (ARRAYSIZE(progressSyms) - 1)];
-            std::tcout <<TEXT("\rShutting down application: ") 
-                <<progressSym <<i <<TEXT("% complete...   ");
+            std::tcout <<TEXT("\rShutting down application: ")
+                       <<progressSym <<i <<TEXT("% complete...   ");
             Sleep(50);
         }
 

@@ -1,11 +1,11 @@
-/// Vectors serialization. WCP library usage example.
+﻿/// Vectors serialization. WCP library usage example.
 ///
 /// Copyright (c) 2009-2010
 /// ILYNS. http://www.ilyns.com
-/// 
+///
 /// Copyright (c) 2009-2010
 /// Alexander Stoyan
-/// 
+///
 /// Follow WCP at:
 ///      http://wcp.codeplex.com/ - latest releases
 ///      http://alexander-stoyan.blogspot.com/ - blog about WCP and related stuff
@@ -53,16 +53,16 @@ struct is_serializable : wcp::noninstantiable
     template<class T>
     struct check_constraint : wcp::noninstantiable
     {
-        // A type constrained to be either POD or integral 
+        // A type constrained to be either POD or integral
         // and to have at least one data member.
         WCP_ENSURE_TYPE_CONSTRAINT(
-            wcp::constraint<T, 
-                wcp::and_<
-                    wcp::or_<
-                        wcp::has_traits_<wcp::is_pod>, 
-                        wcp::has_traits_<wcp::is_integral> >,
-                    wcp::not_<wcp::has_traits_<wcp::is_empty> > 
-                > 
+            wcp::constraint<T,
+            wcp::and_<
+            wcp::or_<
+            wcp::has_traits_<wcp::is_pod>,
+            wcp::has_traits_<wcp::is_integral> >,
+            wcp::not_<wcp::has_traits_<wcp::is_empty> >
+            >
             > IS_MAINTAINED);
     };
 };
@@ -87,7 +87,7 @@ inline void Serialize(const T& obj, IArchive& arc)
 
 #pragma pack(push, 1) // Serializable data is aligned byte 1 byte
 
-// A 2-d vector template. 
+// A 2-d vector template.
 // Any serializable type is accepted as a vector type.
 template<class T>
 struct Vector2d
@@ -118,7 +118,7 @@ struct Vector3d
     WCP_ENSURE_TYPE_CONSTRAINT(wcp::constraint<T, is_serializable> IS_MAINTAINED);
 
     // Specify type identifier
-    static const TypeId TypeId = TypeVector3d;    
+    static const TypeId TypeId = TypeVector3d;
 
     //
     // Vector data
@@ -145,11 +145,15 @@ public:
 
     // Writes a data to a memory buffer
     void Write(const void* p, size_t cb)
-    { buff.add(p, cb); }
+    {
+        buff.add(p, cb);
+    }
 
     // Clears an archive
     void Clear()
-    { buff.clear(); }
+    {
+        buff.clear();
+    }
 
     // Prints out an archive content to a log stream
     void DebugContent() const
@@ -173,12 +177,12 @@ public:
         // Print out binary content
         size_t counter = 0;
         wcp::reference<size_t> rcounter = counter;
-        std::for_each(buff.begin(), buff.end(), 
-            std::bind2nd(std::ptr_fun(DbgPrintByte), rcounter));
+        std::for_each(buff.begin(), buff.end(),
+                      std::bind2nd(std::ptr_fun(DbgPrintByte), rcounter));
 
         // Print out log footer
-        std::tclog <<std::endl <<TEXT("Total size: ") <<buff.size() 
-            <<std::endl <<std::endl;
+        std::tclog <<std::endl <<TEXT("Total size: ") <<buff.size()
+                   <<std::endl <<std::endl;
     }
 
 private:
@@ -189,8 +193,8 @@ private:
     {
         // Print out offset info
         if((rcounter.deref() % 0x10) == 0)
-            std::tclog <<std::setfill(TEXT('0')) <<std::hex 
-                <<std::setw(8) <<rcounter.deref();
+            std::tclog <<std::setfill(TEXT('0')) <<std::hex
+                       <<std::setw(8) <<rcounter.deref();
 
         // Print out byte in hex
         std::tostringstream ss;
@@ -213,9 +217,9 @@ int _tmain(int argc, TCHAR* argv[])
     Vector2d<int> v1 = { 10, 10 };
     Vector2d<float> v2 = { 3.1415f, 74.1898f };
     Vector2d<wcp::ulonglong_t> v3 = { ~0, ~0 };
-    Vector3d<Vector2d<short> > v4 = 
-    { 
-        { 0xff, 0xee }, 
+    Vector3d<Vector2d<short> > v4 =
+    {
+        { 0xff, 0xee },
         { 0xdd, 0xcc },
         { 0xbb, 0xaa }
     };
@@ -224,7 +228,7 @@ int _tmain(int argc, TCHAR* argv[])
     //// because a type constrained is violated.
     //Vector2d<std::tstring> v5 = { L"", L"" };
 
-    // Serialize vectors to memory archive 
+    // Serialize vectors to memory archive
     // and debug memory archive content
 
     MemoryArchive arc;

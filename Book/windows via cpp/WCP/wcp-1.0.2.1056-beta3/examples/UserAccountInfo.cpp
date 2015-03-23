@@ -1,11 +1,11 @@
-/// User account inforamtion. WCP library usage example.
+﻿/// User account inforamtion. WCP library usage example.
 ///
 /// Copyright (c) 2009-2010
 /// ILYNS. http://www.ilyns.com
-/// 
+///
 /// Copyright (c) 2009-2010
 /// Alexander Stoyan
-/// 
+///
 /// Follow WCP at:
 ///      http://wcp.codeplex.com/ - latest releases
 ///      http://alexander-stoyan.blogspot.com/ - blog about WCP and related stuff
@@ -27,8 +27,8 @@ int _tmain(int argc, TCHAR* argv[])
     try
     {
         // Open process handle
-        wcp::handles::handle_t hProcess = OpenProcess(PROCESS_ALL_ACCESS, 
-            FALSE, GetCurrentProcessId());
+        wcp::handles::handle_t hProcess = OpenProcess(PROCESS_ALL_ACCESS,
+                                          FALSE, GetCurrentProcessId());
         if(!hProcess)
             throw wcp::win_exception(GetLastError());
 
@@ -60,17 +60,17 @@ int _tmain(int argc, TCHAR* argv[])
         DWORD cchAccountName = ARRAYSIZE(accountName);
         DWORD cchRefDomain = ARRAYSIZE(refDomain);
         SID_NAME_USE sidNameUse;
-        if(!LookupAccountSid(NULL, userInfo->User.Sid, 
-            accountName, &cchAccountName,
-            refDomain, &cchRefDomain, &sidNameUse))
+        if(!LookupAccountSid(NULL, userInfo->User.Sid,
+                             accountName, &cchAccountName,
+                             refDomain, &cchRefDomain, &sidNameUse))
         {
             throw wcp::win_exception(GetLastError());
         }
 
         // Print out process user info
-        std::tcout <<TEXT("Process user information:\n\tAccount name: ") 
-            << accountName <<TEXT('@') <<refDomain
-            <<TEXT("\n\tSID: ") <<(LPTSTR)(HLOCAL)strSid <<std::endl;
+        std::tcout <<TEXT("Process user information:\n\tAccount name: ")
+                   << accountName <<TEXT('@') <<refDomain
+                   <<TEXT("\n\tSID: ") <<(LPTSTR)(HLOCAL)strSid <<std::endl;
 
         // No CloseHandle and LocalFree needed!
     }
