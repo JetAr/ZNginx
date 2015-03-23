@@ -2,6 +2,8 @@
 	Win32 UNIX Compatibility Implementation. */
 /* cp file1 file2: Copy file1 to file2. */
 
+//z 2015-03-23 17:29 兼容unix实现
+
 #include <io.h>
 #include <sys/types.h>
 #include <sys/stat.h>

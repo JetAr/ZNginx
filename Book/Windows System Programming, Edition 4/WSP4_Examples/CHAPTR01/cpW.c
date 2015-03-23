@@ -5,6 +5,8 @@
 #include <stdio.h>
 #define BUF_SIZE 16384  /* Optimal in several experiments. Small values such as 256 give very bad performance */
 
+//z 2015-03-23 17:28 使用一个大的缓存
+
 int main (int argc, LPTSTR argv [])
 {
     HANDLE hIn, hOut;

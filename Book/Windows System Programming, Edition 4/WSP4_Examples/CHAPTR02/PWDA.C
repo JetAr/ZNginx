@@ -11,17 +11,20 @@ int _tmain (int argc, LPTSTR argv [])
 {
     /* Buffer to receive current directory allows
     	for longest possible path. */
-
+    
+    //z 得到当前目录长度
     DWORD LenCurDir = GetCurrentDirectory (0, NULL);
     /* Return length allows for terminating null character
     	Note that the returned length accounts for the null character
     	when the buffer is too small (thus giving the number of bytes needed) and
     	gives the string length (without the NULL) on success. */
+    //z 分配空间
     LPTSTR pwdBuffer = malloc (LenCurDir * sizeof (TCHAR));
 
     if (pwdBuffer == NULL)
         ReportError (_T ("Failure allocating pathname buffer."), 1, TRUE);
 
+    //z 实际得到当前工作路径
     LenCurDir = GetCurrentDirectory (LenCurDir, pwdBuffer);
 
     PrintMsg (GetStdHandle (STD_OUTPUT_HANDLE), pwdBuffer);

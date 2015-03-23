@@ -5,9 +5,16 @@
 		3.  SEQUENTIAL SCAN */
 /* cp file1 file2: Copy file1 to file2. */
 
+//z 2015-03-23 17:24 使用了一些更为高级的特性使得拷贝起来更快
+/*
+    1. 大缓冲
+    2. 预置的输出文件size ？？ 这点是如何体现的了？
+    3. 顺序扫描
+*/
+
 #include <windows.h>
 #include <stdio.h>
-#define BUF_SIZE 8192
+#define BUF_SIZE 8192 //z 定义了一个8K的缓冲区
 
 int main (int argc, LPTSTR argv [])
 {
@@ -19,6 +26,7 @@ int main (int argc, LPTSTR argv [])
         fprintf (stderr, "Usage: cp file1 file2\n");
         return 1;
     }
+    //z 打开文件的时候，使用了 FILE_FLAG_SEQUENTIAL_SCAN
     hIn = CreateFile (argv [1], GENERIC_READ, 0, NULL, OPEN_EXISTING,
                       FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN, NULL);
     if (hIn == INVALID_HANDLE_VALUE)
@@ -36,7 +44,7 @@ int main (int argc, LPTSTR argv [])
     }
 
     /*  Set the output file size. */
-
+    //z 每次读入8k数据
     while (ReadFile (hIn, buffer, BUF_SIZE, &nIn, NULL) && nIn > 0)
     {
         WriteFile (hOut, buffer, nIn, &nOut, NULL);

@@ -1,6 +1,8 @@
 ﻿/* Chapter 1. Basic cp file copy program. C library Implementation. */
 /* cpC file1 file2: Copy file1 to file2. */
 
+//z 2015-03-23 17:12 基本的文件拷贝程序。
+
 #include <stdio.h>
 #include <errno.h>
 #define BUF_SIZE 256

@@ -66,6 +66,7 @@ BOOL cci_f (LPCTSTR fIn, LPCTSTR fOut,  DWORD shift)
     hIn = CreateFile (fIn, GENERIC_READ, 0, NULL, OPEN_EXISTING,
                       FILE_ATTRIBUTE_NORMAL | SSF | NBF, NULL);
     if (hIn == INVALID_HANDLE_VALUE) return FALSE;
+    //z 得到文件大小
     if (!GetFileSizeEx (hIn, &fileSize)) return FALSE;
 
     hOut = CreateFile (fOut, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS,
@@ -73,6 +74,7 @@ BOOL cci_f (LPCTSTR fIn, LPCTSTR fOut,  DWORD shift)
     if (hOut == INVALID_HANDLE_VALUE) return FALSE;
 
 #ifdef FS
+    //z 设置文件结尾
     SetFilePointerEx (hOut, fileSize, NULL, FILE_BEGIN);
     SetEndOfFile (hOut);
     SetFilePointerEx (hOut, 0, NULL, FILE_BEGIN);

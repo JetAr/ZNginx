@@ -2,6 +2,8 @@
 	Windows Implementation using CopyFile for convenience and possible performance. */
 /* cp file1 file2: Copy file1 to file2. */
 
+//z 2015-03-23 17:30 直接使用 CopyFile，由其来操心和管理各种问题。
+
 #include <windows.h>
 #include <stdio.h>
 #define BUF_SIZE 256
