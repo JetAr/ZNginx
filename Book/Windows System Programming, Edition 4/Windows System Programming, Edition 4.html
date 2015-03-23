@@ -1,0 +1,463 @@
+<html>
+<head>
+<title>Windows System Programming, Edition 4 [JMH Associates]</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+<!--
+body {
+	background-color: #FFFFFF;
+}
+--><style type="text/css">
+a img {
+   border: none;
+}
+
+#content-center {
+	text-align: left;
+	width: 900px;
+	position:center;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	margin-top: 0;
+	margin-right: 10%;
+	margin-bottom: 0;
+	margin-left: 3.5%;
+}
+
+#apDiv1 {
+	position:absolute;
+	left:168px;
+	top:285px;
+	width:1003px;
+	height:624px;
+	z-index:1;
+}
+#Table_01 div {
+}
+#apDiv2 {
+	position:absolute;
+	left:127px;
+	top:281px;
+	width:935px;
+	height:238px;
+	z-index:1;
+	overflow: auto;
+	visibility: visible;
+}
+.TEXT {font-family: "Trebuchet MS"}
+#apDiv3 {
+	position:absolute;
+	left:339px;
+	top:214px;
+	width:709px;
+	height:210px;
+	z-index:2;
+}
+#apDiv2 {
+	position: absolute;
+	left: 100px;
+	top: 300px;
+}
+#Table_01 .TEXT img {
+}
+#Table_01 #content-center div {
+	margin: 20px;
+	padding: 20px;
+	border: thin solid #CCCCCC;
+}
+#Table_01 .TEXT img {
+	margin: 10px;
+	padding: 10px;
+}
+.style17 {color: #000000; font-family: "Trebuchet MS"; }
+
+a img {
+   border: none;
+}
+
+#apDiv1 {
+	position:absolute;
+	left:168px;
+	top:285px;
+	width:1003px;
+	height:624px;
+	z-index:1;
+}
+#apDiv2 {
+	position:absolute;
+	left:127px;
+	top:281px;
+	width:935px;
+	height:238px;
+	z-index:1;
+	overflow: auto;
+	visibility: visible;
+}
+.TEXT {font-family: "Trebuchet MS"}
+#apDiv3 {
+	position:absolute;
+	left:339px;
+	top:214px;
+	width:709px;
+	height:210px;
+	z-index:2;
+}
+
+#content {
+  width: 700px ;
+  margin-left: auto ;
+  margin-right: auto ;
+}
+
+
+
+#apDiv2 {
+	position: absolute;
+	left: 100px;
+	top: 300px;
+}
+
+div.service {
+	width: auto;
+	float: none;
+	margin: 20px;
+}
+#Table_01 .TEXT img {
+}
+#Table_01 #content-center div {
+	margin: 10px;
+	padding: 10px;
+	border: thin solid #CCCCCC;
+	clip: rect(auto,auto,auto,auto);
+}
+#Table_01 .TEXT img {
+	margin: 10px;
+	padding: 10px;
+}
+.style17 {color: #000000; font-family: "Trebuchet MS"; }
+.TEXT1 {
+	font-family: "Trebuchet MS";
+	margin-top: 2px;
+}
+.indented {   padding-left: 50pt;
+   padding-right: 50pt;
+}
+#Table_01 div {
+	border: thin solid #CCCCCC;
+	position: center;
+	white-space: 10;
+	color: #000000;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.TEXT2 {font-family: "Trebuchet MS"}
+.style3 {
+	font-size: 36px;
+	font-weight: bold;
+	color: #c4933b;
+}
+#apDiv4 {
+	position:absolute;
+	left:437px;
+	top:514px;
+	width:227px;
+	height:83px;
+	z-index:1;
+}
+.style19 {
+	font-size: 24px;
+	font-weight: bold;
+}
+.style21 {
+	font-size: 18px;
+	font-weight: bold;
+	color: #c4933b;
+}
+</style> 
+</style> 
+</style>
+<script type="text/javascript">
+<!--
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+//-->
+</script>
+</head>
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="MM_preloadImages('images/buttons &amp; icons/nav buttons/home-over.png','images/buttons &amp; icons/nav buttons/current OVER.jpg','images/buttons &amp; icons/nav buttons/technical OVER.jpg','images/buttons &amp; icons/nav buttons/more about OVER .jpg','images/buttons &amp; icons/nav buttons/contact OVER.jpg','images1/Windows-4th-Book_OVER.png','images/buttons &amp; icons/amazon_over.png')">
+
+<!-- ImageReady Slices (Index Page Flatened Slices.psd) -->
+<div class="TEXT2" id="apDiv4">
+  <p align="center"><strong>purchase</strong> from Amazon<br>
+    <a href="http://www.amazon.com/Windows-Programming-Addison-Wesley-Microsoft-Technology/dp/0321657748/ref=sr_1_1?ie=UTF8&s=books&qid=1263847924&sr=1-1" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('amazon','','images/buttons & icons/amazon_over.png',1)"><img src="images/buttons & icons/amazon_reg.png" alt="amazon" name="amazon" width="119" height="29" border="0"></a></p>
+  <p>&nbsp;</p>
+</div>
+<table id="Table_01" width="1000" align="center" height="865" border="0" cellpadding="0" cellspacing="0">
+
+  <!--DWLayoutTable-->
+<tr>
+    
+    
+		<td width="554" rowspan="4">
+			<img src="images/index page images/NEW-LOGO.png" width="554" height="191" alt=""></td>
+<td colspan="16">
+			<img src="images/index page images/Top-Right-Blue.png" width="446" height="141" alt=""></td>
+		<td width="10">&nbsp;</td>
+  </tr>
+	<tr>
+		<td colspan="3" rowspan="2"><a href="index.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Home','','images/buttons & icons/nav buttons/home-over.png',1)"><img src="images/buttons & icons/nav buttons/home.png" alt="home" name="Home" width="90" height="48" border="0"></a><a href="index1.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('home','','images/buttons & icons/nav buttons/home-over.png',1)"></a></td>
+  <td colspan="2" rowspan="2"><a href="current_projects.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('current','','images/buttons & icons/nav buttons/current OVER.jpg',1)"><img src="images/buttons & icons/nav buttons/current.png" alt="current projects" name="current" width="86" height="48" border="0"></a></td>
+  <td colspan="4" rowspan="2"><a href="technical_training.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('technical','','images/buttons & icons/nav buttons/technical OVER.jpg',1)"><img src="images/buttons & icons/nav buttons/technical.png" alt="technical training" name="technical" width="89" height="48" border="0"></a></td>
+  <td colspan="4" rowspan="2"><a href="more_about_us.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('more about','','images/buttons & icons/nav buttons/more about OVER .jpg',1)"><img src="images/buttons & icons/nav buttons/more about .png" alt="more about us" name="more about" width="90" height="48" border="0"></a></td>
+  <td colspan="2" rowspan="2"><a href="contact.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('contact','','images/buttons & icons/nav buttons/contact OVER.jpg',1)"><img src="images/buttons & icons/nav buttons/contact.png" alt="contact us" name="contact" width="90" height="48" border="0"></a></td>
+<td width="2">
+			<img src="images/index page images/Top-Right-Blue-09.png" width="1" height="2" alt=""></td>
+  <td>
+			<img src="images/index page images/spacer.gif" width="1" height="2" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="2">
+			<img src="images/index page images/index_09.png" width="1" height="48" alt=""></td>
+		<td>
+			<img src="images/index page images/spacer.gif" width="1" height="46" alt=""></td>
+	</tr>
+	<tr>
+		<td width="1">
+			<img src="images/index page images/index_10.png" width="1" height="2" alt=""></td>
+		<td colspan="14">
+			<img src="images/index page images/index_11.png" width="444" height="2" alt=""></td>
+		<td>
+			<img src="images/index page images/spacer.gif" width="1" height="2" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="17"><img src="images/top labels/windows-system-programming.png" alt="top image" width="1000" height="102"></td>
+<td>
+			<img src="images/index page images/spacer.gif" width="1" height="21" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="17" rowspan="8" valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="f2f1e9">
+		  <!--DWLayoutTable-->
+		  <tr>
+		    <td height="1" colspan="3" valign="top">
+			  <img src="images/index page images/Drop-Shadow-Strip-14.png" width="640" height="1" alt=""></td>
+		</tr>
+		  <tr>
+		    <td width="1" height="15"></td>
+            <td width="932"></td>
+            <td width="69"></td>
+          </tr>
+		  <tr>
+		    <td height="1220"></td>
+		    <td valign="top">
+            <div id="content-center">
+            
+		      <div class="style17">
+		        <p><span class="style3">Windows System Programming, Edition 4</span><br>
+		            Now Available<br>
+		          <br>
+	            Published by Addison-Wesley Professional. Part of the Addison-Wesley Microsoft Technology Series series<br>
+		        </p>
+		        <p><a href="comments_updates.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('comments','','images/buttons & icons/comments&updates_OVER.jpg',1)"><img src="images/index page images/Windows-4th-Book.png" alt="Windows4th" width="128" height="168"></a><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('edition 4','','images1/Windows-4th-Book_OVER.png',1)"></a></p>
+		        <p>Download the <a href="WSP4_Examples.zip">Examples file (Version 1.12, January 24, 2011)</a><br>
+		          <br>
+		          At last, Edition 4 is complete! It's taken longer than expected, but the results have been worth the effort. There are many improvements, but I've also been able to retain the basic approach and style of Editions 1-3. I hope you enjoy it and will look forward to hearing from readers.<br>
+		          <br>
+		          John Hart, January 18, 2010<br>
+		          <br>
+		          <span class="style19">About Edition 4</span><br>
+		          <br>
+		          Here is the link to the informIT <a href="http://www.informit.com/store/product.aspx?isbn=0321658302">Windows System Programming, Rough Cuts, 4th Edition</a> page<br>
+		          <br>
+		          Edition 4 is a significant update of Edition 3 (2004) and its predecessors. I've reworked all the examples, added new examples, added lots of new material, and corrected misleading and (at times) incorrect statements. Here's a summary from the preface:<br>
+		          <br>
+		          <span class="style19">Changes in Edition 4</span><br>
+		          <br>
+		          Edition 1, titled Win32 System Programming, was published in 1997 and was updated with Edition 2 (2000) and Edition 3 (2004). Much has changed, and much has stayed the same since these previous editions, and Windows has been part of ongoing, rapid progress in computing technology. The outstanding factors to me that explain the Edition 4 changes are the following:<br>
+	            </p>
+		        <ul class="indented">
+		          <li>The Windows API is extremely stable. Programs written in 1997 continue to run on the latest Windows releases, and Windows skills learned now or even years ago will be valuable for decades to come.
+		          <li> Nonetheless, the API has expanded, and there are new features and functions that are useful and sometimes mandatory. Three examples of many that come to mind and have been important in my work are (1) the ability to work easily with large files and large, 64-bit address spaces, (2) thread pools, and (3) the new condition variables that efficiently solve an important synchronization problem.
+		          <li>Windows scales from phones to hand held and embedded devices to laptops and desktop systems and up to the largest servers.                  
+		          <li>Windows has grown and scaled from the modest resources required in 1997 (16MB of RAM and 250MB of free disk space!) to operate efficiently on systems orders of magnitude larger and faster, but often cheaper.                  
+		          <li>64-bit systems, multicore processors, and large file systems are common, and our application programs must be able to exploit these systems. Frequently, the programs must also continue to run on 32-bit systems. </ul>                                   
+		           
+                    
+                    
+		            <span class="style21">This fourth edition presents extensive new material along with updates and reorganization to keep up with recent progress and:                    </span>
+                <ul class="indented">
+                  <li>Covers important new features in Windows 7, Vista, and Server 2008.
+		          <li>Demonstrates example program operation and performance with screenshots. (Author note: I think these sreenshots really help to understand example usage and also work well to show comparative performance)
+		          <li>Describes and illustrates techniques to assure that relevant applications scale to run on 64-bit systems and can use large files. Enhancements throughout the book address this issue.
+		          <li>Eliminates discussion of Windows 95, 98, and Me (the &ldquo;Windows 9x&rdquo; family), as well as NT and other obsolete systems.
+		          <li>Program examples freely exploit features supported only in current Windows versions.
+		          <li>Provides enhanced coverage of threads, synchronization, and parallelism, including performance, scalability, and reliability considerations.                                                                                                                              
+		          <li>Emphasizes the important role and new features of Windows servers running high-performance, scalable, multithreaded applications.                  
+		          <li>Studies performance implications of different program designs, especially in file access and multithreaded applications with synchronization and parallel programs running on multicore systems.                  
+		          <li>Addresses source code portability to assure operation on Windows, Linux, and UNIX systems. Appendix B is enhanced from the previous versions to help those who need to build code, usually for server applications, that will run on multiple target platforms.                  
+		          <li>Incorporates large quantities of excellent reader and reviewer feedback to fix defects, improve explanations, improve the organization, and address numerous details, large and small.                  
+		        </ul>
+		        <p>
+		     
+		          I've also taken care to make program appearance be much more uniform than in previous editions. For example, I've consistently used the &quot;camel notation&quot; for variable names (this is one of many possible conventions; I found the camel notation to be convenient, and sticking to some convention is better than none at all). I believe that changes of this nature will simplify code understanding.<br>
+		          <br>
+		          <em>One more point:</em> The technical reviewers did an incredible job. They suggested numerous improvements of all sorts. It took a lot of work to address all the suggestions, but the effort was definitely worthwhile and will add value for readers at all levels. The reviewers names and a full acknowledgement are in the book's preface.<br>
+		          <br>
+		          <span class="style19">From the Back Cover</span><br>
+		          <br>
+		          Here is the book's back cover copy, which explains a bit more, but in the third person:<br>
+		          <br>
+		          Windows System Programming, Fourth Edition, now contains extensive new coverage of 64-bit programming, parallelism, multicore systems, and many other crucial topics. Johnson Hart&rsquo;s robust code examples have been updated and streamlined throughout. They have been debugged and tested in both 32-bit and 64-bit versions, on single and multiprocessor systems, and under Windows 7, Vista, Server 2008, and Windows XP. To clarify program operation, sample programs are now illustrated with dozens of screen shots.<br>
+		          <br>
+		          Hart systematically covers Windows externals at the API level, presenting practical coverage of all the services Windows programmers need, and emphasizing how Windows functions actually behave and interact in real-world applications. Hart begins with features used in single-process applications and gradually progresses to more sophisticated functions and multithreaded environments. Topics covered include file systems, memory management, exceptions, processes, threads, synchronization, interprocess communication, Windows services, and security.<br>
+		          <br>
+	            New coverage in this edition includes:</p>
+		        <ul class="indented">
+		          <li>Leveraging parallelism and maximizing performance in multicore systems
+		          <li>Techniques to improve program reliability and performance in all systems
+		          <li>Promoting source code portability and application interoperability across Windows, Linux, and UNIX
+		          <li>Using 64-bit address spaces and ensuring 64-bit/32-bit portability                  
+		          <li>Improving performance and scalability using threads, thread pools, and completion ports
+                  <li>New Windows performance-enhancing API features available starting with Windows Vista, such as slim reader/writer locks and condition variables                  
+		        </ul>
+		        <p>
+		         
+<span class="style19">Windows Versions: Vista, 7, Server 2008, Server 2003, and Windows XP</span><br>
+<br>
+Edition 4 assumes that you are using or targeting a &quot;current&quot; Windows version, and the book freely exploits new Windows features. In particular, Windows Vista and later Windows versions (Server 2008 and Windows 7) support useful new API features and also provide improved performance in some cases. These three versions use Windows NT kernel version 6, or &quot;NT6&quot; for simplicity (Microsoft does not use the term &quot;NT6&quot;, but it's a convenient term).<br>
+<br>
+Nonetheless, Windows XP and Server 2003, and even Server 2000 (based on Windows NT kernel version 5, or &quot;NT5&quot;), will be around for some time, and Vista adoption has been slow (Windows 7 may have a higher adoption rate). Therefore, nearly all programs will operate under NT5. Exmaple programs that depend upon NT6 will issue an error message if you run them on an NT5 system. However, there are workarounds in some cases.<br>
+<br>
+The NT6 advantages are most significant for multithreaded programs (impacting Chapters 9, 10, and 14). Thus, NT6 provides:<br>
+</p>
+		        <ul class="indented">
+		          <li>Condition variables, which correctly and conveniently implement the critical section model and eliminating problems with the PulseEvent function.
+		          <li>Slim reader/writer (SRW) locks (SRW) which are faster than CRITICAL_SECTIONs.
+		          <li>Thread pools                  
+		          <li>Enhanced cancellation functionality
+                </ul>
+		        <p>
+		          Furthermore, NT6 asynchronous I/O performance is much better than on NT5. You do not need to make any code changes to realize this performance improvement.<br>
+		          <br>
+		          From the point of view of the Windows API, NT6 provides numerous advantages. I say this fully realizing that many users, for very good reasons, will stick with Windows XP for some time. Furthermore, if you are developing applications for a wide audience, you will need to assure that the applications run correctly, if not optimally, on NT5 systems.<br>
+		          <span class="style19"><br>
+		          The Examples, Visual Studio, and Open Source Tools</span><br>
+		          <br>
+		          The <em>Examples</em> file, which you can download from this site, contains complete programs for all the examples in the book. Numerous adddtional examples, generally mentioned in the book, illustrate addtional points or exploare alternative methods to solve problems.<br>
+		          <br>
+		          All the examples are provided as Visual Studio solutions, in both Visual Studio 2008 and Visual Studio 2005 format. The projects convert easily to Visual Studio 2010 (RC) form. However, I'll add the new solutions after the VS 2010 planned for April 2010.<br>
+		          <br>
+		          Some Edition 3 readers have reported success using open source development tools, such as gcc and g++ in the Gnu Compiler Collection (<a href="http://gcc.gnu.org/">http://gcc.gnu.org/</a>). Readers interested in these tools can look at the MinGW open source pro ject (<a href="http://www.mingw.org/">www.mingw.org</a>),<br>
+		          <br>
+		          The examples have been tested, and performance comparisons performed, on all current Windows versions, in both 32-bit and 64-bit form where appropriate.</p>
+		      </div>
+		      </div>
+		    </div></td>
+		    <td></td>
+	      </tr>
+		  <tr>
+		    <td height="87"></td>
+		    <td colspan="2"><img src="images/index page images/Bottom-of-Page.jpg" alt="footer" width="1000" height="63"></td>
+	      </tr>
+        
+	  </table>	  </td>
+      <td>
+			<img src="images/index page images/spacer.gif" width="1" height="1" alt=""></td>
+  </tr>
+	<tr>
+	  <td>
+			<img src="images/index page images/spacer.gif" width="1" height="132" alt=""></td>
+	</tr>
+	<tr>
+	  <td><!--DWLayoutEmptyCell-->&nbsp;</td>
+  </tr>
+	<tr>
+	  <td>
+			<img src="images/index page images/spacer.gif" width="1" height="71" alt=""></td>
+	</tr>
+	<tr>
+	  <td>
+		  <img src="images/index page images/spacer.gif" width="1" height="141" alt=""></td>
+	</tr>
+	<tr>
+	  <td>
+			<img src="images/index page images/spacer.gif" width="1" height="26" alt=""></td>
+	</tr>
+	<tr>
+	  <td>
+		  <img src="images/index page images/spacer.gif" width="1" height="28" alt=""></td>
+	</tr>
+	<tr>
+	  <td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="17"><!--DWLayoutEmptyCell-->&nbsp;</td>
+		<td>&nbsp;</td>
+  </tr>
+	<tr>
+		<td colspan="3">
+			<img src="images/index page images/index_34.png" width="640" height="1" alt=""></td>
+		<td colspan="13">
+			<img src="images/index page images/index_35.png" width="359" height="1" alt=""></td>
+		<td>
+			<img src="images/index page images/index_36.png" width="1" height="1" alt=""></td>
+		<td>
+			<img src="images/index page images/spacer.gif" width="1" height="1" alt=""></td>
+	</tr>
+	<tr>
+		<td>
+			<img src="images/index page images/spacer.gif" width="554" height="1" alt=""></td>
+		<td>
+			<img src="images/index page images/spacer.gif" width="1" height="1" alt=""></td>
+		<td width="86">
+			<img src="images/index page images/spacer.gif" width="85" height="1" alt=""></td>
+  <td width="4">
+			<img src="images/index page images/spacer.gif" width="4" height="1" alt=""></td>
+		<td width="51">
+			<img src="images/index page images/spacer.gif" width="51" height="1" alt=""></td>
+		<td width="35">
+			<img src="images/index page images/spacer.gif" width="35" height="1" alt=""></td>
+		<td width="27">
+			<img src="images/index page images/spacer.gif" width="27" height="1" alt=""></td>
+		<td width="10">
+			<img src="images/index page images/spacer.gif" width="10" height="1" alt=""></td>
+		<td width="47">
+			<img src="images/index page images/spacer.gif" width="47" height="1" alt=""></td>
+		<td width="5">
+			<img src="images/index page images/spacer.gif" width="5" height="1" alt=""></td>
+		<td width="17">
+			<img src="images/index page images/spacer.gif" width="17" height="1" alt=""></td>
+		<td width="46">
+			<img src="images/index page images/spacer.gif" width="46" height="1" alt=""></td>
+		<td width="3">
+			<img src="images/index page images/spacer.gif" width="3" height="1" alt=""></td>
+		<td width="24">
+			<img src="images/index page images/spacer.gif" width="24" height="1" alt=""></td>
+		<td width="44">
+			<img src="images/index page images/spacer.gif" width="44" height="1" alt=""></td>
+		<td width="46">
+			<img src="images/index page images/spacer.gif" width="46" height="1" alt=""></td>
+		<td>
+			<img src="images/index page images/spacer.gif" width="1" height="1" alt=""></td>
+		<td></td>
+	</tr>
+</table>
+<!-- End ImageReady Slices -->
+</body>
+</html>

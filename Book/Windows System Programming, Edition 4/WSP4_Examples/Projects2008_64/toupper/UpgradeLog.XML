@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="toupper">
+</Property><Property Name="Solution File" Value="C:\Users\John Hart\jmh_assoc\WSP4_Examples\Projects2008_64\toupper\toupper.sln">
+</Property><Property Name="User Options File" Value="C:\Users\John Hart\jmh_assoc\WSP4_Examples\Projects2008_64\toupper\toupper.suo">
+</Property><Property Name="Date" Value="Wednesday, June 25, 2014">
+</Property><Property Name="Time" Value="9:11 AM">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="toupper.sln" Description="File successfully backed up as C:\Users\John Hart\jmh_assoc\WSP4_Examples\Projects2008_64\toupper\Backup\toupper.sln">
+</Event><Event ErrorLevel="0" Project="" Source="toupper.suo" Description="File successfully backed up as C:\Users\John Hart\jmh_assoc\WSP4_Examples\Projects2008_64\toupper\Backup\toupper.suo">
+</Event><Event ErrorLevel="0" Project="" Source="toupper.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="toupper.sln" Description="Converted">
+</Event></UpgradeLog>

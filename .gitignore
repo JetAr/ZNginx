@@ -29,6 +29,7 @@
 *.hex
 
 # vc
+*.exp
 *.user
 *.ncb
 *.lib
