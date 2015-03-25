@@ -21,6 +21,9 @@
 
 #include "Everything.h"
 
+/*
+    将一个文件中的字符转换为大写字母。
+*/
 int _tmain (int argc, LPTSTR argv [])
 {
     HANDLE hIn, hOut;
@@ -41,6 +44,8 @@ int _tmain (int argc, LPTSTR argv [])
                 /* Create the output file name, and create it (fail if file exists) */
                 hIn  = CreateFile (argv [iFile], GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
                 if (hIn == INVALID_HANDLE_VALUE) ReportException (argv[iFile], 1);
+
+                //z 假设是够小的数据。
                 FileSize = GetFileSize (hIn, NULL); /* Assume "small" file */
                 hOut = CreateFile (OutFileName, GENERIC_READ | GENERIC_WRITE, 0, NULL,
                                    CREATE_NEW, 0, NULL);
@@ -54,6 +59,9 @@ int _tmain (int argc, LPTSTR argv [])
                 /* Read the data, covert it, and write to the output file */
                 /* Free all resources upon completion, and then process the next file */
                 /* Modify the file locks if you are using Windows 9x */
+
+                //z 锁定文件
+                //z LOCKFILE_FAIL_IMMEDIATELY，如果失败理解返回。
                 if (!LockFileEx (hIn,  LOCKFILE_FAIL_IMMEDIATELY, 0, 0, 0, &ov))
                     ReportException (_T("Input file lock error"), 1);
                 if (!LockFileEx (hOut, LOCKFILE_FAIL_IMMEDIATELY, 0, FileSize, 0, &ov))
