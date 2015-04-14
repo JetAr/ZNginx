@@ -45,6 +45,7 @@ BOOL WINAPI DllMain(
     return TRUE;
 }
 
+//z 2015-04-14 14:59 输出的函数
 _declspec( dllexport ) BOOL TheFunction()
 {
     printf("DLL:\tTheFunction() called\n");

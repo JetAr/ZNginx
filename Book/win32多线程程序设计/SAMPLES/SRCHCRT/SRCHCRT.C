@@ -16,6 +16,9 @@
  *
  */
 
+//z 2015-04-14
+//z 和8-2差不多
+
 #define WIN32_LEAN_AND_MEAN
 #include <stdio.h>
 #include <stdlib.h>

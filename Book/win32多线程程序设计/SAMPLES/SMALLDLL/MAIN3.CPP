@@ -26,6 +26,7 @@ THEFUNCTION pTheFunction;
 // Give the worker thread something to wait for.
 HANDLE ghEvent;
 
+//z loadlibrary ，并在一个线程中使用。
 int main(VOID) 
 { 
 	HINSTANCE hinstLib; 

@@ -20,13 +20,14 @@
 //
 // Structure definition
 //
-
+//z 链表，每个节点有80个字符。
 typedef struct _Node
 {
     struct _Node *pNext;
     char	szBuffer[80];
 } Node;
 
+//z list，添加了一个rwlock
 typedef struct _List
 {
 	RWLock	lock;

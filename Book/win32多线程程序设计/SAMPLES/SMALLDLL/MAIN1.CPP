@@ -30,7 +30,7 @@ VOID main(VOID)
         &dwThreadId );
     if (hThrd)
         printf("\tThread launched\n");
- 
+
     WaitForSingleObject(hThrd, INFINITE);
     CloseHandle(hThrd);
 } 
