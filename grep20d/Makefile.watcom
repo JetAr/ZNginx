@@ -1,0 +1,47 @@
+## Compiler, linker, and lib stuff
+## Makefile for use with watcom win95/winnt executable.
+
+CC=wcc386
+LINK=wlink
+
+#disabled for faster compiler
+LFLAGS=sys nt op st=32767
+CFLAGS=/s /w4 /zp8 /d1 /fpd /6r /fp6 /fpi87 /mf /oantrlexi /bt=nt /DHAVE_STRERROR
+
+## variables
+OBJS = FILE alloca.obj,dfa.obj,getopt.obj,grep.obj,kwset.obj,obstack.obj,regex.obj,search.obj
+LINKOBJS = alloca.obj dfa.obj getopt.obj grep.obj kwset.obj obstack.obj regex.obj search.obj
+LIBFILES =
+
+BINNAME=grep.exe
+
+$(BINNAME): $(LINKOBJS)
+        $(LINK) $(LFLAGS) NAME $(BINNAME) $(OBJS) $(LIBPATH) $(LIBFILES)
+
+alloca.obj : alloca.c
+        $(CC) $(CFLAGS) alloca.c
+
+dfa.obj : dfa.c dfa.h regex.h
+        $(CC) $(CFLAGS) dfa.c
+
+obstack.obj : obstack.c obstack.h
+        $(CC) $(CFLAGS) obstack.c
+
+search.obj : search.c grep.h dfa.h kwset.h regex.h
+        $(CC) $(CFLAGS) search.c
+
+kwset.obj : kwset.c kwset.h obstack.h
+        $(CC) $(CFLAGS) kwset.c
+
+getopt.obj : getopt.c getopt.h
+        $(CC) $(CFLAGS) getopt.c
+
+regex.obj : regex.c
+        $(CC) $(CFLAGS) regex.c
+
+grep.obj : grep.c getpagesize.h grep.h
+        $(CC) $(CFLAGS) grep.c
+
+clean :
+        erase $(LINKOBJS) $(BINNAME) *.err
+

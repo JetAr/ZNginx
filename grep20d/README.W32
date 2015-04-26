@@ -1,0 +1,62 @@
+This version of grep for Windows 95/98/NT was created by Tim Charron
+(tcharron@interlog.com) in November 1998.  Last updated Jan/2001
+
+This version was specifically created to allow searches to include
+entire subdirectories of files to be searched, with wildcards.  To do
+this, use one of:
+
+    grep -S "searchtext" *.txt
+    grep -S "searchtext" \personal\files\*.txt
+    grep -S searchtext C:\*.*
+
+(don't confuse the "-S" with the "s" option which is used to suppress errors)
+
+This version was created from one by Ahmad Abualsamid (see his original
+readme.w32 below).  Changes from that distribution include:
+
+- Addition of "-S" flag to allow subdirectories to be searched.
+- New "Makefile.watcom" makefile for use with Watcom C/C++ 11.0 compiler
+- Bug fix.  The original version was displaying the wrong filename when
+  wildcards were used!
+- Directories are listed to stderr as searched if -S is used
+- Added grep.txt file outlining syntax of grep
+- Added "-?" option to display help summary
+- (2.0b version) Fixed display of filenames (-h option, as well as
+  decision to print them based on number of files being checked)
+- (2.0c version) Fixed display of paths if the "-l" option was used with
+  wildcards
+- (2.0d version, Jan 26/2001) Fixed display of paths if the "-c" option was
+  used with wildcards
+- (2.0d version, Jan 26/2001) Changed code to accept standard in from piped
+  output.  With earlier versions, the "-" was required to expicitly indicate
+  that redirection was being used.
+
+This source is free.  Source is distributed according to GNU'S GPL.
+If you find it of value, drop me a line at tcharron@interlog.com.
+
+Tim Charron, November 1998
+
+===========================================================================
+Ahmad's original readme.w32 follows...
+===========================================================================
+
+This is free software, source code included according to GNU's GPL. However
+$1 donations are welcome to allow for creating more creative free software
+for win95/nt:
+        Ahmad Abualsamid
+        9 Bluebird ct. #3
+        Madison, WI 53711
+
+minor bug fixes, to not try to grep on directories, and to display current
+filename correctly.
+-Ahmad Abualsamid, Oct. 97
+
+This is gnu grep "ported" to windows 32. It was compiled using VC++ 5.0. If
+you wish to recompile it ignore the warnings :-)
+mostly minor changes. biggest change was to use findfirst() and findnext()
+to allow for wild cards on the filenames.
+
+to compile create a Console App project in VC++ 5.0, add all .c and .h files
+to that project and choose build.
+
+-Ahmad Abualsamid, Sep. 97
