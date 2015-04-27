@@ -15,7 +15,7 @@ set FileTime=%1.%TDate%.%THour%_%TMin%_%TSed%.%TMs%
 endlocal
 
 echo %FileTime% >> History.txt
-git >>history.txt
+git status >>history.txt
 git add .
 git commit -am "%FileTime%"
 git push
