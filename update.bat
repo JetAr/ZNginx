@@ -1,6 +1,8 @@
-IF "%1" == "" ( echo "usage : update Comment" & goto END )
-
 @echo off
+
+IF "%1" == "" ( echo on &  echo "usage : update Comment" & goto END )
+
+setlocal ENABLEEXTENSIONS
 set TDate=%DATE:~0,10%
 set THour=%TIME:~0,2%
 if %THour% LSS 10 set THour=0%TIME:~1,1%
@@ -15,4 +17,5 @@ git commit -am "%FileTime%"
 git push
 
 :END
+endlocal
 @echo on
