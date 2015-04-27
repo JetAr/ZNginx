@@ -10,9 +10,7 @@ set TMin=%time:~3,2%
 set TSed=%time:~6,2%
 set TMs=%TIME:~-2%
 
-set FileTime=%1.%TDate%.%THour%_%TMin%_%TSed%.%TMs%
-
-endlocal
+set FileTime=%1.%TDate%.%THour%_%TMin%_%TSed%.%TMs%.K.M&M.T
 
 echo %FileTime% >> History.txt
 git status >> History.txt
@@ -20,5 +18,8 @@ git add .
 git commit -am "%FileTime%"
 git push
 
+endlocal
+
 :END
+
 @echo on
