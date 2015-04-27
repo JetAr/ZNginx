@@ -10,3 +10,16 @@ Changes not staged for commit:
 	modified:   update.bat
 
 no changes added to commit (use "git add" and/or "git commit -a")
+D.2015/04/27.14_09_08.97.K.MzM.T 
+On branch master
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   History.txt
+	modified:   update.bat
+
+no changes added to commit (use "git add" and/or "git commit -a")
