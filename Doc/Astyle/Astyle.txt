@@ -5,11 +5,12 @@
 //z 2015-04-27 11:14:17 L.248'45943 BG57IV3@XCL T1417635090.K.F576377644 
 Artistic Style 2.05.1 常用命令
 ------
-常用命令行windows : astyle -A1 -R -z1 -n *.cpp
+常用命令行windows : astyle -A1 -R -Z -z1 -n *.cpp
 -A1 是使用 allman 样式
 -R 表示递归
 -z1 windows 样式行结尾
 -n 表示不产生备份文件
+-Z 保留原文件的修改日期和时间
 
 Usage:
 ------
