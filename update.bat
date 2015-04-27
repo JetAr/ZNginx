@@ -14,13 +14,12 @@ set FileTime=%1.%TDate%.%THour%_%TMin%_%TSed%.%TMs%.K.MzM.T@WS
 
 echo +---------+---------+---------+---------+---------+---------+---------+---------+ >> History.txt
 echo %FileTime% >> History.txt
-git status >> History.txt
 git add .
+git status >> History.txt
 git commit -am "%FileTime%"
 git push
 
 endlocal
 
 :END
-
 @echo on

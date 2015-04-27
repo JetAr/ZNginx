@@ -41,3 +41,15 @@ Untracked files:
 	pop3srv/
 
 no changes added to commit (use "git add" and/or "git commit -a")
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+Visio.2015/04/27.17_38_29.77.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Doc/K/T.2015.BugFree.cs
+	modified:   History.txt
+	modified:   update.bat
+
