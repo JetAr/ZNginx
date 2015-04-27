@@ -1,6 +1,6 @@
 @echo off
 
-IF "%1" == "" ( echo on &  echo "usage : update CommentMsg" & goto END )
+IF "%1" == "" ( echo on & echo "usage : update CommentMsg" & goto END )
 
 setlocal ENABLEEXTENSIONS
 set TDate=%DATE:~0,10%
@@ -15,7 +15,7 @@ set FileTime=%1.%TDate%.%THour%_%TMin%_%TSed%.%TMs%
 endlocal
 
 echo %FileTime% >> History.txt
-git status >>history.txt
+git status >> History.txt
 git add .
 git commit -am "%FileTime%"
 git push
