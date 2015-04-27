@@ -12,10 +12,11 @@ set TMs=%TIME:~-2%
 
 set FileTime=%1.%TDate%.%THour%_%TMin%_%TSed%.%TMs%
 
+endlocal
+
 git add .
 git commit -am "%FileTime%"
 git push
 
 :END
-endlocal
 @echo on
