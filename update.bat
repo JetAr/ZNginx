@@ -10,8 +10,9 @@ set TMin=%time:~3,2%
 set TSed=%time:~6,2%
 set TMs=%TIME:~-2%
 
-set FileTime=%1.%TDate%.%THour%_%TMin%_%TSed%.%TMs%.K.MzM.T
+set FileTime=%1.%TDate%.%THour%_%TMin%_%TSed%.%TMs%.K.MzM.T@WS
 
+echo +---------+---------+---------+---------+---------+---------+---------+---------+ >> History.txt
 echo %FileTime% >> History.txt
 git status >> History.txt
 git add .
