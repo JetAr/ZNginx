@@ -121,3 +121,14 @@ Changes to be committed:
 	new file:   ds & Algo/DS/Dictionary/dict.c
 	new file:   ds & Algo/DS/Dictionary/dict.h
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+DX.2015/05/04.16_56_24.99.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Book/DX/DX9.Luna/BookICode/Book Part II Code/Chapter 3/Cube/cube.cpp
+	modified:   History.txt
+

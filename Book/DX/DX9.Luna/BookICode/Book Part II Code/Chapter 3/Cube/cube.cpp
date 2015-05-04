@@ -146,7 +146,7 @@ bool Setup()
     //
     // Position and aim the camera.
     //
-
+    //z 定位和对准camera
     D3DXVECTOR3 position(0.0f, 0.0f, -5.0f);
     D3DXVECTOR3 target(0.0f, 0.0f, 0.0f);
     D3DXVECTOR3 up(0.0f, 1.0f, 0.0f);
