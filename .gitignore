@@ -50,5 +50,7 @@
 *.opt
 *.bsc
 *.clw
+*.tmp
+*.sbr
 Debug
 Release
