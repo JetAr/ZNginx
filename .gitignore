@@ -48,5 +48,7 @@
 *.pch
 *.plg
 *.opt
+*.bsc
+*.clw
 Debug
 Release

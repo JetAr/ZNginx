@@ -528,3 +528,14 @@ Changes to be committed:
 	new file:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25412\347\253\240/SerialPortVxD/resource.h"
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+ignore.2015/05/05.10_51_14.93.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   .gitignore
+	modified:   History.txt
+
