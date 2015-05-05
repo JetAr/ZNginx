@@ -1,0 +1,366 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (P.R.C.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\SCOMM.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.chs\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\comm.ico"
+IDI_ICON_OFF            ICON    DISCARDABLE     "res\\icon_not.ico"
+IDI_ICON_RED            ICON    DISCARDABLE     "res\\icon_on.ico"
+IDI_ICON_GJWTECH        ICON    DISCARDABLE     "RES\\gjwtech1.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 129
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "关于串口调试助手"
+FONT 9, "宋体"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,6,7,20,20
+    LTEXT           "串口调试助手 V2.2  2002.08",IDC_STATIC,31,15,129,8,
+                    SS_NOPREFIX
+    LTEXT           "版权所有 (C) 2002",IDC_STATIC,93,101,72,8
+    DEFPUSHBUTTON   "确定",IDOK,178,7,50,23,WS_GROUP
+    ICON            IDI_ICON_GJWTECH,IDC_STATIC,208,102,20,20
+    LTEXT           "免费试用 永不过期",IDC_STATIC,32,26,73,8
+    LTEXT           "版权所有，未经许可，不得作为商用",IDC_STATIC,31,35,131,
+                    8
+    LTEXT           "网站用作下载程序，请通知",IDC_STATIC,31,45,97,8
+    LTEXT           "作者，以便及时更新",IDC_STATIC,129,45,73,8
+    LTEXT           "龚建伟技术主页",IDC_STATIC_MAILXFS1,47,63,57,8
+    LTEXT           "http://www.gjwtech.com",IDC_STATIC,48,77,133,8
+END
+
+IDD_SCOMM_DIALOG DIALOGEX 0, 0, 414, 269
+STYLE DS_CENTER | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "串口调试助手 SComAssistant V2.3 For WIN9X/2000/XP"
+FONT 9, "宋体"
+BEGIN
+    EDITTEXT        IDC_EDIT_RECIVE,127,0,284,188,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | WS_VSCROLL
+    LTEXT           "串口",IDC_STATIC10,8,4,22,9
+    COMBOBOX        IDC_COMBO_COMSELECT,35,0,34,52,CBS_DROPDOWN | 
+                    CBS_DISABLENOSCROLL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "波特率",IDC_STATIC11,4,17,26,9
+    COMBOBOX        IDC_COMBO_SPEED,35,14,34,116,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "当前状态",IDC_STATIC_STATUS,15,258,129,11,0,
+                    WS_EX_CLIENTEDGE
+    PUSHBUTTON      "关闭串口",IDC_BUTTON_OPENPORT,35,73,35,19
+    LTEXT           "接收区：",IDC_STATIC,93,10,32,12
+    CONTROL         "十六进制",IDC_CHECK_HEXRECIEVE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,76,85,45,10
+    PUSHBUTTON      "清空接收区",IDC_BUTTON_CLEAR_RECI_AREA,80,36,41,13
+    PUSHBUTTON      "停止显示",IDC_BUTTON_STOPDISP,80,52,41,13
+    PUSHBUTTON      "手动发送",IDC_BUTTON_MANUALSEND,87,214,36,14
+    LTEXT           "自动发送周期：",IDC_STATIC_CYCLETIME,1,244,57,8
+    EDITTEXT        IDC_EDIT_CYCLETIME,58,242,32,14,ES_AUTOHSCROLL
+    LTEXT           "毫秒",IDC_STATIC_MS,90,244,17,8
+    EDITTEXT        IDC_EDIT_SEND,126,190,285,45,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN | 
+                    WS_VSCROLL,WS_EX_STATICEDGE
+    LTEXT           "发送的字符/数据",IDC_STATIC_SENDCHAR,47,198,63,13,
+                    SS_CENTERIMAGE | SS_SUNKEN | WS_BORDER
+    CONTROL         "十六进制发送",IDC_CHECK_HEXSEND,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,1,217,64,10
+    CONTROL         "自动发送(周期改变后重选)",IDC_CHECK_AUTOSEND,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,1,232,112,10
+    ICON            IDI_ICON_GJWTECH,IDC_STATIC_XFS,339,244,21,21,SS_SUNKEN
+    PUSHBUTTON      "清空重填",IDC_BUTTON_CLEARRECASENDA,5,198,36,14
+    LTEXT           "校验位",IDC_STATIC12,4,30,26,9
+    LTEXT           "数据位",IDC_STATIC13,4,43,26,9
+    LTEXT           "停止位",IDC_STATIC14,4,58,26,9
+    COMBOBOX        IDC_COMBO_PARITY,35,27,34,52,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_COMBO_DATABITS,35,41,34,47,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_COMBO_STOPBITS,35,54,34,37,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "WEB",IDC_STATIC_XFS2,300,244,13,9
+    PUSHBUTTON      "保存显示数据",IDC_BUTTON_SAVEDATA,48,153,54,15,0,
+                    WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    EDITTEXT        IDC_EDIT_SAVEPATH,49,169,73,16,ES_AUTOHSCROLL | 
+                    ES_READONLY,WS_EX_STATICEDGE
+    PUSHBUTTON      "更改",IDC_BUTTON_DIRBROWSER,101,153,21,15,0,
+                    WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    PUSHBUTTON      "选择发送文件",IDC_BUTTON_FILEBROWSER,112,238,56,15,0,
+                    WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    EDITTEXT        IDC_EDIT_SENDFILE,169,240,79,13,ES_CENTER | 
+                    ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "发送文件",IDC_BUTTON_SENDFILE,251,238,39,15,0,
+                    WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    ICON            "IDI_ICON_NOTOPEN",IDC_STATIC_OPENOFF,2,71,21,21
+    CONTROL         "自动清空",IDC_CHECK_AUTOCLEAR,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,76,70,45,10
+    CTEXT           "RX:0",IDC_STATIC_RXCOUNT,144,258,59,11,0,
+                    WS_EX_CLIENTEDGE
+    PUSHBUTTON      "计数清零",IDC_BUTTON_COUNTRESET,263,258,35,11,BS_FLAT
+    PUSHBUTTON      "关闭程序",IDC_BUTTON_CLOSE,370,242,41,27,0,
+                    WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,0,0,74,
+                    94
+    CTEXT           "TX:0",IDC_STATIC_TXCOUNT,203,258,59,11,0,
+                    WS_EX_CLIENTEDGE
+    LTEXT           "MAIL",IDC_STATIC_GJW,318,244,17,8
+    CONTROL         "",IDC_BUTTON_PUSHPIN,"Button",BS_OWNERDRAW | BS_BITMAP | 
+                    BS_NOTIFY | WS_TABSTOP,0,259,13,10
+    PUSHBUTTON      "帮助",IDC_BUTTON_HELP,305,254,23,15,BS_FLAT,
+                    WS_EX_STATICEDGE
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 2,1,0,0
+ PRODUCTVERSION 2,1,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "RoaringWindStudio 啸峰工作室\0"
+            VALUE "FileDescription", "SComAssistant Microsoft 基础类应用程序\0"
+            VALUE "FileVersion", "2, 1, 0, 0\0"
+            VALUE "InternalName", "SComAssistant\0"
+            VALUE "LegalCopyright", "版权所有 (C) 2001\0"
+            VALUE "LegalTrademarks", "XFS\0"
+            VALUE "OriginalFilename", "SComAssistant.EXE\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "SComAssistant应用程序\0"
+            VALUE "ProductVersion", "2, 1, 0, 0\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 122
+    END
+
+    IDD_SCOMM_DIALOG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 411
+        BOTTOMMARGIN, 253
+        HORZGUIDE, 95
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_SCOMM_DIALOG DLGINIT
+BEGIN
+    IDC_COMBO_COMSELECT, 0x403, 5, 0
+0x4f43, 0x314d, "\000" 
+    IDC_COMBO_COMSELECT, 0x403, 5, 0
+0x4f43, 0x324d, "\000" 
+    IDC_COMBO_COMSELECT, 0x403, 5, 0
+0x4f43, 0x334d, "\000" 
+    IDC_COMBO_COMSELECT, 0x403, 5, 0
+0x4f43, 0x344d, "\000" 
+    IDC_COMBO_SPEED, 0x403, 4, 0
+0x3033, 0x0030, 
+    IDC_COMBO_SPEED, 0x403, 4, 0
+0x3036, 0x0030, 
+    IDC_COMBO_SPEED, 0x403, 5, 0
+0x3231, 0x3030, "\000" 
+    IDC_COMBO_SPEED, 0x403, 5, 0
+0x3432, 0x3030, "\000" 
+    IDC_COMBO_SPEED, 0x403, 5, 0
+0x3834, 0x3030, "\000" 
+    IDC_COMBO_SPEED, 0x403, 5, 0
+0x3639, 0x3030, "\000" 
+    IDC_COMBO_SPEED, 0x403, 6, 0
+0x3931, 0x3032, 0x0030, 
+    IDC_COMBO_SPEED, 0x403, 6, 0
+0x3833, 0x3034, 0x0030, 
+    IDC_COMBO_SPEED, 0x403, 6, 0
+0x3334, 0x3030, 0x0030, 
+    IDC_COMBO_SPEED, 0x403, 6, 0
+0x3635, 0x3030, 0x0030, 
+    IDC_COMBO_SPEED, 0x403, 6, 0
+0x3735, 0x3036, 0x0030, 
+    IDC_COMBO_SPEED, 0x403, 7, 0
+0x3131, 0x3235, 0x3030, "\000" 
+    IDC_COMBO_PARITY, 0x403, 5, 0
+0x4f4e, 0x454e, "\000" 
+    IDC_COMBO_PARITY, 0x403, 4, 0
+0x444f, 0x0044, 
+    IDC_COMBO_PARITY, 0x403, 5, 0
+0x5645, 0x4e45, "\000" 
+    IDC_COMBO_DATABITS, 0x403, 2, 0
+0x0038, 
+    IDC_COMBO_DATABITS, 0x403, 2, 0
+0x0037, 
+    IDC_COMBO_DATABITS, 0x403, 2, 0
+0x0036, 
+    IDC_COMBO_DATABITS, 0x403, 1, 0
+"\000" 
+    IDC_COMBO_DATABITS, 0x403, 1, 0
+"\000" 
+    IDC_COMBO_STOPBITS, 0x403, 2, 0
+0x0031, 
+    IDC_COMBO_STOPBITS, 0x403, 2, 0
+0x0032, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_CURSOR_HAND         CURSOR  DISCARDABLE     "res\\CURSOR1.CUR"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_PINNED_BITMAP       BITMAP  DISCARDABLE     "RES\\pinned.bmp"
+IDB_UNPINNED_BITMAP     BITMAP  DISCARDABLE     "RES\\unpinned.bmp"
+IDB_ANIM_IMGLIST        BITMAP  DISCARDABLE     "RES\\anim.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "关于串口调试助手About SComAssistant"
+END
+
+#endif    // Chinese (P.R.C.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE 4, 2
+#pragma code_page(936)
+#endif //_WIN32
+#include "res\SCOMM.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.chs\afxres.rc"          // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

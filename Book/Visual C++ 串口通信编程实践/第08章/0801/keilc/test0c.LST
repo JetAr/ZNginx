@@ -1,0 +1,41 @@
+C51 COMPILER V7.00  TEST0C                                                                 07/09/2004 07:45:36 PAGE 1   
+
+
+C51 COMPILER V7.00, COMPILATION OF MODULE TEST0C
+OBJECT MODULE PLACED IN test0c.OBJ
+COMPILER INVOKED BY: C:\KEIL\C51\BIN\C51.EXE test0c.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include <reg51.h>
+   2          #include <stdio.h>
+   3          
+   4          void main(void)
+   5          {
+   6   1          SCON = 0x50; //´®¿Ú·½Ê½1,ÔÊÐí½ÓÊÕ
+   7   1          TMOD = 0x20; //¶¨Ê±Æ÷1¶¨Ê±·½Ê½ 2
+   8   1          TCON = 0x40; //Éè¶¨¶¨Ê±Æ÷¿ªÊ¼¼ÆÊý   Æ Ê 
+   9   1          TH1 = 0xE8;  //11.0592MHz 1200²¨ÌØÂÊ
+  10   1          TL1 = 0xE8;
+  11   1          TI = 1;
+  12   1          TR1 = 1;     //Æô¶¯¶¨Ê±Æ÷ 
+  13   1          
+  14   1          while(1)
+  15   1          {
+  16   2              printf ("Hello World!\n"); //ÏÔÊ¾Hello World
+  17   2          }
+  18   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     30    ----
+   CONSTANT SIZE    =     14    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
