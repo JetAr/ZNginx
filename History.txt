@@ -550,3 +550,14 @@ Changes to be committed:
 	modified:   .gitignore
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+tool_del_tmp.2015/05/05.10_58_18.99.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	new file:   "ToolKit/Bat/\346\211\271\351\207\217\345\210\240\351\231\244VC\344\270\264\346\227\266\346\226\207\344\273\266.txt"
+

@@ -1,0 +1,22 @@
+REM //z 2015-05-05 10:56:08 L.240'47032 T1147084724.K 版本一
+@echo on
+echo 删除VC编译产生的临时文件
+echo 删除开始...
+for /r . %%c in (.) do @if exist "%%c\Debug" rd /S /Q "%%c\Debug"
+for /r . %%c in (.) do @if exist "%%c\Release" rd /S /Q "%%c\Release"
+for /r . %%c in (*.opt *.dsw *. *.bsc *.aps *.clw *.ncb *.plg *.positions *.WW *.user) do del "%%c"
+for /r . %%c in ("*VA_C__Documents and Settings_Administrator_Local Settings_Application Data_VisualAssist_vc6_history_") do del "%%c"
+echo 删除完毕...
+
+REM //z 2015-05-05 10:56:33 L.240'47007 T1147084818.K 版本二
+@echo off  
+echo ----------------------------------------------------  
+echo Press any key to delete all files with ending:  
+echo  *.aps *.idb *.ncp *.obj *.pch *.tmp *.sbr  
+echo  *.tmp *.pdb *.bsc *.ilk *.res *.ncb *.opt   
+echo  *.suo *.manifest  *.dep  
+echo There are Visual C++ and Visual Studio junk  
+echo ----------------------------------------------------  
+pause  
+del /F /S /Q *.aps *.idb *.ncp *.obj *.pch *.sbr *.tmp *.pdb *.bsc *.ilk *.res *.ncb *.opt *.suo *.manifest *.dep  
+pause  
