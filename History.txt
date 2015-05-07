@@ -572,3 +572,16 @@ Changes to be committed:
 	modified:   Doc/K/T.2015.BugFree.cs
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+Game_D.2015/05/07.13_25_23.60.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	new file:   "ZGame/Doc/DirectX 9.0 3D\346\270\270\346\210\217\345\274\200\345\217\221\347\274\226\347\250\213\345\237\272\347\241\200\347\232\204\350\257\204\350\256\272.txt"
+	new file:   "ZGame/Doc/\346\270\270\346\210\217\347\250\213\345\272\217\345\221\230\345\205\273\346\210\220\350\256\241\345\210\222.txt"
+	new file:   ZGame/T.ZGame.cs
+
