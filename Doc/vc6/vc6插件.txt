@@ -1,0 +1,3 @@
+﻿VC6LineNumberAddin 显示行号
+WndTabs 多标签
+visual assist 多功能插件
