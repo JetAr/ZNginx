@@ -19,7 +19,9 @@
  * KIND, either express or implied.
  *
  ***************************************************************************/
-/* This example shows usage of simple cookie interface. */
+//z 2015-05-13 15:03:00 L.232'32220 T1110295240.K
+ //z 简单cookie的使用
+ /* This example shows usage of simple cookie interface. */
 
 #include <stdio.h>
 #include <string.h>
@@ -38,6 +40,7 @@ print_cookies(CURL *curl)
     int i;
 
     printf("Cookies, curl knows:\n");
+    //z 获取 cookie slist
     res = curl_easy_getinfo(curl, CURLINFO_COOKIELIST, &cookies);
     if (res != CURLE_OK)
     {
@@ -45,6 +48,7 @@ print_cookies(CURL *curl)
         exit(1);
     }
     nc = cookies, i = 1;
+    //z 使用 slist 存储的字符串
     while (nc)
     {
         printf("[%d]: %s\n", i, nc->data);
@@ -72,17 +76,22 @@ main(void)
 
         curl_easy_setopt(curl, CURLOPT_URL, "http://www.example.com/");
         curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+        //z 通过这个开启 cookie 引擎
         curl_easy_setopt(curl, CURLOPT_COOKIEFILE, ""); /* just to start the cookie engine */
+        //z 执行，get url 么？
         res = curl_easy_perform(curl);
         if (res != CURLE_OK)
         {
             fprintf(stderr, "Curl perform failed: %s\n", curl_easy_strerror(res));
             return 1;
         }
-
+        
+        //z 输出 cookie
         print_cookies(curl);
 
         printf("Erasing curl's knowledge of cookies!\n");
+        //z 2015-05-13 15:06:55 L.232'31985 T1110403221.K
+        //z 不明白。
         curl_easy_setopt(curl, CURLOPT_COOKIELIST, "ALL");
 
         print_cookies(curl);

@@ -32,6 +32,7 @@ int main(void)
     double speed_upload, total_time;
     FILE *fd;
 
+    //z 打开文件
     fd = fopen("debugit", "rb"); /* open file to upload */
     if(!fd)
     {
@@ -40,9 +41,9 @@ int main(void)
     }
 
     /* to get the file size */
+    //z 获取文件大小
     if(fstat(fileno(fd), &file_info) != 0)
     {
-
         return 1; /* can't continue */
     }
 
@@ -57,9 +58,12 @@ int main(void)
         curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
 
         /* set where to read from (on Windows you need to use READFUNCTION too) */
+        //z 设置读取函数
+        //z 在windows上还要设置 READFUNCTION 。
         curl_easy_setopt(curl, CURLOPT_READDATA, fd);
 
         /* and give the size of the upload (optional) */
+        //z 设置文件大小
         curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE,
                          (curl_off_t)file_info.st_size);
 

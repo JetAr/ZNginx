@@ -29,7 +29,9 @@
  * callback so that it won't create an empty file in case the remote file
  * doesn't exist or something else fails.
  */
-
+//z 从 ftp server 获取一个单一的文件。
+//z 在第一次写的时候才创建实际的文件。
+ 
 struct FtpFile
 {
     const char *filename;
@@ -38,10 +40,12 @@ struct FtpFile
 
 static size_t my_fwrite(void *buffer, size_t size, size_t nmemb, void *stream)
 {
+    //z 得到文件以及文件流
     struct FtpFile *out=(struct FtpFile *)stream;
     if(out && !out->stream)
     {
         /* open file for writing */
+        //z 打开并且记录在 stream 中
         out->stream=fopen(out->filename, "wb");
         if(!out->stream)
             return -1; /* failure, can't open file to write */
@@ -68,11 +72,15 @@ int main(void)
         /*
          * You better replace the URL with one that works!
          */
+        //z 设置url
         curl_easy_setopt(curl, CURLOPT_URL,
                          "ftp://ftp.example.com/pub/www/utilities/curl/curl-7.9.2.tar.gz");
+        
         /* Define our callback to get called when there's data to be written */
+        //z 设置写函数
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, my_fwrite);
         /* Set a pointer to our struct to pass to the callback */
+        //z 给回调函数的数据。
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &ftpfile);
 
         /* Switch on full protocol/debug output */
@@ -90,6 +98,8 @@ int main(void)
         }
     }
 
+    //z 2015-05-13 15:19:45 L.232'31215 T1111696920.K
+    //z 关闭文件
     if(ftpfile.stream)
         fclose(ftpfile.stream); /* close the local file */
 
