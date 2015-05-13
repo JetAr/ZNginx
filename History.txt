@@ -620,3 +620,114 @@ Changes to be committed:
 	modified:   History.txt
 	new file:   ToolKit/Cpp/roundf.c
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+"libcurl".2015/05/13.13_48_00.15.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	new file:   Code/libcurl/Example/Examples/10-at-a-time.c
+	new file:   Code/libcurl/Example/Examples/Makefile.am
+	new file:   Code/libcurl/Example/Examples/Makefile.example
+	new file:   Code/libcurl/Example/Examples/Makefile.in
+	new file:   Code/libcurl/Example/Examples/Makefile.inc
+	new file:   Code/libcurl/Example/Examples/Makefile.m32
+	new file:   Code/libcurl/Example/Examples/Makefile.netware
+	new file:   Code/libcurl/Example/Examples/README
+	new file:   Code/libcurl/Example/Examples/anyauthput.c
+	new file:   Code/libcurl/Example/Examples/asiohiper.cpp
+	new file:   Code/libcurl/Example/Examples/cacertinmem.c
+	new file:   Code/libcurl/Example/Examples/certinfo.c
+	new file:   Code/libcurl/Example/Examples/chkspeed.c
+	new file:   Code/libcurl/Example/Examples/cookie_interface.c
+	new file:   Code/libcurl/Example/Examples/curlgtk.c
+	new file:   Code/libcurl/Example/Examples/curlx.c
+	new file:   Code/libcurl/Example/Examples/debug.c
+	new file:   Code/libcurl/Example/Examples/evhiperfifo.c
+	new file:   Code/libcurl/Example/Examples/externalsocket.c
+	new file:   Code/libcurl/Example/Examples/fileupload.c
+	new file:   Code/libcurl/Example/Examples/fopen.c
+	new file:   Code/libcurl/Example/Examples/ftp-wildcard.c
+	new file:   Code/libcurl/Example/Examples/ftpget.c
+	new file:   Code/libcurl/Example/Examples/ftpgetinfo.c
+	new file:   Code/libcurl/Example/Examples/ftpgetresp.c
+	new file:   Code/libcurl/Example/Examples/ftpsget.c
+	new file:   Code/libcurl/Example/Examples/ftpupload.c
+	new file:   Code/libcurl/Example/Examples/ftpuploadresume.c
+	new file:   Code/libcurl/Example/Examples/getinfo.c
+	new file:   Code/libcurl/Example/Examples/getinmemory.c
+	new file:   Code/libcurl/Example/Examples/ghiper.c
+	new file:   Code/libcurl/Example/Examples/hiperfifo.c
+	new file:   Code/libcurl/Example/Examples/href_extractor.c
+	new file:   Code/libcurl/Example/Examples/htmltidy.c
+	new file:   Code/libcurl/Example/Examples/htmltitle.cpp
+	new file:   Code/libcurl/Example/Examples/http-post.c
+	new file:   Code/libcurl/Example/Examples/httpcustomheader.c
+	new file:   Code/libcurl/Example/Examples/httpput.c
+	new file:   Code/libcurl/Example/Examples/https.c
+	new file:   Code/libcurl/Example/Examples/imap-append.c
+	new file:   Code/libcurl/Example/Examples/imap-copy.c
+	new file:   Code/libcurl/Example/Examples/imap-create.c
+	new file:   Code/libcurl/Example/Examples/imap-delete.c
+	new file:   Code/libcurl/Example/Examples/imap-examine.c
+	new file:   Code/libcurl/Example/Examples/imap-fetch.c
+	new file:   Code/libcurl/Example/Examples/imap-list.c
+	new file:   Code/libcurl/Example/Examples/imap-lsub.c
+	new file:   Code/libcurl/Example/Examples/imap-multi.c
+	new file:   Code/libcurl/Example/Examples/imap-noop.c
+	new file:   Code/libcurl/Example/Examples/imap-search.c
+	new file:   Code/libcurl/Example/Examples/imap-ssl.c
+	new file:   Code/libcurl/Example/Examples/imap-store.c
+	new file:   Code/libcurl/Example/Examples/imap-tls.c
+	new file:   Code/libcurl/Example/Examples/makefile.dj
+	new file:   Code/libcurl/Example/Examples/multi-app.c
+	new file:   Code/libcurl/Example/Examples/multi-debugcallback.c
+	new file:   Code/libcurl/Example/Examples/multi-double.c
+	new file:   Code/libcurl/Example/Examples/multi-post.c
+	new file:   Code/libcurl/Example/Examples/multi-single.c
+	new file:   Code/libcurl/Example/Examples/multi-uv.c
+	new file:   Code/libcurl/Example/Examples/multithread.c
+	new file:   Code/libcurl/Example/Examples/opensslthreadlock.c
+	new file:   Code/libcurl/Example/Examples/persistant.c
+	new file:   Code/libcurl/Example/Examples/pop3-dele.c
+	new file:   Code/libcurl/Example/Examples/pop3-list.c
+	new file:   Code/libcurl/Example/Examples/pop3-multi.c
+	new file:   Code/libcurl/Example/Examples/pop3-noop.c
+	new file:   Code/libcurl/Example/Examples/pop3-retr.c
+	new file:   Code/libcurl/Example/Examples/pop3-ssl.c
+	new file:   Code/libcurl/Example/Examples/pop3-stat.c
+	new file:   Code/libcurl/Example/Examples/pop3-tls.c
+	new file:   Code/libcurl/Example/Examples/pop3-top.c
+	new file:   Code/libcurl/Example/Examples/pop3-uidl.c
+	new file:   Code/libcurl/Example/Examples/post-callback.c
+	new file:   Code/libcurl/Example/Examples/postinmemory.c
+	new file:   Code/libcurl/Example/Examples/postit2.c
+	new file:   Code/libcurl/Example/Examples/progressfunc.c
+	new file:   Code/libcurl/Example/Examples/resolve.c
+	new file:   Code/libcurl/Example/Examples/rtsp.c
+	new file:   Code/libcurl/Example/Examples/sampleconv.c
+	new file:   Code/libcurl/Example/Examples/sendrecv.c
+	new file:   Code/libcurl/Example/Examples/sepheaders.c
+	new file:   Code/libcurl/Example/Examples/sessioninfo.c
+	new file:   Code/libcurl/Example/Examples/sftpget.c
+	new file:   Code/libcurl/Example/Examples/simple.c
+	new file:   Code/libcurl/Example/Examples/simplepost.c
+	new file:   Code/libcurl/Example/Examples/simplessl.c
+	new file:   Code/libcurl/Example/Examples/smooth-gtk-thread.c
+	new file:   Code/libcurl/Example/Examples/smtp-expn.c
+	new file:   Code/libcurl/Example/Examples/smtp-mail.c
+	new file:   Code/libcurl/Example/Examples/smtp-multi.c
+	new file:   Code/libcurl/Example/Examples/smtp-ssl.c
+	new file:   Code/libcurl/Example/Examples/smtp-tls.c
+	new file:   Code/libcurl/Example/Examples/smtp-vrfy.c
+	new file:   Code/libcurl/Example/Examples/synctime.c
+	new file:   Code/libcurl/Example/Examples/threaded-ssl.c
+	new file:   Code/libcurl/Example/Examples/url2file.c
+	new file:   Code/libcurl/Example/Examples/usercertinmem.c
+	new file:   Code/libcurl/Example/Examples/version-check.pl
+	new file:   Code/libcurl/Example/Examples/xmlstream.c
+	modified:   Doc/K/T.2015.BugFree.cs
+	modified:   History.txt
+
