@@ -84,8 +84,8 @@ extern int open(), read(), close();
 
 #ifndef HAVE_STRERROR
 extern int sys_nerr;
-extern char *sys_errlist[];
-//z extern char **sys_errlist;
+//z extern char *sys_errlist[];// vc6 用这个？
+extern char **sys_errlist;//vs2005 可用
 #define strerror(E) ((E) < sys_nerr ? sys_errlist[(E)] : "bogus error number")
 #endif
 
