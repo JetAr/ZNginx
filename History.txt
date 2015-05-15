@@ -761,3 +761,24 @@ Changes to be committed:
 	modified:   grep20d/grep/grep/regex.c
 	new file:   grep20d/grep/grep_vs2005.sln
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+utf8_conversion.2015/05/15.17_19_13.85.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   .gitignore
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/C++ UTF-8 Conversion1.sln
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/UTF8Conversion/ReadMe.txt
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/UTF8Conversion/UTF8Conversion.vcxproj
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/UTF8Conversion/UTF8Conversion.vcxproj.filters
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/UTF8Conversion/stdafx.cpp
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/UTF8Conversion/stdafx.h
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/UTF8Conversion/targetver.h
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/UTF8Conversion/test.cpp
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/UTF8Conversion/utf8conv.h
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/UTF8Conversion/utf8conv_inl.h
+	modified:   History.txt
+

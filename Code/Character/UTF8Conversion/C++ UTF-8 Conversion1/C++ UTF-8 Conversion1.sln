@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UTF8Conversion", "UTF8Conversion\UTF8Conversion.vcxproj", "{03376277-9FE3-485B-9CC2-78AA0D8F9EEA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2E1F58C6-927D-41A0-A303-10C0E301D5B8}"
+	ProjectSection(SolutionItems) = preProject
+		C:\USERS\ADMINISTRATOR\APPDATA\LOCAL\MICROSOFT\VISUALSTUDIO\12.0\EXTENSIONS\3OI2WGV2.GMF\description.html = C:\USERS\ADMINISTRATOR\APPDATA\LOCAL\MICROSOFT\VISUALSTUDIO\12.0\EXTENSIONS\3OI2WGV2.GMF\description.html
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{03376277-9FE3-485B-9CC2-78AA0D8F9EEA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{03376277-9FE3-485B-9CC2-78AA0D8F9EEA}.Debug|Win32.Build.0 = Debug|Win32
+		{03376277-9FE3-485B-9CC2-78AA0D8F9EEA}.Release|Win32.ActiveCfg = Release|Win32
+		{03376277-9FE3-485B-9CC2-78AA0D8F9EEA}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

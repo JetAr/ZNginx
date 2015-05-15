@@ -52,5 +52,6 @@
 *.clw
 *.tmp
 *.sbr
+ipch
 Debug
 Release
