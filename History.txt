@@ -802,3 +802,14 @@ Changes to be committed:
 	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/Doc/license.rtf
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+trie.2015/05/15.17_39_27.27.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	new file:   grep20d/Doc/Trie Tree (bu.edu).cs
+
