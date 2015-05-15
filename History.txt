@@ -782,3 +782,23 @@ Changes to be committed:
 	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/UTF8Conversion/utf8conv_inl.h
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+utf8_conversion_doc.2015/05/15.17_21_57.84.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/Doc/description.html
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/Doc/description/Brand.css
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/Doc/description/Combined.css
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/Doc/description/Galleries.css
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/Doc/description/Layout.css
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/Doc/description/a7d1e078-8570-47da-a87b-ff462dfc958dCombined.css
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/Doc/description/iframedescription.css
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/Doc/description/offline.js
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/Doc/extension.vsixmanifest
+	new file:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/Doc/license.rtf
+	modified:   History.txt
+
