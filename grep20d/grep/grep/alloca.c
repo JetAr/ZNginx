@@ -87,6 +87,10 @@ extern pointer xmalloc ();
 static int stack_dir;		/* 1 or -1 once known.  */
 #define	STACK_DIR	stack_dir
 
+//z 找到栈增长的方向。
+/*
+	迭代调用，第一次会分配一个 dummy ，第二次又会再次分配一个 dummy 。通过比对两次 dummy 的地址，可以得到栈方向
+*/
 static void
 find_stack_direction ()
 {
