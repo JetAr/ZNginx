@@ -2,10 +2,12 @@
 Trie
 
 What is a trie:
+trie是什么
 You've probably already seen kinds of trees that store things more efficiently, such as a binary search tree. Here, we will examine another variant of a tree, called a trie.
 
 Aside: The name trie comes from its use for retrieval. It is pronounced like "try" by some, like "tree" (the pronunciation of "trie" in "retrieval") by others. Here, we will discuss a particular implementation of a trie, which may be somewhat different than how it is described elsewhere.
 
+//z 使用一个 trie 来存储数据，拥有KEY，以及一个value[与key关联的数据]
 We use a trie to store pieces of data that have a key (used to identify the data) and possibly a value (which holds any additional data associated with the key).
 
 Here, we will use data whose keys are strings.
@@ -78,16 +80,19 @@ Because the key for each piece of data is a sequence of characters, we will some
 
 To better understand how a trie works, answer the following questions.
 
-
 What would the trie look like if we now added anne with age 67? How about ro with age 23?
 Would the trie look different if we added the names in a different order, say: rob, ann, emma, roger, amy?
 Is this a binary tree, tertiary tree or what? In other words, each node has at most how many children?
 Trie operations:
 Here are the operations that we will concern ourselves with for this trie. You may need others for a particular use of the trie.
 
+//z 2015-05-18 17:52:49 L.227'22031 T4038131872.K
+一般的对应的操作。
+向trie添加一个key
 Add:
 We've already given examples of adding.
 
+查找key是否在trie中
 IsMember:
 See if data with a certain string key is in the trie.
 
@@ -95,9 +100,11 @@ For example, IsMember(trie, "amy") should report a true value and and IsMember(t
 
 We can imagine other variations where we do something with the value (like return it) once we find something with the matching key.
 
+//z 从 trie 中删除一个 key 。
 Remove:
 Remove something from the trie, given its key.
 
+//z 更多的操作取决于我们如何使用trie。
 We may want more operations depending on how we'll use the trie.
 
 Since our trie holds data with string keys, which of the operations need a key and value, and which just need keys?
@@ -107,6 +114,7 @@ Remember that a trie is a special kind of tree. Since a trie organizes its data 
 
 Finding a key can be done with iteration (looping).
 
+//z 有点儿感觉 \0 多此一举。
 Here is an outline of such an algorithm. It looks in a particular trie and determines whether data with a particular string key is present.
 
 IsMember(trie, key) [iterative]
@@ -297,3 +305,6 @@ We can easily redesign the trie so that it can use keys that are different kinds
 BU CAS CS - Trie 
 Copyright ? 1993-2000 by Robert I. Pitts <rip at bu dot edu>. All Rights Reserved.
 https://www.cs.bu.edu/teaching/c/tree/trie/
+
+//z 2015-05-18 18:00:50 L.227'21550 T1028631090.K
+在oj上解决一些问题的。
