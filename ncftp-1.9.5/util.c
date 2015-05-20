@@ -196,6 +196,7 @@ char *Strpcpy(char *dst, char *src)
 /*
  * malloc's a copy of oldstr.
  */
+//z 2015-05-19 17:19 windows 下有 strdup ，这个不是标准函数么？
 char *NewString(char *oldstr)
 {
     size_t howLong;
