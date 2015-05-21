@@ -870,3 +870,14 @@ Changes to be committed:
 	modified:   Doc/K/T.2015.BugFree.cs
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+cpp_derived.2015/05/21.15_53_55.23.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	new file:   "Code/Cpp/\346\265\213\350\257\225\345\237\272\347\261\273\345\255\220\347\261\273\346\214\207\351\222\210\350\260\203\347\224\250\350\231\232\345\207\275\346\225\260/TestDerived.cpp"
+	modified:   History.txt
+
