@@ -892,3 +892,14 @@ Changes to be committed:
 	modified:   "Code/Cpp/\346\265\213\350\257\225\345\237\272\347\261\273\345\255\220\347\261\273\346\214\207\351\222\210\350\260\203\347\224\250\350\231\232\345\207\275\346\225\260/TestDerived.cpp"
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+3ds_max.2015/05/21.18_09_20.99.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Doc/K/T.2015.BugFree.cs
+	modified:   History.txt
+

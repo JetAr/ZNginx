@@ -59,9 +59,10 @@
        Zcl_S : //z 2015-04-27 11:28:04 L.248'45116 T1418964723.K ~0   +----+----+----+----+----+
        Zcl_E : //z 2015-04-27 11:28:04 L.248'45116 T1418964723.K ~0   +----+----+----+----+----+
      Zndex_S : //z 2015-04-27 11:28:04 L.248'45116 T1418964723.K ~0   +----+----+----+----+----+
-     Zndex_E : //z 2015-05-20 17:46:37 L.225'22403 T1437156793.K ~181 +----+----+----+----+----+
+     Zndex_E : //z 2015-05-21 18:09:00 L.224'21060 T2791790160.K ~257 +----+----+----+----+----+
      TimeCnt : //z 2015-05-13 12:38:40 L.232'40880 T1534596209.K ~9   +----+----+----+----+----+
-     Reg.Cnt : //z 2015-05-19 16:07:36 L.226'28344 T2808715324.K ~13  +----+----+----+----+----+
+     Reg.Cnt : //z 2015-05-21 17:49:30 L.224'22230 T1505065974.K ~14  +----+----+----+----+----+
+     #14  R+ : //z 2015-05-21 17:49:30 L.224'22230 T1505065974.K ~14    V+.196  L+.236  
      #13  R+ : //z 2015-05-19 16:07:36 L.226'28344 T2808715324.K ~13    V+.179  L+.227  
      #12  R+ : //z 2015-05-13 13:48:24 L.232'36696 T2827250037.K ~12    V+.174  L+.221  
      #11  R+ : //z 2015-05-13 12:38:32 L.232'40888 T1534596178.K ~11    V+.165  L+.210  
@@ -76,7 +77,12 @@
      #2   R+ : //z 2015-04-27 11:31:41 L.248'44899 T1419899214.K ~2     V+.19   L+.104  
      #1   R+ : //z 2015-04-27 11:28:08 L.248'45112 T1418964727.K ~1     V+.3    L+.62   
      File.Op : //z 2015-04-27 11:28:04 L.248'45116 T1418964723.K ~0   +----+----+----+----+----+
-     Version : //z 2015-05-20 17:46:37 L.225'22403 T1437156793.K ~194   R+.13   L+.231  --+----+
+     Version : //z 2015-05-21 18:09:00 L.224'21060 T2791790160.K ~271   R+.14   L+.289  --+----+
+     #14  V+ : //z 2015-05-21 18:07:22 L.224'21158 T2791718354.K ~266   R+.14   L+.280  
+     #13  V+ : //z 2015-05-21 17:58:28 L.224'21692 T1506215933.K ~247   R+.14   L+.270  
+     #12  V+ : //z 2015-05-21 17:54:48 L.224'21912 T1506072251.K ~228   R+.14   L+.255  
+     #11  V+ : //z 2015-05-21 17:51:52 L.224'22088 T1505964467.K ~209   R+.14   L+.243  
+     #10  R+ : //z 2015-05-21 17:49:30 L.224'22230 T1505065974.K ~196   R+.14   L+.237  V+.196  
      #10  V+ : //z 2015-05-20 17:38:06 L.225'22914 T1436042646.K ~190   R+.13   L+.229  
      #9   R+ : //z 2015-05-19 16:07:36 L.226'28344 T2808715324.K ~179   R+.13   L+.228  V+.179  
      #9   R+ : //z 2015-05-13 13:48:24 L.232'36696 T2827250037.K ~174   R+.12   L+.222  V+.174  
@@ -105,7 +111,7 @@
      KVersio : //z 2015-04-27 11:28:04 L.248'45116 T1418964723.K ~0   +----+----+----+----+----+
      K Versi : //z 2015-04-27 11:28:04 L.248'45116 T1418964723.K ~0   +----+----+----+----+----+
      K  Vers : //z 2015-04-27 11:28:04 L.248'45116 T1418964723.K ~0   +----+----+----+----+----+
-     K   Ver : //z 2015-04-27 11:28:04 L.248'45116 T1418964723.K ~0   +----+----+----+----+----+
+     K   Ver : //z 2015-05-21 18:07:13 L.224'21167 T2791718322.K ~263   R+.14   L+.280  
      K    Ve : //z 2015-05-08 17:52:01 L.237'22079 T1800686291.K ~149   R+.10   L+.198  
      K     V : //z 2015-04-27 16:35:09 L.248'26691 T3582415387.K ~73    R+.4    L+.148  
      KaizenZ : //z 2015-04-27 11:28:04 L.248'45116 T1418964723.K ~0   +----+----+----+----+----+
@@ -229,3 +235,56 @@ http://tex.loria.fr/prod-graph/zoonekynd/metapost/metapost.html
 git clone https://github.com/racaljk/hosts.git hosts_racaljk
 2015-05-20 17:38 zkz Moving from Research to Practice to Close the Achievement Gap
 #endregion //z 2015-05-19 16:07:36 L.226'28344 BG57IV3@XCL T2808715324.K.F4146951713-+----+----+
+
+#region 05-21 17:49 R#.14   @3ds max
+01. 
+lib 3ds
+64.233.188.102	lib3ds.googlecode.com
+Modified version of lib3ds reader of .3ds format
+http://www.codeproject.com/Articles/406882/Modified-version-of-lib-ds-reader-of-ds-format
+
+http://www.arts.rpi.edu/public_html/ruiz/StuntDummiesFASTSourceCode/3ds.cpp
+http://www.cs.virginia.edu/~jcc5t/classes/grad/animation/physical_simulator/3ds.cpp
+https://github.com/gametutorials/tutorials
+http://src.gnu-darwin.org/ports/games/alephone/work/AlephOne-20070525/Source_Files/ModelView/ModelRenderer.cpp
+marathon /tags/SDL_release_0_12_0/Source_Files/ModelView/StudioLoader.cpp
+https://searchcode.com/codesearch/view/11271988/
+google 3ds loader Terry Caton
+
+3DS File Loader
+Submitted by Terry Caton
+http://www.flipcode.com/archives/3DS_File_Loader.shtml
+
+一个人在论坛求教的问题
+http://www.gamedev.net/topic/91504-pointer-problem-i-think/
+
+digiben@gametutorials.com 
+https://cent.felk.cvut.cz/courses/PGR2/data/vavra1/html/3ds_8cpp-source.html
+
+google tutorial ProcessNextKeyFrameChunk
+
+Zero1_IZ3D is an (extremely old and outdated) 3D game engine attempt using C++/OpenGL
+https://github.com/petarov/zero1iz3d
+
+有一些古老游戏的demo。
+Savage Wheels is a 2D car crashing arcade game, where up to 4 vehicles take part in a deadly tournament.
+https://github.com/petarov
+https://code.google.com/p/savagewheels/
+http://www.kenamick.com/
+
+physical_simulator
+http://www.cs.virginia.edu/~jcc5t/classes/grad/animation/physical_simulator/
+
+一些空间演示demo
+http://www.spacesimulator.net/tutorials/index.html
+
+3ds max文件中的模型顶点
+http://miwenshu.lofter.com/post/96731_68ef653
+
+3D-Studio File Format (.3ds)
+http://www.martinreddy.net/gfx/3d/3DS.spec
+
+http://www.the-labs.com/Blender/3DS-details.html
+
+http://www.spacesimulator.net/tutorials/3ds_loader_tutorial.html
+#endregion //z 2015-05-21 17:49:30 L.224'22230 BG57IV3@XCL T1505065974.K.F4146951713-+----+----+
