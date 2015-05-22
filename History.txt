@@ -914,3 +914,88 @@ Changes to be committed:
 	modified:   Doc/K/T.2015.BugFree.cs
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+3dsMax.2015/05/22.17_54_35.33.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	new file:   ZGame/3dsMax/lib3ds_2_0/AUTHORS
+	new file:   ZGame/3dsMax/lib3ds_2_0/CMakeLists.txt
+	new file:   ZGame/3dsMax/lib3ds_2_0/COPYING
+	new file:   ZGame/3dsMax/lib3ds_2_0/ChangeLog
+	new file:   ZGame/3dsMax/lib3ds_2_0/INSTALL
+	new file:   ZGame/3dsMax/lib3ds_2_0/Makefile.am
+	new file:   ZGame/3dsMax/lib3ds_2_0/NEWS
+	new file:   ZGame/3dsMax/lib3ds_2_0/README
+	new file:   ZGame/3dsMax/lib3ds_2_0/autogen.sh
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/ALL_BUILD.vcproj
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeCache.txt
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeFiles/3.0.2/CMakeCCompiler.cmake
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeFiles/3.0.2/CMakeCXXCompiler.cmake
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeFiles/3.0.2/CMakeDetermineCompilerABI_C.bin
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeFiles/3.0.2/CMakeDetermineCompilerABI_CXX.bin
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeFiles/3.0.2/CMakeRCCompiler.cmake
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeFiles/3.0.2/CMakeSystem.cmake
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeFiles/3.0.2/CompilerIdC/CompilerIdC.vcproj
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeFiles/3.0.2/CompilerIdCXX/CMakeCXXCompilerId.cpp
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeFiles/3.0.2/CompilerIdCXX/CompilerIdCXX.vcproj
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeFiles/ALL_BUILD.rule
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeFiles/CMakeOutput.log
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeFiles/TargetDirectories.txt
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeFiles/ZERO_CHECK.rule
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeFiles/cmake.check_cache
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeFiles/generate.stamp.depend
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeFiles/generate.stamp.list
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/Project.sln
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/ZERO_CHECK.vcproj
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/cmake_install.cmake
+	new file:   ZGame/3dsMax/lib3ds_2_0/bin/lib3ds.vcproj
+	new file:   ZGame/3dsMax/lib3ds_2_0/configure.in
+	new file:   ZGame/3dsMax/lib3ds_2_0/examples/3ds2obj/3ds2obj.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/examples/3ds2obj/CMakeLists.txt
+	new file:   ZGame/3dsMax/lib3ds_2_0/examples/3ds2obj/Makefile.am
+	new file:   ZGame/3dsMax/lib3ds_2_0/examples/3dsdump/3dsdump.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/examples/3dsdump/CMakeLists.txt
+	new file:   ZGame/3dsMax/lib3ds_2_0/examples/3dsdump/Makefile.am
+	new file:   ZGame/3dsMax/lib3ds_2_0/examples/3dsplay/3dsplay.cpp
+	new file:   ZGame/3dsMax/lib3ds_2_0/examples/3dsplay/CMakeLists.txt
+	new file:   ZGame/3dsMax/lib3ds_2_0/examples/3dsplay/tga.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/examples/3dsplay/tga.h
+	new file:   ZGame/3dsMax/lib3ds_2_0/examples/CMakeLists.txt
+	new file:   ZGame/3dsMax/lib3ds_2_0/examples/Makefile.am
+	new file:   ZGame/3dsMax/lib3ds_2_0/examples/cube/CMakeLists.txt
+	new file:   ZGame/3dsMax/lib3ds_2_0/examples/cube/Makefile.am
+	new file:   ZGame/3dsMax/lib3ds_2_0/examples/cube/cube.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/examples/cube/cube.tga
+	new file:   ZGame/3dsMax/lib3ds_2_0/lib3ds-config.in
+	new file:   ZGame/3dsMax/lib3ds_2_0/lib3ds.m4
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/CMakeLists.txt
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/Makefile.am
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds.h
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds.rc
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_atmosphere.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_background.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_camera.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_chunk.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_chunktable.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_file.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_impl.h
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_io.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_light.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_material.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_math.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_matrix.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_mesh.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_node.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_quat.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_shadow.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_track.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_util.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_vector.c
+	new file:   ZGame/3dsMax/lib3ds_2_0/src/lib3ds_viewport.c
+

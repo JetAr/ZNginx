@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding = "Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="ALL_BUILD"
+	ProjectGUID="{F88CB945-C9DF-4E28-9B20-7CCE45EEF905}"
+	Keyword="Win32Proj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="Debug"
+			IntermediateDirectory="ALL_BUILD.dir\Debug"
+			ConfigurationType="10"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories=""
+				AssemblerListingLocation="Debug/"
+				ExceptionHandling="0"
+				PreprocessorDefinitions="LIB3DS_EXPORTS;CMAKE_INTDIR=\&quot;Debug\&quot;"
+				ObjectFile="$(IntDir)\"
+/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="LIB3DS_EXPORTS;CMAKE_INTDIR=\&quot;Debug\&quot;"/>
+			<Tool
+				Name="VCMIDLTool"
+				AdditionalIncludeDirectories=""
+				MkTypLibCompatible="FALSE"
+				TargetEnvironment="1"
+				GenerateStublessProxies="TRUE"
+				TypeLibraryName="$(InputName).tlb"
+				OutputDirectory="$(IntDir)"
+				HeaderFileName="$(InputName).h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="$(InputName)_i.c"
+				ProxyFileName="$(InputName)_p.c"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="Release"
+			IntermediateDirectory="ALL_BUILD.dir\Release"
+			ConfigurationType="10"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories=""
+				AssemblerListingLocation="Release/"
+				ExceptionHandling="0"
+				PreprocessorDefinitions="LIB3DS_EXPORTS;CMAKE_INTDIR=\&quot;Release\&quot;"
+				ObjectFile="$(IntDir)\"
+/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="LIB3DS_EXPORTS;CMAKE_INTDIR=\&quot;Release\&quot;"/>
+			<Tool
+				Name="VCMIDLTool"
+				AdditionalIncludeDirectories=""
+				MkTypLibCompatible="FALSE"
+				TargetEnvironment="1"
+				GenerateStublessProxies="TRUE"
+				TypeLibraryName="$(InputName).tlb"
+				OutputDirectory="$(IntDir)"
+				HeaderFileName="$(InputName).h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="$(InputName)_i.c"
+				ProxyFileName="$(InputName)_p.c"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+		</Configuration>
+		<Configuration
+			Name="MinSizeRel|Win32"
+			OutputDirectory="MinSizeRel"
+			IntermediateDirectory="ALL_BUILD.dir\MinSizeRel"
+			ConfigurationType="10"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories=""
+				AssemblerListingLocation="MinSizeRel/"
+				ExceptionHandling="0"
+				PreprocessorDefinitions="LIB3DS_EXPORTS;CMAKE_INTDIR=\&quot;MinSizeRel\&quot;"
+				ObjectFile="$(IntDir)\"
+/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="LIB3DS_EXPORTS;CMAKE_INTDIR=\&quot;MinSizeRel\&quot;"/>
+			<Tool
+				Name="VCMIDLTool"
+				AdditionalIncludeDirectories=""
+				MkTypLibCompatible="FALSE"
+				TargetEnvironment="1"
+				GenerateStublessProxies="TRUE"
+				TypeLibraryName="$(InputName).tlb"
+				OutputDirectory="$(IntDir)"
+				HeaderFileName="$(InputName).h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="$(InputName)_i.c"
+				ProxyFileName="$(InputName)_p.c"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+		</Configuration>
+		<Configuration
+			Name="RelWithDebInfo|Win32"
+			OutputDirectory="RelWithDebInfo"
+			IntermediateDirectory="ALL_BUILD.dir\RelWithDebInfo"
+			ConfigurationType="10"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories=""
+				AssemblerListingLocation="RelWithDebInfo/"
+				ExceptionHandling="0"
+				PreprocessorDefinitions="LIB3DS_EXPORTS;CMAKE_INTDIR=\&quot;RelWithDebInfo\&quot;"
+				ObjectFile="$(IntDir)\"
+/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="LIB3DS_EXPORTS;CMAKE_INTDIR=\&quot;RelWithDebInfo\&quot;"/>
+			<Tool
+				Name="VCMIDLTool"
+				AdditionalIncludeDirectories=""
+				MkTypLibCompatible="FALSE"
+				TargetEnvironment="1"
+				GenerateStublessProxies="TRUE"
+				TypeLibraryName="$(InputName).tlb"
+				OutputDirectory="$(IntDir)"
+				HeaderFileName="$(InputName).h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="$(InputName)_i.c"
+				ProxyFileName="$(InputName)_p.c"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+			<File
+				RelativePath="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\ALL_BUILD">
+			</File>
+			<File
+				RelativePath="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\src\CMakeLists.txt">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+					Name="VCCustomBuildTool"
+					Description="Building Custom Rule E:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/src/CMakeLists.txt"
+					CommandLine="&quot;C:\Program Files (x86)\CMake\bin\cmake.exe&quot; -HE:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/src -BE:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/bin --check-stamp-file E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\generate.stamp&#x0D;&#x0A;if errorlevel 1 goto :VCReportError"
+					AdditionalDependencies="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\src\CMakeLists.txt;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\3.0.2\CMakeSystem.cmake;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\3.0.2\CMakeCCompiler.cmake;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\3.0.2\CMakeCXXCompiler.cmake;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeSystemSpecificInformation.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeGenericSystem.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\WindowsPaths.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCInformation.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-C.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake&quot;;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\3.0.2\CMakeRCCompiler.cmake;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeRCInformation.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXInformation.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-CXX.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake&quot;;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\src\CMakeLists.txt;"
+					Outputs="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\generate.stamp"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+					Name="VCCustomBuildTool"
+					Description="Building Custom Rule E:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/src/CMakeLists.txt"
+					CommandLine="&quot;C:\Program Files (x86)\CMake\bin\cmake.exe&quot; -HE:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/src -BE:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/bin --check-stamp-file E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\generate.stamp&#x0D;&#x0A;if errorlevel 1 goto :VCReportError"
+					AdditionalDependencies="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\src\CMakeLists.txt;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\3.0.2\CMakeSystem.cmake;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\3.0.2\CMakeCCompiler.cmake;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\3.0.2\CMakeCXXCompiler.cmake;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeSystemSpecificInformation.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeGenericSystem.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\WindowsPaths.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCInformation.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-C.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake&quot;;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\3.0.2\CMakeRCCompiler.cmake;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeRCInformation.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXInformation.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-CXX.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake&quot;;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\src\CMakeLists.txt;"
+					Outputs="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\generate.stamp"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MinSizeRel|Win32">
+					<Tool
+					Name="VCCustomBuildTool"
+					Description="Building Custom Rule E:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/src/CMakeLists.txt"
+					CommandLine="&quot;C:\Program Files (x86)\CMake\bin\cmake.exe&quot; -HE:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/src -BE:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/bin --check-stamp-file E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\generate.stamp&#x0D;&#x0A;if errorlevel 1 goto :VCReportError"
+					AdditionalDependencies="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\src\CMakeLists.txt;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\3.0.2\CMakeSystem.cmake;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\3.0.2\CMakeCCompiler.cmake;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\3.0.2\CMakeCXXCompiler.cmake;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeSystemSpecificInformation.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeGenericSystem.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\WindowsPaths.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCInformation.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-C.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake&quot;;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\3.0.2\CMakeRCCompiler.cmake;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeRCInformation.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXInformation.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-CXX.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake&quot;;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\src\CMakeLists.txt;"
+					Outputs="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\generate.stamp"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="RelWithDebInfo|Win32">
+					<Tool
+					Name="VCCustomBuildTool"
+					Description="Building Custom Rule E:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/src/CMakeLists.txt"
+					CommandLine="&quot;C:\Program Files (x86)\CMake\bin\cmake.exe&quot; -HE:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/src -BE:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/bin --check-stamp-file E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\generate.stamp&#x0D;&#x0A;if errorlevel 1 goto :VCReportError"
+					AdditionalDependencies="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\src\CMakeLists.txt;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\3.0.2\CMakeSystem.cmake;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\3.0.2\CMakeCCompiler.cmake;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\3.0.2\CMakeCXXCompiler.cmake;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeSystemSpecificInformation.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeGenericSystem.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\WindowsPaths.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCInformation.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-C.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake&quot;;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\3.0.2\CMakeRCCompiler.cmake;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeRCInformation.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXInformation.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC-CXX.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\Platform\Windows-MSVC.cmake&quot;;&quot;C:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCommonLanguageInclude.cmake&quot;;E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\src\CMakeLists.txt;"
+					Outputs="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\generate.stamp"/>
+				</FileConfiguration>
+			</File>
+		<Filter
+			Name="CMake Rules"
+			Filter="">
+			<File
+				RelativePath="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\ALL_BUILD.rule">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+					Name="VCCustomBuildTool"
+					Description="Build all projects"
+					CommandLine=""
+					AdditionalDependencies="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\ALL_BUILD.rule"
+					Outputs="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\ALL_BUILD"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+					Name="VCCustomBuildTool"
+					Description="Build all projects"
+					CommandLine=""
+					AdditionalDependencies="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\ALL_BUILD.rule"
+					Outputs="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\ALL_BUILD"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MinSizeRel|Win32">
+					<Tool
+					Name="VCCustomBuildTool"
+					Description="Build all projects"
+					CommandLine=""
+					AdditionalDependencies="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\ALL_BUILD.rule"
+					Outputs="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\ALL_BUILD"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="RelWithDebInfo|Win32">
+					<Tool
+					Name="VCCustomBuildTool"
+					Description="Build all projects"
+					CommandLine=""
+					AdditionalDependencies="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\ALL_BUILD.rule"
+					Outputs="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\ALL_BUILD"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

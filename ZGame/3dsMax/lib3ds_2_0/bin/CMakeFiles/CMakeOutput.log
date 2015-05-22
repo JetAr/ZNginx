@@ -1,0 +1,157 @@
+The system is: Windows - 6.1 - AMD64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler:  
+Build flags: 
+Id flags: 
+
+The output was:
+0
+
+Microsoft (R) Visual Studio 8.0.50727.867 版。
+版权所有 (C) Microsoft Corp 1984-2005。保留所有权利。
+1>------ 已启动生成: 项目: CompilerIdC, 配置: Debug Win32 ------
+1>正在编译...
+1>CMakeCCompilerId.c
+1>正在链接...
+1>正在嵌入清单...
+1>正在执行生成后事件...
+1>CMAKE_C_COMPILER=e:\Program Files\VS2005\VC\bin\cl.exe
+1>生成日志保存在“file://e:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\3.0.2\CompilerIdC\Debug\BuildLog.htm”
+1>CompilerIdC - 0 个错误，0 个警告
+========== 生成: 1 已成功, 0 已失败, 0 最新, 0 已跳过 ==========
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.vcproj"
+
+The C compiler identification is MSVC, found in "E:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/bin/CMakeFiles/3.0.2/CompilerIdC/CompilerIdC.exe"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler:  
+Build flags: 
+Id flags: 
+
+The output was:
+0
+
+Microsoft (R) Visual Studio 8.0.50727.867 版。
+版权所有 (C) Microsoft Corp 1984-2005。保留所有权利。
+1>------ 已启动生成: 项目: CompilerIdCXX, 配置: Debug Win32 ------
+1>正在编译...
+1>CMakeCXXCompilerId.cpp
+1>正在链接...
+1>正在嵌入清单...
+1>正在执行生成后事件...
+1>CMAKE_CXX_COMPILER=e:\Program Files\VS2005\VC\bin\cl.exe
+1>生成日志保存在“file://e:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\3.0.2\CompilerIdCXX\Debug\BuildLog.htm”
+1>CompilerIdCXX - 0 个错误，0 个警告
+========== 生成: 1 已成功, 0 已失败, 0 最新, 0 已跳过 ==========
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.vcproj"
+
+The CXX compiler identification is MSVC, found in "E:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/bin/CMakeFiles/3.0.2/CompilerIdCXX/CompilerIdCXX.exe"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: E:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/bin/CMakeFiles/CMakeTmp
+
+Run Build Command:"e:/Program Files/VS2005/Common7/IDE/devenv.com" "CMAKE_TRY_COMPILE.sln" "/build" "Debug" "/project" "cmTryCompileExec1392856156"
+
+Microsoft (R) Visual Studio 8.0.50727.867 版。
+版权所有 (C) Microsoft Corp 1984-2005。保留所有权利。
+1>------ 已启动生成: 项目: cmTryCompileExec1392856156, 配置: Debug Win32 ------
+1>正在编译...
+1>用于 80x86 的 Microsoft (R) 32 位 C/C++ 优化编译器 14.00.50727.762 版
+1>版权所有(C) Microsoft Corporation。保留所有权利。
+1>cl /Od /D "WIN32" /D "_WINDOWS" /D "_DEBUG" /D "CMAKE_INTDIR=\"Debug\"" /D "_MBCS" /FD /RTC1 /MDd /Fo"cmTryCompileExec1392856156.dir\Debug\\" /Fd"cmTryCompileExec1392856156.dir\Debug\vc80.pdb" /W3 /c /Zi /TC .\testCCompiler.c
+1>testCCompiler.c
+1>正在编译资源清单...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.7600.16385
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>正在链接...
+1>正在嵌入清单...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.7600.16385
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>生成日志保存在“file://e:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\CMakeTmp\cmTryCompileExec1392856156.dir\Debug\BuildLog.htm”
+1>cmTryCompileExec1392856156 - 0 个错误，0 个警告
+========== 生成: 1 已成功, 0 已失败, 0 最新, 0 已跳过 ==========
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: E:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/bin/CMakeFiles/CMakeTmp
+
+Run Build Command:"e:/Program Files/VS2005/Common7/IDE/devenv.com" "CMAKE_TRY_COMPILE.sln" "/build" "Debug" "/project" "cmTryCompileExec240538000"
+
+Microsoft (R) Visual Studio 8.0.50727.867 版。
+版权所有 (C) Microsoft Corp 1984-2005。保留所有权利。
+1>------ 已启动生成: 项目: cmTryCompileExec240538000, 配置: Debug Win32 ------
+1>正在编译...
+1>用于 80x86 的 Microsoft (R) 32 位 C/C++ 优化编译器 14.00.50727.762 版
+1>版权所有(C) Microsoft Corporation。保留所有权利。
+1>cl /Od /D "WIN32" /D "_WINDOWS" /D "_DEBUG" /D "CMAKE_INTDIR=\"Debug\"" /D "_MBCS" /FD /RTC1 /MDd /Fo"cmTryCompileExec240538000.dir\Debug\\" /Fd"cmTryCompileExec240538000.dir\Debug\vc80.pdb" /W3 /c /Zi /TC "c:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCCompilerABI.c"
+1>CMakeCCompilerABI.c
+1>正在编译资源清单...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.7600.16385
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>正在链接...
+1>正在嵌入清单...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.7600.16385
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>生成日志保存在“file://e:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\CMakeTmp\cmTryCompileExec240538000.dir\Debug\BuildLog.htm”
+1>cmTryCompileExec240538000 - 0 个错误，0 个警告
+========== 生成: 1 已成功, 0 已失败, 0 最新, 0 已跳过 ==========
+
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: E:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/bin/CMakeFiles/CMakeTmp
+
+Run Build Command:"e:/Program Files/VS2005/Common7/IDE/devenv.com" "CMAKE_TRY_COMPILE.sln" "/build" "Debug" "/project" "cmTryCompileExec1927368506"
+
+Microsoft (R) Visual Studio 8.0.50727.867 版。
+版权所有 (C) Microsoft Corp 1984-2005。保留所有权利。
+1>------ 已启动生成: 项目: cmTryCompileExec1927368506, 配置: Debug Win32 ------
+1>正在编译...
+1>用于 80x86 的 Microsoft (R) 32 位 C/C++ 优化编译器 14.00.50727.762 版
+1>版权所有(C) Microsoft Corporation。保留所有权利。
+1>cl /Od /D "WIN32" /D "_WINDOWS" /D "_DEBUG" /D "CMAKE_INTDIR=\"Debug\"" /D "_MBCS" /FD /EHsc /RTC1 /MDd /Fo"cmTryCompileExec1927368506.dir\Debug\\" /Fd"cmTryCompileExec1927368506.dir\Debug\vc80.pdb" /W3 /c /Zi /TP .\testCXXCompiler.cxx
+1>testCXXCompiler.cxx
+1>正在编译资源清单...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.7600.16385
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>正在链接...
+1>正在嵌入清单...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.7600.16385
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>生成日志保存在“file://e:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\CMakeTmp\cmTryCompileExec1927368506.dir\Debug\BuildLog.htm”
+1>cmTryCompileExec1927368506 - 0 个错误，0 个警告
+========== 生成: 1 已成功, 0 已失败, 0 最新, 0 已跳过 ==========
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: E:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/bin/CMakeFiles/CMakeTmp
+
+Run Build Command:"e:/Program Files/VS2005/Common7/IDE/devenv.com" "CMAKE_TRY_COMPILE.sln" "/build" "Debug" "/project" "cmTryCompileExec1665216210"
+
+Microsoft (R) Visual Studio 8.0.50727.867 版。
+版权所有 (C) Microsoft Corp 1984-2005。保留所有权利。
+1>------ 已启动生成: 项目: cmTryCompileExec1665216210, 配置: Debug Win32 ------
+1>正在编译...
+1>用于 80x86 的 Microsoft (R) 32 位 C/C++ 优化编译器 14.00.50727.762 版
+1>版权所有(C) Microsoft Corporation。保留所有权利。
+1>cl /Od /D "WIN32" /D "_WINDOWS" /D "_DEBUG" /D "CMAKE_INTDIR=\"Debug\"" /D "_MBCS" /FD /EHsc /RTC1 /MDd /Fo"cmTryCompileExec1665216210.dir\Debug\\" /Fd"cmTryCompileExec1665216210.dir\Debug\vc80.pdb" /W3 /c /Zi /TP "c:\Program Files (x86)\CMake\share\cmake-3.0\Modules\CMakeCXXCompilerABI.cpp"
+1>CMakeCXXCompilerABI.cpp
+1>正在编译资源清单...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.7600.16385
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>正在链接...
+1>正在嵌入清单...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.7600.16385
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>生成日志保存在“file://e:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\bin\CMakeFiles\CMakeTmp\cmTryCompileExec1665216210.dir\Debug\BuildLog.htm”
+1>cmTryCompileExec1665216210 - 0 个错误，0 个警告
+========== 生成: 1 已成功, 0 已失败, 0 最新, 0 已跳过 ==========
+
+
