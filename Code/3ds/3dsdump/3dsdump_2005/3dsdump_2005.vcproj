@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="3dsplay"
-	ProjectGUID="{4B26CA08-23A5-496F-A32B-7FA54E10757D}"
-	RootNamespace="My3dsplay"
+	Name="3dsdump_2005"
+	ProjectGUID="{9D28CD6E-C57B-47C6-87DB-BB44CCE16B6A}"
+	RootNamespace="My3dsdump_2005"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -40,8 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=""
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -117,6 +116,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				FavorSizeOrSpeed="1"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -136,7 +136,8 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="1"
-				GenerateDebugInformation="true"
+				AdditionalLibraryDirectories=""
+				GenerateDebugInformation="false"
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -177,7 +178,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\tga.h"
+				RelativePath=".\3dsdump.c"
 				>
 			</File>
 		</Filter>
@@ -187,15 +188,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\3dsplay.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\lib3ds.h"
-				>
-			</File>
-			<File
-				RelativePath=".\tga.c"
 				>
 			</File>
 		</Filter>

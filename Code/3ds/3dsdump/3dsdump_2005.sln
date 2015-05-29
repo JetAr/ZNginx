@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "3dsdump_2005", "3dsdump_2005\3dsdump_2005.vcproj", "{9D28CD6E-C57B-47C6-87DB-BB44CCE16B6A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9D28CD6E-C57B-47C6-87DB-BB44CCE16B6A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9D28CD6E-C57B-47C6-87DB-BB44CCE16B6A}.Debug|Win32.Build.0 = Debug|Win32
+		{9D28CD6E-C57B-47C6-87DB-BB44CCE16B6A}.Release|Win32.ActiveCfg = Release|Win32
+		{9D28CD6E-C57B-47C6-87DB-BB44CCE16B6A}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
