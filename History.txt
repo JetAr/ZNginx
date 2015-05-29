@@ -1071,3 +1071,91 @@ Changes to be committed:
 	new file:   Code/3ds/3dsplay/3dsplay_2005.sln
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+lib3ds-1.3.0.2015/05/29.15_05_48.26.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/3ds-utils.spec.in
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/AUTHORS
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/COPYING
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/ChangeLog
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/INSTALL
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/Makefile.am
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/Makefile.in
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/NEWS
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/README
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/TODO
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/aclocal.m4
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/config.guess
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/config.h.in
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/config.sub
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/configure
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/configure.in
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/depcomp
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/examples/3dsplay.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/install-sh
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds-config.1
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds-config.1.in
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds-config.in
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds.m4
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds.spec.in
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/Makefile.am
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/Makefile.in
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/atmosphere.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/atmosphere.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/background.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/background.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/camera.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/camera.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/chunk.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/chunk.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/chunktable.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/chunktable.sed
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/ease.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/ease.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/file.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/file.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/io.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/io.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/light.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/light.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/material.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/material.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/matrix.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/matrix.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/mesh.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/mesh.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/node.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/node.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/quat.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/quat.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/shadow.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/shadow.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/tcb.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/tcb.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/tracks.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/tracks.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/types.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/types.txt
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/vector.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/vector.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/viewport.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/lib3ds/viewport.h
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/ltmain.sh
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/missing
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/msvc8/3dsdump.vcproj
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/msvc8/3dsplay.vcproj
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/msvc8/lib3ds.rc
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/msvc8/lib3ds.sln
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/msvc8/lib3ds.vcproj
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/tools/3dsdump.1
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/tools/3dsdump.1.in
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/tools/3dsdump.c
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/tools/Makefile.am
+	new file:   ZGame/3dsMax/lib3ds-1.3.0/tools/Makefile.in
+
