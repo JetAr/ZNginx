@@ -1,0 +1,15 @@
+# Skip
+_backup/*
+to_a/*
+*.ncb
+*.opt
+*.plg
+*.dsw
+*.exe
+debug.txt
+
+# cmake
+CMakeCache.txt
+CMakeFiles/*
+Makefile
+cmake*

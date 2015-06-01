@@ -1196,3 +1196,60 @@ Changes to be committed:
 	modified:   Doc/K/T.2015.BugFree.cs
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+zero1iz3d.2015/06/01.17_58_13.36.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	new file:   ZGame/zero1iz3d/.gitignore
+	new file:   ZGame/zero1iz3d/3d_engine.dsp
+	new file:   ZGame/zero1iz3d/3d_engine_2005.sln
+	new file:   ZGame/zero1iz3d/3d_engine_2005.vcproj
+	new file:   ZGame/zero1iz3d/3ds.cpp
+	new file:   ZGame/zero1iz3d/3ds.h
+	new file:   ZGame/zero1iz3d/3ds_format.cpp
+	new file:   ZGame/zero1iz3d/3ds_format.h
+	new file:   ZGame/zero1iz3d/CBillBoard.cpp
+	new file:   ZGame/zero1iz3d/CBillBoard.h
+	new file:   ZGame/zero1iz3d/CCamera.cpp
+	new file:   ZGame/zero1iz3d/CCamera.h
+	new file:   ZGame/zero1iz3d/CDebug.cpp
+	new file:   ZGame/zero1iz3d/CDebug.h
+	new file:   ZGame/zero1iz3d/CFog.cpp
+	new file:   ZGame/zero1iz3d/CFog.h
+	new file:   ZGame/zero1iz3d/CModel.cpp
+	new file:   ZGame/zero1iz3d/CModel.h
+	new file:   ZGame/zero1iz3d/COpenGL.cpp
+	new file:   ZGame/zero1iz3d/COpenGL.h
+	new file:   ZGame/zero1iz3d/CParticle.cpp
+	new file:   ZGame/zero1iz3d/CParticle.h
+	new file:   ZGame/zero1iz3d/CSprite.cpp
+	new file:   ZGame/zero1iz3d/CSprite.h
+	new file:   ZGame/zero1iz3d/CText.cpp
+	new file:   ZGame/zero1iz3d/CText.h
+	new file:   ZGame/zero1iz3d/CTexture.cpp
+	new file:   ZGame/zero1iz3d/CTexture.h
+	new file:   ZGame/zero1iz3d/CTimer.cpp
+	new file:   ZGame/zero1iz3d/CTimer.h
+	new file:   ZGame/zero1iz3d/Geometry.cpp
+	new file:   ZGame/zero1iz3d/Geometry.h
+	new file:   ZGame/zero1iz3d/LICENSE
+	new file:   ZGame/zero1iz3d/README.md
+	new file:   ZGame/zero1iz3d/data/cliffs.bmp
+	new file:   ZGame/zero1iz3d/data/grass.BMP
+	new file:   ZGame/zero1iz3d/data/grass.tga
+	new file:   ZGame/zero1iz3d/data/moon.bmp
+	new file:   ZGame/zero1iz3d/data/skin.bmp
+	new file:   ZGame/zero1iz3d/data/star.tga
+	new file:   ZGame/zero1iz3d/data/terren3z.3DS
+	new file:   ZGame/zero1iz3d/data/tree1.tga
+	new file:   ZGame/zero1iz3d/data/tree2.tga
+	new file:   ZGame/zero1iz3d/data/warrior.3DS
+	new file:   ZGame/zero1iz3d/data/win3.BMP
+	new file:   ZGame/zero1iz3d/main.cpp
+	new file:   ZGame/zero1iz3d/main.h
+
