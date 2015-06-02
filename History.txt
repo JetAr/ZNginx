@@ -1198,6 +1198,7 @@ Changes to be committed:
 
 +---------+---------+---------+---------+---------+---------+---------+---------+ 
 zero1iz3d.2015/06/01.17_58_13.36.K.MzM.T@WS 
+H.2015/06/01.23_07_47.40.K.MzM.T@WS 
 On branch master
 Your branch is up-to-date with 'origin/master'.
 
@@ -1252,4 +1253,5 @@ Changes to be committed:
 	new file:   ZGame/zero1iz3d/data/win3.BMP
 	new file:   ZGame/zero1iz3d/main.cpp
 	new file:   ZGame/zero1iz3d/main.h
+	new file:   ToolKit/Hosts/H.150601.cs.7z
 
