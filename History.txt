@@ -1271,3 +1271,14 @@ Changes not staged for commit:
 
 	deleted:    ToolKit/Hosts/H.150601.cs.7z
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+3ds.2015/06/02.10_00_22.42.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Code/3ds/3dsplay/3dsplay/3dsplay_2005.vcproj
+	modified:   History.txt
+

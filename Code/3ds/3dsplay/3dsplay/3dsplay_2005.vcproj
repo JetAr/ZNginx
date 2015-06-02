@@ -177,7 +177,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\tga.h"
+				RelativePath=".\3dsplay.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tga.c"
 				>
 			</File>
 		</Filter>
@@ -187,15 +191,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\3dsplay.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\lib3ds.h"
 				>
 			</File>
 			<File
-				RelativePath=".\tga.c"
+				RelativePath=".\tga.h"
 				>
 			</File>
 		</Filter>
