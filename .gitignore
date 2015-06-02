@@ -33,7 +33,6 @@
 *.exp
 *.user
 *.ncb
-*.lib
 *.ilk
 *.obj
 *.pdb
@@ -53,3 +52,10 @@
 ipch
 Debug
 Release
+
+# cmake
+CMakeCache.txt
+CMakeFiles/*
+#Makefile
+#cmake*
+
