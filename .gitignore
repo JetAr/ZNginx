@@ -21,7 +21,7 @@
 *.dylib
 
 # Executables
-*.exe
+#*.exe
 *.out
 *.app
 *.i*86
@@ -38,14 +38,12 @@
 *.obj
 *.pdb
 *.suo
-*.exe
 *.htm
 *.idb
 *.manifest
 *.res
 *.dep
 *.user
-*.pch
 *.plg
 *.opt
 *.bsc
