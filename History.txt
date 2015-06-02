@@ -1255,3 +1255,19 @@ Changes to be committed:
 	new file:   ZGame/zero1iz3d/main.h
 	new file:   ToolKit/Hosts/H.150601.cs.7z
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+del_hosts.2015/06/02.09_54_11.54.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	deleted:    ToolKit/Hosts/H.150601.cs.7z
+
