@@ -9,13 +9,14 @@
 *.pch
 
 # Libraries
-*.lib
+#*.lib
+#lib
 *.a
 *.la
 *.lo
 
 # Shared objects (inc. Windows DLLs)
-*.dll
+#*.dll
 *.so
 *.so.*
 *.dylib
@@ -49,6 +50,8 @@
 *.clw
 *.tmp
 *.sbr
+*.sdf
+*.opensdf
 ipch
 Debug
 Release

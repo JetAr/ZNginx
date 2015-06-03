@@ -7863,3 +7863,146 @@ Changes to be committed:
 	new file:   ZGame/game_tutorials/Win32/Vertical Scroll Bar/VerticalText.txt
 	new file:   ZGame/game_tutorials/Win32/Vertical Scroll Bar/win_main.cpp
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+dll_lib.2015/06/03.09_37_45.94.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   .gitignore
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/CHAPTR10/ThreeStagePthreads/pthreadVC2.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/CHAPTR10/ThreeStagePthreads/pthreadVC2.lib
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/Miscellaneous/TimeTest/Utility_4_0.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/Miscellaneous/TimeTest/Utility_4_0.lib
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/Miscellaneous/msg_emulation/Lib/msg_emulation_dll.lib
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/Miscellaneous/msg_emulation/Run/msg_emulation_dll.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/Miscellaneous/msg_emulation/run7/msg_emulation_dll.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/lib/Asc2UnDll.lib
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/lib/SendReceiveSKHA.lib
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/lib/SendReceiveSKHA_64.lib
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/lib/SendReceiveSKST_DLL.lib
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/lib/SendReceiveSKST_DLL_64.lib
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/lib/UtilityStatic.lib
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/lib/UtilityUnicode.lib
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/lib/Utility_4_0.lib
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/lib/Utility_4_0_64.lib
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/lib/pthreadVC2.lib
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run5/SendReceiveSKHA.DLL
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run5/SendReceiveSKST_DLL.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run5/Utility_4_0.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run5/cci_fDll.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run5/cci_fMMDll.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run5/commandsIP.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run5/msvcr70.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run5/pcstatsDLL.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8/SendReceiveSKHA.DLL
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8/SendReceiveSKST_DLL.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8/Utility_4_0.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8/Utility_4_0.lib
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8/cci_fDll.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8/cci_fDll.lib
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8/cci_fMMDll.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8/commandsIP.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8/msvcr70.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8/pcstatsDLL.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8_64/SendReceiveSKHA.DLL
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8_64/SendReceiveSKST_DLL.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8_64/Utility_4_0_64.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8_64/Utility_4_0_64.lib
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8_64/cci_fDll.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8_64/cci_fDll.lib
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8_64/cci_fMMDll.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8_64/commandsIP.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8_64/msvcr70.dll
+	new file:   Book/Windows System Programming, Edition 4/WSP4_Examples/run8_64/pcstatsDLL.dll
+	modified:   History.txt
+	new file:   ZGame/game_tutorials/C++/ASCII RPG Part2/fmod.dll
+	new file:   ZGame/game_tutorials/C++/ASCII RPG Part2/fmodvc.lib
+	new file:   ZGame/game_tutorials/C++/ASCII RPG Part3/fmod.dll
+	new file:   ZGame/game_tutorials/C++/ASCII RPG Part3/fmodvc.lib
+	new file:   ZGame/game_tutorials/C++/ASCII RPG Part4/fmod.dll
+	new file:   ZGame/game_tutorials/C++/ASCII RPG Part4/fmodvc.lib
+	new file:   ZGame/game_tutorials/C++/ASCII RPG Part5/fmod.dll
+	new file:   ZGame/game_tutorials/C++/ASCII RPG Part5/fmodvc.lib
+	new file:   ZGame/game_tutorials/C++/ASCII RPG Part6/fmod.dll
+	new file:   ZGame/game_tutorials/C++/ASCII RPG Part6/fmodvc.lib
+	new file:   ZGame/game_tutorials/C++/Playing MOD Files Using Fmod/fmod.dll
+	new file:   ZGame/game_tutorials/C++/Playing MOD Files Using Fmod/fmodvc.lib
+	new file:   ZGame/game_tutorials/C++/Playing MP3 or WAV Files Using Fmod/fmod.dll
+	new file:   ZGame/game_tutorials/C++/Playing MP3 or WAV Files Using Fmod/fmodvc.lib
+	new file:   ZGame/game_tutorials/C++/Using a DLL/PrintDLL.dll
+	new file:   ZGame/game_tutorials/C++/Using a DLL/PrintDLL.lib
+	new file:   ZGame/game_tutorials/C/Fmod Part1/fmod.dll
+	new file:   ZGame/game_tutorials/C/Fmod Part1/fmodvc.lib
+	new file:   ZGame/game_tutorials/C/Fmod Part2/fmod.dll
+	new file:   ZGame/game_tutorials/C/Fmod Part2/fmodvc.lib
+	new file:   ZGame/game_tutorials/OpenGL/BSP Loader Part2/jpeg.lib
+	new file:   ZGame/game_tutorials/OpenGL/BSP Loader Part2/libc.lib
+	new file:   ZGame/game_tutorials/OpenGL/BSP Loader Part3/jpeg.lib
+	new file:   ZGame/game_tutorials/OpenGL/BSP Loader Part3/libc.lib
+	new file:   ZGame/game_tutorials/OpenGL/BSP Loader Part4/jpeg.lib
+	new file:   ZGame/game_tutorials/OpenGL/BSP Loader Part4/libc.lib
+	new file:   ZGame/game_tutorials/OpenGL/BSP Loader Part5/jpeg.lib
+	new file:   ZGame/game_tutorials/OpenGL/BSP Loader Part5/libc.lib
+	new file:   ZGame/game_tutorials/OpenGL/BSP Loader Part6/jpeg.lib
+	new file:   ZGame/game_tutorials/OpenGL/BSP Loader Part6/libc.lib
+	new file:   ZGame/game_tutorials/OpenGL/BSP Loader/jpeg.lib
+	new file:   ZGame/game_tutorials/OpenGL/BSP Loader/libc.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera Part2/Lib/glew/lib/Win32/glew32.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera Part2/Lib/glew/lib/Win32/glew32s.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera Part2/Lib/glew/lib/x64/glew32.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera Part2/Lib/glew/lib/x64/glew32s.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera Part2/Lib/glfw3/Lib/glfw3.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera Part3/Lib/glew/lib/Win32/glew32.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera Part3/Lib/glew/lib/Win32/glew32s.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera Part3/Lib/glew/lib/x64/glew32.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera Part3/Lib/glew/lib/x64/glew32s.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera Part3/Lib/glfw3/Lib/glfw3.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera Part5/Lib/glew/lib/Win32/glew32.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera Part5/Lib/glew/lib/Win32/glew32s.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera Part5/Lib/glew/lib/x64/glew32.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera Part5/Lib/glew/lib/x64/glew32s.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera Part5/Lib/glfw3/Lib/glfw3.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera/Lib/glew/lib/Win32/glew32.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera/Lib/glew/lib/Win32/glew32s.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera/Lib/glew/lib/x64/glew32.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera/Lib/glew/lib/x64/glew32s.lib
+	new file:   ZGame/game_tutorials/OpenGL/Camera/Lib/glfw3/Lib/glfw3.lib
+	new file:   ZGame/game_tutorials/OpenGL/Color/Lib/glew/lib/Win32/glew32.lib
+	new file:   ZGame/game_tutorials/OpenGL/Color/Lib/glew/lib/Win32/glew32s.lib
+	new file:   ZGame/game_tutorials/OpenGL/Color/Lib/glew/lib/x64/glew32.lib
+	new file:   ZGame/game_tutorials/OpenGL/Color/Lib/glew/lib/x64/glew32s.lib
+	new file:   ZGame/game_tutorials/OpenGL/Color/Lib/glfw3/Lib/glfw3.lib
+	new file:   ZGame/game_tutorials/OpenGL/First OpenGL Program/Lib/glew/lib/Win32/glew32.lib
+	new file:   ZGame/game_tutorials/OpenGL/First OpenGL Program/Lib/glew/lib/Win32/glew32s.lib
+	new file:   ZGame/game_tutorials/OpenGL/First OpenGL Program/Lib/glew/lib/x64/glew32.lib
+	new file:   ZGame/game_tutorials/OpenGL/First OpenGL Program/Lib/glew/lib/x64/glew32s.lib
+	new file:   ZGame/game_tutorials/OpenGL/First OpenGL Program/Lib/glfw3/Lib/glfw3.lib
+	new file:   ZGame/game_tutorials/OpenGL/Frames Per Second/Lib/glew/lib/Win32/glew32.lib
+	new file:   ZGame/game_tutorials/OpenGL/Frames Per Second/Lib/glew/lib/Win32/glew32s.lib
+	new file:   ZGame/game_tutorials/OpenGL/Frames Per Second/Lib/glew/lib/x64/glew32.lib
+	new file:   ZGame/game_tutorials/OpenGL/Frames Per Second/Lib/glew/lib/x64/glew32s.lib
+	new file:   ZGame/game_tutorials/OpenGL/Frames Per Second/Lib/glfw3/Lib/glfw3.lib
+	new file:   ZGame/game_tutorials/OpenGL/Matrices/Lib/glew/lib/Win32/glew32.lib
+	new file:   ZGame/game_tutorials/OpenGL/Matrices/Lib/glew/lib/Win32/glew32s.lib
+	new file:   ZGame/game_tutorials/OpenGL/Matrices/Lib/glew/lib/x64/glew32.lib
+	new file:   ZGame/game_tutorials/OpenGL/Matrices/Lib/glew/lib/x64/glew32s.lib
+	new file:   ZGame/game_tutorials/OpenGL/Matrices/Lib/glfw3/Lib/glfw3.lib
+	new file:   ZGame/game_tutorials/OpenGL/Quadrics/Glaux.lib
+	new file:   ZGame/game_tutorials/OpenGL/Texture Mapping Part3/jpeg.lib
+	new file:   ZGame/game_tutorials/OpenGL/Texture Mapping Part3/libc.lib
+	new file:   ZGame/game_tutorials/Win32/2D RPG Part2/fmod.dll
+	new file:   ZGame/game_tutorials/Win32/2D RPG Part2/fmodvc.lib
+	new file:   ZGame/game_tutorials/Win32/2D RPG Part3/fmod.dll
+	new file:   ZGame/game_tutorials/Win32/2D RPG Part3/fmodvc.lib
+	new file:   ZGame/game_tutorials/Win32/2D RPG Part4/fmod.dll
+	new file:   ZGame/game_tutorials/Win32/2D RPG Part4/fmodvc.lib
+	new file:   ZGame/game_tutorials/Win32/2D RPG Part5/fmod.dll
+	new file:   ZGame/game_tutorials/Win32/2D RPG Part5/fmodvc.lib
+	new file:   ZGame/game_tutorials/Win32/2D RPG Part6/fmod.dll
+	new file:   ZGame/game_tutorials/Win32/2D RPG Part6/fmodvc.lib
+	new file:   ZGame/game_tutorials/Win32/BlackJack/GT_WinObj2D.lib
+	new file:   ZGame/game_tutorials/Win32/BlackJack/libc.lib
+
