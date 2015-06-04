@@ -1,5 +1,5 @@
 ﻿// Done by TheTutor
-
+//z 处理键盘输入，接受三个键 R G B
 /*
 	This tutorial is all about receiving keyboard input in your Win32 application.
 	Windows provides multiple ways to receive keyboard input, but this tutorial

@@ -10,7 +10,7 @@
 //																		 //
 //***********************************************************************//
 
-
+//z 为text添加颜色，通过调用 SetTextColor 。
 // When working with windows we want to print text sometimes, but black text
 // can be boring after a while.  This tutorials shows you how to add color
 // to your text.  We have a nice function called SetTextColor() that takes
@@ -94,7 +94,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
     PAINTSTRUCT paintStruct; // A PAINTSTRUCT structure is something we need to paint (draw) when handling the WM_PAINT message.
     HDC hdc=NULL; // An HDC is a handle to a device context.  We use this handle as a way to communicate to the graphics card so we can draw things to the window.
     int x, y; // These will be used to position our text.
-    char szHello[]="Hello World!"; // The string to print, pretty original huh? :)
+    const char szHello[]="Hello World!"; // The string to print, pretty original huh? :)
 
     // This checks what the message is.  Below we handle the messages that we care of about.
     // Remember there are HUNDREDS of messages we could handle, but we'll only deal with the
