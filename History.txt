@@ -8006,3 +8006,14 @@ Changes to be committed:
 	new file:   ZGame/game_tutorials/Win32/BlackJack/GT_WinObj2D.lib
 	new file:   ZGame/game_tutorials/Win32/BlackJack/libc.lib
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/06/04.16_34_20.54.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Doc/K/T.2015.BugFree.cs
+	modified:   History.txt
+
