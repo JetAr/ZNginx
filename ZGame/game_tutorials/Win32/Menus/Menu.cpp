@@ -15,6 +15,8 @@
 #include "resource.h"
 using namespace std;		// Include the standard namespace
 
+//z 使用了菜单
+
 // The function prototype for our WndProc (The function that handles all the windows messages)
 LRESULT CALLBACK WndProc (HWND, UINT, WPARAM, LPARAM);
 
@@ -46,6 +48,7 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine
     wndclass.lpszClassName = "Window Class 1"; // Name of our class
 
 ////////// *NEW* /////////// *NEW* /////////// PUT THE MENU ID HERE ////////// *NEW* /////////// *NEW* ///////////
+	//z 添加了菜单信息
     wndclass.lpszMenuName  = MAKEINTRESOURCE(IDR_MENU1); // Here we set our menu using the menu ID that
     // corresponds to the menu we created in the resource
     // editor.  However, the variable lpszMenuName is a string

@@ -12,6 +12,8 @@
 	So with that brief introduction lets head to the code and get drawing.
 */
 
+// 绘制形状（图元）
+
 #include <windows.h>
 #include <assert.h>
 

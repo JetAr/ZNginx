@@ -24,6 +24,8 @@
 
 const char kClassName[] = "GT_Cursor"; // WNDCLASSEX name
 
+// 设置光标图像
+
 // WinProc
 LRESULT CALLBACK WinProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
 

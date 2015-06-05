@@ -32,6 +32,8 @@ const int kWinHgt = 480;
 
 const char kClassName[] = "GameTutorials_HBRUSH";
 
+//z 同HPEN，使用了HBRUSH
+
 //////////////
 // Globals //
 ////////////

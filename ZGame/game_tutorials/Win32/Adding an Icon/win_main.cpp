@@ -15,6 +15,8 @@
 	Now we're ready to add the icon to our program
 */
 
+//z 添加 ICON 
+
 #include <windows.h>
 #include "resource.h"
 

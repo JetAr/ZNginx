@@ -32,6 +32,8 @@
 // Constants //
 //////////////
 
+//z 输出 flags 信息
+
 const int kWinWid = 320;
 const int kWinHgt = 240;
 

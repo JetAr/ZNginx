@@ -9,6 +9,8 @@
 	So enough of this introduction lets get a move on!
 */
 
+//z 添加menu
+
 // In Visual Studio 2005 Microsoft added safer versions (denoted by a "_s" suffix) to many
 // common C/C++ run time functions.  Currently the ISO Standards Committee for C and C++
 // is determining if they are going to add them to the official language set.  Until then,
@@ -78,7 +80,8 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprev, PSTR cmdline, int ishow
     //								 MAKEINTRESOURCE() is a Win32 macro that coverts the int id we
     //								 received from the resource file into it's corresponding string
     //								 version that LoadMenu() can then use
-    gMenu = LoadMenu(hinstance,MAKEINTRESOURCE(IDR_MENU1));
+    //z 载入菜单
+	gMenu = LoadMenu(hinstance,MAKEINTRESOURCE(IDR_MENU1));
 
     // Create the window
     hwnd = CreateWindowEx(WS_EX_APPWINDOW,
@@ -99,6 +102,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprev, PSTR cmdline, int ishow
     // Error Check
     if(!hwnd)
     {
+		//z 创建的菜单资源要记得释放
         DestroyMenu(gMenu); // This frees the menu that we created
         return EXIT_FAILURE;
     }
@@ -149,7 +153,8 @@ LRESULT CALLBACK WinProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
     {
     // This message gets sent if a "command item" from a menu is selected
     // (it also gets sent for other stuff but this is what we care about)
-    case WM_COMMAND:
+    //z 在选中一个菜单的时候，会发送该消息。
+	case WM_COMMAND:
 
         switch(LOWORD(wparam)) // The LOWORD(wparam) will equal the "identifier" of
         {

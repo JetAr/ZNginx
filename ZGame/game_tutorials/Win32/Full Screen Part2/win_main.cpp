@@ -13,6 +13,8 @@
 	Okay we know what we want to do, so lets go do it!
 */
 
+//z 全屏 F1 切换
+
 #include <windows.h>
 #include "resource.h"
 

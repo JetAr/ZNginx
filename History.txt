@@ -8029,3 +8029,25 @@ Changes to be committed:
 	modified:   ZGame/game_tutorials/Win32/Color Text/Text.cpp
 	modified:   ZGame/game_tutorials/Win32/Keyboard Input/win_main.cpp
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+gt.2015/06/05.14_42_59.43.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	modified:   ZGame/game_tutorials/Win32/Adding a Cursor/win_main.cpp
+	modified:   ZGame/game_tutorials/Win32/Adding an Icon/win_main.cpp
+	modified:   ZGame/game_tutorials/Win32/Drawing Shapes/win_main.cpp
+	modified:   ZGame/game_tutorials/Win32/Full Screen Part2/win_main.cpp
+	modified:   ZGame/game_tutorials/Win32/Full Screen/FullScreen.cpp
+	modified:   ZGame/game_tutorials/Win32/HBRUSH/win_main.cpp
+	modified:   ZGame/game_tutorials/Win32/HPEN/win_main.cpp
+	modified:   ZGame/game_tutorials/Win32/Horizontal Scroll Bar/win_main.cpp
+	modified:   ZGame/game_tutorials/Win32/Menus Part2/win_main.cpp
+	modified:   ZGame/game_tutorials/Win32/Menus/Menu.cpp
+	modified:   ZGame/game_tutorials/Win32/Mouse Input Part2/win_main.cpp
+	modified:   ZGame/game_tutorials/Win32/Mouse Input/win_main.cpp
+

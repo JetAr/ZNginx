@@ -11,6 +11,8 @@
 
 */
 
+//z WM_MOUSEMOVE w flags，l 位置
+
 // In Visual Studio 2005 Microsoft added safer versions (denoted by a "_s" suffix) to many
 // common C/C++ run time functions.  Currently the ISO Standards Committee for C and C++
 // is determining if they are going to add them to the official language set.  Until then,
