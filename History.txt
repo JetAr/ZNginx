@@ -8062,3 +8062,19 @@ Changes to be committed:
 	modified:   Doc/K/T.2015.BugFree.cs
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+gt.2015-06-06.22_37_44.69.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	modified:   ZGame/game_tutorials/Win32/Displaying Multiple Bitmaps/Bitmap.cpp
+	modified:   ZGame/game_tutorials/Win32/Displaying Multiple Bitmaps/Bitmap.h
+	modified:   ZGame/game_tutorials/Win32/Displaying Multiple Bitmaps/DisplayBitmaps.cpp
+	modified:   ZGame/game_tutorials/Win32/Double Buffering/win_main.cpp
+	modified:   ZGame/game_tutorials/Win32/Moving a Bitmap/DisplayBitmaps.cpp
+	modified:   ZGame/game_tutorials/Win32/Text Blitter/win_main.cpp
+

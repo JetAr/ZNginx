@@ -1,5 +1,5 @@
 ﻿// Done by TheTutor
-
+//z 引入了一个lockrate
 /*
 
   This tutorial is all about double buffering.  So what's that you ask?  Well to really

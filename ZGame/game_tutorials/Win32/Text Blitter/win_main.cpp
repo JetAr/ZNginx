@@ -148,6 +148,7 @@ LRESULT CALLBACK WinProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
     return DefWindowProc(hwnd, message, wparam, lparam);
 }
 
+//z 这个地方比较有意思，也算一种新的思路
 // This will print "buff" to the screen starting at (x, y)
 void PrintText(CWinObj &win_obj, SText &tb, char buff[MAX_LENGTH], int x, int y)
 {

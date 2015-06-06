@@ -8,12 +8,16 @@ using namespace std;			// Include the standard namespace
 
 struct BUFFER					// This is our back buffering structure
 {
+	//z 窗口句柄
     HWND hwnd;					// This holds the current window's handle
+	//z 窗口的 client rectangle 
     RECT scrnRect;				// This holds the client rectangle of the window
-    HANDLE hCompBitmap;			// This holds the compatible bitmap for the backbuffer
-    HANDLE hOldBitmap;			// This is used for storage to free when the program quits
+    //z backbuffer 的　compatible bitmap
+	HANDLE hCompBitmap;			// This holds the compatible bitmap for the backbuffer
+	HANDLE hOldBitmap;			// This is used for storage to free when the program quits
     HANDLE hOldBitmap2;			// This is used as storage to swap between selected bitmaps when using selectObject()
-    HDC hdcFront;				// This is the front buffer (The part we see)
+    
+	HDC hdcFront;				// This is the front buffer (The part we see)
     HDC hdcBack;				// This is the back buffer (the part we draw to, then flip)
     HDC hdcBitmap;				// This is a temp buffer to swap the bitmap back and forth from
 };

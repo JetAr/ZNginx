@@ -17,7 +17,7 @@
 // Create a define for our window width
 #define WIDTH  800
 
-
+//z 双缓冲
 // Create our double buffering structure
 BUFFER gBuffer;
 // Create a handle to our first bitmap
@@ -145,6 +145,7 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
         DisplayBitmap(&gBuffer, hTileBitmap2, x, 200);
 
         // Now that we filled the back buffer with images, display it on screen
+		//z 绘制是绘制在　back buffer 上，要显示到前端，还需要交换。
         SwapBackBuffer(&gBuffer, TRUE);
         break;
 
@@ -162,6 +163,7 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 void Init(HWND hwnd)
 {
+	//z 载入 bitmap 
     // Load the bitmap and store it in a handle
     hTileBitmap = LoadABitmap("Bitmap.bmp");
 
@@ -198,9 +200,13 @@ void DeInit()
 //
 // WHAT IS BACKBUFFERING!?!!?!?
 //
+//z 使用　back buffering　能够避免闪烁。
 // Back Buffering is what we do to get rid of the flicker when we display
 // images to the screen.  It basically works like this:
 //
+//z 工作原理
+//z 显示位图到一个ｂｕｆｆｅｒ（screen的拷贝）
+//z 然后将后端和前端交换
 // A. Display all our bitmaps to a buffer (a copy of the screen).
 // B. Then display all the bitmaps at once to the screen by flipping
 //    the back buffer to the front.
@@ -224,6 +230,9 @@ void DeInit()
 // Let me explain the sequence that you will want to use in order
 // to display bitmaps to the screen using backbuffering:
 //
+//z 创建双缓冲
+//z 为了第一次看起来不是那么可怕，我们对backbuffer进行了清屏
+//z 
 // 1) You need to call the CreateDoubleBuffering() function (once) to set up
 //    our double buffering.  This needs the address of BUFFER structure
 //    to fill in, and the handle to the window.  This function fills in
