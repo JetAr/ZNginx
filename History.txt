@@ -8078,3 +8078,15 @@ Changes to be committed:
 	modified:   ZGame/game_tutorials/Win32/Moving a Bitmap/DisplayBitmaps.cpp
 	modified:   ZGame/game_tutorials/Win32/Text Blitter/win_main.cpp
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/06/08.18_03_54.16.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	modified:   ZGame/game_tutorials/Win32/Map Editor/Init.cpp
+	modified:   ZGame/game_tutorials/Win32/Map Editor/Tile.h
+

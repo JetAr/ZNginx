@@ -83,7 +83,6 @@ enum eItemTypes
 class CTile
 {
 public:
-
     CTile();	// The constructor (initializing function)
 
     // Our standard "Set" functions for our protected data
@@ -134,6 +133,7 @@ protected:
 
 
 // This class inherits from <Base Class> CTile and stores our item information
+//z 存储 item 信息
 class CItem : public CTile
 {
 public:

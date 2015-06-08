@@ -71,7 +71,7 @@ HWND CreateMyWindow(LPSTR strWindowName, int width, int height, DWORD dwStyle, H
 /////	This function creates our tool bar window
 /////
 ///////////////////////////////// CREATE TOOL WINDOW \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-
+//z 创建 toolbar 窗口
 HWND CreateToolWindow(HWND hWndParent, LPSTR strWindowName, int width, int height, DWORD dwStyle, HINSTANCE hInstance)
 {
     WNDCLASSEX wndclassEx;
