@@ -8090,3 +8090,14 @@ Changes to be committed:
 	modified:   ZGame/game_tutorials/Win32/Map Editor/Init.cpp
 	modified:   ZGame/game_tutorials/Win32/Map Editor/Tile.h
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/06/10.09_46_06.14.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Doc/K/T.2015.BugFree.cs
+	modified:   History.txt
+
