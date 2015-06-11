@@ -100,7 +100,9 @@ HWND CreateToolWindow(HWND hWndParent, LPSTR strWindowName, int width, int heigh
     RECT rParentWindow = {0};
 
     GetWindowRect(hWndParent, &rParentWindow);			// Get the window position of the main window
-    // Set the tool bar on the right of the main window
+    
+	// Set the tool bar on the right of the main window
+	//z 创建 tool bar 主窗口
     HWND hWnd = CreateWindowEx(WS_EX_TOOLWINDOW, "ToolWindowClass", strWindowName, dwStyle,
                                rParentWindow.right, rParentWindow.top, rWindow.right  - rWindow.left,
                                rWindow.bottom - rWindow.top, hWndParent, NULL, hInstance, NULL);
@@ -166,6 +168,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hprev, PSTR cmdline, int ishow
 
     // Create our tool bar window offset by the scroll bar pixel width and to compensate
     // for the small title bar we offset the height with the menu offset
+	//z 创建工具栏窗口
     g_hWndTool = CreateToolWindow(hWnd, "", TILE_WIDTH + SCROLL_BAR_OFFSET, HEIGHT + MENU_OFFSET,
                                   WS_POPUP| WS_SYSMENU | WS_CAPTION , hInstance);
 

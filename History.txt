@@ -8112,3 +8112,15 @@ Changes to be committed:
 	modified:   Doc/K/T.2015.BugFree.cs
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+bike.2015/06/11.16_26_49.92.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	new file:   Doc/Bike/Tool.cs
+	modified:   History.txt
+	modified:   ZGame/game_tutorials/Win32/Map Editor/Init.cpp
+
