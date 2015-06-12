@@ -8137,3 +8137,17 @@ Changes to be committed:
 	modified:   ZGame/game_tutorials/Win32/Map Editor/Tile.cpp
 	modified:   ZGame/game_tutorials/Win32/Map Editor/Tile.h
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+mapeditor02.2015/06/12.16_33_06.98.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	new file:   Doc/Cursor/Using Cursors.cs
+	modified:   History.txt
+	modified:   ZGame/game_tutorials/Win32/Map Editor Part2/Main.cpp
+	modified:   ZGame/game_tutorials/Win32/Map Editor Part2/Tile.cpp
+	modified:   ZGame/game_tutorials/Win32/Map Editor Part2/Tile.h
+

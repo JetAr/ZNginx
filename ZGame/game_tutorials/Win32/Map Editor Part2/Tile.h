@@ -65,6 +65,7 @@
 #define EXIT_TYPE			4
 
 // These are the types of items we can have, used for equipping items to a player
+//z 为 item 增加类型
 enum eItemTypes
 {
     kItem = 0,
@@ -122,7 +123,6 @@ public:
 
 // Set it protected so that inherited classes can access if necessary
 protected:
-
     HBITMAP m_bmpTile;				// The handle to the tile's bitmap
     char m_szFile[MAX_PATH];		// The file name of the bitmap
     char m_type;					// The type of the tile
@@ -423,6 +423,8 @@ int LoadTiles();
 //
 // *Quick Notes*
 //
+// 增加了 InsertTile 以及 DeleteFile 。
+// 用于插入tile以及删除tile。
 // We added InsertTile() and DeleteTile() to this file.  These functions
 // allow us to draw on the map and erase tiles from the map.  In the
 // next tutorial we will add loading and saving functionality.

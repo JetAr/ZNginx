@@ -433,7 +433,7 @@ void CMap::InsertTile(CTile *pTile, int x, int y)
 /////	This function deletes a tile from the map depending on the current type
 /////
 ///////////////////////////////// DELETE TILE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-
+//z 删除文件
 void CMap::DeleteTile(int mapX, int mapY)
 {
     // Since we only delete tiles of the current type selected, we need to do a
