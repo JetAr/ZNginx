@@ -33,10 +33,11 @@
 /////	This is the constructor for the CTile class.  Initializes all data
 /////
 ///////////////////////////////// CTILE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-
+//z 看起来有bitmap，有type以及一个文件路径
+//z 注意数组初始化是在函数体内；其他可以使用初始化成员列表。
 CTile::CTile():m_bmpTile(0),m_type(0)
 {
-    memset(m_szFile, 0, MAX_PATH);
+	memset(m_szFile, 0, MAX_PATH);
 }
 
 
@@ -48,7 +49,7 @@ CTile::CTile():m_bmpTile(0),m_type(0)
 
 CItem::CItem():m_lifeInc(0),m_strengthInc(0),m_protectionInc(0), m_itemType(0)
 {
-    memset(m_szItem, 0, MAX_NAME_LEN);
+	memset(m_szItem, 0, MAX_NAME_LEN);
 }
 
 
@@ -60,7 +61,7 @@ CItem::CItem():m_lifeInc(0),m_strengthInc(0),m_protectionInc(0), m_itemType(0)
 
 CMonster::CMonster():m_life(0),m_strength(0),m_speed(0)
 {
-    memset(m_szMonster, 0, MAX_NAME_LEN);
+	memset(m_szMonster, 0, MAX_NAME_LEN);
 }
 
 ///////////////////////////////// CNPC \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
@@ -71,8 +72,8 @@ CMonster::CMonster():m_life(0),m_strength(0),m_speed(0)
 
 CNpc::CNpc():m_life(0),m_strength(0),m_speed(0)
 {
-    memset(m_szName, 0, MAX_NAME_LEN);
-    memset(m_szMessage, 0, MAX_MESSAGE_LEN);
+	memset(m_szName, 0, MAX_NAME_LEN);
+	memset(m_szMessage, 0, MAX_MESSAGE_LEN);
 }
 
 
@@ -84,9 +85,9 @@ CNpc::CNpc():m_life(0),m_strength(0),m_speed(0)
 
 CExit::CExit()
 {
-    memset(m_szCurrentMap, 0, MAX_PATH);
-    memset(m_szNewMap, 0, MAX_PATH);
-    m_newPosition.x = m_newPosition.y = 0;
+	memset(m_szCurrentMap, 0, MAX_PATH);
+	memset(m_szNewMap, 0, MAX_PATH);
+	m_newPosition.x = m_newPosition.y = 0;
 }
 
 
@@ -98,7 +99,7 @@ CExit::CExit()
 
 CMap::CMap():m_currentTypeFlag(TILE_TYPE)
 {
-    memset(m_szMapName, 0, MAX_PATH);
+	memset(m_szMapName, 0, MAX_PATH);
 }
 
 
@@ -110,53 +111,53 @@ CMap::CMap():m_currentTypeFlag(TILE_TYPE)
 
 void CMap::Draw()
 {
-    // Here we set the portion to draw for our transparent tiles
-    RECT portion = {0, 0, TILE_WIDTH, TILE_HEIGHT};
-    int x = 0, y = 0;
+	// Here we set the portion to draw for our transparent tiles
+	RECT portion = {0, 0, TILE_WIDTH, TILE_HEIGHT};
+	int x = 0, y = 0;
 
-    // Currently we don't really use this whole function since we
-    // can't place anything on the map, but let's it up for when
-    // we do have that functionality.
+	// Currently we don't really use this whole function since we
+	// can't place anything on the map, but let's it up for when
+	// we do have that functionality.
 
-    // Go through and draw all the normal map tiles
-    for(int i = 0; i < (int)m_vTiles.size(); i++)
-    {
-        x = m_vTiles[i].GetIndex().x * TILE_WIDTH;
-        y = m_vTiles[i].GetIndex().y * TILE_HEIGHT;
-        g_Buffer.DisplayBitmap(m_vTiles[i].GetBitmap(), x, y);
-    }
+	// Go through and draw all the normal map tiles
+	for(int i = 0; i < (int)m_vTiles.size(); i++)
+	{
+		x = m_vTiles[i].GetIndex().x * TILE_WIDTH;
+		y = m_vTiles[i].GetIndex().y * TILE_HEIGHT;
+		g_Buffer.DisplayBitmap(m_vTiles[i].GetBitmap(), x, y);
+	}
 
-    // Go through and draw all the items on the map
-    for(int i = 0; i < (int)m_vItems.size(); i++)
-    {
-        x = m_vItems[i].GetIndex().x * TILE_WIDTH;
-        y = m_vItems[i].GetIndex().y * TILE_HEIGHT;
-        g_Buffer.DisplayTransparentBitmap(m_vItems[i].GetBitmap(), x, y, portion);
-    }
+	// Go through and draw all the items on the map
+	for(int i = 0; i < (int)m_vItems.size(); i++)
+	{
+		x = m_vItems[i].GetIndex().x * TILE_WIDTH;
+		y = m_vItems[i].GetIndex().y * TILE_HEIGHT;
+		g_Buffer.DisplayTransparentBitmap(m_vItems[i].GetBitmap(), x, y, portion);
+	}
 
-    // Go through and draw all the monsters on the map
-    for(int i = 0; i < (int)m_vMonsters.size(); i++)
-    {
-        x = m_vMonsters[i].GetIndex().x * TILE_WIDTH;
-        y = m_vMonsters[i].GetIndex().y * TILE_HEIGHT;
-        g_Buffer.DisplayTransparentBitmap(m_vMonsters[i].GetBitmap(), x, y, portion);
-    }
+	// Go through and draw all the monsters on the map
+	for(int i = 0; i < (int)m_vMonsters.size(); i++)
+	{
+		x = m_vMonsters[i].GetIndex().x * TILE_WIDTH;
+		y = m_vMonsters[i].GetIndex().y * TILE_HEIGHT;
+		g_Buffer.DisplayTransparentBitmap(m_vMonsters[i].GetBitmap(), x, y, portion);
+	}
 
-    // Go through and draw all the non player characters on the map
-    for(int i = 0; i < (int)m_vNpcs.size(); i++)
-    {
-        x = m_vNpcs[i].GetIndex().x * TILE_WIDTH;
-        y = m_vNpcs[i].GetIndex().y * TILE_HEIGHT;
-        g_Buffer.DisplayTransparentBitmap(m_vNpcs[i].GetBitmap(), x, y, portion);
-    }
+	// Go through and draw all the non player characters on the map
+	for(int i = 0; i < (int)m_vNpcs.size(); i++)
+	{
+		x = m_vNpcs[i].GetIndex().x * TILE_WIDTH;
+		y = m_vNpcs[i].GetIndex().y * TILE_HEIGHT;
+		g_Buffer.DisplayTransparentBitmap(m_vNpcs[i].GetBitmap(), x, y, portion);
+	}
 
-    // Go through and draw all the exits on the map
-    for(int i = 0; i < (int)m_vExits.size(); i++)
-    {
-        x = m_vExits[i].GetIndex().x * TILE_WIDTH;
-        y = m_vExits[i].GetIndex().y * TILE_HEIGHT;
-        Rectangle(g_Buffer.GetHDC(), x, y, x + TILE_WIDTH, y + TILE_HEIGHT);
-    }
+	// Go through and draw all the exits on the map
+	for(int i = 0; i < (int)m_vExits.size(); i++)
+	{
+		x = m_vExits[i].GetIndex().x * TILE_WIDTH;
+		y = m_vExits[i].GetIndex().y * TILE_HEIGHT;
+		Rectangle(g_Buffer.GetHDC(), x, y, x + TILE_WIDTH, y + TILE_HEIGHT);
+	}
 }
 
 
@@ -168,44 +169,47 @@ void CMap::Draw()
 
 void CMap::SetDefault()
 {
-    char szFile[MAX_PATH] = {0};
+	char szFile[MAX_PATH] = {0};
 
-    // Here we setup the file to load as the default texture (grass)
-    sprintf(szFile, "%s\\%s", TILES_DIR, DEFAULT_TILE);
+	// Here we setup the file to load as the default texture (grass)
+	sprintf(szFile, "%s\\%s", TILES_DIR, DEFAULT_TILE);
 
-    // Load the default tile file
-    HBITMAP bmpDefault = g_Buffer.LoadABitmap(szFile);
-    CTile temp;
+	// Load the default tile file
+	//z 载入一个bitmap
+	HBITMAP bmpDefault = g_Buffer.LoadABitmap(szFile);
+	CTile temp;
 
-    // Use a temporary tile for the default tile (Set it's type and name)
-    temp.SetFileName(szFile);
-    temp.SetType(FLOOR);
+	// Use a temporary tile for the default tile (Set it's type and name)
+	temp.SetFileName(szFile);
+	temp.SetType(FLOOR);
 
-    // Make sure we clear and release all the data with our global lists
-    m_vTiles.clear();
-    m_vItems.clear();
-    m_vMonsters.clear();
-    m_vNpcs.clear();
-    m_vExits.clear();
+	// Make sure we clear and release all the data with our global lists
+	//z 清除列表
+	m_vTiles.clear();
+	m_vItems.clear();
+	m_vMonsters.clear();
+	m_vNpcs.clear();
+	m_vExits.clear();
 
-    // Reset the current map's name so we know for the Save As / Save menu items
-    strcpy(m_szMapName, "");
+	// Reset the current map's name so we know for the Save As / Save menu items
+	strcpy(m_szMapName, "");
 
-    // Go through the whole map (make it like a 2D array) and assign the
-    // map a tile for every spot (the default tile with grass).  Set it's index too.
-    for(int y = 0; y < MAP_HEIGHT; y++)
-    {
-        for(int x = 0; x < MAP_WIDTH; x++)
-        {
-            // Set the current index for the map and add it to the tile list
-            temp.SetIndex(x, y);
-            m_vTiles.push_back(temp);
-        }
-    }
+	// Go through the whole map (make it like a 2D array) and assign the
+	// map a tile for every spot (the default tile with grass).  Set it's index too.
+	//z 每格都有一个 tile ；有文件名，index，以及属性
+	for(int y = 0; y < MAP_HEIGHT; y++)
+	{
+		for(int x = 0; x < MAP_WIDTH; x++)
+		{
+			// Set the current index for the map and add it to the tile list
+			temp.SetIndex(x, y);
+			m_vTiles.push_back(temp);
+		}
+	}
 
-    // Go through all the tiles that were just assigned and load the default bitmap
-    for(int i = 0; i < (int)m_vTiles.size(); i++)
-        m_vTiles[i].SetBitmap( g_Buffer.LoadABitmap( m_vTiles[i].GetFileName() ) );
+	// Go through all the tiles that were just assigned and load the default bitmap
+	for(int i = 0; i < (int)m_vTiles.size(); i++)
+		m_vTiles[i].SetBitmap( g_Buffer.LoadABitmap( m_vTiles[i].GetFileName() ) );
 }
 
 
@@ -217,17 +221,17 @@ void CMap::SetDefault()
 
 int CMap::GetCurrentTypeSize()
 {
-    // Check the current type and depending on the type, return the list size (# of tiles)
-    if(m_currentTypeFlag == ITEM_TYPE)
-        return (int)g_vItems.size();
-    else if(m_currentTypeFlag == MONSTER_TYPE)
-        return (int)g_vMonsters.size();
-    else if(m_currentTypeFlag == NPC_TYPE)
-        return (int)g_vNpcs.size();
-    else if(m_currentTypeFlag == EXIT_TYPE)
-        return 0;	// Exits of course have no tiles so 0
-    else			// Else default is a normal tile
-        return (int)g_vTiles.size();
+	// Check the current type and depending on the type, return the list size (# of tiles)
+	if(m_currentTypeFlag == ITEM_TYPE)
+		return (int)g_vItems.size();
+	else if(m_currentTypeFlag == MONSTER_TYPE)
+		return (int)g_vMonsters.size();
+	else if(m_currentTypeFlag == NPC_TYPE)
+		return (int)g_vNpcs.size();
+	else if(m_currentTypeFlag == EXIT_TYPE)
+		return 0;	// Exits of course have no tiles so 0
+	else			// Else default is a normal tile
+		return (int)g_vTiles.size();
 }
 
 
@@ -239,17 +243,17 @@ int CMap::GetCurrentTypeSize()
 
 int CMap::GetCurrentListSize()
 {
-    // Check the current type and depending on the type, return the list size (# of tiles)
-    if(m_currentTypeFlag == ITEM_TYPE)
-        return (int)m_vItems.size();
-    else if(m_currentTypeFlag == MONSTER_TYPE)
-        return (int)m_vMonsters.size();
-    else if(m_currentTypeFlag == NPC_TYPE)
-        return (int)m_vNpcs.size();
-    else if(m_currentTypeFlag == EXIT_TYPE)
-        return (int)m_vExits.size();
-    else			// Else default is a normal tile
-        return (int)m_vTiles.size();
+	// Check the current type and depending on the type, return the list size (# of tiles)
+	if(m_currentTypeFlag == ITEM_TYPE)
+		return (int)m_vItems.size();
+	else if(m_currentTypeFlag == MONSTER_TYPE)
+		return (int)m_vMonsters.size();
+	else if(m_currentTypeFlag == NPC_TYPE)
+		return (int)m_vNpcs.size();
+	else if(m_currentTypeFlag == EXIT_TYPE)
+		return (int)m_vExits.size();
+	else			// Else default is a normal tile
+		return (int)m_vTiles.size();
 }
 
 
@@ -258,44 +262,44 @@ int CMap::GetCurrentListSize()
 /////	This function returns a tile from the current <global> list being used
 /////
 ///////////////////////////// GET CURRENT TILE TYPE \\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-
+//z 根据 index 以及当前 tile type 获取对应的CTile类指针
 CTile *CMap::GetCurrentTypeTile(int index)
 {
-    // Check the current type and depending on the type, return desired tile
-    if(m_currentTypeFlag == ITEM_TYPE)
-    {
-        // Make sure index is legal
-        if(index < 0 || index >= (int)g_vItems.size())
-            return NULL;
-        else
-            return &g_vItems[index];
-    }
-    else if(m_currentTypeFlag == MONSTER_TYPE)
-    {
-        // Make sure index is legal
-        if(index < 0 || index >= (int)g_vMonsters.size())
-            return NULL;
-        else
-            return &g_vMonsters[index];
-    }
-    else if(m_currentTypeFlag == NPC_TYPE)
-    {
-        // Make sure index is legal
-        if(index < 0 || index >= (int)g_vNpcs.size())
-            return NULL;
-        else
-            return &g_vNpcs[index];
-    }
-    else if(m_currentTypeFlag == EXIT_TYPE)
-        return NULL;	// Exits have no tiles so return NULL
-    else				// Else means it must be a normal tile
-    {
-        // Make sure index is legal
-        if(index < 0 || index >= (int)g_vTiles.size())
-            return NULL;
-        else
-            return &g_vTiles[index];
-    }
+	// Check the current type and depending on the type, return desired tile
+	if(m_currentTypeFlag == ITEM_TYPE)
+	{
+		// Make sure index is legal
+		if(index < 0 || index >= (int)g_vItems.size())
+			return NULL;
+		else
+			return &g_vItems[index];
+	}
+	else if(m_currentTypeFlag == MONSTER_TYPE)
+	{
+		// Make sure index is legal
+		if(index < 0 || index >= (int)g_vMonsters.size())
+			return NULL;
+		else
+			return &g_vMonsters[index];
+	}
+	else if(m_currentTypeFlag == NPC_TYPE)
+	{
+		// Make sure index is legal
+		if(index < 0 || index >= (int)g_vNpcs.size())
+			return NULL;
+		else
+			return &g_vNpcs[index];
+	}
+	else if(m_currentTypeFlag == EXIT_TYPE)
+		return NULL;	// Exits have no tiles so return NULL
+	else				// Else means it must be a normal tile
+	{
+		// Make sure index is legal
+		if(index < 0 || index >= (int)g_vTiles.size())
+			return NULL;
+		else
+			return &g_vTiles[index];
+	}
 
 }
 
@@ -308,47 +312,47 @@ CTile *CMap::GetCurrentTypeTile(int index)
 
 CTile *CMap::GetCurrentListTile(int index)
 {
-    // Check the current type and depending on the type, return desired tile
-    if(m_currentTypeFlag == ITEM_TYPE)
-    {
-        // Make sure index is legal
-        if(index < 0 || index >= (int)m_vItems.size())
-            return NULL;
-        else
-            return &m_vItems[index];
-    }
-    else if(m_currentTypeFlag == MONSTER_TYPE)
-    {
-        // Make sure index is legal
-        if(index < 0 || index >= (int)m_vMonsters.size())
-            return NULL;
-        else
-            return &m_vMonsters[index];
-    }
-    else if(m_currentTypeFlag == NPC_TYPE)
-    {
-        // Make sure index is legal
-        if(index < 0 || index >= (int)m_vNpcs.size())
-            return NULL;
-        else
-            return &m_vNpcs[index];
-    }
-    else if(m_currentTypeFlag == EXIT_TYPE)
-    {
-        // Make sure index is legal
-        if(index < 0 || index >= (int)m_vExits.size())
-            return NULL;
-        else
-            return &m_vExits[index];	// Exits are saved on the map so return a exit
-    }
-    else								// Else return a tile from the normal tile list
-    {
-        // Make sure index is legal
-        if(index < 0 || index >= (int)m_vTiles.size())
-            return NULL;
-        else
-            return &m_vTiles[index];
-    }
+	// Check the current type and depending on the type, return desired tile
+	if(m_currentTypeFlag == ITEM_TYPE)
+	{
+		// Make sure index is legal
+		if(index < 0 || index >= (int)m_vItems.size())
+			return NULL;
+		else
+			return &m_vItems[index];
+	}
+	else if(m_currentTypeFlag == MONSTER_TYPE)
+	{
+		// Make sure index is legal
+		if(index < 0 || index >= (int)m_vMonsters.size())
+			return NULL;
+		else
+			return &m_vMonsters[index];
+	}
+	else if(m_currentTypeFlag == NPC_TYPE)
+	{
+		// Make sure index is legal
+		if(index < 0 || index >= (int)m_vNpcs.size())
+			return NULL;
+		else
+			return &m_vNpcs[index];
+	}
+	else if(m_currentTypeFlag == EXIT_TYPE)
+	{
+		// Make sure index is legal
+		if(index < 0 || index >= (int)m_vExits.size())
+			return NULL;
+		else
+			return &m_vExits[index];	// Exits are saved on the map so return a exit
+	}
+	else								// Else return a tile from the normal tile list
+	{
+		// Make sure index is legal
+		if(index < 0 || index >= (int)m_vTiles.size())
+			return NULL;
+		else
+			return &m_vTiles[index];
+	}
 }
 
 
@@ -357,16 +361,16 @@ CTile *CMap::GetCurrentListTile(int index)
 /////	This takes a file name and returns it's type (i.e. wall, floor, etc...)
 /////
 ///////////////////////////////// SET TILE TYPE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-
+//z 根据路径？得到tile type
 char SetTileType(char *szFile)
 {
-    // See if the substring "*_FILE" is in the current file, then return type
-    if(strstr(szFile, WALL_FILE))
-        return WALL;
-    else if(strstr(szFile, DOOR_FILE))
-        return DOOR;
-    else
-        return FLOOR;	// It must be a normal floor tile then
+	// See if the substring "*_FILE" is in the current file, then return type
+	if(strstr(szFile, WALL_FILE))
+		return WALL;
+	else if(strstr(szFile, DOOR_FILE))
+		return DOOR;
+	else
+		return FLOOR;	// It must be a normal floor tile then
 }
 
 
@@ -378,85 +382,85 @@ char SetTileType(char *szFile)
 
 void LoadTileType(char *szDir, int type)
 {
-    WIN32_FIND_DATA findFileData;
-    HANDLE hFind;
-    char szFile[MAX_PATH] = {0};
+	WIN32_FIND_DATA findFileData;
+	HANDLE hFind;
+	char szFile[MAX_PATH] = {0};
 
-    // We copy the file to a temp variable and add a * so that
-    // FindFirstFile() knows to look in the desired directory at all files.
-    strcpy(szFile, szDir);
-    strcat(szFile, "*");
+	// We copy the file to a temp variable and add a * so that
+	// FindFirstFile() knows to look in the desired directory at all files.
+	strcpy(szFile, szDir);
+	strcat(szFile, "*");
 
-    // Find the first file in the directory (usually "." or "..")
-    hFind = FindFirstFile(szFile, &findFileData);
+	// Find the first file in the directory (usually "." or "..")
+	hFind = FindFirstFile(szFile, &findFileData);
 
-    // Make sure we have a valid handle and a file was found
-    if(hFind == INVALID_HANDLE_VALUE)
-    {
-        // Print an error message so we know we need to add files, then quit
-        sprintf(szFile, "Unable to find tiles in %s", szDir);
-        MessageBox(g_hWnd, szFile, "Error", MB_OK);
-        PostQuitMessage(0);
-    }
-    else
-    {
-        // Continue to look in this directory until we run out of files
-        while (FindNextFile(hFind, &findFileData) != 0)
-        {
-            // Store the current file found with it's respective directory
-            sprintf(szFile, "%s\\%s", szDir, findFileData.cFileName);
+	// Make sure we have a valid handle and a file was found
+	if(hFind == INVALID_HANDLE_VALUE)
+	{
+		// Print an error message so we know we need to add files, then quit
+		sprintf(szFile, "Unable to find tiles in %s", szDir);
+		MessageBox(g_hWnd, szFile, "Error", MB_OK);
+		PostQuitMessage(0);
+	}
+	else
+	{
+		// Continue to look in this directory until we run out of files
+		while (FindNextFile(hFind, &findFileData) != 0)
+		{
+			// Store the current file found with it's respective directory
+			sprintf(szFile, "%s\\%s", szDir, findFileData.cFileName);
 
-            // Check if it's a bmp file using a simple substring check
-            if(strstr(findFileData.cFileName, ".bmp"))
-            {
-                // Unfortunately, even though our classes are inherited from
-                // the same base class, because we are using vectors (which are
-                // templates - handled by the preprocessor) we can't do much
-                // polymorphism in many of our functions.  Instead, we do checks
-                // on the type being passed in.  Sorry about that :)
+			// Check if it's a bmp file using a simple substring check
+			if(strstr(findFileData.cFileName, ".bmp"))
+			{
+				// Unfortunately, even though our classes are inherited from
+				// the same base class, because we are using vectors (which are
+				// templates - handled by the preprocessor) we can't do much
+				// polymorphism in many of our functions.  Instead, we do checks
+				// on the type being passed in.  Sorry about that :)
 
-                // If the path we are looking in is for items
-                if(type == ITEM_TYPE)
-                {
-                    // Initialize a temp Item and add it to our global list
-                    CItem temp;
-                    temp.SetFileName(szFile);
-                    temp.SetType( ITEM );
-                    g_vItems.push_back(temp);
-                }
-                // If the path we are looking in is for monsters
-                else if(type == MONSTER_TYPE)
-                {
-                    // Initialize a temp monster and add it to our global list
-                    CMonster temp;
-                    temp.SetFileName(szFile);
-                    temp.SetType( MONSTER );
-                    g_vMonsters.push_back(temp);
-                }
-                // If the path we are looking in is for Npcs
-                else if(type == NPC_TYPE)
-                {
-                    // Initialize a temp npc and add it to our global list
-                    CNpc temp;
-                    temp.SetFileName(szFile);
-                    temp.SetType( NPC );
-                    g_vNpcs.push_back(temp);
-                }
-                // Else the path must be for normal tiles
-                else
-                {
-                    // Initialize a temp tile and add it to our global list
-                    CTile temp;
-                    temp.SetFileName(szFile);
-                    temp.SetType( SetTileType( temp.GetFileName() ) );
-                    g_vTiles.push_back(temp);
-                }
-            }
-        }
+				// If the path we are looking in is for items
+				if(type == ITEM_TYPE)
+				{
+					// Initialize a temp Item and add it to our global list
+					CItem temp;
+					temp.SetFileName(szFile);
+					temp.SetType( ITEM );
+					g_vItems.push_back(temp);
+				}
+				// If the path we are looking in is for monsters
+				else if(type == MONSTER_TYPE)
+				{
+					// Initialize a temp monster and add it to our global list
+					CMonster temp;
+					temp.SetFileName(szFile);
+					temp.SetType( MONSTER );
+					g_vMonsters.push_back(temp);
+				}
+				// If the path we are looking in is for Npcs
+				else if(type == NPC_TYPE)
+				{
+					// Initialize a temp npc and add it to our global list
+					CNpc temp;
+					temp.SetFileName(szFile);
+					temp.SetType( NPC );
+					g_vNpcs.push_back(temp);
+				}
+				// Else the path must be for normal tiles
+				else
+				{
+					// Initialize a temp tile and add it to our global list
+					CTile temp;
+					temp.SetFileName(szFile);
+					temp.SetType( SetTileType( temp.GetFileName() ) );
+					g_vTiles.push_back(temp);
+				}
+			}
+		}
 
-        // Destroy the handle and close the files
-        FindClose(hFind);
-    }
+		// Destroy the handle and close the files
+		FindClose(hFind);
+	}
 }
 
 
@@ -468,25 +472,28 @@ void LoadTileType(char *szDir, int type)
 
 int LoadTiles()
 {
-    // Here we load all the tile types from their respective directories
-    LoadTileType(TILES_DIR, TILE_TYPE);
-    LoadTileType(ITEMS_DIR, ITEM_TYPE);
-    LoadTileType(MONSTERS_DIR, MONSTER_TYPE);
-    LoadTileType(NPCS_DIR, NPC_TYPE);
+	// Here we load all the tile types from their respective directories
+	//z 不同类型的 tiles 放在不同目录下。
+	LoadTileType(TILES_DIR, TILE_TYPE);
+	LoadTileType(ITEMS_DIR, ITEM_TYPE);
+	LoadTileType(MONSTERS_DIR, MONSTER_TYPE);
+	LoadTileType(NPCS_DIR, NPC_TYPE);
 
-    // Here we go through all of the global tiles and load their bitmaps
-    for(int i = 0; i < (int)g_vTiles.size(); i++)
-        g_vTiles[i].SetBitmap(g_Buffer.LoadABitmap(g_vTiles[i].GetFileName()));
-    for(int i = 0; i < (int)g_vItems.size(); i++)
-        g_vItems[i].SetBitmap(g_Buffer.LoadABitmap(g_vItems[i].GetFileName()));
-    for(int i = 0; i < (int)g_vMonsters.size(); i++)
-        g_vMonsters[i].SetBitmap(g_Buffer.LoadABitmap(g_vMonsters[i].GetFileName()));
-    for(int i = 0; i < (int)g_vNpcs.size(); i++)
-        g_vNpcs[i].SetBitmap(g_Buffer.LoadABitmap(g_vNpcs[i].GetFileName()));
+	//z 多次载入同一个文件是否会得到同一个句柄？否则这样载入多次，会不会造成内存的重复占用？
 
-    // We return the tile's size because that is our default type.
-    // We also subtract the MAP_HEIGHT - 1 to offset the scroll bar max position.
-    return (int)g_vTiles.size() - MAP_HEIGHT - 1;
+	// Here we go through all of the global tiles and load their bitmaps
+	for(int i = 0; i < (int)g_vTiles.size(); i++)
+		g_vTiles[i].SetBitmap(g_Buffer.LoadABitmap(g_vTiles[i].GetFileName()));
+	for(int i = 0; i < (int)g_vItems.size(); i++)
+		g_vItems[i].SetBitmap(g_Buffer.LoadABitmap(g_vItems[i].GetFileName()));
+	for(int i = 0; i < (int)g_vMonsters.size(); i++)
+		g_vMonsters[i].SetBitmap(g_Buffer.LoadABitmap(g_vMonsters[i].GetFileName()));
+	for(int i = 0; i < (int)g_vNpcs.size(); i++)
+		g_vNpcs[i].SetBitmap(g_Buffer.LoadABitmap(g_vNpcs[i].GetFileName()));
+
+	// We return the tile's size because that is our default type.
+	// We also subtract the MAP_HEIGHT - 1 to offset the scroll bar max position.
+	return (int)g_vTiles.size() - MAP_HEIGHT - 1;
 }
 
 //////////// *** NEW *** ////////// *** NEW *** ///////////// *** NEW *** ////////////////////

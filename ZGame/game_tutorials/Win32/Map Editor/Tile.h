@@ -70,65 +70,74 @@
 // These are the types of items we can have, used for equipping items to a player
 enum eItemTypes
 {
-    kItem = 0,
-    kHead,
-    kChest,
-    kWeapon,
-    kFeet
+	kItem = 0,
+	kHead,
+	kChest,
+	kWeapon,
+	kFeet
 };
 
-
+//z 用于处理各种 tile 类型。
 // Our <Base Class> for each tile type.
 // This is then inherited from to create other tile types.
 class CTile
 {
 public:
-    CTile();	// The constructor (initializing function)
+	CTile();	// The constructor (initializing function)
+	
+	//z set 系列函数都没有返回值
+	// Our standard "Set" functions for our protected data
+	//z 设置bmp句柄
+	void SetBitmap(HBITMAP bmpNew)
+	{
+		m_bmpTile = bmpNew;
+	}
+	//z 设置文件名
+	void SetFileName(char *szNew)
+	{
+		strcpy(m_szFile, szNew);
+	}
+	//z 设置类型
+	void SetType(char newType)
+	{
+		m_type = newType;
+	}
 
-    // Our standard "Set" functions for our protected data
-    void SetBitmap(HBITMAP bmpNew)
-    {
-        m_bmpTile = bmpNew;
-    }
-    void SetFileName(char *szNew)
-    {
-        strcpy(m_szFile, szNew);
-    }
-    void SetType(char newType)
-    {
-        m_type = newType;
-    }
-    void SetIndex(int x, int y)
-    {
-        m_index.x = x;
-        m_index.y = y;
-    }
+	void SetIndex(int x, int y)
+	{
+		m_index.x = x;
+		m_index.y = y;
+	}
 
-    // Our standard "Get" functions for the protected data
-    HBITMAP GetBitmap()
-    {
-        return m_bmpTile;
-    }
-    char *GetFileName()
-    {
-        return m_szFile;
-    }
-    char GetType()
-    {
-        return m_type;
-    }
-    POINT GetIndex()
-    {
-        return m_index;
-    }
+	// Our standard "Get" functions for the protected data
+	HBITMAP GetBitmap()
+	{
+		return m_bmpTile;
+	}
+	char *GetFileName()
+	{
+		return m_szFile;
+	}
+	char GetType()
+	{
+		return m_type;
+	}
+	POINT GetIndex()
+	{
+		return m_index;
+	}
 
 // Set it protected so that inherited classes can access if necessary
+//z protected，继承类可以访问。
 protected:
-
-    HBITMAP m_bmpTile;				// The handle to the tile's bitmap
-    char m_szFile[MAX_PATH];		// The file name of the bitmap
-    char m_type;					// The type of the tile
-    POINT m_index;					// The index on the map of the tile
+	//z 图形文件句柄
+	HBITMAP m_bmpTile;				// The handle to the tile's bitmap
+	//z 文件名称
+	char m_szFile[MAX_PATH];		// The file name of the bitmap
+	//z tile类型
+	char m_type;					// The type of the tile
+	//z tile 在 map 上的 index 。
+	POINT m_index;					// The index on the map of the tile
 };
 
 
@@ -137,60 +146,60 @@ protected:
 class CItem : public CTile
 {
 public:
+	CItem();			// The constructor
 
-    CItem();			// The constructor
+	// Our standard "Set" functions for private data
+	void SetLifeInc(int newInc)
+	{
+		m_lifeInc = newInc;
+	}
+	void SetStrengthInc(int newInc)
+	{
+		m_strengthInc = newInc;
+	}
+	void SetProtectionInc(int newInc)
+	{
+		m_protectionInc = newInc;
+	}
+	void SetName(char *szNew)
+	{
+		strcpy(m_szItem, szNew);
+	}
+	void SetItemType(int type)
+	{
+		m_itemType = type;
+	}
 
-    // Our standard "Set" functions for private data
-    void SetLifeInc(int newInc)
-    {
-        m_lifeInc = newInc;
-    }
-    void SetStrengthInc(int newInc)
-    {
-        m_strengthInc = newInc;
-    }
-    void SetProtectionInc(int newInc)
-    {
-        m_protectionInc = newInc;
-    }
-    void SetName(char *szNew)
-    {
-        strcpy(m_szItem, szNew);
-    }
-    void SetItemType(int type)
-    {
-        m_itemType = type;
-    }
-
-    // Our standard "Get" functions for private data
-    int GetItemType()
-    {
-        return m_itemType;
-    }
-    int GetLifeInc()
-    {
-        return m_lifeInc;
-    }
-    int GetStrengthInc()
-    {
-        return m_strengthInc;
-    }
-    int GetProtectionInc()
-    {
-        return m_protectionInc;
-    }
-    char *GetItemName()
-    {
-        return m_szItem;
-    }
+	// Our standard "Get" functions for private data
+	int GetItemType()
+	{
+		return m_itemType;
+	}
+	int GetLifeInc()
+	{
+		return m_lifeInc;
+	}
+	int GetStrengthInc()
+	{
+		return m_strengthInc;
+	}
+	int GetProtectionInc()
+	{
+		return m_protectionInc;
+	}
+	char *GetItemName()
+	{
+		return m_szItem;
+	}
 
 private:
-
-    int m_itemType;					// The type of item (kWeapon, kItem, kHead, kChest, kFeet)
-    int m_lifeInc;					// The life increase for item
-    int m_strengthInc;				// The strength increase for this item
-    int m_protectionInc;			// The protection increase for this item
-    char m_szItem[MAX_NAME_LEN];	// The name of the item
+	//z 后面列出了 item 类型，看起来是装备
+	int m_itemType;					// The type of item (kWeapon, kItem, kHead, kChest, kFeet)
+	//z 然后每样装备都有对应的属性；属性增强。
+	int m_lifeInc;					// The life increase for item
+	int m_strengthInc;				// The strength increase for this item
+	int m_protectionInc;			// The protection increase for this item
+	char m_szItem[MAX_NAME_LEN];	// The name of the item
 };
 
 
@@ -199,50 +208,50 @@ class CMonster : public CTile
 {
 public:
 
-    CMonster();		// The constructor
+	CMonster();		// The constructor
 
-    // Our standard "Set" functions for the private data
-    void SetLife(int newLife)
-    {
-        m_life = newLife;
-    }
-    void SetStrength(int newStrength)
-    {
-        m_strength = newStrength;
-    }
-    void SetName(char *szNew)
-    {
-        strcpy(m_szMonster, szNew);
-    }
-    void SetSpeed(int newSpeed)
-    {
-        m_speed = newSpeed;
-    }
+	// Our standard "Set" functions for the private data
+	void SetLife(int newLife)
+	{
+		m_life = newLife;
+	}
+	void SetStrength(int newStrength)
+	{
+		m_strength = newStrength;
+	}
+	void SetName(char *szNew)
+	{
+		strcpy(m_szMonster, szNew);
+	}
+	void SetSpeed(int newSpeed)
+	{
+		m_speed = newSpeed;
+	}
 
-    // Our standard "Get" functions for the private data
-    int GetLife()
-    {
-        return m_life;
-    }
-    int GetStrength()
-    {
-        return m_strength;
-    }
-    int GetSpeed()
-    {
-        return m_speed;
-    }
-    char *GetName()
-    {
-        return m_szMonster;
-    }
+	// Our standard "Get" functions for the private data
+	int GetLife()
+	{
+		return m_life;
+	}
+	int GetStrength()
+	{
+		return m_strength;
+	}
+	int GetSpeed()
+	{
+		return m_speed;
+	}
+	char *GetName()
+	{
+		return m_szMonster;
+	}
 
 private:
 
-    int m_life;						// The life of the monster
-    int m_strength;					// The strength of the monster
-    int m_speed;					// The speed of the monster
-    char m_szMonster[MAX_NAME_LEN]; // The name of the monster
+	int m_life;						// The life of the monster
+	int m_strength;					// The strength of the monster
+	int m_speed;					// The speed of the monster
+	char m_szMonster[MAX_NAME_LEN]; // The name of the monster
 };
 
 
@@ -251,59 +260,59 @@ class CNpc : public CTile
 {
 public:
 
-    CNpc();			// The constructor
+	CNpc();			// The constructor
 
-    // Our standard "Set" functions for the private data
-    void SetLife(int newLife)
-    {
-        m_life = newLife;
-    }
-    void SetStrength(int newStrength)
-    {
-        m_strength = newStrength;
-    }
-    void SetName(char *szNew)
-    {
-        strcpy(m_szName, szNew);
-    }
-    void SetMessage(char *szNew)
-    {
-        strncpy(m_szMessage, szNew, MAX_MESSAGE_LEN);
-    }
-    void SetSpeed(int newSpeed)
-    {
-        m_speed = newSpeed;
-    }
+	// Our standard "Set" functions for the private data
+	void SetLife(int newLife)
+	{
+		m_life = newLife;
+	}
+	void SetStrength(int newStrength)
+	{
+		m_strength = newStrength;
+	}
+	void SetName(char *szNew)
+	{
+		strcpy(m_szName, szNew);
+	}
+	void SetMessage(char *szNew)
+	{
+		strncpy(m_szMessage, szNew, MAX_MESSAGE_LEN);
+	}
+	void SetSpeed(int newSpeed)
+	{
+		m_speed = newSpeed;
+	}
 
-    // Our standard "Get" functions for the private data
-    int GetLife()
-    {
-        return m_life;
-    }
-    int GetStrength()
-    {
-        return m_strength;
-    }
-    int GetSpeed()
-    {
-        return m_speed;
-    }
-    char *GetName()
-    {
-        return m_szName;
-    }
-    char *GetMessage()
-    {
-        return m_szMessage;
-    }
+	// Our standard "Get" functions for the private data
+	int GetLife()
+	{
+		return m_life;
+	}
+	int GetStrength()
+	{
+		return m_strength;
+	}
+	int GetSpeed()
+	{
+		return m_speed;
+	}
+	char *GetName()
+	{
+		return m_szName;
+	}
+	char *GetMessage()
+	{
+		return m_szMessage;
+	}
 
 private:
 
-    int m_life;						// The life of the Npc
-    int m_strength;					// The strength of the Npc
-    int m_speed;					// The speed of the Npc
-    char m_szName[MAX_NAME_LEN];	// The name of the Npc
-    char m_szMessage[MAX_MESSAGE_LEN];	// The message that the Npc says when you talk to them
+	int m_life;						// The life of the Npc
+	int m_strength;					// The strength of the Npc
+	int m_speed;					// The speed of the Npc
+	char m_szName[MAX_NAME_LEN];	// The name of the Npc
+	char m_szMessage[MAX_MESSAGE_LEN];	// The message that the Npc says when you talk to them
 };
 
 
@@ -312,95 +321,93 @@ class CExit : public CTile
 {
 public:
 
-    CExit();			// The constructor
+	CExit();			// The constructor
 
-    // Our standard "Set" functions for the private data
-    void SetCurrentMap(char *szCurrent)
-    {
-        strcpy(m_szCurrentMap, szCurrent);
-    }
-    void SetNewMap(char *szNew)
-    {
-        strcpy(m_szNewMap, szNew);
-    }
-    void SetNewPos(POINT position)
-    {
-        m_newPosition = position;
-    }
+	// Our standard "Set" functions for the private data
+	void SetCurrentMap(char *szCurrent)
+	{
+		strcpy(m_szCurrentMap, szCurrent);
+	}
+	void SetNewMap(char *szNew)
+	{
+		strcpy(m_szNewMap, szNew);
+	}
+	void SetNewPos(POINT position)
+	{
+		m_newPosition = position;
+	}
 
-    // Our standard "Get" functions for the private data
-    char *GetCurrentMap()
-    {
-        return m_szCurrentMap;
-    }
-    char *GetNewMap()
-    {
-        return m_szNewMap;
-    }
-    POINT GetNewPos()
-    {
-        return m_newPosition;
-    }
+	// Our standard "Get" functions for the private data
+	char *GetCurrentMap()
+	{
+		return m_szCurrentMap;
+	}
+	char *GetNewMap()
+	{
+		return m_szNewMap;
+	}
+	POINT GetNewPos()
+	{
+		return m_newPosition;
+	}
 
 private:
-
-    char m_szCurrentMap[MAX_PATH];	// The current map name of this exit
-    char m_szNewMap[MAX_PATH];		// The destination map's name
-    POINT m_newPosition;			// The new position on the next map to exit to
+	char m_szCurrentMap[MAX_PATH];	// The current map name of this exit
+	char m_szNewMap[MAX_PATH];		// The destination map's name
+	POINT m_newPosition;			// The new position on the next map to exit to
 };
-
 
 // This class handles most of our map functionality
 class CMap
 {
 public:
 
-    CMap();			// The constructor
+	CMap();			// The constructor
 
-    // This resets the map to green grass
-    void SetDefault();
+	// This resets the map to green grass
+	void SetDefault();
 
-    // This draws our map
-    void Draw();
+	// This draws our map
+	void Draw();
 
-    // These set and get the map name
-    void SetMapName(char *szName)
-    {
-        strcpy(m_szMapName, szName);
-    }
-    char *GetMapName()
-    {
-        return m_szMapName;
-    }
+	// These set and get the map name
+	void SetMapName(char *szName)
+	{
+		strcpy(m_szMapName, szName);
+	}
+	char *GetMapName()
+	{
+		return m_szMapName;
+	}
 
-    // These set and get the current tile type being used
-    void SetCurrentType(int type)
-    {
-        m_currentTypeFlag = type;
-    }
-    int GetCurrentType()
-    {
-        return m_currentTypeFlag;
-    }
+	// These set and get the current tile type being used
+	void SetCurrentType(int type)
+	{
+		m_currentTypeFlag = type;
+	}
+	int GetCurrentType()
+	{
+		return m_currentTypeFlag;
+	}
 
-    // These get the current global list's size and specific tile
-    int GetCurrentTypeSize();
-    CTile *GetCurrentTypeTile(int index);
+	// These get the current global list's size and specific tile
+	int GetCurrentTypeSize();
+	CTile *GetCurrentTypeTile(int index);
 
-    // These get the current map list's size and specific tile
-    int GetCurrentListSize();
-    CTile *GetCurrentListTile(int index);
+	// These get the current map list's size and specific tile
+	int GetCurrentListSize();
+	CTile *GetCurrentListTile(int index);
 
 private:
 
-    char m_szMapName[MAX_PATH];		// The name of the map
-    int m_currentTypeFlag;			// The flag that determines the list type in the tool bar
+	char m_szMapName[MAX_PATH];		// The name of the map
+	int m_currentTypeFlag;			// The flag that determines the list type in the tool bar
 
-    vector<CTile> m_vTiles;			// The normal map tiles list on our map
-    vector<CItem> m_vItems;			// The item list for our map
-    vector<CMonster> m_vMonsters;	// The monster list for our map
-    vector<CNpc>  m_vNpcs;			// The npc list for our map
-    vector<CExit> m_vExits;			// The exit list for our map
+	vector<CTile> m_vTiles;			// The normal map tiles list on our map
+	vector<CItem> m_vItems;			// The item list for our map
+	vector<CMonster> m_vMonsters;	// The monster list for our map
+	vector<CNpc>  m_vNpcs;			// The npc list for our map
+	vector<CExit> m_vExits;			// The exit list for our map
 };
 
 // This loads the tiles for the global tile lists and returns the size for the scroll bar
