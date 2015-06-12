@@ -28,7 +28,7 @@
 
 CBuffer::CBuffer():hWnd(0),hCompBitmap(0),hOldCompBitmap(0),hOldDispBitmap(0),hdcFront(0),hdcBack(0),oldPen(0),oldBrush(0)
 {
-    memset(&scrnRect, 0, sizeof(RECT));
+	memset(&scrnRect, 0, sizeof(RECT));
 }
 
 
@@ -44,22 +44,22 @@ CBuffer::CBuffer():hWnd(0),hCompBitmap(0),hOldCompBitmap(0),hOldDispBitmap(0),hd
 
 CBuffer::~CBuffer()
 {
-    // We need to make sure if we used a pen or brush the original
-    // pen and brushes are restored so there isn't a memory leak.
-    if(oldPen)
-    {
-        HPEN setPen = (HPEN)SelectObject(hdcBack, oldPen);
-        DeleteObject(setPen);
-    }
+	// We need to make sure if we used a pen or brush the original
+	// pen and brushes are restored so there isn't a memory leak.
+	if(oldPen)
+	{
+		HPEN setPen = (HPEN)SelectObject(hdcBack, oldPen);
+		DeleteObject(setPen);
+	}
 
-    if(oldBrush)
-    {
-        HBRUSH setBrush = (HBRUSH)SelectObject(hdcBack, oldBrush);
-        DeleteObject(setBrush);
-    }
+	if(oldBrush)
+	{
+		HBRUSH setBrush = (HBRUSH)SelectObject(hdcBack, oldBrush);
+		DeleteObject(setBrush);
+	}
 
-    // Free our back buffer information
-    FreeBuffers();
+	// Free our back buffer information
+	FreeBuffers();
 }
 
 
@@ -76,29 +76,29 @@ CBuffer::~CBuffer()
 
 void CBuffer::CreateDoubleBuffering(HWND hWndNew)
 {
-    // Assign the window handle to our structure
-    hWnd = hWndNew;
+	// Assign the window handle to our structure
+	hWnd = hWndNew;
 
-    // Store the client rectangle in our structure
-    GetClientRect(hWnd, &(scrnRect));
+	// Store the client rectangle in our structure
+	GetClientRect(hWnd, &(scrnRect));
 
-    // Get a handle to the device context and store it as the front buffer
-    hdcFront = GetDC(hWnd);
+	// Get a handle to the device context and store it as the front buffer
+	hdcFront = GetDC(hWnd);
 
-    // Create a compatible device context for the backbuffer
-    hdcBack = CreateCompatibleDC(hdcFront);
+	// Create a compatible device context for the backbuffer
+	hdcBack = CreateCompatibleDC(hdcFront);
 
-    // Create another hdc to store the bitmap in before the backbuffer
-    hdcBitmap = CreateCompatibleDC(hdcFront);
+	// Create another hdc to store the bitmap in before the backbuffer
+	hdcBitmap = CreateCompatibleDC(hdcFront);
 
-    // Create a dummy bitmap handle to store in the front buffer
-    hCompBitmap = CreateCompatibleBitmap(hdcFront, scrnRect.right, scrnRect.bottom);
+	// Create a dummy bitmap handle to store in the front buffer
+	hCompBitmap = CreateCompatibleBitmap(hdcFront, scrnRect.right, scrnRect.bottom);
 
-    // Select the bitmap handle into the back buffer to make it the same size as the front hdc
-    hOldCompBitmap = (HBITMAP)SelectObject(hdcBack, hCompBitmap);
+	// Select the bitmap handle into the back buffer to make it the same size as the front hdc
+	hOldCompBitmap = (HBITMAP)SelectObject(hdcBack, hCompBitmap);
 
-    // Also select it int the bitmap hdc so we can store its original handle to put back later
-    hOldDispBitmap = (HBITMAP)SelectObject(hdcBack, hCompBitmap);
+	// Also select it int the bitmap hdc so we can store its original handle to put back later
+	hOldDispBitmap = (HBITMAP)SelectObject(hdcBack, hCompBitmap);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -113,8 +113,8 @@ void CBuffer::CreateDoubleBuffering(HWND hWndNew)
 
 HBITMAP CBuffer::LoadABitmap(LPSTR szFileName)
 {
-    // Load the bitmap and return the handle to the bitmap we just loaded
-    return (HBITMAP)LoadImage(NULL, szFileName, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+	// Load the bitmap and return the handle to the bitmap we just loaded
+	return (HBITMAP)LoadImage(NULL, szFileName, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 }
 
 
@@ -131,17 +131,17 @@ HBITMAP CBuffer::LoadABitmap(LPSTR szFileName)
 
 void CBuffer::DisplayBitmap(HBITMAP hBitmap, int x, int y)
 {
-    // Used to hold information about the bitmap
-    BITMAP info = {0};
+	// Used to hold information about the bitmap
+	BITMAP info = {0};
 
-    // Get the bitmap's information
-    GetObject(hBitmap, sizeof(BITMAP), &info);
+	// Get the bitmap's information
+	GetObject(hBitmap, sizeof(BITMAP), &info);
 
-    // Select the bitmap handle into the extra hdc that holds the bitmap
-    SelectObject(hdcBitmap, hBitmap);
+	// Select the bitmap handle into the extra hdc that holds the bitmap
+	SelectObject(hdcBitmap, hBitmap);
 
-    // Blit the bitmap hdc into the backbuffer
-    BitBlt(hdcBack, x, y, info.bmWidth, info.bmHeight, hdcBitmap, 0, 0, SRCCOPY);
+	// Blit the bitmap hdc into the backbuffer
+	BitBlt(hdcBack, x, y, info.bmWidth, info.bmHeight, hdcBitmap, 0, 0, SRCCOPY);
 }
 
 
@@ -159,14 +159,14 @@ void CBuffer::DisplayBitmap(HBITMAP hBitmap, int x, int y)
 
 void CBuffer::DisplayBitmap(HBITMAP hBitmap, int x, int y, RECT rPortion)
 {
-    // Assign the width and height to shorten variables.
-    int width = rPortion.right - rPortion.left, height = rPortion.bottom - rPortion.top;
+	// Assign the width and height to shorten variables.
+	int width = rPortion.right - rPortion.left, height = rPortion.bottom - rPortion.top;
 
-    // Select the bitmap handle into the extra hdc that holds the bitmap
-    SelectObject(hdcBitmap, hBitmap);
+	// Select the bitmap handle into the extra hdc that holds the bitmap
+	SelectObject(hdcBitmap, hBitmap);
 
-    // Blit the bitmap hdc into the backbuffer using the transparent color 0 (black)
-    BOOL result = BitBlt(hdcBack, x, y, width, height, hdcBitmap, rPortion.left, rPortion.top, SRCCOPY);
+	// Blit the bitmap hdc into the backbuffer using the transparent color 0 (black)
+	BOOL result = BitBlt(hdcBack, x, y, width, height, hdcBitmap, rPortion.left, rPortion.top, SRCCOPY);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -184,17 +184,17 @@ void CBuffer::DisplayBitmap(HBITMAP hBitmap, int x, int y, RECT rPortion)
 
 void CBuffer::DisplayTransparentBitmap(HBITMAP hBitmap, int x, int y)
 {
-    // Used to hold information about the bitmap
-    BITMAP info = {0};
+	// Used to hold information about the bitmap
+	BITMAP info = {0};
 
-    // Get the bitmap's information
-    GetObject(hBitmap, sizeof(BITMAP), &info);
+	// Get the bitmap's information
+	GetObject(hBitmap, sizeof(BITMAP), &info);
 
-    // Select the bitmap handle into the extra hdc that holds the bitmap
-    SelectObject(hdcBitmap, hBitmap);
+	// Select the bitmap handle into the extra hdc that holds the bitmap
+	SelectObject(hdcBitmap, hBitmap);
 
-    TransparentBlt(hdcBack, x, y, info.bmWidth, info.bmHeight,
-                   hdcBitmap, 0, 0, info.bmWidth, info.bmHeight, TRANSPARENT_COLOR);
+	TransparentBlt(hdcBack, x, y, info.bmWidth, info.bmHeight,
+				   hdcBitmap, 0, 0, info.bmWidth, info.bmHeight, TRANSPARENT_COLOR);
 }
 
 
@@ -214,14 +214,14 @@ void CBuffer::DisplayTransparentBitmap(HBITMAP hBitmap, int x, int y)
 
 void CBuffer::DisplayTransparentBitmap(HBITMAP hBitmap, int x, int y, RECT rPortion)
 {
-    // Assign the width and height to shorten variables.
-    int width = rPortion.right - rPortion.left, height = rPortion.bottom - rPortion.top;
+	// Assign the width and height to shorten variables.
+	int width = rPortion.right - rPortion.left, height = rPortion.bottom - rPortion.top;
 
-    // Select the bitmap handle into the extra hdc that holds the bitmap
-    SelectObject(hdcBitmap, hBitmap);
+	// Select the bitmap handle into the extra hdc that holds the bitmap
+	SelectObject(hdcBitmap, hBitmap);
 
-    TransparentBlt(hdcBack, x, y, width, height, hdcBitmap,
-                   rPortion.left, rPortion.top, width, height, TRANSPARENT_COLOR);
+	TransparentBlt(hdcBack, x, y, width, height, hdcBitmap,
+				   rPortion.left, rPortion.top, width, height, TRANSPARENT_COLOR);
 }
 
 
@@ -237,21 +237,21 @@ void CBuffer::DisplayTransparentBitmap(HBITMAP hBitmap, int x, int y, RECT rPort
 
 void CBuffer::DrawBackgroundImage(HBITMAP hBitmap)
 {
-    // This will hold our information on the bitmap
-    BITMAP bitmapInfo;
+	// This will hold our information on the bitmap
+	BITMAP bitmapInfo;
 
-    // Select the bitmap handle into the extra hdc that holds the bitmap
-    HBITMAP hOldBitmap = (HBITMAP) SelectObject(hdcBitmap, hBitmap);
+	// Select the bitmap handle into the extra hdc that holds the bitmap
+	HBITMAP hOldBitmap = (HBITMAP) SelectObject(hdcBitmap, hBitmap);
 
-    // Get the width and height of the background bitmap
-    GetObject(hBitmap, sizeof(BITMAP), &bitmapInfo);
+	// Get the width and height of the background bitmap
+	GetObject(hBitmap, sizeof(BITMAP), &bitmapInfo);
 
-    // Blit the bitmap hdc into the backbuffer using the transparent color 0 (black)
-    BOOL result = StretchBlt(hdcBack, 0, 0, scrnRect.right, scrnRect.bottom,
-                             hdcBitmap, 0, 0, bitmapInfo.bmWidth, bitmapInfo.bmHeight, SRCCOPY);
+	// Blit the bitmap hdc into the backbuffer using the transparent color 0 (black)
+	BOOL result = StretchBlt(hdcBack, 0, 0, scrnRect.right, scrnRect.bottom,
+							 hdcBitmap, 0, 0, bitmapInfo.bmWidth, bitmapInfo.bmHeight, SRCCOPY);
 
-    // Select the old handle to the bitmap back where it was to clean up
-    SelectObject(hdcBitmap, hOldBitmap);
+	// Select the old handle to the bitmap back where it was to clean up
+	SelectObject(hdcBitmap, hOldBitmap);
 }
 
 
@@ -267,8 +267,8 @@ void CBuffer::DrawBackgroundImage(HBITMAP hBitmap)
 
 void CBuffer::ClearScreen(int color)
 {
-    // Fill the backbuffer with white to erase the previous position of the bitmap
-    FillRect(hdcBack, &scrnRect, (HBRUSH)GetStockObject(color));
+	// Fill the backbuffer with white to erase the previous position of the bitmap
+	FillRect(hdcBack, &scrnRect, (HBRUSH)GetStockObject(color));
 }
 
 
@@ -286,25 +286,25 @@ void CBuffer::ClearScreen(int color)
 
 void CBuffer::SetPen(int type, int thickness, COLORREF color)
 {
-    // First create a brush that is hollow for shapes
-    LOGBRUSH logBrush = {BS_HOLLOW, DIB_RGB_COLORS, NULL};
+	// First create a brush that is hollow for shapes
+	LOGBRUSH logBrush = {BS_HOLLOW, DIB_RGB_COLORS, NULL};
 
-    // Set our new brush and our desired pen type
-    HBRUSH hBrush = CreateBrushIndirect(&logBrush);
-    HPEN hPen = CreatePen(type, thickness, color);
+	// Set our new brush and our desired pen type
+	HBRUSH hBrush = CreateBrushIndirect(&logBrush);
+	HPEN hPen = CreatePen(type, thickness, color);
 
-    // Make sure we only store the old original pen if we haven't yet
-    if(!oldPen)
-    {
-        // Select both into our HDC
-        oldPen = (HPEN)SelectObject(hdcBack,hPen);
-        oldBrush = (HBRUSH)SelectObject(hdcBack, hBrush);
-    }
-    else
-    {
-        HPEN lastPen = (HPEN)SelectObject(hdcBack,hPen);
-        DeleteObject(lastPen);
-    }
+	// Make sure we only store the old original pen if we haven't yet
+	if(!oldPen)
+	{
+		// Select both into our HDC
+		oldPen = (HPEN)SelectObject(hdcBack,hPen);
+		oldBrush = (HBRUSH)SelectObject(hdcBack, hBrush);
+	}
+	else
+	{
+		HPEN lastPen = (HPEN)SelectObject(hdcBack,hPen);
+		DeleteObject(lastPen);
+	}
 }
 
 
@@ -321,13 +321,14 @@ void CBuffer::SetPen(int type, int thickness, COLORREF color)
 
 void CBuffer::SwapBackBuffer(BOOL bClearBackBuffer)
 {
-    // Blit the whole backbuffer to the screen (The front buffer)
-    BitBlt(hdcFront, scrnRect.left, scrnRect.top,
-           scrnRect.right, scrnRect.bottom, hdcBack, 0, 0, SRCCOPY);
+	// Blit the whole backbuffer to the screen (The front buffer)
+	BitBlt(hdcFront, scrnRect.left, scrnRect.top,
+		   scrnRect.right, scrnRect.bottom, hdcBack, 0, 0, SRCCOPY);
 
-    // If we want to clear the screen afterwards, set the background to white
-    if(bClearBackBuffer)
-        ClearScreen(BLACK_BRUSH);
+	// If we want to clear the screen afterwards, set the background to white
+	//z 是否对背景屏进行清屏
+	if(bClearBackBuffer)
+		ClearScreen(BLACK_BRUSH);
 }
 
 
@@ -344,20 +345,20 @@ void CBuffer::SwapBackBuffer(BOOL bClearBackBuffer)
 
 void CBuffer::ResizeBuffers()
 {
-    // Get the new client rectangle of the window
-    GetClientRect(hWnd, &(scrnRect));
+	// Get the new client rectangle of the window
+	GetClientRect(hWnd, &(scrnRect));
 
-    // Select the old bitmap back into the back buffer
-    SelectObject(hdcBack, hOldCompBitmap);
+	// Select the old bitmap back into the back buffer
+	SelectObject(hdcBack, hOldCompBitmap);
 
-    // Delete the old compatible bitmap
-    DeleteObject(hCompBitmap);
+	// Delete the old compatible bitmap
+	DeleteObject(hCompBitmap);
 
-    // Create a new compatible bitmap with the new size of the window
-    hCompBitmap = CreateCompatibleBitmap(hdcFront, scrnRect.right, scrnRect.bottom);
+	// Create a new compatible bitmap with the new size of the window
+	hCompBitmap = CreateCompatibleBitmap(hdcFront, scrnRect.right, scrnRect.bottom);
 
-    // Select the new compatible bitmap into the backbuffer and store the old one again
-    hOldCompBitmap = (HBITMAP) SelectObject(hdcBack, hCompBitmap);
+	// Select the new compatible bitmap into the backbuffer and store the old one again
+	hOldCompBitmap = (HBITMAP) SelectObject(hdcBack, hCompBitmap);
 }
 
 
@@ -373,19 +374,19 @@ void CBuffer::ResizeBuffers()
 
 void CBuffer::FreeBuffers()
 {
-    // Set the back buffer to it's original bitmap (This is necessary for clean-up)
-    SelectObject(hdcBack, hOldCompBitmap);
+	// Set the back buffer to it's original bitmap (This is necessary for clean-up)
+	SelectObject(hdcBack, hOldCompBitmap);
 
-    // Set the bitmap hdc back to it's original bitmap handle (This is necessary for clean-up)
-    SelectObject(hdcBitmap, hOldDispBitmap);
+	// Set the bitmap hdc back to it's original bitmap handle (This is necessary for clean-up)
+	SelectObject(hdcBitmap, hOldDispBitmap);
 
-    // Free the hbitmap
-    if(hCompBitmap)	DeleteObject(hCompBitmap);
+	// Free the hbitmap
+	if(hCompBitmap)	DeleteObject(hCompBitmap);
 
-    // Free all the HDC's
-    if(hdcBack)		DeleteDC(hdcBack);
-    if(hdcBitmap)	DeleteDC(hdcBitmap);
-    if(hdcFront)	ReleaseDC(hWnd, hdcFront);
+	// Free all the HDC's
+	if(hdcBack)		DeleteDC(hdcBack);
+	if(hdcBitmap)	DeleteDC(hdcBitmap);
+	if(hdcFront)	ReleaseDC(hWnd, hdcFront);
 }
 
 

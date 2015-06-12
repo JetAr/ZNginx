@@ -102,7 +102,7 @@ CMap::CMap():m_currentTypeFlag(TILE_TYPE)
 /////	This function returns a bitmap handle for a tile type when loading a map
 /////
 ///////////////////////////////// FIND HBITMAP \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-
+//z 根据文件名
 HBITMAP CMap::FindHBitmap(char *szFile, int type)
 {
     // So that we only load the bitmaps once and not duplicate any unnecessary

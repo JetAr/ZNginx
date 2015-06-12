@@ -117,7 +117,7 @@ HWND CreateToolWindow(HWND hWndParent, LPSTR strWindowName, int width, int heigh
 /////	This function cleans up and then posts a quit message to the window
 /////
 ///////////////////////////////// DE INIT \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-
+//z 释放资源
 void DeInit()
 {
     // Here we free all of the HBITMAP's that were loaded in the beginning

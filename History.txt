@@ -8151,3 +8151,19 @@ Changes to be committed:
 	modified:   ZGame/game_tutorials/Win32/Map Editor Part2/Tile.cpp
 	modified:   ZGame/game_tutorials/Win32/Map Editor Part2/Tile.h
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+mapeditor03.2015/06/12.17_41_14.66.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	new file:   Doc/gdi/SelectObject.cs
+	modified:   History.txt
+	modified:   ZGame/T.ZGame.cs
+	modified:   ZGame/game_tutorials/Win32/Map Editor Part3/Bitmap.cpp
+	modified:   ZGame/game_tutorials/Win32/Map Editor Part3/Init.cpp
+	modified:   ZGame/game_tutorials/Win32/Map Editor Part3/Main.cpp
+	modified:   ZGame/game_tutorials/Win32/Map Editor Part3/Tile.cpp
+

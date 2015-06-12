@@ -40,7 +40,8 @@ bool g_bLButtonDown = false;					// Whether or not the left mouse button is down
 
 
 //////////// *** NEW *** ////////// *** NEW *** ///////////// *** NEW *** ////////////////////
-
+//z 这个专题集中于载入和保存 map files 。
+//z 一个文件名对应一个handle。可以 share 。
 // In this version of our tutorial series we focus on Loading and Saving map files.  We use
 // the .map extension.  The loading and saving algorithm is extremely simple, but you can
 // encode it in a more compressed and encrypted format if you would like.  Since we have a
@@ -51,6 +52,7 @@ bool g_bLButtonDown = false;					// Whether or not the left mouse button is down
 // handle between the global lists and the private members of the map class.  That's why we
 // add a function called FindHBitmap().
 //
+//z 另外使用了一个函数 SetTileInfo() 载入该信息。
 // You will notice that in the Items\, Monsters\ and Npcs\ folder there is a text file
 // that stores information about the tiles.  We use the function SetTileInfo() to load in
 // that information, then store that info with the associated tile.
