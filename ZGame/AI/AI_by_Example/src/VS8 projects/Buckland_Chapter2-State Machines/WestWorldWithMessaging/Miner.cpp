@@ -1,5 +1,5 @@
 ﻿#include "Miner.h"
-
+//z 2015-06-24 16:23:31 L.190'27389 T1746043090.K
 bool Miner::HandleMessage(const Telegram& msg)
 {
     return m_pStateMachine->HandleMessage(msg);

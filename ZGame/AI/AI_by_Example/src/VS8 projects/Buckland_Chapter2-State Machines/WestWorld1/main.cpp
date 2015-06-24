@@ -3,7 +3,7 @@
 #include "misc/ConsoleUtils.h"
 #include "EntityNames.h"
 
-
+//z 2015-06-24 15:58:36 L.190'28884 T458312574 .K
 int main()
 {
     //create a miner

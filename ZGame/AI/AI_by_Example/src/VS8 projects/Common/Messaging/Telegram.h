@@ -14,15 +14,17 @@
 #include <iostream>
 #include <math.h>
 
+//z 2015-06-24 16:02:26 L.190'28654 T1743635283.K 发送信息
 
 struct Telegram
 {
-    //the entity that sent this telegram
+    //the entity that sent this telegram 发送者
     int          Sender;
 
-    //the entity that is to receive this telegram
+    //the entity that is to receive this telegram 接收者
     int          Receiver;
 
+    //z 信息类型
     //the message itself. These are all enumerated in the file
     //"MessageTypes.h"
     int          Msg;
@@ -33,6 +35,7 @@ struct Telegram
     double       DispatchTime;
 
     //any additional information that may accompany the message
+    //z 任何与之相随的信息
     void*        ExtraInfo;
 
 
@@ -42,7 +45,7 @@ struct Telegram
         Msg(-1)
     {}
 
-
+    //z ctor
     Telegram(double time,
              int    sender,
              int    receiver,
@@ -66,6 +69,8 @@ const double SmallestDelay = 0.25;
 
 inline bool operator==(const Telegram& t1, const Telegram& t2)
 {
+    //z 注意这里对于 == 的定义。只有两者之差大于0.25的时候，后面的才有效。
+    //z 时间差小于0.25可视作==的必要条件
     return ( fabs(t1.DispatchTime-t2.DispatchTime) < SmallestDelay) &&
            (t1.Sender == t2.Sender)        &&
            (t1.Receiver == t2.Receiver)    &&
@@ -81,6 +86,7 @@ inline bool operator<(const Telegram& t1, const Telegram& t2)
 
     else
     {
+        //z 如果不等于，那么根据其时间来进行判断
         return  (t1.DispatchTime < t2.DispatchTime);
     }
 }

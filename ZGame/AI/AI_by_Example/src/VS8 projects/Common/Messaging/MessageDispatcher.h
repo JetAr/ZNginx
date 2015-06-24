@@ -33,7 +33,8 @@ const int    SENDER_ID_IRRELEVANT = -1;
 class MessageDispatcher
 {
 private:
-
+    //z 使用了一个set来作为容器，其可自动排序并且避免重复。
+    //z 在时间0.25内重发的信息，视作重复？
     //a std::set is used as the container for the delayed messages
     //because of the benefit of automatic sorting and avoidance
     //of duplicates. Messages are sorted by their dispatch time.

@@ -13,7 +13,7 @@
 
 #include "messaging/Telegram.h"
 
-
+//z 2015-06-24 15:56:12 L.190'29028 T458240630 .K
 class BaseGameEntity
 {
 

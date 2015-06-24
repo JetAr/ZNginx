@@ -32,6 +32,7 @@ void EnterMineAndDigForNugget::Enter(Miner* pMiner)
 {
     //if the miner is not already located at the goldmine, he must
     //change location to the gold mine
+    //z 2015-06-24 16:26:54 L.190'27186 T1746150970.K 如果当前没有在 goldmine ，那么前往
     if (pMiner->Location() != goldmine)
     {
         cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Walkin' to the goldmine";
@@ -110,6 +111,7 @@ void VisitBankAndDepositGold::Execute(Miner* pMiner)
     cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": "
          << "Depositing gold. Total savings now: "<< pMiner->Wealth();
 
+    //z 财富是否多到可以回家休息了
     //wealthy enough to have a well earned rest?
     if (pMiner->Wealth() >= ComfortLevel)
     {
@@ -118,8 +120,8 @@ void VisitBankAndDepositGold::Execute(Miner* pMiner)
 
         pMiner->GetFSM()->ChangeState(GoHomeAndSleepTilRested::Instance());
     }
-
     //otherwise get more gold
+    //z 或者继续dig更多的nugget。
     else
     {
         pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());

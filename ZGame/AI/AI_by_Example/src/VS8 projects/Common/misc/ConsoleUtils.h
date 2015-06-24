@@ -14,6 +14,7 @@
 #include <iostream>
 
 //default text colors can be found in wincon.h
+//z 2015-06-24 16:19:45 L.190'27615 T1745072828.K 设置字体颜色
 inline void SetTextColor(WORD colors)
 {
     HANDLE hConsole=GetStdHandle(STD_OUTPUT_HANDLE);
@@ -24,6 +25,7 @@ inline void SetTextColor(WORD colors)
 inline void PressAnyKeyToContinue()
 {
     //change text color to white
+    //z 设置字体颜色为白色
     SetTextColor(FOREGROUND_BLUE| FOREGROUND_RED | FOREGROUND_GREEN);
 
     std::cout << "\n\nPress any key to continue" << std::endl;

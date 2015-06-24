@@ -15,6 +15,7 @@ using std::set;
 //-----------------------------------------------------------------------------
 MessageDispatcher* MessageDispatcher::Instance()
 {
+    //z object ，程序结束时，自动清理
     static MessageDispatcher instance;
 
     return &instance;
@@ -49,6 +50,7 @@ void MessageDispatcher::DispatchMsg(double       delay,
 {
 
     //get a pointer to the receiver
+    //z 由id得到entity。
     BaseGameEntity* pReceiver = EntityMgr->GetEntityFromID(receiver);
 
     //make sure the receiver is valid
@@ -62,6 +64,7 @@ void MessageDispatcher::DispatchMsg(double       delay,
     }
 
     //create the telegram
+    //z 创建 telegram 
     Telegram telegram(0, sender, receiver, msg, AdditionalInfo);
 
     //if there is no delay, route telegram immediately
@@ -74,9 +77,9 @@ void MessageDispatcher::DispatchMsg(double       delay,
 #endif
 
         //send the telegram to the recipient
+        //z 如果无延迟，直接交由 receiver 来进行处理。
         Discharge(pReceiver, telegram);
     }
-
     //else calculate the time when the telegram should be dispatched
     else
     {
@@ -85,6 +88,7 @@ void MessageDispatcher::DispatchMsg(double       delay,
         telegram.DispatchTime = CurrentTime + delay;
 
         //and put it in the queue
+        //z 否则放入set中，留待后续处理。
         PriorityQ.insert(telegram);
 
 #ifdef SHOW_MESSAGING_INFO
@@ -108,6 +112,7 @@ void MessageDispatcher::DispatchDelayedMessages()
     //now peek at the queue to see if any telegrams need dispatching.
     //remove all telegrams from the front of the queue that have gone
     //past their sell by date
+    //z 一个无穷循环，只要当前时间超过了 dispatchtime ，那么就进行 dispatch 。
     while( !PriorityQ.empty() &&
             (PriorityQ.begin()->DispatchTime < CurrentTime) &&
             (PriorityQ.begin()->DispatchTime > 0) )

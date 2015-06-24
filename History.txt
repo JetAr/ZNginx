@@ -13408,3 +13408,26 @@ Changes to be committed:
 	modified:   ZGame/AI/AI_by_Example/src/VS8 projects/Common/misc/utils.h
 	modified:   ZGame/AI/AI_by_Example/src/VS8 projects/Common/script/Scriptor.h
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+al_examples.2015/06/24.17_00_20.62.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Doc/K/T.2015.BugFree.cs
+	modified:   History.txt
+	modified:   ZGame/AI/AI_by_Example/src/VS8 projects/Buckland_Chapter2-State Machines/WestWorld1/main.cpp
+	modified:   ZGame/AI/AI_by_Example/src/VS8 projects/Buckland_Chapter2-State Machines/WestWorldWithMessaging/BaseGameEntity.h
+	modified:   ZGame/AI/AI_by_Example/src/VS8 projects/Buckland_Chapter2-State Machines/WestWorldWithMessaging/EntityManager.h
+	modified:   ZGame/AI/AI_by_Example/src/VS8 projects/Buckland_Chapter2-State Machines/WestWorldWithMessaging/Locations.h
+	modified:   ZGame/AI/AI_by_Example/src/VS8 projects/Buckland_Chapter2-State Machines/WestWorldWithMessaging/Miner.cpp
+	modified:   ZGame/AI/AI_by_Example/src/VS8 projects/Buckland_Chapter2-State Machines/WestWorldWithMessaging/MinerOwnedStates.cpp
+	modified:   ZGame/AI/AI_by_Example/src/VS8 projects/Common/Messaging/MessageDispatcher.cpp
+	modified:   ZGame/AI/AI_by_Example/src/VS8 projects/Common/Messaging/MessageDispatcher.h
+	modified:   ZGame/AI/AI_by_Example/src/VS8 projects/Common/Messaging/Telegram.h
+	modified:   ZGame/AI/AI_by_Example/src/VS8 projects/Common/misc/ConsoleUtils.h
+	modified:   ZGame/AI/AI_by_Example/src/VS8 projects/Common/misc/autolist.h
+	modified:   ZGame/T.ZGame.cs
+
