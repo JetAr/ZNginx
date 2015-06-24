@@ -1,0 +1,14 @@
+changes to 2008 version:
+
+
+Fixed problem with iterator > end() in DebugConsole.cpp
+
+Raven
+-----
+in script1.rc changed
+
+ #include "afxres.h" 
+
+to
+
+ "#include "windows.h"

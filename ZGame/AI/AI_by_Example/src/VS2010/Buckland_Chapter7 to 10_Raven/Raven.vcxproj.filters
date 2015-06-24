@@ -1,0 +1,629 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Game">
+      <UniqueIdentifier>{5afad2b9-498e-4439-9128-375f7fe152b0}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Game\weapons &amp; projectiles">
+      <UniqueIdentifier>{f8e2454e-0aff-4086-b008-27d18960a5ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\weapons &amp; projectiles\weapons">
+      <UniqueIdentifier>{22f06348-dc4b-4263-a5c0-a23b95ae39a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\weapons &amp; projectiles\projectiles">
+      <UniqueIdentifier>{fe63c6c2-a8f9-425f-898c-40a7f7b85e83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Base entity classes">
+      <UniqueIdentifier>{98088908-5992-4a0f-a889-715c207b7589}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Script related">
+      <UniqueIdentifier>{9d7b066b-6c49-4255-be55-476e8c0b6fdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Script related\general">
+      <UniqueIdentifier>{6ed6d6d2-b76e-4852-a496-33ada85a0557}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Script related\lua headers">
+      <UniqueIdentifier>{7a7cdb20-9c53-48f6-b5f5-3da6359bcbc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\misc">
+      <UniqueIdentifier>{ce3a2a8a-9260-492f-81ad-1c276291884d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{dee236fe-e435-493e-98ba-3e69d8b817f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\maps">
+      <UniqueIdentifier>{f8dc09bb-f563-4eb1-9c61-ef784a3b864b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{64293b41-0c31-468f-95f4-6c7b42f3b6c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\goals">
+      <UniqueIdentifier>{cba189c7-cf4f-4700-845a-e9a49f46d560}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\goals\composite">
+      <UniqueIdentifier>{220ba402-39ef-45f7-a966-18043685cad0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\goals\goal evaluation">
+      <UniqueIdentifier>{89d69d3f-2c3c-487c-a08b-65218c24ade5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\goals\atomic">
+      <UniqueIdentifier>{cbb82169-9c76-4c52-a854-fac37df3738f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\fuzzy logic">
+      <UniqueIdentifier>{8617fe2c-63df-44b9-94e7-0c6b683b7f6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\fuzzy logic\fuzzy set types">
+      <UniqueIdentifier>{5498c68a-91a1-4c33-a69a-5a74fe4c71a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Movement &amp; Navigation">
+      <UniqueIdentifier>{fa7146e7-4d15-4661-878e-4d5b43c51e5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Messaging">
+      <UniqueIdentifier>{39179b36-0944-4aae-9447-b67aa05bdedb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Sensory Memory">
+      <UniqueIdentifier>{d933299d-da7a-481e-8e2a-193fe04fb1a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Triggers">
+      <UniqueIdentifier>{7127bcd3-ca8e-487c-b561-dc7983867e31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Weapon Handling">
+      <UniqueIdentifier>{aa836393-90bb-470b-93ea-1ee73f23ede9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Target Selection">
+      <UniqueIdentifier>{0ba96256-f21a-46a5-ad61-252d454a867a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{f3f5ab42-49d8-4348-aa63-66655abd9be1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Raven_Bot.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Raven_Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Raven_Map.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="armory\Raven_Weapon.cpp">
+      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="armory\Weapon_Blaster.cpp">
+      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="armory\Weapon_RailGun.cpp">
+      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="armory\Weapon_RocketLauncher.cpp">
+      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="armory\Weapon_ShotGun.cpp">
+      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="armory\Projectile_Bolt.cpp">
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
+    </ClCompile>
+    <ClCompile Include="armory\Projectile_Pellet.cpp">
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
+    </ClCompile>
+    <ClCompile Include="armory\Projectile_Rocket.cpp">
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
+    </ClCompile>
+    <ClCompile Include="armory\Projectile_Slug.cpp">
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
+    </ClCompile>
+    <ClCompile Include="armory\Raven_Projectile.cpp">
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\Game\BaseGameEntity.cpp">
+      <Filter>Game\Base entity classes</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\Raven_Scriptor.cpp">
+      <Filter>Game\Script related\general</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\Game\EntityManager.cpp">
+      <Filter>Game\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="GraveMarkers.cpp">
+      <Filter>Game\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Raven_Door.cpp">
+      <Filter>Game\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Raven_UserOptions.cpp">
+      <Filter>Game\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\Raven_Goal_Types.cpp">
+      <Filter>AI\goals</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\Goal_AdjustRange.cpp">
+      <Filter>AI\goals\composite</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\Goal_AttackTarget.cpp">
+      <Filter>AI\goals\composite</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\Goal_Explore.cpp">
+      <Filter>AI\goals\composite</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\Goal_FollowPath.cpp">
+      <Filter>AI\goals\composite</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\Goal_GetItem.cpp">
+      <Filter>AI\goals\composite</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\Goal_HuntTarget.cpp">
+      <Filter>AI\goals\composite</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\Goal_MoveToPosition.cpp">
+      <Filter>AI\goals\composite</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\Goal_NegotiateDoor.cpp">
+      <Filter>AI\goals\composite</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\Goal_Think.cpp">
+      <Filter>AI\goals\composite</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\AttackTargetGoal_Evaluator.cpp">
+      <Filter>AI\goals\goal evaluation</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\ExploreGoal_Evaluator.cpp">
+      <Filter>AI\goals\goal evaluation</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\GetHealthGoal_Evaluator.cpp">
+      <Filter>AI\goals\goal evaluation</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\GetWeaponGoal_Evaluator.cpp">
+      <Filter>AI\goals\goal evaluation</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\Raven_Feature.cpp">
+      <Filter>AI\goals\goal evaluation</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\Goal_DodgeSideToSide.cpp">
+      <Filter>AI\goals\atomic</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\Goal_SayPhrase.cpp">
+      <Filter>AI\goals\atomic</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\Goal_SeekToPosition.cpp">
+      <Filter>AI\goals\atomic</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\Goal_TraverseEdge.cpp">
+      <Filter>AI\goals\atomic</Filter>
+    </ClCompile>
+    <ClCompile Include="goals\Goal_Wander.cpp">
+      <Filter>AI\goals\atomic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\fuzzy\FuzzyModule.cpp">
+      <Filter>AI\fuzzy logic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\fuzzy\FuzzyOperators.cpp">
+      <Filter>AI\fuzzy logic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\fuzzy\FuzzyVariable.cpp">
+      <Filter>AI\fuzzy logic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\fuzzy\FuzzySet_LeftShoulder.cpp">
+      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\fuzzy\FuzzySet_RightShoulder.cpp">
+      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\fuzzy\FuzzySet_Singleton.cpp">
+      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\fuzzy\FuzzySet_Triangle.cpp">
+      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+    </ClCompile>
+    <ClCompile Include="navigation\Raven_PathPlanner.cpp">
+      <Filter>AI\Movement &amp; Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="Raven_SteeringBehaviors.cpp">
+      <Filter>AI\Movement &amp; Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\Messaging\MessageDispatcher.cpp">
+      <Filter>AI\Messaging</Filter>
+    </ClCompile>
+    <ClCompile Include="Raven_SensoryMemory.cpp">
+      <Filter>AI\Sensory Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="triggers\Trigger_HealthGiver.cpp">
+      <Filter>AI\Triggers</Filter>
+    </ClCompile>
+    <ClCompile Include="triggers\Trigger_SoundNotify.cpp">
+      <Filter>AI\Triggers</Filter>
+    </ClCompile>
+    <ClCompile Include="triggers\Trigger_WeaponGiver.cpp">
+      <Filter>AI\Triggers</Filter>
+    </ClCompile>
+    <ClCompile Include="Raven_WeaponSystem.cpp">
+      <Filter>AI\Weapon Handling</Filter>
+    </ClCompile>
+    <ClCompile Include="Raven_TargetingSystem.cpp">
+      <Filter>AI\Target Selection</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\misc\Cgdi.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\Time\CrudeTimer.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\Debug\DebugConsole.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\misc\FrameCounter.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\Time\PrecisionTimer.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\2D\Vector2d.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\misc\WindowUtils.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Raven_Bot.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Raven_Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Raven_Map.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="armory\Raven_Weapon.h">
+      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="armory\Weapon_Blaster.h">
+      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="armory\Weapon_RailGun.h">
+      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="armory\Weapon_RocketLauncher.h">
+      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="armory\Weapon_ShotGun.h">
+      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="armory\Projectile_Bolt.h">
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="armory\Projectile_Pellet.h">
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="armory\Projectile_Rocket.h">
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="armory\Projectile_Slug.h">
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="armory\Raven_Projectile.h">
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Game\BaseGameEntity.h">
+      <Filter>Game\Base entity classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Game\EntityFunctionTemplates.h">
+      <Filter>Game\Base entity classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Game\MovingEntity.h">
+      <Filter>Game\Base entity classes</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\Raven_Scriptor.h">
+      <Filter>Game\Script related\general</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\script\Scriptor.h">
+      <Filter>Game\Script related\general</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\lua-5.1.3\include\lauxlib.h">
+      <Filter>Game\Script related\lua headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\lua-5.1.3\include\lua.h">
+      <Filter>Game\Script related\lua headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\lua-5.1.3\include\luahelperfunctions.h">
+      <Filter>Game\Script related\lua headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\lua-5.1.3\include\lualib.h">
+      <Filter>Game\Script related\lua headers</Filter>
+    </ClInclude>
+    <ClInclude Include="constants.h">
+      <Filter>Game\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Game\EntityManager.h">
+      <Filter>Game\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="GraveMarkers.h">
+      <Filter>Game\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Raven_Door.h">
+      <Filter>Game\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Raven_ObjectEnumerations.h">
+      <Filter>Game\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Raven_UserOptions.h">
+      <Filter>Game\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\Raven_Goal_Types.h">
+      <Filter>AI\goals</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\Goal_AdjustRange.h">
+      <Filter>AI\goals\composite</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\Goal_AttackTarget.h">
+      <Filter>AI\goals\composite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Goals\Goal_Composite.h">
+      <Filter>AI\goals\composite</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\Goal_Explore.h">
+      <Filter>AI\goals\composite</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\Goal_FollowPath.h">
+      <Filter>AI\goals\composite</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\Goal_GetItem.h">
+      <Filter>AI\goals\composite</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\Goal_HuntTarget.h">
+      <Filter>AI\goals\composite</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\Goal_MoveToPosition.h">
+      <Filter>AI\goals\composite</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\Goal_NegotiateDoor.h">
+      <Filter>AI\goals\composite</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\Goal_Think.h">
+      <Filter>AI\goals\composite</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\AttackTargetGoal_Evaluator.h">
+      <Filter>AI\goals\goal evaluation</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\ExploreGoal_Evaluator.h">
+      <Filter>AI\goals\goal evaluation</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\GetHealthGoal_Evaluator.h">
+      <Filter>AI\goals\goal evaluation</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\GetWeaponGoal_Evaluator.h">
+      <Filter>AI\goals\goal evaluation</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\Goal_Evaluator.h">
+      <Filter>AI\goals\goal evaluation</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\Raven_Feature.h">
+      <Filter>AI\goals\goal evaluation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Goals\Goal.h">
+      <Filter>AI\goals\atomic</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\Goal_DodgeSideToSide.h">
+      <Filter>AI\goals\atomic</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\Goal_SayPhrase.h">
+      <Filter>AI\goals\atomic</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\Goal_SeekToPosition.h">
+      <Filter>AI\goals\atomic</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\Goal_TraverseEdge.h">
+      <Filter>AI\goals\atomic</Filter>
+    </ClInclude>
+    <ClInclude Include="goals\Goal_Wander.h">
+      <Filter>AI\goals\atomic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\fuzzy\FuzzyHedges.h">
+      <Filter>AI\fuzzy logic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\fuzzy\FuzzyModule.h">
+      <Filter>AI\fuzzy logic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\fuzzy\FuzzyOperators.h">
+      <Filter>AI\fuzzy logic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\fuzzy\FuzzyRule.h">
+      <Filter>AI\fuzzy logic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\fuzzy\FuzzyTerm.h">
+      <Filter>AI\fuzzy logic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\fuzzy\FuzzyVariable.h">
+      <Filter>AI\fuzzy logic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\fuzzy\FzSet.h">
+      <Filter>AI\fuzzy logic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\fuzzy\FuzzySet.h">
+      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\fuzzy\FuzzySet_LeftShoulder.h">
+      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\fuzzy\FuzzySet_RightShoulder.h">
+      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\fuzzy\FuzzySet_Shoulder.h">
+      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\fuzzy\FuzzySet_Singleton.h">
+      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\fuzzy\FuzzySet_Triangle.h">
+      <Filter>AI\fuzzy logic\fuzzy set types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Graph\AStarHeuristicPolicies.h">
+      <Filter>AI\Movement &amp; Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\misc\CellSpacePartition.h">
+      <Filter>AI\Movement &amp; Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Graph\GraphAlgorithms.h">
+      <Filter>AI\Movement &amp; Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Graph\GraphEdgeTypes.h">
+      <Filter>AI\Movement &amp; Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Graph\GraphNodeTypes.h">
+      <Filter>AI\Movement &amp; Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Graph\HandyGraphFunctions.h">
+      <Filter>AI\Movement &amp; Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Graph\NodeTypeEnumerations.h">
+      <Filter>AI\Movement &amp; Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="navigation\PathEdge.h">
+      <Filter>AI\Movement &amp; Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="navigation\PathManager.h">
+      <Filter>AI\Movement &amp; Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="navigation\Raven_PathPlanner.h">
+      <Filter>AI\Movement &amp; Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="Raven_SteeringBehaviors.h">
+      <Filter>AI\Movement &amp; Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="navigation\SearchTerminationPolicies.h">
+      <Filter>AI\Movement &amp; Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Graph\SparseGraph.h">
+      <Filter>AI\Movement &amp; Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="navigation\TimeSlicedGraphAlgorithms.h">
+      <Filter>AI\Movement &amp; Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Messaging\MessageDispatcher.h">
+      <Filter>AI\Messaging</Filter>
+    </ClInclude>
+    <ClInclude Include="Raven_Messages.h">
+      <Filter>AI\Messaging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Messaging\Telegram.h">
+      <Filter>AI\Messaging</Filter>
+    </ClInclude>
+    <ClInclude Include="Raven_SensoryMemory.h">
+      <Filter>AI\Sensory Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Triggers\Trigger.h">
+      <Filter>AI\Triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="triggers\Trigger_HealthGiver.h">
+      <Filter>AI\Triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Triggers\Trigger_LimitedLifeTime.h">
+      <Filter>AI\Triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="triggers\Trigger_OnButtonSendMsg.h">
+      <Filter>AI\Triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Triggers\Trigger_ReSpawning.h">
+      <Filter>AI\Triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="triggers\Trigger_SoundNotify.h">
+      <Filter>AI\Triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="triggers\Trigger_WeaponGiver.h">
+      <Filter>AI\Triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Triggers\TriggerRegion.h">
+      <Filter>AI\Triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Triggers\TriggerSystem.h">
+      <Filter>AI\Triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="Raven_WeaponSystem.h">
+      <Filter>AI\Weapon Handling</Filter>
+    </ClInclude>
+    <ClInclude Include="Raven_TargetingSystem.h">
+      <Filter>AI\Target Selection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\2D\C2DMatrix.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\misc\Cgdi.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Time\CrudeTimer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Debug\DebugConsole.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\misc\FrameCounter.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\2D\geometry.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\2D\InvertedAABBox2D.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Time\PrecisionTimer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\misc\PriorityQueue.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\PriorityQueue.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Time\Regulator.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\misc\Stream_Utility_Functions.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\2D\Transformations.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\misc\utils.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\2D\Vector2D.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\2D\Wall2D.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\2D\WallIntersectionTests.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\misc\WindowUtils.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Params.lua">
+      <Filter>Game\Script related</Filter>
+    </None>
+    <None Include="note.txt">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="maps\Raven_DM1.map">
+      <Filter>Resource Files\maps</Filter>
+    </None>
+    <None Include="maps\Raven_DM1_Doors.map">
+      <Filter>Resource Files\maps</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Script1.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

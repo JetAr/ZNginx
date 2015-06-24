@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="Steering">
+</Property><Property Name="Solution File" Value="D:\code\AI Source\LATEST vc6-vc10\VS2010\Buckland_Chapter3-Steering Behaviors\Steering.sln">
+</Property><Property Name="User Options File" Value="D:\code\AI Source\LATEST vc6-vc10\VS2010\Buckland_Chapter3-Steering Behaviors\Steering.suo">
+</Property><Property Name="Date" Value="19 April 2012">
+</Property><Property Name="Time" Value="10:26">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="Steering.sln" Description="File successfully backed up as D:\code\AI Source\LATEST vc6-vc10\VS2010\Buckland_Chapter3-Steering Behaviors\Steering.sln.old">
+</Event><Event ErrorLevel="0" Project="" Source="Steering.suo" Description="File successfully backed up as D:\code\AI Source\LATEST vc6-vc10\VS2010\Buckland_Chapter3-Steering Behaviors\Steering.suo.old">
+</Event><Event ErrorLevel="0" Project="Steering" Source="Steering.vcproj" Description="Converting project file 'D:\code\AI Source\LATEST vc6-vc10\VS2010\Buckland_Chapter3-Steering Behaviors\Steering.vcproj'.">
+</Event><Event ErrorLevel="1" Project="Steering" Source="Steering.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="1" Project="Steering" Source="Steering.vcproj" Description="MSB8012: $(TargetPath) ('D:\code\AI Source\LATEST vc6-vc10\VS2010\Buckland_Chapter3-Steering Behaviors\.\Debug\Steering.exe') does not match the Linker's OutputFile property value '.\Debug/Steering.exe' ('D:\code\AI Source\LATEST vc6-vc10\VS2010\Buckland_Chapter3-Steering Behaviors\Debug/Steering.exe') in project configuration 'Debug|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetPath) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="1" Project="Steering" Source="Steering.vcproj" Description="MSB8012: $(TargetPath) ('D:\code\AI Source\LATEST vc6-vc10\VS2010\Buckland_Chapter3-Steering Behaviors\.\Release\Steering.exe') does not match the Linker's OutputFile property value '.\Release/Steering.exe' ('D:\code\AI Source\LATEST vc6-vc10\VS2010\Buckland_Chapter3-Steering Behaviors\Release/Steering.exe') in project configuration 'Release|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetPath) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="0" Project="Steering" Source="Steering.vcproj" Description="Done converting to new project file 'D:\code\AI Source\LATEST vc6-vc10\VS2010\Buckland_Chapter3-Steering Behaviors\Steering.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="Steering" Source="Steering.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="Steering.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="Steering.sln" Description="Converted">
+</Event></UpgradeLog>

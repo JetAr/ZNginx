@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="SimpleSoccer">
+</Property><Property Name="Solution File" Value="D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter4-SimpleSoccer\SimpleSoccer.sln">
+</Property><Property Name="Date" Value="09 January 2012">
+</Property><Property Name="Time" Value="15:46">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="SimpleSoccer.sln" Description="File successfully backed up as D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter4-SimpleSoccer\SimpleSoccer.sln.old">
+</Event><Event ErrorLevel="0" Project="SimpleSoccer" Source="SimpleSoccer.vcproj" Description="Converting project file 'D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter4-SimpleSoccer\SimpleSoccer.vcproj'.">
+</Event><Event ErrorLevel="1" Project="SimpleSoccer" Source="SimpleSoccer.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="1" Project="SimpleSoccer" Source="SimpleSoccer.vcproj" Description="MSB8012: $(TargetPath) ('D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter4-SimpleSoccer\.\Release\SimpleSoccer.exe') does not match the Linker's OutputFile property value '.\Release/SimpleSoccer.exe' ('D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter4-SimpleSoccer\Release/SimpleSoccer.exe') in project configuration 'Release|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetPath) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="1" Project="SimpleSoccer" Source="SimpleSoccer.vcproj" Description="MSB8012: $(TargetPath) ('D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter4-SimpleSoccer\.\Debug\SimpleSoccer.exe') does not match the Linker's OutputFile property value '.\Debug/SimpleSoccer.exe' ('D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter4-SimpleSoccer\Debug/SimpleSoccer.exe') in project configuration 'Debug|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetPath) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="0" Project="SimpleSoccer" Source="SimpleSoccer.vcproj" Description="Done converting to new project file 'D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter4-SimpleSoccer\SimpleSoccer.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="SimpleSoccer" Source="SimpleSoccer.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="SimpleSoccer.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="SimpleSoccer.sln" Description="Converted">
+</Event></UpgradeLog>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="Raven">
+</Property><Property Name="Solution File" Value="D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter7 to 10_Raven\Raven.sln">
+</Property><Property Name="User Options File" Value="D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter7 to 10_Raven\Raven.suo">
+</Property><Property Name="Date" Value="11 January 2012">
+</Property><Property Name="Time" Value="10:12">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="Raven.sln" Description="File successfully backed up as D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter7 to 10_Raven\Raven.sln.old">
+</Event><Event ErrorLevel="0" Project="" Source="Raven.suo" Description="File successfully backed up as D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter7 to 10_Raven\Raven.suo.old">
+</Event><Event ErrorLevel="0" Project="Raven" Source="Raven.vcproj" Description="Converting project file 'D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter7 to 10_Raven\Raven.vcproj'.">
+</Event><Event ErrorLevel="1" Project="Raven" Source="Raven.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="1" Project="Raven" Source="Raven.vcproj" Description="MSB8012: $(TargetPath) ('D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter7 to 10_Raven\.\Raven___Win32_boundschecker\Raven.exe') does not match the Linker's OutputFile property value '.\Raven___Win32_boundschecker/Raven.exe' ('D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter7 to 10_Raven\Raven___Win32_boundschecker/Raven.exe') in project configuration 'boundschecker|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetPath) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="1" Project="Raven" Source="Raven.vcproj" Description="MSB8012: $(TargetPath) ('D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter7 to 10_Raven\.\Debug\Raven.exe') does not match the Linker's OutputFile property value '.\Debug/Raven.exe' ('D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter7 to 10_Raven\Debug/Raven.exe') in project configuration 'Debug|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetPath) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="1" Project="Raven" Source="Raven.vcproj" Description="MSB8012: $(TargetPath) ('D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter7 to 10_Raven\.\Release\Raven.exe') does not match the Linker's OutputFile property value '.\Release/Raven.exe' ('D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter7 to 10_Raven\Release/Raven.exe') in project configuration 'Release|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetPath) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="0" Project="Raven" Source="Raven.vcproj" Description="Done converting to new project file 'D:\code\AI Source\LATEST vc6-vc8\VS2010\Buckland_Chapter7 to 10_Raven\Raven.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="Raven" Source="Raven.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="Raven.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="Raven.sln" Description="Converted">
+</Event></UpgradeLog>

@@ -1,0 +1,21 @@
+Download and install the latest version of the Boost library from www.boost.org.
+
+VS 2010 Express
+---------------
+
+The global directory path settings have been deprecated in VS 2010. In Express the directory paths must now be set on a per project basis.
+
+To add the paths:
+
+ right click on the project name in solution explorer.
+
+ at the top, in the dropdown configuration box select 'all configurations'.
+
+ click on VC++ Directories.
+
+ add the paths as below.
+
+	For the chapter 1 - 5 projects add the 'common' folder of the downloaded files.
+
+	For the rest, also add the path to the Boost library headers.
+ 

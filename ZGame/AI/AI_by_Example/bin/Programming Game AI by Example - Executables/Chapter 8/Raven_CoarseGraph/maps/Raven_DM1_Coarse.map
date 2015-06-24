@@ -1,0 +1,133 @@
+18
+Index: 0 PosX: 250 PosY: 200
+Index: 1 PosX: 160 PosY: 80
+Index: 2 PosX: 80 PosY: 70
+Index: 3 PosX: 90 PosY: 190
+Index: 4 PosX: 30 PosY: 290
+Index: 5 PosX: 40 PosY: 390
+Index: 6 PosX: 160 PosY: 330
+Index: 7 PosX: 160 PosY: 390
+Index: 8 PosX: 270 PosY: 330
+Index: 9 PosX: 270 PosY: 390
+Index: 10 PosX: 430 PosY: 390
+Index: 11 PosX: 350 PosY: 390
+Index: 12 PosX: 430 PosY: 270
+Index: 13 PosX: 370 PosY: 270
+Index: 14 PosX: 460 PosY: 160
+Index: 15 PosX: 440 PosY: 50
+Index: 16 PosX: 320 PosY: 90
+Index: 17 PosX: 250 PosY: 30
+50
+From: 0 To: 8 Cost: 151.327 m_iFlags: 0 ID: -1
+From: 0 To: 13 Cost: 144.222 m_iFlags: 0 ID: -1
+From: 0 To: 16 Cost: 122.066 m_iFlags: 0 ID: -1
+From: 0 To: 1 Cost: 144.222 m_iFlags: 0 ID: -1
+From: 0 To: 6 Cost: 158.114 m_iFlags: 0 ID: -1
+From: 1 To: 2 Cost: 89.4427 m_iFlags: 0 ID: -1
+From: 1 To: 17 Cost: 80.6226 m_iFlags: 0 ID: -1
+From: 1 To: 0 Cost: 144.222 m_iFlags: 0 ID: -1
+From: 2 To: 1 Cost: 89.4427 m_iFlags: 0 ID: -1
+From: 2 To: 3 Cost: 152.971 m_iFlags: 0 ID: -1
+From: 3 To: 4 Cost: 116.619 m_iFlags: 0 ID: -1
+From: 3 To: 2 Cost: 152.971 m_iFlags: 0 ID: -1
+From: 4 To: 3 Cost: 116.619 m_iFlags: 0 ID: -1
+From: 4 To: 5 Cost: 90.5538 m_iFlags: 0 ID: -1
+From: 5 To: 4 Cost: 90.5538 m_iFlags: 0 ID: -1
+From: 5 To: 6 Cost: 126.491 m_iFlags: 0 ID: -1
+From: 5 To: 7 Cost: 120.416 m_iFlags: 0 ID: -1
+From: 6 To: 5 Cost: 126.491 m_iFlags: 0 ID: -1
+From: 6 To: 7 Cost: 50 m_iFlags: 0 ID: -1
+From: 6 To: 8 Cost: 110 m_iFlags: 0 ID: -1
+From: 6 To: 0 Cost: 158.114 m_iFlags: 0 ID: -1
+From: 7 To: 5 Cost: 120.416 m_iFlags: 0 ID: -1
+From: 7 To: 6 Cost: 50 m_iFlags: 0 ID: -1
+From: 7 To: 9 Cost: 110 m_iFlags: 0 ID: -1
+From: 8 To: 0 Cost: 151.327 m_iFlags: 0 ID: -1
+From: 8 To: 6 Cost: 110 m_iFlags: 0 ID: -1
+From: 8 To: 9 Cost: 50 m_iFlags: 0 ID: -1
+From: 8 To: 13 Cost: 122.066 m_iFlags: 0 ID: -1
+From: 9 To: 7 Cost: 110 m_iFlags: 0 ID: -1
+From: 9 To: 8 Cost: 50 m_iFlags: 0 ID: -1
+From: 9 To: 11 Cost: 80 m_iFlags: 0 ID: -1
+From: 10 To: 11 Cost: 80 m_iFlags: 0 ID: -1
+From: 10 To: 12 Cost: 120 m_iFlags: 0 ID: -1
+From: 11 To: 9 Cost: 80 m_iFlags: 0 ID: -1
+From: 11 To: 10 Cost: 80 m_iFlags: 0 ID: -1
+From: 12 To: 10 Cost: 120 m_iFlags: 0 ID: -1
+From: 12 To: 13 Cost: 60 m_iFlags: 0 ID: -1
+From: 12 To: 14 Cost: 114.018 m_iFlags: 0 ID: -1
+From: 13 To: 0 Cost: 144.222 m_iFlags: 0 ID: -1
+From: 13 To: 8 Cost: 122.066 m_iFlags: 0 ID: -1
+From: 13 To: 12 Cost: 60 m_iFlags: 0 ID: -1
+From: 14 To: 12 Cost: 114.018 m_iFlags: 0 ID: -1
+From: 14 To: 15 Cost: 111.803 m_iFlags: 0 ID: -1
+From: 15 To: 14 Cost: 111.803 m_iFlags: 0 ID: -1
+From: 15 To: 16 Cost: 126.491 m_iFlags: 0 ID: -1
+From: 16 To: 0 Cost: 122.066 m_iFlags: 0 ID: -1
+From: 16 To: 15 Cost: 126.491 m_iFlags: 0 ID: -1
+From: 16 To: 17 Cost: 94.3398 m_iFlags: 0 ID: -1
+From: 17 To: 1 Cost: 80.6226 m_iFlags: 0 ID: -1
+From: 17 To: 16 Cost: 94.3398 m_iFlags: 0 ID: -1
+
+485 470
+0 20 130 20 10 1 0
+0 20 10 160 10 0 1
+0 160 10 160 60 -1 0
+0 160 60 170 60 0 1
+0 170 60 170 10 1 0
+0 170 10 320 10 0 1
+0 170 100 160 100 0 -1
+0 70 130 20 130 0 -1
+0 160 130 110 130 0 -1
+0 70 180 70 130 1 0
+0 10 180 70 180 0 1
+0 110 130 110 210 -1 0
+0 70 300 50 300 0 -1
+0 10 410 10 180 1 0
+0 50 300 50 330 -1 0
+0 320 10 320 60 -1 0
+0 320 60 330 60 0 1
+0 330 60 330 30 1 0
+0 330 30 480 30 0 1
+0 480 30 480 190 -1 0
+0 480 190 460 190 0 -1
+0 460 190 460 410 -1 0
+0 410 370 410 300 1 0
+0 410 130 390 130 0 -1
+0 390 130 390 160 -1 0
+0 390 160 330 160 0 -1
+0 330 120 320 120 0 -1
+0 320 190 280 190 0 -1
+0 280 190 280 200 -1 0
+0 280 200 390 200 0 1
+0 390 240 410 240 0 1
+0 220 190 170 190 0 -1
+0 220 200 220 190 1 0
+0 140 200 220 200 0 1
+0 140 330 140 200 1 0
+0 410 300 390 300 0 -1
+0 390 300 390 350 -1 0
+0 300 370 410 370 0 1
+0 300 350 300 370 -1 0
+0 390 350 300 350 0 -1
+0 460 410 10 410 0 -1
+0 240 350 170 350 0 -1
+0 270 70 220 70 0 -1
+0 220 70 220 150 -1 0
+0 220 150 270 150 0 1
+0 270 150 270 70 1 0
+0 -1.07374e+008 -1.07374e+008 -1.07374e+008 -1.07374e+008 -1.07374e+008 -1.07374e+008
+0 50 330 140 330 0 1
+0 110 210 70 300 -0.913812 -0.406138
+0 160 100 160 130 -1 0
+0 170 190 170 100 1 0
+0 330 160 330 120 1 0
+0 320 120 320 190 -1 0
+0 390 200 390 240 -1 0
+0 410 240 410 130 1 0
+0 240 370 240 350 1 0
+0 170 350 170 370 -1 0
+0 170 370 240 370 0 1
+5 390  350 240 7  -1
+5 391  50 380 7  -1
+5 392  50 40 7  -1

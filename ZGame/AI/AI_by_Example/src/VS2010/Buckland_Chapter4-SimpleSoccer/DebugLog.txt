@@ -1,0 +1,39 @@
+Player 2 enters wait state
+Player 3 enters wait state
+Player 4 enters wait state
+Player 5 enters wait state
+Player 7 enters wait state
+Player 8 enters wait state
+Player 9 enters wait state
+Player 10 enters wait state
+Player 3 enters chase state
+Player 8 enters chase state
+Player 8 enters kick state
+Player 7 enters support state
+Player 8 enters dribble state
+Player 8 enters chase state
+Player 8 enters chase state
+Player 8 enters kick state
+Player 3 enters kick state
+Player 7 enters ReturnToHome state
+Player 3 passes the ball with force 2.77052  to player 4  Target is  214.878 306.652
+Player 4 enters receive state (Using Arrive)
+Player 3 enters wait state
+Player 3 enters support state
+Player 7 enters wait state
+Player 4 enters chase state
+Player 4 enters kick state
+Player 4 enters dribble state
+Player 4 enters chase state
+Player 4 enters chase state
+Player 4 enters kick state
+Player 4 enters chase state
+Player 4 enters kick state
+Player 4 enters chase state
+Player 4 enters kick state
+Player 4 enters chase state
+Player 4 enters kick state
+Player 4 enters kick state
+Player 4 passes the ball with force 2.50185  to player 5  Target is  181.268 164.906
+Player 5 enters receive state (Using Arrive)
+Player 4 enters wait state

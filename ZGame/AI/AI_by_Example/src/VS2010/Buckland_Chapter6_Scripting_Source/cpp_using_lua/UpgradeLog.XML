@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="cpp_using_lua">
+</Property><Property Name="Solution File" Value="D:\code\AI Source\LATEST vc6-vc10\VS2010\Buckland_Chapter6_Scripting_Source\cpp_using_lua\cpp_using_lua.sln">
+</Property><Property Name="Date" Value="14 January 2012">
+</Property><Property Name="Time" Value="17:25">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="cpp_using_lua.sln" Description="File successfully backed up as D:\code\AI Source\LATEST vc6-vc10\VS2010\Buckland_Chapter6_Scripting_Source\cpp_using_lua\cpp_using_lua.sln.old">
+</Event><Event ErrorLevel="0" Project="cpp_using_lua" Source="cpp_using_lua.vcproj" Description="Web deployment to the local IIS server is no longer supported. The Web Deployment build tool has been removed from your project settings.">
+</Event><Event ErrorLevel="1" Project="cpp_using_lua" Source="cpp_using_lua.vcproj" Description="This application has been updated to include settings related to the User Account Control (UAC) feature of Windows Vista. By default, when run on Windows Vista with UAC enabled, this application is marked to run with the same privileges as the process that launched it. This marking also disables the application from running with virtualization. You can change UAC related settings from the Property Pages of the project.">
+</Event><Event ErrorLevel="0" Project="cpp_using_lua" Source="cpp_using_lua.vcproj" Description="Project file successfully backed up as 'D:\code\AI Source\LATEST vc6-vc10\VS2010\Buckland_Chapter6_Scripting_Source\cpp_using_lua\cpp_using_lua.vcproj.8.00.old'.">
+</Event><Event ErrorLevel="0" Project="cpp_using_lua" Source="cpp_using_lua.vcproj" Description="Project upgraded successfully.">
+</Event><Event ErrorLevel="3" Project="cpp_using_lua" Source="cpp_using_lua.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="cpp_using_lua.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="cpp_using_lua.sln" Description="Converted">
+</Event></UpgradeLog>
