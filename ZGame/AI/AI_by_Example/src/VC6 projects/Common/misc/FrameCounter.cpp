@@ -1,9 +1,9 @@
-#include "framecounter.h"
+﻿#include "framecounter.h"
 
 
 FrameCounter* FrameCounter::Instance()
 {
-  static FrameCounter instance;
+    static FrameCounter instance;
 
-  return &instance;
+    return &instance;
 }

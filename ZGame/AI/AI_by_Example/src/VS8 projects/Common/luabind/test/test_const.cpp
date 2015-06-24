@@ -1,4 +1,4 @@
-// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -25,10 +25,19 @@
 
 struct A
 {
-    const A* f() { return this; }
+    const A* f()
+    {
+        return this;
+    }
 
-    int g1() const { return 1; }
-    int g2() { return 2; }
+    int g1() const
+    {
+        return 1;
+    }
+    int g2()
+    {
+        return 2;
+    }
 };
 
 void test_main(lua_State* L)
@@ -38,10 +47,10 @@ void test_main(lua_State* L)
     module(L)
     [
         class_<A>("A")
-            .def(constructor<>())
-            .def("f", &A::f)
-            .def("g", &A::g1)
-            .def("g", &A::g2)
+        .def(constructor<>())
+        .def("f", &A::f)
+        .def("g", &A::g1)
+        .def("g", &A::g2)
     ];
 
     DOSTRING(L, "a = A()");

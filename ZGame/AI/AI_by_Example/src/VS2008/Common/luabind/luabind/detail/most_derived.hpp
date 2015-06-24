@@ -1,4 +1,4 @@
-// Copyright (c) 2005 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2005 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -26,19 +26,23 @@
 # include <boost/mpl/if.hpp>
 # include <boost/type_traits/is_base_and_derived.hpp>
 
-namespace luabind { namespace detail {
+namespace luabind
+{
+namespace detail
+{
 
 template<class Class, class WrappedClass>
 struct most_derived
 {
     typedef typename boost::mpl::if_<
-        boost::is_base_and_derived<Class, WrappedClass>
-      , WrappedClass
-      , Class
+    boost::is_base_and_derived<Class, WrappedClass>
+    , WrappedClass
+    , Class
     >::type type;
 };
 
-}} // namespace luabind::detail
+}
+} // namespace luabind::detail
 
 #endif // MOST_DERIVED_051018_HPP
 

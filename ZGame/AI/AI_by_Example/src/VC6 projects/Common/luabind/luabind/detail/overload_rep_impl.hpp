@@ -1,4 +1,4 @@
-// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -25,22 +25,25 @@
 
 #include <luabind/detail/overload_rep.hpp>
 
-namespace luabind { namespace detail
+namespace luabind
 {
-	inline int overload_rep::call(lua_State* L, const object_rep& o) const 
-	{ 
-		const class_rep* crep = o.crep();
+namespace detail
+{
+inline int overload_rep::call(lua_State* L, const object_rep& o) const
+{
+    const class_rep* crep = o.crep();
 
-		void* ptr;
-		
-		if (crep->has_holder())
-			ptr = crep->extractor()(o.ptr());
-		else
-			ptr = o.ptr();
+    void* ptr;
 
-		return call_fun(L, static_cast<char*>(ptr) + m_pointer_offset);
-	}
+    if (crep->has_holder())
+        ptr = crep->extractor()(o.ptr());
+    else
+        ptr = o.ptr();
 
-}} // namespace luabind::detail
+    return call_fun(L, static_cast<char*>(ptr) + m_pointer_offset);
+}
+
+}
+} // namespace luabind::detail
 
 #endif // LUABIND_OVERLOAD_REP_IMPL_HPP_INCLUDED

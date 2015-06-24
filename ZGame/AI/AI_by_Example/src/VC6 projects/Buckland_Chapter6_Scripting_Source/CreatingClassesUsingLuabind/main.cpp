@@ -1,4 +1,4 @@
-//include the libraries
+﻿//include the libraries
 #pragma comment(lib, "lua.lib")
 #pragma comment(lib, "lualib.lib")
 #pragma comment(lib, "luabind.lib")
@@ -6,9 +6,9 @@
 
 extern "C"
 {
-  #include <lua.h>
-  #include <lualib.h>
-  #include <lauxlib.h>
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
 }
 
 #include <string>
@@ -26,19 +26,19 @@ using namespace luabind;
 
 int main()
 {
-  //create a lua state
-  lua_State* pLua = lua_open();
+    //create a lua state
+    lua_State* pLua = lua_open();
 
-  //open the libraries
-  OpenLuaLibraries(pLua);
+    //open the libraries
+    OpenLuaLibraries(pLua);
 
-  //open luabind
-  open(pLua);
- 
-  //load and run the script
-  RunLuaScript(pLua, "classes_in_lua.lua");
+    //open luabind
+    open(pLua);
 
-  lua_close(pLua);
-    
-  return 0;
+    //load and run the script
+    RunLuaScript(pLua, "classes_in_lua.lua");
+
+    lua_close(pLua);
+
+    return 0;
 }

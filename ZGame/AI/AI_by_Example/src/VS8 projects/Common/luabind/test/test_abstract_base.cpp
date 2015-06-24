@@ -1,4 +1,4 @@
-// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -30,7 +30,7 @@ struct abstract
 {
     virtual ~abstract() {}
     virtual std::string hello() = 0;
-}; 
+};
 
 COUNTER_GUARD(abstract);
 
@@ -62,14 +62,14 @@ std::string call_hello(abstract& a)
 
 abstract& return_abstract_ref()
 {
-	static concrete c;
-	return c;
+    static concrete c;
+    return c;
 }
 
 abstract const& return_const_abstract_ref()
 {
-	static concrete c;
-	return c;
+    static concrete c;
+    return c;
 }
 
 
@@ -78,36 +78,36 @@ void test_main(lua_State* L)
     module(L)
     [
         class_<abstract, abstract_wrap>("abstract")
-            .def(constructor<>())
-            .def("hello", &abstract::hello),
+        .def(constructor<>())
+        .def("hello", &abstract::hello),
 
         def("call_hello", &call_hello),
-		  def("return_abstract_ref", &return_abstract_ref),
-		  def("return_const_abstract_ref", &return_const_abstract_ref)
+        def("return_abstract_ref", &return_abstract_ref),
+        def("return_const_abstract_ref", &return_const_abstract_ref)
     ];
-    
+
     DOSTRING_EXPECTED(L,
-        "x = abstract()\n"
-        "x:hello()\n"
-      , "pure virtual function called");
+                      "x = abstract()\n"
+                      "x:hello()\n"
+                      , "pure virtual function called");
 
-    DOSTRING_EXPECTED(L, 
-        "call_hello(x)\n"
-      , "pure virtual function called");
-    
-    DOSTRING(L,
-        "class 'concrete' (abstract)\n"
-        "  function concrete:__init()\n"
-        "      super()\n"
-        "  end\n"
-
-        "  function concrete:hello()\n"
-        "      return 'hello from lua'\n"
-        "  end\n");
+    DOSTRING_EXPECTED(L,
+                      "call_hello(x)\n"
+                      , "pure virtual function called");
 
     DOSTRING(L,
-        "y = concrete()\n"
-        "y:hello()\n");
+             "class 'concrete' (abstract)\n"
+             "  function concrete:__init()\n"
+             "      super()\n"
+             "  end\n"
+
+             "  function concrete:hello()\n"
+             "      return 'hello from lua'\n"
+             "  end\n");
+
+    DOSTRING(L,
+             "y = concrete()\n"
+             "y:hello()\n");
 
     DOSTRING(L, "call_hello(y)\n");
 }

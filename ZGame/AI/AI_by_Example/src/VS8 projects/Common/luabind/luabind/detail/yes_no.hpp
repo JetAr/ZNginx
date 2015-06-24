@@ -1,4 +1,4 @@
-// Copyright (c) 2004 Daniel Wallin
+﻿// Copyright (c) 2004 Daniel Wallin
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -23,12 +23,16 @@
 #ifndef YES_NO_040211_HPP
 #define YES_NO_040211_HPP
 
-namespace luabind { namespace detail {
+namespace luabind
+{
+namespace detail
+{
 
-    typedef char(&yes_t)[1];
-    typedef char(&no_t)[2];
+typedef char(&yes_t)[1];
+typedef char(&no_t)[2];
 
-}} // namespace luabind::detail
+}
+} // namespace luabind::detail
 
 #endif // YES_NO_040211_HPP
 

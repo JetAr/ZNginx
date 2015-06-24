@@ -1,4 +1,4 @@
-/*
+﻿/*
 * The code below can be used to make a Lua core that does not contain the
 * parsing modules (lcode, llex, lparser), which represent 35% of the total core.
 * You'll only be able to load binary files and strings, precompiled with luac.
@@ -13,14 +13,16 @@
 #include "lparser.h"
 #include "lzio.h"
 
-void luaX_init (lua_State *L) {
-  UNUSED(L);
+void luaX_init (lua_State *L)
+{
+    UNUSED(L);
 }
 
-Proto *luaY_parser (lua_State *L, ZIO *z, Mbuffer *buff) {
-  UNUSED(z);
-  UNUSED(buff);
-  lua_pushstring(L,"parser not loaded");
-  lua_error(L);
-  return NULL;
+Proto *luaY_parser (lua_State *L, ZIO *z, Mbuffer *buff)
+{
+    UNUSED(z);
+    UNUSED(buff);
+    lua_pushstring(L,"parser not loaded");
+    lua_error(L);
+    return NULL;
 }

@@ -1,4 +1,4 @@
-/*
+﻿/*
 ** $Id: lauxlib.h,v 1.60 2003/04/03 13:35:34 roberto Exp $
 ** Auxiliary functions for building Lua libraries
 ** See Copyright Notice in lua.h
@@ -21,21 +21,22 @@
 
 
 
-typedef struct luaL_reg {
-  const char *name;
-  lua_CFunction func;
+typedef struct luaL_reg
+{
+    const char *name;
+    lua_CFunction func;
 } luaL_reg;
 
 
 LUALIB_API void luaL_openlib (lua_State *L, const char *libname,
-                               const luaL_reg *l, int nup);
+                              const luaL_reg *l, int nup);
 LUALIB_API int luaL_getmetafield (lua_State *L, int obj, const char *e);
 LUALIB_API int luaL_callmeta (lua_State *L, int obj, const char *e);
 LUALIB_API int luaL_typerror (lua_State *L, int narg, const char *tname);
 LUALIB_API int luaL_argerror (lua_State *L, int numarg, const char *extramsg);
 LUALIB_API const char *luaL_checklstring (lua_State *L, int numArg, size_t *l);
 LUALIB_API const char *luaL_optlstring (lua_State *L, int numArg,
-                                           const char *def, size_t *l);
+                                        const char *def, size_t *l);
 LUALIB_API lua_Number luaL_checknumber (lua_State *L, int numArg);
 LUALIB_API lua_Number luaL_optnumber (lua_State *L, int nArg, lua_Number def);
 
@@ -92,11 +93,12 @@ LUALIB_API int luaL_loadbuffer (lua_State *L, const char *buff, size_t sz,
 #endif
 
 
-typedef struct luaL_Buffer {
-  char *p;			/* current position in buffer */
-  int lvl;  /* number of strings in the stack (level) */
-  lua_State *L;
-  char buffer[LUAL_BUFFERSIZE];
+typedef struct luaL_Buffer
+{
+    char *p;			/* current position in buffer */
+    int lvl;  /* number of strings in the stack (level) */
+    lua_State *L;
+    char buffer[LUAL_BUFFERSIZE];
 } luaL_Buffer;
 
 #define luaL_putchar(B,c) \
@@ -128,8 +130,8 @@ LUALIB_API int   lua_dobuffer (lua_State *L, const char *buff, size_t sz,
 
 
 #define luaL_check_lstr 	luaL_checklstring
-#define luaL_opt_lstr 	luaL_optlstring 
-#define luaL_check_number 	luaL_checknumber 
+#define luaL_opt_lstr 	luaL_optlstring
+#define luaL_check_number 	luaL_checknumber
 #define luaL_opt_number	luaL_optnumber
 #define luaL_arg_check	luaL_argcheck
 #define luaL_check_string	luaL_checkstring

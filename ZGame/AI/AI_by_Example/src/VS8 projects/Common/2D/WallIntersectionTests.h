@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------------
 //
 //  Name:   WallIntersectionTests.h
 //
@@ -23,19 +23,19 @@ inline bool doWallsObstructLineSegment(Vector2D from,
                                        Vector2D to,
                                        const ContWall& walls)
 {
-  //test against the walls
-  ContWall::const_iterator curWall = walls.begin();
+    //test against the walls
+    ContWall::const_iterator curWall = walls.begin();
 
-  for (curWall; curWall != walls.end(); ++curWall)
-  {
-    //do a line segment intersection test
-    if (LineIntersection2D(from, to, (*curWall)->From(), (*curWall)->To()))
+    for (curWall; curWall != walls.end(); ++curWall)
     {
-      return true;
+        //do a line segment intersection test
+        if (LineIntersection2D(from, to, (*curWall)->From(), (*curWall)->To()))
+        {
+            return true;
+        }
     }
-  }
-                                                                           
-  return false;
+
+    return false;
 }
 
 
@@ -48,32 +48,32 @@ inline bool doWallsObstructLineSegment(Vector2D from,
 //-----------------------------------------------------------------------------
 template <class ContWall>
 inline bool doWallsObstructCylinderSides(Vector2D        A,
-                                         Vector2D        B,
-                                         double           BoundingRadius,
-                                         const ContWall& walls)
+        Vector2D        B,
+        double           BoundingRadius,
+        const ContWall& walls)
 {
-  //the line segments that make up the sides of the cylinder must be created
-  Vector2D toB = Vec2DNormalize(B-A);
+    //the line segments that make up the sides of the cylinder must be created
+    Vector2D toB = Vec2DNormalize(B-A);
 
-  //A1B1 will be one side of the cylinder, A2B2 the other.
-  Vector2D A1, B1, A2, B2;
+    //A1B1 will be one side of the cylinder, A2B2 the other.
+    Vector2D A1, B1, A2, B2;
 
-  Vector2D radialEdge = toB.Perp() * BoundingRadius;
+    Vector2D radialEdge = toB.Perp() * BoundingRadius;
 
-  //create the two sides of the cylinder
-  A1 = A + radialEdge;
-  B1 = B + radialEdge;
+    //create the two sides of the cylinder
+    A1 = A + radialEdge;
+    B1 = B + radialEdge;
 
-  A2 = A - radialEdge;
-  B2 = B - radialEdge;
+    A2 = A - radialEdge;
+    B2 = B - radialEdge;
 
-  //now test against them
-  if (!doWallsObstructLineSegment(A1, B1, walls))
-  {
-    return doWallsObstructLineSegment(A2, B2, walls);
-  }
-  
-  return true;
+    //now test against them
+    if (!doWallsObstructLineSegment(A1, B1, walls))
+    {
+        return doWallsObstructLineSegment(A2, B2, walls);
+    }
+
+    return true;
 }
 
 //------------------ FindClosestPointOfIntersectionWithWalls ------------------
@@ -87,32 +87,32 @@ inline bool doWallsObstructCylinderSides(Vector2D        A,
 
 template <class ContWall>
 inline bool FindClosestPointOfIntersectionWithWalls(Vector2D        A,
-                                                    Vector2D        B,
-                                                    double&          distance,
-                                                    Vector2D&       ip,
-                                                    const ContWall& walls)
+        Vector2D        B,
+        double&          distance,
+        Vector2D&       ip,
+        const ContWall& walls)
 {
-  distance = MaxDouble;
+    distance = MaxDouble;
 
-  ContWall::const_iterator curWall = walls.begin();
-  for (curWall; curWall != walls.end(); ++curWall)
-  {
-    double dist = 0.0;
-    Vector2D point;
-
-    if (LineIntersection2D(A, B, (*curWall)->From(), (*curWall)->To(), dist, point))
+    ContWall::const_iterator curWall = walls.begin();
+    for (curWall; curWall != walls.end(); ++curWall)
     {
-      if (dist < distance)
-      {
-        distance = dist;
-        ip = point;
-      }
+        double dist = 0.0;
+        Vector2D point;
+
+        if (LineIntersection2D(A, B, (*curWall)->From(), (*curWall)->To(), dist, point))
+        {
+            if (dist < distance)
+            {
+                distance = dist;
+                ip = point;
+            }
+        }
     }
-  }
 
-  if (distance < MaxDouble) return true;
+    if (distance < MaxDouble) return true;
 
-  return false;
+    return false;
 }
 
 //------------------------ doWallsIntersectCircle -----------------------------
@@ -122,19 +122,19 @@ inline bool FindClosestPointOfIntersectionWithWalls(Vector2D        A,
 template <class ContWall>
 inline bool doWallsIntersectCircle(const ContWall& walls, Vector2D p, double r)
 {
-  //test against the walls
-  ContWall::const_iterator curWall = walls.begin();
+    //test against the walls
+    ContWall::const_iterator curWall = walls.begin();
 
-  for (curWall; curWall != walls.end(); ++curWall)
-  {
-    //do a line segment intersection test
-    if (LineSegmentCircleIntersection((*curWall)->From(), (*curWall)->To(), p, r))
+    for (curWall; curWall != walls.end(); ++curWall)
     {
-      return true;
+        //do a line segment intersection test
+        if (LineSegmentCircleIntersection((*curWall)->From(), (*curWall)->To(), p, r))
+        {
+            return true;
+        }
     }
-  }
-                                                                           
-  return false;
+
+    return false;
 }
 
 

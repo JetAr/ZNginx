@@ -1,4 +1,4 @@
-// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -24,22 +24,33 @@
 #include <luabind/luabind.hpp>
 #include <boost/shared_ptr.hpp>
 
-struct A : counted_type<A> 
-{ virtual ~A() {} };
+struct A : counted_type<A>
+{
+    virtual ~A() {}
+};
 
-struct B : A, counted_type<B>  
+struct B : A, counted_type<B>
 {};
 
 struct test_implicit : counted_type<test_implicit>
 {
-	char const* f(A*) { return "f(A*)"; }
-	char const* f(B*) { return "f(B*)"; }
+    char const* f(A*)
+    {
+        return "f(A*)";
+    }
+    char const* f(B*)
+    {
+        return "f(B*)";
+    }
 };
 
 struct char_pointer_convertable
-  : counted_type<char_pointer_convertable>
+    : counted_type<char_pointer_convertable>
 {
-	operator const char*() const { return "foo!"; }
+    operator const char*() const
+    {
+        return "foo!";
+    }
 };
 
 void func(const char_pointer_convertable& f)
@@ -48,12 +59,12 @@ void func(const char_pointer_convertable& f)
 
 void not_convertable(boost::shared_ptr<A>)
 {
-	TEST_CHECK(false);
+    TEST_CHECK(false);
 }
 
 int f(int& a)
 {
-	return a;
+    return a;
 }
 
 COUNTER_GUARD(A);
@@ -71,22 +82,22 @@ void test_main(lua_State* L)
     module(L)
     [
         class_<A>("A")
-            .def(constructor<>()),
-    
+        .def(constructor<>()),
+
         class_<B, A>("B")
-            .def(constructor<>()),
-    
+        .def(constructor<>()),
+
         class_<test_implicit>("test")
-            .def(constructor<>())
-            .def("f", (f1)&test_implicit::f)
-            .def("f", (f2)&test_implicit::f),
+        .def(constructor<>())
+        .def("f", (f1)&test_implicit::f)
+        .def("f", (f2)&test_implicit::f),
 
         class_<char_pointer_convertable>("char_ptr")
-            .def(constructor<>()),
+        .def(constructor<>()),
 
         def("func", &func),
-		def("no_convert", &not_convertable),
-		def("f", &f)
+        def("no_convert", &not_convertable),
+        def("f", &f)
     ];
 
     DOSTRING(L, "a = A()");
@@ -96,23 +107,23 @@ void test_main(lua_State* L)
     DOSTRING(L, "assert(t:f(a) == 'f(A*)')");
     DOSTRING(L, "assert(t:f(b) == 'f(B*)')");
 
-    DOSTRING(L, 
-        "a = char_ptr()\n"
-        "func(a)");
+    DOSTRING(L,
+             "a = char_ptr()\n"
+             "func(a)");
 
-	DOSTRING_EXPECTED(L,
-		"a = A()\n"
-		"no_convert(a)",
-		("no match for function call 'no_convert' with the parameters (A)\n"
-		"candidates are:\n"
-		"no_convert(custom ["
-		+ std::string(typeid(boost::shared_ptr<A>).name()) + "])\n").c_str());
+    DOSTRING_EXPECTED(L,
+                      "a = A()\n"
+                      "no_convert(a)",
+                      ("no match for function call 'no_convert' with the parameters (A)\n"
+                       "candidates are:\n"
+                       "no_convert(custom ["
+                       + std::string(typeid(boost::shared_ptr<A>).name()) + "])\n").c_str());
 
-	DOSTRING_EXPECTED(L,
-		"a = nil\n"
-		"f(a)",
-		"no match for function call 'f' with the parameters (nil)\n"
-		"candidates are:\n"
-		"f(number&)\n");
+    DOSTRING_EXPECTED(L,
+                      "a = nil\n"
+                      "f(a)",
+                      "no match for function call 'f' with the parameters (nil)\n"
+                      "candidates are:\n"
+                      "f(number&)\n");
 }
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2005 Daniel Wallin, Arvid Norberg
+﻿// Copyright (c) 2005 Daniel Wallin, Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -26,9 +26,9 @@
 
 struct V
 {
-    int f(int,int) 
+    int f(int,int)
     {
-        return 2; 
+        return 2;
     }
 };
 
@@ -42,13 +42,13 @@ void test_main(lua_State* L)
     module(L)
     [
         class_<W>("W")
-          .def(constructor<>())
-          .def("f", &V::f)
+        .def(constructor<>())
+        .def("f", &V::f)
     ];
 
     DOSTRING(L,
-        "x = W()\n"
-        "assert(x:f(1,2) == 2)\n"
-    );
+             "x = W()\n"
+             "assert(x:f(1,2) == 2)\n"
+            );
 }
 

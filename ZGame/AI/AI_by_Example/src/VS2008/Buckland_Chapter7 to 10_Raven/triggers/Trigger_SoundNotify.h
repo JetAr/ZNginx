@@ -1,4 +1,4 @@
-#ifndef TRIGGER_SOUNDNOTIFY_H
+﻿#ifndef TRIGGER_SOUNDNOTIFY_H
 #define TRIGGER_SOUNDNOTIFY_H
 #pragma warning (disable:4786)
 //-----------------------------------------------------------------------------
@@ -23,17 +23,17 @@ class Trigger_SoundNotify : public Trigger_LimitedLifetime<Raven_Bot>
 {
 private:
 
-  //a pointer to the bot that has made the sound
-  Raven_Bot*  m_pSoundSource;
+    //a pointer to the bot that has made the sound
+    Raven_Bot*  m_pSoundSource;
 
 public:
 
-  Trigger_SoundNotify(Raven_Bot* source, double range);
+    Trigger_SoundNotify(Raven_Bot* source, double range);
 
 
-  void  Try(Raven_Bot*);
+    void  Try(Raven_Bot*);
 
-  void  Render(){}
+    void  Render() {}
 
 };
 

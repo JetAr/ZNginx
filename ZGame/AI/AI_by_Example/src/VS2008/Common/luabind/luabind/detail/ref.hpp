@@ -1,4 +1,4 @@
-// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -44,85 +44,94 @@ namespace luabind
 namespace detail
 {
 
-	int LUABIND_API ref(lua_State *L);
-	void LUABIND_API unref(lua_State *L, int ref);
+int LUABIND_API ref(lua_State *L);
+void LUABIND_API unref(lua_State *L, int ref);
 
-	inline void getref(lua_State* L, int r)
-	{
-		lua_rawgeti(L, LUA_REGISTRYINDEX, r);
-	}
+inline void getref(lua_State* L, int r)
+{
+    lua_rawgeti(L, LUA_REGISTRYINDEX, r);
+}
 
-	struct lua_reference
-	{
-		lua_reference(lua_State* L_ = 0)
-			: L(L_)
-			, m_ref(LUA_NOREF)
-		{}
-		lua_reference(lua_reference const& r)
-			: L(r.L)
-			, m_ref(LUA_NOREF)
-		{
-			if (!r.is_valid()) return;
-			r.get(L);
-			set(L);
-		}
-		~lua_reference() { reset(); }
+struct lua_reference
+{
+    lua_reference(lua_State* L_ = 0)
+        : L(L_)
+        , m_ref(LUA_NOREF)
+    {}
+    lua_reference(lua_reference const& r)
+        : L(r.L)
+        , m_ref(LUA_NOREF)
+    {
+        if (!r.is_valid()) return;
+        r.get(L);
+        set(L);
+    }
+    ~lua_reference()
+    {
+        reset();
+    }
 
-		lua_State* state() const { return L; }
+    lua_State* state() const
+    {
+        return L;
+    }
 
-		void operator=(lua_reference const& r)
-		{
-			// TODO: self assignment problems
-			reset();
-			if (!r.is_valid()) return;
-			r.get(r.state());
-			set(r.state());
-		}
+    void operator=(lua_reference const& r)
+    {
+        // TODO: self assignment problems
+        reset();
+        if (!r.is_valid()) return;
+        r.get(r.state());
+        set(r.state());
+    }
 
-		bool is_valid() const
-		{ return m_ref != LUA_NOREF; }
+    bool is_valid() const
+    {
+        return m_ref != LUA_NOREF;
+    }
 
-		void set(lua_State* L_)
-		{
-			reset();
-			L = L_;
-			m_ref = ref(L);
-		}
+    void set(lua_State* L_)
+    {
+        reset();
+        L = L_;
+        m_ref = ref(L);
+    }
 
-		void replace(lua_State* L_)
-		{
-			lua_rawseti(L_, LUA_REGISTRYINDEX, m_ref);
-		}
+    void replace(lua_State* L_)
+    {
+        lua_rawseti(L_, LUA_REGISTRYINDEX, m_ref);
+    }
 
-		// L may not be the same pointer as
-		// was used when creating this reference
-		// since it may be a thread that shares
-		// the same globals table.
-		void get(lua_State* L_) const
-		{
-			assert(m_ref != LUA_NOREF);
-			assert(L_);
-			getref(L_, m_ref);
-		}
+    // L may not be the same pointer as
+    // was used when creating this reference
+    // since it may be a thread that shares
+    // the same globals table.
+    void get(lua_State* L_) const
+    {
+        assert(m_ref != LUA_NOREF);
+        assert(L_);
+        getref(L_, m_ref);
+    }
 
-		void reset()
-		{
-			if (L && m_ref != LUA_NOREF) unref(L, m_ref);
-			m_ref = LUA_NOREF;
-		}
+    void reset()
+    {
+        if (L && m_ref != LUA_NOREF) unref(L, m_ref);
+        m_ref = LUA_NOREF;
+    }
 
-		void swap(lua_reference& r)
-		{
-			assert(r.L == L);
-			std::swap(r.m_ref, m_ref);
-		}
+    void swap(lua_reference& r)
+    {
+        assert(r.L == L);
+        std::swap(r.m_ref, m_ref);
+    }
 
-	private:
-		lua_State* L;
-		int m_ref;
-	};
+private:
+    lua_State* L;
+    int m_ref;
+};
 
-}}
+}
+}
 
 #endif // LUABIND_REF_HPP_INCLUDED
 

@@ -1,4 +1,4 @@
-#include "fuzzy/fuzzyvariable.h"
+﻿#include "fuzzy/fuzzyvariable.h"
 #include "fuzzy/fuzzyoperators.h"
 #include "fuzzy/FuzzySet_triangle.h"
 #include "fuzzy/FuzzySet_LeftShoulder.h"
@@ -14,11 +14,11 @@
 //-----------------------------------------------------------------------------
 FuzzyVariable::~FuzzyVariable()
 {
-  MemberSets::iterator it;
-  for (it = m_MemberSets.begin(); it != m_MemberSets.end(); ++it)
-  {
-    delete it->second;
-  }
+    MemberSets::iterator it;
+    for (it = m_MemberSets.begin(); it != m_MemberSets.end(); ++it)
+    {
+        delete it->second;
+    }
 }
 
 //--------------------------- Fuzzify -----------------------------------------
@@ -27,17 +27,17 @@ FuzzyVariable::~FuzzyVariable()
 //  in the variable.
 //-----------------------------------------------------------------------------
 void FuzzyVariable::Fuzzify(double val)
-{    
-  //make sure the value is within the bounds of this variable
-  assert ( (val >= m_dMinRange) && (val <= m_dMaxRange) && 
-           "<FuzzyVariable::Fuzzify>: value out of range");
+{
+    //make sure the value is within the bounds of this variable
+    assert ( (val >= m_dMinRange) && (val <= m_dMaxRange) &&
+             "<FuzzyVariable::Fuzzify>: value out of range");
 
-  //for each set in the flv calculate the DOM for the given value
-  MemberSets::const_iterator curSet;
-  for (curSet = m_MemberSets.begin(); curSet != m_MemberSets.end(); ++curSet)
-  {
-    curSet->second->SetDOM(curSet->second->CalculateDOM(val));
-  }
+    //for each set in the flv calculate the DOM for the given value
+    MemberSets::const_iterator curSet;
+    for (curSet = m_MemberSets.begin(); curSet != m_MemberSets.end(); ++curSet)
+    {
+        curSet->second->SetDOM(curSet->second->CalculateDOM(val));
+    }
 }
 
 
@@ -45,25 +45,25 @@ void FuzzyVariable::Fuzzify(double val)
 //
 // defuzzifies the value by averaging the maxima of the sets that have fired
 //
-// OUTPUT = sum (maxima * DOM) / sum (DOMs) 
+// OUTPUT = sum (maxima * DOM) / sum (DOMs)
 //-----------------------------------------------------------------------------
 double FuzzyVariable::DeFuzzifyMaxAv()const
 {
-  double bottom = 0.0;
-  double top    = 0.0;
+    double bottom = 0.0;
+    double top    = 0.0;
 
-  MemberSets::const_iterator curSet;
-  for (curSet = m_MemberSets.begin(); curSet != m_MemberSets.end(); ++curSet)
-  {
-    bottom += curSet->second->GetDOM();
+    MemberSets::const_iterator curSet;
+    for (curSet = m_MemberSets.begin(); curSet != m_MemberSets.end(); ++curSet)
+    {
+        bottom += curSet->second->GetDOM();
 
-    top += curSet->second->GetRepresentativeVal() * curSet->second->GetDOM();
-  }
+        top += curSet->second->GetRepresentativeVal() * curSet->second->GetDOM();
+    }
 
-  //make sure bottom is not equal to zero
-  if (isEqual(0, bottom)) return 0.0;
+    //make sure bottom is not equal to zero
+    if (isEqual(0, bottom)) return 0.0;
 
-  return top / bottom;   
+    return top / bottom;
 }
 
 //------------------------- DeFuzzifyCentroid ---------------------------------
@@ -72,44 +72,44 @@ double FuzzyVariable::DeFuzzifyMaxAv()const
 //-----------------------------------------------------------------------------
 double FuzzyVariable::DeFuzzifyCentroid(int NumSamples)const
 {
-  //calculate the step size
-  double StepSize = (m_dMaxRange - m_dMinRange)/(double)NumSamples;
+    //calculate the step size
+    double StepSize = (m_dMaxRange - m_dMinRange)/(double)NumSamples;
 
-  double TotalArea    = 0.0;
-  double SumOfMoments = 0.0;
+    double TotalArea    = 0.0;
+    double SumOfMoments = 0.0;
 
-  //step through the range of this variable in increments equal to StepSize
-  //adding up the contribution (lower of CalculateDOM or the actual DOM of this
-  //variable's fuzzified value) for each subset. This gives an approximation of
-  //the total area of the fuzzy manifold.(This is similar to how the area under
-  //a curve is calculated using calculus... the heights of lots of 'slices' are
-  //summed to give the total area.)
-  //
-  //in addition the moment of each slice is calculated and summed. Dividing
-  //the total area by the sum of the moments gives the centroid. (Just like
-  //calculating the center of mass of an object)
-  for (int samp=1; samp<=NumSamples; ++samp)
-  {
-    //for each set get the contribution to the area. This is the lower of the 
-    //value returned from CalculateDOM or the actual DOM of the fuzzified 
-    //value itself   
-    MemberSets::const_iterator curSet = m_MemberSets.begin();
-    for (curSet; curSet != m_MemberSets.end(); ++curSet)
+    //step through the range of this variable in increments equal to StepSize
+    //adding up the contribution (lower of CalculateDOM or the actual DOM of this
+    //variable's fuzzified value) for each subset. This gives an approximation of
+    //the total area of the fuzzy manifold.(This is similar to how the area under
+    //a curve is calculated using calculus... the heights of lots of 'slices' are
+    //summed to give the total area.)
+    //
+    //in addition the moment of each slice is calculated and summed. Dividing
+    //the total area by the sum of the moments gives the centroid. (Just like
+    //calculating the center of mass of an object)
+    for (int samp=1; samp<=NumSamples; ++samp)
     {
-      double contribution = 
-          MinOf(curSet->second->CalculateDOM(m_dMinRange + samp * StepSize),
-                curSet->second->GetDOM());
+        //for each set get the contribution to the area. This is the lower of the
+        //value returned from CalculateDOM or the actual DOM of the fuzzified
+        //value itself
+        MemberSets::const_iterator curSet = m_MemberSets.begin();
+        for (curSet; curSet != m_MemberSets.end(); ++curSet)
+        {
+            double contribution =
+                MinOf(curSet->second->CalculateDOM(m_dMinRange + samp * StepSize),
+                      curSet->second->GetDOM());
 
-      TotalArea += contribution;
+            TotalArea += contribution;
 
-      SumOfMoments += (m_dMinRange + samp * StepSize)  * contribution;
+            SumOfMoments += (m_dMinRange + samp * StepSize)  * contribution;
+        }
     }
-  }
 
-  //make sure total area is not equal to zero
-  if (isEqual(0, TotalArea)) return 0.0;
-  
-  return (SumOfMoments / TotalArea);
+    //make sure total area is not equal to zero
+    if (isEqual(0, TotalArea)) return 0.0;
+
+    return (SumOfMoments / TotalArea);
 }
 
 //------------------------- AddTriangularSet ----------------------------------
@@ -117,17 +117,17 @@ double FuzzyVariable::DeFuzzifyCentroid(int NumSamples)const
 //  adds a triangular shaped fuzzy set to the variable
 //-----------------------------------------------------------------------------
 FzSet FuzzyVariable::AddTriangularSet(std::string name,
-                                     double       minBound,
-                                     double       peak,
-                                     double       maxBound)
+                                      double       minBound,
+                                      double       peak,
+                                      double       maxBound)
 {
-  m_MemberSets[name] = new FuzzySet_Triangle(peak,
-                                             peak-minBound,
-                                             maxBound-peak);
-  //adjust range if necessary
-  AdjustRangeToFit(minBound, maxBound);
+    m_MemberSets[name] = new FuzzySet_Triangle(peak,
+            peak-minBound,
+            maxBound-peak);
+    //adjust range if necessary
+    AdjustRangeToFit(minBound, maxBound);
 
-  return FzSet(*m_MemberSets[name]);
+    return FzSet(*m_MemberSets[name]);
 }
 
 //--------------------------- AddLeftShoulder ---------------------------------
@@ -139,12 +139,12 @@ FzSet FuzzyVariable::AddLeftShoulderSet(std::string name,
                                         double       peak,
                                         double       maxBound)
 {
-  m_MemberSets[name] = new FuzzySet_LeftShoulder(peak, peak-minBound, maxBound-peak);
+    m_MemberSets[name] = new FuzzySet_LeftShoulder(peak, peak-minBound, maxBound-peak);
 
-  //adjust range if necessary
-  AdjustRangeToFit(minBound, maxBound);
+    //adjust range if necessary
+    AdjustRangeToFit(minBound, maxBound);
 
-  return FzSet(*m_MemberSets[name]);
+    return FzSet(*m_MemberSets[name]);
 }
 
 
@@ -153,16 +153,16 @@ FzSet FuzzyVariable::AddLeftShoulderSet(std::string name,
 //  adds a left shoulder type set
 //-----------------------------------------------------------------------------
 FzSet FuzzyVariable::AddRightShoulderSet(std::string name,
-                                         double       minBound,
-                                         double       peak,
-                                         double       maxBound)
+        double       minBound,
+        double       peak,
+        double       maxBound)
 {
-  m_MemberSets[name] = new FuzzySet_RightShoulder(peak, peak-minBound, maxBound-peak);
+    m_MemberSets[name] = new FuzzySet_RightShoulder(peak, peak-minBound, maxBound-peak);
 
-  //adjust range if necessary
-  AdjustRangeToFit(minBound, maxBound);
+    //adjust range if necessary
+    AdjustRangeToFit(minBound, maxBound);
 
-  return FzSet(*m_MemberSets[name]);
+    return FzSet(*m_MemberSets[name]);
 }
 
 
@@ -171,17 +171,17 @@ FzSet FuzzyVariable::AddRightShoulderSet(std::string name,
 //  adds a singleton to the variable
 //-----------------------------------------------------------------------------
 FzSet FuzzyVariable::AddSingletonSet(std::string name,
-                                    double       minBound,
-                                    double       peak,
-                                    double       maxBound)
+                                     double       minBound,
+                                     double       peak,
+                                     double       maxBound)
 {
-  m_MemberSets[name] = new FuzzySet_Singleton(peak,
-                                              peak-minBound,
-                                              maxBound-peak);
+    m_MemberSets[name] = new FuzzySet_Singleton(peak,
+            peak-minBound,
+            maxBound-peak);
 
-  AdjustRangeToFit(minBound, maxBound);
+    AdjustRangeToFit(minBound, maxBound);
 
-  return FzSet(*m_MemberSets[name]);
+    return FzSet(*m_MemberSets[name]);
 }
 
 //---------------------------- AdjustRangeToFit -------------------------------
@@ -191,22 +191,22 @@ FzSet FuzzyVariable::AddSingletonSet(std::string name,
 //-----------------------------------------------------------------------------
 void FuzzyVariable::AdjustRangeToFit(double minBound, double maxBound)
 {
-  if (minBound < m_dMinRange) m_dMinRange = minBound;
-  if (maxBound > m_dMaxRange) m_dMaxRange = maxBound;
+    if (minBound < m_dMinRange) m_dMinRange = minBound;
+    if (maxBound > m_dMaxRange) m_dMaxRange = maxBound;
 }
 
 //---------------------------- WriteDOMs --------------------------------------
 std::ostream& FuzzyVariable::WriteDOMs(std::ostream& os)
 {
-  MemberSets::iterator it;
-  for (it = m_MemberSets.begin(); it != m_MemberSets.end(); ++it)
-  {
+    MemberSets::iterator it;
+    for (it = m_MemberSets.begin(); it != m_MemberSets.end(); ++it)
+    {
 
-    os << "\n" << it->first << " is " << it->second->GetDOM();
-  }
+        os << "\n" << it->first << " is " << it->second->GetDOM();
+    }
 
-  os << "\nMin Range: " << m_dMinRange << "\nMax Range: " << m_dMaxRange;
+    os << "\nMin Range: " << m_dMinRange << "\nMax Range: " << m_dMaxRange;
 
     return os;
-  
+
 }

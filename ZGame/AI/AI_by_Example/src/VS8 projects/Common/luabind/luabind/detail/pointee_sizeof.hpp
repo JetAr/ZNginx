@@ -1,4 +1,4 @@
-// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -25,28 +25,30 @@
 
 #include <boost/mpl/int.hpp>
 
-namespace luabind {
+namespace luabind
+{
 
-    namespace detail {
+namespace detail
+{
 
-    template<class T> T& deref_type(T(*)(), int);
-    template<class T> T& deref_type(T*(*)(), long);
+template<class T> T& deref_type(T(*)(), int);
+template<class T> T& deref_type(T*(*)(), long);
 
-    } // namespace detail
+} // namespace detail
 
-    // returns the indirect sizeof U, as in
-    //    sizeof(T*) = sizeof(T)
-    //    sizeof(T&) = sizeof(T)
-    //    sizeof(T)  = sizeof(T)
-    template<class T>
-    struct pointee_sizeof
-    {
-        BOOST_STATIC_CONSTANT(int, value = (
-            sizeof(detail::deref_type((T(*)())0), 0L)
-        ));
+// returns the indirect sizeof U, as in
+//    sizeof(T*) = sizeof(T)
+//    sizeof(T&) = sizeof(T)
+//    sizeof(T)  = sizeof(T)
+template<class T>
+struct pointee_sizeof
+{
+    BOOST_STATIC_CONSTANT(int, value = (
+                                           sizeof(detail::deref_type((T(*)())0), 0L)
+                                       ));
 
-        typedef boost::mpl::int_<value> type;
-    };
+    typedef boost::mpl::int_<value> type;
+};
 
 } // namespace luabind
 

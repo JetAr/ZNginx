@@ -1,4 +1,4 @@
-#ifndef GOAL_FOLLOWPATH_H
+﻿#ifndef GOAL_FOLLOWPATH_H
 #define GOAL_FOLLOWPATH_H
 #pragma warning (disable:4786)
 //-----------------------------------------------------------------------------
@@ -21,18 +21,18 @@ class Goal_FollowPath : public Goal_Composite<Raven_Bot>
 {
 private:
 
-  //a local copy of the path returned by the path planner
-  std::list<PathEdge>  m_Path;
+    //a local copy of the path returned by the path planner
+    std::list<PathEdge>  m_Path;
 
 public:
 
-  Goal_FollowPath(Raven_Bot* pBot, std::list<PathEdge> path);
+    Goal_FollowPath(Raven_Bot* pBot, std::list<PathEdge> path);
 
-  //the usual suspects
-  void Activate();
-  int Process();
-  void Render();
-  void Terminate(){}
+    //the usual suspects
+    void Activate();
+    int Process();
+    void Render();
+    void Terminate() {}
 };
 
 #endif

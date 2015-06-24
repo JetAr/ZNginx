@@ -1,4 +1,4 @@
-// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -31,51 +31,52 @@
 #include <boost/type_traits/is_const.hpp>
 #include <boost/mpl/if.hpp>
 
-namespace luabind {
+namespace luabind
+{
 
 namespace detail
 {
-  namespace mpl = boost::mpl;
- 
-  template<class T>
-  wrap_base const* get_back_reference_aux0(T const* p, mpl::true_)
-  {
-      return dynamic_cast<wrap_base const*>(p);
-  }
+namespace mpl = boost::mpl;
 
-  template<class T>
-  wrap_base const* get_back_reference_aux0(T const* p, mpl::false_)
-  {
-      return 0;
-  }
+template<class T>
+wrap_base const* get_back_reference_aux0(T const* p, mpl::true_)
+{
+    return dynamic_cast<wrap_base const*>(p);
+}
 
-  template<class T>
-  wrap_base const* get_back_reference_aux1(T const* p)
-  {
-      return get_back_reference_aux0(p, boost::is_polymorphic<T>());
-  }
+template<class T>
+wrap_base const* get_back_reference_aux0(T const* p, mpl::false_)
+{
+    return 0;
+}
 
-  template<class T>
-  wrap_base const* get_back_reference_aux2(T const& x, mpl::true_)
-  {
-      return get_back_reference_aux1(get_pointer(x));
-  }
+template<class T>
+wrap_base const* get_back_reference_aux1(T const* p)
+{
+    return get_back_reference_aux0(p, boost::is_polymorphic<T>());
+}
 
-  template<class T>
-  wrap_base const* get_back_reference_aux2(T const& x, mpl::false_)
-  {
-      return get_back_reference_aux1(&x);
-  }
+template<class T>
+wrap_base const* get_back_reference_aux2(T const& x, mpl::true_)
+{
+    return get_back_reference_aux1(get_pointer(x));
+}
 
-  template<class T>
-  wrap_base const* get_back_reference(T const& x)
-  {
-      return detail::get_back_reference_aux2(
-          x
-        , has_get_pointer<T>()
-      );
-  }
-  
+template<class T>
+wrap_base const* get_back_reference_aux2(T const& x, mpl::false_)
+{
+    return get_back_reference_aux1(&x);
+}
+
+template<class T>
+wrap_base const* get_back_reference(T const& x)
+{
+    return detail::get_back_reference_aux2(
+               x
+               , has_get_pointer<T>()
+           );
+}
+
 } // namespace detail
 
 template<class T>

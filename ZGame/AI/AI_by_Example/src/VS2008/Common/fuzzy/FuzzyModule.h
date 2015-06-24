@@ -1,4 +1,4 @@
-#ifndef FUZZY_MODULE_H
+﻿#ifndef FUZZY_MODULE_H
 #define FUZZY_MODULE_H
 #pragma warning (disable:4786)
 //-----------------------------------------------------------------------------
@@ -29,52 +29,52 @@ class FuzzyModule
 {
 private:
 
-  typedef std::map<std::string, FuzzyVariable*> VarMap;
-  
+    typedef std::map<std::string, FuzzyVariable*> VarMap;
+
 public:
 
-  //you must pass one of these values to the defuzzify method. This module
-  //only supports the MaxAv and centroid methods.
-  enum DefuzzifyMethod{max_av, centroid};
+    //you must pass one of these values to the defuzzify method. This module
+    //only supports the MaxAv and centroid methods.
+    enum DefuzzifyMethod {max_av, centroid};
 
-  //when calculating the centroid of the fuzzy manifold this value is used
-  //to determine how many cross-sections should be sampled
-  enum {NumSamples = 15};
+    //when calculating the centroid of the fuzzy manifold this value is used
+    //to determine how many cross-sections should be sampled
+    enum {NumSamples = 15};
 
 private:
 
-  //a map of all the fuzzy variables this module uses
-  VarMap                   m_Variables;
+    //a map of all the fuzzy variables this module uses
+    VarMap                   m_Variables;
 
-  //a vector containing all the fuzzy rules
-  std::vector<FuzzyRule*>   m_Rules;
- 
+    //a vector containing all the fuzzy rules
+    std::vector<FuzzyRule*>   m_Rules;
 
-  //zeros the DOMs of the consequents of each rule. Used by Defuzzify()
-  inline void SetConfidencesOfConsequentsToZero();
+
+    //zeros the DOMs of the consequents of each rule. Used by Defuzzify()
+    inline void SetConfidencesOfConsequentsToZero();
 
 
 public:
 
-  ~FuzzyModule();
+    ~FuzzyModule();
 
-  //creates a new 'empty' fuzzy variable and returns a reference to it.
-  FuzzyVariable&  CreateFLV(const std::string& VarName);
-  
-  //adds a rule to the module
-  void            AddRule(FuzzyTerm& antecedent, FuzzyTerm& consequence);
+    //creates a new 'empty' fuzzy variable and returns a reference to it.
+    FuzzyVariable&  CreateFLV(const std::string& VarName);
 
-  //this method calls the Fuzzify method of the named FLV 
-  inline void     Fuzzify(const std::string& NameOfFLV, double val);
+    //adds a rule to the module
+    void            AddRule(FuzzyTerm& antecedent, FuzzyTerm& consequence);
 
-  //given a fuzzy variable and a deffuzification method this returns a 
-  //crisp value
-  inline double    DeFuzzify(const std::string& key,
-                            DefuzzifyMethod    method = max_av);
-    
-  
-  //writes the DOMs of all the variables in the module to an output stream
-  std::ostream&   WriteAllDOMs(std::ostream& os);
+    //this method calls the Fuzzify method of the named FLV
+    inline void     Fuzzify(const std::string& NameOfFLV, double val);
+
+    //given a fuzzy variable and a deffuzification method this returns a
+    //crisp value
+    inline double    DeFuzzify(const std::string& key,
+                               DefuzzifyMethod    method = max_av);
+
+
+    //writes the DOMs of all the variables in the module to an output stream
+    std::ostream&   WriteAllDOMs(std::ostream& os);
 
 };
 
@@ -87,52 +87,52 @@ public:
 //-----------------------------------------------------------------------------
 inline void FuzzyModule::Fuzzify(const std::string& NameOfFLV, double val)
 {
-  //first make sure the key exists
-  assert ( (m_Variables.find(NameOfFLV) != m_Variables.end()) &&
-          "<FuzzyModule::Fuzzify>:key not found");
+    //first make sure the key exists
+    assert ( (m_Variables.find(NameOfFLV) != m_Variables.end()) &&
+             "<FuzzyModule::Fuzzify>:key not found");
 
-  m_Variables[NameOfFLV]->Fuzzify(val);
+    m_Variables[NameOfFLV]->Fuzzify(val);
 }
 
 //---------------------------- DeFuzzify --------------------------------------
 //
-//  given a fuzzy variable and a deffuzification method this returns a 
+//  given a fuzzy variable and a deffuzification method this returns a
 //  crisp value
 //-----------------------------------------------------------------------------
 inline double
 FuzzyModule::DeFuzzify(const std::string& NameOfFLV, DefuzzifyMethod method)
 {
-  //first make sure the key exists
-  assert ( (m_Variables.find(NameOfFLV) != m_Variables.end()) &&
-          "<FuzzyModule::DeFuzzifyMaxAv>:key not found");
+    //first make sure the key exists
+    assert ( (m_Variables.find(NameOfFLV) != m_Variables.end()) &&
+             "<FuzzyModule::DeFuzzifyMaxAv>:key not found");
 
-  //clear the DOMs of all the consequents of all the rules
-  SetConfidencesOfConsequentsToZero();
+    //clear the DOMs of all the consequents of all the rules
+    SetConfidencesOfConsequentsToZero();
 
-  //process the rules
-  std::vector<FuzzyRule*>::iterator curRule = m_Rules.begin();
-  for (curRule; curRule != m_Rules.end(); ++curRule)
-  {
-    (*curRule)->Calculate();
-  }
+    //process the rules
+    std::vector<FuzzyRule*>::iterator curRule = m_Rules.begin();
+    for (curRule; curRule != m_Rules.end(); ++curRule)
+    {
+        (*curRule)->Calculate();
+    }
 
-  //now defuzzify the resultant conclusion using the specified method
-  switch (method)
-  {
-  case centroid:
+    //now defuzzify the resultant conclusion using the specified method
+    switch (method)
+    {
+    case centroid:
 
-    return m_Variables[NameOfFLV]->DeFuzzifyCentroid(NumSamples);
+        return m_Variables[NameOfFLV]->DeFuzzifyCentroid(NumSamples);
 
-    break;
+        break;
 
-  case max_av:
+    case max_av:
 
-    return m_Variables[NameOfFLV]->DeFuzzifyMaxAv();
+        return m_Variables[NameOfFLV]->DeFuzzifyMaxAv();
 
-    break;
-  }
+        break;
+    }
 
-  return 0;
+    return 0;
 }
 
 
@@ -143,11 +143,11 @@ FuzzyModule::DeFuzzify(const std::string& NameOfFLV, DefuzzifyMethod method)
 //-----------------------------------------------------------------------------
 inline void FuzzyModule::SetConfidencesOfConsequentsToZero()
 {
-  std::vector<FuzzyRule*>::iterator curRule = m_Rules.begin();
-  for (curRule; curRule != m_Rules.end(); ++curRule)
-  {
-    (*curRule)->SetConfidenceOfConsequentToZero();
-  }
+    std::vector<FuzzyRule*>::iterator curRule = m_Rules.begin();
+    for (curRule; curRule != m_Rules.end(); ++curRule)
+    {
+        (*curRule)->SetConfidenceOfConsequentToZero();
+    }
 }
 
 

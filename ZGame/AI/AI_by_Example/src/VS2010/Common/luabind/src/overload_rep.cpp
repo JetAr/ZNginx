@@ -1,4 +1,4 @@
-// Copyright (c) 2005 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2005 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -22,16 +22,19 @@
 
 #include <luabind/detail/overload_rep.hpp>
 
-namespace luabind { namespace detail
+namespace luabind
 {
-	int overload_rep::call(lua_State* L, bool force_static_call) const 
-	{ 
-		if (force_static_call)
-			return call_fun_static(L);
-		else
-			return call_fun(L);
-	}
+namespace detail
+{
+int overload_rep::call(lua_State* L, bool force_static_call) const
+{
+    if (force_static_call)
+        return call_fun_static(L);
+    else
+        return call_fun(L);
+}
 
-}} // namespace luabind::detail
+}
+} // namespace luabind::detail
 
 

@@ -1,4 +1,4 @@
-//include the libraries
+﻿//include the libraries
 #pragma comment(lib, "lua.lib")
 #pragma comment(lib, "lualib.lib")
 #pragma comment(lib, "luabind.lib")
@@ -6,9 +6,9 @@
 
 extern "C"
 {
-  #include <lua.h>
-  #include <lualib.h>
-  #include <lauxlib.h>
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
 }
 
 #include <string>
@@ -29,49 +29,49 @@ using namespace luabind;
 
 void RegisterAnimalWithLua(lua_State* pLua)
 {
-  module(pLua)
-  [
-    class_<Animal>("Animal")
-    .def(constructor<string, int>())
-    .def("Speak", &Animal::Speak)
-    .def("NumLegs", &Animal::NumLegs)   
-  ];  
+    module(pLua)
+    [
+        class_<Animal>("Animal")
+        .def(constructor<string, int>())
+        .def("Speak", &Animal::Speak)
+        .def("NumLegs", &Animal::NumLegs)
+    ];
 }
 
 void RegisterPetWithLua(lua_State* pLua)
 {
-  module(pLua)
+    module(pLua)
     [
-      class_<Pet, bases<Animal> >("Pet")
-      .def(constructor<string, string, int>())
-      .def("GetName", &Pet::GetName)  
-    
-    ];  
+        class_<Pet, bases<Animal> >("Pet")
+        .def(constructor<string, string, int>())
+        .def("GetName", &Pet::GetName)
+
+    ];
 }
 
 
 int main()
 {
-  //create a lua state
-  lua_State* pLua = lua_open();
+    //create a lua state
+    lua_State* pLua = lua_open();
 
-  //open the libraries
-  OpenLuaLibraries(pLua);
+    //open the libraries
+    OpenLuaLibraries(pLua);
 
-  //open luabind
-  open(pLua);
+    //open luabind
+    open(pLua);
 
-  RegisterAnimalWithLua(pLua);
-  RegisterPetWithLua(pLua);
- 
-  //load and run the script
-  RunLuaScript(pLua, "ExposingCPPClassesToLua.lua");
+    RegisterAnimalWithLua(pLua);
+    RegisterPetWithLua(pLua);
 
-  lua_close(pLua);
+    //load and run the script
+    RunLuaScript(pLua, "ExposingCPPClassesToLua.lua");
+
+    lua_close(pLua);
 
 
 
-  
-    
-  return 0;
+
+
+    return 0;
 }

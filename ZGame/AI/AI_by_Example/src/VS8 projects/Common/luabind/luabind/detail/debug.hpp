@@ -1,4 +1,4 @@
-// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -28,25 +28,28 @@
 #include <luabind/lua_include.hpp>
 #include <cassert>
 
-namespace luabind { namespace detail
+namespace luabind
 {
-	struct stack_checker_type
-	{
-		stack_checker_type(lua_State* L)
-			: m_L(L)
-			, m_stack(lua_gettop(m_L))
-		{}
+namespace detail
+{
+struct stack_checker_type
+{
+    stack_checker_type(lua_State* L)
+        : m_L(L)
+        , m_stack(lua_gettop(m_L))
+    {}
 
-		~stack_checker_type()
-		{
-			assert(m_stack == lua_gettop(m_L));
-		}
+    ~stack_checker_type()
+    {
+        assert(m_stack == lua_gettop(m_L));
+    }
 
-		lua_State* m_L;
-		int m_stack;
-	};
+    lua_State* m_L;
+    int m_stack;
+};
 
-}}
+}
+}
 #define LUABIND_CHECK_STACK(L) luabind::detail::stack_checker_type stack_checker_object(L)
 #else
 #define LUABIND_CHECK_STACK(L) do {} while (0)

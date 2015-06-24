@@ -1,4 +1,4 @@
-// Copyright (c) 2005 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2005 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -23,13 +23,14 @@
 #ifndef LUABIND_FROM_STACK_050715_HPP
 #define LUABIND_FROM_STACK_050715_HPP
 
-namespace luabind {
+namespace luabind
+{
 
 struct from_stack
 {
     from_stack(lua_State* interpreter, int index)
-      : interpreter(interpreter)
-      , index(index)
+        : interpreter(interpreter)
+        , index(index)
     {}
 
     lua_State* interpreter;

@@ -1,4 +1,4 @@
-#ifndef USER_OPTIONS
+﻿#ifndef USER_OPTIONS
 #define USER_OPTIONS
 //-----------------------------------------------------------------------------
 //
@@ -16,43 +16,43 @@ class Raven_UserOptions
 {
 private:
 
-  Raven_UserOptions();
+    Raven_UserOptions();
 
-  //copy ctor and assignment should be private
-  Raven_UserOptions(const Raven_UserOptions&);
-  Raven_UserOptions& operator=(const Raven_UserOptions&);
+    //copy ctor and assignment should be private
+    Raven_UserOptions(const Raven_UserOptions&);
+    Raven_UserOptions& operator=(const Raven_UserOptions&);
 
 
 public:
 
-  static Raven_UserOptions* Instance();
-  
-  bool m_bShowGraph;
+    static Raven_UserOptions* Instance();
 
-  bool m_bShowNodeIndices;
+    bool m_bShowGraph;
 
-  bool m_bShowPathOfSelectedBot;
+    bool m_bShowNodeIndices;
 
-  bool m_bShowTargetOfSelectedBot;
+    bool m_bShowPathOfSelectedBot;
 
-  bool m_bShowOpponentsSensedBySelectedBot;
+    bool m_bShowTargetOfSelectedBot;
 
-  bool m_bOnlyShowBotsInTargetsFOV;
+    bool m_bShowOpponentsSensedBySelectedBot;
 
-  bool m_bShowGoalsOfSelectedBot;
+    bool m_bOnlyShowBotsInTargetsFOV;
 
-  bool m_bShowGoalAppraisals;
+    bool m_bShowGoalsOfSelectedBot;
 
-  bool m_bShowWeaponAppraisals;
+    bool m_bShowGoalAppraisals;
 
-  bool m_bSmoothPathsQuick;
-  bool m_bSmoothPathsPrecise;
+    bool m_bShowWeaponAppraisals;
 
-  bool m_bShowBotIDs;
+    bool m_bSmoothPathsQuick;
+    bool m_bSmoothPathsPrecise;
 
-  bool m_bShowBotHealth;
+    bool m_bShowBotIDs;
 
-  bool m_bShowScore;
+    bool m_bShowBotHealth;
+
+    bool m_bShowScore;
 };
 
 

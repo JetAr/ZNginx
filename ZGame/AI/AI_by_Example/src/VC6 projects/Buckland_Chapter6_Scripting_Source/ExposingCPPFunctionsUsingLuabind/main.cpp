@@ -1,4 +1,4 @@
-//include the libraries
+﻿//include the libraries
 #pragma comment(lib, "lua.lib")
 #pragma comment(lib, "lualib.lib")
 #pragma comment(lib, "luabind.lib")
@@ -8,9 +8,9 @@
 
 extern "C"
 {
-  #include <lua.h>
-  #include <lualib.h>
-  #include <lauxlib.h>
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
 }
 
 #include <iostream>
@@ -28,40 +28,40 @@ using namespace luabind;
 //define a couple of simple functions
 void HelloWorld()
 {
-  cout << "\n[C++]: Hello World!" << endl;
+    cout << "\n[C++]: Hello World!" << endl;
 }
 
 int add(int a, int b)
 {
-  return a + b;
+    return a + b;
 }
 
 
 
 int main()
 {
-  //create a lua state
-  lua_State* pLua = lua_open();
+    //create a lua state
+    lua_State* pLua = lua_open();
 
-  //open the lua std libraries
-  OpenLuaLibraries(pLua);
+    //open the lua std libraries
+    OpenLuaLibraries(pLua);
 
-  //open luabind
-  open(pLua);
+    //open luabind
+    open(pLua);
 
-  module(pLua)
-  [
-	  def("HelloWorld", &HelloWorld),
-    def("add", &add)
-  ];
- 
-  //load and run the script
-  RunLuaScript(pLua, "ExposingCPPFunctionsToLua.lua");
+    module(pLua)
+    [
+        def("HelloWorld", &HelloWorld),
+        def("add", &add)
+    ];
 
-  
-  //tidy up
-  lua_close(pLua);
+    //load and run the script
+    RunLuaScript(pLua, "ExposingCPPFunctionsToLua.lua");
 
-    
-  return 0;
+
+    //tidy up
+    lua_close(pLua);
+
+
+    return 0;
 }

@@ -1,4 +1,4 @@
-#ifndef RAILGUN_H
+﻿#ifndef RAILGUN_H
 #define RAILGUN_H
 #pragma warning (disable:4786)
 //-----------------------------------------------------------------------------
@@ -20,17 +20,17 @@ class RailGun : public Raven_Weapon
 {
 private:
 
-  void  InitializeFuzzyModule();
+    void  InitializeFuzzyModule();
 
 public:
 
-  RailGun(Raven_Bot* owner);
+    RailGun(Raven_Bot* owner);
 
-  void  Render();
+    void  Render();
 
-  void  ShootAt(Vector2D pos);
+    void  ShootAt(Vector2D pos);
 
-  double GetDesirability(double DistToTarget);
+    double GetDesirability(double DistToTarget);
 };
 
 

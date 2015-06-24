@@ -1,4 +1,4 @@
-#ifndef GOAL_FIND_TARGET_H
+﻿#ifndef GOAL_FIND_TARGET_H
 #define GOAL_FIND_TARGET_H
 #pragma warning (disable:4786)
 //-----------------------------------------------------------------------------
@@ -19,22 +19,22 @@ class Goal_HuntTarget : public Goal_Composite<Raven_Bot>
 {
 private:
 
-  //this value is set to true if the last visible position of the target
-  //bot has been searched without success
-  bool  m_bLVPTried;
+    //this value is set to true if the last visible position of the target
+    //bot has been searched without success
+    bool  m_bLVPTried;
 
 public:
 
-  Goal_HuntTarget(Raven_Bot* pBot):Goal_Composite<Raven_Bot>(pBot, goal_hunt_target),
-                                   m_bLVPTried(false)
-  {}
+    Goal_HuntTarget(Raven_Bot* pBot):Goal_Composite<Raven_Bot>(pBot, goal_hunt_target),
+        m_bLVPTried(false)
+    {}
 
-   //the usual suspects
-  void Activate();
-  int  Process();
-  void Terminate(){}
+    //the usual suspects
+    void Activate();
+    int  Process();
+    void Terminate() {}
 
-  void Render();
+    void Render();
 
 
 };

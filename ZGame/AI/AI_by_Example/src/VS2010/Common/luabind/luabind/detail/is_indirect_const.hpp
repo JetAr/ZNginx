@@ -1,4 +1,4 @@
-// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -27,42 +27,44 @@
 #include <boost/type_traits/is_const.hpp>
 #include <boost/mpl/bool.hpp>
 
-namespace luabind {
+namespace luabind
+{
 
-    namespace detail {
+namespace detail
+{
 
-    template<class T>
-    typename boost::is_const<T>::type
-    is_indirect_const_check(T(*)(), int);
+template<class T>
+typename boost::is_const<T>::type
+is_indirect_const_check(T(*)(), int);
 
-    template<class T>
-    typename boost::is_const<T>::type 
-    is_indirect_const_check(T*(*)(), long);
+template<class T>
+typename boost::is_const<T>::type
+is_indirect_const_check(T*(*)(), long);
 
-    template<class T>
-    typename boost::is_const<T>::type 
-    is_indirect_const_check(T&(*)(), long);
-    
-    yes_t to_yes_no(boost::mpl::true_);
-    no_t to_yes_no(boost::mpl::false_);
+template<class T>
+typename boost::is_const<T>::type
+is_indirect_const_check(T&(*)(), long);
 
-    } // namespace detail
+yes_t to_yes_no(boost::mpl::true_);
+no_t to_yes_no(boost::mpl::false_);
 
-    // returns true for:
-    //    T = U*  is_const<U>
-    //    T = U&  is_const<U>
-    //    T = U   is_const<U>
-    template<class T>
-    struct is_indirect_const
-    {
-        BOOST_STATIC_CONSTANT(int, value = (
-            sizeof(
-                detail::to_yes_no(
-                    detail::is_indirect_const_check((T(*)())0, 0L)
-            ))
-         == sizeof(detail::yes_t)
-        ));
-    };
+} // namespace detail
+
+// returns true for:
+//    T = U*  is_const<U>
+//    T = U&  is_const<U>
+//    T = U   is_const<U>
+template<class T>
+struct is_indirect_const
+{
+    BOOST_STATIC_CONSTANT(int, value = (
+                                           sizeof(
+                                                   detail::to_yes_no(
+                                                           detail::is_indirect_const_check((T(*)())0, 0L)
+                                                   ))
+                                           == sizeof(detail::yes_t)
+                                       ));
+};
 
 } // namespace luabind
 

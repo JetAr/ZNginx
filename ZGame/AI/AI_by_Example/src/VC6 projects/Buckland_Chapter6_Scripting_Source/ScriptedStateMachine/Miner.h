@@ -1,4 +1,4 @@
-#ifndef MINER_H
+﻿#ifndef MINER_H
 #define MINER_H
 #pragma warning (disable : 4786)
 //------------------------------------------------------------------------
@@ -32,32 +32,50 @@ class Miner : public Entity
 {
 private:
 
-  ScriptedStateMachine<Miner>* m_pStateMachine;
+    ScriptedStateMachine<Miner>* m_pStateMachine;
 
-  //how many nuggets the miner has in his pockets
-  int                   m_iGoldCarried;
+    //how many nuggets the miner has in his pockets
+    int                   m_iGoldCarried;
 
-  //the higher the value, the more tired the miner
-  int                   m_iFatigue;
+    //the higher the value, the more tired the miner
+    int                   m_iFatigue;
 
 public:
 
-  Miner(std::string name);
+    Miner(std::string name);
 
-  ~Miner(){delete m_pStateMachine;}
+    ~Miner()
+    {
+        delete m_pStateMachine;
+    }
 
-  //this must be implemented
-  void Update();
+    //this must be implemented
+    void Update();
 
-  int           GoldCarried()const{return m_iGoldCarried;}
-  void          SetGoldCarried(int val){m_iGoldCarried = val;}
-  void          AddToGoldCarried(int val);
+    int           GoldCarried()const
+    {
+        return m_iGoldCarried;
+    }
+    void          SetGoldCarried(int val)
+    {
+        m_iGoldCarried = val;
+    }
+    void          AddToGoldCarried(int val);
 
-  bool          Fatigued()const;
-  void          DecreaseFatigue(){m_iFatigue -= 1;}
-  void          IncreaseFatigue(){m_iFatigue += 1;}
+    bool          Fatigued()const;
+    void          DecreaseFatigue()
+    {
+        m_iFatigue -= 1;
+    }
+    void          IncreaseFatigue()
+    {
+        m_iFatigue += 1;
+    }
 
-  ScriptedStateMachine<Miner>* GetFSM()const{return m_pStateMachine;}
+    ScriptedStateMachine<Miner>* GetFSM()const
+    {
+        return m_pStateMachine;
+    }
 };
 
 

@@ -1,8 +1,8 @@
-extern "C"
+﻿extern "C"
 {
-  #include <lua.h>
-  #include <lualib.h>
-  #include <lauxlib.h>
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
 }
 
 #pragma comment(lib, "lua.lib")
@@ -20,22 +20,22 @@ using namespace std;
 
 int main()
 {
-  //create a lua state
-  lua_State* pL = lua_open();
+    //create a lua state
+    lua_State* pL = lua_open();
 
-  OpenLuaLibraries(pL);
+    OpenLuaLibraries(pL);
 
-  //register the functions with lua
-  lua_register(pL, "cpp_GetAIMove", cpp_GetAIMove);
-  lua_register(pL, "cpp_EvaluateTheGuesses", cpp_EvaluateTheGuesses);
+    //register the functions with lua
+    lua_register(pL, "cpp_GetAIMove", cpp_GetAIMove);
+    lua_register(pL, "cpp_EvaluateTheGuesses", cpp_EvaluateTheGuesses);
 
-  //run the script
-  RunLuaScript(pL, "Rock_Paper_Scissors_Using_C++_Funcs.lua");
-  
-  //tidy up
-  lua_close(pL);
+    //run the script
+    RunLuaScript(pL, "Rock_Paper_Scissors_Using_C++_Funcs.lua");
 
-  cout << "\n\n\n";
-    
-  return 0;
+    //tidy up
+    lua_close(pL);
+
+    cout << "\n\n\n";
+
+    return 0;
 }

@@ -1,4 +1,4 @@
-//include the libraries
+﻿//include the libraries
 #pragma comment(lib, "lua.lib")
 #pragma comment(lib, "lualib.lib")
 #pragma comment(lib, "luabind.lib")
@@ -6,9 +6,9 @@
 
 extern "C"
 {
-  #include <lua.h>
-  #include <lualib.h>
-  #include <lauxlib.h>
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
 }
 
 #include <string>
@@ -28,86 +28,86 @@ using namespace luabind;
 
 void RegisterScriptedStateMachineWithLua(lua_State* pLua)
 {
-  luabind::module(pLua)
+    luabind::module(pLua)
     [
-      class_<ScriptedStateMachine<Miner> >("ScriptedStateMachine")
-    
+        class_<ScriptedStateMachine<Miner> >("ScriptedStateMachine")
+
         .def("ChangeState", &ScriptedStateMachine<Miner>::ChangeState)
         .def("CurrentState", &ScriptedStateMachine<Miner>::CurrentState)
         .def("SetCurrentState", &ScriptedStateMachine<Miner>::SetCurrentState)
-    ];  
+    ];
 }
 
 
 void RegisterEntityWithLua(lua_State* pLua)
 {
-  module(pLua)
+    module(pLua)
     [
-      class_<Entity>("Entity")
+        class_<Entity>("Entity")
 
         .def("Name", &Entity::Name)
-        .def("ID", &Entity::ID)   
-    ];  
+        .def("ID", &Entity::ID)
+    ];
 }
 
 
 void RegisterMinerWithLua(lua_State* pLua)
 {
-  module(pLua)
-    [   
-      class_<Miner, bases<Entity> >("Miner")
+    module(pLua)
+    [
+        class_<Miner, bases<Entity> >("Miner")
 
         .def("GoldCarried", &Miner::GoldCarried)
         .def("SetGoldCarried", &Miner::SetGoldCarried)
         .def("AddToGoldCarried", &Miner::AddToGoldCarried)
         .def("Fatigued", &Miner::Fatigued)
         .def("DecreaseFatigue", &Miner::DecreaseFatigue)
-        .def("IncreaseFatigue", &Miner::IncreaseFatigue) 
+        .def("IncreaseFatigue", &Miner::IncreaseFatigue)
         .def("GetFSM", &Miner::GetFSM)
-    ];  
+    ];
 }
 
 
 
 int main()
 {
-  //create a lua state
-  lua_State* pLua = lua_open();
+    //create a lua state
+    lua_State* pLua = lua_open();
 
-  LuaExceptionGuard guard(pLua);
+    LuaExceptionGuard guard(pLua);
 
-  //open the libraries
-  OpenLuaLibraries(pLua);
-  
-  //open luabind
-  open(pLua);
-  
-  //bind the relevant classes to Lua
-  RegisterEntityWithLua(pLua);
-  RegisterScriptedStateMachineWithLua(pLua);
-  RegisterMinerWithLua(pLua);
- 
-  //load and run the script
-  RunLuaScript(pLua, "StateMachineScript.lua");
-  
-  //create a miner
-  Miner bob("bob");
+    //open the libraries
+    OpenLuaLibraries(pLua);
 
-  //grab the global table from the lua state. This will inlclude
-  //all the functions and variables defined in the scripts run so far
-  //(StateMachineScript.lua in this example)
-  object states = get_globals(pLua);
+    //open luabind
+    open(pLua);
 
-  //make sure Bob's CurrentState object is set to a valid state.
-  bob.GetFSM()->SetCurrentState(states["State_GoHome"]);
+    //bind the relevant classes to Lua
+    RegisterEntityWithLua(pLua);
+    RegisterScriptedStateMachineWithLua(pLua);
+    RegisterMinerWithLua(pLua);
 
-  //run him through a few update cycles
-  for (int i=0; i<10; ++i)
-  {
-    bob.Update();
-  }
+    //load and run the script
+    RunLuaScript(pLua, "StateMachineScript.lua");
 
-  return 0;
+    //create a miner
+    Miner bob("bob");
+
+    //grab the global table from the lua state. This will inlclude
+    //all the functions and variables defined in the scripts run so far
+    //(StateMachineScript.lua in this example)
+    object states = get_globals(pLua);
+
+    //make sure Bob's CurrentState object is set to a valid state.
+    bob.GetFSM()->SetCurrentState(states["State_GoHome"]);
+
+    //run him through a few update cycles
+    for (int i=0; i<10; ++i)
+    {
+        bob.Update();
+    }
+
+    return 0;
 }
 
 

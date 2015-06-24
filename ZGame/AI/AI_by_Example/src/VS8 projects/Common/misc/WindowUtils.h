@@ -1,4 +1,4 @@
-#ifndef WINDOW_UTILS_H
+﻿#ifndef WINDOW_UTILS_H
 #define WINDOW_UTILS_H
 #pragma warning (disable:4786)
 
@@ -16,19 +16,19 @@ struct Vector2D;
 //Call this to refresh the client window
 inline void RedrawWindow(HWND hwnd, bool RedrawBackGround = true)
 {
-  InvalidateRect(hwnd, NULL, RedrawBackGround);
-  UpdateWindow(hwnd);
+    InvalidateRect(hwnd, NULL, RedrawBackGround);
+    UpdateWindow(hwnd);
 }
 
 //Call this to refresh the client window
 inline void RedrawWindowRect(HWND hwnd, bool RedrawBackGround, RECT& RedrawArea)
 {
-  InvalidateRect(hwnd, &RedrawArea, RedrawBackGround);
-  UpdateWindow(hwnd);
+    InvalidateRect(hwnd, &RedrawArea, RedrawBackGround);
+    UpdateWindow(hwnd);
 }
 
 
-//Changes the state of a menu item given the item identifier, the 
+//Changes the state of a menu item given the item identifier, the
 //desired state and the HWND of the menu owner
 void ChangeMenuState(HWND hwnd, UINT MenuItem, UINT state);
 
@@ -36,7 +36,7 @@ void ChangeMenuState(HWND hwnd, UINT MenuItem, UINT state);
 void CheckMenuItemAppropriately(HWND hwnd, UINT MenuItem, bool b);
 
 
-//this is a replacement for the StringCchLength function found in the 
+//this is a replacement for the StringCchLength function found in the
 //platform SDK. See MSDN for details. Only ever used for checking toolbar
 //strings
 bool CheckBufferLength(char* buff, int MaxLength, unsigned int& BufferLength);
@@ -44,10 +44,10 @@ bool CheckBufferLength(char* buff, int MaxLength, unsigned int& BufferLength);
 void ErrorBox(std::string& msg);
 void ErrorBox(char* msg);
 
-//gets the coordinates of the cursor relative to an active window 
+//gets the coordinates of the cursor relative to an active window
 Vector2D GetClientCursorPosition();
 
-//gets the coordinates of the cursor relative to an active window 
+//gets the coordinates of the cursor relative to an active window
 Vector2D GetClientCursorPosition(HWND hwnd);
 
 

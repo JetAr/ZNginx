@@ -1,4 +1,4 @@
-// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -27,9 +27,9 @@
 #include <boost/config.hpp>
 
 #ifdef BOOST_MSVC
-	#define LUABIND_ANONYMOUS_FIX static
+#define LUABIND_ANONYMOUS_FIX static
 #else
-	#define LUABIND_ANONYMOUS_FIX
+#define LUABIND_ANONYMOUS_FIX
 #endif
 
 #if defined (BOOST_MSVC) && (BOOST_MSVC <= 1200)
@@ -40,37 +40,37 @@
 
 namespace std
 {
-	using ::strlen;
-	using ::strcmp;
-	using ::type_info;
+using ::strlen;
+using ::strcmp;
+using ::type_info;
 }
 
 #endif
 
 
 #if defined (BOOST_MSVC) && (BOOST_MSVC <= 1300)
-	#define LUABIND_MSVC_TYPENAME
+#define LUABIND_MSVC_TYPENAME
 #else
-	#define LUABIND_MSVC_TYPENAME typename
+#define LUABIND_MSVC_TYPENAME typename
 #endif
 
 // the maximum number of arguments of functions that's
 // registered. Must at least be 2
 #ifndef LUABIND_MAX_ARITY
-	#define LUABIND_MAX_ARITY 10
+#define LUABIND_MAX_ARITY 10
 #elif LUABIND_MAX_ARITY <= 1
-	#undef LUABIND_MAX_ARITY
-	#define LUABIND_MAX_ARITY 2
+#undef LUABIND_MAX_ARITY
+#define LUABIND_MAX_ARITY 2
 #endif
 
 // the maximum number of classes one class
 // can derive from
 // max bases must at least be 1
 #ifndef LUABIND_MAX_BASES
-	#define LUABIND_MAX_BASES 4
+#define LUABIND_MAX_BASES 4
 #elif LUABIND_MAX_BASES <= 0
-	#undef LUABIND_MAX_BASES
-	#define LUABIND_MAX_BASES 1
+#undef LUABIND_MAX_BASES
+#define LUABIND_MAX_BASES 1
 #endif
 
 // LUABIND_NO_ERROR_CHECKING
@@ -107,10 +107,10 @@ namespace std
 // for all classes that you have type-info for.
 
 #ifndef LUABIND_TYPE_INFO
-	#define LUABIND_TYPE_INFO const std::type_info*
-	#define LUABIND_TYPEID(t) &typeid(t)
-	#define LUABIND_TYPE_INFO_EQUAL(i1, i2) *i1 == *i2
-	#define LUABIND_INVALID_TYPE_INFO &typeid(detail::null_type)
+#define LUABIND_TYPE_INFO const std::type_info*
+#define LUABIND_TYPEID(t) &typeid(t)
+#define LUABIND_TYPE_INFO_EQUAL(i1, i2) *i1 == *i2
+#define LUABIND_INVALID_TYPE_INFO &typeid(detail::null_type)
 #include <typeinfo>
 #endif
 
@@ -136,17 +136,17 @@ namespace std
 // this define is set if we're currently building a luabind file
 // select import or export depending on it
 #ifdef LUABIND_BUILDING
-	#ifdef LUABIND_EXPORT
-		#define LUABIND_API LUABIND_EXPORT
-	#else
-		#define LUABIND_API
-	#endif
+#ifdef LUABIND_EXPORT
+#define LUABIND_API LUABIND_EXPORT
 #else
-	#ifdef LUABIND_IMPORT
-		#define LUABIND_API LUABIND_IMPORT
-	#else
-		#define LUABIND_API
-	#endif
+#define LUABIND_API
+#endif
+#else
+#ifdef LUABIND_IMPORT
+#define LUABIND_API LUABIND_IMPORT
+#else
+#define LUABIND_API
+#endif
 #endif
 
 #endif

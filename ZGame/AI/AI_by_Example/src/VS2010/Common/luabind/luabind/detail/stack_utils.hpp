@@ -1,4 +1,4 @@
-// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -25,28 +25,31 @@
 
 #include <cassert>
 
-namespace luabind { namespace detail
+namespace luabind
+{
+namespace detail
 {
 
-	struct stack_pop
-	{
-		stack_pop(lua_State* L, int n)
-			: m_state(L)
-			, m_n(n)
-			{
-			}
+struct stack_pop
+{
+    stack_pop(lua_State* L, int n)
+        : m_state(L)
+        , m_n(n)
+    {
+    }
 
-		~stack_pop() 
-		{
-			lua_pop(m_state, m_n);
-		}
+    ~stack_pop()
+    {
+        lua_pop(m_state, m_n);
+    }
 
-	private:
+private:
 
-		lua_State* m_state;
-		int m_n;
-	};
-}}
+    lua_State* m_state;
+    int m_n;
+};
+}
+}
 
 #endif // LUABIND_STACK_UTILS_HPP_INCLUDED
 

@@ -1,4 +1,4 @@
-#ifndef GOAL_EXPLORE_H
+﻿#ifndef GOAL_EXPLORE_H
 #define GOAL_EXPLORE_H
 #pragma warning (disable:4786)
 
@@ -12,27 +12,27 @@ class Raven_Bot;
 class Goal_Explore : public Goal_Composite<Raven_Bot>
 {
 private:
-  
-  Vector2D  m_CurrentDestination;
 
-  //set to true when the destination for the exploration has been established
-  bool      m_bDestinationIsSet;
+    Vector2D  m_CurrentDestination;
+
+    //set to true when the destination for the exploration has been established
+    bool      m_bDestinationIsSet;
 
 public:
 
-  Goal_Explore(Raven_Bot* pOwner):Goal_Composite<Raven_Bot>(pOwner,
-                                                            goal_explore),
-                                  m_bDestinationIsSet(false)
-  {}
+    Goal_Explore(Raven_Bot* pOwner):Goal_Composite<Raven_Bot>(pOwner,
+                goal_explore),
+        m_bDestinationIsSet(false)
+    {}
 
 
-  void Activate();
+    void Activate();
 
-  int Process();
+    int Process();
 
-  void Terminate(){}
+    void Terminate() {}
 
-  bool HandleMessage(const Telegram& msg);
+    bool HandleMessage(const Telegram& msg);
 };
 
 

@@ -1,4 +1,4 @@
-#ifndef KEEPERSTATES_H
+﻿#ifndef KEEPERSTATES_H
 #define KEEPERSTATES_H
 //------------------------------------------------------------------------
 //
@@ -23,21 +23,21 @@ class SoccerPitch;
 class GlobalKeeperState: public State<GoalKeeper>
 {
 private:
-  
-  GlobalKeeperState(){}
+
+    GlobalKeeperState() {}
 
 public:
 
-  //this is a singleton
-  static GlobalKeeperState* Instance();
+    //this is a singleton
+    static GlobalKeeperState* Instance();
 
-  void Enter(GoalKeeper* keeper){}
+    void Enter(GoalKeeper* keeper) {}
 
-  void Execute(GoalKeeper* keeper){}
+    void Execute(GoalKeeper* keeper) {}
 
-  void Exit(GoalKeeper* keeper){}
+    void Exit(GoalKeeper* keeper) {}
 
-  bool OnMessage(GoalKeeper*, const Telegram&);
+    bool OnMessage(GoalKeeper*, const Telegram&);
 };
 
 //-----------------------------------------------------------------------------
@@ -45,84 +45,96 @@ public:
 class TendGoal: public State<GoalKeeper>
 {
 private:
-  
-  TendGoal(){}
+
+    TendGoal() {}
 
 public:
 
-  //this is a singleton
-  static TendGoal* Instance();
+    //this is a singleton
+    static TendGoal* Instance();
 
-  void Enter(GoalKeeper* keeper);
+    void Enter(GoalKeeper* keeper);
 
-  void Execute(GoalKeeper* keeper);
+    void Execute(GoalKeeper* keeper);
 
-  void Exit(GoalKeeper* keeper);
+    void Exit(GoalKeeper* keeper);
 
-  bool OnMessage(GoalKeeper*, const Telegram&){return false;}
+    bool OnMessage(GoalKeeper*, const Telegram&)
+    {
+        return false;
+    }
 };
 
 //------------------------------------------------------------------------
 class InterceptBall: public State<GoalKeeper>
 {
 private:
-  
-  InterceptBall(){}
+
+    InterceptBall() {}
 
 public:
 
-  //this is a singleton
-  static InterceptBall* Instance();
+    //this is a singleton
+    static InterceptBall* Instance();
 
-  void Enter(GoalKeeper* keeper);
+    void Enter(GoalKeeper* keeper);
 
-  void Execute(GoalKeeper* keeper);
+    void Execute(GoalKeeper* keeper);
 
-  void Exit(GoalKeeper* keeper);
+    void Exit(GoalKeeper* keeper);
 
-  bool OnMessage(GoalKeeper*, const Telegram&){return false;}
+    bool OnMessage(GoalKeeper*, const Telegram&)
+    {
+        return false;
+    }
 };
 
 //------------------------------------------------------------------------
 class ReturnHome: public State<GoalKeeper>
 {
 private:
-  
-  ReturnHome(){}
+
+    ReturnHome() {}
 
 public:
 
-  //this is a singleton
-  static ReturnHome* Instance();
+    //this is a singleton
+    static ReturnHome* Instance();
 
-  void Enter(GoalKeeper* keeper);
+    void Enter(GoalKeeper* keeper);
 
-  void Execute(GoalKeeper* keeper);
+    void Execute(GoalKeeper* keeper);
 
-  void Exit(GoalKeeper* keeper);
+    void Exit(GoalKeeper* keeper);
 
-  bool OnMessage(GoalKeeper*, const Telegram&){return false;}
+    bool OnMessage(GoalKeeper*, const Telegram&)
+    {
+        return false;
+    }
 };
 
 //------------------------------------------------------------------------
 class PutBallBackInPlay: public State<GoalKeeper>
 {
 private:
-  
-  PutBallBackInPlay(){}
+
+    PutBallBackInPlay() {}
 
 public:
 
-  //this is a singleton
-  static PutBallBackInPlay* Instance();
+    //this is a singleton
+    static PutBallBackInPlay* Instance();
 
-  void Enter(GoalKeeper* keeper);
+    void Enter(GoalKeeper* keeper);
 
-  void Execute(GoalKeeper* keeper);
+    void Execute(GoalKeeper* keeper);
 
-  void Exit(GoalKeeper* keeper){}
+    void Exit(GoalKeeper* keeper) {}
 
-  bool OnMessage(GoalKeeper*, const Telegram&){return false;}
+    bool OnMessage(GoalKeeper*, const Telegram&)
+    {
+        return false;
+    }
 };
 
 

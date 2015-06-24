@@ -1,15 +1,15 @@
-#include "Raven_Scriptor.h"
+﻿#include "Raven_Scriptor.h"
 
 Raven_Scriptor* Raven_Scriptor::Instance()
 {
-  static Raven_Scriptor instance;
+    static Raven_Scriptor instance;
 
-  return &instance;
+    return &instance;
 }
 
 
 
 Raven_Scriptor::Raven_Scriptor():Scriptor()
 {
-  RunScriptFile("Params.lua");
+    RunScriptFile("Params.lua");
 }

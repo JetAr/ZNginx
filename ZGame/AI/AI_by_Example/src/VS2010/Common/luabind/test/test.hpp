@@ -1,4 +1,4 @@
-// Copyright (c) 2005 Daniel Wallin, Arvid Norberg
+﻿// Copyright (c) 2005 Daniel Wallin, Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -26,11 +26,11 @@
 #include <boost/preprocessor/cat.hpp>
 #include <luabind/error.hpp>
 
-extern "C" 
+extern "C"
 {
-    #include "lua.h"
-    #include "lauxlib.h"
-    #include "lualib.h"
+#include "lua.h"
+#include "lauxlib.h"
+#include "lualib.h"
 }
 
 void report_failure(char const* str, char const* file, int line);
@@ -74,7 +74,7 @@ template<class T>
 struct counted_type
 {
     static int count;
-    
+
     counted_type()
     {
         ++count;

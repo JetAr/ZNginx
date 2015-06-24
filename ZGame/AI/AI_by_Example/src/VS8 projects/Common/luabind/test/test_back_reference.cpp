@@ -1,4 +1,4 @@
-// Copyright (c) 2005 Daniel Wallin
+﻿// Copyright (c) 2005 Daniel Wallin
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -29,17 +29,17 @@ using namespace luabind;
 #ifdef BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP
 namespace luabind
 {
-  using boost::get_pointer;    
+using boost::get_pointer;
 }
 #endif
 
 namespace luabind
 {
-  template<class T>
-  boost::shared_ptr<T const>* get_const_holder(boost::shared_ptr<T>*)
-  {
-      return 0;
-  }
+template<class T>
+boost::shared_ptr<T const>* get_const_holder(boost::shared_ptr<T>*)
+{
+    return 0;
+}
 }
 
 struct base0
@@ -73,36 +73,36 @@ void test_main(lua_State* L)
     module(L)
     [
         class_<base0, base_wrap0>("base0")
-          .def(constructor<>()),
+        .def(constructor<>()),
         def("filter0", &filter0),
 
         class_<base1, base_wrap1, boost::shared_ptr<base1> >("base1")
-          .def(constructor<>()),
+        .def(constructor<>()),
         def("filter1", &filter1)
     ];
 
     DOSTRING(L,
-        "class 'derived0' (base0)\n"
-        "  function derived0:__init()\n"
-        "    super()\n"
-        "  end\n"
+             "class 'derived0' (base0)\n"
+             "  function derived0:__init()\n"
+             "    super()\n"
+             "  end\n"
 
-        "class 'derived1' (base1)\n"
-        "  function derived1:__init()\n"
-        "    super()\n"
-        "  end\n"
-    );
-
-    DOSTRING(L,
-        "x = derived0()\n"
-        "y = filter0(x)\n"
-        "assert(x == y)\n"
-    );
+             "class 'derived1' (base1)\n"
+             "  function derived1:__init()\n"
+             "    super()\n"
+             "  end\n"
+            );
 
     DOSTRING(L,
-        "x = derived1()\n"
-        "y = filter1(x)\n"
-        "assert(x == y)\n"
-    );
+             "x = derived0()\n"
+             "y = filter0(x)\n"
+             "assert(x == y)\n"
+            );
+
+    DOSTRING(L,
+             "x = derived1()\n"
+             "y = filter1(x)\n"
+             "assert(x == y)\n"
+            );
 }
 

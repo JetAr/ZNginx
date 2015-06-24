@@ -1,4 +1,4 @@
-#ifndef GOAL_MOVE_TO_ITEM_H
+﻿#ifndef GOAL_MOVE_TO_ITEM_H
 #define GOAL_MOVE_TO_ITEM_H
 #pragma warning (disable:4786)
 
@@ -12,20 +12,20 @@ class Goal_MoveToItem : public Raven_Goal
 {
 private:
 
-  int  m_iItemType;
+    int  m_iItemType;
 
 public:
 
-  Goal_MoveToItem(Raven_Bot* pBot,
-               int        type):Raven_Goal(pBot, goal_explore),
-                                m_iItemType(type)
-  {}
+    Goal_MoveToItem(Raven_Bot* pBot,
+                    int        type):Raven_Goal(pBot, goal_explore),
+        m_iItemType(type)
+    {}
 
-  void Initialize();
+    void Initialize();
 
-  void Process(){}
+    void Process() {}
 
-  void Terminate(){}
+    void Terminate() {}
 };
 
 

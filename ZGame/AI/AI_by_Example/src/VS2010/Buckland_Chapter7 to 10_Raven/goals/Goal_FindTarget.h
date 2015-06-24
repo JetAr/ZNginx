@@ -1,4 +1,4 @@
-#ifndef GOAL_WANDER_H
+﻿#ifndef GOAL_WANDER_H
 #define GOAL_WANDER_H
 #pragma warning (disable:4786)
 //-----------------------------------------------------------------------------
@@ -20,14 +20,14 @@ private:
 
 public:
 
-  Goal_Wander(Raven_Bot* pBot):Goal<Raven_Bot>(pBot,goal_wander)
-  {}
+    Goal_Wander(Raven_Bot* pBot):Goal<Raven_Bot>(pBot,goal_wander)
+    {}
 
-  void Activate();
+    void Activate();
 
-  int  Process();
+    int  Process();
 
-  void Terminate();
+    void Terminate();
 };
 
 

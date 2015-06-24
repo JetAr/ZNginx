@@ -1,4 +1,4 @@
-#include "ExploreGoal_Evaluator.h"
+﻿#include "ExploreGoal_Evaluator.h"
 #include "../navigation/Raven_PathPlanner.h"
 #include "../Raven_ObjectEnumerations.h"
 #include "../lua/Raven_Scriptor.h"
@@ -15,23 +15,23 @@
 //-----------------------------------------------------------------------------
 double ExploreGoal_Evaluator::CalculateDesirability(Raven_Bot* pBot)
 {
-  double Desirability = 0.05;
+    double Desirability = 0.05;
 
-  Desirability *= m_dCharacterBias;
+    Desirability *= m_dCharacterBias;
 
-  return Desirability;
+    return Desirability;
 }
 
 //----------------------------- SetGoal ---------------------------------------
 //-----------------------------------------------------------------------------
 void ExploreGoal_Evaluator::SetGoal(Raven_Bot* pBot)
 {
-  pBot->GetBrain()->AddGoal_Explore();
+    pBot->GetBrain()->AddGoal_Explore();
 }
 
 //-------------------------- RenderInfo ---------------------------------------
 //-----------------------------------------------------------------------------
 void ExploreGoal_Evaluator::RenderInfo(Vector2D Position, Raven_Bot* pBot)
 {
-  gdi->TextAtPos(Position, "EX: " + ttos(CalculateDesirability(pBot), 2));
+    gdi->TextAtPos(Position, "EX: " + ttos(CalculateDesirability(pBot), 2));
 }

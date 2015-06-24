@@ -1,4 +1,4 @@
-// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -27,11 +27,11 @@
         BOOST_PP_CAT(_, n)
 
 template<class Self BOOST_PP_ENUM_TRAILING_PARAMS(N, class A)>
-struct BOOST_PP_CAT(call_operator, N) 
+struct BOOST_PP_CAT(call_operator, N)
     : detail::operator_<
-          BOOST_PP_CAT(call_operator, N)<
-              Self BOOST_PP_ENUM_TRAILING_PARAMS(N, A)
-          >
+      BOOST_PP_CAT(call_operator, N)<
+      Self BOOST_PP_ENUM_TRAILING_PARAMS(N, A)
+      >
       >
 {
     BOOST_PP_CAT(call_operator, N)(int) {}
@@ -41,7 +41,7 @@ struct BOOST_PP_CAT(call_operator, N)
     {
         static void execute(
             lua_State* L
-          , typename detail::unwrap_parameter_type<T, Self>::type self
+            , typename detail::unwrap_parameter_type<T, Self>::type self
             BOOST_PP_ENUM_TRAILING(N, LUABIND_UNWRAP_PARAMETER, _)
         )
         {
@@ -49,16 +49,19 @@ struct BOOST_PP_CAT(call_operator, N)
             operator_result(
                 L
 #if BOOST_WORKAROUND(BOOST_MSVC, <= 1300)
-              , self(BOOST_PP_ENUM_PARAMS(N, _))
+                , self(BOOST_PP_ENUM_PARAMS(N, _))
 #else
-              , (self(BOOST_PP_ENUM_PARAMS(N, _)), detail::operator_void_return())
+                , (self(BOOST_PP_ENUM_PARAMS(N, _)), detail::operator_void_return())
 #endif
-              , (Policies*)0
+                , (Policies*)0
             );
-        } 
+        }
     };
 
-    static char const* name() { return "__call"; }
+    static char const* name()
+    {
+        return "__call";
+    }
 };
 
 #undef LUABIND_UNWRAP_PARAMETER

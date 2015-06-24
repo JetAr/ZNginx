@@ -1,4 +1,4 @@
-#ifndef GOAL_ATTACKTARGET_H
+﻿#ifndef GOAL_ATTACKTARGET_H
 #define GOAL_ATTACKTARGET_H
 #pragma warning (disable:4786)
 //-----------------------------------------------------------------------------
@@ -7,7 +7,7 @@
 //
 //  Author: Mat Buckland (ai-junkie.com)
 //
-//  Desc:   
+//  Desc:
 //
 //-----------------------------------------------------------------------------
 #include "Goals/Goal_Composite.h"
@@ -22,14 +22,17 @@ class Goal_AttackTarget : public Goal_Composite<Raven_Bot>
 {
 public:
 
-  Goal_AttackTarget(Raven_Bot* pOwner):Goal_Composite<Raven_Bot>(pOwner, goal_attack_target)
-  {}
+    Goal_AttackTarget(Raven_Bot* pOwner):Goal_Composite<Raven_Bot>(pOwner, goal_attack_target)
+    {}
 
-  void Activate();
+    void Activate();
 
-  int  Process();
+    int  Process();
 
-  void Terminate(){m_iStatus = completed;}
+    void Terminate()
+    {
+        m_iStatus = completed;
+    }
 
 };
 

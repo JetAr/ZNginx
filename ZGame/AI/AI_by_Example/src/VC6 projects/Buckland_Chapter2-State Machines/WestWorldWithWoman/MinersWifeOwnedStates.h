@@ -1,4 +1,4 @@
-#ifndef MINERSWIFE_OWNED_STATES_H
+﻿#ifndef MINERSWIFE_OWNED_STATES_H
 #define MINERSWIFE_OWNED_STATES_H
 //------------------------------------------------------------------------
 //
@@ -18,24 +18,24 @@ class MinersWife;
 
 //------------------------------------------------------------------------
 class WifesGlobalState : public State<MinersWife>
-{  
+{
 private:
-  
-  WifesGlobalState(){}
-  
-  //copy ctor and assignment should be private
-  WifesGlobalState(const WifesGlobalState&);
-  WifesGlobalState& operator=(const WifesGlobalState&);
- 
+
+    WifesGlobalState() {}
+
+    //copy ctor and assignment should be private
+    WifesGlobalState(const WifesGlobalState&);
+    WifesGlobalState& operator=(const WifesGlobalState&);
+
 public:
 
-  static WifesGlobalState* Instance();
-  
-  virtual void Enter(MinersWife* wife){}
+    static WifesGlobalState* Instance();
 
-  virtual void Execute(MinersWife* wife);
+    virtual void Enter(MinersWife* wife) {}
 
-  virtual void Exit(MinersWife* wife){}
+    virtual void Execute(MinersWife* wife);
+
+    virtual void Exit(MinersWife* wife) {}
 };
 
 
@@ -47,22 +47,22 @@ class DoHouseWork : public State<MinersWife>
 {
 
 private:
-  
-  DoHouseWork(){}
 
-  //copy ctor and assignment should be private
-  DoHouseWork(const DoHouseWork&);
-  DoHouseWork& operator=(const DoHouseWork&); 
-  
+    DoHouseWork() {}
+
+    //copy ctor and assignment should be private
+    DoHouseWork(const DoHouseWork&);
+    DoHouseWork& operator=(const DoHouseWork&);
+
 public:
 
-  static DoHouseWork* Instance();
-  
-  virtual void Enter(MinersWife* wife);
+    static DoHouseWork* Instance();
 
-  virtual void Execute(MinersWife* wife);
+    virtual void Enter(MinersWife* wife);
 
-  virtual void Exit(MinersWife* wife);
+    virtual void Execute(MinersWife* wife);
+
+    virtual void Exit(MinersWife* wife);
 
 };
 
@@ -75,22 +75,22 @@ public:
 class VisitBathroom : public State<MinersWife>
 {
 private:
-  
-  VisitBathroom(){}
 
-  //copy ctor and assignment should be private
-  VisitBathroom(const VisitBathroom&);
-  VisitBathroom& operator=(const VisitBathroom&);
- 
+    VisitBathroom() {}
+
+    //copy ctor and assignment should be private
+    VisitBathroom(const VisitBathroom&);
+    VisitBathroom& operator=(const VisitBathroom&);
+
 public:
 
-  static VisitBathroom* Instance();
-  
-  virtual void Enter(MinersWife* wife);
+    static VisitBathroom* Instance();
 
-  virtual void Execute(MinersWife* wife);
+    virtual void Enter(MinersWife* wife);
 
-  virtual void Exit(MinersWife* wife);
+    virtual void Execute(MinersWife* wife);
+
+    virtual void Exit(MinersWife* wife);
 
 };
 

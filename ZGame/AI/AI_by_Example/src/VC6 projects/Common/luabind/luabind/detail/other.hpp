@@ -1,4 +1,4 @@
-// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -37,83 +37,89 @@
 
 namespace luabind
 {
-	template<class T>
-	struct other
-	{
-		typedef T type;
-	};
+template<class T>
+struct other
+{
+    typedef T type;
+};
 }
 
 #ifndef BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-namespace luabind { namespace detail
+namespace luabind
 {
-	template<typename T>
-	class unwrap_other
-	{
-	public:
-			typedef T type;
-	};
+namespace detail
+{
+template<typename T>
+class unwrap_other
+{
+public:
+    typedef T type;
+};
 
-	template<typename T>
-	class unwrap_other<other<T> >
-	{
-	public:
-			typedef T type;
-	};
-}} // namespace luabind::detail
+template<typename T>
+class unwrap_other<other<T> >
+{
+public:
+    typedef T type;
+};
+}
+} // namespace luabind::detail
 
 # else // no partial specialization
 
 #include <boost/type.hpp>
 
-namespace luabind { namespace detail
+namespace luabind
 {
-	typedef char (&yes_other_t)[1];
-	typedef char (&no_other_t)[2];
+namespace detail
+{
+typedef char (&yes_other_t)[1];
+typedef char (&no_other_t)[2];
 
-	no_other_t is_other_test(...);
+no_other_t is_other_test(...);
 
-	template<typename T>
-	yes_other_t is_other_test(type< other<T> >);
+template<typename T>
+yes_other_t is_other_test(type< other<T> >);
 
-	template<bool wrapped>
-	struct other_unwrapper
-	{
-			template <class T>
-			struct apply
-			{
-					typedef T type;
-			};
-	};
+template<bool wrapped>
+struct other_unwrapper
+{
+    template <class T>
+    struct apply
+    {
+        typedef T type;
+    };
+};
 
-	template<>
-	struct other_unwrapper<true>
-	{
-			template <class T>
-			struct apply
-			{
-					typedef typename T::type type;
-			};
-	};
+template<>
+struct other_unwrapper<true>
+{
+    template <class T>
+    struct apply
+    {
+        typedef typename T::type type;
+    };
+};
 
-	template<typename T>
-	class is_other
-	{
-	 public:
-			BOOST_STATIC_CONSTANT(
-					bool, value = (
-							sizeof(detail::is_other_test(type<T>()))
-							== sizeof(detail::yes_other_t)));
-	};
+template<typename T>
+class is_other
+{
+public:
+    BOOST_STATIC_CONSTANT(
+        bool, value = (
+                          sizeof(detail::is_other_test(type<T>()))
+                          == sizeof(detail::yes_other_t)));
+};
 
-	template <typename T>
-	class unwrap_other
-			: public detail::other_unwrapper<
-			is_other<T>::value
-	>::template apply<T>
-	{};
+template <typename T>
+class unwrap_other
+    : public detail::other_unwrapper<
+      is_other<T>::value
+      >::template apply<T>
+{};
 
-}} // namespace luabind::detail
+}
+} // namespace luabind::detail
 #endif // BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
 #endif // LUABIND_OTHER_HPP_INCLUDED

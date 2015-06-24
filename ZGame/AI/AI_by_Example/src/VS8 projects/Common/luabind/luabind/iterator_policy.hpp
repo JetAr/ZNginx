@@ -1,4 +1,4 @@
-// Copyright Daniel Wallin 2007. Use, modification and distribution is
+﻿// Copyright Daniel Wallin 2007. Use, modification and distribution is
 // subject to the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -9,7 +9,10 @@
 # include <luabind/detail/policy.hpp>
 # include <luabind/detail/convert_to_lua.hpp>
 
-namespace luabind { namespace detail {
+namespace luabind
+{
+namespace detail
+{
 
 template <class Iterator>
 struct iterator
@@ -17,7 +20,7 @@ struct iterator
     static int next(lua_State* L)
     {
         iterator* self = static_cast<iterator*>(
-            lua_touserdata(L, lua_upvalueindex(1)));
+                             lua_touserdata(L, lua_upvalueindex(1)));
 
         if (self->first != self->last)
         {
@@ -35,14 +38,14 @@ struct iterator
     static int destroy(lua_State* L)
     {
         iterator* self = static_cast<iterator*>(
-            lua_touserdata(L, lua_upvalueindex(1)));
+                             lua_touserdata(L, lua_upvalueindex(1)));
         self->~iterator();
         return 0;
     }
 
     iterator(Iterator first, Iterator last)
-      : first(first)
-      , last(last)
+        : first(first)
+        , last(last)
     {}
 
     Iterator first;
@@ -101,14 +104,19 @@ struct iterator_policy : conversion_policy<0>
     };
 };
 
-}} // namespace luabind::detail
+}
+} // namespace luabind::detail
 
-namespace luabind { namespace {
+namespace luabind
+{
+namespace
+{
 
 LUABIND_ANONYMOUS_FIX detail::policy_cons<
-    detail::iterator_policy, detail::null_type> return_stl_iterator;
+detail::iterator_policy, detail::null_type> return_stl_iterator;
 
-}} // namespace luabind::unnamed
+}
+} // namespace luabind::unnamed
 
 #endif // LUABIND_ITERATOR_POLICY__071111_HPP
 

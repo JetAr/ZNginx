@@ -1,4 +1,4 @@
-// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -34,57 +34,69 @@ namespace luabind
 
 #ifndef LUABIND_NO_EXCEPTIONS
 
-	// this exception usually means that the lua function you called
-	// from C++ failed with an error code. You will have to
-	// read the error code from the top of the lua stack
-	// the reason why this exception class doesn't contain
-	// the message itself is that std::string's copy constructor
-	// may throw, if the copy constructor of an exception that is
-	// being thrown throws another exception, terminate will be called
-	// and the entire application is killed.
-	class LUABIND_API error : public std::exception
-	{
-	public:
-		explicit error(lua_State* L): m_L(L) {}
-		lua_State* state() const throw() { return m_L; }
-		virtual const char* what() const throw()
-		{
-			return "lua runtime error";
-		}
-	private:
-		lua_State* m_L;
-	};
+// this exception usually means that the lua function you called
+// from C++ failed with an error code. You will have to
+// read the error code from the top of the lua stack
+// the reason why this exception class doesn't contain
+// the message itself is that std::string's copy constructor
+// may throw, if the copy constructor of an exception that is
+// being thrown throws another exception, terminate will be called
+// and the entire application is killed.
+class LUABIND_API error : public std::exception
+{
+public:
+    explicit error(lua_State* L): m_L(L) {}
+    lua_State* state() const throw()
+    {
+        return m_L;
+    }
+    virtual const char* what() const throw()
+    {
+        return "lua runtime error";
+    }
+private:
+    lua_State* m_L;
+};
 
-	// if an object_cast<>() fails, this is thrown
-	// it is also thrown if the return value of
-	// a lua function cannot be converted
-	class LUABIND_API cast_failed : public std::exception
-	{
-	public:
-		cast_failed(lua_State* L, LUABIND_TYPE_INFO i): m_L(L), m_info(i) {}
-		lua_State* state() const throw() { return m_L; }
-		LUABIND_TYPE_INFO info() const throw() { return m_info; }
-		virtual const char* what() const throw() { return "unable to make cast"; }
-	private:
-		lua_State* m_L;
-		LUABIND_TYPE_INFO m_info;
-	};
+// if an object_cast<>() fails, this is thrown
+// it is also thrown if the return value of
+// a lua function cannot be converted
+class LUABIND_API cast_failed : public std::exception
+{
+public:
+    cast_failed(lua_State* L, LUABIND_TYPE_INFO i): m_L(L), m_info(i) {}
+    lua_State* state() const throw()
+    {
+        return m_L;
+    }
+    LUABIND_TYPE_INFO info() const throw()
+    {
+        return m_info;
+    }
+    virtual const char* what() const throw()
+    {
+        return "unable to make cast";
+    }
+private:
+    lua_State* m_L;
+    LUABIND_TYPE_INFO m_info;
+};
 
 #else
 
-	typedef void(*error_callback_fun)(lua_State*);
-	typedef void(*cast_failed_callback_fun)(lua_State*, LUABIND_TYPE_INFO);
+typedef void(*error_callback_fun)(lua_State*);
+typedef void(*cast_failed_callback_fun)(lua_State*, LUABIND_TYPE_INFO);
 
-	LUABIND_API void set_error_callback(error_callback_fun e);
-	LUABIND_API void set_cast_failed_callback(cast_failed_callback_fun c);
-	LUABIND_API error_callback_fun get_error_callback();
-	LUABIND_API cast_failed_callback_fun get_cast_failed_callback();
+LUABIND_API void set_error_callback(error_callback_fun e);
+LUABIND_API void set_cast_failed_callback(cast_failed_callback_fun c);
+LUABIND_API error_callback_fun get_error_callback();
+LUABIND_API cast_failed_callback_fun get_cast_failed_callback();
 
 #endif
 
-	typedef int(*pcall_callback_fun)(lua_State*);
-	LUABIND_API void set_pcall_callback(pcall_callback_fun e);
-	LUABIND_API pcall_callback_fun get_pcall_callback();
+typedef int(*pcall_callback_fun)(lua_State*);
+LUABIND_API void set_pcall_callback(pcall_callback_fun e);
+LUABIND_API pcall_callback_fun get_pcall_callback();
 
 }
 

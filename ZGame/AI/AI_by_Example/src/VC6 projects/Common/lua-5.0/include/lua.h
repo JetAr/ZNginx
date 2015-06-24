@@ -1,4 +1,4 @@
-/*
+﻿/*
 ** $Id: lua.h,v 1.175 2003/03/18 12:31:39 roberto Exp $
 ** Lua - An Extensible Extension Language
 ** Tecgraf: Computer Graphics Technology Group, PUC-Rio, Brazil
@@ -153,7 +153,7 @@ LUA_API void  lua_pushnumber (lua_State *L, lua_Number n);
 LUA_API void  lua_pushlstring (lua_State *L, const char *s, size_t l);
 LUA_API void  lua_pushstring (lua_State *L, const char *s);
 LUA_API const char *lua_pushvfstring (lua_State *L, const char *fmt,
-                                                    va_list argp);
+                                      va_list argp);
 LUA_API const char *lua_pushfstring (lua_State *L, const char *fmt, ...);
 LUA_API void  lua_pushcclosure (lua_State *L, lua_CFunction fn, int n);
 LUA_API void  lua_pushboolean (lua_State *L, int b);
@@ -221,7 +221,7 @@ LUA_API void  lua_concat (lua_State *L, int n);
 
 
 
-/* 
+/*
 ** ===============================================================
 ** some useful macros
 ** ===============================================================
@@ -347,18 +347,19 @@ LUA_API int lua_gethookcount (lua_State *L);
 
 #define LUA_IDSIZE	60
 
-struct lua_Debug {
-  int event;
-  const char *name;	/* (n) */
-  const char *namewhat;	/* (n) `global', `local', `field', `method' */
-  const char *what;	/* (S) `Lua', `C', `main', `tail' */
-  const char *source;	/* (S) */
-  int currentline;	/* (l) */
-  int nups;		/* (u) number of upvalues */
-  int linedefined;	/* (S) */
-  char short_src[LUA_IDSIZE]; /* (S) */
-  /* private part */
-  int i_ci;  /* active function */
+struct lua_Debug
+{
+    int event;
+    const char *name;	/* (n) */
+    const char *namewhat;	/* (n) `global', `local', `field', `method' */
+    const char *what;	/* (S) `Lua', `C', `main', `tail' */
+    const char *source;	/* (S) */
+    int currentline;	/* (l) */
+    int nups;		/* (u) number of upvalues */
+    int linedefined;	/* (S) */
+    char short_src[LUA_IDSIZE]; /* (S) */
+    /* private part */
+    int i_ci;  /* active function */
 };
 
 /* }====================================================================== */

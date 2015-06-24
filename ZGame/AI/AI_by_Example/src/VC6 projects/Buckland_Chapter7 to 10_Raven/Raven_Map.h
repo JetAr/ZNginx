@@ -1,4 +1,4 @@
-#ifndef RAVEN_MAP_H
+﻿#ifndef RAVEN_MAP_H
 #define RAVEN_MAP_H
 #pragma warning (disable:4786)
 //-----------------------------------------------------------------------------
@@ -33,95 +33,128 @@ class Raven_Map
 {
 public:
 
-  typedef NavGraphNode<Trigger<Raven_Bot>*>         GraphNode;
-  typedef SparseGraph<GraphNode, NavGraphEdge>      NavGraph;
-  typedef CellSpacePartition<NavGraph::NodeType*>   CellSpace;
+    typedef NavGraphNode<Trigger<Raven_Bot>*>         GraphNode;
+    typedef SparseGraph<GraphNode, NavGraphEdge>      NavGraph;
+    typedef CellSpacePartition<NavGraph::NodeType*>   CellSpace;
 
-  typedef Trigger<Raven_Bot>                        TriggerType;
-  typedef TriggerSystem<TriggerType>                TriggerSystem;
-  
+    typedef Trigger<Raven_Bot>                        TriggerType;
+    typedef TriggerSystem<TriggerType>                TriggerSystem;
+
 private:
- 
-  //the walls that comprise the current map's architecture. 
-  std::vector<Wall2D*>                m_Walls;
 
-  //trigger are objects that define a region of space. When a raven bot
-  //enters that area, it 'triggers' an event. That event may be anything
-  //from increasing a bot's health to opening a door or requesting a lift.
-  TriggerSystem                      m_TriggerSystem;    
+    //the walls that comprise the current map's architecture.
+    std::vector<Wall2D*>                m_Walls;
 
-  //this holds a number of spawn positions. When a bot is instantiated
-  //it will appear at a randomly selected point chosen from this vector
-  std::vector<Vector2D>              m_SpawnPoints;
+    //trigger are objects that define a region of space. When a raven bot
+    //enters that area, it 'triggers' an event. That event may be anything
+    //from increasing a bot's health to opening a door or requesting a lift.
+    TriggerSystem                      m_TriggerSystem;
 
-  //a map may contain a number of sliding doors.
-  std::vector<Raven_Door*>           m_Doors;
- 
-  //this map's accompanying navigation graph
-  NavGraph*                          m_pNavGraph;  
+    //this holds a number of spawn positions. When a bot is instantiated
+    //it will appear at a randomly selected point chosen from this vector
+    std::vector<Vector2D>              m_SpawnPoints;
 
-  //the graph nodes will be partitioned enabling fast lookup
-  CellSpace*                        m_pSpacePartition;
+    //a map may contain a number of sliding doors.
+    std::vector<Raven_Door*>           m_Doors;
 
-  //the size of the search radius the cellspace partition uses when looking for 
-  //neighbors 
-  double                             m_dCellSpaceNeighborhoodRange;
+    //this map's accompanying navigation graph
+    NavGraph*                          m_pNavGraph;
 
-  int m_iSizeX;
-  int m_iSizeY;
-  
-  void  PartitionNavGraph();
+    //the graph nodes will be partitioned enabling fast lookup
+    CellSpace*                        m_pSpacePartition;
 
-  //this will hold a pre-calculated lookup table of the cost to travel from
-  //one node to any other.
-  std::vector<std::vector<double> >  m_PathCosts;
+    //the size of the search radius the cellspace partition uses when looking for
+    //neighbors
+    double                             m_dCellSpaceNeighborhoodRange;
+
+    int m_iSizeX;
+    int m_iSizeY;
+
+    void  PartitionNavGraph();
+
+    //this will hold a pre-calculated lookup table of the cost to travel from
+    //one node to any other.
+    std::vector<std::vector<double> >  m_PathCosts;
 
 
     //stream constructors for loading from a file
-  void AddWall(std::ifstream& in);
-  void AddSpawnPoint(std::ifstream& in);
-  void AddHealth_Giver(std::ifstream& in);
-  void AddWeapon_Giver(int type_of_weapon, std::ifstream& in);
-  void AddDoor(std::ifstream& in);
-  void AddDoorTrigger(std::ifstream& in);
+    void AddWall(std::ifstream& in);
+    void AddSpawnPoint(std::ifstream& in);
+    void AddHealth_Giver(std::ifstream& in);
+    void AddWeapon_Giver(int type_of_weapon, std::ifstream& in);
+    void AddDoor(std::ifstream& in);
+    void AddDoorTrigger(std::ifstream& in);
 
-  void Clear();
-  
+    void Clear();
+
 public:
-  
-  Raven_Map();  
-  ~Raven_Map();
 
-  void Render();
+    Raven_Map();
+    ~Raven_Map();
 
-  //loads an environment from a file
-  bool LoadMap(const std::string& FileName); 
+    void Render();
 
-  //adds a wall and returns a pointer to that wall. (this method can be
-  //used by objects such as doors to add walls to the environment)
-  Wall2D* AddWall(Vector2D from, Vector2D to);
+    //loads an environment from a file
+    bool LoadMap(const std::string& FileName);
 
-  void    AddSoundTrigger(Raven_Bot* pSoundSource, double range);
+    //adds a wall and returns a pointer to that wall. (this method can be
+    //used by objects such as doors to add walls to the environment)
+    Wall2D* AddWall(Vector2D from, Vector2D to);
 
-  double   CalculateCostToTravelBetweenNodes(int nd1, int nd2)const;
+    void    AddSoundTrigger(Raven_Bot* pSoundSource, double range);
 
-  //returns the position of a graph node selected at random
-  Vector2D GetRandomNodeLocation()const;
-  
-  
-  void  UpdateTriggerSystem(std::list<Raven_Bot*>& bots);
+    double   CalculateCostToTravelBetweenNodes(int nd1, int nd2)const;
 
-  const Raven_Map::TriggerSystem::TriggerList&  GetTriggers()const{return m_TriggerSystem.GetTriggers();}
-  const std::vector<Wall2D*>&        GetWalls()const{return m_Walls;}
-  NavGraph&                          GetNavGraph()const{return *m_pNavGraph;}
-  std::vector<Raven_Door*>&          GetDoors(){return m_Doors;}
-  const std::vector<Vector2D>&       GetSpawnPoints()const{return m_SpawnPoints;}
-  CellSpace* const                   GetCellSpace()const{return m_pSpacePartition;}
-  Vector2D                           GetRandomSpawnPoint(){return m_SpawnPoints[RandInt(0,m_SpawnPoints.size()-1)];}
-  int                                GetSizeX()const{return m_iSizeX;}
-  int                                GetSizeY()const{return m_iSizeY;}
-  int                                GetMaxDimension()const{return Maximum(m_iSizeX, m_iSizeY);}
-  double                             GetCellSpaceNeighborhoodRange()const{return m_dCellSpaceNeighborhoodRange;}
+    //returns the position of a graph node selected at random
+    Vector2D GetRandomNodeLocation()const;
+
+
+    void  UpdateTriggerSystem(std::list<Raven_Bot*>& bots);
+
+    const Raven_Map::TriggerSystem::TriggerList&  GetTriggers()const
+    {
+        return m_TriggerSystem.GetTriggers();
+    }
+    const std::vector<Wall2D*>&        GetWalls()const
+    {
+        return m_Walls;
+    }
+    NavGraph&                          GetNavGraph()const
+    {
+        return *m_pNavGraph;
+    }
+    std::vector<Raven_Door*>&          GetDoors()
+    {
+        return m_Doors;
+    }
+    const std::vector<Vector2D>&       GetSpawnPoints()const
+    {
+        return m_SpawnPoints;
+    }
+    CellSpace* const                   GetCellSpace()const
+    {
+        return m_pSpacePartition;
+    }
+    Vector2D                           GetRandomSpawnPoint()
+    {
+        return m_SpawnPoints[RandInt(0,m_SpawnPoints.size()-1)];
+    }
+    int                                GetSizeX()const
+    {
+        return m_iSizeX;
+    }
+    int                                GetSizeY()const
+    {
+        return m_iSizeY;
+    }
+    int                                GetMaxDimension()const
+    {
+        return Maximum(m_iSizeX, m_iSizeY);
+    }
+    double                             GetCellSpaceNeighborhoodRange()const
+    {
+        return m_dCellSpaceNeighborhoodRange;
+    }
 
 };
 

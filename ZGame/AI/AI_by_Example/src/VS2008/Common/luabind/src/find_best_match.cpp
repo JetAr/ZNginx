@@ -1,4 +1,4 @@
-// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -28,13 +28,13 @@ using namespace luabind::detail;
 
 bool luabind::detail::find_best_match(
     lua_State* L
-  , overload_rep_base const* start
-  , int num_overloads
-  , size_t orep_size
-  , bool& ambiguous
-  , int& min_match
-  , int& match_index
-  , int num_params)
+    , overload_rep_base const* start
+    , int num_overloads
+    , size_t orep_size
+    , bool& ambiguous
+    , int& min_match
+    , int& match_index
+    , int num_params)
 {
     int min_but_one_match = std::numeric_limits<int>::max();
     bool found = false;
@@ -60,18 +60,18 @@ bool luabind::detail::find_best_match(
     }
 
     ambiguous = min_match == min_but_one_match
-        && min_match < std::numeric_limits<int>::max();
+                && min_match < std::numeric_limits<int>::max();
     return found;
 }
 
 void luabind::detail::find_exact_match(
     lua_State* L
-  , overload_rep_base const* start
-  , int num_overloads
-  , size_t orep_size
-  , int cmp_match
-  , int num_params
-  , std::vector<const overload_rep_base*>& dest)
+    , overload_rep_base const* start
+    , int num_overloads
+    , size_t orep_size
+    , int cmp_match
+    , int num_params
+    , std::vector<const overload_rep_base*>& dest)
 {
     for (int i = 0; i < num_overloads; ++i)
     {

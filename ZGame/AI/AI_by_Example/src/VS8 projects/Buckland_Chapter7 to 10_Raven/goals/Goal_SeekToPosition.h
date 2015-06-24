@@ -1,4 +1,4 @@
-#ifndef GOAL_SEEK_TO_POSITION_H
+﻿#ifndef GOAL_SEEK_TO_POSITION_H
 #define GOAL_SEEK_TO_POSITION_H
 #pragma warning (disable:4786)
 
@@ -12,28 +12,28 @@ class Goal_SeekToPosition : public Goal<Raven_Bot>
 {
 private:
 
-  //the position the bot is moving to
-  Vector2D  m_vPosition;
+    //the position the bot is moving to
+    Vector2D  m_vPosition;
 
-  //the approximate time the bot should take to travel the target location
-  double     m_dTimeToReachPos;
-  
-  //this records the time this goal was activated
-  double     m_dStartTime;
+    //the approximate time the bot should take to travel the target location
+    double     m_dTimeToReachPos;
 
-  //returns true if a bot gets stuck
-  bool      isStuck()const;
+    //this records the time this goal was activated
+    double     m_dStartTime;
+
+    //returns true if a bot gets stuck
+    bool      isStuck()const;
 
 public:
 
-  Goal_SeekToPosition(Raven_Bot* pBot, Vector2D target);
+    Goal_SeekToPosition(Raven_Bot* pBot, Vector2D target);
 
-  //the usual suspects
-  void Activate();
-  int  Process();
-  void Terminate();
+    //the usual suspects
+    void Activate();
+    int  Process();
+    void Terminate();
 
-  void Render();
+    void Render();
 };
 
 

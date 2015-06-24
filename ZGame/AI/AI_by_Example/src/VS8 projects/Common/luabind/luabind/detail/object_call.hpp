@@ -1,4 +1,4 @@
-// Copyright (c) 2005 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2005 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -32,20 +32,20 @@
 
 template<BOOST_PP_ENUM_PARAMS(N, class A)>
 call_proxy<
-    Derived
-  , boost::tuples::tuple<
-        BOOST_PP_ENUM_BINARY_PARAMS(N, A, const* BOOST_PP_INTERCEPT)
-    >
+Derived
+, boost::tuples::tuple<
+BOOST_PP_ENUM_BINARY_PARAMS(N, A, const* BOOST_PP_INTERCEPT)
+>
 > operator()(BOOST_PP_ENUM_BINARY_PARAMS(N, A, const& a))
 {
     typedef boost::tuples::tuple<
-        BOOST_PP_ENUM_BINARY_PARAMS(N, A, const* BOOST_PP_INTERCEPT)
+    BOOST_PP_ENUM_BINARY_PARAMS(N, A, const* BOOST_PP_INTERCEPT)
     > arguments;
 
     return call_proxy<Derived, arguments>(
-        derived()
-      , arguments(BOOST_PP_ENUM_PARAMS(N, &a))
-    );
+               derived()
+               , arguments(BOOST_PP_ENUM_PARAMS(N, &a))
+           );
 }
 
 #undef N

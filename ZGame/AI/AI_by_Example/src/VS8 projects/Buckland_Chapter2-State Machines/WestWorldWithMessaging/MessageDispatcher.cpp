@@ -1,4 +1,4 @@
-#include "MessageDispatcher.h"
+﻿#include "MessageDispatcher.h"
 #include "BaseGameEntity.h"
 #include "Time/CrudeTimer.h"
 #include "EntityManager.h"
@@ -23,24 +23,24 @@ extern std::ofstream os;
 
 MessageDispatcher* MessageDispatcher::Instance()
 {
-  static MessageDispatcher instance;
+    static MessageDispatcher instance;
 
-  return &instance;
+    return &instance;
 }
 
 
 //----------------------------- Dispatch ---------------------------------
-//  
+//
 //  see description in header
 //------------------------------------------------------------------------
 void MessageDispatcher::Discharge(BaseGameEntity* pReceiver,
                                   const Telegram& telegram)
 {
-  if (!pReceiver->HandleMessage(telegram))
-  {
-    //telegram could not be handled
-    cout << "Message not handled";
-  }
+    if (!pReceiver->HandleMessage(telegram))
+    {
+        //telegram could not be handled
+        cout << "Message not handled";
+    }
 }
 
 //---------------------------- DispatchMessage ---------------------------
@@ -55,49 +55,49 @@ void MessageDispatcher::DispatchMessage(double  delay,
                                         int    msg,
                                         void*  ExtraInfo)
 {
-  SetTextColor(BACKGROUND_RED|FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
+    SetTextColor(BACKGROUND_RED|FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
 
-  //get pointers to the sender and receiver
-  BaseGameEntity* pSender   = EntityMgr->GetEntityFromID(sender);
-  BaseGameEntity* pReceiver = EntityMgr->GetEntityFromID(receiver);
+    //get pointers to the sender and receiver
+    BaseGameEntity* pSender   = EntityMgr->GetEntityFromID(sender);
+    BaseGameEntity* pReceiver = EntityMgr->GetEntityFromID(receiver);
 
-  //make sure the receiver is valid
-  if (pReceiver == NULL)
-  {
-    cout << "\nWarning! No Receiver with ID of " << receiver << " found";
+    //make sure the receiver is valid
+    if (pReceiver == NULL)
+    {
+        cout << "\nWarning! No Receiver with ID of " << receiver << " found";
 
-    return;
-  }
-  
-  //create the telegram
-  Telegram telegram(0, sender, receiver, msg, ExtraInfo);
-  
-  //if there is no delay, route telegram immediately                       
-  if (delay <= 0.0f)                                                        
-  {
-    cout << "\nInstant telegram dispatched at time: " << Clock->GetCurrentTime()
-         << " by " << GetNameOfEntity(pSender->ID()) << " for " << GetNameOfEntity(pReceiver->ID()) 
-         << ". Msg is "<< MsgToStr(msg);
+        return;
+    }
 
-    //send the telegram to the recipient
-    Discharge(pReceiver, telegram);
-  }
+    //create the telegram
+    Telegram telegram(0, sender, receiver, msg, ExtraInfo);
 
-  //else calculate the time when the telegram should be dispatched
-  else
-  {
-    double CurrentTime = Clock->GetCurrentTime(); 
+    //if there is no delay, route telegram immediately
+    if (delay <= 0.0f)
+    {
+        cout << "\nInstant telegram dispatched at time: " << Clock->GetCurrentTime()
+             << " by " << GetNameOfEntity(pSender->ID()) << " for " << GetNameOfEntity(pReceiver->ID())
+             << ". Msg is "<< MsgToStr(msg);
 
-    telegram.DispatchTime = CurrentTime + delay;
+        //send the telegram to the recipient
+        Discharge(pReceiver, telegram);
+    }
 
-    //and put it in the queue
-    PriorityQ.insert(telegram);   
+    //else calculate the time when the telegram should be dispatched
+    else
+    {
+        double CurrentTime = Clock->GetCurrentTime();
 
-    cout << "\nDelayed telegram from " << GetNameOfEntity(pSender->ID()) << " recorded at time " 
-            << Clock->GetCurrentTime() << " for " << GetNameOfEntity(pReceiver->ID())
-            << ". Msg is "<< MsgToStr(msg);
-            
-  }
+        telegram.DispatchTime = CurrentTime + delay;
+
+        //and put it in the queue
+        PriorityQ.insert(telegram);
+
+        cout << "\nDelayed telegram from " << GetNameOfEntity(pSender->ID()) << " recorded at time "
+             << Clock->GetCurrentTime() << " for " << GetNameOfEntity(pReceiver->ID())
+             << ". Msg is "<< MsgToStr(msg);
+
+    }
 }
 
 
@@ -108,33 +108,33 @@ void MessageDispatcher::DispatchMessage(double  delay,
 //------------------------------------------------------------------------
 void MessageDispatcher::DispatchDelayedMessages()
 {
-  SetTextColor(BACKGROUND_RED|FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
-  
-  //get current time
-  double CurrentTime = Clock->GetCurrentTime();
+    SetTextColor(BACKGROUND_RED|FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
 
-  //now peek at the queue to see if any telegrams need dispatching.
-  //remove all telegrams from the front of the queue that have gone
-  //past their sell by date
-  while( !PriorityQ.empty() &&
-         (PriorityQ.begin()->DispatchTime < CurrentTime) && 
-         (PriorityQ.begin()->DispatchTime > 0) )
-  {
-    //read the telegram from the front of the queue
-    const Telegram& telegram = *PriorityQ.begin();
+    //get current time
+    double CurrentTime = Clock->GetCurrentTime();
 
-    //find the recipient
-    BaseGameEntity* pReceiver = EntityMgr->GetEntityFromID(telegram.Receiver);
+    //now peek at the queue to see if any telegrams need dispatching.
+    //remove all telegrams from the front of the queue that have gone
+    //past their sell by date
+    while( !PriorityQ.empty() &&
+            (PriorityQ.begin()->DispatchTime < CurrentTime) &&
+            (PriorityQ.begin()->DispatchTime > 0) )
+    {
+        //read the telegram from the front of the queue
+        const Telegram& telegram = *PriorityQ.begin();
 
-    cout << "\nQueued telegram ready for dispatch: Sent to " 
-         << GetNameOfEntity(pReceiver->ID()) << ". Msg is " << MsgToStr(telegram.Msg);
+        //find the recipient
+        BaseGameEntity* pReceiver = EntityMgr->GetEntityFromID(telegram.Receiver);
 
-    //send the telegram to the recipient
-    Discharge(pReceiver, telegram);
+        cout << "\nQueued telegram ready for dispatch: Sent to "
+             << GetNameOfEntity(pReceiver->ID()) << ". Msg is " << MsgToStr(telegram.Msg);
 
-    //remove it from the queue
-    PriorityQ.erase(PriorityQ.begin());
-  }
+        //send the telegram to the recipient
+        Discharge(pReceiver, telegram);
+
+        //remove it from the queue
+        PriorityQ.erase(PriorityQ.begin());
+    }
 }
 
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -73,26 +73,30 @@ int function_should_never_be_called(lua_State* L)
     return 1;
 }
 
-namespace luabind { namespace converters
+namespace luabind
 {
-    yes_t is_user_defined(by_value<int>);
+namespace converters
+{
+yes_t is_user_defined(by_value<int>);
 
-    int convert_lua_to_cpp(lua_State* L, by_value<int>, int index)
-    {
-        return static_cast<int>(lua_tonumber(L, index));
-    }
+int convert_lua_to_cpp(lua_State* L, by_value<int>, int index)
+{
+    return static_cast<int>(lua_tonumber(L, index));
+}
 
-    int match_lua_to_cpp(lua_State* L, by_value<int>, int index)
-    {
-        if (lua_isnumber(L, index)) return 0; else return -1;
-    }
+int match_lua_to_cpp(lua_State* L, by_value<int>, int index)
+{
+    if (lua_isnumber(L, index)) return 0;
+    else return -1;
+}
 
-    void convert_cpp_to_lua(lua_State* L, const  int& v)
-    {
-        lua_pushnumber(L, v);
-    }
+void convert_cpp_to_lua(lua_State* L, const  int& v)
+{
+    lua_pushnumber(L, v);
+}
 
-}}
+}
+}
 
 void test_main(lua_State* L)
 {
@@ -107,10 +111,10 @@ void test_main(lua_State* L)
     module(L)
     [
         class_<copy_me>("copy_me")
-            .def(constructor<>()),
-    
+        .def(constructor<>()),
+
         class_<base>("base")
-            .def("f", &base::f),
+        .def("f", &base::f),
 
 
         def("by_value", &take_by_value),
@@ -119,18 +123,18 @@ void test_main(lua_State* L)
         def("f", (int(*)(int, int)) &f),
         def("create", &create_base, adopt(return_value))
 //        def("set_functor", &set_functor)
-            
+
 #if !(BOOST_MSVC < 1300)
         ,
         def("test_value_converter", &test_value_converter),
         def("test_pointer_converter", &test_pointer_converter)
 #endif
-            
+
     ];
 
     DOSTRING(L,
-        "e = create()\n"
-        "assert(e:f() == 5)");
+             "e = create()\n"
+             "assert(e:f() == 5)");
 
     DOSTRING(L, "assert(f(7) == 8)");
 
@@ -152,10 +156,10 @@ void test_main(lua_State* L)
 #endif
 
     DOSTRING_EXPECTED(L, "f('incorrect', 'parameters')",
-        "no match for function call 'f' with the parameters (string, string)\n"
-        "candidates are:\n"
-        "f(number)\n"
-        "f(number, number)\n");
+                      "no match for function call 'f' with the parameters (string, string)\n"
+                      "candidates are:\n"
+                      "f(number)\n"
+                      "f(number, number)\n");
 
 
     DOSTRING(L, "function failing_fun() error('expected error message') end");
@@ -167,7 +171,7 @@ void test_main(lua_State* L)
     catch(luabind::error const& e)
     {
         if (std::string("[string \"function failing_fun() error('expected "
-            "erro...\"]:1: expected error message") != lua_tostring(L, -1))
+                        "erro...\"]:1: expected error message") != lua_tostring(L, -1))
         {
             TEST_ERROR("function failed with unexpected error message");
             lua_pop(L, 1);

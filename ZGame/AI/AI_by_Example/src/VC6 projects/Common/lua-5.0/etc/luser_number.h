@@ -1,4 +1,4 @@
-/* luser_number.h -- number type configuration for Lua core
+﻿/* luser_number.h -- number type configuration for Lua core
 *
 * #define LUA_USER_H to this file and #define one of USE_* below
 */

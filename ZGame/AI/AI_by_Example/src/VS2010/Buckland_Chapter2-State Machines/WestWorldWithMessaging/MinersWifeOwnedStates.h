@@ -1,4 +1,4 @@
-#ifndef MINERSWIFE_OWNED_STATES_H
+﻿#ifndef MINERSWIFE_OWNED_STATES_H
 #define MINERSWIFE_OWNED_STATES_H
 //------------------------------------------------------------------------
 //
@@ -20,27 +20,27 @@ class MinersWife;
 
 //------------------------------------------------------------------------
 class WifesGlobalState : public State<MinersWife>
-{  
+{
 private:
-  
-  WifesGlobalState(){}
 
-  //copy ctor and assignment should be private
-  WifesGlobalState(const WifesGlobalState&);
-  WifesGlobalState& operator=(const WifesGlobalState&);
- 
+    WifesGlobalState() {}
+
+    //copy ctor and assignment should be private
+    WifesGlobalState(const WifesGlobalState&);
+    WifesGlobalState& operator=(const WifesGlobalState&);
+
 public:
 
-  //this is a singleton
-  static WifesGlobalState* Instance();
-  
-  virtual void Enter(MinersWife* wife){}
+    //this is a singleton
+    static WifesGlobalState* Instance();
 
-  virtual void Execute(MinersWife* wife);
+    virtual void Enter(MinersWife* wife) {}
 
-  virtual void Exit(MinersWife* wife){}
+    virtual void Execute(MinersWife* wife);
 
-  virtual bool OnMessage(MinersWife* wife, const Telegram& msg);
+    virtual void Exit(MinersWife* wife) {}
+
+    virtual bool OnMessage(MinersWife* wife, const Telegram& msg);
 };
 
 
@@ -52,24 +52,24 @@ class DoHouseWork : public State<MinersWife>
 {
 private:
 
-  DoHouseWork(){}
-  
-  //copy ctor and assignment should be private
-  DoHouseWork(const DoHouseWork&);
-  DoHouseWork& operator=(const DoHouseWork&);
+    DoHouseWork() {}
+
+    //copy ctor and assignment should be private
+    DoHouseWork(const DoHouseWork&);
+    DoHouseWork& operator=(const DoHouseWork&);
 
 public:
 
-  //this is a singleton
-  static DoHouseWork* Instance();
-  
-  virtual void Enter(MinersWife* wife);
+    //this is a singleton
+    static DoHouseWork* Instance();
 
-  virtual void Execute(MinersWife* wife);
+    virtual void Enter(MinersWife* wife);
 
-  virtual void Exit(MinersWife* wife);
-  
-  virtual bool OnMessage(MinersWife* wife, const Telegram& msg);
+    virtual void Execute(MinersWife* wife);
+
+    virtual void Exit(MinersWife* wife);
+
+    virtual bool OnMessage(MinersWife* wife, const Telegram& msg);
 
 };
 
@@ -82,25 +82,25 @@ public:
 class VisitBathroom : public State<MinersWife>
 {
 private:
-  
-  VisitBathroom(){}
 
-  //copy ctor and assignment should be private
-  VisitBathroom(const VisitBathroom&);
-  VisitBathroom& operator=(const VisitBathroom&);
- 
+    VisitBathroom() {}
+
+    //copy ctor and assignment should be private
+    VisitBathroom(const VisitBathroom&);
+    VisitBathroom& operator=(const VisitBathroom&);
+
 public:
 
-  //this is a singleton
-  static VisitBathroom* Instance();
-  
-  virtual void Enter(MinersWife* wife);
+    //this is a singleton
+    static VisitBathroom* Instance();
 
-  virtual void Execute(MinersWife* wife);
+    virtual void Enter(MinersWife* wife);
 
-  virtual void Exit(MinersWife* wife);
+    virtual void Execute(MinersWife* wife);
 
-  virtual bool OnMessage(MinersWife* wife, const Telegram& msg);
+    virtual void Exit(MinersWife* wife);
+
+    virtual bool OnMessage(MinersWife* wife, const Telegram& msg);
 
 };
 
@@ -112,25 +112,25 @@ public:
 class CookStew : public State<MinersWife>
 {
 private:
-  
-  CookStew(){}
 
-  //copy ctor and assignment should be private
-  CookStew(const CookStew&);
-  CookStew& operator=(const CookStew&);
- 
+    CookStew() {}
+
+    //copy ctor and assignment should be private
+    CookStew(const CookStew&);
+    CookStew& operator=(const CookStew&);
+
 public:
 
-  //this is a singleton
-  static CookStew* Instance();
-  
-  virtual void Enter(MinersWife* wife);
+    //this is a singleton
+    static CookStew* Instance();
 
-  virtual void Execute(MinersWife* wife);
+    virtual void Enter(MinersWife* wife);
 
-  virtual void Exit(MinersWife* wife);
+    virtual void Execute(MinersWife* wife);
 
-  virtual bool OnMessage(MinersWife* wife, const Telegram& msg);
+    virtual void Exit(MinersWife* wife);
+
+    virtual bool OnMessage(MinersWife* wife, const Telegram& msg);
 };
 
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -22,9 +22,9 @@
 
 extern "C"
 {
-	#include "lua.h"
-	#include "lauxlib.h"
-	#include "lualib.h"
+#include "lua.h"
+#include "lauxlib.h"
+#include "lualib.h"
 }
 
 #define LUABIND_NO_HEADERS_ONLY
@@ -35,30 +35,30 @@ using namespace luabind::detail;
 
 std::string luabind::detail::stack_content_by_name(lua_State* L, int start_index)
 {
-	std::string ret;
-	int top = lua_gettop(L);
-	for (int i = start_index; i <= top; ++i)
-	{
-		object_rep* obj = is_class_object(L, i);
-		class_rep* crep = is_class_rep(L, i)?(class_rep*)lua_touserdata(L, i):0;
-		if (obj == 0 && crep == 0)
-		{
-			int type = lua_type(L, i);
-			ret += lua_typename(L, type);
-		}
-		else if (obj)
-		{
-			if (obj->flags() & object_rep::constant) ret += "const ";
-			ret += obj->crep()->name();
-		}
-		else if (crep)
-		{
-			ret += "<";
-			ret += crep->name();
-			ret += ">";
-		}
-		if (i < top) ret += ", ";
-	}
-	return ret;
+    std::string ret;
+    int top = lua_gettop(L);
+    for (int i = start_index; i <= top; ++i)
+    {
+        object_rep* obj = is_class_object(L, i);
+        class_rep* crep = is_class_rep(L, i)?(class_rep*)lua_touserdata(L, i):0;
+        if (obj == 0 && crep == 0)
+        {
+            int type = lua_type(L, i);
+            ret += lua_typename(L, type);
+        }
+        else if (obj)
+        {
+            if (obj->flags() & object_rep::constant) ret += "const ";
+            ret += obj->crep()->name();
+        }
+        else if (crep)
+        {
+            ret += "<";
+            ret += crep->name();
+            ret += ">";
+        }
+        if (i < top) ret += ", ";
+    }
+    return ret;
 }
 

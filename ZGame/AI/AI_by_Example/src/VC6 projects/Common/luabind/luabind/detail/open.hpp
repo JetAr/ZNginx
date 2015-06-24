@@ -1,4 +1,4 @@
-// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -30,16 +30,16 @@
 
 namespace luabind
 {
-	namespace detail
-	{
-		void add_operator_to_metatable(lua_State* L, int op_index);
-		int create_cpp_class_metatable(lua_State* L);
-		int create_cpp_instance_metatable(lua_State* L);
-		int create_lua_class_metatable(lua_State* L);
-		int create_lua_instance_metatable(lua_State* L);
-	}
+namespace detail
+{
+void add_operator_to_metatable(lua_State* L, int op_index);
+int create_cpp_class_metatable(lua_State* L);
+int create_cpp_instance_metatable(lua_State* L);
+int create_lua_class_metatable(lua_State* L);
+int create_lua_instance_metatable(lua_State* L);
+}
 
-	void open(lua_State* L);
+void open(lua_State* L);
 }
 
 #endif // LUABIND_OPEN_HPP_INCLUDED

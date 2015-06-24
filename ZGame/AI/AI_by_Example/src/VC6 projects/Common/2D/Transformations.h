@@ -1,4 +1,4 @@
-#ifndef TRANSFORMATIONS_H
+﻿#ifndef TRANSFORMATIONS_H
 #define TRANSFORMATIONS_H
 //------------------------------------------------------------------------
 //
@@ -27,33 +27,33 @@
 //  this function transforms the 2D vectors into the object's world space
 //------------------------------------------------------------------------
 inline std::vector<Vector2D> WorldTransform(std::vector<Vector2D> &points,
-                                            const Vector2D   &pos,
-                                            const Vector2D   &forward,
-                                            const Vector2D   &side,
-                                            const Vector2D   &scale)
+        const Vector2D   &pos,
+        const Vector2D   &forward,
+        const Vector2D   &side,
+        const Vector2D   &scale)
 {
-	//copy the original vertices into the buffer about to be transformed
-  std::vector<Vector2D> TranVector2Ds = points;
-  
-  //create a transformation matrix
-	C2DMatrix matTransform;
-	
-	//scale
-  if ( (scale.x != 1.0) || (scale.y != 1.0) )
-  {
-	  matTransform.Scale(scale.x, scale.y);
-  }
+    //copy the original vertices into the buffer about to be transformed
+    std::vector<Vector2D> TranVector2Ds = points;
 
-	//rotate
-	matTransform.Rotate(forward, side);
+    //create a transformation matrix
+    C2DMatrix matTransform;
 
-	//and translate
-	matTransform.Translate(pos.x, pos.y);
-	
-  //now transform the object's vertices
-  matTransform.TransformVector2Ds(TranVector2Ds);
+    //scale
+    if ( (scale.x != 1.0) || (scale.y != 1.0) )
+    {
+        matTransform.Scale(scale.x, scale.y);
+    }
 
-  return TranVector2Ds;
+    //rotate
+    matTransform.Rotate(forward, side);
+
+    //and translate
+    matTransform.Translate(pos.x, pos.y);
+
+    //now transform the object's vertices
+    matTransform.TransformVector2Ds(TranVector2Ds);
+
+    return TranVector2Ds;
 }
 
 //--------------------------- WorldTransform -----------------------------
@@ -62,26 +62,26 @@ inline std::vector<Vector2D> WorldTransform(std::vector<Vector2D> &points,
 //  this function transforms the 2D vectors into the object's world space
 //------------------------------------------------------------------------
 inline std::vector<Vector2D> WorldTransform(std::vector<Vector2D> &points,
-                                 const Vector2D   &pos,
-                                 const Vector2D   &forward,
-                                 const Vector2D   &side)
+        const Vector2D   &pos,
+        const Vector2D   &forward,
+        const Vector2D   &side)
 {
-	//copy the original vertices into the buffer about to be transformed
-  std::vector<Vector2D> TranVector2Ds = points;
-  
-  //create a transformation matrix
-	C2DMatrix matTransform;
+    //copy the original vertices into the buffer about to be transformed
+    std::vector<Vector2D> TranVector2Ds = points;
 
-	//rotate
-	matTransform.Rotate(forward, side);
+    //create a transformation matrix
+    C2DMatrix matTransform;
 
-	//and translate
-	matTransform.Translate(pos.x, pos.y);
-	
-  //now transform the object's vertices
-  matTransform.TransformVector2Ds(TranVector2Ds);
+    //rotate
+    matTransform.Rotate(forward, side);
 
-  return TranVector2Ds;
+    //and translate
+    matTransform.Translate(pos.x, pos.y);
+
+    //now transform the object's vertices
+    matTransform.TransformVector2Ds(TranVector2Ds);
+
+    return TranVector2Ds;
 }
 
 //--------------------- PointToWorldSpace --------------------------------
@@ -89,26 +89,26 @@ inline std::vector<Vector2D> WorldTransform(std::vector<Vector2D> &points,
 //  Transforms a point from the agent's local space into world space
 //------------------------------------------------------------------------
 inline Vector2D PointToWorldSpace(const Vector2D &point,
-                                    const Vector2D &AgentHeading,
-                                    const Vector2D &AgentSide,
-                                    const Vector2D &AgentPosition)
+                                  const Vector2D &AgentHeading,
+                                  const Vector2D &AgentSide,
+                                  const Vector2D &AgentPosition)
 {
-	//make a copy of the point
-  Vector2D TransPoint = point;
-  
-  //create a transformation matrix
-	C2DMatrix matTransform;
+    //make a copy of the point
+    Vector2D TransPoint = point;
 
-	//rotate
-	matTransform.Rotate(AgentHeading, AgentSide);
+    //create a transformation matrix
+    C2DMatrix matTransform;
 
-	//and translate
-	matTransform.Translate(AgentPosition.x, AgentPosition.y);
-	
-  //now transform the vertices
-  matTransform.TransformVector2Ds(TransPoint);
+    //rotate
+    matTransform.Rotate(AgentHeading, AgentSide);
 
-  return TransPoint;
+    //and translate
+    matTransform.Translate(AgentPosition.x, AgentPosition.y);
+
+    //now transform the vertices
+    matTransform.TransformVector2Ds(TransPoint);
+
+    return TransPoint;
 }
 
 //--------------------- VectorToWorldSpace --------------------------------
@@ -116,22 +116,22 @@ inline Vector2D PointToWorldSpace(const Vector2D &point,
 //  Transforms a vector from the agent's local space into world space
 //------------------------------------------------------------------------
 inline Vector2D VectorToWorldSpace(const Vector2D &vec,
-                                     const Vector2D &AgentHeading,
-                                     const Vector2D &AgentSide)
+                                   const Vector2D &AgentHeading,
+                                   const Vector2D &AgentSide)
 {
-	//make a copy of the point
-  Vector2D TransVec = vec;
-  
-  //create a transformation matrix
-	C2DMatrix matTransform;
+    //make a copy of the point
+    Vector2D TransVec = vec;
 
-	//rotate
-	matTransform.Rotate(AgentHeading, AgentSide);
+    //create a transformation matrix
+    C2DMatrix matTransform;
 
-  //now transform the vertices
-  matTransform.TransformVector2Ds(TransVec);
+    //rotate
+    matTransform.Rotate(AgentHeading, AgentSide);
 
-  return TransVec;
+    //now transform the vertices
+    matTransform.TransformVector2Ds(TransVec);
+
+    return TransVec;
 }
 
 
@@ -139,53 +139,58 @@ inline Vector2D VectorToWorldSpace(const Vector2D &vec,
 //
 //------------------------------------------------------------------------
 inline Vector2D PointToLocalSpace(const Vector2D &point,
-                             Vector2D &AgentHeading,
-                             Vector2D &AgentSide,
-                              Vector2D &AgentPosition)
+                                  Vector2D &AgentHeading,
+                                  Vector2D &AgentSide,
+                                  Vector2D &AgentPosition)
 {
 
-	//make a copy of the point
-  Vector2D TransPoint = point;
-  
-  //create a transformation matrix
-	C2DMatrix matTransform;
+    //make a copy of the point
+    Vector2D TransPoint = point;
 
-  double Tx = -AgentPosition.Dot(AgentHeading);
-  double Ty = -AgentPosition.Dot(AgentSide);
+    //create a transformation matrix
+    C2DMatrix matTransform;
 
-  //create the transformation matrix
-  matTransform._11(AgentHeading.x); matTransform._12(AgentSide.x);
-  matTransform._21(AgentHeading.y); matTransform._22(AgentSide.y);
-  matTransform._31(Tx);           matTransform._32(Ty);
-	
-  //now transform the vertices
-  matTransform.TransformVector2Ds(TransPoint);
+    double Tx = -AgentPosition.Dot(AgentHeading);
+    double Ty = -AgentPosition.Dot(AgentSide);
 
-  return TransPoint;
+    //create the transformation matrix
+    matTransform._11(AgentHeading.x);
+    matTransform._12(AgentSide.x);
+    matTransform._21(AgentHeading.y);
+    matTransform._22(AgentSide.y);
+    matTransform._31(Tx);
+    matTransform._32(Ty);
+
+    //now transform the vertices
+    matTransform.TransformVector2Ds(TransPoint);
+
+    return TransPoint;
 }
 
 //--------------------- VectorToLocalSpace --------------------------------
 //
 //------------------------------------------------------------------------
 inline Vector2D VectorToLocalSpace(const Vector2D &vec,
-                             const Vector2D &AgentHeading,
-                             const Vector2D &AgentSide)
-{ 
+                                   const Vector2D &AgentHeading,
+                                   const Vector2D &AgentSide)
+{
 
-	//make a copy of the point
-  Vector2D TransPoint = vec;
-  
-  //create a transformation matrix
-	C2DMatrix matTransform;
+    //make a copy of the point
+    Vector2D TransPoint = vec;
 
-  //create the transformation matrix
-  matTransform._11(AgentHeading.x); matTransform._12(AgentSide.x);
-  matTransform._21(AgentHeading.y); matTransform._22(AgentSide.y);
-	
-  //now transform the vertices
-  matTransform.TransformVector2Ds(TransPoint);
+    //create a transformation matrix
+    C2DMatrix matTransform;
 
-  return TransPoint;
+    //create the transformation matrix
+    matTransform._11(AgentHeading.x);
+    matTransform._12(AgentSide.x);
+    matTransform._21(AgentHeading.y);
+    matTransform._22(AgentSide.y);
+
+    //now transform the vertices
+    matTransform.TransformVector2Ds(TransPoint);
+
+    return TransPoint;
 }
 
 //-------------------------- Vec2DRotateAroundOrigin --------------------------
@@ -194,48 +199,48 @@ inline Vector2D VectorToLocalSpace(const Vector2D &vec,
 //-----------------------------------------------------------------------------
 inline void Vec2DRotateAroundOrigin(Vector2D& v, double ang)
 {
-  //create a transformation matrix
-  C2DMatrix mat;
+    //create a transformation matrix
+    C2DMatrix mat;
 
-  //rotate
-  mat.Rotate(ang);
-	
-  //now transform the object's vertices
-  mat.TransformVector2Ds(v);
+    //rotate
+    mat.Rotate(ang);
+
+    //now transform the object's vertices
+    mat.TransformVector2Ds(v);
 }
 
 //------------------------ CreateWhiskers ------------------------------------
 //
-//  given an origin, a facing direction, a 'field of view' describing the 
+//  given an origin, a facing direction, a 'field of view' describing the
 //  limit of the outer whiskers, a whisker length and the number of whiskers
 //  this method returns a vector containing the end positions of a series
 //  of whiskers radiating away from the origin and with equal distance between
 //  them. (like the spokes of a wheel clipped to a specific segment size)
 //----------------------------------------------------------------------------
 inline std::vector<Vector2D> CreateWhiskers(unsigned int  NumWhiskers,
-                                            double        WhiskerLength,
-                                            double        fov,
-                                            Vector2D      facing,
-                                            Vector2D      origin)
+        double        WhiskerLength,
+        double        fov,
+        Vector2D      facing,
+        Vector2D      origin)
 {
-  //this is the magnitude of the angle separating each whisker
-  double SectorSize = fov/(double)(NumWhiskers-1);
+    //this is the magnitude of the angle separating each whisker
+    double SectorSize = fov/(double)(NumWhiskers-1);
 
-  std::vector<Vector2D> whiskers;
-  Vector2D temp;
-  double angle = -fov*0.5; 
+    std::vector<Vector2D> whiskers;
+    Vector2D temp;
+    double angle = -fov*0.5;
 
-  for (unsigned int w=0; w<NumWhiskers; ++w)
-  {
-    //create the whisker extending outwards at this angle
-    temp = facing;
-    Vec2DRotateAroundOrigin(temp, angle);
-    whiskers.push_back(origin + WhiskerLength * temp);
+    for (unsigned int w=0; w<NumWhiskers; ++w)
+    {
+        //create the whisker extending outwards at this angle
+        temp = facing;
+        Vec2DRotateAroundOrigin(temp, angle);
+        whiskers.push_back(origin + WhiskerLength * temp);
 
-    angle+=SectorSize;
-  }
+        angle+=SectorSize;
+    }
 
-  return whiskers;
+    return whiskers;
 }
 
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -24,11 +24,12 @@
 #include <luabind/luabind.hpp>
 #include <luabind/scope.hpp>
 
-namespace {
+namespace
+{
 
-    struct X {};
-    struct Y {};
-    
+struct X {};
+struct Y {};
+
 } // namespace unnamed
 
 luabind::scope test_separate_registration()
@@ -36,16 +37,16 @@ luabind::scope test_separate_registration()
     using namespace luabind;
 
     return class_<X>("X")
-               .def(constructor<>()),
+           .def(constructor<>()),
            class_<Y>("Y")
-               .def(constructor<>())
+           .def(constructor<>())
            ;
 }
 
 void test_main(lua_State* L)
 {
     using namespace luabind;
-    
+
     module(L)
     [
         namespace_("Z") [

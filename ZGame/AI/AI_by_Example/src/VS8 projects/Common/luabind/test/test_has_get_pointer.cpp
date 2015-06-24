@@ -1,4 +1,4 @@
-// Copyright (c) 2005 Daniel Wallin
+﻿// Copyright (c) 2005 Daniel Wallin
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -31,25 +31,25 @@ namespace lb = luabind::detail;
 namespace test
 {
 
-  struct X
-  {
-  };
+struct X
+{
+};
 
-  struct Y
-  {
-  };
+struct Y
+{
+};
 
-  Y* get_pointer(Y const&);
-  
-  struct Z : boost::enable_shared_from_this<Z> {};
-  
+Y* get_pointer(Y const&);
+
+struct Z : boost::enable_shared_from_this<Z> {};
+
 } // namespace test
 
 #ifdef BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP
 namespace luabind
 {
-  using test::get_pointer;
-  using boost::get_pointer;
+using test::get_pointer;
+using boost::get_pointer;
 } // namespace luabind
 #endif
 

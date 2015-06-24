@@ -1,4 +1,4 @@
-#ifndef GOAL_ADJUST_RANGE_H
+﻿#ifndef GOAL_ADJUST_RANGE_H
 #define GOAL_ADJUST_RANGE_H
 #pragma warning (disable:4786)
 //-----------------------------------------------------------------------------
@@ -7,7 +7,7 @@
 //
 //  Author: Mat Buckland (ai-junkie.com)
 //
-//  Desc:   
+//  Desc:
 //
 //-----------------------------------------------------------------------------
 #include "goals/Goal.h"
@@ -22,20 +22,20 @@ class Goal_AdjustRange : public Goal<Raven_Bot>
 {
 private:
 
-  Raven_Bot*  m_pTarget;
+    Raven_Bot*  m_pTarget;
 
-  double       m_dIdealRange;
+    double       m_dIdealRange;
 
 public:
 
-  Goal_AdjustRange(Raven_Bot* pBot);
+    Goal_AdjustRange(Raven_Bot* pBot);
 
-  void Activate();
+    void Activate();
 
-  int  Process();
+    int  Process();
 
-  void Terminate();
- 
+    void Terminate();
+
 };
 
 

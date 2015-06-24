@@ -1,4 +1,4 @@
-#include <fstream>
+﻿#include <fstream>
 #include "Locations.h"
 #include "Miner.h"
 #include "MinersWife.h"
@@ -13,28 +13,28 @@ int main()
 {
 //define this to send output to a text file (see locations.h)
 #ifdef TEXTOUTPUT
-  os.open("output.txt");
+    os.open("output.txt");
 #endif
 
-  //create a miner
-  Miner Bob(ent_Miner_Bob);
+    //create a miner
+    Miner Bob(ent_Miner_Bob);
 
-  //create his wife
-  MinersWife Elsa(ent_Elsa);
+    //create his wife
+    MinersWife Elsa(ent_Elsa);
 
-  //run Bob and Elsa through a few Update calls
-  for (int i=0; i<20; ++i)
-  { 
-    Bob.Update();
-    Elsa.Update();
+    //run Bob and Elsa through a few Update calls
+    for (int i=0; i<20; ++i)
+    {
+        Bob.Update();
+        Elsa.Update();
 
-    Sleep(800);
-  }
+        Sleep(800);
+    }
 
-  //wait for a keypress before exiting
-  PressAnyKeyToContinue();
+    //wait for a keypress before exiting
+    PressAnyKeyToContinue();
 
-  return 0;
+    return 0;
 }
 
 

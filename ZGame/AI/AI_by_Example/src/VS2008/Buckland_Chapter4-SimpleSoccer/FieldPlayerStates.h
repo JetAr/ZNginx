@@ -1,4 +1,4 @@
-#ifndef FIELDPLAYERSTATES_H
+﻿#ifndef FIELDPLAYERSTATES_H
 #define FIELDPLAYERSTATES_H
 //------------------------------------------------------------------------
 //
@@ -26,63 +26,69 @@ class SoccerPitch;
 class GlobalPlayerState : public State<FieldPlayer>
 {
 private:
-  
-  GlobalPlayerState(){}
+
+    GlobalPlayerState() {}
 
 public:
 
-  //this is a singleton
-  static GlobalPlayerState* Instance();
+    //this is a singleton
+    static GlobalPlayerState* Instance();
 
-  void Enter(FieldPlayer* player){}
+    void Enter(FieldPlayer* player) {}
 
-  void Execute(FieldPlayer* player);
+    void Execute(FieldPlayer* player);
 
-  void Exit(FieldPlayer* player){}
+    void Exit(FieldPlayer* player) {}
 
-  bool OnMessage(FieldPlayer*, const Telegram&);
+    bool OnMessage(FieldPlayer*, const Telegram&);
 };
 
 //------------------------------------------------------------------------
 class ChaseBall : public State<FieldPlayer>
 {
 private:
-  
-  ChaseBall(){}
+
+    ChaseBall() {}
 
 public:
 
-  //this is a singleton
-  static ChaseBall* Instance();
+    //this is a singleton
+    static ChaseBall* Instance();
 
-  void Enter(FieldPlayer* player);
+    void Enter(FieldPlayer* player);
 
-  void Execute(FieldPlayer* player);
+    void Execute(FieldPlayer* player);
 
-  void Exit(FieldPlayer* player);
+    void Exit(FieldPlayer* player);
 
-  bool OnMessage(FieldPlayer*, const Telegram&){return false;}
+    bool OnMessage(FieldPlayer*, const Telegram&)
+    {
+        return false;
+    }
 };
 
 //------------------------------------------------------------------------
 class Dribble : public State<FieldPlayer>
 {
 private:
-  
-  Dribble(){}
+
+    Dribble() {}
 
 public:
 
-  //this is a singleton
-  static Dribble* Instance();
+    //this is a singleton
+    static Dribble* Instance();
 
-  void Enter(FieldPlayer* player);
+    void Enter(FieldPlayer* player);
 
-  void Execute(FieldPlayer* player);
+    void Execute(FieldPlayer* player);
 
-  void Exit(FieldPlayer* player){}
+    void Exit(FieldPlayer* player) {}
 
-  bool OnMessage(FieldPlayer*, const Telegram&){return false;}
+    bool OnMessage(FieldPlayer*, const Telegram&)
+    {
+        return false;
+    }
 };
 
 
@@ -90,84 +96,96 @@ public:
 class ReturnToHomeRegion: public State<FieldPlayer>
 {
 private:
-  
-  ReturnToHomeRegion(){}
+
+    ReturnToHomeRegion() {}
 
 public:
 
-  //this is a singleton
-  static ReturnToHomeRegion* Instance();
+    //this is a singleton
+    static ReturnToHomeRegion* Instance();
 
-  void Enter(FieldPlayer* player);
+    void Enter(FieldPlayer* player);
 
-  void Execute(FieldPlayer* player);
+    void Execute(FieldPlayer* player);
 
-  void Exit(FieldPlayer* player);
+    void Exit(FieldPlayer* player);
 
-  bool OnMessage(FieldPlayer*, const Telegram&){return false;}
+    bool OnMessage(FieldPlayer*, const Telegram&)
+    {
+        return false;
+    }
 };
 
 //------------------------------------------------------------------------
 class Wait: public State<FieldPlayer>
 {
 private:
-  
-  Wait(){}
+
+    Wait() {}
 
 public:
 
-  //this is a singleton
-  static Wait* Instance();
+    //this is a singleton
+    static Wait* Instance();
 
-  void Enter(FieldPlayer* player);
+    void Enter(FieldPlayer* player);
 
-  void Execute(FieldPlayer* player);
+    void Execute(FieldPlayer* player);
 
-  void Exit(FieldPlayer* player);
+    void Exit(FieldPlayer* player);
 
-  bool OnMessage(FieldPlayer*, const Telegram&){return false;}
+    bool OnMessage(FieldPlayer*, const Telegram&)
+    {
+        return false;
+    }
 };
 
 //------------------------------------------------------------------------
 class KickBall: public State<FieldPlayer>
 {
 private:
-  
-  KickBall(){}
+
+    KickBall() {}
 
 public:
 
-  //this is a singleton
-  static KickBall* Instance();
+    //this is a singleton
+    static KickBall* Instance();
 
-  void Enter(FieldPlayer* player);
+    void Enter(FieldPlayer* player);
 
-  void Execute(FieldPlayer* player);
+    void Execute(FieldPlayer* player);
 
-  void Exit(FieldPlayer* player){}
+    void Exit(FieldPlayer* player) {}
 
-  bool OnMessage(FieldPlayer*, const Telegram&){return false;}
+    bool OnMessage(FieldPlayer*, const Telegram&)
+    {
+        return false;
+    }
 };
 
 //------------------------------------------------------------------------
 class ReceiveBall: public State<FieldPlayer>
 {
 private:
-  
-  ReceiveBall(){}
+
+    ReceiveBall() {}
 
 public:
 
-  //this is a singleton
-  static ReceiveBall* Instance();
+    //this is a singleton
+    static ReceiveBall* Instance();
 
-  void Enter(FieldPlayer* player);
+    void Enter(FieldPlayer* player);
 
-  void Execute(FieldPlayer* player);
+    void Execute(FieldPlayer* player);
 
-  void Exit(FieldPlayer* player);
+    void Exit(FieldPlayer* player);
 
-  bool OnMessage(FieldPlayer*, const Telegram&){return false;}
+    bool OnMessage(FieldPlayer*, const Telegram&)
+    {
+        return false;
+    }
 };
 
 
@@ -175,25 +193,28 @@ public:
 class SupportAttacker: public State<FieldPlayer>
 {
 private:
-  
-  SupportAttacker(){}
+
+    SupportAttacker() {}
 
 public:
 
-  //this is a singleton
-  static SupportAttacker* Instance();
+    //this is a singleton
+    static SupportAttacker* Instance();
 
-  void Enter(FieldPlayer* player);
+    void Enter(FieldPlayer* player);
 
-  void Execute(FieldPlayer* player);
+    void Execute(FieldPlayer* player);
 
-  void Exit(FieldPlayer* player);
+    void Exit(FieldPlayer* player);
 
-  bool OnMessage(FieldPlayer*, const Telegram&){return false;}
+    bool OnMessage(FieldPlayer*, const Telegram&)
+    {
+        return false;
+    }
 };
 
 
 
 
-  
+
 #endif

@@ -1,4 +1,4 @@
-#ifndef GRAVE_MARKERS_H
+﻿#ifndef GRAVE_MARKERS_H
 #define GRAVE_MARKERS_H
 #pragma warning (disable : 4786)
 //-----------------------------------------------------------------------------
@@ -18,39 +18,39 @@
 class GraveMarkers
 {
 private:
-  
-  struct GraveRecord
-  {
-    Vector2D Position;
-    double    TimeCreated;
 
-    GraveRecord(Vector2D pos):Position(pos),
-                              TimeCreated(Clock->GetCurrentTime())
-    {}
-  };
+    struct GraveRecord
+    {
+        Vector2D Position;
+        double    TimeCreated;
 
-private:
-  
-  typedef std::list<GraveRecord> GraveList;
+        GraveRecord(Vector2D pos):Position(pos),
+            TimeCreated(Clock->GetCurrentTime())
+        {}
+    };
 
 private:
 
-  //how long a grave remains on screen
-  double m_dLifeTime;
+    typedef std::list<GraveRecord> GraveList;
 
-  //when a bot dies, a grave is rendered to mark the spot.
-  std::vector<Vector2D>   m_vecRIPVB;
-  std::vector<Vector2D>   m_vecRIPVBTrans;
-  GraveList               m_GraveList;
+private:
+
+    //how long a grave remains on screen
+    double m_dLifeTime;
+
+    //when a bot dies, a grave is rendered to mark the spot.
+    std::vector<Vector2D>   m_vecRIPVB;
+    std::vector<Vector2D>   m_vecRIPVBTrans;
+    GraveList               m_GraveList;
 
 
 public:
 
-  GraveMarkers(double lifetime);
+    GraveMarkers(double lifetime);
 
-  void Update();
-  void Render();
-  void AddGrave(Vector2D pos);
+    void Update();
+    void Render();
+    void AddGrave(Vector2D pos);
 
 };
 

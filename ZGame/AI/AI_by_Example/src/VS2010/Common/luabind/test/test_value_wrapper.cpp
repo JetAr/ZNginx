@@ -1,4 +1,4 @@
-// Copyright (c) 2005 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2005 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -34,18 +34,18 @@ struct X
 namespace luabind
 {
 #ifdef LUABIND_USE_VALUE_WRAPPER_TAG
-  template<>
-  struct value_wrapper_traits<X_tag>
-  {
-      typedef boost::mpl::true_ is_specialized;
-  };
+template<>
+struct value_wrapper_traits<X_tag>
+{
+    typedef boost::mpl::true_ is_specialized;
+};
 #else
-  // used on compilers supporting partial template specialization
-  template<>
-  struct value_wrapper_traits<X>
-  {
-      typedef boost::mpl::true_ is_specialized;
-  };
+// used on compilers supporting partial template specialization
+template<>
+struct value_wrapper_traits<X>
+{
+    typedef boost::mpl::true_ is_specialized;
+};
 #endif
 
 } // namespace luabind

@@ -1,4 +1,4 @@
-#ifndef RAVEN_ATTACK_GOAL_EVALUATOR
+﻿#ifndef RAVEN_ATTACK_GOAL_EVALUATOR
 #define RAVEN_ATTACK_GOAL_EVALUATOR
 #pragma warning (disable:4786)
 //-----------------------------------------------------------------------------
@@ -16,16 +16,16 @@
 
 
 class AttackTargetGoal_Evaluator : public Goal_Evaluator
-{ 
+{
 public:
 
-  AttackTargetGoal_Evaluator(double bias):Goal_Evaluator(bias){}
-  
-  double CalculateDesirability(Raven_Bot* pBot);
+    AttackTargetGoal_Evaluator(double bias):Goal_Evaluator(bias) {}
 
-  void  SetGoal(Raven_Bot* pEnt);
+    double CalculateDesirability(Raven_Bot* pBot);
 
-  void RenderInfo(Vector2D Position, Raven_Bot* pBot);
+    void  SetGoal(Raven_Bot* pEnt);
+
+    void RenderInfo(Vector2D Position, Raven_Bot* pBot);
 };
 
 

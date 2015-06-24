@@ -1,4 +1,4 @@
-// Copyright (c) 2004 Daniel Wallin
+﻿// Copyright (c) 2004 Daniel Wallin
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -26,19 +26,40 @@
 struct ex : public std::exception
 {
     ex(const char* m): msg(m) {}
-    virtual const char* what() const throw() { return msg; }
+    virtual const char* what() const throw()
+    {
+        return msg;
+    }
     const char* msg;
 };
 
 struct exception_thrower : counted_type<exception_thrower>
 {
     exception_thrower() {}
-    exception_thrower(int) { throw ex("exception description"); }
-    exception_thrower(int, int) { throw "a string exception"; }
-    exception_thrower(int, int, int) { throw 10; }
-    int f() { throw ex("exception from a member function"); }
-    int g() { throw "a string exception"; }
-    int h() { throw 10; }
+    exception_thrower(int)
+    {
+        throw ex("exception description");
+    }
+    exception_thrower(int, int)
+    {
+        throw "a string exception";
+    }
+    exception_thrower(int, int, int)
+    {
+        throw 10;
+    }
+    int f()
+    {
+        throw ex("exception from a member function");
+    }
+    int g()
+    {
+        throw "a string exception";
+    }
+    int h()
+    {
+        throw 10;
+    }
 };
 
 COUNTER_GUARD(exception_thrower);
@@ -52,13 +73,13 @@ void test_main(lua_State* L)
     module(L)
     [
         class_<exception_thrower>("throw")
-            .def(constructor<>())
-            .def(constructor<int>())
-            .def(constructor<int, int>())
-            .def(constructor<int, int, int>())
-            .def("f", &exception_thrower::f)
-            .def("g", &exception_thrower::g)
-            .def("h", &exception_thrower::h)
+        .def(constructor<>())
+        .def(constructor<int>())
+        .def(constructor<int, int>())
+        .def(constructor<int, int, int>())
+        .def("f", &exception_thrower::f)
+        .def("g", &exception_thrower::g)
+        .def("h", &exception_thrower::h)
     ];
 
     DOSTRING_EXPECTED(L, "a = throw(1)", "exception description");
@@ -69,12 +90,12 @@ void test_main(lua_State* L)
     DOSTRING_EXPECTED(L, "a:g()", "a string exception");
 
     DOSTRING_EXPECTED(L, "a:h()", "throw:h() threw an exception");
-    DOSTRING_EXPECTED(L, 
-        "obj = throw('incorrect', 'parameters', 'constructor')",
-        "no constructor of 'throw' matched the arguments "
-        "(string, string, string)\n candidates are:\n"
-        "throw()\nthrow(number)\nthrow(number, number)\n"
-        "throw(number, number, number)\n");
+    DOSTRING_EXPECTED(L,
+                      "obj = throw('incorrect', 'parameters', 'constructor')",
+                      "no constructor of 'throw' matched the arguments "
+                      "(string, string, string)\n candidates are:\n"
+                      "throw()\nthrow(number)\nthrow(number, number)\n"
+                      "throw(number, number, number)\n");
 
 #endif
 }

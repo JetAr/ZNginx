@@ -1,4 +1,4 @@
-// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2004 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -23,7 +23,8 @@
 #ifndef LUABIND_BACK_REFERENCE_FWD_040510_HPP
 #define LUABIND_BACK_REFERENCE_FWD_040510_HPP
 
-namespace luabind {
+namespace luabind
+{
 
 template<class T>
 bool get_back_reference(lua_State* L, T const& x);

@@ -1,10 +1,10 @@
-#ifndef TEST_H_INCLUDED
+﻿#ifndef TEST_H_INCLUDED
 #define TEST_H_INCLUDED
 
 extern "C"
 {
-	#include "lua.h"
-	#include "lualib.h"
+#include "lua.h"
+#include "lualib.h"
 }
 
 //#define LUABIND_NO_ERROR_CHECKING
@@ -24,10 +24,20 @@ int dostring2(lua_State* L, const char* str);
 
 struct lua_closer
 {
-	lua_State* L;
-	lua_closer(lua_State* L_): L(L_) {}
-	void release() { if (L) {lua_close(L); L = 0; } }
-	~lua_closer() { if (L != 0) lua_close(L); }
+    lua_State* L;
+    lua_closer(lua_State* L_): L(L_) {}
+    void release()
+    {
+        if (L)
+        {
+            lua_close(L);
+            L = 0;
+        }
+    }
+    ~lua_closer()
+    {
+        if (L != 0) lua_close(L);
+    }
 };
 
 

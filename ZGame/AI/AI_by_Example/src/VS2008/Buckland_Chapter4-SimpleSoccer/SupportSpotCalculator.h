@@ -1,4 +1,4 @@
-#ifndef SUPPORTSPOTCALCULATOR
+﻿#ifndef SUPPORTSPOTCALCULATOR
 #define SUPPORTSPOTCALCULATOR
 #pragma warning (disable:4786)
 //------------------------------------------------------------------------
@@ -32,55 +32,55 @@ class Regulator;
 class SupportSpotCalculator
 {
 private:
-  
-  //a data structure to hold the values and positions of each spot
-  struct SupportSpot
-  {
-    
-    Vector2D  m_vPos;
 
-    double    m_dScore;
+    //a data structure to hold the values and positions of each spot
+    struct SupportSpot
+    {
 
-    SupportSpot(Vector2D pos, double value):m_vPos(pos),
-                                            m_dScore(value)
-    {}
-  };
+        Vector2D  m_vPos;
+
+        double    m_dScore;
+
+        SupportSpot(Vector2D pos, double value):m_vPos(pos),
+            m_dScore(value)
+        {}
+    };
 
 private:
 
 
-  SoccerTeam*               m_pTeam;
+    SoccerTeam*               m_pTeam;
 
-  std::vector<SupportSpot>  m_Spots;
+    std::vector<SupportSpot>  m_Spots;
 
-  //a pointer to the highest valued spot from the last update
-  SupportSpot*              m_pBestSupportingSpot;
+    //a pointer to the highest valued spot from the last update
+    SupportSpot*              m_pBestSupportingSpot;
 
-  //this will regulate how often the spots are calculated (default is
-  //one update per second)
-  Regulator*                m_pRegulator;
+    //this will regulate how often the spots are calculated (default is
+    //one update per second)
+    Regulator*                m_pRegulator;
 
 public:
-  
-  SupportSpotCalculator(int numX,
-                        int numY,
-                        SoccerTeam* team);
 
-  ~SupportSpotCalculator();
+    SupportSpotCalculator(int numX,
+                          int numY,
+                          SoccerTeam* team);
 
-  //draws the spots to the screen as a hollow circles. The higher the 
-  //score, the bigger the circle. The best supporting spot is drawn in
-  //bright green.
-  void       Render()const;
+    ~SupportSpotCalculator();
 
-  //this method iterates through each possible spot and calculates its
-  //score.
-  Vector2D  DetermineBestSupportingPosition();
+    //draws the spots to the screen as a hollow circles. The higher the
+    //score, the bigger the circle. The best supporting spot is drawn in
+    //bright green.
+    void       Render()const;
 
-  //returns the best supporting spot if there is one. If one hasn't been
-  //calculated yet, this method calls DetermineBestSupportingPosition and
-  //returns the result.
-  Vector2D  GetBestSupportingSpot();
+    //this method iterates through each possible spot and calculates its
+    //score.
+    Vector2D  DetermineBestSupportingPosition();
+
+    //returns the best supporting spot if there is one. If one hasn't been
+    //calculated yet, this method calls DetermineBestSupportingPosition and
+    //returns the result.
+    Vector2D  GetBestSupportingSpot();
 };
 
 

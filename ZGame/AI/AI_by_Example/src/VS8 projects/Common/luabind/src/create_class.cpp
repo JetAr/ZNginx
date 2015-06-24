@@ -1,4 +1,4 @@
-// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -24,119 +24,122 @@
 
 #include <luabind/luabind.hpp>
 
-namespace luabind { namespace detail
+namespace luabind
 {
-	namespace
-	{
-		// expects two tables on the lua stack:
-		// 1: destination
-		// 2: source
-		void copy_member_table(lua_State* L)
-		{
-			lua_pushnil(L);
+namespace detail
+{
+namespace
+{
+// expects two tables on the lua stack:
+// 1: destination
+// 2: source
+void copy_member_table(lua_State* L)
+{
+    lua_pushnil(L);
 
-			while (lua_next(L, -2))
-			{
-				lua_pushstring(L, "__init");
-				if (lua_equal(L, -1, -3))
-				{
-					lua_pop(L, 2);
-					continue;
-				}
-				else lua_pop(L, 1); // __init string
+    while (lua_next(L, -2))
+    {
+        lua_pushstring(L, "__init");
+        if (lua_equal(L, -1, -3))
+        {
+            lua_pop(L, 2);
+            continue;
+        }
+        else lua_pop(L, 1); // __init string
 
-				lua_pushstring(L, "__finalize");
-				if (lua_equal(L, -1, -3))
-				{
-					lua_pop(L, 2);
-					continue;
-				}
-				else lua_pop(L, 1); // __finalize string
+        lua_pushstring(L, "__finalize");
+        if (lua_equal(L, -1, -3))
+        {
+            lua_pop(L, 2);
+            continue;
+        }
+        else lua_pop(L, 1); // __finalize string
 
-				lua_pushvalue(L, -2); // copy key
-				lua_insert(L, -2);
-				lua_settable(L, -5);
-			}
-		}
-	}
+        lua_pushvalue(L, -2); // copy key
+        lua_insert(L, -2);
+        lua_settable(L, -5);
+    }
+}
+}
 
 
-	int create_class::stage2(lua_State* L)
-	{
-		class_rep* crep = static_cast<class_rep*>(lua_touserdata(L, lua_upvalueindex(1)));
-		assert((crep != 0) && "internal error, please report");
-		assert((is_class_rep(L, lua_upvalueindex(1))) && "internal error, please report");
+int create_class::stage2(lua_State* L)
+{
+    class_rep* crep = static_cast<class_rep*>(lua_touserdata(L, lua_upvalueindex(1)));
+    assert((crep != 0) && "internal error, please report");
+    assert((is_class_rep(L, lua_upvalueindex(1))) && "internal error, please report");
 
-	#ifndef LUABIND_NO_ERROR_CHECKING
+#ifndef LUABIND_NO_ERROR_CHECKING
 
-		if (!is_class_rep(L, 1))
-		{
-			lua_pushstring(L, "expected class to derive from or a newline");
-			lua_error(L);
-		}
+    if (!is_class_rep(L, 1))
+    {
+        lua_pushstring(L, "expected class to derive from or a newline");
+        lua_error(L);
+    }
 
-	#endif
+#endif
 
-		class_rep* base = static_cast<class_rep*>(lua_touserdata(L, 1));
-		class_rep::base_info binfo;
+    class_rep* base = static_cast<class_rep*>(lua_touserdata(L, 1));
+    class_rep::base_info binfo;
 
-		binfo.pointer_offset = 0;
-		binfo.base = base;
-		crep->add_base_class(binfo);
+    binfo.pointer_offset = 0;
+    binfo.base = base;
+    crep->add_base_class(binfo);
 
-		// set holder size and alignment so that we can class_rep::allocate
-		// can return the correctly sized buffers
-		crep->derived_from(base);
-		
-		// copy base class members
+    // set holder size and alignment so that we can class_rep::allocate
+    // can return the correctly sized buffers
+    crep->derived_from(base);
 
-		crep->get_table(L);
-		base->get_table(L);
-		copy_member_table(L);
+    // copy base class members
 
-		crep->get_default_table(L);
-		base->get_default_table(L);
-		copy_member_table(L);
+    crep->get_table(L);
+    base->get_table(L);
+    copy_member_table(L);
 
-		crep->set_type(base->type());
+    crep->get_default_table(L);
+    base->get_default_table(L);
+    copy_member_table(L);
 
-		return 0;
-	}
+    crep->set_type(base->type());
 
-	int create_class::stage1(lua_State* L)
-	{
+    return 0;
+}
 
-	#ifndef LUABIND_NO_ERROR_CHECKING
+int create_class::stage1(lua_State* L)
+{
 
-		if (lua_gettop(L) != 1 || lua_type(L, 1) != LUA_TSTRING || lua_isnumber(L, 1))
-		{
-			lua_pushstring(L, "invalid construct, expected class name");
-			lua_error(L);
-		}
+#ifndef LUABIND_NO_ERROR_CHECKING
 
-		if (std::strlen(lua_tostring(L, 1)) != lua_strlen(L, 1))
-		{
-			lua_pushstring(L, "luabind does not support class names with extra nulls");
-			lua_error(L);
-		}
+    if (lua_gettop(L) != 1 || lua_type(L, 1) != LUA_TSTRING || lua_isnumber(L, 1))
+    {
+        lua_pushstring(L, "invalid construct, expected class name");
+        lua_error(L);
+    }
 
-	#endif
+    if (std::strlen(lua_tostring(L, 1)) != lua_strlen(L, 1))
+    {
+        lua_pushstring(L, "luabind does not support class names with extra nulls");
+        lua_error(L);
+    }
 
-		const char* name = lua_tostring(L, 1);
+#endif
 
-		void* c = lua_newuserdata(L, sizeof(class_rep));
-		new(c) class_rep(L, name);
+    const char* name = lua_tostring(L, 1);
 
-		// make the class globally available
-		lua_pushstring(L, name);
-		lua_pushvalue(L, -2);
-		lua_settable(L, LUA_GLOBALSINDEX);
+    void* c = lua_newuserdata(L, sizeof(class_rep));
+    new(c) class_rep(L, name);
 
-		// also add it to the closure as return value
-		lua_pushcclosure(L, &stage2, 1);
+    // make the class globally available
+    lua_pushstring(L, name);
+    lua_pushvalue(L, -2);
+    lua_settable(L, LUA_GLOBALSINDEX);
 
-		return 1;
-	}
+    // also add it to the closure as return value
+    lua_pushcclosure(L, &stage2, 1);
 
-}}
+    return 1;
+}
+
+}
+}
 

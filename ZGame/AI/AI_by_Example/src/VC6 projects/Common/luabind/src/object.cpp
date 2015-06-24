@@ -1,4 +1,4 @@
-// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -22,7 +22,7 @@
 
 extern "C"
 {
-	#include "lua.h"
+#include "lua.h"
 }
 
 #include <luabind/luabind.hpp>
@@ -32,12 +32,12 @@ using namespace luabind::detail;
 
 namespace luabind
 {
-	namespace detail
-	{
+namespace detail
+{
 
 
-		// *************************************
-		// PROXY OBJECT
+// *************************************
+// PROXY OBJECT
 
 #define LUABIND_PROXY_ASSIGNMENT_OPERATOR(rhs)\
 		proxy_object& proxy_object::operator=(const rhs& p) \
@@ -59,33 +59,33 @@ LUABIND_PROXY_ASSIGNMENT_OPERATOR(proxy_array_object)
 
 #undef LUABIND_PROXY_ASSIGNMENT_OPERATOR
 
-		void proxy_object::pushvalue() const
-		{
-			assert((m_key_ref != LUA_NOREF) && "you cannot call pushvalue() on an uninitialized object");
+void proxy_object::pushvalue() const
+{
+    assert((m_key_ref != LUA_NOREF) && "you cannot call pushvalue() on an uninitialized object");
 
-			lua_State* L = m_obj->lua_state();
-			m_obj->pushvalue();
-			detail::getref(L, m_key_ref);
-			lua_gettable(L, -2);
-			// remove the table and leave the value on top of the stack
-			lua_remove(L, -2);
-		}
+    lua_State* L = m_obj->lua_state();
+    m_obj->pushvalue();
+    detail::getref(L, m_key_ref);
+    lua_gettable(L, -2);
+    // remove the table and leave the value on top of the stack
+    lua_remove(L, -2);
+}
 
-		void proxy_object::set() const
-		{
-			lua_State* L = lua_state();
-			m_obj->pushvalue();
-			detail::getref(L, m_key_ref);
-			lua_pushvalue(L, -3);
-			lua_settable(L, -3);
-			// pop table and value
-			lua_pop(L, 2);
-		}
+void proxy_object::set() const
+{
+    lua_State* L = lua_state();
+    m_obj->pushvalue();
+    detail::getref(L, m_key_ref);
+    lua_pushvalue(L, -3);
+    lua_settable(L, -3);
+    // pop table and value
+    lua_pop(L, 2);
+}
 
 
 
-		// *************************************
-		// PROXY ARRAY OBJECT
+// *************************************
+// PROXY ARRAY OBJECT
 
 
 
@@ -108,30 +108,30 @@ LUABIND_ARRAY_PROXY_ASSIGNMENT_OPERATOR(proxy_array_object)
 
 #undef LUABIND_ARRAY_PROXY_ASSIGNMENT_OPERATOR
 
-		void proxy_array_object::pushvalue() const
-		{
-			// you are trying to dereference an invalid object
-			assert((m_key != LUA_NOREF) && "you cannot call pushvalue() on an uninitialized object");
+void proxy_array_object::pushvalue() const
+{
+    // you are trying to dereference an invalid object
+    assert((m_key != LUA_NOREF) && "you cannot call pushvalue() on an uninitialized object");
 
-			lua_State* L = m_obj->lua_state();
-			m_obj->pushvalue();
-			lua_rawgeti(L, -1, m_key);
-			lua_remove(L, -2);
-		}
+    lua_State* L = m_obj->lua_state();
+    m_obj->pushvalue();
+    lua_rawgeti(L, -1, m_key);
+    lua_remove(L, -2);
+}
 
-		void proxy_array_object::set() const
-		{
-			lua_State* L = lua_state();
-			m_obj->pushvalue();
-			lua_pushvalue(L, -2);
-			lua_rawseti(L, -2, m_key);
-			// pop table and value
-			lua_pop(L, 2);
-		}
+void proxy_array_object::set() const
+{
+    lua_State* L = lua_state();
+    m_obj->pushvalue();
+    lua_pushvalue(L, -2);
+    lua_rawseti(L, -2, m_key);
+    // pop table and value
+    lua_pop(L, 2);
+}
 
 
-		// *************************************
-		// PROXY RAW OBJECT
+// *************************************
+// PROXY RAW OBJECT
 
 
 #define LUABIND_RAW_PROXY_ASSIGNMENT_OPERATOR(rhs)\
@@ -154,30 +154,30 @@ LUABIND_RAW_PROXY_ASSIGNMENT_OPERATOR(proxy_array_object)
 
 #undef LUABIND_RAW_PROXY_ASSIGNMENT_OPERATOR
 
-		void proxy_raw_object::pushvalue() const
-		{
-			assert((m_key_ref != LUA_NOREF) && "you cannot call pushvalue() on an uninitiallized object");
+void proxy_raw_object::pushvalue() const
+{
+    assert((m_key_ref != LUA_NOREF) && "you cannot call pushvalue() on an uninitiallized object");
 
-			lua_State* L = lua_state();
-			m_obj->pushvalue();
-			detail::getref(L, m_key_ref);
-			lua_rawget(L, -2);
-			// remove the table and leave the value on top of the stack
-			lua_remove(L, -2);
-		}
+    lua_State* L = lua_state();
+    m_obj->pushvalue();
+    detail::getref(L, m_key_ref);
+    lua_rawget(L, -2);
+    // remove the table and leave the value on top of the stack
+    lua_remove(L, -2);
+}
 
-		void proxy_raw_object::set() const
-		{
-			lua_State* L = lua_state();
-			m_obj->pushvalue();
-			detail::getref(L, m_key_ref);
-			lua_pushvalue(L, -3);
-			lua_rawset(L, -3);
-			// pop table and value
-			lua_pop(L, 2);
-		}
+void proxy_raw_object::set() const
+{
+    lua_State* L = lua_state();
+    m_obj->pushvalue();
+    detail::getref(L, m_key_ref);
+    lua_pushvalue(L, -3);
+    lua_rawset(L, -3);
+    // pop table and value
+    lua_pop(L, 2);
+}
 
-	} // detail
+} // detail
 
 #define LUABIND_DECLARE_OPERATOR(MACRO)\
 	MACRO(object, object) \
@@ -198,8 +198,8 @@ LUABIND_RAW_PROXY_ASSIGNMENT_OPERATOR(proxy_array_object)
 	MACRO(detail::proxy_raw_object, detail::proxy_raw_object)
 
 
-		// *****************************
-		// OPERATOR ==
+// *****************************
+// OPERATOR ==
 
 
 
@@ -217,13 +217,13 @@ LUABIND_RAW_PROXY_ASSIGNMENT_OPERATOR(proxy_array_object)
 		return result; \
 	}
 
-	LUABIND_DECLARE_OPERATOR(LUABIND_EQUALITY_OPERATOR)
+LUABIND_DECLARE_OPERATOR(LUABIND_EQUALITY_OPERATOR)
 
 #undef LUABIND_EQUALITY_OPERATOR
 
 
-	// *****************************
-	// OPERATOR =
+// *****************************
+// OPERATOR =
 
 #define LUABIND_ASSIGNMENT_OPERATOR(rhs)\
 	object& object::operator=(const rhs& o) const \
@@ -234,15 +234,15 @@ LUABIND_RAW_PROXY_ASSIGNMENT_OPERATOR(proxy_array_object)
 		return const_cast<luabind::object&>(*this); \
 	}
 
-	LUABIND_ASSIGNMENT_OPERATOR(object)
-	LUABIND_ASSIGNMENT_OPERATOR(proxy_object)
-	LUABIND_ASSIGNMENT_OPERATOR(proxy_array_object)
-	LUABIND_ASSIGNMENT_OPERATOR(proxy_raw_object)
+LUABIND_ASSIGNMENT_OPERATOR(object)
+LUABIND_ASSIGNMENT_OPERATOR(proxy_object)
+LUABIND_ASSIGNMENT_OPERATOR(proxy_array_object)
+LUABIND_ASSIGNMENT_OPERATOR(proxy_raw_object)
 
 
-	
-		// *****************************
-		// OPERATOR ==
+
+// *****************************
+// OPERATOR ==
 
 
 
@@ -260,7 +260,7 @@ LUABIND_RAW_PROXY_ASSIGNMENT_OPERATOR(proxy_array_object)
 		return result; \
 	}
 
-	LUABIND_DECLARE_OPERATOR(LUABIND_LESSTHAN_OPERATOR)
+LUABIND_DECLARE_OPERATOR(LUABIND_LESSTHAN_OPERATOR)
 
 #undef LUABIND_LESSTHAN_OPERATOR
 
@@ -279,7 +279,7 @@ LUABIND_RAW_PROXY_ASSIGNMENT_OPERATOR(proxy_array_object)
 		return result1 || result2; \
 	}
 
-	LUABIND_DECLARE_OPERATOR(LUABIND_LESSOREQUAL_OPERATOR)
+LUABIND_DECLARE_OPERATOR(LUABIND_LESSOREQUAL_OPERATOR)
 
 #undef LUABIND_LESSOREQUAL_OPERATOR
 

@@ -1,4 +1,4 @@
-#ifndef ROCKETLAUNCHER_H
+﻿#ifndef ROCKETLAUNCHER_H
 #define ROCKETLAUNCHER_H
 #pragma warning (disable:4786)
 //-----------------------------------------------------------------------------
@@ -19,18 +19,18 @@ class RocketLauncher : public Raven_Weapon
 {
 private:
 
-  void     InitializeFuzzyModule();
+    void     InitializeFuzzyModule();
 
 public:
 
-  RocketLauncher(Raven_Bot* owner);
+    RocketLauncher(Raven_Bot* owner);
 
 
-  void Render();
+    void Render();
 
-  void ShootAt(Vector2D pos);
+    void ShootAt(Vector2D pos);
 
-  double GetDesirability(double DistToTarget);
+    double GetDesirability(double DistToTarget);
 };
 
 

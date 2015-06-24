@@ -1,4 +1,4 @@
-#include "MinersWifeOwnedStates.h"
+﻿#include "MinersWifeOwnedStates.h"
 #include "MinersWife.h"
 #include "Locations.h"
 #include "EntityNames.h"
@@ -15,28 +15,28 @@ extern std::ofstream os;
 //-----------------------------------------------------------------------Global state
 WifesGlobalState* WifesGlobalState::Instance()
 {
-  static WifesGlobalState instance;
+    static WifesGlobalState instance;
 
-  return &instance;
+    return &instance;
 }
 
 
 void WifesGlobalState::Execute(MinersWife* wife)
 {
-  //1 in 10 chance of needing the bathroom
-  if (RandFloat() < 0.1)
-  {
-    wife->GetFSM()->ChangeState(VisitBathroom::Instance());
-  }
+    //1 in 10 chance of needing the bathroom
+    if (RandFloat() < 0.1)
+    {
+        wife->GetFSM()->ChangeState(VisitBathroom::Instance());
+    }
 }
 
 //---------------------------------------DoHouseWork
 
 DoHouseWork* DoHouseWork::Instance()
 {
-  static DoHouseWork instance;
+    static DoHouseWork instance;
 
-  return &instance;
+    return &instance;
 }
 
 
@@ -47,26 +47,26 @@ void DoHouseWork::Enter(MinersWife* wife)
 
 void DoHouseWork::Execute(MinersWife* wife)
 {
-  switch(RandInt(0,2))
-  {
-  case 0:
+    switch(RandInt(0,2))
+    {
+    case 0:
 
-    cout << "\n" << GetNameOfEntity(wife->ID()) << ": Moppin' the floor";
+        cout << "\n" << GetNameOfEntity(wife->ID()) << ": Moppin' the floor";
 
-    break;
+        break;
 
-  case 1:
+    case 1:
 
-    cout << "\n" << GetNameOfEntity(wife->ID()) << ": Washin' the dishes";
+        cout << "\n" << GetNameOfEntity(wife->ID()) << ": Washin' the dishes";
 
-    break;
+        break;
 
-  case 2:
+    case 2:
 
-    cout << "\n" << GetNameOfEntity(wife->ID()) << ": Makin' the bed";
+        cout << "\n" << GetNameOfEntity(wife->ID()) << ": Makin' the bed";
 
-    break;
-  }
+        break;
+    }
 }
 
 void DoHouseWork::Exit(MinersWife* wife)
@@ -78,26 +78,26 @@ void DoHouseWork::Exit(MinersWife* wife)
 //------------------------------------------------------------------------VisitBathroom
 VisitBathroom* VisitBathroom::Instance()
 {
-  static VisitBathroom instance;
+    static VisitBathroom instance;
 
-  return &instance;
+    return &instance;
 }
 
 
 void VisitBathroom::Enter(MinersWife* wife)
-{  
-  cout << "\n" << GetNameOfEntity(wife->ID()) << ": Walkin' to the can. Need to powda mah pretty li'lle nose"; 
+{
+    cout << "\n" << GetNameOfEntity(wife->ID()) << ": Walkin' to the can. Need to powda mah pretty li'lle nose";
 }
 
 
 void VisitBathroom::Execute(MinersWife* wife)
 {
-  cout << "\n" << GetNameOfEntity(wife->ID()) << ": Ahhhhhh! Sweet relief!";
+    cout << "\n" << GetNameOfEntity(wife->ID()) << ": Ahhhhhh! Sweet relief!";
 
-  wife->GetFSM()->RevertToPreviousState();
+    wife->GetFSM()->RevertToPreviousState();
 }
 
 void VisitBathroom::Exit(MinersWife* wife)
 {
-  cout << "\n" << GetNameOfEntity(wife->ID()) << ": Leavin' the Jon";
+    cout << "\n" << GetNameOfEntity(wife->ID()) << ": Leavin' the Jon";
 }

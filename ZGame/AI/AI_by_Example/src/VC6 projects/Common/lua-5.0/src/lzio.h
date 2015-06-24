@@ -1,4 +1,4 @@
-/*
+﻿/*
 ** $Id: lzio.h,v 1.15 2003/03/20 16:00:56 roberto Exp $
 ** Buffered streams
 ** See Copyright Notice in lua.h
@@ -28,9 +28,10 @@ int luaZ_lookahead (ZIO *z);
 
 
 
-typedef struct Mbuffer {
-  char *buffer;
-  size_t buffsize;
+typedef struct Mbuffer
+{
+    char *buffer;
+    size_t buffsize;
 } Mbuffer;
 
 
@@ -50,12 +51,13 @@ char *luaZ_openspace (lua_State *L, Mbuffer *buff, size_t n);
 
 /* --------- Private Part ------------------ */
 
-struct Zio {
-  size_t n;			/* bytes still unread */
-  const char *p;		/* current position in buffer */
-  lua_Chunkreader reader;
-  void* data;			/* additional data */
-  const char *name;
+struct Zio
+{
+    size_t n;			/* bytes still unread */
+    const char *p;		/* current position in buffer */
+    lua_Chunkreader reader;
+    void* data;			/* additional data */
+    const char *name;
 };
 
 

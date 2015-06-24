@@ -1,4 +1,4 @@
-// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -36,46 +36,67 @@
 #include <luabind/detail/signature_match.hpp>
 #include <luabind/detail/overload_rep_base.hpp>
 
-namespace luabind { namespace detail
+namespace luabind
+{
+namespace detail
 {
 
 
-	struct construct_rep
-	{
-		struct overload_t: public overload_rep_base
-		{
-			overload_t(): wrapped_construct_fun(0) 
-			{
-			}
+struct construct_rep
+{
+    struct overload_t: public overload_rep_base
+    {
+        overload_t(): wrapped_construct_fun(0)
+        {
+        }
 
-			typedef void*(*construct_ptr)(lua_State*);
-			typedef void*(*wrapped_construct_ptr)(lua_State*, int);
-			typedef void(*get_signature_ptr)(lua_State*, std::string&);
+        typedef void*(*construct_ptr)(lua_State*);
+        typedef void*(*wrapped_construct_ptr)(lua_State*, int);
+        typedef void(*get_signature_ptr)(lua_State*, std::string&);
 
-			inline void set_constructor(construct_ptr f) { construct_fun = f; }
-			inline void set_wrapped_constructor(wrapped_construct_ptr f) { wrapped_construct_fun = f; }
+        inline void set_constructor(construct_ptr f)
+        {
+            construct_fun = f;
+        }
+        inline void set_wrapped_constructor(wrapped_construct_ptr f)
+        {
+            wrapped_construct_fun = f;
+        }
 
-			inline void* construct(lua_State* L) { return construct_fun(L); } 
-			inline void* construct_wrapped(lua_State* L, int ref) { return wrapped_construct_fun(L, ref); } 
-			inline bool has_wrapped_construct() { return wrapped_construct_fun != 0; }
+        inline void* construct(lua_State* L)
+        {
+            return construct_fun(L);
+        }
+        inline void* construct_wrapped(lua_State* L, int ref)
+        {
+            return wrapped_construct_fun(L, ref);
+        }
+        inline bool has_wrapped_construct()
+        {
+            return wrapped_construct_fun != 0;
+        }
 
-			inline void set_arity(int arity) { m_arity = arity; }
+        inline void set_arity(int arity)
+        {
+            m_arity = arity;
+        }
 
-		private:
+    private:
 
-			construct_ptr construct_fun;
-			wrapped_construct_ptr wrapped_construct_fun;
+        construct_ptr construct_fun;
+        wrapped_construct_ptr wrapped_construct_fun;
 
-		};
+    };
 
-		void swap(construct_rep& x)
-		{
-			std::swap(x.overloads, overloads);
-		}
+    void swap(construct_rep& x)
+    {
+        std::swap(x.overloads, overloads);
+    }
 
-		std::vector<overload_t> overloads;
-	};
+    std::vector<overload_t> overloads;
+};
 
-}}
+}
+}
 
 #endif // LUABIND_CONSTRUCT_REP_HPP_INCLUDED

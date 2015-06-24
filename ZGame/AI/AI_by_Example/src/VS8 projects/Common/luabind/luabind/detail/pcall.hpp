@@ -1,4 +1,4 @@
-// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2003 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -27,10 +27,13 @@
 
 struct lua_State;
 
-namespace luabind { namespace detail
+namespace luabind
 {
-	LUABIND_API int pcall(lua_State *L, int nargs, int nresults);
-	LUABIND_API int resume_impl(lua_State *L, int nargs, int nresults);
-}}
+namespace detail
+{
+LUABIND_API int pcall(lua_State *L, int nargs, int nresults);
+LUABIND_API int resume_impl(lua_State *L, int nargs, int nresults);
+}
+}
 
 #endif

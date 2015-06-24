@@ -1,4 +1,4 @@
-#ifndef TYPE_TO_STRING_H
+﻿#ifndef TYPE_TO_STRING_H
 #define TYPE_TO_STRING_H
 //-----------------------------------------------------------------------------
 //
@@ -16,7 +16,7 @@ class TypeToString
 {
 public:
 
-  virtual std::string Convert(int enumeration)=0;
+    virtual std::string Convert(int enumeration)=0;
 };
 
 #endif

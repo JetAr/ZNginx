@@ -1,4 +1,4 @@
-// Copyright (c) 2005 Daniel Wallin
+﻿// Copyright (c) 2005 Daniel Wallin
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,8 @@
 
 # include <boost/get_pointer.hpp>
 
-namespace luabind {
+namespace luabind
+{
 
 using boost::get_pointer;
 

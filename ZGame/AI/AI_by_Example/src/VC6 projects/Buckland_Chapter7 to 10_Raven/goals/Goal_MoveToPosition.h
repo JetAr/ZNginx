@@ -1,4 +1,4 @@
-#ifndef GOAL_MOVE_POS_H
+﻿#ifndef GOAL_MOVE_POS_H
 #define GOAL_MOVE_POS_H
 #pragma warning (disable:4786)
 
@@ -13,28 +13,28 @@ class Goal_MoveToPosition : public Goal_Composite<Raven_Bot>
 {
 private:
 
-  //the position the bot wants to reach
-  Vector2D m_vDestination;
+    //the position the bot wants to reach
+    Vector2D m_vDestination;
 
 public:
 
-  Goal_MoveToPosition(Raven_Bot* pBot,
-                      Vector2D   pos):
-  
-            Goal_Composite<Raven_Bot>(pBot,
-                                      goal_move_to_position),
-            m_vDestination(pos)
-  {}
+    Goal_MoveToPosition(Raven_Bot* pBot,
+                        Vector2D   pos):
 
- //the usual suspects
-  void Activate();
-  int  Process();
-  void Terminate(){}
+        Goal_Composite<Raven_Bot>(pBot,
+                                  goal_move_to_position),
+        m_vDestination(pos)
+    {}
 
-  //this goal is able to accept messages
-  bool HandleMessage(const Telegram& msg);
+//the usual suspects
+    void Activate();
+    int  Process();
+    void Terminate() {}
 
-  void Render();
+    //this goal is able to accept messages
+    bool HandleMessage(const Telegram& msg);
+
+    void Render();
 };
 
 

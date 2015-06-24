@@ -1,18 +1,18 @@
-#include "misc/iniFileLoaderBase.h"
+﻿#include "misc/iniFileLoaderBase.h"
 using std::string;
 
 
 //removes any commenting from a line of text
 void RemoveCommentingFromLine(string& line)
 {
-   //search for any comment and remove
-   string::size_type idx = line.find('//');
+    //search for any comment and remove
+    string::size_type idx = line.find('//');
 
-   if (idx != string::npos)
-   {
-     //cut out the comment
-     line = line.substr(0, idx);
-   }
+    if (idx != string::npos)
+    {
+        //cut out the comment
+        line = line.substr(0, idx);
+    }
 }
 //----------------------- GetNextParameter ------------------------------------
 //
@@ -21,24 +21,24 @@ void RemoveCommentingFromLine(string& line)
 //-----------------------------------------------------------------------------
 string iniFileLoaderBase::GetNextParameter()
 {
- 
-  //this will be the string that holds the bext parameter
-  std::string line;
-  
-  std::getline(file, line);
-   
-  RemoveCommentingFromLine(line);
 
-  //if the line is of zero length, get the next line from
-  //the file
-  if (line.length() == 0)
-  {
-    return GetNextParameter();
-  }
+    //this will be the string that holds the bext parameter
+    std::string line;
 
-  GetParameterValueAsString(line);  
-    
-  return line;
+    std::getline(file, line);
+
+    RemoveCommentingFromLine(line);
+
+    //if the line is of zero length, get the next line from
+    //the file
+    if (line.length() == 0)
+    {
+        return GetNextParameter();
+    }
+
+    GetParameterValueAsString(line);
+
+    return line;
 }
 
 
@@ -49,42 +49,42 @@ string iniFileLoaderBase::GetNextParameter()
 //-----------------------------------------------------------------------------
 void iniFileLoaderBase::GetParameterValueAsString(string& line)
 {
-  //find beginning of parameter description
-  string::size_type begIdx;
-  string::size_type endIdx;
+    //find beginning of parameter description
+    string::size_type begIdx;
+    string::size_type endIdx;
 
-  //define some delimiters
-  const string delims(" \;=,");
+    //define some delimiters
+    const string delims(" \;=,");
 
-  begIdx = line.find_first_not_of(delims);
+    begIdx = line.find_first_not_of(delims);
 
-  //find the end of the parameter description
-  if (begIdx != string::npos)
-  {
-    endIdx = line.find_first_of(delims, begIdx);
-
-    //end of word is the end of the line
-    if (endIdx == string::npos)
+    //find the end of the parameter description
+    if (begIdx != string::npos)
     {
-      endIdx = line.length();
+        endIdx = line.find_first_of(delims, begIdx);
+
+        //end of word is the end of the line
+        if (endIdx == string::npos)
+        {
+            endIdx = line.length();
+        }
     }
-  }   
 
-  //find the beginning of the parameter value
-  begIdx = line.find_first_not_of(delims, endIdx);
-  //find the end of the parameter value
-  if(begIdx != string::npos)
-  {
-    endIdx = line.find_first_of(delims, begIdx);
-
-    //end of word is the end of the line
-    if (endIdx == string::npos)
+    //find the beginning of the parameter value
+    begIdx = line.find_first_not_of(delims, endIdx);
+    //find the end of the parameter value
+    if(begIdx != string::npos)
     {
-      endIdx = line.length();
+        endIdx = line.find_first_of(delims, begIdx);
+
+        //end of word is the end of the line
+        if (endIdx == string::npos)
+        {
+            endIdx = line.length();
+        }
     }
-  }
-    
-  line = line.substr(begIdx, endIdx);
+
+    line = line.substr(begIdx, endIdx);
 }
 
 //--------------------------- GetNextToken ------------------------------------
@@ -92,47 +92,50 @@ void iniFileLoaderBase::GetParameterValueAsString(string& line)
 //  ignores any commenting and gets the next string
 //-----------------------------------------------------------------------------
 std::string iniFileLoaderBase::GetNextToken()
-{ 
-  //strip the line of any commenting
-  while (CurrentLine.length() == 0)
-  {
-    std::getline(file, CurrentLine);
-   
-    RemoveCommentingFromLine(CurrentLine);
-  }
-
-   //find beginning of parameter description
-  string::size_type begIdx; 
-  string::size_type endIdx;
-
-  //define some delimiters
-  const string delims(" \;=,");
-
-  begIdx = CurrentLine.find_first_not_of(delims);
-
-  //find the end of the parameter description
-  if (begIdx != string::npos)
-  {
-    endIdx = CurrentLine.find_first_of(delims, begIdx);
-
-    //end of word is the end of the line
-    if (endIdx == string::npos)
+{
+    //strip the line of any commenting
+    while (CurrentLine.length() == 0)
     {
-      endIdx = CurrentLine.length();
+        std::getline(file, CurrentLine);
+
+        RemoveCommentingFromLine(CurrentLine);
     }
-  }
-    
-  string s = CurrentLine.substr(begIdx, endIdx);
 
-  if (endIdx != CurrentLine.length())
-  {
-    //strip the token from the line
-    CurrentLine = CurrentLine.substr(endIdx+1, CurrentLine.length());
-  }
+    //find beginning of parameter description
+    string::size_type begIdx;
+    string::size_type endIdx;
 
-  else { CurrentLine = "";}
+    //define some delimiters
+    const string delims(" \;=,");
 
-  return s;
-  
+    begIdx = CurrentLine.find_first_not_of(delims);
+
+    //find the end of the parameter description
+    if (begIdx != string::npos)
+    {
+        endIdx = CurrentLine.find_first_of(delims, begIdx);
+
+        //end of word is the end of the line
+        if (endIdx == string::npos)
+        {
+            endIdx = CurrentLine.length();
+        }
+    }
+
+    string s = CurrentLine.substr(begIdx, endIdx);
+
+    if (endIdx != CurrentLine.length())
+    {
+        //strip the token from the line
+        CurrentLine = CurrentLine.substr(endIdx+1, CurrentLine.length());
+    }
+
+    else
+    {
+        CurrentLine = "";
+    }
+
+    return s;
+
 }
 

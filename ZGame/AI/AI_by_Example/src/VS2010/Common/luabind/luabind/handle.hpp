@@ -1,4 +1,4 @@
-// Copyright (c) 2005 Daniel Wallin and Arvid Norberg
+﻿// Copyright (c) 2005 Daniel Wallin and Arvid Norberg
 
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -27,11 +27,12 @@
 #include <luabind/value_wrapper.hpp>
 #include <luabind/detail/ref.hpp>
 
-namespace luabind {
+namespace luabind
+{
 
 // A reference to a Lua value. Represents an entry in the
 // registry table.
-class handle 
+class handle
 {
 public:
     handle();
@@ -54,13 +55,13 @@ private:
 };
 
 inline handle::handle()
-  : m_interpreter(0)
-  , m_index(LUA_NOREF)
+    : m_interpreter(0)
+    , m_index(LUA_NOREF)
 {}
 
 inline handle::handle(handle const& other)
-  : m_interpreter(other.m_interpreter)
-  , m_index(LUA_NOREF)
+    : m_interpreter(other.m_interpreter)
+    , m_index(LUA_NOREF)
 {
     if (m_interpreter == 0) return;
     detail::getref(m_interpreter, other.m_index);
@@ -68,8 +69,8 @@ inline handle::handle(handle const& other)
 }
 
 inline handle::handle(lua_State* interpreter, int stack_index)
-  : m_interpreter(interpreter)
-  , m_index(LUA_NOREF)
+    : m_interpreter(interpreter)
+    , m_index(LUA_NOREF)
 {
     lua_pushvalue(interpreter, stack_index);
     m_index = detail::ref(interpreter);
@@ -118,7 +119,7 @@ struct value_wrapper_traits<handle>
     {
         return value.interpreter();
     }
-    
+
     static void unwrap(lua_State* interpreter, handle const& value)
     {
         value.push(interpreter);
