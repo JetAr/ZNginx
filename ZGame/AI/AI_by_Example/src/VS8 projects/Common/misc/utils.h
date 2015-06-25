@@ -32,19 +32,21 @@ const double   HalfPi    = Pi / 2;
 const double   QuarterPi = Pi / 4;
 
 //returns true if the value is a NaN
+// zitem 不明白
 template <typename T>
 inline bool isNaN(T val)
 {
     return val != val;
 }
 
+//z 角度转换为弧度
 inline double DegsToRads(double degs)
 {
     return TwoPi * (degs/360.0);
 }
 
 
-
+//z 值是否等于 0.0 
 //returns true if the parameter is equal to zero
 inline bool IsZero(double val)
 {
@@ -60,7 +62,7 @@ inline bool InRange(double start, double end, double val)
         if ( (val > start) && (val < end) ) return true;
         else return false;
     }
-
+    //z 可能起始位置和结束位置是颠倒的。
     else
     {
         if ( (val < start) && (val > end) ) return true;
@@ -93,6 +95,7 @@ inline double RandFloat()
     return ((rand())/(RAND_MAX+1.0));
 }
 
+//z 返回值，在x和y之间。
 inline double RandInRange(double x, double y)
 {
     return x + RandFloat()*(y-x);

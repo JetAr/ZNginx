@@ -1,5 +1,0 @@
-rect 	rect.html	10,70,90,90		# this is a rectangle
-circle  circ.html	30,50,45,50		# this is a circle
-poly    tri.html 	55,65,73,41,90,65	# this is a triangle
-point   left.html	30,18			# this is the left point
-point   right.html 	73,18			# this is the right point
