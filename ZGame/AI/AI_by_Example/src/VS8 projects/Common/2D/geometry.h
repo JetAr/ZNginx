@@ -519,6 +519,7 @@ inline double TwoCirclesIntersectionArea(double x1, double y1, double r1,
 //
 //  given the radius, calculates the area of a circle
 //-----------------------------------------------------------------------
+//z 圆面积
 inline double CircleArea(double radius)
 {
     return pi * radius * radius;
@@ -529,6 +530,7 @@ inline double CircleArea(double radius)
 //
 //  returns true if the point p is within the radius of the given circle
 //------------------------------------------------------------------------
+//z 点是否在圆内
 inline bool PointInCircle(Vector2D Pos,
                           double    radius,
                           Vector2D p)
