@@ -15992,3 +15992,20 @@ Changes not staged for commit:
 	deleted:    wget153/wget153_2005.sln
 	deleted:    wget153/wget153_2005.vcproj
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+"del_zsocket_150625_v01".2015/06/25.15_56_01.52.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	deleted:    "Doc/\346\200\216\346\240\267\345\255\246\344\271\240 HTTP \345\215\217\350\256\256.mht"
+	deleted:    "Doc/\350\266\205\346\226\207\346\234\254\345\202\263\350\274\270\345\215\224\350\255\260-HTTP 1.1.mht"
+
