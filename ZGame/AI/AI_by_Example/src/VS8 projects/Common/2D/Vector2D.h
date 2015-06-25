@@ -20,11 +20,13 @@ struct Vector2D
 {
     double x;
     double y;
-
+    
+    //z ctor
     Vector2D():x(0.0),y(0.0) {}
     Vector2D(double a, double b):x(a),y(b) {}
 
     //sets x and y to zero
+    //z 置零
     void Zero()
     {
         x=0.0;
@@ -32,41 +34,53 @@ struct Vector2D
     }
 
     //returns true if both x and y are zero
+    //z 是否在原点（零值）
     bool isZero()const
     {
         return (x*x + y*y) < MinDouble;
     }
 
     //returns the length of the vector
+    //z 返回矢量长度
     inline double    Length()const;
 
     //returns the squared length of the vector (thereby avoiding the sqrt)
+    //z 返回矢量长度的平方
     inline double    LengthSq()const;
 
+    //z 归一化
     inline void      Normalize();
-
+    //z 点积
     inline double    Dot(const Vector2D& v2)const;
 
+    //z 判断方向，是顺时针还是逆时针
+    //z x方向向右，y方向向下
     //returns positive if v2 is clockwise of this vector,
     //negative if anticlockwise (assuming the Y axis is pointing down,
     //X axis to right like a Window app)
     inline int       Sign(const Vector2D& v2)const;
-
+    
+    //z perpendicular 垂直；成直角
     //returns the vector that is perpendicular to this one.
     inline Vector2D  Perp()const;
 
     //adjusts x and y so that the length of the vector does not exceed max
+    //z 调整 x 和 y 以使得矢量的长度不超过 max 
     inline void      Truncate(double max);
 
+    //z 求两个矢量的距离
     //returns the distance between this vector and th one passed as a parameter
     inline double    Distance(const Vector2D &v2)const;
 
     //squared version of above.
+    //z 两个矢量距离的平方
     inline double    DistanceSq(const Vector2D &v2)const;
 
+    //z 反射
     inline void      Reflect(const Vector2D& norm);
 
     //returns the vector that is the reverse of this vector
+    //z 取反
     inline Vector2D  GetReverse()const;
 
 
@@ -87,6 +101,7 @@ struct Vector2D
         return *this;
     }
 
+    //z 数乘
     const Vector2D& operator*=(const double& rhs)
     {
         x *= rhs;
@@ -150,6 +165,7 @@ inline double Vector2D::LengthSq()const
 //------------------------- Vec2DDot -------------------------------------
 //
 //  calculates the dot product
+//z 点积
 //------------------------------------------------------------------------
 inline double Vector2D::Dot(const Vector2D &v2)const
 {
@@ -163,6 +179,8 @@ inline double Vector2D::Dot(const Vector2D &v2)const
 //------------------------------------------------------------------------
 enum {clockwise = 1, anticlockwise = -1};
 
+//z 看起来是在比较矢量斜率
+//z v2相对this是顺时针还是逆时针
 inline int Vector2D::Sign(const Vector2D& v2)const
 {
     if (y*v2.x > x*v2.y)
@@ -179,6 +197,9 @@ inline int Vector2D::Sign(const Vector2D& v2)const
 //
 //  Returns a vector perpendicular to this vector
 //------------------------------------------------------------------------
+//z 2015-06-25 16:53:56 L.189'25564 T1817402301.K
+//z 2维平面上与x，y垂直的线有俩，(y,-x) 以及 (-y,x) ，两个。
+//z 这里使用了其中一个
 inline Vector2D Vector2D::Perp()const
 {
     return Vector2D(-y, x);
@@ -187,6 +208,8 @@ inline Vector2D Vector2D::Perp()const
 //------------------------------ Distance --------------------------------
 //
 //  calculates the euclidean distance between two vectors
+//z 2015-06-25 16:54:47 L.189'25513 T1817438206.K
+//z 计算两个矢量的欧拉距离
 //------------------------------------------------------------------------
 inline double Vector2D::Distance(const Vector2D &v2)const
 {
@@ -215,10 +238,13 @@ inline double Vector2D::DistanceSq(const Vector2D &v2)const
 //------------------------------------------------------------------------
 inline void Vector2D::Truncate(double max)
 {
+    //z 如果长度大于max
     if (this->Length() > max)
     {
+        //z 首先归一化
         this->Normalize();
 
+        //z 而后乘以max，使得长度最多为max
         *this *= max;
     }
 }
@@ -236,6 +262,7 @@ inline void Vector2D::Reflect(const Vector2D& norm)
 //----------------------- GetReverse ----------------------------------------
 //
 //  returns the vector that is the reverse of this vector
+//z 对矢量取反，由(x,y)变成(-x,－y)。
 //------------------------------------------------------------------------
 inline Vector2D Vector2D::GetReverse()const
 {
@@ -246,11 +273,14 @@ inline Vector2D Vector2D::GetReverse()const
 //------------------------- Normalize ------------------------------------
 //
 //  normalizes a 2D Vector
+//z 对矢量进行归一化
 //------------------------------------------------------------------------
 inline void Vector2D::Normalize()
 {
+    //z 先求矢量长度
     double vector_length = this->Length();
-
+    
+    //z 在大于epsilon的情况下
     if (vector_length > std::numeric_limits<double>::epsilon())
     {
         this->x /= vector_length;

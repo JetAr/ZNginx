@@ -115,9 +115,10 @@ inline double RandomClamped()
     return RandFloat() - RandFloat();
 }
 
-
+//z 高斯正态分布
 //returns a random number with a normal distribution. See method at
 //http://www.taygeta.com/random/gaussian.html
+//z http://www.design.caltech.edu/erik/Misc/Gaussian.html
 inline double RandGaussian(double mean = 0.0, double standard_deviation = 1.0)
 {
     double x1, x2, w, y1;
@@ -178,18 +179,19 @@ inline T MinOf(const T& a, const T& b)
     return b;
 }
 
-
 //clamps the first argument between the second two
 template <class T, class U, class V>
 inline void Clamp(T& arg, const U& minVal, const V& maxVal)
 {
     assert ( ((double)minVal < (double)maxVal) && "<Clamp>MaxVal < MinVal!");
 
+    //z 如果 arg 小于最小值，那么取最小值
     if (arg < (T)minVal)
     {
         arg = (T)minVal;
     }
 
+    //z 如果 arg 大于最大值，那么取最大值
     if (arg > (T)maxVal)
     {
         arg = (T)maxVal;
@@ -203,6 +205,7 @@ inline int Rounded(double val)
     int    integral = (int)val;
     double mantissa = val - integral;
 
+    //z 四舍五入
     if (mantissa < 0.5)
     {
         return integral;
@@ -253,7 +256,7 @@ inline bool isEqual(double a, double b)
     return false;
 }
 
-
+//z 求向量平均值
 template <class T>
 inline double Average(const std::vector<T>& v)
 {
@@ -272,7 +275,8 @@ inline double StandardDeviation(const std::vector<double>& v)
 {
     double sd      = 0.0;
     double average = Average(v);
-
+    
+    //z 标准方差？
     for (unsigned int i=0; i<v.size(); ++i)
     {
         sd += (v[i] - average) * (v[i] - average);
@@ -282,7 +286,6 @@ inline double StandardDeviation(const std::vector<double>& v)
 
     return sqrt(sd);
 }
-
 
 template <class container>
 inline void DeleteSTLContainer(container& c)

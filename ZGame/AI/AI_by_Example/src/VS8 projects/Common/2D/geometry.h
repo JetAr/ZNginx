@@ -17,9 +17,8 @@
 #include <math.h>
 #include <vector>
 
-
-
-
+//z plane 平面， ray 射线？
+//z 如果射线是平行的，返回负值
 //given a plane and a ray this function determins how far along the ray
 //an interestion occurs. Returns negative if the ray is parallel
 inline double DistanceToRayPlaneIntersection(Vector2D RayOrigin,
