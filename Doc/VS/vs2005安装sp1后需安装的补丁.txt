@@ -1,0 +1,7 @@
+Microsoft Visual Studio 2005 Service Pack 1 的安全更新 (KB971090)
+用于智能设备的 Microsoft Visual Studio 2005 Service Pack 1 ATL 安全更新 (KB973673)
+Microsoft Visual Studio 2005 Service Pack 1 XML 编辑器的安全更新 (KB2251481)
+Microsoft Visual Studio 2005 Service Pack 1 安全更新 (KB2538218)
+Microsoft Visual C++ 2005 Service Pack 1 Redistributable Package 的安全更新 (KB2538242)
+Microsoft Visual Studio 2005 Service Pack 1 安全更新 (KB2548826)
+Microsoft Visual Studio 2005 Service Pack 1 更新 (KB2938803)

@@ -34,3 +34,14 @@ Changes to be committed:
 	modified:   History.txt
 	modified:   ZGame/AI/AI_by_Example/src/VS8 projects/Common/2D/geometry.h
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+vs2005_patch.2015-06-26.08_19_25.71.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	new file:   "Doc/VS/vs2005\345\256\211\350\243\205sp1\345\220\216\351\234\200\345\256\211\350\243\205\347\232\204\350\241\245\344\270\201.txt"
+	modified:   History.txt
+
