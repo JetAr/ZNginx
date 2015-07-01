@@ -11,11 +11,11 @@
 
 #include "SearchEngine.h"
 
-class CMinimaxEngine : public CSearchEngine  
+class CMinimaxEngine : public CSearchEngine
 {
 public:
-	CMinimaxEngine();
-	virtual ~CMinimaxEngine();
+    CMinimaxEngine();
+    virtual ~CMinimaxEngine();
 
 };
 

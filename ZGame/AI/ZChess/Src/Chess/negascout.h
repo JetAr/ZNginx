@@ -14,17 +14,17 @@
 #include "HistoryHeuristic.h"
 
 class CNegaScout : public CSearchEngine,
-                   public CTranspositionTable,
-				   public CHistoryHeuristic
+    public CTranspositionTable,
+    public CHistoryHeuristic
 {
 public:
-	CNegaScout();
-	virtual ~CNegaScout();
+    CNegaScout();
+    virtual ~CNegaScout();
 
-	virtual void SearchAGoodMove(BYTE position[10][9]);
+    virtual void SearchAGoodMove(BYTE position[10][9]);
 
 protected:
-	int NegaScout(int depth, int alpha, int beta);
+    int NegaScout(int depth, int alpha, int beta);
 
 };
 

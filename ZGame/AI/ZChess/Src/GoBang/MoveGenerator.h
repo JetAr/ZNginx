@@ -12,23 +12,23 @@
 #include "HistoryHeuristic.h"
 #include "Eveluation.h"
 
-class CMoveGenerator  
+class CMoveGenerator
 {
 public:
-	CMoveGenerator();
-	virtual ~CMoveGenerator();
+    CMoveGenerator();
+    virtual ~CMoveGenerator();
 
 public:
-	int CreatePossibleMove(BYTE position[GRID_NUM ][GRID_NUM ],int nPly,int nSide);
+    int CreatePossibleMove(BYTE position[GRID_NUM ][GRID_NUM ],int nPly,int nSide);
 
 protected:
-	int AddMove(int nToX,int nToY,int nPly);
+    int AddMove(int nToX,int nToY,int nPly);
 
 public:
-	STONEMOVE m_MoveList[10][225];//用以记录走法的数组
+    STONEMOVE m_MoveList[10][225];//用以记录走法的数组
 
 protected:
-	int m_nMoveCount;//此变量用以记录走法的总数
+    int m_nMoveCount;//此变量用以记录走法的总数
 };
 
 #endif // !defined(AFX_MOVEGENERATOR_H__BB5A9F7B_7AFA_4FFF_B48D_86F04CB429FC__INCLUDED_)

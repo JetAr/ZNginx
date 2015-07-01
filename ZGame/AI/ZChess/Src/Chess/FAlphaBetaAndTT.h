@@ -15,10 +15,10 @@
 class CFAlphaBetaAndTT : public CFAlphaBetaEngine, public CTranspositionTable
 {
 public:
-	CFAlphaBetaAndTT();
-	virtual ~CFAlphaBetaAndTT();
+    CFAlphaBetaAndTT();
+    virtual ~CFAlphaBetaAndTT();
     virtual SearchAGoodMove(BYTE position[10][9]);
-	int FAlphaBeta(int depth, int alpha, int beta);
+    int FAlphaBeta(int depth, int alpha, int beta);
 
 };
 

@@ -16,15 +16,15 @@
 //用以表示棋子位置的结构
 typedef struct _stoneposition
 {
-	BYTE x;
-	BYTE y;
-}STONEPOS;
+    BYTE x;
+    BYTE y;
+} STONEPOS;
 
 //这个结构用以表示走法
 typedef struct _stonemove
 {
-	STONEPOS StonePos;//棋子位置
-	int Score;		  //走法的分数
-}STONEMOVE;
+    STONEPOS StonePos;//棋子位置
+    int Score;		  //走法的分数
+} STONEMOVE;
 
 #endif

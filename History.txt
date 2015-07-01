@@ -197,3 +197,76 @@ Changes to be committed:
 
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+zchess_astyle.2015/07/01.13_48_18.23.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	modified:   ZGame/AI/ZChess/Src/Chess/AlphaBetaAndTT.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/AlphaBetaAndTT.h
+	modified:   ZGame/AI/ZChess/Src/Chess/AlphaBetaEngine.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/AlphaBetaEngine.h
+	modified:   ZGame/AI/ZChess/Src/Chess/Alphabeta_HH.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/Alphabeta_HH.h
+	modified:   ZGame/AI/ZChess/Src/Chess/AspirationSearch.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/AspirationSearch.h
+	modified:   ZGame/AI/ZChess/Src/Chess/Eveluation.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/Eveluation.h
+	modified:   ZGame/AI/ZChess/Src/Chess/FAlphaBetaAndTT.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/FAlphaBetaAndTT.h
+	modified:   ZGame/AI/ZChess/Src/Chess/FAlphaBetaEngine.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/FAlphaBetaEngine.h
+	modified:   ZGame/AI/ZChess/Src/Chess/HistoryHeuristic.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/HistoryHeuristic.h
+	modified:   ZGame/AI/ZChess/Src/Chess/IDAlphabeta.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/IDAlphabeta.h
+	modified:   ZGame/AI/ZChess/Src/Chess/MTD_f.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/MTD_f.h
+	modified:   ZGame/AI/ZChess/Src/Chess/MinimaxEngine.h
+	modified:   ZGame/AI/ZChess/Src/Chess/MoveGenerator.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/MoveGenerator.h
+	modified:   ZGame/AI/ZChess/Src/Chess/NegaScout.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/NegaScout_TT_HH.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/NegaScout_TT_HH.h
+	modified:   ZGame/AI/ZChess/Src/Chess/NegamaxEngine.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/NegamaxEngine.h
+	modified:   ZGame/AI/ZChess/Src/Chess/NewGame.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/NewGame.h
+	modified:   ZGame/AI/ZChess/Src/Chess/PVS_Engine.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/PVS_Engine.h
+	modified:   ZGame/AI/ZChess/Src/Chess/SearchEngine.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/SearchEngine.h
+	modified:   ZGame/AI/ZChess/Src/Chess/TranspositionTable.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/TranspositionTable.h
+	modified:   ZGame/AI/ZChess/Src/Chess/chess.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/chess.h
+	modified:   ZGame/AI/ZChess/Src/Chess/chessDlg.cpp
+	modified:   ZGame/AI/ZChess/Src/Chess/chessDlg.h
+	modified:   ZGame/AI/ZChess/Src/Chess/define.h
+	modified:   ZGame/AI/ZChess/Src/Chess/negascout.h
+	modified:   ZGame/AI/ZChess/Src/Chess/resource.h
+	modified:   ZGame/AI/ZChess/Src/GoBang/Define.h
+	modified:   ZGame/AI/ZChess/Src/GoBang/Eveluation.cpp
+	modified:   ZGame/AI/ZChess/Src/GoBang/Eveluation.h
+	modified:   ZGame/AI/ZChess/Src/GoBang/HistoryHeuristic.cpp
+	modified:   ZGame/AI/ZChess/Src/GoBang/HistoryHeuristic.h
+	modified:   ZGame/AI/ZChess/Src/GoBang/MoveGenerator.cpp
+	modified:   ZGame/AI/ZChess/Src/GoBang/MoveGenerator.h
+	modified:   ZGame/AI/ZChess/Src/GoBang/NegaScout_TT_HH.cpp
+	modified:   ZGame/AI/ZChess/Src/GoBang/NegaScout_TT_HH.h
+	modified:   ZGame/AI/ZChess/Src/GoBang/NewGameDlg.cpp
+	modified:   ZGame/AI/ZChess/Src/GoBang/NewGameDlg.h
+	modified:   ZGame/AI/ZChess/Src/GoBang/Renju.cpp
+	modified:   ZGame/AI/ZChess/Src/GoBang/Renju.h
+	modified:   ZGame/AI/ZChess/Src/GoBang/RenjuDlg.cpp
+	modified:   ZGame/AI/ZChess/Src/GoBang/RenjuDlg.h
+	modified:   ZGame/AI/ZChess/Src/GoBang/SearchEngine.cpp
+	modified:   ZGame/AI/ZChess/Src/GoBang/SearchEngine.h
+	modified:   ZGame/AI/ZChess/Src/GoBang/TranspositionTable.cpp
+	modified:   ZGame/AI/ZChess/Src/GoBang/TranspositionTable.h
+	modified:   ZGame/AI/ZChess/Src/GoBang/resource.h
+
