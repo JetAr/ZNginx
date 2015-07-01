@@ -73,3 +73,104 @@ Changes to be committed:
 	modified:   Doc/K/T.2015.BugFree.cs
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+chess.2015/07/01.13_43_48.72.K.MzM.T@WS 
+On branch master
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	new file:   ZGame/AI/ZChess/Src/Chess/AlphaBetaAndTT.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/AlphaBetaAndTT.h
+	new file:   ZGame/AI/ZChess/Src/Chess/AlphaBetaEngine.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/AlphaBetaEngine.h
+	new file:   ZGame/AI/ZChess/Src/Chess/Alphabeta_HH.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/Alphabeta_HH.h
+	new file:   ZGame/AI/ZChess/Src/Chess/AspirationSearch.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/AspirationSearch.h
+	new file:   ZGame/AI/ZChess/Src/Chess/Eveluation.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/Eveluation.h
+	new file:   ZGame/AI/ZChess/Src/Chess/FAlphaBetaAndTT.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/FAlphaBetaAndTT.h
+	new file:   ZGame/AI/ZChess/Src/Chess/FAlphaBetaEngine.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/FAlphaBetaEngine.h
+	new file:   ZGame/AI/ZChess/Src/Chess/HistoryHeuristic.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/HistoryHeuristic.h
+	new file:   ZGame/AI/ZChess/Src/Chess/IDAlphabeta.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/IDAlphabeta.h
+	new file:   ZGame/AI/ZChess/Src/Chess/MTD_f.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/MTD_f.h
+	new file:   ZGame/AI/ZChess/Src/Chess/MinimaxEngine.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/MinimaxEngine.h
+	new file:   ZGame/AI/ZChess/Src/Chess/MoveGenerator.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/MoveGenerator.h
+	new file:   ZGame/AI/ZChess/Src/Chess/NegaScout.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/NegaScout_TT_HH.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/NegaScout_TT_HH.h
+	new file:   ZGame/AI/ZChess/Src/Chess/NegamaxEngine.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/NegamaxEngine.h
+	new file:   ZGame/AI/ZChess/Src/Chess/NewGame.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/NewGame.h
+	new file:   ZGame/AI/ZChess/Src/Chess/PVS_Engine.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/PVS_Engine.h
+	new file:   ZGame/AI/ZChess/Src/Chess/ReadMe.txt
+	new file:   ZGame/AI/ZChess/Src/Chess/SearchEngine.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/SearchEngine.h
+	new file:   ZGame/AI/ZChess/Src/Chess/StdAfx.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/StdAfx.h
+	new file:   ZGame/AI/ZChess/Src/Chess/Text1.txt
+	new file:   ZGame/AI/ZChess/Src/Chess/TranspositionTable.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/TranspositionTable.h
+	new file:   ZGame/AI/ZChess/Src/Chess/chess.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/chess.dsp
+	new file:   ZGame/AI/ZChess/Src/Chess/chess.dsw
+	new file:   ZGame/AI/ZChess/Src/Chess/chess.exe
+	new file:   ZGame/AI/ZChess/Src/Chess/chess.h
+	new file:   ZGame/AI/ZChess/Src/Chess/chess.rc
+	new file:   ZGame/AI/ZChess/Src/Chess/chessDlg.cpp
+	new file:   ZGame/AI/ZChess/Src/Chess/chessDlg.h
+	new file:   ZGame/AI/ZChess/Src/Chess/chess_2005.sln
+	new file:   ZGame/AI/ZChess/Src/Chess/chess_2005.vcproj
+	new file:   ZGame/AI/ZChess/Src/Chess/define.h
+	new file:   ZGame/AI/ZChess/Src/Chess/negascout.h
+	new file:   ZGame/AI/ZChess/Src/Chess/res/bitmap1.bmp
+	new file:   ZGame/AI/ZChess/Src/Chess/res/bmp00001.bmp
+	new file:   ZGame/AI/ZChess/Src/Chess/res/chess.ico
+	new file:   ZGame/AI/ZChess/Src/Chess/res/chess.rc2
+	new file:   ZGame/AI/ZChess/Src/Chess/res/vssver.scc
+	new file:   ZGame/AI/ZChess/Src/Chess/resource.h
+	new file:   ZGame/AI/ZChess/Src/GoBang/Define.h
+	new file:   ZGame/AI/ZChess/Src/GoBang/Eveluation.cpp
+	new file:   ZGame/AI/ZChess/Src/GoBang/Eveluation.h
+	new file:   ZGame/AI/ZChess/Src/GoBang/HistoryHeuristic.cpp
+	new file:   ZGame/AI/ZChess/Src/GoBang/HistoryHeuristic.h
+	new file:   ZGame/AI/ZChess/Src/GoBang/MoveGenerator.cpp
+	new file:   ZGame/AI/ZChess/Src/GoBang/MoveGenerator.h
+	new file:   ZGame/AI/ZChess/Src/GoBang/NegaScout_TT_HH.cpp
+	new file:   ZGame/AI/ZChess/Src/GoBang/NegaScout_TT_HH.h
+	new file:   ZGame/AI/ZChess/Src/GoBang/NewGameDlg.cpp
+	new file:   ZGame/AI/ZChess/Src/GoBang/NewGameDlg.h
+	new file:   ZGame/AI/ZChess/Src/GoBang/ReadMe.txt
+	new file:   ZGame/AI/ZChess/Src/GoBang/Renju.cpp
+	new file:   ZGame/AI/ZChess/Src/GoBang/Renju.dsp
+	new file:   ZGame/AI/ZChess/Src/GoBang/Renju.dsw
+	new file:   ZGame/AI/ZChess/Src/GoBang/Renju.exe
+	new file:   ZGame/AI/ZChess/Src/GoBang/Renju.h
+	new file:   ZGame/AI/ZChess/Src/GoBang/Renju.rc
+	new file:   ZGame/AI/ZChess/Src/GoBang/RenjuDlg.cpp
+	new file:   ZGame/AI/ZChess/Src/GoBang/RenjuDlg.h
+	new file:   ZGame/AI/ZChess/Src/GoBang/Renju_vs2005.sln
+	new file:   ZGame/AI/ZChess/Src/GoBang/Renju_vs2005.vcproj
+	new file:   ZGame/AI/ZChess/Src/GoBang/SearchEngine.cpp
+	new file:   ZGame/AI/ZChess/Src/GoBang/SearchEngine.h
+	new file:   ZGame/AI/ZChess/Src/GoBang/StdAfx.cpp
+	new file:   ZGame/AI/ZChess/Src/GoBang/StdAfx.h
+	new file:   ZGame/AI/ZChess/Src/GoBang/TranspositionTable.cpp
+	new file:   ZGame/AI/ZChess/Src/GoBang/TranspositionTable.h
+	new file:   ZGame/AI/ZChess/Src/GoBang/res/Renju.ico
+	new file:   ZGame/AI/ZChess/Src/GoBang/res/Renju.rc2
+	new file:   ZGame/AI/ZChess/Src/GoBang/resource.h
+
