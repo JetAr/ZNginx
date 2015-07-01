@@ -63,13 +63,18 @@ Changes not staged for commit:
 	deleted:    T.Http.cs
 
 +---------+---------+---------+---------+---------+---------+---------+---------+ 
+<<<<<<< HEAD
 game_book_ai_pro.2015/07/01.13_07_45.06.K.MzM.T@WS 
+=======
+d.2015/06/30.08_37_13.88.K.MzM.T@WS 
+>>>>>>> 375d53f814c82003091679940ce0cb9bec7a663b
 On branch master
 Your branch is up-to-date with 'origin/master'.
 
 Changes to be committed:
   (use "git reset HEAD <file>..." to unstage)
 
+<<<<<<< HEAD
 	modified:   Doc/K/T.2015.BugFree.cs
 	modified:   History.txt
 
@@ -173,4 +178,22 @@ Changes to be committed:
 	new file:   ZGame/AI/ZChess/Src/GoBang/res/Renju.ico
 	new file:   ZGame/AI/ZChess/Src/GoBang/res/Renju.rc2
 	new file:   ZGame/AI/ZChess/Src/GoBang/resource.h
+
+=======
+	modified:   History.txt
+
+>>>>>>> 375d53f814c82003091679940ce0cb9bec7a663b
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/07/01.13_44_39.93.K.MzM.T@WS 
+On branch master
+Your branch and 'origin/master' have diverged,
+and have 2 and 1 different commit each, respectively.
+  (use "git pull" to merge the remote branch into yours)
+
+All conflicts fixed but you are still merging.
+  (use "git commit" to conclude merge)
+
+Changes to be committed:
+
+	modified:   History.txt
 
