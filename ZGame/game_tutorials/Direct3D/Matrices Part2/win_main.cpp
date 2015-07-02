@@ -188,7 +188,6 @@ LRESULT CALLBACK WinProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
     switch(message)
     {
     case WM_KEYDOWN:
-
         // If the user presses ESC, close the app
         if(wparam == VK_ESCAPE)
             SendMessage(hwnd, WM_CLOSE, 0, 0);

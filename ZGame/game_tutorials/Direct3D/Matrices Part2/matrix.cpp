@@ -90,6 +90,7 @@ CMatrix CMatrix::operator *(const CMatrix &mat)
            );
 }
 
+//z 单位矩阵
 // Set the matrix to the identity matrix
 // You can think of the identity matrix just like you think of the number 1 when
 // thinking about multiplication.  So just as 2 * 1 = 2, given a square matrix A and
@@ -104,6 +105,7 @@ void CMatrix::identity()
     m[0] = m[5] = m[10] = m[15] = 1.0f;
 }
 
+//z 2015-07-02 17:38 转置矩阵
 // Transposes the matrix
 // When you transpose a matrix, you swap all of it's rows and columns.  So
 // here's what you get:

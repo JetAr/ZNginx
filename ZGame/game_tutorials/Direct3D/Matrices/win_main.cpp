@@ -1,5 +1,5 @@
 ﻿// Done by TheTutor
-
+//z 2015-07-02 16:17
 /*
 	This tutorial is all about matrices.  Now this tutorial will NOT cover all the math
 	behind matrices (linear algebra).  However, it will go over some of their uses specifically
@@ -178,7 +178,8 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprev, PSTR cmdline, int ishow
             D3DXMatrixRotationX(&wMatrix, DEG2RAD(angle)); // Spin around the X
             //D3DXMatrixRotationY(&wMatrix, DEG2RAD(angle)); // Spin around the Y
             //D3DXMatrixRotationZ(&wMatrix, DEG2RAD(angle)); // Spin around the Z
-
+            
+            //z 设置 world matrix
             g3D->setWorldMatrix(&wMatrix); // Set our world transformation
 
             DrawTriangle(); // Draw the sweet, sweet triangle
@@ -225,6 +226,7 @@ bool LockFrameRate(int frame_rate)
 
     // Get the elapsed time by subtracting the current time from the last time
     // If the desired frame rate amount of seconds has passed -- return true (ie Blit())
+    //z 根据 frame_rate 进行 render ？
     if((currentTime - lastTime) > (1.0f / frame_rate))
     {
         // Reset the last time

@@ -143,13 +143,16 @@ bool CD3DObj::renderLine(SVertex *vertList, int numVerts)
 
     // Set the FVF
     // The FVF is a flag which defines what data is stored in the vertex
+    //z 设置 FVF，fvf说明了在 vertex 中存储了什么数据。
     mDevice->SetFVF(SVertexType);
 
     // Render the line segements
+    //z 绘制线段
     mResult = mDevice->DrawPrimitiveUP(D3DPT_LINELIST, numVerts / 2, vertList, sizeof(SVertex));
     return (mResult == D3D_OK);
 }
 
+//z 设置 view matrix
 // Sets up the view of the scene based on passed in eye and target
 void CD3DObj::setViewMatrix(const CPos &eye, const CPos &lookAt)
 {
@@ -163,17 +166,22 @@ void CD3DObj::setViewMatrix(const CPos &eye, const CPos &lookAt)
     mDevice->SetTransform(D3DTS_VIEW, &matrix); // Set our view of the world
 }
 
+//z 设置投影矩阵，这控制了3d scene 是如何投影到 2d monitor上去的。
+//z 使用传入的 view、aspect ratio 以及 near clip 和 far clip plane 
 // Sets the projection matrix, which dictates how our 3D scene is projected onto our 2D monitor
 // using the passed in field of view, aspect ratio, near clip plane, and far clip plane
 void CD3DObj::setProjMatrix(float fov, float aspectRatio, float nearClip, float farClip)
 {
     D3DXMATRIXA16 matrix;
-
+    
+    //z 创建和设置 projection matrix
     // Create and set projection matrix
     D3DXMatrixPerspectiveFovLH(&matrix, fov, aspectRatio, nearClip, farClip);
+    //z 设置 projection matrix ，作用？
     mDevice->SetTransform(D3DTS_PROJECTION, &matrix);
 }
 
+//z 设置 world matrix
 // Sets the world matrix to the matrix passed in
 void CD3DObj::setWorldMatrix(const D3DXMATRIX *matrix)
 {
