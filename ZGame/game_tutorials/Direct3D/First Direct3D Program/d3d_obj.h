@@ -5,6 +5,8 @@
 #include <assert.h>
 #include "vertex_types.h"
 
+//z 2015-07-02 13:32
+//z 创建 3D Ojbect 。
 // Here is our 3D Object to handle all of our 3D needs -- It will create our needed D3D interfaces
 // and allow us to render a list or vertices of a vertex type that we created.
 // You'll notice that all of the functions/variables are static.  This is because
@@ -56,6 +58,7 @@ private:
 
     static HRESULT mResult; // Used for error checking
 
+    //z 这样，可以不用有函数体的
     // We make the copy constructor and assignment operator private because
     // we do NOT want anyone accidentally making a copy of this class
     CD3DObj(const CD3DObj &obj) {}
@@ -65,6 +68,7 @@ private:
     }
 };
 
+//z 定义一个全局 3d object。
 // Here we define our global 3D object
 extern CD3DObj *g3D;
 

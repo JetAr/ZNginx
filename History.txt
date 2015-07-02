@@ -292,3 +292,23 @@ Changes to be committed:
 	modified:   Doc/K/T.2015.BugFree.cs
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d3d_eg.2015/07/02.15_51_22.66.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Doc/K/T.2015.BugFree.cs
+	modified:   History.txt
+	modified:   ZGame/AI/AI_by_Example/src/VS8 projects/Buckland_Chapter3-Steering Behaviors/Obstacle.cpp
+	modified:   ZGame/AI/AI_by_Example/src/VS8 projects/Buckland_Chapter3-Steering Behaviors/Obstacle.h
+	modified:   ZGame/game_tutorials/Direct3D/Color/d3d_obj.cpp
+	modified:   ZGame/game_tutorials/Direct3D/Color/d3d_obj.h
+	modified:   ZGame/game_tutorials/Direct3D/Color/win_main.cpp
+	modified:   ZGame/game_tutorials/Direct3D/First Direct3D Program/d3d_obj.cpp
+	modified:   ZGame/game_tutorials/Direct3D/First Direct3D Program/d3d_obj.h
+	modified:   ZGame/game_tutorials/Direct3D/First Direct3D Program/win_main.cpp
+	modified:   ZGame/game_tutorials/Direct3D/Matrices/d3d_obj.cpp
+

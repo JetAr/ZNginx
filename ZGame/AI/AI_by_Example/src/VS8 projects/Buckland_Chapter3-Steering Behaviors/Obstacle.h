@@ -16,11 +16,11 @@
 
 #include <windows.h>
 
-
+//z 2015-07-02 11:02 Obstacle 障碍物
 class Obstacle : public BaseGameEntity
 {
 public:
-
+    //z 位置和半径
     Obstacle(double x,
              double y,
              double r):BaseGameEntity(0, Vector2D(x,y), r)

@@ -12,12 +12,14 @@ HRESULT CD3DObj::mResult = 0;
 bool CD3DObj::init(HWND hwnd)
 {
     // Create the D3D object, which is needed to create the D3DDevice.
+    //z 创建 d3d object
     mInterface = Direct3DCreate9(D3D_SDK_VERSION);
 
-    // Error Check
+    // Error Check，检查是否创建成功
     if(mInterface == NULL)
         return false;
 
+    //z 参数，3d device 创建方式
     // This is the structure that defines how our 3D device (the thing that allows us
     // to render) is going to be created.
     D3DPRESENT_PARAMETERS params = {0}; // Start by zeroing out the parameters
@@ -36,6 +38,8 @@ bool CD3DObj::init(HWND hwnd)
     // the frame buffer, while the current frame buffer becomes
     // the back buffer.  Flipping is really fast, because it avoids
     // copying the back buffer to the front buffer
+
+    //z 设置为NULL，那么在创建时会使用当前桌面的显示格式。
     params.BackBufferFormat = D3DFMT_UNKNOWN; // Here we set what we want our D3DFORMAT to be.
     // An example format would be D3DFMT_R8G8B8 which
     // is a 24-bit RGB format.  However we choose
@@ -48,6 +52,7 @@ bool CD3DObj::init(HWND hwnd)
     // device.  So by parameter:
     // D3DADAPTER_DEFAULT -- Specifies which adapter to use.  D3DADAPTER_DEFAULT means always
     //						 use the primary adapter.
+    //z 使用何种方式来进行光栅化；这里使用硬件来进行光栅化。
     // D3DDEVTYPE_HAL -- This is the D3DDEVTYPE.  It specifies what the device type will
     //       			 be.  D3DDEVTYPE_HAL says the device will use hardware rasterization.
     // hwnd -- This is the HWND to the window that the focus of the device belongs to.  Basically
@@ -60,6 +65,7 @@ bool CD3DObj::init(HWND hwnd)
     //			  refresh rate, and stencil format can be specified in this struct.
     // &mDevice -- This is the address of a pointer to a IDirect3DDevice9.  This will get
     //				  filled in with the created device.
+    //z 通过 3d object 来创建 3d device 。
     mResult = mInterface->CreateDevice(D3DADAPTER_DEFAULT,
                                        D3DDEVTYPE_HAL,
                                        hwnd,
@@ -88,6 +94,7 @@ bool CD3DObj::init(HWND hwnd)
 // Begins the scene
 void CD3DObj::begin()
 {
+    //z 开始 scene
     // This begins our scene.
     mResult = mDevice->BeginScene();
     assert(mResult == D3D_OK);
@@ -109,6 +116,7 @@ void CD3DObj::end()
     //		   NULL then the HWND set in the D3DPRESENT_PARAMETERS (set in our init() function)
     //		   is used
     // NULL -- Must be NULL unless a swap chain was created with D3DSWAPEFFECT_COPY
+    //z 绘制 next back buffer 到屏幕
     mResult = mDevice->Present(NULL, NULL, NULL, NULL);
     assert(mResult == D3D_OK);
 }
@@ -119,8 +127,10 @@ bool CD3DObj::render(SVertex *vertList, int numVerts)
     // The first thing we have to do before rendering is tell D3D what
     // type of vertices we'll be rendering.  We do this by passing the
     // #define that stipulates our vertex type.
+    //z vertices 的格式
     mDevice->SetFVF(SVertexType);
 
+    //z 2015-07-02 13:42 通过使用 d3d vertex buffer，能够提升 rendering 速度。
     // Now we are ready to render.  We can do this with one function call.
     // You'll notice the "UP" in the function name.  This stands for "user pointer" and
     // means that we are passing D3D a pointer to a list of vertices to be rendered.

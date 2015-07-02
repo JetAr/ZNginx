@@ -31,7 +31,7 @@
 	 to get in living color...
 
 */
-
+//z 2015-07-02 15:32 v01
 
 #include <windows.h>
 #include "d3d_obj.h"
@@ -169,6 +169,7 @@ LRESULT CALLBACK WinProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
         if(y < rect.top) y = (short)rect.top;
         if(y > rect.bottom) y = (short)rect.bottom;
 
+        //z 2015-07-02 15:35 随着位置移动，会变化颜色。
         // Determine the percentage of red, green and blue to use for our
         // triangle based on the position of the cursor.  Here's how we determine
         // the color:  The farther we move the cursor to the right, the more red

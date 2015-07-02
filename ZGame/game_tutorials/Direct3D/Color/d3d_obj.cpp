@@ -1,5 +1,7 @@
 ﻿#include "d3d_obj.h"
 
+//z 2015-07-02 15:29
+
 // Declare our static variables
 // So why have "mInterface" and "mDevice" be public?  Well we are going to want to
 // access those variables by other classes (say for instance if we add a D3D texture class),

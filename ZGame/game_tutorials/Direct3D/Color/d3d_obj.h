@@ -5,6 +5,8 @@
 #include <assert.h>
 #include "vertex_types.h"
 
+//z 2015-07-02 15:28 标示下
+
 // Here is our 3D Object to handle all of our 3D needs -- It will create our needed D3D interfaces
 // and allow us to render a list or vertices of a vertex type that we created.
 // You'll notice that all of the functions/variables are static.  This is because

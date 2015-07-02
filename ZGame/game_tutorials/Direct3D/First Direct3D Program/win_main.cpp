@@ -9,6 +9,7 @@
 	can read about how to do just that in the FAQ section of the GameTutorials CD or
 	at http://www.gametutorials.com/beginnerfaq.htm
 
+    2015-07-02 14:19 intimidate 恐吓，使胆怯，使害怕
 	For an introductory tutorial the sheer number of files may seem a bit intimidating,
 	but after reading through it, most should agree that breaking things up this may
 	makes everything a bit easier to swallow.  So where do we begin?  3D is a HUGE
@@ -19,7 +20,7 @@
 	more than we can chew and start with the most basic concepts dealing with 3D
 	programming using D3D, this tutorial will do one simple task:  Draw a white triangle to
 	the screen.
-
+    2015-07-02 14:21 本教程，在screen上绘制一个白色三角形
 	To accomplish the task at hand there's a few things we will have to do:
 
 		  1)  Go over and define some common 3D lingo
@@ -32,13 +33,14 @@
 */
 
 /*	VOCAB 1.01
-
+    2015-07-02 14:22 顶点，可能会包含多种数据，比如颜色，纹理坐标，bone weights等等。
 	Vertex -- A vertex is a special point of a mathematical object, and is usually a
 			  location where two or more lines or edges meet.  At least that's roughly the
 			  mathematical definition.  In 3D programming this definition holds up pretty well
 			  expect that quite often additional data (such as a color, texture coordinates,
 			  bone weights, etc) are added to each vertex.
-
+    
+    图元，用于渲染的基本图形形状
 	Primitive -- A base geometric shape to render.  Examples are a point, a line, or a triangle
 
 	Vertex Buffer --  This is basically the same concept as a "character buffer".  So just
@@ -142,6 +144,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprev, PSTR cmdline, int ishow
 
     // Here's where we create our triangle.  By using a little math
     // we'll center the triangle based on the width of the window.
+    //z 2015-07-02 14:36 定义三角形。
     SVertex triangle[] =
     {
         // x, y, z, w, color
@@ -208,6 +211,7 @@ LRESULT CALLBACK WinProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
 // Extra DirectXion
 
 /*
+    d3d 是很cool，强大，但同时也很复杂。
 	Did you think there'd be this much stuff you'd have to do just to get
 	a triangle to the screen?  Well probably if you've done 3D before, but if
 	you haven't big shocker eh?  D3D is a very cool, very powerful API.  It's also
@@ -215,7 +219,8 @@ LRESULT CALLBACK WinProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
 	already have a good grasp of C/C++ and Win32 programming.  I say this not to
 	discourage you, but to prevent you from hours and hours of frustration and hair pulling.
 	But do come back when you've brushed up on those topics %)
-
+    
+    2015-07-02 14:42 未进行任何的优化。
 	Okay if you are still reading this you must be ready for the full 3D experience.  So
 	I wanted to just touch on a few things before I close this tutorial out.  First,
 	this tutorial IS NOT trying to be optimized in any sense.  This tutorial's

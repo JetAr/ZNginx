@@ -39,6 +39,7 @@ bool CD3DObj::init(HWND hwnd)
     // D3DFMT_UNKNOWN so that when the device is created
     // the format that will be selected is the current
     // desktop display format.
+    //z 是否检测depth stencil；但需要详细的解释；什么是depth stencil
     params.EnableAutoDepthStencil = true; // This says "Create a Z-buffer/Stencil buffer for us"
     // **NOTE** If we want an application that has a z-buffer
     // we're gonna want to do this
@@ -87,15 +88,18 @@ bool CD3DObj::init(HWND hwnd)
             return false; // Couldn't create a D3D 9.0 device
     }
 
+    //z 关掉 culling mode 。
     //Turn off back face culling so our geometry is always visible
     mResult = mDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
     assert(mResult == D3D_OK);
 
     // Turn off D3D lighting, since we are providing our own vertex colors
+    //z 关掉 d3d lighting。 我们为 vertex 提供了自己的颜色
     mResult = mDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
     assert(mResult == D3D_OK);
 
     // Turn on Z-buffering
+    //z 启用 z-buffering 。事实上得了解device整个的工作状态以及原理什么的。
     mResult = mDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
     assert(mResult == D3D_OK);
     return true; // We got loaded
