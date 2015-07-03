@@ -326,3 +326,15 @@ Changes to be committed:
 	modified:   ZGame/game_tutorials/Direct3D/Matrices/d3d_obj.cpp
 	modified:   ZGame/game_tutorials/Direct3D/Matrices/win_main.cpp
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+dg.2015/07/03.17_01_19.55.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	modified:   ZGame/game_tutorials/Direct3D/Rotating Cube/d3d_obj.cpp
+	modified:   ZGame/game_tutorials/Direct3D/Rotating Cube/win_main.cpp
+

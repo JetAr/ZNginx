@@ -91,6 +91,7 @@ bool CD3DObj::init(HWND hwnd)
     assert(mResult == D3D_OK);
 
     // Turn on Z-buffering
+    //z 启用 z-buffer。
     mResult = mDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
     assert(mResult == D3D_OK);
     return true; // We got loaded
@@ -163,9 +164,11 @@ bool CD3DObj::renderLine(SVertex *vertList, int numVerts)
     return (mResult == D3D_OK);
 }
 
+//z 得到 view world
 // Sets up the view of the scene based on passed in eye and target
 void CD3DObj::setViewMatrix(const CPos &eye, const CPos &lookAt)
 {
+    //z 根据 cye lookAt 以及 up 获取 view matrix。
     D3DXMATRIXA16 matrix;
     D3DXVECTOR3 up(0.0f, 1.0f, 0.0f); // World's up vector
 
@@ -173,6 +176,7 @@ void CD3DObj::setViewMatrix(const CPos &eye, const CPos &lookAt)
     // **NOTE** We can cast to (D3DXVECTOR3*) because our CVector has it's data members (x,y,z)
     // declared the same way a D3DXVECTOR3 does
     D3DXMatrixLookAtLH(&matrix, (D3DXVECTOR3*)(&eye), (D3DXVECTOR3*)(&lookAt), &up);
+    //z 设置世界视角
     mDevice->SetTransform(D3DTS_VIEW, &matrix); // Set our view of the world
 }
 

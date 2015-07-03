@@ -271,6 +271,7 @@ void DrawAndRotateCube()
     // We add 1° each time we draw and convert to radians
     float angInRad = DEG2RAD(++angle);
 
+    //z 设置了一个旋转 matrix 。
     // Here's where all the magic happens.  This functions fills the matrix we
     // pass in with a rotation matrix using the angles we pass for yaw, pitch and
     // roll.  So by parameter:
