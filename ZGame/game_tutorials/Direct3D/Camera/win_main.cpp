@@ -1,4 +1,5 @@
-﻿// Done by TheTutor
+﻿//z 2015-07-06 14:19 摄像机
+// Done by TheTutor
 
 /*
 	This tutorial is gonna introduce the concept of a "camera" in a 3D app.  So before we
@@ -7,9 +8,11 @@
 	film to be viewed at a later date and time.  Well in a 3D application, the camera sets up
 	what is viewable every frame.  A 3D camera typically has some general data associated with it,
 	such as:
-
+        摄像机在世界空间中的位置。
 		Eye position -- Where the camera is located in "world space"
+        目标位置
 		Target position -- What the camera is looking at in "world space"
+        对于world，那个方向是向上的
 		Up vector -- Defines which direction is up for the world
 
 	This is the basic, bare bones data you'll need to do a simple camera system.  Certainly

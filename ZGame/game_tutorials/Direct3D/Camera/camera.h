@@ -41,6 +41,7 @@
 
 */
 
+//z 默认移动的 units 。2015-07-06 14:24
 const float kDefaultAmt = 1.0f; // Number of units to move by default
 
 class CCamera

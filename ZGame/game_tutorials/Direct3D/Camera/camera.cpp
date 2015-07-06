@@ -1,5 +1,6 @@
 ﻿#include "camera.h"
 
+//z 2015-07-06 14:27
 // Default Constructor
 CCamera::CCamera()
 {
