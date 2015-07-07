@@ -18,6 +18,7 @@ CCamera::CCamera()
 // [ ca 0 -sa ]
 // [ 0  1   0 ]
 // [ sa 0  ca ]
+//z 平摇
 void CCamera::rotateY(float angle, const CPos &target)
 {
     float xxx, zzz;
@@ -59,6 +60,7 @@ void CCamera::rotateY(float angle, const CPos &target)
 	[(x * y * (1 - cos(t)) - z * sin(t))		(y * y * (1 - cos(t)) + cos(t))			(y * z * (1 - cos(t)) + x * sin(t))]
 	[(x * z * (1 - cos(t)) + y * sin(t))		(y * z * (1 - cos(t)) - x * sin(t))		(z * z * (1 - cos(t)) + cos(t))	   ]
 */
+//z 2015-07-07 11:37 俯仰
 void CCamera::pitch(float angle, const CPos &target)
 {
     // Compute the sin and cos of the angle

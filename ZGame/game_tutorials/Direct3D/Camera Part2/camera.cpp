@@ -21,11 +21,14 @@ void CCamera::reset()
 // Pitches the camera up/down
 void CCamera::pitch(float angle)
 {
+    //z 2015-07-07 11:06 移动 camera up或down 要保证 camera 的轴都是正交的。
     /*
     	Now when we pitch the camera up/down we need to make sure we keep all
     	the camera axes perpendicular to each other, otherwise we loose the
     	fact that they represent the camera's coordinate system.
-
+        
+        //z 旋转 forward vector 后，需要重新计算 up vector。因为其也会旋转。
+        //z 此时 right 轴不会变动
     	Thus when we rotate the forward vector, we also have to recalculate
     	the up vector because it will rotate too.  We could just rotate it
     	around the same axis, but it's faster to recompute it using
@@ -148,6 +151,7 @@ void CCamera::move(ECamMoveDir dir, float amt)
 // Rotates around an arbritrary axis
 CVector CCamera::rotateAroundAxis(const CVector &vec, const CVector &axis, float angle)
 {
+    //z 2015-07-07 11:20 将 vec 绕 axis 旋转角度 angle 。
     float aX = axis.x; // Axis X
     float aY = axis.y; // Axis Y
     float aZ = axis.z; // Axis Z

@@ -49,7 +49,7 @@
 	 One of the functions will rotate the camera around the world Y axis, and the other
 	 will rotate the camera around it's local X axis.
 */
-
+//z 2015-07-07 11:22 俯仰，平摇，zoom，
 const float kDefaultAmt = 1.0f; // Default amount to move camera by
 
 // The camera

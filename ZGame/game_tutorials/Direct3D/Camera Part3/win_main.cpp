@@ -24,7 +24,7 @@
 	to the code...
 */
 
-
+//z 2015-07-07 11:29 第三人称视角 camera
 #include <windows.h>
 #include <stdio.h>
 #include "d3d_obj.h"
@@ -340,6 +340,7 @@ void CameraMouseInput()
     // Pitch the camera up/down
     gCamera->pitch(DEG2RAD(amt), gCubePos);
 
+    //z 设置 cursor 到屏幕中间
     SetCursorPos(midScrX, midScrY); // Set our cursor back to the middle of the screen
 }
 
