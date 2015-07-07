@@ -1,6 +1,8 @@
 ﻿#include "d3d_texture.h"
 #include "d3d_obj.h"
 
+//z 2015-07-07 13:52
+
 // Constructor -- Zero out everything
 CD3DTexture::CD3DTexture()
 {

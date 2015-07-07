@@ -3,6 +3,7 @@
 
 #include <d3dx9tex.h>
 
+//z 2015-07-07 13:19 处理 texture 
 // This is our D3D texture class.  It will handle all of the
 // texture needs for our app.
 class CD3DTexture

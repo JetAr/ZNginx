@@ -18,6 +18,7 @@
 	acheive their breathe taking visuals.  While pixel shaders are employed to do most of their
 	multi-texturing tasks, D3D allows you to blend up to eight textures using the fixed function
 	pipeline (ie by NOT using shaders).
+    //z d3d 
 
 	This tutorial shows the basics of how to go about doing light mapping, the process of blending
 	a light texture (a grey scale texture which makes up the shape and intensity of a light striking

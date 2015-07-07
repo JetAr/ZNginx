@@ -8,6 +8,7 @@ CD3DTexture::CD3DTexture()
     mTexture = NULL;
 }
 
+//z 2015-07-07 13:20 从纹理中载入文件
 // Loads the texture specified by "fileName".  Returns
 // true on success, false otherwise
 bool CD3DTexture::load(const char *fileName)
@@ -27,6 +28,8 @@ bool CD3DTexture::load(const char *fileName)
         mTexture = NULL;
     }
 
+    //z 2015-07-07 13:22 D3DXCreateTextureFromFile 载入 texture 。
+    //z 注意该函数将会创建一个 full mipmap chain 。
     // D3D makes it VERY EASY for us to load a texture.  Lets look at
     // this function by parameter:
     // CD3DObj::mDevice -- Pointer to a IDirect3DDevice9 (D3D display device)
@@ -47,6 +50,8 @@ void CD3DTexture::select()
 {
     assert(CD3DObj::mDevice != NULL); // Make sure device is valid
 
+    //z 2015-07-07 13:24 告知 d3d 何时使用 texture 。
+    //z 使用这个 texture ，直到被告知不再使用这个 texture 。
     // So the real question is how do we tell D3D what texture to
     // use when?  Well luckily to say "Hey use this texture for
     // all of the next drawing operations until told otherwise" is

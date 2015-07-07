@@ -1,6 +1,6 @@
 ﻿#include "d3d_obj.h"
 #include <assert.h>
-
+//z 2015-07-07 13:52
 // Declare our static variables
 IDirect3D9* CD3DObj::mInterface = NULL;
 IDirect3DDevice9* CD3DObj::mDevice = NULL;
