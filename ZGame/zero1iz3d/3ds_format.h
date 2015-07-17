@@ -1,6 +1,6 @@
-// 3ds_format.h -
+﻿// 3ds_format.h -
 
-// da go smenq s moi, 3ds sux 
+// da go smenq s moi, 3ds sux
 
 
 
@@ -11,7 +11,7 @@
 
 
 
-// Primary Chunk -> at the beginning of the 3ds file 
+// Primary Chunk -> at the beginning of the 3ds file
 #define PRIMARY       0x4D4D
 
 // Main Chunks
@@ -42,9 +42,9 @@
 
 struct _chunk
 {
-	unsigned short int id;        // chunk ID
-	unsigned int len;			  // chunk length
-	//unsigned int bytesread;
+    unsigned short int id;        // chunk ID
+    unsigned int len;			  // chunk length
+    //unsigned int bytesread;
 };
 
 
@@ -57,10 +57,10 @@ private:
 
 public:
 
-	C3ds_Loader();
-	~C3ds_Loader();
+    C3ds_Loader();
+    ~C3ds_Loader();
 
-	bool Load( const char *3ds_filename );
+    bool Load( const char *3ds_filename );
 
 
 };
@@ -70,24 +70,24 @@ public:
 
 
 // Once again I should point out that the coordinate system of OpenGL and 3DS Max are different.
-// Since 3D Studio Max Models with the Z-Axis pointing up (strange and ugly I know! :), 
+// Since 3D Studio Max Models with the Z-Axis pointing up (strange and ugly I know! :),
 // we need to flip the y values with the z values in our vertices.  That way it
-// will be normal, with Y pointing up.  Also, because we swap the Y and Z we need to negate 
+// will be normal, with Y pointing up.  Also, because we swap the Y and Z we need to negate
 // the Z to make it come out correctly.  This is also explained and done in ReadVertices().
 //
 // CHUNKS: What is a chunk anyway?
-// 
-// "The chunk ID is a unique code which identifies the type of data in this chunk 
-// and also may indicate the existence of subordinate chunks. The chunk length indicates 
-// the length of following data to be associated with this chunk. Note, this may 
-// contain more data than just this chunk. If the length of data is greater than that 
-// needed to fill in the information for the chunk, additional subordinate chunks are 
-// attached to this chunk immediately following any data needed for this chunk, and 
-// should be parsed out. These subordinate chunks may themselves contain subordinate chunks. 
-// Unfortunately, there is no indication of the length of data, which is owned by the current 
-// chunk, only the total length of data attached to the chunk, which means that the only way 
-// to parse out subordinate chunks is to know the exact format of the owning chunk. On the 
-// other hand, if a chunk is unknown, the parsing program can skip the entire chunk and 
+//
+// "The chunk ID is a unique code which identifies the type of data in this chunk
+// and also may indicate the existence of subordinate chunks. The chunk length indicates
+// the length of following data to be associated with this chunk. Note, this may
+// contain more data than just this chunk. If the length of data is greater than that
+// needed to fill in the information for the chunk, additional subordinate chunks are
+// attached to this chunk immediately following any data needed for this chunk, and
+// should be parsed out. These subordinate chunks may themselves contain subordinate chunks.
+// Unfortunately, there is no indication of the length of data, which is owned by the current
+// chunk, only the total length of data attached to the chunk, which means that the only way
+// to parse out subordinate chunks is to know the exact format of the owning chunk. On the
+// other hand, if a chunk is unknown, the parsing program can skip the entire chunk and
 // subordinate chunks in one jump. " - Jeff Lewis (werewolf@worldgate.com)
 //
 // In a short amount of words, a chunk is defined this way:
@@ -97,7 +97,7 @@ public:
 //
 // So, to start reading the 3DS file, you read the first 2 bytes of it, then
 // the length (using fread()).  It should be the PRIMARY chunk, otherwise it isn't
-// a .3DS file.  
+// a .3DS file.
 //
 // Below is a list of the order that you will find the chunks and all the know chunks.
 // If you go to www.wosit.org you can find a few documents on the 3DS file format.
@@ -111,22 +111,22 @@ public:
 //     |  |
 //     |  +--EDIT_MATERIAL (0xAFFF)
 //     |  |  |
-//     |  |  +--MAT_NAME01 (0xA000) (See mli Doc) 
+//     |  |  +--MAT_NAME01 (0xA000) (See mli Doc)
 //     |  |
 //     |  +--EDIT_CONFIG1  (0x0100)
-//     |  +--EDIT_CONFIG2  (0x3E3D) 
+//     |  +--EDIT_CONFIG2  (0x3E3D)
 //     |  +--EDIT_VIEW_P1  (0x7012)
 //     |  |  |
 //     |  |  +--TOP            (0x0001)
 //     |  |  +--BOTTOM         (0x0002)
 //     |  |  +--LEFT           (0x0003)
 //     |  |  +--RIGHT          (0x0004)
-//     |  |  +--FRONT          (0x0005) 
+//     |  |  +--FRONT          (0x0005)
 //     |  |  +--BACK           (0x0006)
 //     |  |  +--USER           (0x0007)
 //     |  |  +--CAMERA         (0xFFFF)
 //     |  |  +--LIGHT          (0x0009)
-//     |  |  +--DISABLED       (0x0010)  
+//     |  |  +--DISABLED       (0x0010)
 //     |  |  +--BOGUS          (0x0011)
 //     |  |
 //     |  +--EDIT_VIEW_P2  (0x7011)
@@ -135,29 +135,29 @@ public:
 //     |  |  +--BOTTOM         (0x0002)
 //     |  |  +--LEFT           (0x0003)
 //     |  |  +--RIGHT          (0x0004)
-//     |  |  +--FRONT          (0x0005) 
+//     |  |  +--FRONT          (0x0005)
 //     |  |  +--BACK           (0x0006)
 //     |  |  +--USER           (0x0007)
 //     |  |  +--CAMERA         (0xFFFF)
 //     |  |  +--LIGHT          (0x0009)
-//     |  |  +--DISABLED       (0x0010)  
+//     |  |  +--DISABLED       (0x0010)
 //     |  |  +--BOGUS          (0x0011)
 //     |  |
 //     |  +--EDIT_VIEW_P3  (0x7020)
-//     |  +--EDIT_VIEW1    (0x7001) 
-//     |  +--EDIT_BACKGR   (0x1200) 
+//     |  +--EDIT_VIEW1    (0x7001)
+//     |  +--EDIT_BACKGR   (0x1200)
 //     |  +--EDIT_AMBIENT  (0x2100)
 //     |  +--EDIT_OBJECT   (0x4000)
 //     |  |  |
-//     |  |  +--OBJ_TRIMESH   (0x4100)      
+//     |  |  +--OBJ_TRIMESH   (0x4100)
 //     |  |  |  |
-//     |  |  |  +--TRI_VERTEXL          (0x4110) 
+//     |  |  |  +--TRI_VERTEXL          (0x4110)
 //     |  |  |  +--TRI_VERTEXOPTIONS    (0x4111)
-//     |  |  |  +--TRI_MAPPINGCOORS     (0x4140) 
+//     |  |  |  +--TRI_MAPPINGCOORS     (0x4140)
 //     |  |  |  +--TRI_MAPPINGSTANDARD  (0x4170)
 //     |  |  |  +--TRI_FACEL1           (0x4120)
 //     |  |  |  |  |
-//     |  |  |  |  +--TRI_SMOOTH            (0x4150)   
+//     |  |  |  |  +--TRI_SMOOTH            (0x4150)
 //     |  |  |  |  +--TRI_MATERIAL          (0x4130)
 //     |  |  |  |
 //     |  |  |  +--TRI_LOCAL            (0x4160)
@@ -166,19 +166,19 @@ public:
 //     |  |  +--OBJ_LIGHT    (0x4600)
 //     |  |  |  |
 //     |  |  |  +--LIT_OFF              (0x4620)
-//     |  |  |  +--LIT_SPOT             (0x4610) 
-//     |  |  |  +--LIT_UNKNWN01         (0x465A) 
-//     |  |  | 
+//     |  |  |  +--LIT_SPOT             (0x4610)
+//     |  |  |  +--LIT_UNKNWN01         (0x465A)
+//     |  |  |
 //     |  |  +--OBJ_CAMERA   (0x4700)
 //     |  |  |  |
 //     |  |  |  +--CAM_UNKNWN01         (0x4710)
-//     |  |  |  +--CAM_UNKNWN02         (0x4720)  
+//     |  |  |  +--CAM_UNKNWN02         (0x4720)
 //     |  |  |
 //     |  |  +--OBJ_UNKNWN01 (0x4710)
 //     |  |  +--OBJ_UNKNWN02 (0x4720)
 //     |  |
 //     |  +--EDIT_UNKNW01  (0x1100)
-//     |  +--EDIT_UNKNW02  (0x1201) 
+//     |  +--EDIT_UNKNW02  (0x1201)
 //     |  +--EDIT_UNKNW03  (0x1300)
 //     |  +--EDIT_UNKNW04  (0x1400)
 //     |  +--EDIT_UNKNW05  (0x1420)
@@ -204,10 +204,10 @@ public:
 //           +--KEYF_OBJDUMMYNAME (0xB011)
 //           +--KEYF_OBJUNKNWN01  (0xB013)
 //           +--KEYF_OBJUNKNWN02  (0xB014)
-//           +--KEYF_OBJUNKNWN03  (0xB015)  
-//           +--KEYF_OBJPIVOT     (0xB020)  
-//           +--KEYF_OBJUNKNWN04  (0xB021)  
-//           +--KEYF_OBJUNKNWN05  (0xB022)  
+//           +--KEYF_OBJUNKNWN03  (0xB015)
+//           +--KEYF_OBJPIVOT     (0xB020)
+//           +--KEYF_OBJUNKNWN04  (0xB021)
+//           +--KEYF_OBJUNKNWN05  (0xB022)
 //
 // Once you know how to read chunks, all you have to know is the ID you are looking for
 // and what data is stored after that ID.  You need to get the file format for that.
@@ -220,7 +220,7 @@ public:
 // this is the best .3DS tutorial, or even a GOOD one :)  But it is a good start, and there
 // isn't much code out there that is simple when it comes to reading .3DS files.
 // So far, this is the best I have seen.  That is why I made it :)
-// 
+//
 // Ben Humphrey (DigiBen)
 // Game Programmer
 // DigiBen@GameTutorials.com

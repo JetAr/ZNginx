@@ -407,3 +407,47 @@ Changes to be committed:
 	modified:   Doc/K/T.2015.BugFree.cs
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+zero1iz3d_150717.2015/07/17.17_10_40.23.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	modified:   ZGame/game_tutorials/Direct3D/Transparency/win_main.cpp
+	modified:   ZGame/game_tutorials/Direct3D/Vertex Lighting/d3d_obj.cpp
+	modified:   ZGame/game_tutorials/Direct3D/Vertex Lighting/win_main.cpp
+	modified:   ZGame/zero1iz3d/3d_engine_2005.vcproj
+	modified:   ZGame/zero1iz3d/3ds.cpp
+	modified:   ZGame/zero1iz3d/3ds.h
+	modified:   ZGame/zero1iz3d/3ds_format.cpp
+	modified:   ZGame/zero1iz3d/3ds_format.h
+	modified:   ZGame/zero1iz3d/CBillBoard.cpp
+	modified:   ZGame/zero1iz3d/CBillBoard.h
+	modified:   ZGame/zero1iz3d/CCamera.cpp
+	modified:   ZGame/zero1iz3d/CCamera.h
+	modified:   ZGame/zero1iz3d/CDebug.cpp
+	modified:   ZGame/zero1iz3d/CDebug.h
+	modified:   ZGame/zero1iz3d/CFog.cpp
+	modified:   ZGame/zero1iz3d/CFog.h
+	modified:   ZGame/zero1iz3d/CModel.cpp
+	modified:   ZGame/zero1iz3d/CModel.h
+	modified:   ZGame/zero1iz3d/COpenGL.cpp
+	modified:   ZGame/zero1iz3d/COpenGL.h
+	modified:   ZGame/zero1iz3d/CParticle.cpp
+	modified:   ZGame/zero1iz3d/CParticle.h
+	modified:   ZGame/zero1iz3d/CSprite.cpp
+	modified:   ZGame/zero1iz3d/CSprite.h
+	modified:   ZGame/zero1iz3d/CText.cpp
+	modified:   ZGame/zero1iz3d/CText.h
+	modified:   ZGame/zero1iz3d/CTexture.cpp
+	modified:   ZGame/zero1iz3d/CTexture.h
+	modified:   ZGame/zero1iz3d/CTimer.cpp
+	modified:   ZGame/zero1iz3d/CTimer.h
+	modified:   ZGame/zero1iz3d/Geometry.cpp
+	modified:   ZGame/zero1iz3d/Geometry.h
+	modified:   ZGame/zero1iz3d/main.cpp
+	modified:   ZGame/zero1iz3d/main.h
+

@@ -1,4 +1,4 @@
-// 3ds.h - 
+﻿// 3ds.h -
 
 
 #ifndef _3DS_H
@@ -35,68 +35,69 @@
 
 
 // Here is our structure for our 3DS indicies (since .3DS stores 4 unsigned shorts)
-struct tIndices {							
+struct tIndices
+{
 
-	unsigned short a, b, c, bVisible;		// This will hold point1, 2, and 3 index's into the vertex array plus a visible flag
+    unsigned short a, b, c, bVisible;		// This will hold point1, 2, and 3 index's into the vertex array plus a visible flag
 };
 
 // This holds the chunk info
 struct tChunk
 {
-	unsigned short int ID;					// The chunk's ID		
-	unsigned int length;					// The length of the chunk
-	unsigned int bytesRead;					// The amount of bytes read within that chunk
+    unsigned short int ID;					// The chunk's ID
+    unsigned int length;					// The length of the chunk
+    unsigned int bytesRead;					// The amount of bytes read within that chunk
 };
 
 // This class handles all of the loading code
 class CLoad3DS
 {
 public:
-	CLoad3DS();								// This inits the data members
+    CLoad3DS();								// This inits the data members
 
-	// This is the function that you call to load the 3DS
-	bool Import3DS(CModel *pModel, char *strFileName);
+    // This is the function that you call to load the 3DS
+    bool Import3DS(CModel *pModel, char *strFileName);
 
 private:
-	// This reads in a string and saves it in the char array passed in
-	int GetString(char *);
+    // This reads in a string and saves it in the char array passed in
+    int GetString(char *);
 
-	// This reads the next chunk
-	void ReadChunk(tChunk *);
+    // This reads the next chunk
+    void ReadChunk(tChunk *);
 
-	// This reads the next large chunk
-	void ProcessNextChunk(CModel *pModel, tChunk *);
+    // This reads the next large chunk
+    void ProcessNextChunk(CModel *pModel, tChunk *);
 
-	// This reads the object chunks
-	void ProcessNextObjectChunk(CModel *pModel, t3DObject *pObject, tChunk *);
+    // This reads the object chunks
+    void ProcessNextObjectChunk(CModel *pModel, t3DObject *pObject, tChunk *);
 
-	// This reads the material chunks
-	void ProcessNextMaterialChunk(CModel *pModel, tChunk *);
+    // This reads the material chunks
+    void ProcessNextMaterialChunk(CModel *pModel, tChunk *);
 
-	// This reads the RGB value for the object's color
-	void ReadColorChunk(tMaterialInfo *pMaterial, tChunk *pChunk);
+    // This reads the RGB value for the object's color
+    void ReadColorChunk(tMaterialInfo *pMaterial, tChunk *pChunk);
 
-	// This reads the objects vertices
-	void ReadVertices(t3DObject *pObject, tChunk *);
+    // This reads the objects vertices
+    void ReadVertices(t3DObject *pObject, tChunk *);
 
-	// This reads the objects face information
-	void ReadVertexIndices(t3DObject *pObject, tChunk *);
+    // This reads the objects face information
+    void ReadVertexIndices(t3DObject *pObject, tChunk *);
 
-	// This reads the texture coodinates of the object
-	void ReadUVCoordinates(t3DObject *pObject, tChunk *);
+    // This reads the texture coodinates of the object
+    void ReadUVCoordinates(t3DObject *pObject, tChunk *);
 
-	// This reads in the material name assigned to the object and sets the materialID
-	void ReadObjectMaterial(CModel *pModel, t3DObject *pObject, tChunk *pPreviousChunk);
-	
-	// This frees memory and closes the file
-	void CleanUp();
-	
-	// The file pointer
-	FILE *m_FilePointer;
-	
-	// These are used through the loading process to hold the chunk information
-	tChunk *m_CurrentChunk;
-	tChunk *m_TempChunk;
+    // This reads in the material name assigned to the object and sets the materialID
+    void ReadObjectMaterial(CModel *pModel, t3DObject *pObject, tChunk *pPreviousChunk);
+
+    // This frees memory and closes the file
+    void CleanUp();
+
+    // The file pointer
+    FILE *m_FilePointer;
+
+    // These are used through the loading process to hold the chunk information
+    tChunk *m_CurrentChunk;
+    tChunk *m_TempChunk;
 };
 
 

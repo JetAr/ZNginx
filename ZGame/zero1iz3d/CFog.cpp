@@ -1,4 +1,4 @@
-
+﻿
 
 #include "main.h"
 
@@ -11,11 +11,11 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 CFog::CFog()
 {
-	startz = 1.0f;
-	endz = 5.0f;
-	density = DEFAULT_DENSITY;
-	clr = BLACK;
-	mode = FOG_EXP2;
+    startz = 1.0f;
+    endz = 5.0f;
+    density = DEFAULT_DENSITY;
+    clr = BLACK;
+    mode = FOG_EXP2;
 }
 
 
@@ -25,7 +25,7 @@ CFog::CFog()
 ////////////////////////////////////////////////////////////////////////////////////////////////
 CFog::CFog( FOG_MODE fog_mode, rgb color, float start, float end, float dens )
 {
-	Initialize( fog_mode, color, start, end, dens );
+    Initialize( fog_mode, color, start, end, dens );
 }
 
 
@@ -35,11 +35,11 @@ CFog::CFog( FOG_MODE fog_mode, rgb color, float start, float end, float dens )
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void CFog::Initialize( FOG_MODE fog_mode, rgb color, float start, float end, float dens )
 {
-	mode = fog_mode;
-	clr = color;
-	startz = start;
-	endz = end;
-	density = dens;
+    mode = fog_mode;
+    clr = color;
+    startz = start;
+    endz = end;
+    density = dens;
 }
 
 
@@ -50,30 +50,30 @@ void CFog::Initialize( FOG_MODE fog_mode, rgb color, float start, float end, flo
 void CFog::setEnable()
 {
 
-	// set fog mode
-	if ( mode == FOG_EXP )
-		glFogi( GL_FOG_MODE, GL_EXP );
-	else if ( mode == FOG_EXP2 )
-		glFogi( GL_FOG_MODE, GL_EXP2 );
-	else
-		glFogi( GL_FOG_MODE, GL_LINEAR );
+    // set fog mode
+    if ( mode == FOG_EXP )
+        glFogi( GL_FOG_MODE, GL_EXP );
+    else if ( mode == FOG_EXP2 )
+        glFogi( GL_FOG_MODE, GL_EXP2 );
+    else
+        glFogi( GL_FOG_MODE, GL_LINEAR );
 
-	// set fog color
-	float fc[] = { clr.r, clr.g, clr.b, 1.0f };
-	glFogfv( GL_FOG_COLOR, fc );
+    // set fog color
+    float fc[] = { clr.r, clr.g, clr.b, 1.0f };
+    glFogfv( GL_FOG_COLOR, fc );
 
-	// near and far plane
-	glFogf( GL_FOG_START, startz );
-	glFogf( GL_FOG_END, endz );
+    // near and far plane
+    glFogf( GL_FOG_START, startz );
+    glFogf( GL_FOG_END, endz );
 
-	// density
-	glFogf( GL_FOG_DENSITY, density );
+    // density
+    glFogf( GL_FOG_DENSITY, density );
 
-	// calcs performance
-	glHint( GL_FOG, GL_FASTEST ); // GL_DONT_CARE, GL_NICEST, GL_FASTEST
+    // calcs performance
+    glHint( GL_FOG, GL_FASTEST ); // GL_DONT_CARE, GL_NICEST, GL_FASTEST
 
-	// finally, enable fog
-	glEnable( GL_FOG );
+    // finally, enable fog
+    glEnable( GL_FOG );
 }
 
 
@@ -83,7 +83,7 @@ void CFog::setEnable()
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void CFog::setDisable()
 {
-	glDisable( GL_FOG );
+    glDisable( GL_FOG );
 }
 
 
@@ -93,10 +93,10 @@ void CFog::setDisable()
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void CFog::setLOD( bool bLOD )
 {
-	// simply change fog calculations
-	if ( bLOD )
-		glHint( GL_FOG, GL_FASTEST );
-	else
-		glHint( GL_FOG, GL_NICEST );
+    // simply change fog calculations
+    if ( bLOD )
+        glHint( GL_FOG, GL_FASTEST );
+    else
+        glHint( GL_FOG, GL_NICEST );
 }
 

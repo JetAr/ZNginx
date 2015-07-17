@@ -358,10 +358,12 @@ bool CD3DObj::initLights()
 
     // First we need to get the device's capabilites so we can determine
     // how many lights we can have
+    //z 看看最多可以设置多少 灯
     if(mInterface->GetDeviceCaps(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &caps) != D3D_OK)
         return false;
 
     // Store the maximum number of lights
+    //z 存储灯的数目
     mMaxLights = caps.MaxActiveLights;
 
     // Now we'll create an array of lights that is as big as

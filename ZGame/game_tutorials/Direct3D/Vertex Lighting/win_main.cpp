@@ -1,18 +1,22 @@
 ﻿// Done by TheTutor
 
+//z 光线
 /*	Lighting is a crucial component to making any graphics engine look nice.  This tutorial
 	is aimed at being the first step to understanding D3D lighting.
 
 	A D3D light comes in three main flavors.  Here's a quick break down of each:
-
+        
+        //z 点光源
 		Point Light - Also sometimes called an omni light.  This light is a point
 					  in space and it emanates light in all directions.  An example
 					  would be a fire.
-
+        
+        //z 射灯
 		Spot Light - A spot light emanates light in a focused direction within a
 					 limited cone.  An example (besides of course a spot light :) would
 					 be a flashlight.
 
+        //z 平行光
 		Directional Light -	This light emanates light in a specified direction.  It has
 							infinite distance for what it will light.  An example would be the sun.
 
@@ -20,25 +24,37 @@
 	a light.  Lets break down each member of the D3DLIGHT9 struct:
 
 	typedef struct _D3DLIGHT9 {
+        //z 灯光类型
 		D3DLIGHTTYPE Type; // Specifies the type of light.  Either point, spot or directional
+        //z 漫反射颜色分量
 		D3DCOLORVALUE Diffuse; // The diffuse color component of the light (the lights "color")
+        //z 高光颜色分量
 		D3DCOLORVALUE Specular; // The specular color component (shininess) of the light
+        //z 光的环境颜色
 		D3DCOLORVALUE Ambient; // The ambient color of the light (how much something not lit by the light
 							  // gets illuminated)
-		D3DVECTOR Position; // Where in world space the light is
+		//z 灯在世界坐标系中的位置
+        D3DVECTOR Position; // Where in world space the light is
+        //z 在 world space 中的方向，灯的朝向。
 		D3DVECTOR Direction; // The direction, in world space, the light is pointing
-		float Range; // The range in which a light will illuminate an object.  This parameter
+		//z 灯照亮 object 的范围
+        float Range; // The range in which a light will illuminate an object.  This parameter
 					// has no effect for directional lights
-		float Falloff; // For spot lights only, it's the falloff of light intensity between a
+		//z 灯强度在内锥和外锥间的衰减
+        float Falloff; // For spot lights only, it's the falloff of light intensity between a
 					  // spot lights inner cone and outer cone.  This is expensive!  It is generally
 					 // always kept at 1.0f
-		float Attenuation0; // Value specifying how much a light intensity changes over distance
+		//z 指定光强度随距离的衰减
+        //z 通常将0和2设置为0.0f，而将1设置为1.0f。这样光是线性变化的
+        float Attenuation0; // Value specifying how much a light intensity changes over distance
 		float Attenuation1; // Value specifying how much a light intensity changes over distance
 		float Attenuation2; // Value specifying how much a light intensity changes over distance
 							// **NOTE** You can play with these for different attenuation effects
 							// but it is most common to sent Attenuation0 and Attenuation2 to 0.0f
 							// and Attenuation1 to 1.0f.  This gives a linear light attenuation.
-		float Theta; // Angle, in radians of a spot light's inner cone
+		//z 角度，射灯内锥弧度
+        float Theta; // Angle, in radians of a spot light's inner cone
+        //z 角度，射灯外锥弧度
 		float Phi; // Angle, in radians of a spot light's outer cone
 	} D3DLIGHT9;
 
@@ -47,13 +63,17 @@
 			 working with lights in D3D is to look up the light struct in MSDN for all the nitty-
 			 gritty details :)
 
-	Now that we know how the D3D light struct is laid out, it is important to understand a little
+	//z 光效是由 vertex lighting 来完成的。每一个 vertex 的颜色是由场景中的等影响的。
+    //z 一般而言，一个 vertex 的光效值由点积（等的方向 vector 以及 each vertex 的 normal 的点积）决定
+    //z 必须为vertex定义一个 normal 。
+    Now that we know how the D3D light struct is laid out, it is important to understand a little
 	bit of how lighting works in D3D.  There are many factors involved to determine how a particular
 	object is lit, but ultimately lighting is done via vertex lighting.  This means that every vertex's
 	color is influenced by the lights (or lack of lights) in the scene.  In general, the lighting value
 	for a vertex is determined by a dot product between the light's direction vector and the normal of
 	each vertex.  You MUST have a normal defined for your vertex, or lighting will not work correctly.
-
+    
+    //z 光类型，光颜色， vertex color ， objects material 属性， 光的 position，range 和 atenuation 
 	Other factors that determine the final color of the vertex are:  light type, light color,
 	vertex color, an objects material properties, position/range/attenuation of light,
 	and direction of light.
@@ -184,8 +204,10 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprev, PSTR cmdline, int ishow
 
             g3D->begin(); // Begin drawing
             g3D->clear();
-
+            
+            //z 设置灯位置
             g3D->setLightPos(0, gLightPos); // Set the light position
+            //z 是否启用灯
             g3D->setLightActive(0, true); // Make the light active
             // **NOTE** You must do this to update the
             // D3D light's data

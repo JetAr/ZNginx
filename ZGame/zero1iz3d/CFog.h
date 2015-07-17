@@ -1,4 +1,4 @@
-// CFog.h -
+﻿// CFog.h -
 
 
 
@@ -10,7 +10,7 @@
 #define DEFAULT_DENSITY 0.025f
 
 /*
-   Some Technicals 
+   Some Technicals
    ----------------------
 
    end,start - kydeto maglata zapochva i svarshva
@@ -20,34 +20,34 @@
 */
 
 
-typedef enum	   
+typedef enum
 {
-	FOG_LINEAR,    // f = ( end - z ) / ( end - start )
-	FOG_EXP,	   // f = pow( e, -( density*z ) ) 
-	FOG_EXP2	   // f = pow( e, -( density*z )^2 )
+    FOG_LINEAR,    // f = ( end - z ) / ( end - start )
+    FOG_EXP,	   // f = pow( e, -( density*z ) )
+    FOG_EXP2	   // f = pow( e, -( density*z )^2 )
 } FOG_MODE;
 
 
-class CFog 
+class CFog
 {
 
 private:
 
-	rgb clr;
-	float density;
-	float startz, endz;
-	FOG_MODE mode;
+    rgb clr;
+    float density;
+    float startz, endz;
+    FOG_MODE mode;
 
 public:
 
-	CFog();
-	CFog( FOG_MODE fog_mode, rgb color, float start, float end, float dens = DEFAULT_DENSITY );
+    CFog();
+    CFog( FOG_MODE fog_mode, rgb color, float start, float end, float dens = DEFAULT_DENSITY );
 
-	void Initialize( FOG_MODE fog_mode, rgb color, float start, float end, float dens = DEFAULT_DENSITY );
-	void setEnable();
-	void setDisable();
-	void setLOD( bool bLOD );
+    void Initialize( FOG_MODE fog_mode, rgb color, float start, float end, float dens = DEFAULT_DENSITY );
+    void setEnable();
+    void setDisable();
+    void setLOD( bool bLOD );
 
 };
-	
+
 #endif

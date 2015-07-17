@@ -1,4 +1,4 @@
-// CTimer.cpp -
+﻿// CTimer.cpp -
 
 
 #include "main.h"
@@ -13,30 +13,30 @@
 /////////////////////////////////////////////////////////////////////////////////////////////
 void CTimer::Start()
 {
-	m_paused = false;
-	m_starttime = TICKS;
+    m_paused = false;
+    m_starttime = TICKS;
 }
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 //// Name: Pause()
-//// Desc: 
+//// Desc:
 /////////////////////////////////////////////////////////////////////////////////////////////
 void CTimer::Pause()
 {
-	m_paused = true;
-	m_pausestart = TICKS;
+    m_paused = true;
+    m_pausestart = TICKS;
 }
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 //// Name: Unpause()
-//// Desc: 
+//// Desc:
 /////////////////////////////////////////////////////////////////////////////////////////////
 void CTimer::Unpause()
 {
-	m_paused = false;
-	m_pausetime += TICKS - m_pausestart;
+    m_paused = false;
+    m_pausetime += TICKS - m_pausestart;
 }
 
 
@@ -46,13 +46,13 @@ void CTimer::Unpause()
 /////////////////////////////////////////////////////////////////////////////////////////////
 int CTimer::Time()
 {
-	int cur_time = TICKS;
-	int result = cur_time - m_pausetime;
+    int cur_time = TICKS;
+    int result = cur_time - m_pausetime;
 
-	if ( m_paused )
-		result -= cur_time - m_pausestart;
+    if ( m_paused )
+        result -= cur_time - m_pausestart;
 
-	return result - m_starttime;
+    return result - m_starttime;
 }
 
 
@@ -62,15 +62,15 @@ int CTimer::Time()
 /////////////////////////////////////////////////////////////////////////////////////////////
 bool CTimer::Elapsed( int &time_start, int interval )
 {
-	int cur_time = Time();
+    int cur_time = Time();
 
-	if ( cur_time > time_start + interval )
-	{
-		time_start = cur_time;
-		return true;
-	}
-	else 
-		return false;
+    if ( cur_time > time_start + interval )
+    {
+        time_start = cur_time;
+        return true;
+    }
+    else
+        return false;
 }
 
 
@@ -78,14 +78,14 @@ bool CTimer::Elapsed( int &time_start, int interval )
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 //// Name: CFrame()
-//// Desc: 
+//// Desc:
 /////////////////////////////////////////////////////////////////////////////////////////////
 CGameFrame::CGameFrame()
 {
-	timer = NULL;
-	frametime = lasttime = 0;
-	fps = frames = 0;
-	motion_frame = 0.0f;
+    timer = NULL;
+    frametime = lasttime = 0;
+    fps = frames = 0;
+    motion_frame = 0.0f;
 }
 
 
@@ -95,9 +95,9 @@ CGameFrame::CGameFrame()
 /////////////////////////////////////////////////////////////////////////////////////////////
 CGameFrame::CGameFrame( CTimer *Timer )
 {
-	frametime = lasttime = Timer->Time();
-	fps = frames = 0;
-	motion_frame = 0.0f;
+    frametime = lasttime = Timer->Time();
+    fps = frames = 0;
+    motion_frame = 0.0f;
 }
 
 
@@ -107,31 +107,31 @@ CGameFrame::CGameFrame( CTimer *Timer )
 /////////////////////////////////////////////////////////////////////////////////////////////
 void CGameFrame::Update()
 {
-	int now = timer->Time();
-	int diff = now - lasttime;
-	 
-	// get frames per second
-	if ( ( now - frametime ) >= 1000 )
-	{
-		fps = frames;
-		frames = 0;
-		frametime = now;
-	}
-	else
-		frames++;
+    int now = timer->Time();
+    int diff = now - lasttime;
 
-	/*diff = ( diff <= 0 ? 1 : diff );
-	if ( diff != 0 )
-		fps = ( (float)(1000.0 / diff) );*/
+    // get frames per second
+    if ( ( now - frametime ) >= 1000 )
+    {
+        fps = frames;
+        frames = 0;
+        frametime = now;
+    }
+    else
+        frames++;
+
+    /*diff = ( diff <= 0 ? 1 : diff );
+    if ( diff != 0 )
+    	fps = ( (float)(1000.0 / diff) );*/
 
 
-	// calculate motion frame
-	motion_frame = (float)diff / 1000.0f;
+    // calculate motion frame
+    motion_frame = (float)diff / 1000.0f;
 
-	// save last time-check
-	lasttime = now;	
+    // save last time-check
+    lasttime = now;
 }
-	
+
 
 
 

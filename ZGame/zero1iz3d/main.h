@@ -1,17 +1,17 @@
-// main.h -
+﻿// main.h -
 
 
 /*
 
-  KenamicK Entertainment 3D Engine 
-  
+  KenamicK Entertainment 3D Engine
+
   Engine Title: 'Zero1_IZ3D'
-  
+
   © 2004 Mar, April, May
-  
+
   http://www.kenamick.com/
 
-  -> v proces na razrabotka LoL: 
+  -> v proces na razrabotka LoL:
  ---------------------- points to follow
   * setting GL STATES e time-consuming	       -> opraveno s frequent lista v COpenGL.cpp
   * Polzvai Display Lists za static models     -> class completed
@@ -62,7 +62,7 @@ extern float g_sin[];
 #include "CParticle.h"
 #include "CBillBoard.h"
 #include "CFog.h"
-// system 
+// system
 #include "CTimer.h"
 #include "CDebug.h"
 

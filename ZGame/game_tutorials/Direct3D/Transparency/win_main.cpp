@@ -266,7 +266,7 @@ void UpdateAlpha()
         // which will zero out the first 8-bits of our color.  Then we
         // shift our alpha over 24-bits and binary OR it with the color which
         // will set the alpha bits in our color to our alpha value.
-        gCubeVerts[i].color &= 0x00FFFFFF;
+        gCubeVerts[i].color &= 0x00FFFFFF;//z 去除原来的 alpha 值，然后设置为255。
         gCubeVerts[i].color |= (alpha << 24);
     }
 
@@ -291,7 +291,7 @@ void UpdateAlpha()
 }
 
 // DirectXion
-
+//z 一个简单的例子
 /*
 	This tutorial was a mere introduction to blending in D3D.  There are several
 	other blend mode you can set for both source blending and dest blending.

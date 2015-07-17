@@ -1,4 +1,4 @@
-// CCamera.h -
+﻿// CCamera.h -
 
 
 #ifndef __CCAMERA_INCLUDED
@@ -21,30 +21,30 @@
 */
 
 
-class CCamera 
+class CCamera
 {
 
 public:
 
-	CVector  mv_pos;			// camera position
-	CVector  mv_view;			// view 
-	CVector  mv_up;				// up vector
-	CVector  mv_strafe;			// strafe vector
+    CVector  mv_pos;			// camera position
+    CVector  mv_view;			// view
+    CVector  mv_up;				// up vector
+    CVector  mv_strafe;			// strafe vector
 
 
-	CCamera();
+    CCamera();
 
-	void Reset();
-	void Translate( float, float, float );
-	void setPosition( float x, float y, float z,  float vx, float vy, float vz,  float ux, float uy, float uz );
-	void setPosition2D( float, float );
-	void LookAt();
-	void GetDirection( CVector &v );
-	void Move( float speed );
-	void Rotate( float angle, CVector v );
-	void Rotate( float angle, float , float , float );
-	void Strafe( float speed );
-	
+    void Reset();
+    void Translate( float, float, float );
+    void setPosition( float x, float y, float z,  float vx, float vy, float vz,  float ux, float uy, float uz );
+    void setPosition2D( float, float );
+    void LookAt();
+    void GetDirection( CVector &v );
+    void Move( float speed );
+    void Rotate( float angle, CVector v );
+    void Rotate( float angle, float , float , float );
+    void Strafe( float speed );
+
 
 };
 
