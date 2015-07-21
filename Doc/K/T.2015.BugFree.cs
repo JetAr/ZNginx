@@ -85,9 +85,10 @@
       L396, 24:R#.18   @3ds
       L405, 25:R#.19   @znote BookList
       L408, 26:todo 深入理解nginx redis设计与实现
-     Zndex_E : //z 2015-07-16 13:11:21 L.168'38919 T1395134381.K ~475 +----+----+----+----+----+
+     Zndex_E : //z 2015-07-21 17:26:44 L.163'23596 T4165843192.K ~511 +----+----+----+----+----+
      TimeCnt : //z 2015-07-16 13:11:21 L.168'38919 T1395134381.K ~21  +----+----+----+----+----+
-     Reg.Cnt : //z 2015-07-16 13:06:43 L.168'39197 T1394128213.K ~24  +----+----+----+----+----+
+     Reg.Cnt : //z 2015-07-21 13:07:21 L.163'39159 T3292602638.K ~25  +----+----+----+----+----+
+     #25  R+ : //z 2015-07-21 13:07:21 L.163'39159 T3292602638.K ~25    V+.501  L+.570  
      #24  R+ : //z 2015-07-16 13:06:43 L.168'39197 T1394128213.K ~24    V+.488  L+.528  
      #23  R+ : //z 2015-07-06 12:45:55 L.178'40445 T2164889881.K ~23    V+.474  L+.515  
      #22  R+ : //z 2015-07-02 15:24:43 L.182'30917 T1470713170.K ~22    V+.470  L+.509  
@@ -114,7 +115,10 @@
      #1   R+ : //z 2015-04-27 11:28:08 L.248'45112 T1418964727.K ~1     V+.3    L+.62   
      File.Op : //z 2015-06-18 08:36:17 L.196'55423 T2695262750.K ~1   +----+----+----+----+----+
      #1   O+ : //z 2015-06-18 08:36:17 L.196'55423 T2695262750.K ~1     V+.374  L+.1    
-     Version : //z 2015-07-16 13:11:21 L.168'38919 T1395134381.K ~499   R+.24   L+.564  --+----+
+     Version : //z 2015-07-21 17:26:44 L.163'23596 T4165843192.K ~536   R+.25   L+.595  --+----+
+     #28  V+ : //z 2015-07-21 13:36:42 L.163'37398 T3296124531.K ~532   R+.25   L+.570  
+     #27  V+ : //z 2015-07-21 13:16:25 L.163'38615 T3293752626.K ~513   R+.25   L+.579  
+     #26  R+ : //z 2015-07-21 13:07:21 L.163'39159 T3292602638.K ~501   R+.25   L+.571  V+.501  
      #26  V+ : //z 2015-07-16 13:07:09 L.168'39171 T1394164024.K ~494   R+.24   L+.532  
      #25  R+ : //z 2015-07-16 13:06:43 L.168'39197 T1394128213.K ~488   R+.24   L+.529  V+.488  
      #25  V+ : //z 2015-07-06 12:45:55 L.178'40445 T2164889881.K ~475   R+.23   L+.517  
@@ -563,3 +567,31 @@ http://poj.org/
 最近发现的一个比较有意思的论坛Hacker News： 
 https://news.ycombinator.com 
 #endregion //z 2015-07-16 13:06:43 L.168'39197 BG57IV3@XCL T1394128213.K.F4146951713-+----+----+
+
+#region 07-21 13:07 R#.25   @一些 game engine 
+01. 
+simple opengl engine. fast, simple opengl game engine
+https://code.google.com/p/sigelengine/
+
+simple multimedia engine with opengl 3.3 / 4.2
+https://code.google.com/p/axelynx/
+svn checkout http://axelynx.googlecode.com/svn/trunk/ axelynx
+svn checkout https://axelynx.googlecode.com/svn/trunk/ axelynx
+
+wrapping irrlicht engine for android
+svn checkout http://wrapirrlicht-for-android.googlecode.com/svn/trunk/ wrapirrlicht
+
+dangerdeep
+http://src.gnu-darwin.org/ports/games/dangerdeep/work/dangerdeep-0.3.0/src/
+http://sourceforge.net/projects/dangerdeep/files/0.4.0_pre3327/
+
+jlengine 3d MMORPG engine
+https://code.google.com/p/jlengine/
+
+tkogl -- TkOGL is a package extension to the Tcl scripting language that enables a user to utilize OpenGL
+http://hct.ece.ubc.ca/research/tkogl/#downloadSection3
+http://ftp.math.utah.edu/u/ma/hohn/linux/visualization/OpenGL/TkOGL/src/
+
+
+https://github.com/nmanjofo/fit-renderer
+#endregion //z 2015-07-21 13:07:21 L.163'39159 BG57IV3@XCL T3292602638.K.F4146951713-+----+----+
