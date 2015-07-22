@@ -85,7 +85,7 @@
       L396, 24:R#.18   @3ds
       L405, 25:R#.19   @znote BookList
       L408, 26:todo 深入理解nginx redis设计与实现
-     Zndex_E : //z 2015-07-21 17:26:44 L.163'23596 T4165843192.K ~511 +----+----+----+----+----+
+     Zndex_E : //z 2015-07-22 09:44:44 L.162'51316 T2855143162.K ~516 +----+----+----+----+----+
      TimeCnt : //z 2015-07-16 13:11:21 L.168'38919 T1395134381.K ~21  +----+----+----+----+----+
      Reg.Cnt : //z 2015-07-21 13:07:21 L.163'39159 T3292602638.K ~25  +----+----+----+----+----+
      #25  R+ : //z 2015-07-21 13:07:21 L.163'39159 T3292602638.K ~25    V+.501  L+.570  
@@ -115,7 +115,7 @@
      #1   R+ : //z 2015-04-27 11:28:08 L.248'45112 T1418964727.K ~1     V+.3    L+.62   
      File.Op : //z 2015-06-18 08:36:17 L.196'55423 T2695262750.K ~1   +----+----+----+----+----+
      #1   O+ : //z 2015-06-18 08:36:17 L.196'55423 T2695262750.K ~1     V+.374  L+.1    
-     Version : //z 2015-07-21 17:26:44 L.163'23596 T4165843192.K ~536   R+.25   L+.595  --+----+
+     Version : //z 2015-07-22 09:44:44 L.162'51316 T2855143162.K ~541   R+.25   L+.599  --+----+
      #28  V+ : //z 2015-07-21 13:36:42 L.163'37398 T3296124531.K ~532   R+.25   L+.570  
      #27  V+ : //z 2015-07-21 13:16:25 L.163'38615 T3293752626.K ~513   R+.25   L+.579  
      #26  R+ : //z 2015-07-21 13:07:21 L.163'39159 T3292602638.K ~501   R+.25   L+.571  V+.501  
@@ -592,6 +592,9 @@ tkogl -- TkOGL is a package extension to the Tcl scripting language that enables
 http://hct.ece.ubc.ca/research/tkogl/#downloadSection3
 http://ftp.math.utah.edu/u/ma/hohn/linux/visualization/OpenGL/TkOGL/src/
 
-
+fit-renderer
 https://github.com/nmanjofo/fit-renderer
+
+mihu-racing
+svn checkout http://mihu-racing.googlecode.com/svn/trunk/ mihu-racing-read-only
 #endregion //z 2015-07-21 13:07:21 L.163'39159 BG57IV3@XCL T3292602638.K.F4146951713-+----+----+
