@@ -484,3 +484,59 @@ Changes to be committed:
 	modified:   Doc/K/T.2015.BugFree.cs
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+dx10.2015/07/26.23_56_58.71.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	new file:   ZGame/DX10/47.Picking/dx10exe47/Engine/Engine.exe
+	new file:   ZGame/DX10/47.Picking/dx10exe47/Engine/data/blue.dds
+	new file:   ZGame/DX10/47.Picking/dx10exe47/Engine/data/font.dds
+	new file:   ZGame/DX10/47.Picking/dx10exe47/Engine/data/fontdata.txt
+	new file:   ZGame/DX10/47.Picking/dx10exe47/Engine/data/mouse.dds
+	new file:   ZGame/DX10/47.Picking/dx10exe47/Engine/data/sphere.txt
+	new file:   ZGame/DX10/47.Picking/dx10exe47/Engine/font.fx
+	new file:   ZGame/DX10/47.Picking/dx10exe47/Engine/light.fx
+	new file:   ZGame/DX10/47.Picking/dx10exe47/Engine/texture.fx
+	new file:   ZGame/DX10/47.Picking/dx10src47/data/blue.dds
+	new file:   ZGame/DX10/47.Picking/dx10src47/data/font.dds
+	new file:   ZGame/DX10/47.Picking/dx10src47/data/fontdata.txt
+	new file:   ZGame/DX10/47.Picking/dx10src47/data/mouse.dds
+	new file:   ZGame/DX10/47.Picking/dx10src47/data/sphere.txt
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/applicationclass.cpp
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/applicationclass.h
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/bitmapclass.cpp
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/bitmapclass.h
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/cameraclass.cpp
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/cameraclass.h
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/d3dclass.cpp
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/d3dclass.h
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/font.fx
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/fontclass.cpp
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/fontclass.h
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/fontshaderclass.cpp
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/fontshaderclass.h
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/inputclass.cpp
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/inputclass.h
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/light.fx
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/lightclass.cpp
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/lightclass.h
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/lightshaderclass.cpp
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/lightshaderclass.h
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/main.cpp
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/modelclass.cpp
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/modelclass.h
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/systemclass.cpp
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/systemclass.h
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/textclass.cpp
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/textclass.h
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/texture.fx
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/textureclass.cpp
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/textureclass.h
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/textureshaderclass.cpp
+	new file:   ZGame/DX10/47.Picking/dx10src47/source/textureshaderclass.h
+
