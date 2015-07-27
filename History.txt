@@ -540,3 +540,15 @@ Changes to be committed:
 	new file:   ZGame/DX10/47.Picking/dx10src47/source/textureshaderclass.cpp
 	new file:   ZGame/DX10/47.Picking/dx10src47/source/textureshaderclass.h
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+dx10.2015/07/27.16_38_11.39.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/applicationclass.cpp
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/fontclass.cpp
+

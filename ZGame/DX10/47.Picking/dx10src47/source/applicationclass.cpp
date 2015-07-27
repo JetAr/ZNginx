@@ -372,7 +372,7 @@ bool ApplicationClass::Render()
 	return true;
 }
 
-
+//z 2015-07-27 10:18 计算是否相交
 void ApplicationClass::TestIntersection(int mouseX, int mouseY)
 {
 	float pointX, pointY;

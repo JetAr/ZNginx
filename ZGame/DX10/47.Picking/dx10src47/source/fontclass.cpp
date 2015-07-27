@@ -186,6 +186,7 @@ void FontClass::BuildVertexArray(void* vertices, char* sentence, float drawX, fl
 		}
 		else
 		{
+            //z 保存texture的作用是啥？
 			// First triangle in quad.
 			vertexPtr[index].position = D3DXVECTOR3(drawX, drawY, 0.0f);  // Top left.
 			vertexPtr[index].texture = D3DXVECTOR2(m_Font[letter].left, 0.0f);
