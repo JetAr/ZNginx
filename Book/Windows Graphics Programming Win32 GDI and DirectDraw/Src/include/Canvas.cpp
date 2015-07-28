@@ -42,35 +42,35 @@ void KCanvas::OnDraw(HDC hDC, const RECT * rcPaint)
 // called by CFrame::OnCommand
 BOOL KCanvas::OnCommand(WPARAM wParam, LPARAM lParam)
 {
-	return FALSE;	// not processed
+    return FALSE;	// not processed
 }
 
 
 LRESULT KCanvas::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	switch( uMsg )
-	{
-		case WM_CREATE:
-			m_hWnd = hWnd;
+    switch( uMsg )
+    {
+    case WM_CREATE:
+        m_hWnd = hWnd;
 
-			return 0;
+        return 0;
 
-		case WM_PAINT:
-			{
-				PAINTSTRUCT ps; 
+    case WM_PAINT:
+    {
+        PAINTSTRUCT ps;
 
-				HDC hDC = BeginPaint(m_hWnd, &ps);
+        HDC hDC = BeginPaint(m_hWnd, &ps);
 
-				OnDraw(hDC, & ps.rcPaint);
+        OnDraw(hDC, & ps.rcPaint);
 
-				EndPaint(m_hWnd, &ps);
-			}
-			return 0;
+        EndPaint(m_hWnd, &ps);
+    }
+    return 0;
 
-		case WM_COMMAND:
-			if ( OnCommand(wParam, lParam) )
-				return 0;
-	}
+    case WM_COMMAND:
+        if ( OnCommand(wParam, lParam) )
+            return 0;
+    }
 
-	return DefWindowProc(hWnd, uMsg, wParam, lParam);
+    return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }

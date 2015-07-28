@@ -20,109 +20,109 @@
 
 class KParser
 {
-	typedef enum { MAX_TYPES = 512,
-				   MAX_NAMELEN = 64
-				};
-	HANDLE str;
-	HANDLE hmap;
-	char * view;
-	
-	int	   size;
-	int	   pos;
+    typedef enum { MAX_TYPES = 512,
+                   MAX_NAMELEN = 64
+                 };
+    HANDLE str;
+    HANDLE hmap;
+    char * view;
 
-	char   typnam[MAX_TYPES][MAX_NAMELEN];
-	int	   types;
+    int	   size;
+    int	   pos;
+
+    char   typnam[MAX_TYPES][MAX_NAMELEN];
+    int	   types;
 
 public:
 
-	bool Open(const char * file)
-	{
-		str = CreateFile(file, 
-					       GENERIC_READ, FILE_SHARE_READ, NULL,
-					           OPEN_EXISTING,
-					           FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN, NULL);
+    bool Open(const char * file)
+    {
+        str = CreateFile(file,
+                         GENERIC_READ, FILE_SHARE_READ, NULL,
+                         OPEN_EXISTING,
+                         FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN, NULL);
 
-		if ( str == INVALID_HANDLE_VALUE )
-			return false;
+        if ( str == INVALID_HANDLE_VALUE )
+            return false;
 
-		size = GetFileSize(str, NULL);
+        size = GetFileSize(str, NULL);
 
-		hmap = CreateFileMapping(str, NULL, PAGE_READONLY, 0, 0, NULL);
+        hmap = CreateFileMapping(str, NULL, PAGE_READONLY, 0, 0, NULL);
 
-		if ( hmap )
-			view = (char *) MapViewOfFile(hmap, FILE_MAP_READ, 0, 0, 0);
+        if ( hmap )
+            view = (char *) MapViewOfFile(hmap, FILE_MAP_READ, 0, 0, 0);
 
-		ch = ' ';
-		pos = 0;
+        ch = ' ';
+        pos = 0;
 
-		types = 0;
+        types = 0;
 
-		return true;
-	}
+        return true;
+    }
 
-	char ch;
-	char token[MAX_PATH];
+    char ch;
+    char token[MAX_PATH];
 
-	void Close(void)
-	{
-		UnmapViewOfFile(view);
-		CloseHandle(hmap);
-		CloseHandle(str);
-	}
+    void Close(void)
+    {
+        UnmapViewOfFile(view);
+        CloseHandle(hmap);
+        CloseHandle(str);
+    }
 
-	bool Eof(void)
-	{
-		return pos >= size;
-	}
+    bool Eof(void)
+    {
+        return pos >= size;
+    }
 
-	bool Equal(const char *check);
+    bool Equal(const char *check);
 
-	void Nextch(void);
-	void NextToken(void);
+    void Nextch(void);
+    void NextToken(void);
 
-	void CheckType(char *word);
-	void CheckTypes(char * line);
-	void DumpTypes();
-	
-	void CheckAPI(void);
+    void CheckType(char *word);
+    void CheckTypes(char * line);
+    void DumpTypes();
+
+    void CheckAPI(void);
 };
 
 
 void KParser::CheckType(char * word)
 {
-	while ( * word==' ' )
-		word ++;
+    while ( * word==' ' )
+        word ++;
 
-	int len = strlen(word);
+    int len = strlen(word);
 
-	while ( len && word[len-1]==' ' )
-	{
-		len --;
-		word[len]=0;
-	}
+    while ( len && word[len-1]==' ' )
+    {
+        len --;
+        word[len]=0;
+    }
 
-	if ( len==0 )
-		return;
+    if ( len==0 )
+        return;
 
-	for (int i=0; i<types; i++)
-		if ( strcmp(word, typnam[i])==0 )
-			return;
+    for (int i=0; i<types; i++)
+        if ( strcmp(word, typnam[i])==0 )
+            return;
 
-	strcpy(typnam[types], word);
-	types ++;
+    strcpy(typnam[types], word);
+    types ++;
 }
 
 
 void KParser::DumpTypes(void)
 {
-	printf("\n");
-	printf("[Types]\n");
+    printf("\n");
+    printf("[Types]\n");
 
-	for (int i=0; i<types; i++)
-	{
-		printf(typnam[i]);
-	    printf("\n");
-	}
+    for (int i=0; i<types; i++)
+    {
+        printf(typnam[i]);
+        printf("\n");
+    }
 }
 
 
@@ -130,155 +130,155 @@ void KParser::DumpTypes(void)
 //      ^15
 void KParser::CheckTypes(char * line)
 {
-	line[14] = 0;
+    line[14] = 0;
 
-	CheckType(line);
+    CheckType(line);
 
-	line = strchr(line+15, '(');
+    line = strchr(line+15, '(');
 
-	if ( line )
-	{
-		line ++;
-		char * p;
+    if ( line )
+    {
+        line ++;
+        char * p;
 
-		while ( p = strchr(line, ',') )
-		{
-			* p = 0;
-			CheckType(line);
+        while ( p = strchr(line, ',') )
+        {
+            * p = 0;
+            CheckType(line);
 
-			line = p+1;
-		}
+            line = p+1;
+        }
 
-		p = strchr(line, ')');
+        p = strchr(line, ')');
 
-		if ( p )
-		{
-			* p = 0;
-			CheckType(line);
-		}
-	}
+        if ( p )
+        {
+            * p = 0;
+            CheckType(line);
+        }
+    }
 }
 
 
 void KParser::Nextch(void)
 {
     do
-    { 
-		ch = * view ++; 
-		pos ++;
-	}
+    {
+        ch = * view ++;
+        pos ++;
+    }
     while (ch=='\r');   // skip '\r'
-    
-    if ( ch=='\t' ) 
-		ch=' ';         // map tab to space
+
+    if ( ch=='\t' )
+        ch=' ';         // map tab to space
 }
 
 
 void KParser::NextToken(void)
 {
 again:
-	token[0] = 0;
+    token[0] = 0;
 
-	if ( Eof() )
-		return;
+    if ( Eof() )
+        return;
 
-	while ( ch==' ' )
-		Nextch();
+    while ( ch==' ' )
+        Nextch();
 
-	if ( ch=='\n' )
-	{
-		token[0] = ch;
-		token[1] = 0;
+    if ( ch=='\n' )
+    {
+        token[0] = ch;
+        token[1] = 0;
 
-		Nextch();
-		return;
-	}
-	
-	if ( ch=='/' )
-	{
-		Nextch();
-	
-		if ( ch=='/' )				// single line commented
-		{
-			while ( ch!='\n') 
-				Nextch();
-			Nextch();
-			goto again;
-		}
+        Nextch();
+        return;
+    }
 
-		if ( ch=='*' )				// block comment /* ... */, nesting not allowed
-		{
-			Nextch();
-			
-		more:
-			while ( ch!='*')
-				Nextch();
+    if ( ch=='/' )
+    {
+        Nextch();
 
-			Nextch();
-			if ( ch=='/' )
-			{
-				Nextch();
-				goto again;
-			}
-			else
-				goto more;
-		}
+        if ( ch=='/' )				// single line commented
+        {
+            while ( ch!='\n')
+                Nextch();
+            Nextch();
+            goto again;
+        }
 
-		token[0] = '/';
-		token[1] = 0;
+        if ( ch=='*' )				// block comment /* ... */, nesting not allowed
+        {
+            Nextch();
 
-		return;
-	}
+more:
+            while ( ch!='*')
+                Nextch();
 
-	int len = 0;
-	
-	// simple single character delimiters
-	switch ( ch )
-	{
-		case '(':
-		case ')':
-		case ',':
-		case ';':
-		case '[':
-		case ']':
-		case '+':
-		case '*': 
-			token[len++] = ch;
-			token[len] = 0;
-			Nextch();
-			return;
-	}
-	
-	// identifiers or keywords
-	if ( (ch=='_') || isalpha(ch) )
-	{
-		token[len++] = ch;
-		Nextch();
+            Nextch();
+            if ( ch=='/' )
+            {
+                Nextch();
+                goto again;
+            }
+            else
+                goto more;
+        }
 
-		while ( (ch=='_') || isalpha(ch) || isdigit(ch) )
-		{
-			token[len++] = ch;
-			Nextch();
-		}
+        token[0] = '/';
+        token[1] = 0;
 
-		token[len] = 0;
-		return;
-	}
+        return;
+    }
 
-	// others
-	while ( (ch!=' ') && (ch!='\n') )
-	{
-		token[len++] = ch;
-		Nextch();
-	}
+    int len = 0;
 
-	token[len] = 0;
+    // simple single character delimiters
+    switch ( ch )
+    {
+    case '(':
+    case ')':
+    case ',':
+    case ';':
+    case '[':
+    case ']':
+    case '+':
+    case '*':
+        token[len++] = ch;
+        token[len] = 0;
+        Nextch();
+        return;
+    }
+
+    // identifiers or keywords
+    if ( (ch=='_') || isalpha(ch) )
+    {
+        token[len++] = ch;
+        Nextch();
+
+        while ( (ch=='_') || isalpha(ch) || isdigit(ch) )
+        {
+            token[len++] = ch;
+            Nextch();
+        }
+
+        token[len] = 0;
+        return;
+    }
+
+    // others
+    while ( (ch!=' ') && (ch!='\n') )
+    {
+        token[len++] = ch;
+        Nextch();
+    }
+
+    token[len] = 0;
 }
 
 
 bool KParser::Equal(const char * check)
 {
-	return strcmp(token, check)==0;
+    return strcmp(token, check)==0;
 }
 
 
@@ -289,175 +289,175 @@ bool KParser::Equal(const char * check)
 
 void KParser::CheckAPI(void)
 {
-	NextToken();
+    NextToken();
 
-	// first token after a new line
-	if ( Equal("DECLARE_INTERFACE_") )
-	{
-		NextToken();		// (
-		NextToken();		// interface name
+    // first token after a new line
+    if ( Equal("DECLARE_INTERFACE_") )
+    {
+        NextToken();		// (
+        NextToken();		// interface name
 
-		printf("\n[%s]\n", token);
+        printf("\n[%s]\n", token);
 
-		return;
-	}
+        return;
+    }
 
-	// <newline> WINGDIAPI
-	char line[MAX_PATH];
-	
-	line[0] = 0;
+    // <newline> WINGDIAPI
+    char line[MAX_PATH];
 
-	int isapi = 0;
-	
-	int identadmit = 100;
+    line[0] = 0;
 
-	while ( ! Eof() && (isapi || token[0]!='\n') )
-	{
-		// rejecting pragmas
-		if ( Equal("#define") || Equal("#ifdef") || Equal("#ifndef") ||
-			 Equal("#else") || Equal("#endif") || Equal("typedef") 
-		   )
-			return;
+    int isapi = 0;
 
-		// API signals
-		if ( Equal("WINGDIAPI") || Equal("WINUSERAPI") || 
-			 Equal("WINAPI") || Equal("APIENTRY") )
-		{
-			isapi = true;
-			NextToken();
-			continue;
-		}
+    int identadmit = 100;
 
-		//  STDMETHOD(QueryInterface) (THIS_ REFIID riid, LPVOID FAR * ppvObj) PURE;
-		if ( Equal("STDMETHOD") )
-		{
-			isapi = true;
-
-			NextToken(); // (
-			strcat(line, "HRESULT");
-			while ( strlen(line)<15 )
-				strcat(line, " ");
-
-			NextToken();			// name
-			strcat(line, token);
-			NextToken();		// )
-
-			NextToken();		// (
-		}
-
-		// STDMETHOD_(ULONG,AddRef) (THIS)  PURE;
-		if ( Equal("STDMETHOD_") )
-		{
-			isapi = true;
-
-			NextToken(); // (
-			NextToken(); // type
-			strcat(line, token);
-			while ( strlen(line)<15 )
-				strcat(line, " ");
-
-			NextToken();			// ,
-			NextToken();			// name
-			strcat(line, token);
-			NextToken();		// )
-
-			NextToken();		// (
-		}
-	
-		if ( Equal("THIS_") )
-		{
-			strcat(line, "THIS");
-			strcpy(token, ",");
-		}
-
-		// skipped words
-		if ( Equal("IN")	   || Equal("OUT") || 
-			 Equal("CONST") || Equal("FAR")  || 
-			 Equal("extern")   || Equal("PURE") ||
-			 token[0]=='\n'     
+    while ( ! Eof() && (isapi || token[0]!='\n') )
+    {
+        // rejecting pragmas
+        if ( Equal("#define") || Equal("#ifdef") || Equal("#ifndef") ||
+                Equal("#else") || Equal("#endif") || Equal("typedef")
            )
-		{
-			NextToken();
-			continue;
-		}
+            return;
 
-		// ; is the end
-		if ( token[0] == ';' )
-		{
-			if ( isapi )
-			{
-				printf(line);
-				printf("\n");
+        // API signals
+        if ( Equal("WINGDIAPI") || Equal("WINUSERAPI") ||
+                Equal("WINAPI") || Equal("APIENTRY") )
+        {
+            isapi = true;
+            NextToken();
+            continue;
+        }
 
-				CheckTypes(line);
-			}
+        //  STDMETHOD(QueryInterface) (THIS_ REFIID riid, LPVOID FAR * ppvObj) PURE;
+        if ( Equal("STDMETHOD") )
+        {
+            isapi = true;
 
-			NextToken();
-			return;
-		}
+            NextToken(); // (
+            strcat(line, "HRESULT");
+            while ( strlen(line)<15 )
+                strcat(line, " ");
 
-		char copy[MAX_PATH];
-		strcpy(copy, token);
+            NextToken();			// name
+            strcat(line, token);
+            NextToken();		// )
 
-		NextToken();
+            NextToken();		// (
+        }
 
-		// before adding '(', add space to function name
-		if ( token[0]=='(' )
-			while ( strlen(line)<15 )
-				strcat(line, " ");
+        // STDMETHOD_(ULONG,AddRef) (THIS)  PURE;
+        if ( Equal("STDMETHOD_") )
+        {
+            isapi = true;
 
-		// skip parameter name
-		if ( copy[0]=='_' || isalpha(copy[0]) )
-		{
-			if ( identadmit )
-			{
-				identadmit --;
-				strcat(line, copy);
-			}
-		}
-		else
-			strcat(line, copy);
+            NextToken(); // (
+            NextToken(); // type
+            strcat(line, token);
+            while ( strlen(line)<15 )
+                strcat(line, " ");
 
-		// after '(' or ',', one identifier only
-		if ( copy[0]=='(' || copy[0]==',' )
-			identadmit = 1;
-	}
-}			
+            NextToken();			// ,
+            NextToken();			// name
+            strcat(line, token);
+            NextToken();		// )
+
+            NextToken();		// (
+        }
+
+        if ( Equal("THIS_") )
+        {
+            strcat(line, "THIS");
+            strcpy(token, ",");
+        }
+
+        // skipped words
+        if ( Equal("IN")	   || Equal("OUT") ||
+                Equal("CONST") || Equal("FAR")  ||
+                Equal("extern")   || Equal("PURE") ||
+                token[0]=='\n'
+           )
+        {
+            NextToken();
+            continue;
+        }
+
+        // ; is the end
+        if ( token[0] == ';' )
+        {
+            if ( isapi )
+            {
+                printf(line);
+                printf("\n");
+
+                CheckTypes(line);
+            }
+
+            NextToken();
+            return;
+        }
+
+        char copy[MAX_PATH];
+        strcpy(copy, token);
+
+        NextToken();
+
+        // before adding '(', add space to function name
+        if ( token[0]=='(' )
+            while ( strlen(line)<15 )
+                strcat(line, " ");
+
+        // skip parameter name
+        if ( copy[0]=='_' || isalpha(copy[0]) )
+        {
+            if ( identadmit )
+            {
+                identadmit --;
+                strcat(line, copy);
+            }
+        }
+        else
+            strcat(line, copy);
+
+        // after '(' or ',', one identifier only
+        if ( copy[0]=='(' || copy[0]==',' )
+            identadmit = 1;
+    }
+}
 
 
 int main( int argc, char *argv[ ], char *envp[ ] )
 {
-	KParser parser;
+    KParser parser;
 
-	if ( argc<2 )
-	{
-		printf("Skimmer: extracts function prototypes from Windows API header file\n");
-		printf("Usage: skimmer <headerfilename>\n");
-		return -1;
-	}
+    if ( argc<2 )
+    {
+        printf("Skimmer: extracts function prototypes from Windows API header file\n");
+        printf("Usage: skimmer <headerfilename>\n");
+        return -1;
+    }
 
-	if ( !parser.Open(argv[1]) )
-	{
-		printf("Unable to open %s.\n", argv[1]);
-		return -1;
-	}
+    if ( !parser.Open(argv[1]) )
+    {
+        printf("Unable to open %s.\n", argv[1]);
+        return -1;
+    }
 
-	parser.token[0] = '\n';
-	parser.token[1] = 0;
+    parser.token[0] = '\n';
+    parser.token[1] = 0;
 
-	printf("[%s]\n", argv[1]);
+    printf("[%s]\n", argv[1]);
 
-	while ( ! parser.Eof() )
-	{
-		if ( parser.token[0] == '\n' ) // starting with a newline, check API
-			parser.CheckAPI();
-		else
-			parser.NextToken();
-	}
-	
-	parser.DumpTypes();
+    while ( ! parser.Eof() )
+    {
+        if ( parser.token[0] == '\n' ) // starting with a newline, check API
+            parser.CheckAPI();
+        else
+            parser.NextToken();
+    }
 
-	parser.Close();
+    parser.DumpTypes();
 
-	return 0;
+    parser.Close();
+
+    return 0;
 }

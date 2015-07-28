@@ -30,31 +30,31 @@
 
 class KMain : public KPropertySheet
 {
-	KHGDIOBJ            m_HGDIOBJ;
-	KLocateGdiTablePage m_FindTable;
-	KDecodeTablePage    m_DecodeTable;
+    KHGDIOBJ            m_HGDIOBJ;
+    KLocateGdiTablePage m_FindTable;
+    KDecodeTablePage    m_DecodeTable;
 
-public: 
+public:
 
-	void Run(HINSTANCE hInst)
-	{
-		if ( ! m_DecodeTable.IsGDITableAccessible() )
-			return;
+    void Run(HINSTANCE hInst)
+    {
+        if ( ! m_DecodeTable.IsGDITableAccessible() )
+            return;
 
         HPROPSHEETPAGE hPage[3];
 
-		m_FindTable.Initialize(hInst);
-		m_DecodeTable.m_hInst = hInst;
+        m_FindTable.Initialize(hInst);
+        m_DecodeTable.m_hInst = hInst;
 
-		hPage[0] = m_HGDIOBJ.createPropertySheetPage(hInst, IDD_DECODEHANDLE);
+        hPage[0] = m_HGDIOBJ.createPropertySheetPage(hInst, IDD_DECODEHANDLE);
         hPage[1] = m_FindTable.createPropertySheetPage(hInst, IDD_LOCATETABLE);
-		hPage[2] = m_DecodeTable.createPropertySheetPage(hInst, IDD_DECODETABLE);
+        hPage[2] = m_DecodeTable.createPropertySheetPage(hInst, IDD_DECODETABLE);
 
-		TCHAR Title[MAX_PATH];
+        TCHAR Title[MAX_PATH];
         wsprintf(Title, "GDI Handles - (process 0x%X)", GetCurrentProcessId());
-        
-		propertySheet(hInst, NULL, IDI_GDIHANDLES, 3, hPage, Title);
-	}
+
+        propertySheet(hInst, NULL, IDI_GDIHANDLES, 3, hPage, Title);
+    }
 
 };
 
@@ -62,16 +62,16 @@ void Test(void);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 {
-	KMain    main;
+    KMain    main;
 
-	GetStockObject(BLACK_PEN);
+    GetStockObject(BLACK_PEN);
 
     Test();
 
-	InitCommonControls();
+    InitCommonControls();
 
 
-	main.Run(hInstance);
+    main.Run(hInstance);
 
-	return TRUE;
-}	
+    return TRUE;
+}

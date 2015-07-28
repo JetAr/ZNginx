@@ -30,99 +30,103 @@
 
 class KFixedString
 {
-	int	  m_len;
+    int	  m_len;
 
 public:
 
-	TCHAR m_buffer[MAX_PATH];
+    TCHAR m_buffer[MAX_PATH];
 
-	KFixedString(void)
-	{
-		m_buffer[0] = 0;
-		m_len       = 0;
-	}
+    KFixedString(void)
+    {
+        m_buffer[0] = 0;
+        m_len       = 0;
+    }
 
-	void Add(TCHAR ch)
-	{
-		m_buffer[m_len++] = ch;
-		m_buffer[m_len  ] = 0;
-	}
+    void Add(TCHAR ch)
+    {
+        m_buffer[m_len++] = ch;
+        m_buffer[m_len  ] = 0;
+    }
 
-	void Add(PCTSTR pStr)
-	{
-		_tcscat(m_buffer + m_len, pStr);
+    void Add(PCTSTR pStr)
+    {
+        _tcscat(m_buffer + m_len, pStr);
 
-		m_len += _tcslen(pStr);
-	}
+        m_len += _tcslen(pStr);
+    }
 
-	void Add(int i)
-	{
-		wsprintf(m_buffer + m_len, "%d ", i);
-		m_len = _tcslen(m_buffer);
-	}
+    void Add(int i)
+    {
+        wsprintf(m_buffer + m_len, "%d ", i);
+        m_len = _tcslen(m_buffer);
+    }
 
-	void Add(int x, int y)
-	{
-		wsprintf(m_buffer + m_len, "(%d, %d)", x, y);
+    void Add(int x, int y)
+    {
+        wsprintf(m_buffer + m_len, "(%d, %d)", x, y);
 
-		m_len = _tcslen(m_buffer);
-	}
+        m_len = _tcslen(m_buffer);
+    }
 };
 
 
 void DumpMapMode(HDC hDC)
 {
-	POINT p;
-	SIZE  s;
-	KFixedString str;
+    POINT p;
+    SIZE  s;
+    KFixedString str;
 
-	str.Add( GetMapMode(hDC) );
+    str.Add( GetMapMode(hDC) );
 
-	str.Add( GetDeviceCaps(hDC, HORZSIZE) );
-	str.Add( GetDeviceCaps(hDC, VERTSIZE) );
-	
-	str.Add( GetDeviceCaps(hDC, HORZRES) );
-	str.Add( GetDeviceCaps(hDC, VERTRES) );
-	str.Add( GetDeviceCaps(hDC, LOGPIXELSX) );
-	str.Add( GetDeviceCaps(hDC, LOGPIXELSY) );
+    str.Add( GetDeviceCaps(hDC, HORZSIZE) );
+    str.Add( GetDeviceCaps(hDC, VERTSIZE) );
 
-	GetWindowOrgEx(hDC, & p); str.Add(p.x, p.y);
-	GetWindowExtEx(hDC, & s); str.Add(s.cx, s.cy);
+    str.Add( GetDeviceCaps(hDC, HORZRES) );
+    str.Add( GetDeviceCaps(hDC, VERTRES) );
+    str.Add( GetDeviceCaps(hDC, LOGPIXELSX) );
+    str.Add( GetDeviceCaps(hDC, LOGPIXELSY) );
 
-	GetViewportOrgEx(hDC, & p); str.Add(p.x, p.y);
-	GetViewportExtEx(hDC, & s); str.Add(s.cx, s.cy);
+    GetWindowOrgEx(hDC, & p);
+    str.Add(p.x, p.y);
+    GetWindowExtEx(hDC, & s);
+    str.Add(s.cx, s.cy);
 
-	MessageBox(NULL, str.m_buffer, "Map mode", MB_OK);
+    GetViewportOrgEx(hDC, & p);
+    str.Add(p.x, p.y);
+    GetViewportExtEx(hDC, & s);
+    str.Add(s.cx, s.cy);
+
+    MessageBox(NULL, str.m_buffer, "Map mode", MB_OK);
 }
 
 
 void SetEnglish(HDC hDC)
 {
-	SetWindowOrgEx(hDC, 5, 5, NULL);
-	SetViewportOrgEx(hDC, 10, 10, NULL);
+    SetWindowOrgEx(hDC, 5, 5, NULL);
+    SetViewportOrgEx(hDC, 10, 10, NULL);
 
-	SetMapMode(hDC, MM_TEXT);
-	DumpMapMode(hDC);
-	
-	SetMapMode(hDC, MM_ISOTROPIC);
-	DumpMapMode(hDC);
-	
-	SetWindowExtEx(hDC, 3, 5, NULL);
+    SetMapMode(hDC, MM_TEXT);
+    DumpMapMode(hDC);
 
-	DumpMapMode(hDC);
+    SetMapMode(hDC, MM_ISOTROPIC);
+    DumpMapMode(hDC);
 
-	SetViewportExtEx(hDC, 5, 3, NULL);
+    SetWindowExtEx(hDC, 3, 5, NULL);
 
-	DumpMapMode(hDC);
+    DumpMapMode(hDC);
 
-	SetMapMode(hDC, MM_ANISOTROPIC);
-	BOOL rslt = SetViewportExtEx(hDC, 1, 1, NULL);
-	
-	DumpMapMode(hDC);
+    SetViewportExtEx(hDC, 5, 3, NULL);
 
-	rslt = SetViewportExtEx(hDC, 0, 0, NULL);
-	
-	DumpMapMode(hDC);
+    DumpMapMode(hDC);
+
+    SetMapMode(hDC, MM_ANISOTROPIC);
+    BOOL rslt = SetViewportExtEx(hDC, 1, 1, NULL);
+
+    DumpMapMode(hDC);
+
+    rslt = SetViewportExtEx(hDC, 0, 0, NULL);
+
+    DumpMapMode(hDC);
 
 }
 
@@ -130,139 +134,139 @@ void SetEnglish(HDC hDC)
 // Demonstrate world transformation using dotted-lines
 void Transform_DottedLine(HDC hDC, int width, int height)
 {
-	KAffine af;
+    KAffine af;
 
-	SetMapMode(hDC, MM_ANISOTROPIC);
-	SetWindowExtEx  (hDC, 1, 1,				   NULL); // default
-	SetWindowOrgEx  (hDC, 0, 0,				   NULL);
-	
-	SetViewportExtEx(hDC, 1, -1,			   NULL); // y axis goes up
-	SetViewportOrgEx(hDC, width/2, height*3/4, NULL); // 1/2, 3/4
+    SetMapMode(hDC, MM_ANISOTROPIC);
+    SetWindowExtEx  (hDC, 1, 1,				   NULL); // default
+    SetWindowOrgEx  (hDC, 0, 0,				   NULL);
 
-	SetGraphicsMode(hDC, GM_ADVANCED);				  // using world coordinate space	
+    SetViewportExtEx(hDC, 1, -1,			   NULL); // y axis goes up
+    SetViewportOrgEx(hDC, width/2, height*3/4, NULL); // 1/2, 3/4
 
-	for (int i=0; i<=72*5; i++)
-	{
-		SetWorldTransform(hDC, & af.m_xm);		// set transformation 
+    SetGraphicsMode(hDC, GM_ADVANCED);				  // using world coordinate space
 
-		for (int x=0; x<=200; x+=3)				// dotted line
-			SetPixel(hDC, x+50, 0, 0);
+    for (int i=0; i<=72*5; i++)
+    {
+        SetWorldTransform(hDC, & af.m_xm);		// set transformation
 
-		af.Translate(5, 5);						// translate
+        for (int x=0; x<=200; x+=3)				// dotted line
+            SetPixel(hDC, x+50, 0, 0);
 
-		af.Scale((FLOAT) 0.98, (FLOAT) 0.98);	// scale 0.98
-		af.Rotate(5);							// rotate
-	}
+        af.Translate(5, 5);						// translate
+
+        af.Scale((FLOAT) 0.98, (FLOAT) 0.98);	// scale 0.98
+        af.Rotate(5);							// rotate
+    }
 }
 
 
 // size x size square in logical coordinate space
 void Face(HDC hDC, COLORREF color, int size)
 {
-	for (int x=0; x<size; x++)
-	for (int y=0; y<size; y++)
-		SetPixel(hDC, x, y, color);
+    for (int x=0; x<size; x++)
+        for (int y=0; y<size; y++)
+            SetPixel(hDC, x, y, color);
 }
 
 
 // use three transformations to map square in logical coordinate space to faces of a 3D cube
 void Draw_Cube(HDC hDC, int width, int height, int degree)
 {
-	KAffine af;
+    KAffine af;
 
-	SetMapMode(hDC, MM_ANISOTROPIC);
-	SetWindowExtEx  (hDC, 1, 1,				   NULL); // default
-	SetWindowOrgEx  (hDC, 0, 0,				   NULL);
-	
-	SetViewportExtEx(hDC, 1, -1,			   NULL); // y axis goes up
-	SetViewportOrgEx(hDC, width/2, height*3/4, NULL); // 1/2, 3/4
+    SetMapMode(hDC, MM_ANISOTROPIC);
+    SetWindowExtEx  (hDC, 1, 1,				   NULL); // default
+    SetWindowOrgEx  (hDC, 0, 0,				   NULL);
 
-	SetGraphicsMode(hDC, GM_ADVANCED);
+    SetViewportExtEx(hDC, 1, -1,			   NULL); // y axis goes up
+    SetViewportOrgEx(hDC, width/2, height*3/4, NULL); // 1/2, 3/4
 
-	const float pi   = (float) 3.1415926;
-	const int   size = 150;
-	const float dx   = (float) (size * cos(pi*degree/180));
-	const float dy   = (float) (size * sin(pi*degree/180));
-	
-	af.MapTri(0, 0, (float)size, 0, 0, (float)size,   0, 0, dx, dy, 0, (float)size);
-	SetWorldTransform(hDC, & af.m_xm);
+    SetGraphicsMode(hDC, GM_ADVANCED);
 
-	Face(hDC, RGB(0xFF, 0, 0), size);
+    const float pi   = (float) 3.1415926;
+    const int   size = 150;
+    const float dx   = (float) (size * cos(pi*degree/180));
+    const float dy   = (float) (size * sin(pi*degree/180));
 
-	af.MapTri(0, 0, (float)size, 0, 0, (float)size,   0, 0, -dx, dy, 0, (float)size);
-	SetWorldTransform(hDC, & af.m_xm);
-	Face(hDC, RGB(0, 0xFF, 0), size);
+    af.MapTri(0, 0, (float)size, 0, 0, (float)size,   0, 0, dx, dy, 0, (float)size);
+    SetWorldTransform(hDC, & af.m_xm);
 
-	af.MapTri(0, 0, (float)size, 0, 0, (float)size,   0, (float)size, dx, size + dy, -dx, size + dy);
-	SetWorldTransform(hDC, & af.m_xm);
-	Face(hDC, RGB(0, 0, 0xFF), size);
-}	
+    Face(hDC, RGB(0xFF, 0, 0), size);
+
+    af.MapTri(0, 0, (float)size, 0, 0, (float)size,   0, 0, -dx, dy, 0, (float)size);
+    SetWorldTransform(hDC, & af.m_xm);
+    Face(hDC, RGB(0, 0xFF, 0), size);
+
+    af.MapTri(0, 0, (float)size, 0, 0, (float)size,   0, (float)size, dx, size + dy, -dx, size + dy);
+    SetWorldTransform(hDC, & af.m_xm);
+    Face(hDC, RGB(0, 0, 0xFF), size);
+}
 
 
 
 class KRotate
 {
-	int m_x0, m_y0, m_dx, m_dy;
+    int m_x0, m_y0, m_dx, m_dy;
 
 public:
 
-	int m_ds;
-	
-	KRotate(int x0, int y0, int x1, int y1)
-	{
-		m_x0 = x0;
-		m_y0 = y0;
-		m_dx = x1 - x0;
-		m_dy = y1 - y0;
-		m_ds = (int) sqrt( m_dx * m_dx + m_dy * m_dy);
-	}
+    int m_ds;
 
-	int RotateX(int x, int y)
-	{
-		return x * m_dx / m_ds - y * m_dy / m_ds;
-	}
+    KRotate(int x0, int y0, int x1, int y1)
+    {
+        m_x0 = x0;
+        m_y0 = y0;
+        m_dx = x1 - x0;
+        m_dy = y1 - y0;
+        m_ds = (int) sqrt( m_dx * m_dx + m_dy * m_dy);
+    }
 
-	int RotateY(int x, int y)
-	{
-		return x * m_dy / m_ds + y * m_dx / m_ds;
-	}
+    int RotateX(int x, int y)
+    {
+        return x * m_dx / m_ds - y * m_dy / m_ds;
+    }
+
+    int RotateY(int x, int y)
+    {
+        return x * m_dy / m_ds + y * m_dx / m_ds;
+    }
 };
 
 
-// Draw a line with an arrow	
+// Draw a line with an arrow
 void Arrow(HDC hDC, int x0, int y0, int x1, int y1, int width, int height)
 {
-	MoveToEx(hDC, x0, y0, NULL);
-	LineTo(hDC, x1, y1);
+    MoveToEx(hDC, x0, y0, NULL);
+    LineTo(hDC, x1, y1);
 
-	KRotate rotate(x0, y0, x1, y1);
+    KRotate rotate(x0, y0, x1, y1);
 
-	POINT arrow[4] = 
-	{ 
-		x1, y1, 
-		
-		rotate.RotateX(rotate.m_ds-width,  height) + x0, 
-		rotate.RotateY(rotate.m_ds-width,  height) + y0,
-		
-		rotate.RotateX(rotate.m_ds-width, -height) + x0, 
-		rotate.RotateY(rotate.m_ds-width, -height) + y0,
-		
-		x1, y1
-	};
+    POINT arrow[4] =
+    {
+        x1, y1,
 
-	HGDIOBJ hOld = SelectObject(hDC, GetStockObject(BLACK_BRUSH));
-	Polygon(hDC, arrow, 4);
-	SelectObject(hDC, hOld);
+        rotate.RotateX(rotate.m_ds-width,  height) + x0,
+        rotate.RotateY(rotate.m_ds-width,  height) + y0,
+
+        rotate.RotateX(rotate.m_ds-width, -height) + x0,
+        rotate.RotateY(rotate.m_ds-width, -height) + y0,
+
+        x1, y1
+    };
+
+    HGDIOBJ hOld = SelectObject(hDC, GetStockObject(BLACK_BRUSH));
+    Polygon(hDC, arrow, 4);
+    SelectObject(hDC, hOld);
 }
 
 
 // Convert size in points to device coordinate
 void PointToDevice(HDC hDC, SIZE & size)
 {
-	int dpix = GetDeviceCaps(hDC, LOGPIXELSX);
-	int dpiy = GetDeviceCaps(hDC, LOGPIXELSY);
+    int dpix = GetDeviceCaps(hDC, LOGPIXELSX);
+    int dpiy = GetDeviceCaps(hDC, LOGPIXELSY);
 
-	size.cx = size.cx * dpix / 72;
+    size.cx = size.cx * dpix / 72;
     size.cy = size.cy * dpiy / 72;
 }
 
@@ -270,64 +274,68 @@ void PointToDevice(HDC hDC, SIZE & size)
 // Convert size in device coordinate to logical coordinate
 void DeviceToLogical(HDC hDC, SIZE & size)
 {
-	POINT p[2] = { 0, 0, size.cx, size.cy };
+    POINT p[2] = { 0, 0, size.cx, size.cy };
 
-	DPtoLP(hDC, p, 2);
+    DPtoLP(hDC, p, 2);
 
-	size.cx = abs(p[1].x - p[0].x);
-	size.cy = abs(p[1].y - p[0].y);
+    size.cx = abs(p[1].x - p[0].x);
+    size.cy = abs(p[1].y - p[0].y);
 }
 
 
 // Generic algorithm for axes display: width height in device coordinate
 void ShowAxes(HDC hDC, int width, int height)
 {
-	POINT corner[2];
+    POINT corner[2];
 
-	// display axes for the area [10, 10, width-10, height-10]
-	corner[0].x = 10;
-	corner[0].y = 10;
-	corner[1].x = width - 10;
-	corner[1].y = height - 10;
+    // display axes for the area [10, 10, width-10, height-10]
+    corner[0].x = 10;
+    corner[0].y = 10;
+    corner[1].x = width - 10;
+    corner[1].y = height - 10;
 
-	// covert to logical coordinate
-	DPtoLP(hDC, corner, 2);
+    // covert to logical coordinate
+    DPtoLP(hDC, corner, 2);
 
-	// we need to display a 10x2 point arrow, convert to device coordinate, then to logical
-	SIZE s = { 10, 2 };
-	PointToDevice(hDC, s);
-	DeviceToLogical(hDC, s);
+    // we need to display a 10x2 point arrow, convert to device coordinate, then to logical
+    SIZE s = { 10, 2 };
+    PointToDevice(hDC, s);
+    DeviceToLogical(hDC, s);
 
-	// X-axis
-	Arrow(hDC, min(corner[0].x, corner[1].x), 0, 
-		       max(corner[0].x, corner[1].x), 0, s.cx, s.cy);
+    // X-axis
+    Arrow(hDC, min(corner[0].x, corner[1].x), 0,
+          max(corner[0].x, corner[1].x), 0, s.cx, s.cy);
 
-	// Y-axis
-	Arrow(hDC, 0, min(corner[0].y, corner[1].y), 
-		       0, max(corner[0].y, corner[1].y), s.cx, s.cy);
+    // Y-axis
+    Arrow(hDC, 0, min(corner[0].y, corner[1].y),
+          0, max(corner[0].y, corner[1].y), s.cx, s.cy);
 }
 
 
 // Decode world transformation and mapping mode
 void DecodeTransform(HDC hDC)
 {
-	POINT windoworg;   GetWindowOrgEx(hDC, & windoworg);
-	SIZE  windowext;   GetWindowExtEx(hDC, & windowext);
+    POINT windoworg;
+    GetWindowOrgEx(hDC, & windoworg);
+    SIZE  windowext;
+    GetWindowExtEx(hDC, & windowext);
 
-	POINT viewportorg; GetViewportOrgEx(hDC, & viewportorg);
-	SIZE  viewportext; GetViewportExtEx(hDC, & viewportext);
+    POINT viewportorg;
+    GetViewportOrgEx(hDC, & viewportorg);
+    SIZE  viewportext;
+    GetViewportExtEx(hDC, & viewportext);
 
-	TCHAR formulax[128];
-	TCHAR formulay[128];
+    TCHAR formulax[128];
+    TCHAR formulay[128];
 
-	wsprintf(formulax, "x' = (x-%d) %d / %d + %d", windoworg.x, viewportext.cx, windowext.cx, viewportorg.x);
-	wsprintf(formulay, "y' = (y-%d) %d / %d + %d", windoworg.y, viewportext.cy, windowext.cy, viewportorg.y);
+    wsprintf(formulax, "x' = (x-%d) %d / %d + %d", windoworg.x, viewportext.cx, windowext.cx, viewportorg.x);
+    wsprintf(formulay, "y' = (y-%d) %d / %d + %d", windoworg.y, viewportext.cy, windowext.cy, viewportorg.y);
 
-	POINT p[2] = { 10, 10, 10, 35 };
-	DPtoLP(hDC, p, 2);
+    POINT p[2] = { 10, 10, 10, 35 };
+    DPtoLP(hDC, p, 2);
 
-	TextOut(hDC, p[0].x, p[0].y, formulax, _tcslen(formulax));
-	TextOut(hDC, p[1].x, p[1].y, formulay, _tcslen(formulay));
+    TextOut(hDC, p[0].x, p[0].y, formulax, _tcslen(formulax));
+    TextOut(hDC, p[1].x, p[1].y, formulay, _tcslen(formulay));
 }
 
 
@@ -335,100 +343,108 @@ void DecodeTransform(HDC hDC)
 class KScene
 {
 public:
-	virtual  ~KScene()
-	{
-	}
+    virtual  ~KScene()
+    {
+    }
 
-	virtual void          OnDraw(HDC hDC)                         = 0;
-	virtual void          OnMouseMove(int x, int y, TCHAR mess[]) = 0;
-	virtual const TCHAR * GetTitle(void)                          = 0;
+    virtual void          OnDraw(HDC hDC)                         = 0;
+    virtual void          OnMouseMove(int x, int y, TCHAR mess[]) = 0;
+    virtual const TCHAR * GetTitle(void)                          = 0;
 };
 
 
 // Mapping mode demostration
 class KMapMode : public KScene
 {
-	HWND m_hWnd;
-	int  m_width;
-	int  m_height;
-	int  m_mapmode;
-	int  m_dpix;
-	int  m_dpiy;
+    HWND m_hWnd;
+    int  m_width;
+    int  m_height;
+    int  m_mapmode;
+    int  m_dpix;
+    int  m_dpiy;
 
-	// setup a mapping mode with origin in the center
-	void Setup(HDC hDC)
-	{
-		RECT rect;
+    // setup a mapping mode with origin in the center
+    void Setup(HDC hDC)
+    {
+        RECT rect;
 
-		GetClientRect(m_hWnd, & rect);
-		m_width  = rect.right;
-		m_height = rect.bottom;
+        GetClientRect(m_hWnd, & rect);
+        m_width  = rect.right;
+        m_height = rect.bottom;
 
-		SetMapMode(hDC, m_mapmode);
+        SetMapMode(hDC, m_mapmode);
 
-		if ( m_dpix )
-		{
-			SetViewportExtEx(hDC, GetDeviceCaps(hDC, LOGPIXELSX), GetDeviceCaps(hDC, LOGPIXELSY), NULL);
-			  SetWindowExtEx(hDC, m_dpix,                         m_dpiy,						  NULL);
-		}
+        if ( m_dpix )
+        {
+            SetViewportExtEx(hDC, GetDeviceCaps(hDC, LOGPIXELSX), GetDeviceCaps(hDC, LOGPIXELSY), NULL);
+            SetWindowExtEx(hDC, m_dpix,                         m_dpiy,						  NULL);
+        }
 
-		SetWindowOrgEx(hDC,   0,         0,          NULL);
-		SetViewportOrgEx(hDC, m_width/2, m_height/2, NULL);
-	}
+        SetWindowOrgEx(hDC,   0,         0,          NULL);
+        SetViewportOrgEx(hDC, m_width/2, m_height/2, NULL);
+    }
 
-	// draw axes
-	void OnDraw(HDC hDC)
-	{
-		Setup(hDC);
-		
-		ShowAxes(hDC, m_width, m_height);
-		DecodeTransform(hDC);
+    // draw axes
+    void OnDraw(HDC hDC)
+    {
+        Setup(hDC);
 
-		SelectObject(hDC, GetStockObject(NULL_BRUSH));
-		Ellipse(hDC, -100, -100, 100, 100);
-	}
+        ShowAxes(hDC, m_width, m_height);
+        DecodeTransform(hDC);
 
-	// display device coordinate and logical coordinate
-	void OnMouseMove(int x, int y, TCHAR mess[])
-	{
-		POINT p = { x, y };
+        SelectObject(hDC, GetStockObject(NULL_BRUSH));
+        Ellipse(hDC, -100, -100, 100, 100);
+    }
 
-		wsprintf(mess, _T("Client: %d x %d"), p.x, p.y);
+    // display device coordinate and logical coordinate
+    void OnMouseMove(int x, int y, TCHAR mess[])
+    {
+        POINT p = { x, y };
 
-		HDC hDC = GetDC(m_hWnd);
+        wsprintf(mess, _T("Client: %d x %d"), p.x, p.y);
 
-		Setup(hDC);
-		DPtoLP(hDC, & p, 1);
-		wsprintf(mess + _tcslen(mess), ", Logical: %d x %d", p.x, p.y);
+        HDC hDC = GetDC(m_hWnd);
 
-		ReleaseDC(m_hWnd, hDC);
-	}
+        Setup(hDC);
+        DPtoLP(hDC, & p, 1);
+        wsprintf(mess + _tcslen(mess), ", Logical: %d x %d", p.x, p.y);
+
+        ReleaseDC(m_hWnd, hDC);
+    }
 
 public:
-	KMapMode(HWND hWnd, int mapmode, int dpix=0, int dpiy=0)
-	{
-		m_hWnd    = hWnd;
-		m_mapmode = mapmode;
-		m_dpix    = dpix;
-		m_dpiy    = dpiy;
-	}
+    KMapMode(HWND hWnd, int mapmode, int dpix=0, int dpiy=0)
+    {
+        m_hWnd    = hWnd;
+        m_mapmode = mapmode;
+        m_dpix    = dpix;
+        m_dpiy    = dpiy;
+    }
 
-	const TCHAR * GetTitle(void)
-	{
-		switch ( m_mapmode )
-		{
-			case MM_TEXT	   : return _T("MappingMode: MM_TEXT");
-			case MM_LOENGLISH  : return _T("MappingMode: MM_LOENGLISH");
-			case MM_HIENGLISH  : return _T("MappingMode: MM_HIENGLISH");
-			case MM_LOMETRIC   : return _T("MappingMode: MM_LOMETRIC");
-			case MM_HIMETRIC   : return _T("MappingMode: MM_HIMETRIC");
-			case MM_TWIPS      : return _T("MappingMode: MM_TWIPS");
-			case MM_ISOTROPIC  : return _T("MappingMode: MM_ISOTROPIC");
-			case MM_ANISOTROPIC: return _T("MappingMode: MM_ANISOTROPIC");
-		}
+    const TCHAR * GetTitle(void)
+    {
+        switch ( m_mapmode )
+        {
+        case MM_TEXT	   :
+            return _T("MappingMode: MM_TEXT");
+        case MM_LOENGLISH  :
+            return _T("MappingMode: MM_LOENGLISH");
+        case MM_HIENGLISH  :
+            return _T("MappingMode: MM_HIENGLISH");
+        case MM_LOMETRIC   :
+            return _T("MappingMode: MM_LOMETRIC");
+        case MM_HIMETRIC   :
+            return _T("MappingMode: MM_HIMETRIC");
+        case MM_TWIPS      :
+            return _T("MappingMode: MM_TWIPS");
+        case MM_ISOTROPIC  :
+            return _T("MappingMode: MM_ISOTROPIC");
+        case MM_ANISOTROPIC:
+            return _T("MappingMode: MM_ANISOTROPIC");
+        }
 
-		return NULL;
-	}
+        return NULL;
+    }
 
 };
 
@@ -436,147 +452,163 @@ public:
 
 class KMyCanvas : public KCanvas
 {
-	int      mode;
-	KScene * scene;
+    int      mode;
+    KScene * scene;
 
-	void GetWndClassEx(WNDCLASSEX & wc)
-	{
-		memset(& wc, 0, sizeof(wc));
+    void GetWndClassEx(WNDCLASSEX & wc)
+    {
+        memset(& wc, 0, sizeof(wc));
 
-		wc.cbSize        = sizeof(WNDCLASSEX);
-		wc.style         = CS_HREDRAW | CS_VREDRAW;  // repaint when resize
-		wc.lpfnWndProc   = WindowProc;
-		wc.cbClsExtra    = 0;
-		wc.cbWndExtra    = 0;       
-		wc.hInstance     = NULL;
-		wc.hIcon         = NULL;
-		wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
-		wc.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);
-		wc.lpszMenuName  = NULL;
-		wc.lpszClassName = NULL;
-		wc.hIconSm       = NULL;
-	}
+        wc.cbSize        = sizeof(WNDCLASSEX);
+        wc.style         = CS_HREDRAW | CS_VREDRAW;  // repaint when resize
+        wc.lpfnWndProc   = WindowProc;
+        wc.cbClsExtra    = 0;
+        wc.cbWndExtra    = 0;
+        wc.hInstance     = NULL;
+        wc.hIcon         = NULL;
+        wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
+        wc.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);
+        wc.lpszMenuName  = NULL;
+        wc.lpszClassName = NULL;
+        wc.hIconSm       = NULL;
+    }
 
 public:
-	KMyCanvas()
-	{
-		mode  = 0;
-		scene = NULL;
-	}
+    KMyCanvas()
+    {
+        mode  = 0;
+        scene = NULL;
+    }
 
-	virtual void OnDraw(HDC hDC, const RECT * rcPaint)
-	{
-		if ( scene )
-			scene->OnDraw(hDC);
-		else
-		{
-			RECT rect;
+    virtual void OnDraw(HDC hDC, const RECT * rcPaint)
+    {
+        if ( scene )
+            scene->OnDraw(hDC);
+        else
+        {
+            RECT rect;
 
-			GetClientRect(m_hWnd, & rect);
-	
-			switch (mode )
-			{
-				case IDM_VIEW_DOTLINE:
-					Transform_DottedLine(hDC, rect.right, rect.bottom);
-					break;
+            GetClientRect(m_hWnd, & rect);
 
-				case IDM_VIEW_CUBE30:
-					Draw_Cube(hDC, rect.right, rect.bottom, 30);
-					break;
+            switch (mode )
+            {
+            case IDM_VIEW_DOTLINE:
+                Transform_DottedLine(hDC, rect.right, rect.bottom);
+                break;
 
-				case IDM_VIEW_CUBE45:
-					Draw_Cube(hDC, rect.right, rect.bottom, 45);
-					break;
-			}
-		}
-	}
+            case IDM_VIEW_CUBE30:
+                Draw_Cube(hDC, rect.right, rect.bottom, 30);
+                break;
 
-	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam)
-	{
-		if ( mode != LOWORD(wParam) )
-		{
-			mode = LOWORD(wParam);
-		
-			if ( scene )
-			{
-				delete scene;
-				scene = NULL;
-			}
+            case IDM_VIEW_CUBE45:
+                Draw_Cube(hDC, rect.right, rect.bottom, 45);
+                break;
+            }
+        }
+    }
 
-			switch ( mode )
-			{
-				case IDM_VIEW_MMTEXT     :   scene = new KMapMode(m_hWnd, MM_TEXT);        break;
-				case IDM_VIEW_MMLOENGLISH:   scene = new KMapMode(m_hWnd, MM_LOENGLISH);   break;
-				case IDM_VIEW_MMHIENGLISH:   scene = new KMapMode(m_hWnd, MM_HIENGLISH);   break;
-				case IDM_VIEW_MMLOMETRIC:    scene = new KMapMode(m_hWnd, MM_LOMETRIC);    break;
-				case IDM_VIEW_MMHIMETRIC:    scene = new KMapMode(m_hWnd, MM_HIMETRIC);    break;
-				case IDM_VIEW_MMTWIPS:	     scene = new KMapMode(m_hWnd, MM_TWIPS);       break;
-				case IDM_VIEW_MMISOTROPIC:   scene = new KMapMode(m_hWnd, MM_ISOTROPIC, 300, 300);   break;
-				case IDM_VIEW_MMANISOTROPIC: scene = new KMapMode(m_hWnd, MM_ANISOTROPIC, 600, 300); break;
-			}
+    virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam)
+    {
+        if ( mode != LOWORD(wParam) )
+        {
+            mode = LOWORD(wParam);
 
-			if ( scene )
-				m_pStatus->SetText(0, scene->GetTitle());
-			
-			InvalidateRect(m_hWnd, NULL, TRUE);
-		}
-		
-		return TRUE;
-	}
+            if ( scene )
+            {
+                delete scene;
+                scene = NULL;
+            }
 
-	LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-	{
-		if ( uMsg==WM_MOUSEMOVE )
-		{
-			TCHAR temp[64];
+            switch ( mode )
+            {
+            case IDM_VIEW_MMTEXT     :
+                scene = new KMapMode(m_hWnd, MM_TEXT);
+                break;
+            case IDM_VIEW_MMLOENGLISH:
+                scene = new KMapMode(m_hWnd, MM_LOENGLISH);
+                break;
+            case IDM_VIEW_MMHIENGLISH:
+                scene = new KMapMode(m_hWnd, MM_HIENGLISH);
+                break;
+            case IDM_VIEW_MMLOMETRIC:
+                scene = new KMapMode(m_hWnd, MM_LOMETRIC);
+                break;
+            case IDM_VIEW_MMHIMETRIC:
+                scene = new KMapMode(m_hWnd, MM_HIMETRIC);
+                break;
+            case IDM_VIEW_MMTWIPS:
+                scene = new KMapMode(m_hWnd, MM_TWIPS);
+                break;
+            case IDM_VIEW_MMISOTROPIC:
+                scene = new KMapMode(m_hWnd, MM_ISOTROPIC, 300, 300);
+                break;
+            case IDM_VIEW_MMANISOTROPIC:
+                scene = new KMapMode(m_hWnd, MM_ANISOTROPIC, 600, 300);
+                break;
+            }
 
-			temp[0] = 0;
-			if ( scene )
-				scene->OnMouseMove(LOWORD(lParam), HIWORD(lParam), temp);
+            if ( scene )
+                m_pStatus->SetText(0, scene->GetTitle());
 
-			if ( temp[0] )
-				m_pStatus->SetText(1, temp);
+            InvalidateRect(m_hWnd, NULL, TRUE);
+        }
 
-			return 0;
-		}
-		else
-			return KCanvas::WndProc(hWnd, uMsg, wParam, lParam);
-	}
+        return TRUE;
+    }
+
+    LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+    {
+        if ( uMsg==WM_MOUSEMOVE )
+        {
+            TCHAR temp[64];
+
+            temp[0] = 0;
+            if ( scene )
+                scene->OnMouseMove(LOWORD(lParam), HIWORD(lParam), temp);
+
+            if ( temp[0] )
+                m_pStatus->SetText(1, temp);
+
+            return 0;
+        }
+        else
+            return KCanvas::WndProc(hWnd, uMsg, wParam, lParam);
+    }
 };
 
 class KMyFrame : public KFrame
 {
-	void GetWndClassEx(WNDCLASSEX & wc)
-	{
-		KFrame::GetWndClassEx(wc);
-		wc.hIcon  = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_GRAPH));
-	}
+    void GetWndClassEx(WNDCLASSEX & wc)
+    {
+        KFrame::GetWndClassEx(wc);
+        wc.hIcon  = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_GRAPH));
+    }
 
 public:
-	KMyFrame(HINSTANCE hInstance, const TBBUTTON * pButtons, int nCount,
-			KToolbar * pToolbar, KCanvas * pCanvas, KStatusWindow * pStatus) :
-		KFrame(hInstance, pButtons, nCount, pToolbar, pCanvas, pStatus)
-	{
-	}
+    KMyFrame(HINSTANCE hInstance, const TBBUTTON * pButtons, int nCount,
+             KToolbar * pToolbar, KCanvas * pCanvas, KStatusWindow * pStatus) :
+        KFrame(hInstance, pButtons, nCount, pToolbar, pCanvas, pStatus)
+    {
+    }
 
 };
 
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nShow)
 {
-	KMyCanvas		canvas;
-	KStatusWindow   status;
+    KMyCanvas		canvas;
+    KStatusWindow   status;
 
-	KMyFrame		frame(hInst, NULL, 0, NULL, & canvas, & status);
-	
-	frame.CreateEx(0, _T("CoorinateSpace"), _T("Coordinate Space"),
-		WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, 
-		NULL, LoadMenu(hInst, MAKEINTRESOURCE(IDR_MAIN)), hInst);
+    KMyFrame		frame(hInst, NULL, 0, NULL, & canvas, & status);
+
+    frame.CreateEx(0, _T("CoorinateSpace"), _T("Coordinate Space"),
+                   WS_OVERLAPPEDWINDOW,
+                   CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+                   NULL, LoadMenu(hInst, MAKEINTRESOURCE(IDR_MAIN)), hInst);
 
     frame.ShowWindow(nShow);
     frame.UpdateWindow();
     frame.MessageLoop();
 
-	return 0;
+    return 0;
 }

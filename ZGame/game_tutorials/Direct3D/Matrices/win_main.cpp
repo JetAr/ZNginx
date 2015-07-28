@@ -178,7 +178,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprev, PSTR cmdline, int ishow
             D3DXMatrixRotationX(&wMatrix, DEG2RAD(angle)); // Spin around the X
             //D3DXMatrixRotationY(&wMatrix, DEG2RAD(angle)); // Spin around the Y
             //D3DXMatrixRotationZ(&wMatrix, DEG2RAD(angle)); // Spin around the Z
-            
+
             //z 设置 world matrix
             g3D->setWorldMatrix(&wMatrix); // Set our world transformation
 

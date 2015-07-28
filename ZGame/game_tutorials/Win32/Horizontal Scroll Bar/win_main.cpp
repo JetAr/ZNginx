@@ -123,13 +123,13 @@ LRESULT CALLBACK WinProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
         scrollInfo.cbSize = sizeof(SCROLLINFO);
 
         // This is the lowest x-pos you can scroll to (farthest to the left you can scroll to)
-		//z 最低点x-pos。
+        //z 最低点x-pos。
         scrollInfo.nMin = 0;
 
         // We want to be at least able to scroll as far as
         // our sentence is long, so we set the highest x-pos (farthest we can scroll to the right)
         // to be the length of our sentence
-		//z x-pos最大值
+        //z x-pos最大值
         scrollInfo.nMax = strlen(kSentence);
 
         // This represents the size of the page that is being scrolled on.  So in a MS Word
@@ -144,8 +144,8 @@ LRESULT CALLBACK WinProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
         // of flags that represent the variables in the struct, that we actually want to set.
         // The SIF_PAGE flag says "We've set the nPage variable, please use it".
         // The SIF_RANGE flag says "We've set the nMin and nMax variables, please use them."
-		//z SIF_PAGE 表明我们设置了 page 值
-		//z SIF_RANGE 表明我们设置了 range 值
+        //z SIF_PAGE 表明我们设置了 page 值
+        //z SIF_RANGE 表明我们设置了 range 值
         scrollInfo.fMask = SIF_PAGE | SIF_RANGE;
 
         // Now that we've set our SCROLLINFO, we need to let the window know about it.
@@ -155,7 +155,7 @@ LRESULT CALLBACK WinProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
         //			  horizontal scroll bar
         // &scrollInfo -- The address of the SCROLLINFO struct we filled
         // false -- A boolean value saying whether we want to redraw the scroll bar or not.
-		SetScrollInfo(hwnd,SB_HORZ,&scrollInfo,false);
+        SetScrollInfo(hwnd,SB_HORZ,&scrollInfo,false);
         return 0;
 
     // This message is sent to a window when a scroll event occurs in a window's standard

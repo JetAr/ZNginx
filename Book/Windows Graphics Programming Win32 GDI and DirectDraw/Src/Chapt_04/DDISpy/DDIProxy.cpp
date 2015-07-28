@@ -22,8 +22,8 @@
 
 typedef struct
 {
-	PFN   pProxy;
-	PFN   pReal;
+    PFN   pProxy;
+    PFN   pReal;
 }   PROXYFN;
 
 #define DrvSetPalette			NULL
@@ -34,35 +34,35 @@ typedef struct
 #define DrvAssertMode			NULL
 #define DrvRealizeBrush			NULL
 
-PROXYFN DDI_Proxy [] = 
+PROXYFN DDI_Proxy [] =
 {
-	(PFN) DrvEnablePDEV,			NULL,
-	(PFN) DrvCompletePDEV,			NULL,
-	(PFN) DrvDisablePDEV,			NULL,
+    (PFN) DrvEnablePDEV,			NULL,
+    (PFN) DrvCompletePDEV,			NULL,
+    (PFN) DrvDisablePDEV,			NULL,
     (PFN) DrvEnableSurface,			NULL,
-    
-	(PFN) DrvDisableSurface,		NULL,
+
+    (PFN) DrvDisableSurface,		NULL,
     (PFN) DrvAssertMode,			NULL,
     (PFN) DrvOffset,				NULL,
     (PFN) DrvResetPDEV,				NULL,
-    
-	(PFN) DrvDisableDriver,			NULL,
-	(PFN) NULL,						NULL,
+
+    (PFN) DrvDisableDriver,			NULL,
+    (PFN) NULL,						NULL,
     (PFN) DrvCreateDeviceBitmap,	NULL,
     (PFN) DrvDeleteDeviceBitmap,	NULL,
-    
-	(PFN) DrvRealizeBrush,			NULL,
+
+    (PFN) DrvRealizeBrush,			NULL,
     (PFN) DrvDitherColor,			NULL,
     (PFN) DrvStrokePath,			NULL,
     (PFN) DrvFillPath,				NULL,
-    
-	(PFN) DrvStrokeAndFillPath,		NULL,
+
+    (PFN) DrvStrokeAndFillPath,		NULL,
     (PFN) DrvPaint,					NULL,
     (PFN) DrvBitBlt,				NULL,
     (PFN) DrvCopyBits,				NULL,
-    
-	(PFN) DrvStretchBlt,			NULL,
-	(PFN) NULL,						NULL,
+
+    (PFN) DrvStretchBlt,			NULL,
+    (PFN) NULL,						NULL,
     (PFN) DrvSetPalette,			NULL,
     (PFN) DrvTextOut,				NULL,
 };
@@ -72,65 +72,65 @@ int			  BufferPos;
 
 void DDISpy_Start(unsigned fntable, int count)
 {
-	unsigned * pFuncTable = (unsigned *) fntable;
+    unsigned * pFuncTable = (unsigned *) fntable;
 
-	memset(Buffer, 0, sizeof(Buffer));
-	BufferPos = 0;
+    memset(Buffer, 0, sizeof(Buffer));
+    BufferPos = 0;
 
-	for (int i=0; i<count; i++)
-		if ( pFuncTable[i] > 0xa0000000  ) // either in win32k.sys or device driver
-		if ( DDI_Proxy[i].pProxy != NULL ) // we have a proxy
-		{
-			DDI_Proxy[i].pReal = (PFN) pFuncTable[i];		// actual function to call
+    for (int i=0; i<count; i++)
+        if ( pFuncTable[i] > 0xa0000000  ) // either in win32k.sys or device driver
+            if ( DDI_Proxy[i].pProxy != NULL ) // we have a proxy
+            {
+                DDI_Proxy[i].pReal = (PFN) pFuncTable[i];		// actual function to call
 
-			pFuncTable[i] = (unsigned) DDI_Proxy[i].pProxy;	// hack it !!!
-		}
+                pFuncTable[i] = (unsigned) DDI_Proxy[i].pProxy;	// hack it !!!
+            }
 }
 
 void DDISpy_Stop(unsigned fntable, int count)
 {
-	unsigned * pFuncTable = (unsigned *) fntable;
+    unsigned * pFuncTable = (unsigned *) fntable;
 
-	for (int i=0; i<count; i++)
-		if ( pFuncTable[i] > 0xa0000000  ) // either in win32k.sys or device driver
-		if ( DDI_Proxy[i].pProxy != NULL ) // we have a proxy
-		{
-			pFuncTable[i] = (unsigned) DDI_Proxy[i].pReal;	// reWrite it !!!
-		}
+    for (int i=0; i<count; i++)
+        if ( pFuncTable[i] > 0xa0000000  ) // either in win32k.sys or device driver
+            if ( DDI_Proxy[i].pProxy != NULL ) // we have a proxy
+            {
+                pFuncTable[i] = (unsigned) DDI_Proxy[i].pReal;	// reWrite it !!!
+            }
 }
 
 /*
 BOOL APIENTRY DrvEnableDriver(ULONG iEngineVersion, ULONG cj, DRVENABLEDATA *pded)
 {
-    return FALSE; 
+    return FALSE;
 }
 */
 
 
 void Write(unsigned ch)
 {
-	Buffer[BufferPos] = ch;
-	BufferPos = (BufferPos + 1) % BUFFER_SIZE;
+    Buffer[BufferPos] = ch;
+    BufferPos = (BufferPos + 1) % BUFFER_SIZE;
 }
 
 int call = 0;
 
 void Write(const char * str)
 {
-	call ++;
+    call ++;
 
-	Write((char)(call / 1000 + '0')); 
-	Write((char)(call / 100 % 10 + '0'));
-	Write((char)(call / 10 % 10  + '0'));
-	Write((char)(call      % 10 + '0'));
-	Write(' ');
+    Write((char)(call / 1000 + '0'));
+    Write((char)(call / 100 % 10 + '0'));
+    Write((char)(call / 10 % 10  + '0'));
+    Write((char)(call      % 10 + '0'));
+    Write(' ');
 
-	while ( * str )
-	{
-		Write( * str );
-		str ++;
-	}
-	Write(' ');
+    while ( * str )
+    {
+        Write( * str );
+        str ++;
+    }
+    Write(' ');
 }
 
 
@@ -138,96 +138,96 @@ void Write(const char * str)
 
 void APIENTRY DrvDisableDriver(void)
 {
-	Write("DisableDriver");
-	
-	Call(DrvDisableDriver)();
+    Write("DisableDriver");
+
+    Call(DrvDisableDriver)();
 }
 
 
 DHPDEV APIENTRY DrvEnablePDEV(DEVMODEW *pdm,
-              LPWSTR    pwszLogAddress,
-              ULONG     cPat,
-              HSURF    *phsurfPatterns,
-              ULONG     cjCaps,
-              ULONG    *pdevcaps,
-              ULONG     cjDevInfo,
-              DEVINFO  *pdi,
-              HDEV      hdev,
-              PWSTR     pwszDeviceName,
-              HANDLE    hDriver)
+                              LPWSTR    pwszLogAddress,
+                              ULONG     cPat,
+                              HSURF    *phsurfPatterns,
+                              ULONG     cjCaps,
+                              ULONG    *pdevcaps,
+                              ULONG     cjDevInfo,
+                              DEVINFO  *pdi,
+                              HDEV      hdev,
+                              PWSTR     pwszDeviceName,
+                              HANDLE    hDriver)
 {
-	Write("EnablePDEV");
+    Write("EnablePDEV");
 
-	return Call(DrvEnablePDEV) (pdm, pwszLogAddress, cPat, phsurfPatterns, 
-		cjCaps, (GDIINFO *) pdevcaps, cjDevInfo, pdi, hdev, pwszDeviceName, hDriver);
+    return Call(DrvEnablePDEV) (pdm, pwszLogAddress, cPat, phsurfPatterns,
+                                cjCaps, (GDIINFO *) pdevcaps, cjDevInfo, pdi, hdev, pwszDeviceName, hDriver);
 }
 
 
 void APIENTRY DrvCompletePDEV(DHPDEV dhpdev, HDEV hdev)
 {
-	Write("CompletePDEV");
+    Write("CompletePDEV");
 
-	Call(DrvCompletePDEV) (dhpdev, hdev);
+    Call(DrvCompletePDEV) (dhpdev, hdev);
 }
 
 
 BOOL APIENTRY DrvResetPDEV(DHPDEV dhpdevOld, DHPDEV dhpdevNew)
 {
-	Write("ResetPDEV");
+    Write("ResetPDEV");
 
-	return Call(DrvResetPDEV) (dhpdevOld, dhpdevNew);
+    return Call(DrvResetPDEV) (dhpdevOld, dhpdevNew);
 }
 
 
 void APIENTRY DrvDisablePDEV(DHPDEV dhpdev)
 {
-	Write("DisablePDEV");
+    Write("DisablePDEV");
 
-	Call(DrvDisablePDEV) (dhpdev);
+    Call(DrvDisablePDEV) (dhpdev);
 }
 
 
 HSURF APIENTRY DrvEnableSurface(DHPDEV dhpdev)
 {
-	Write("EnableSurface");
+    Write("EnableSurface");
 
-	return Call(DrvEnableSurface) (dhpdev);
+    return Call(DrvEnableSurface) (dhpdev);
 }
 
 
 void APIENTRY DrvDisableSurface(DHPDEV dhpdev)
 {
-	Write("DisableSurface");
+    Write("DisableSurface");
 
-	Call(DrvDisableSurface) (dhpdev);
+    Call(DrvDisableSurface) (dhpdev);
 }
 
 BOOL APIENTRY DrvStrokePath(SURFOBJ   *pso,
-							PATHOBJ   *ppo,
-							CLIPOBJ   *pco,
-                            XFORMOBJ  *pxo, 
-							BRUSHOBJ  *pbo,
-							POINTL    *pptlBrushOrg,
+                            PATHOBJ   *ppo,
+                            CLIPOBJ   *pco,
+                            XFORMOBJ  *pxo,
+                            BRUSHOBJ  *pbo,
+                            POINTL    *pptlBrushOrg,
                             LINEATTRS *plineattrs,
-							MIX        mix)
+                            MIX        mix)
 {
-	Write("StrokePath");
+    Write("StrokePath");
 
-	return Call(DrvStrokePath) (pso, ppo, pco, pxo, pbo, pptlBrushOrg, plineattrs, mix);
+    return Call(DrvStrokePath) (pso, ppo, pco, pxo, pbo, pptlBrushOrg, plineattrs, mix);
 }
 
 
 BOOL APIENTRY DrvFillPath(SURFOBJ  *pso,
-						  PATHOBJ  *ppo,
-						  CLIPOBJ  *pco,
-						  BRUSHOBJ *pbo,
+                          PATHOBJ  *ppo,
+                          CLIPOBJ  *pco,
+                          BRUSHOBJ *pbo,
                           POINTL   *pptlBrushOrg,
-						  MIX       mix,
-						  FLONG     flOptions)
+                          MIX       mix,
+                          FLONG     flOptions)
 {
-	Write("FillPath");
+    Write("FillPath");
 
-	return Call(DrvFillPath) (pso, ppo, pco, pbo, pptlBrushOrg, mix, flOptions);
+    return Call(DrvFillPath) (pso, ppo, pco, pbo, pptlBrushOrg, mix, flOptions);
 }
 
 
@@ -236,98 +236,98 @@ BOOL APIENTRY DrvStrokeAndFillPath(SURFOBJ *pso,PATHOBJ *ppo,CLIPOBJ *pco,
                                    LINEATTRS *plineattrs,BRUSHOBJ *pboFill,
                                    POINTL *pptlBrushOrg,MIX mixFill,FLONG flOptions)
 {
-	Write("StrokeAndFillPath");
+    Write("StrokeAndFillPath");
 
-	return Call(DrvStrokeAndFillPath) (pso, ppo, pco, pxo, pboStroke, plineattrs,
-		pboFill, pptlBrushOrg, mixFill, flOptions);
+    return Call(DrvStrokeAndFillPath) (pso, ppo, pco, pxo, pboStroke, plineattrs,
+                                       pboFill, pptlBrushOrg, mixFill, flOptions);
 }
 
 
-BOOL APIENTRY DrvLineTo(SURFOBJ *pso, CLIPOBJ *pco, BRUSHOBJ *pbo, LONG x1, 
+BOOL APIENTRY DrvLineTo(SURFOBJ *pso, CLIPOBJ *pco, BRUSHOBJ *pbo, LONG x1,
                         LONG y1, LONG x2, LONG y2, RECTL *prclBounds, MIX mix)
 {
-	Write("LineTo");
+    Write("LineTo");
 
-	return Call(DrvLineTo)(pso, pco, pbo, x1, y1, x2, y2, prclBounds, mix);
+    return Call(DrvLineTo)(pso, pco, pbo, x1, y1, x2, y2, prclBounds, mix);
 }
 
 
-BOOL APIENTRY DrvPaint(SURFOBJ  *pso, 
-					   CLIPOBJ  *pco, 
-					   BRUSHOBJ *pbo,
-					   POINTL   *pptlBrushOrg,
-					   MIX       mix)
+BOOL APIENTRY DrvPaint(SURFOBJ  *pso,
+                       CLIPOBJ  *pco,
+                       BRUSHOBJ *pbo,
+                       POINTL   *pptlBrushOrg,
+                       MIX       mix)
 {
-	Write("Paint");
+    Write("Paint");
 
-	return Call(DrvPaint) (pso, pco, pbo, pptlBrushOrg, mix);
+    return Call(DrvPaint) (pso, pco, pbo, pptlBrushOrg, mix);
 }
 
 
 BOOL APIENTRY DrvBitBlt(SURFOBJ  *psoTrg,
-						SURFOBJ  *psoSrc,
-						SURFOBJ  *psoMask,
+                        SURFOBJ  *psoSrc,
+                        SURFOBJ  *psoMask,
                         CLIPOBJ  *pco,
-						XLATEOBJ *pxlo,
-						RECTL    *prclTrg,
-						POINTL   *pptlSrc,
+                        XLATEOBJ *pxlo,
+                        RECTL    *prclTrg,
+                        POINTL   *pptlSrc,
                         POINTL   *pptlMask,
-						BRUSHOBJ *pbo,
-						POINTL   *pptlBrush,
-						ROP4      rop4)
+                        BRUSHOBJ *pbo,
+                        POINTL   *pptlBrush,
+                        ROP4      rop4)
 {
-	Write("BitBlt");
+    Write("BitBlt");
 
-	return Call(DrvBitBlt) (psoTrg, psoSrc, psoMask, pco, pxlo, prclTrg, 
-		pptlSrc, pptlMask, pbo, pptlBrush, rop4);
+    return Call(DrvBitBlt) (psoTrg, psoSrc, psoMask, pco, pxlo, prclTrg,
+                            pptlSrc, pptlMask, pbo, pptlBrush, rop4);
 }
 
 
 BOOL APIENTRY DrvCopyBits(SURFOBJ  *psoDest,
-						  SURFOBJ  *psoSrc,
-						  CLIPOBJ  *pco,
+                          SURFOBJ  *psoSrc,
+                          CLIPOBJ  *pco,
                           XLATEOBJ *pxlo,
-						  RECTL    *prclDest,
-						  POINTL   *pptlSrc)
+                          RECTL    *prclDest,
+                          POINTL   *pptlSrc)
 {
-	Write("CopyBits");
+    Write("CopyBits");
 
-	return Call(DrvCopyBits)(psoDest, psoSrc, pco, pxlo, prclDest, pptlSrc);
+    return Call(DrvCopyBits)(psoDest, psoSrc, pco, pxlo, prclDest, pptlSrc);
 }
 
 
 BOOL APIENTRY DrvStretchBlt(SURFOBJ         *psoDest,
-							SURFOBJ         *psoSrc,
-							SURFOBJ         *psoMask,
+                            SURFOBJ         *psoSrc,
+                            SURFOBJ         *psoMask,
                             CLIPOBJ         *pco,
-							XLATEOBJ        *pxlo,
-							COLORADJUSTMENT *pca,
+                            XLATEOBJ        *pxlo,
+                            COLORADJUSTMENT *pca,
                             POINTL          *pptlHTOrg,
-							RECTL           *prclDest,
+                            RECTL           *prclDest,
                             RECTL           *prclSrc,
                             POINTL          *pptlMask,
-							ULONG            iMode)
+                            ULONG            iMode)
 {
-	Write("StretchBlt");
+    Write("StretchBlt");
 
-	return Call(DrvStretchBlt) (psoDest, psoSrc, psoMask, pco, pxlo, pca, pptlHTOrg,
-		prclDest, prclSrc, pptlMask, iMode);
+    return Call(DrvStretchBlt) (psoDest, psoSrc, psoMask, pco, pxlo, pca, pptlHTOrg,
+                                prclDest, prclSrc, pptlMask, iMode);
 }
 
 
 BOOL APIENTRY DrvTextOut(SURFOBJ  *pso,
-           STROBJ   *pstro,
-           FONTOBJ  *pfo,
-           CLIPOBJ  *pco,
-           RECTL    *prclExtra,
-           RECTL    *prclOpaque,
-           BRUSHOBJ *pboFore,
-           BRUSHOBJ *pboOpaque,
-           POINTL   *pptlOrg,
-           MIX       mix)
+                         STROBJ   *pstro,
+                         FONTOBJ  *pfo,
+                         CLIPOBJ  *pco,
+                         RECTL    *prclExtra,
+                         RECTL    *prclOpaque,
+                         BRUSHOBJ *pboFore,
+                         BRUSHOBJ *pboOpaque,
+                         POINTL   *pptlOrg,
+                         MIX       mix)
 {
-	Write("TextOut");
+    Write("TextOut");
 
-	return Call(DrvTextOut) (pso, pstro, pfo, pco, prclExtra, prclOpaque, 
-		pboFore, pboOpaque, pptlOrg, mix);
+    return Call(DrvTextOut) (pso, pstro, pfo, pco, prclExtra, prclOpaque,
+                             pboFore, pboOpaque, pptlOrg, mix);
 }

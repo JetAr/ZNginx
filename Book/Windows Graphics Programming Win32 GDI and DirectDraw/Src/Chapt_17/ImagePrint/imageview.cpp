@@ -35,85 +35,101 @@
 
 KImageCanvas::~KImageCanvas()
 {
-	if ( m_pPicture )
-		delete [] (BYTE *) m_pPicture;
+    if ( m_pPicture )
+        delete [] (BYTE *) m_pPicture;
 }
 
 BOOL StretchJPEG(HDC hDC, int x, int y, int w, int h, void * pJPEGImage, unsigned nJPEGSize, int width, int height);
 
 void KImageCanvas::UponDrawPage(HDC hDC, const RECT * rcPaint, int width, int height, int pageno)
 {
-	if ( (m_pPicture==NULL) && (m_pPicture->m_pBMI==NULL) )
-		return;
+    if ( (m_pPicture==NULL) && (m_pPicture->m_pBMI==NULL) )
+        return;
 
-	int sw   = m_pPicture->GetWidth();
-	int sh   = m_pPicture->GetHeight();
-	
-	int dpix = sw * ONEINCH / width;
-	int dpiy = sh * ONEINCH / height;
-	
-	int dpi  = max(dpix, dpiy);
+    int sw   = m_pPicture->GetWidth();
+    int sh   = m_pPicture->GetHeight();
 
-	int dispwidth  = sw * ONEINCH / dpi;
-	int dispheight = sh * ONEINCH / dpi;
-	
-	SetStretchBltMode(hDC, STRETCH_HALFTONE);
+    int dpix = sw * ONEINCH / width;
+    int dpiy = sh * ONEINCH / height;
 
-	int x = ( width- dispwidth)/2;
-	int y = (height-dispheight)/2;
+    int dpi  = max(dpix, dpiy);
 
-	if ( StretchJPEG(hDC, x, y, dispwidth, dispheight, 
-				m_pPicture->m_pJPEG, m_pPicture->m_nJPEGSize, sw, sh ) )
-		return;
+    int dispwidth  = sw * ONEINCH / dpi;
+    int dispheight = sh * ONEINCH / dpi;
 
-	StretchDIBits(hDC, x, y, dispwidth, dispheight, 0, 0, sw, sh, 
-		m_pPicture->m_pBits, m_pPicture->m_pBMI, DIB_RGB_COLORS, SRCCOPY);
+    SetStretchBltMode(hDC, STRETCH_HALFTONE);
+
+    int x = ( width- dispwidth)/2;
+    int y = (height-dispheight)/2;
+
+    if ( StretchJPEG(hDC, x, y, dispwidth, dispheight,
+                     m_pPicture->m_pJPEG, m_pPicture->m_nJPEGSize, sw, sh ) )
+        return;
+
+    StretchDIBits(hDC, x, y, dispwidth, dispheight, 0, 0, sw, sh,
+                  m_pPicture->m_pBits, m_pPicture->m_pBMI, DIB_RGB_COLORS, SRCCOPY);
 }
 
 int KImageCanvas::OnCommand(int cmd, HWND hWnd)
 {
-	switch ( cmd )
-	{
-		case IDM_VIEW_ZOOM500  : return SetZoom(500);
-		case IDM_VIEW_ZOOM400  : return SetZoom(400);
-		case IDM_VIEW_ZOOM200  : return SetZoom(200); 
-		case IDM_VIEW_ZOOM150  : return SetZoom(150); 
-		case IDM_VIEW_ZOOM100  : return SetZoom(100);
-		case IDM_VIEW_ZOOM75   : return SetZoom( 75);
-		case IDM_VIEW_ZOOM50   : return SetZoom( 50);
-		case IDM_VIEW_ZOOM25   : return SetZoom( 25);
-		case IDM_VIEW_ZOOM10   : return SetZoom( 10);
+    switch ( cmd )
+    {
+    case IDM_VIEW_ZOOM500  :
+        return SetZoom(500);
+    case IDM_VIEW_ZOOM400  :
+        return SetZoom(400);
+    case IDM_VIEW_ZOOM200  :
+        return SetZoom(200);
+    case IDM_VIEW_ZOOM150  :
+        return SetZoom(150);
+    case IDM_VIEW_ZOOM100  :
+        return SetZoom(100);
+    case IDM_VIEW_ZOOM75   :
+        return SetZoom( 75);
+    case IDM_VIEW_ZOOM50   :
+        return SetZoom( 50);
+    case IDM_VIEW_ZOOM25   :
+        return SetZoom( 25);
+    case IDM_VIEW_ZOOM10   :
+        return SetZoom( 10);
 
-		case IDM_FILE_PRINT    : UponFilePrint();     GetDimension(); return View_Resize;
-		case IDM_FILE_PAGESETUP: UponFilePageSetup(); GetDimension(); return View_Resize;
+    case IDM_FILE_PRINT    :
+        UponFilePrint();
+        GetDimension();
+        return View_Resize;
+    case IDM_FILE_PAGESETUP:
+        UponFilePageSetup();
+        GetDimension();
+        return View_Resize;
 
-		case IDM_FILE_PROPERTY :
-			{
-				int nControlID[] = { IDC_LIST, IDC_DEFAULT, IDC_PRINTERS, 
-					IDC_PRINTERPROPERTIES, IDC_ADVANCEDDOCUMENTPROPERTIES, IDC_DOCUMENTPROPERTIES };
-			
-				ShowProperty(m_OutputSetup, m_hInst, nControlID, IDD_PROPERTY);
-			}
-	}
+    case IDM_FILE_PROPERTY :
+    {
+        int nControlID[] = { IDC_LIST, IDC_DEFAULT, IDC_PRINTERS,
+                             IDC_PRINTERPROPERTIES, IDC_ADVANCEDDOCUMENTPROPERTIES, IDC_DOCUMENTPROPERTIES
+                           };
 
-	return View_NoChange;
+        ShowProperty(m_OutputSetup, m_hInst, nControlID, IDD_PROPERTY);
+    }
+    }
+
+    return View_NoChange;
 }
 
 
 BOOL StretchJPEG(HDC hDC, int x, int y, int w, int h, void * pJPEGImage, unsigned nJPEGSize, int width, int height)
 {
-	DWORD esc = CHECKJPEGFORMAT;
-	if ( ExtEscape(hDC, QUERYESCSUPPORT, sizeof(esc), (char *) &esc, 0, 0) <=0 )
-		return FALSE;
-	
-	DWORD rslt = 0;
-	if ( ExtEscape(hDC, CHECKJPEGFORMAT, nJPEGSize, (char *) pJPEGImage, sizeof(rslt), (char *) &rslt) <=0 )
-		return FALSE;
+    DWORD esc = CHECKJPEGFORMAT;
+    if ( ExtEscape(hDC, QUERYESCSUPPORT, sizeof(esc), (char *) &esc, 0, 0) <=0 )
+        return FALSE;
 
-	if ( rslt!=1 )
-		return FALSE;
+    DWORD rslt = 0;
+    if ( ExtEscape(hDC, CHECKJPEGFORMAT, nJPEGSize, (char *) pJPEGImage, sizeof(rslt), (char *) &rslt) <=0 )
+        return FALSE;
 
-	BITMAPINFO bmi;
+    if ( rslt!=1 )
+        return FALSE;
+
+    BITMAPINFO bmi;
 
     memset(&bmi, 0, sizeof(bmi));
     bmi.bmiHeader.biSize        = sizeof(BITMAPINFOHEADER);
@@ -124,5 +140,5 @@ BOOL StretchJPEG(HDC hDC, int x, int y, int w, int h, void * pJPEGImage, unsigne
     bmi.bmiHeader.biCompression = BI_JPEG;
     bmi.bmiHeader.biSizeImage   = nJPEGSize;
 
-	return GDI_ERROR != StretchDIBits(hDC, x, y, w, h, 0, 0, width, height, pJPEGImage, & bmi, DIB_RGB_COLORS, SRCCOPY);
+    return GDI_ERROR != StretchDIBits(hDC, x, y, w, h, 0, 0, width, height, pJPEGImage, & bmi, DIB_RGB_COLORS, SRCCOPY);
 }

@@ -19,18 +19,18 @@
 
 int MyMessageBox(HWND hWnd, const TCHAR * text, const TCHAR * caption, DWORD style)
 {
-	MSGBOXPARAMS param;
+    MSGBOXPARAMS param;
 
-	memset(& param, 0, sizeof(param));
-	param.cbSize	  = sizeof(param);
-	param.hwndOwner   = hWnd;
-	param.hInstance   = GetModuleHandle(NULL);
-	param.lpszText    = text;
-	param.lpszCaption = caption;
-	param.dwStyle     = style | MB_USERICON;
-	param.lpszIcon    = MAKEINTRESOURCE(IDI_GRAPH);
+    memset(& param, 0, sizeof(param));
+    param.cbSize	  = sizeof(param);
+    param.hwndOwner   = hWnd;
+    param.hInstance   = GetModuleHandle(NULL);
+    param.lpszText    = text;
+    param.lpszCaption = caption;
+    param.dwStyle     = style | MB_USERICON;
+    param.lpszIcon    = MAKEINTRESOURCE(IDI_GRAPH);
 
-	return MessageBoxIndirect(&param);
+    return MessageBoxIndirect(&param);
 }
 
 typedef unsigned (CALLBACK * Proc0) (void);

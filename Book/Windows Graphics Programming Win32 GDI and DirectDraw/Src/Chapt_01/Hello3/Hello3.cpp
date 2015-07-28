@@ -28,10 +28,10 @@ const TCHAR szProgram[] = _T("HelloWorld3");
 void CenterText(HDC hDC, int x, int y, LPCTSTR szFace, LPCTSTR szMessage, int point)
 {
     HFONT hFont = CreateFont(
-        - point * GetDeviceCaps(hDC, LOGPIXELSY) / 72,
-        0, 0, 0, FW_BOLD, TRUE, FALSE, FALSE, 
-        ANSI_CHARSET, OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, 
-        PROOF_QUALITY, VARIABLE_PITCH, szFace);
+                      - point * GetDeviceCaps(hDC, LOGPIXELSY) / 72,
+                      0, 0, 0, FW_BOLD, TRUE, FALSE, FALSE,
+                      ANSI_CHARSET, OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS,
+                      PROOF_QUALITY, VARIABLE_PITCH, szFace);
     assert(hFont);
 
     HGDIOBJ hOld = SelectObject(hDC, hFont);
@@ -59,29 +59,29 @@ class KHelloWindow : public KWindow
     {
         TextOut(hDC, 0, 0, szHint, lstrlen(szHint));
         CenterText(hDC, GetDeviceCaps(hDC, HORZRES)/2,
-			GetDeviceCaps(hDC, VERTRES)/2, szFace, szMessage, 72);
+                   GetDeviceCaps(hDC, VERTRES)/2, szFace, szMessage, 72);
     }
 
 public:
-    
+
 };
 
 
-int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, 
+int WINAPI WinMain(HINSTANCE hInst, HINSTANCE,
                    LPSTR lpCmd, int nShow)
 {
     KHelloWindow win;
-    
+
     win.CreateEx(0, szProgram, szProgram,
-	             WS_POPUP,
-	             0, 0,
-	             GetSystemMetrics( SM_CXSCREEN ),
-	             GetSystemMetrics( SM_CYSCREEN ),
-	             NULL, NULL, hInst);
-        
+                 WS_POPUP,
+                 0, 0,
+                 GetSystemMetrics( SM_CXSCREEN ),
+                 GetSystemMetrics( SM_CYSCREEN ),
+                 NULL, NULL, hInst);
+
     win.ShowWindow(nShow);
 
     win.UpdateWindow();
-  
+
     return win.MessageLoop();
 }

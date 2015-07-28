@@ -15,12 +15,12 @@
 
 unsigned short KCRC::Update(unsigned short crc, unsigned char * buffer, int len )
 {
-    while ( len-- > 0 ) 
+    while ( len-- > 0 )
     {
         if ( byteswap )
-	        crc = (crc << 8) ^ crctab[(crc>>8)     ^ * buffer++];
+            crc = (crc << 8) ^ crctab[(crc>>8)     ^ * buffer++];
         else
-	        crc = (crc >> 8) ^ crctab[(crc & 0xFF) ^ * buffer++]; 
+            crc = (crc >> 8) ^ crctab[(crc & 0xFF) ^ * buffer++];
     }
 
     return crc;
@@ -36,17 +36,17 @@ KCRC::KCRC()
 
         if (byteswap)
         {
-    	    v = b << 8;
+            v = b << 8;
             for (i=0; i<8; i++)
-	            v = (v & 0x8000) ? (v<<1) ^ poly : v << 1;
+                v = (v & 0x8000) ? (v<<1) ^ poly : v << 1;
         }
         else
         {
             v = b;
-	        for(i=0; i<8; i++)
-	            v = v & 1 ? (v>>1) ^ poly : v >> 1;
+            for(i=0; i<8; i++)
+                v = v & 1 ? (v>>1) ^ poly : v >> 1;
         }
 
-	    crctab[b] = v;
+        crctab[b] = v;
     }
 }

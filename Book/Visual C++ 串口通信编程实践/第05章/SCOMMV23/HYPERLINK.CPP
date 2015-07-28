@@ -60,7 +60,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CHyperLink message handlers
 
-BOOL CHyperLink::PreTranslateMessage(MSG* pMsg) 
+BOOL CHyperLink::PreTranslateMessage(MSG* pMsg)
 {
     m_ToolTip.RelayEvent(pMsg);
     return CStatic::PreTranslateMessage(pMsg);
@@ -70,14 +70,16 @@ void CHyperLink::OnClicked()
 {
     int result = (int)GotoURL(m_strURL, SW_SHOW);
     m_bVisited = (result > HINSTANCE_ERROR);
-    if (!m_bVisited) {
+    if (!m_bVisited)
+    {
         MessageBeep(MB_ICONEXCLAMATION);     // Unable to follow link
         ReportError(result);
-    } else 
+    }
+    else
         SetVisited();                        // Repaint to show visited colour
 }
 
-HBRUSH CHyperLink::CtlColor(CDC* pDC, UINT nCtlColor) 
+HBRUSH CHyperLink::CtlColor(CDC* pDC, UINT nCtlColor)
 {
     ASSERT(nCtlColor == CTLCOLOR_STATIC);
 
@@ -93,7 +95,7 @@ HBRUSH CHyperLink::CtlColor(CDC* pDC, UINT nCtlColor)
     return (HBRUSH)GetStockObject(NULL_BRUSH);
 }
 
-void CHyperLink::OnMouseMove(UINT nFlags, CPoint point) 
+void CHyperLink::OnMouseMove(UINT nFlags, CPoint point)
 {
     CStatic::OnMouseMove(nFlags, point);
 
@@ -118,7 +120,7 @@ void CHyperLink::OnMouseMove(UINT nFlags, CPoint point)
     }
 }
 
-BOOL CHyperLink::OnSetCursor(CWnd* /*pWnd*/, UINT /*nHitTest*/, UINT /*message*/) 
+BOOL CHyperLink::OnSetCursor(CWnd* /*pWnd*/, UINT /*nHitTest*/, UINT /*message*/)
 {
     if (m_hLinkCursor)
     {
@@ -128,12 +130,12 @@ BOOL CHyperLink::OnSetCursor(CWnd* /*pWnd*/, UINT /*nHitTest*/, UINT /*message*/
     return FALSE;
 }
 
-void CHyperLink::PreSubclassWindow() 
+void CHyperLink::PreSubclassWindow()
 {
     // We want to get mouse clicks via STN_CLICKED
     DWORD dwStyle = GetStyle();
     ::SetWindowLong(GetSafeHwnd(), GWL_STYLE, dwStyle | SS_NOTIFY);
-    
+
     // Set the URL as the window text
     if (m_strURL.IsEmpty())
         GetWindowText(m_strURL);
@@ -141,7 +143,8 @@ void CHyperLink::PreSubclassWindow()
     // Check that the window text isn't empty. If it is, set it as the URL.
     CString strWndText;
     GetWindowText(strWndText);
-    if (strWndText.IsEmpty()) {
+    if (strWndText.IsEmpty())
+    {
         ASSERT(!m_strURL.IsEmpty());    // Window and URL both NULL. DUH!
         SetWindowText(m_strURL);
     }
@@ -157,7 +160,7 @@ void CHyperLink::PreSubclassWindow()
     SetDefaultCursor();      // Try and load up a "hand" cursor
 
     // Create the tooltip
-    CRect rect; 
+    CRect rect;
     GetClientRect(rect);
     m_ToolTip.Create(this);
     m_ToolTip.AddTool(this, m_strURL, rect, TOOLTIP_ID);
@@ -172,40 +175,41 @@ void CHyperLink::SetURL(CString strURL)
 {
     m_strURL = strURL;
 
-    if (::IsWindow(GetSafeHwnd())) {
+    if (::IsWindow(GetSafeHwnd()))
+    {
         PositionWindow();
         m_ToolTip.UpdateTipText(strURL, this, TOOLTIP_ID);
     }
 }
 
 CString CHyperLink::GetURL() const
-{ 
-    return m_strURL;   
+{
+    return m_strURL;
 }
 
 void CHyperLink::SetColours(COLORREF crLinkColour, COLORREF crVisitedColour,
-                            COLORREF crHoverColour /* = -1 */) 
-{ 
-    m_crLinkColour    = crLinkColour; 
+                            COLORREF crHoverColour /* = -1 */)
+{
+    m_crLinkColour    = crLinkColour;
     m_crVisitedColour = crVisitedColour;
 
-	if (crHoverColour == -1)
-		m_crHoverColour = ::GetSysColor(COLOR_HIGHLIGHT);
-	else
-		m_crHoverColour = crHoverColour;
+    if (crHoverColour == -1)
+        m_crHoverColour = ::GetSysColor(COLOR_HIGHLIGHT);
+    else
+        m_crHoverColour = crHoverColour;
 
     if (::IsWindow(m_hWnd))
-        Invalidate(); 
+        Invalidate();
 }
 
 COLORREF CHyperLink::GetLinkColour() const
-{ 
-    return m_crLinkColour; 
+{
+    return m_crLinkColour;
 }
 
 COLORREF CHyperLink::GetVisitedColour() const
 {
-    return m_crVisitedColour; 
+    return m_crVisitedColour;
 }
 
 COLORREF CHyperLink::GetHoverColour() const
@@ -213,21 +217,21 @@ COLORREF CHyperLink::GetHoverColour() const
     return m_crHoverColour;
 }
 
-void CHyperLink::SetVisited(BOOL bVisited /* = TRUE */) 
-{ 
-    m_bVisited = bVisited; 
+void CHyperLink::SetVisited(BOOL bVisited /* = TRUE */)
+{
+    m_bVisited = bVisited;
 
     if (::IsWindow(GetSafeHwnd()))
-        Invalidate(); 
+        Invalidate();
 }
 
 BOOL CHyperLink::GetVisited() const
-{ 
-    return m_bVisited; 
+{
+    return m_bVisited;
 }
 
 void CHyperLink::SetLinkCursor(HCURSOR hCursor)
-{ 
+{
     m_hLinkCursor = hCursor;
     if (m_hLinkCursor == NULL)
         SetDefaultCursor();
@@ -252,13 +256,13 @@ void CHyperLink::SetUnderline(BOOL bUnderline /* = TRUE */)
         m_Font.CreateFontIndirect(&lf);
         SetFont(&m_Font);
 
-        Invalidate(); 
+        Invalidate();
     }
 }
 
 BOOL CHyperLink::GetUnderline() const
-{ 
-    return m_bUnderline; 
+{
+    return m_bUnderline;
 }
 
 void CHyperLink::SetAutoSize(BOOL bAutoSize /* = TRUE */)
@@ -270,8 +274,8 @@ void CHyperLink::SetAutoSize(BOOL bAutoSize /* = TRUE */)
 }
 
 BOOL CHyperLink::GetAutoSize() const
-{ 
-    return m_bAdjustToFit; 
+{
+    return m_bAdjustToFit;
 }
 
 
@@ -281,11 +285,11 @@ BOOL CHyperLink::GetAutoSize() const
 // then the window is merely shrunk, but if it is centred or right
 // justified then the window will have to be moved as well.
 //
-// Suggested by Pål K. Tønder 
+// Suggested by Pål K. Tønder
 
 void CHyperLink::PositionWindow()
 {
-    if (!::IsWindow(GetSafeHwnd()) || !m_bAdjustToFit) 
+    if (!::IsWindow(GetSafeHwnd()) || !m_bAdjustToFit)
         return;
 
     // Get the current window position
@@ -315,11 +319,11 @@ void CHyperLink::PositionWindow()
     else
         rect.bottom = rect.top + Extent.cy;
 
-    if (dwStyle & SS_CENTER)   
+    if (dwStyle & SS_CENTER)
         rect.DeflateRect((rect.Width() - Extent.cx)/2, 0);
-    else if (dwStyle & SS_RIGHT) 
+    else if (dwStyle & SS_RIGHT)
         rect.left  = rect.right - Extent.cx;
-    else // SS_LEFT = 0, so we can't test for it explicitly 
+    else // SS_LEFT = 0, so we can't test for it explicitly
         rect.right = rect.left + Extent.cx;
 
     // Move the window
@@ -343,7 +347,8 @@ void CHyperLink::SetDefaultCursor()
         strWndDir += _T("\\winhlp32.exe");
         // This retrieves cursor #106 from winhlp32.exe, which is a hand pointer
         HMODULE hModule = LoadLibrary(strWndDir);
-        if (hModule) {
+        if (hModule)
+        {
             HCURSOR hHandCursor = ::LoadCursor(hModule, MAKEINTRESOURCE(106));
             if (hHandCursor)
                 m_hLinkCursor = CopyCursor(hHandCursor);
@@ -357,7 +362,8 @@ LONG CHyperLink::GetRegKey(HKEY key, LPCTSTR subkey, LPTSTR retdata)
     HKEY hkey;
     LONG retval = RegOpenKeyEx(key, subkey, 0, KEY_QUERY_VALUE, &hkey);
 
-    if (retval == ERROR_SUCCESS) {
+    if (retval == ERROR_SUCCESS)
+    {
         long datasize = MAX_PATH;
         TCHAR data[MAX_PATH];
         RegQueryValue(hkey, NULL, data, &datasize);
@@ -371,21 +377,49 @@ LONG CHyperLink::GetRegKey(HKEY key, LPCTSTR subkey, LPTSTR retdata)
 void CHyperLink::ReportError(int nError)
 {
     CString str;
-    switch (nError) {
-        case 0:                       str = "The operating system is out\nof memory or resources."; break;
-        case SE_ERR_PNF:              str = "The specified path was not found."; break;
-        case SE_ERR_FNF:              str = "The specified file was not found."; break;
-        case ERROR_BAD_FORMAT:        str = "The .EXE file is invalid\n(non-Win32 .EXE or error in .EXE image)."; break;
-        case SE_ERR_ACCESSDENIED:     str = "The operating system denied\naccess to the specified file."; break;
-        case SE_ERR_ASSOCINCOMPLETE:  str = "The filename association is\nincomplete or invalid."; break;
-        case SE_ERR_DDEBUSY:          str = "The DDE transaction could not\nbe completed because other DDE transactions\nwere being processed."; break;
-        case SE_ERR_DDEFAIL:          str = "The DDE transaction failed."; break;
-        case SE_ERR_DDETIMEOUT:       str = "The DDE transaction could not\nbe completed because the request timed out."; break;
-        case SE_ERR_DLLNOTFOUND:      str = "The specified dynamic-link library was not found."; break;
-        case SE_ERR_NOASSOC:          str = "There is no application associated\nwith the given filename extension."; break;
-        case SE_ERR_OOM:              str = "There was not enough memory to complete the operation."; break;
-        case SE_ERR_SHARE:            str = "A sharing violation occurred. ";
-        default:                      str.Format("Unknown Error (%d) occurred.", nError); break;
+    switch (nError)
+    {
+    case 0:
+        str = "The operating system is out\nof memory or resources.";
+        break;
+    case SE_ERR_PNF:
+        str = "The specified path was not found.";
+        break;
+    case SE_ERR_FNF:
+        str = "The specified file was not found.";
+        break;
+    case ERROR_BAD_FORMAT:
+        str = "The .EXE file is invalid\n(non-Win32 .EXE or error in .EXE image).";
+        break;
+    case SE_ERR_ACCESSDENIED:
+        str = "The operating system denied\naccess to the specified file.";
+        break;
+    case SE_ERR_ASSOCINCOMPLETE:
+        str = "The filename association is\nincomplete or invalid.";
+        break;
+    case SE_ERR_DDEBUSY:
+        str = "The DDE transaction could not\nbe completed because other DDE transactions\nwere being processed.";
+        break;
+    case SE_ERR_DDEFAIL:
+        str = "The DDE transaction failed.";
+        break;
+    case SE_ERR_DDETIMEOUT:
+        str = "The DDE transaction could not\nbe completed because the request timed out.";
+        break;
+    case SE_ERR_DLLNOTFOUND:
+        str = "The specified dynamic-link library was not found.";
+        break;
+    case SE_ERR_NOASSOC:
+        str = "There is no application associated\nwith the given filename extension.";
+        break;
+    case SE_ERR_OOM:
+        str = "There was not enough memory to complete the operation.";
+        break;
+    case SE_ERR_SHARE:
+        str = "A sharing violation occurred. ";
+    default:
+        str.Format("Unknown Error (%d) occurred.", nError);
+        break;
     }
     str = "Unable to open hyperlink:\n\n" + str;
     AfxMessageBox(str, MB_ICONEXCLAMATION | MB_OK);
@@ -399,16 +433,20 @@ HINSTANCE CHyperLink::GotoURL(LPCTSTR url, int showcmd)
     HINSTANCE result = ShellExecute(NULL, _T("open"), url, NULL,NULL, showcmd);
 
     // If it failed, get the .htm regkey and lookup the program
-    if ((UINT)result <= HINSTANCE_ERROR) {
+    if ((UINT)result <= HINSTANCE_ERROR)
+    {
 
-        if (GetRegKey(HKEY_CLASSES_ROOT, _T(".htm"), key) == ERROR_SUCCESS) {
+        if (GetRegKey(HKEY_CLASSES_ROOT, _T(".htm"), key) == ERROR_SUCCESS)
+        {
             lstrcat(key, _T("\\shell\\open\\command"));
 
-            if (GetRegKey(HKEY_CLASSES_ROOT,key,key) == ERROR_SUCCESS) {
+            if (GetRegKey(HKEY_CLASSES_ROOT,key,key) == ERROR_SUCCESS)
+            {
                 TCHAR *pos;
                 pos = _tcsstr(key, _T("\"%1\""));
-                if (pos == NULL) {                     // No quotes found
-                    pos = strstr(key, _T("%1"));       // Check for %1, without quotes 
+                if (pos == NULL)                       // No quotes found
+                {
+                    pos = strstr(key, _T("%1"));       // Check for %1, without quotes
                     if (pos == NULL)                   // No parameter at all...
                         pos = key+lstrlen(key)-1;
                     else

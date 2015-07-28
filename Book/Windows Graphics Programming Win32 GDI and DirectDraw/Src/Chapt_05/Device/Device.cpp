@@ -24,58 +24,58 @@
 
 class KMain : public KPropertySheet
 {
-	KDevicePage * m_Device;
+    KDevicePage * m_Device;
 
-public: 
+public:
 
-	KMain(void)
-	{
-		m_Device = NULL;
-	}
+    KMain(void)
+    {
+        m_Device = NULL;
+    }
 
-	~KMain(void)
-	{
-		if ( m_Device )
-		{
-			delete m_Device;
-			m_Device = NULL;
-		}
-	}
+    ~KMain(void)
+    {
+        if ( m_Device )
+        {
+            delete m_Device;
+            m_Device = NULL;
+        }
+    }
 
-	void Run(HINSTANCE hInst)
-	{
+    void Run(HINSTANCE hInst)
+    {
         HPROPSHEETPAGE hPage[3];
 
-		m_Device = new KDevicePage(hInst);
-		hPage[0] = m_Device->createPropertySheetPage(hInst, IDD_DEVICEPAGE);
+        m_Device = new KDevicePage(hInst);
+        hPage[0] = m_Device->createPropertySheetPage(hInst, IDD_DEVICEPAGE);
 
-		propertySheet(hInst, NULL, 0, 1, hPage, "Device");
-	}
+        propertySheet(hInst, NULL, 0, 1, hPage, "Device");
+    }
 };
 
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 {
-	KMain    main;
-    
-/*	HDC hDC1 = CreateDCW(L"DISPLAY", NULL, NULL, NULL);
+    KMain    main;
 
-	HDC hDC2 = CreateDCW(L"DISPLAY", L"\\\\.\\DISPLAY1", NULL, NULL);
-	HDC hDC3 = CreateDCW(NULL, L"\\\\.\\DISPLAY1", NULL, NULL);
-	HDC hDC4 = CreateDCW(NULL, L"\\\\.\\DISPLAY3", NULL, NULL);
+    /*	HDC hDC1 = CreateDCW(L"DISPLAY", NULL, NULL, NULL);
 
-	DEVMODEW Dm;
+    	HDC hDC2 = CreateDCW(L"DISPLAY", L"\\\\.\\DISPLAY1", NULL, NULL);
+    	HDC hDC3 = CreateDCW(NULL, L"\\\\.\\DISPLAY1", NULL, NULL);
+    	HDC hDC4 = CreateDCW(NULL, L"\\\\.\\DISPLAY3", NULL, NULL);
 
-	Dm.dmSize        = sizeof(Dm);
-	Dm.dmDriverExtra = 0;
+    	DEVMODEW Dm;
 
-	HDC hDC5 = CreateDCW(NULL, L"HP DeskJet 895Cxi", NULL, & Dm);
-	
-	DeleteDC(hDC1);
-*/
-	InitCommonControls();
+    	Dm.dmSize        = sizeof(Dm);
+    	Dm.dmDriverExtra = 0;
 
-	main.Run(hInstance);
+    	HDC hDC5 = CreateDCW(NULL, L"HP DeskJet 895Cxi", NULL, & Dm);
 
-	return TRUE;
-}	
+    	DeleteDC(hDC1);
+    */
+    InitCommonControls();
+
+    main.Run(hInstance);
+
+    return TRUE;
+}

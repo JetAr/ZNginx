@@ -21,55 +21,55 @@
 
 void KToolbar::Create(HWND hParent, HINSTANCE hInst, UINT nControlID, const TBBUTTON * pButtons, int nCount)
 {
-	m_ControlID = nControlID;
-	m_hWnd      = CreateToolbarEx(hParent, WS_CHILD | WS_BORDER | WS_VISIBLE,
-							nControlID, 	40,
-							(HINSTANCE) HINST_COMMCTRL,	IDB_VIEW_LARGE_COLOR,
-							pButtons, nCount, 
-							24, 24, 30, 30, sizeof(TBBUTTON) );
+    m_ControlID = nControlID;
+    m_hWnd      = CreateToolbarEx(hParent, WS_CHILD | WS_BORDER | WS_VISIBLE,
+                                  nControlID, 	40,
+                                  (HINSTANCE) HINST_COMMCTRL,	IDB_VIEW_LARGE_COLOR,
+                                  pButtons, nCount,
+                                  24, 24, 30, 30, sizeof(TBBUTTON) );
 
 //	SendMessage(m_hWnd, TB_SETBITMAPSIZE, 0, MAKELONG(20, 20));
 
-	m_hToolTip  = CreateWindowEx(0, TOOLTIPS_CLASS, NULL, TTS_ALWAYSTIP,
-						CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
-						hParent, NULL,
-						hInst, NULL);
+    m_hToolTip  = CreateWindowEx(0, TOOLTIPS_CLASS, NULL, TTS_ALWAYSTIP,
+                                 CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+                                 hParent, NULL,
+                                 hInst, NULL);
 
-	m_ResInstance = (HINSTANCE) HINST_COMMCTRL;
-	m_ResId       = IDB_VIEW_LARGE_COLOR;
+    m_ResInstance = (HINSTANCE) HINST_COMMCTRL;
+    m_ResId       = IDB_VIEW_LARGE_COLOR;
 
-	TOOLINFO ti;
+    TOOLINFO ti;
 
-	ti.cbSize = sizeof(TOOLINFO);
-	ti.hwnd   = m_hWnd;
-	ti.hinst  = hInst;
-	ti.uFlags = TTF_SUBCLASS;
+    ti.cbSize = sizeof(TOOLINFO);
+    ti.hwnd   = m_hWnd;
+    ti.hinst  = hInst;
+    ti.uFlags = TTF_SUBCLASS;
 
-	for (int i=0; i<nCount; i++)
-		if (pButtons[i].fsStyle == TBSTYLE_BUTTON)
-		{
-			TCHAR Str[MAX_PATH];
+    for (int i=0; i<nCount; i++)
+        if (pButtons[i].fsStyle == TBSTYLE_BUTTON)
+        {
+            TCHAR Str[MAX_PATH];
 
-			SendMessage(m_hWnd, TB_GETITEMRECT, i, (LPARAM) & ti.rect);
+            SendMessage(m_hWnd, TB_GETITEMRECT, i, (LPARAM) & ti.rect);
 
-			LoadString(hInst, pButtons[i].dwData, Str, sizeof(Str));
-			
-			ti.uId      = pButtons[i].idCommand;
-			ti.lpszText = Str;
+            LoadString(hInst, pButtons[i].dwData, Str, sizeof(Str));
 
-			SendMessage(m_hToolTip, TTM_ADDTOOL, 0, (LPARAM) & ti);
-		}
+            ti.uId      = pButtons[i].idCommand;
+            ti.lpszText = Str;
 
-	// set the tooltip control as part of the toolbar
-	SendMessage(m_hWnd, TB_SETTOOLTIPS, (WPARAM) m_hToolTip, 0);
+            SendMessage(m_hToolTip, TTM_ADDTOOL, 0, (LPARAM) & ti);
+        }
+
+    // set the tooltip control as part of the toolbar
+    SendMessage(m_hWnd, TB_SETTOOLTIPS, (WPARAM) m_hToolTip, 0);
 }
 
 
 void KToolbar::Resize(HWND hParent, int width, int height)
 {
-	RECT Self;
+    RECT Self;
 
-	GetClientRect(m_hWnd, & Self);
+    GetClientRect(m_hWnd, & Self);
 
-	MoveWindow(m_hWnd, 0, 0, width, Self.bottom - Self.top, TRUE);	
+    MoveWindow(m_hWnd, 0, 0, width, Self.bottom - Self.top, TRUE);
 }

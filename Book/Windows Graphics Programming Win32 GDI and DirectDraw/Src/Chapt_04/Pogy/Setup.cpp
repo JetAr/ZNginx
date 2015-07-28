@@ -56,18 +56,18 @@ BOOL KSetupPogyPage::DlgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg)
     {
-        case WM_INITDIALOG:
-            m_hWnd = hWnd;
-            SetButtons();
-            return TRUE;
+    case WM_INITDIALOG:
+        m_hWnd = hWnd;
+        SetButtons();
+        return TRUE;
 
-        case WM_DESTROY:
-            ReadButtons();
-            m_hWnd = NULL;
-            return TRUE;
+    case WM_DESTROY:
+        ReadButtons();
+        m_hWnd = NULL;
+        return TRUE;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return FALSE;
@@ -79,7 +79,7 @@ void KSetupPogyPage::ReadOptions(HINSTANCE hInstance)
     KProfile Profile;
 
     Profile.SetFileName(hInstance, _T("Pogy.ini"));
-    
+
     bLogCall   = Profile.ReadInt(sec_option, key_logcall,  true) != 0;
     bDispCall  = Profile.ReadInt(sec_option, key_dispcall, true) != 0;
 }

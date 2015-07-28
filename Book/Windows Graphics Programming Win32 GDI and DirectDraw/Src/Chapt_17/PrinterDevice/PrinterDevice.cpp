@@ -25,43 +25,43 @@
 
 class KMain : public KPropertySheet
 {
-	KDevicePage * m_Device;
+    KDevicePage * m_Device;
 
-public: 
+public:
 
-	KMain(void)
-	{
-		m_Device = NULL;
-	}
+    KMain(void)
+    {
+        m_Device = NULL;
+    }
 
-	~KMain(void)
-	{
-		if ( m_Device )
-		{
-			delete m_Device;
-			m_Device = NULL;
-		}
-	}
+    ~KMain(void)
+    {
+        if ( m_Device )
+        {
+            delete m_Device;
+            m_Device = NULL;
+        }
+    }
 
-	void Run(HINSTANCE hInst)
-	{
+    void Run(HINSTANCE hInst)
+    {
         HPROPSHEETPAGE hPage[3];
 
-		m_Device = new KDevicePage(hInst);
-		hPage[0] = m_Device->createPropertySheetPage(hInst, IDD_DEVICEPAGE);
+        m_Device = new KDevicePage(hInst);
+        hPage[0] = m_Device->createPropertySheetPage(hInst, IDD_DEVICEPAGE);
 
-		propertySheet(hInst, NULL, IDI_PRINT, 1, hPage, "Printer Device");
-	}
+        propertySheet(hInst, NULL, IDI_PRINT, 1, hPage, "Printer Device");
+    }
 };
 
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 {
-	KMain    main;
-    
-	InitCommonControls();
+    KMain    main;
 
-	main.Run(hInstance);
+    InitCommonControls();
 
-	return TRUE;
-}	
+    main.Run(hInstance);
+
+    return TRUE;
+}

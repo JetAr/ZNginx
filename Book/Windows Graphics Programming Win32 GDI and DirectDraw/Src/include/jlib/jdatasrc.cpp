@@ -30,26 +30,26 @@
 
 #define INPUT_BUF_SIZE  4096	/* choose an efficiently fread'able size */
 
-// Expanded data source object for stdio input 
+// Expanded data source object for stdio input
 class my_source_mgr : public jpeg_source_mgr
 {
-	FILE *  infile;						/* source stream */
-	JOCTET  buffer[INPUT_BUF_SIZE];
-	boolean start_of_file;				/* have we gotten any data yet? */
+    FILE *  infile;						/* source stream */
+    JOCTET  buffer[INPUT_BUF_SIZE];
+    boolean start_of_file;				/* have we gotten any data yet? */
 
 public:
 
-	void Reset(FILE * inf)
-	{
-		infile = inf;
-		bytes_in_buffer = 0; /* forces fill_input_buffer on first read */
-		next_input_byte = NULL; /* until buffer loaded */
-	}
+    void Reset(FILE * inf)
+    {
+        infile = inf;
+        bytes_in_buffer = 0; /* forces fill_input_buffer on first read */
+        next_input_byte = NULL; /* until buffer loaded */
+    }
 
-	virtual void     init_source(j_decompress_ptr cinfo);
-	virtual boolean  fill_input_buffer(j_decompress_ptr cinfo);
-	virtual void     skip_input_data(j_decompress_ptr cinfo, long num_bytes);
-	virtual void     term_source(j_decompress_ptr cinfo);
+    virtual void     init_source(j_decompress_ptr cinfo);
+    virtual boolean  fill_input_buffer(j_decompress_ptr cinfo);
+    virtual void     skip_input_data(j_decompress_ptr cinfo, long num_bytes);
+    virtual void     term_source(j_decompress_ptr cinfo);
 
 };
 
@@ -62,11 +62,11 @@ public:
 
 void my_source_mgr::init_source(j_decompress_ptr cinfo)
 {
-	/* We reset the empty-input-file flag for each image,
-	* but we don't clear the input buffer.
-	* This is correct behavior for reading a series of images from one source.
-	*/
-	start_of_file = TRUE;
+    /* We reset the empty-input-file flag for each image,
+    * but we don't clear the input buffer.
+    * This is correct behavior for reading a series of images from one source.
+    */
+    start_of_file = TRUE;
 }
 
 
@@ -105,25 +105,25 @@ void my_source_mgr::init_source(j_decompress_ptr cinfo)
 
 boolean my_source_mgr::fill_input_buffer(j_decompress_ptr cinfo)
 {
-	size_t nbytes = JFREAD(infile, buffer, INPUT_BUF_SIZE);
+    size_t nbytes = JFREAD(infile, buffer, INPUT_BUF_SIZE);
 
-	if (nbytes <= 0) 
-	{
-		if ( start_of_file )	/* Treat empty input file as fatal error */
-			cinfo->ERREXIT(JERR_INPUT_EMPTY);
-		cinfo->WARNMS(JWRN_JPEG_EOF);
-		/* Insert a fake EOI marker */
-    
-		buffer[0] = (JOCTET) 0xFF;
-		buffer[1] = (JOCTET) JPEG_EOI;
-		nbytes = 2;
-	}
+    if (nbytes <= 0)
+    {
+        if ( start_of_file )	/* Treat empty input file as fatal error */
+            cinfo->ERREXIT(JERR_INPUT_EMPTY);
+        cinfo->WARNMS(JWRN_JPEG_EOF);
+        /* Insert a fake EOI marker */
 
-	next_input_byte = buffer;
-	bytes_in_buffer = nbytes;
-	start_of_file   = FALSE;
+        buffer[0] = (JOCTET) 0xFF;
+        buffer[1] = (JOCTET) JPEG_EOI;
+        nbytes = 2;
+    }
 
-	return TRUE;
+    next_input_byte = buffer;
+    bytes_in_buffer = nbytes;
+    start_of_file   = FALSE;
+
+    return TRUE;
 }
 
 
@@ -141,23 +141,23 @@ boolean my_source_mgr::fill_input_buffer(j_decompress_ptr cinfo)
 
 void my_source_mgr::skip_input_data (j_decompress_ptr cinfo, long num_bytes)
 {
-	/* Just a dumb implementation for now.  Could use fseek() except
-	* it doesn't work on pipes.  Not clear that being smart is worth
-	* any trouble anyway --- large skips are infrequent.
-	*/
-	if (num_bytes > 0) 
-	{
-		while (num_bytes > (long) bytes_in_buffer) 
-		{
-			num_bytes -= (long) bytes_in_buffer;
-			fill_input_buffer(cinfo);
-			/* note we assume that fill_input_buffer will never return FALSE,
-			* so suspension need not be handled.
-			*/
-		}
-		next_input_byte += (size_t) num_bytes;
-		bytes_in_buffer -= (size_t) num_bytes;
-	}
+    /* Just a dumb implementation for now.  Could use fseek() except
+    * it doesn't work on pipes.  Not clear that being smart is worth
+    * any trouble anyway --- large skips are infrequent.
+    */
+    if (num_bytes > 0)
+    {
+        while (num_bytes > (long) bytes_in_buffer)
+        {
+            num_bytes -= (long) bytes_in_buffer;
+            fill_input_buffer(cinfo);
+            /* note we assume that fill_input_buffer will never return FALSE,
+            * so suspension need not be handled.
+            */
+        }
+        next_input_byte += (size_t) num_bytes;
+        bytes_in_buffer -= (size_t) num_bytes;
+    }
 }
 
 
@@ -181,11 +181,11 @@ void my_source_mgr::skip_input_data (j_decompress_ptr cinfo, long num_bytes)
 
 void my_source_mgr::term_source (j_decompress_ptr cinfo)
 {
-	if (cinfo->src)
-	{		
-		delete (my_source_mgr *) cinfo->src;
-		cinfo->src = NULL;
-	}
+    if (cinfo->src)
+    {
+        delete (my_source_mgr *) cinfo->src;
+        cinfo->src = NULL;
+    }
 }
 
 
@@ -197,39 +197,39 @@ void my_source_mgr::term_source (j_decompress_ptr cinfo)
 
 GLOBAL(void) jpeg_stdio_src (j_decompress_ptr cinfo, FILE * infile)
 {
-	my_source_mgr * src;
+    my_source_mgr * src;
 
-	/* The source object and input buffer are made permanent so that a series
-	* of JPEG images can be read from the same file by calling jpeg_stdio_src
-	* only before the first one.  (If we discarded the buffer at the end of
-	* one image, we'd likely lose the start of the next one.)
-	* This makes it unsafe to use this manager and a different source
-	* manager serially with the same JPEG object.  Caveat programmer.
-	*/
-	if (cinfo->src == NULL) // first time for this JPEG object? 
-		cinfo->src = new my_source_mgr;
+    /* The source object and input buffer are made permanent so that a series
+    * of JPEG images can be read from the same file by calling jpeg_stdio_src
+    * only before the first one.  (If we discarded the buffer at the end of
+    * one image, we'd likely lose the start of the next one.)
+    * This makes it unsafe to use this manager and a different source
+    * manager serially with the same JPEG object.  Caveat programmer.
+    */
+    if (cinfo->src == NULL) // first time for this JPEG object?
+        cinfo->src = new my_source_mgr;
 
-	src = (my_source_mgr *) cinfo->src;
+    src = (my_source_mgr *) cinfo->src;
 
-	src->Reset(infile);
+    src->Reset(infile);
 }
 
 
 void jpeg_source_mgr::init_source(j_decompress_ptr cinfo)
 {
-	next_input_byte = NULL;
-	bytes_in_buffer = 0;
+    next_input_byte = NULL;
+    bytes_in_buffer = 0;
 }
 
 boolean  jpeg_source_mgr::fill_input_buffer(j_decompress_ptr cinfo)
 {
-	return FALSE;
+    return FALSE;
 }
 
 void jpeg_source_mgr::skip_input_data(j_decompress_ptr cinfo, long num_bytes)
 {
-	next_input_byte += num_bytes;
-	bytes_in_buffer -= num_bytes;
+    next_input_byte += num_bytes;
+    bytes_in_buffer -= num_bytes;
 }
 
 void jpeg_source_mgr::term_source(j_decompress_ptr cinfo)
@@ -246,24 +246,24 @@ class const_source_mgr : public jpeg_source_mgr
 
 public :
 
-	void Reset(const unsigned char * buffer, int len )
-	{
-		bytes_in_buffer = len; 
-		next_input_byte = buffer;
-	}
-	
-	void init_source(j_decompress_ptr cinfo)
-	{
-	}
+    void Reset(const unsigned char * buffer, int len )
+    {
+        bytes_in_buffer = len;
+        next_input_byte = buffer;
+    }
 
-	virtual void term_source(j_decompress_ptr cinfo)
-	{
-		if (cinfo->src)
-		{		
-			delete (const_source_mgr *) cinfo->src;
-			cinfo->src = NULL;
-		}
-	}
+    void init_source(j_decompress_ptr cinfo)
+    {
+    }
+
+    virtual void term_source(j_decompress_ptr cinfo)
+    {
+        if (cinfo->src)
+        {
+            delete (const_source_mgr *) cinfo->src;
+            cinfo->src = NULL;
+        }
+    }
 };
 
 
@@ -275,13 +275,13 @@ public :
 
 GLOBAL(void) jpeg_const_src (j_decompress_ptr cinfo, const unsigned char * buffer, int len)
 {
-	const_source_mgr * src;
+    const_source_mgr * src;
 
-	if (cinfo->src == NULL) // first time for this JPEG object? 
-		cinfo->src = new const_source_mgr;
+    if (cinfo->src == NULL) // first time for this JPEG object?
+        cinfo->src = new const_source_mgr;
 
-	src = (const_source_mgr *) cinfo->src;
+    src = (const_source_mgr *) cinfo->src;
 
-	src->Reset(buffer, len);
+    src->Reset(buffer, len);
 }
 

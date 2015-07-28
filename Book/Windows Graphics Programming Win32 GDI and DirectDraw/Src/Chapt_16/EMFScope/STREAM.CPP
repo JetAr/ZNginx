@@ -20,29 +20,29 @@
 
 BOOL KInputFile::Open(const TCHAR *filename)
 {
-	m_handle = CreateFile(filename, GENERIC_READ, 0, NULL,
-					      OPEN_EXISTING,
-					      FILE_ATTRIBUTE_NORMAL, NULL);
-	
+    m_handle = CreateFile(filename, GENERIC_READ, 0, NULL,
+                          OPEN_EXISTING,
+                          FILE_ATTRIBUTE_NORMAL, NULL);
+
     if (m_handle==INVALID_HANDLE_VALUE) return FALSE;
-            
-	m_eof        = FALSE;
-	m_bufpos     = 0;
-	m_buflen	 = 0;
-    m_fileoffset = 0;    
+
+    m_eof        = FALSE;
+    m_bufpos     = 0;
+    m_buflen	 = 0;
+    m_fileoffset = 0;
 
     return TRUE;
-}                           
+}
 
 
-void KInputFile::Reset(void)        
+void KInputFile::Reset(void)
 {
-	m_eof        = FALSE;
-	m_bufpos     = 0;
-	m_buflen     = 0;
-	m_fileoffset = 0;
+    m_eof        = FALSE;
+    m_bufpos     = 0;
+    m_buflen     = 0;
+    m_fileoffset = 0;
 
-	SetFilePointer(m_handle, 0, 0, FILE_BEGIN);
+    SetFilePointer(m_handle, 0, 0, FILE_BEGIN);
 }
 
 
@@ -50,7 +50,7 @@ void KInputFile::Close(void)
 {
     if (m_handle!=INVALID_HANDLE_VALUE)
     {
-		CloseHandle(m_handle);
+        CloseHandle(m_handle);
 
         m_handle = INVALID_HANDLE_VALUE;
     }
@@ -64,90 +64,90 @@ BYTE KInputFile::readbyte(void)
         if (m_eof)
             return c_EOF;
 
-		ReadFile(m_handle, m_buffer, c_bufsize, &m_buflen, NULL); 
-		m_fileoffset += m_buflen;
+        ReadFile(m_handle, m_buffer, c_bufsize, &m_buflen, NULL);
+        m_fileoffset += m_buflen;
 
         m_bufpos = 0;
-        if (m_buflen<=0) 
-        {   
+        if (m_buflen<=0)
+        {
             m_eof=TRUE;
             return c_EOF;
-        }            
+        }
     }
-    
-    return m_buffer[m_bufpos++]; 
+
+    return m_buffer[m_bufpos++];
 }
 
 
 DWORD KInputFile::readdword(void)
 {
-	DWORD *prslt;
-	char   temp[4];
+    DWORD *prslt;
+    char   temp[4];
 
-	if (m_buflen < m_bufpos + 4 )
-	{
-		for (int i=0; i<4; i++)
-			temp[i] = readbyte();
+    if (m_buflen < m_bufpos + 4 )
+    {
+        for (int i=0; i<4; i++)
+            temp[i] = readbyte();
 
-		prslt = (DWORD *)temp;
-	}
-	else
-	{
-		prslt = (DWORD *) (& m_buffer[m_bufpos]);
-		m_bufpos+= 4;
-	}
+        prslt = (DWORD *)temp;
+    }
+    else
+    {
+        prslt = (DWORD *) (& m_buffer[m_bufpos]);
+        m_bufpos+= 4;
+    }
 
-	return *prslt;
+    return *prslt;
 }
 
 
 int KInputFile::read(char *buffer, int len)
 {
-	int copied = 0;
+    int copied = 0;
 
-	while (len)
-	{
-		int l = m_buflen - m_bufpos;
+    while (len)
+    {
+        int l = m_buflen - m_bufpos;
 
-		if (l>0)				// copy from current buffer
-		{
-			if (l>len)
-				l = len;
+        if (l>0)				// copy from current buffer
+        {
+            if (l>len)
+                l = len;
 
             if (buffer)
             {
-			    memcpy(buffer, & m_buffer[m_bufpos], l);
-			    buffer   += l;
+                memcpy(buffer, & m_buffer[m_bufpos], l);
+                buffer   += l;
             }
-	
-			copied   += l;
-			m_bufpos += l;
-			len      -= l;
-		}
-		else 
-		{
-			if ( buffer==NULL ) // skipping only
-			{
-				m_fileoffset += len;
-				SetFilePointer(m_handle, m_fileoffset, NULL, FILE_BEGIN);	// move pointer
 
-				return copied + len;										// m_buffer is still empty
-			}
+            copied   += l;
+            m_bufpos += l;
+            len      -= l;
+        }
+        else
+        {
+            if ( buffer==NULL ) // skipping only
+            {
+                m_fileoffset += len;
+                SetFilePointer(m_handle, m_fileoffset, NULL, FILE_BEGIN);	// move pointer
 
-			ReadFile(m_handle, m_buffer, c_bufsize, &m_buflen, NULL);		// read a buffer-full of data
-			m_fileoffset += m_buflen;
+                return copied + len;										// m_buffer is still empty
+            }
 
-			m_bufpos = 0;
-			
-			if (m_buflen<=0)
-			{
-				m_eof = TRUE;
-				break;
-			}
-		}
-	}
+            ReadFile(m_handle, m_buffer, c_bufsize, &m_buflen, NULL);		// read a buffer-full of data
+            m_fileoffset += m_buflen;
 
-	return copied;
+            m_bufpos = 0;
+
+            if (m_buflen<=0)
+            {
+                m_eof = TRUE;
+                break;
+            }
+        }
+    }
+
+    return copied;
 }
 
 /////////////////////////////////////////
@@ -155,25 +155,25 @@ int KInputFile::read(char *buffer, int len)
 BOOL KOutputFile::Open(const char far *filename)
 {
     m_handle = CreateFile(filename, GENERIC_WRITE, 0, NULL, CREATE_NEW,
-						  FILE_ATTRIBUTE_NORMAL, NULL);
+                          FILE_ATTRIBUTE_NORMAL, NULL);
 
-	if (m_handle==INVALID_HANDLE_VALUE) return FALSE;
-            
+    if (m_handle==INVALID_HANDLE_VALUE) return FALSE;
+
     m_bufpos = 0;
-        
+
     return TRUE;
-}                           
-        
+}
+
 
 void KOutputFile::Flush(void)
-{   
+{
     if (m_bufpos)
     {
-		unsigned long dwWritten;
+        unsigned long dwWritten;
 
-		WriteFile(m_handle, m_buffer, m_bufpos, &dwWritten, NULL);
+        WriteFile(m_handle, m_buffer, m_bufpos, &dwWritten, NULL);
         m_bufpos = 0;
-    }        
+    }
 }
 
 void KOutputFile::Close(void)
@@ -187,15 +187,16 @@ void KOutputFile::Close(void)
 }
 
 void KOutputFile::write(BYTE b)
-{   
+{
     if (b=='\n')
-    {   m_buffer[m_bufpos++ ] = '\r';
+    {
+        m_buffer[m_bufpos++ ] = '\r';
         if (m_bufpos >= c_bufsize)
             Flush();
     }
-                
+
     m_buffer[m_bufpos++] = b;
-    
+
     if (m_bufpos >= c_bufsize)             // input buffer empty
         Flush();
 }

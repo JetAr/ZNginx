@@ -23,31 +23,31 @@
 
 BOOL KToolbarB::SetBitmap(HINSTANCE hInstance, int resourceID)
 {
-	HPALETTE hPal = CreateSystemPalette();
-	HBITMAP  hBmp = PaletteLoadBitmap(hInstance, MAKEINTRESOURCE(resourceID), hPal);
-	DeleteObject(hPal);
+    HPALETTE hPal = CreateSystemPalette();
+    HBITMAP  hBmp = PaletteLoadBitmap(hInstance, MAKEINTRESOURCE(resourceID), hPal);
+    DeleteObject(hPal);
 
-	if ( hBmp )
-	{
-		TBREPLACEBITMAP rp;
+    if ( hBmp )
+    {
+        TBREPLACEBITMAP rp;
 
-		rp.hInstOld = m_ResInstance;
-		rp.nIDOld   = m_ResId;
-		rp.hInstNew = NULL;
-		rp.nIDNew   = (UINT) hBmp;
-		rp.nButtons = 40;
+        rp.hInstOld = m_ResInstance;
+        rp.nIDOld   = m_ResId;
+        rp.hInstNew = NULL;
+        rp.nIDNew   = (UINT) hBmp;
+        rp.nButtons = 40;
 
-		SendMessage(m_hWnd, TB_REPLACEBITMAP, 0, (LPARAM) & rp);
+        SendMessage(m_hWnd, TB_REPLACEBITMAP, 0, (LPARAM) & rp);
 
-		if ( m_ResInstance==NULL )
-			DeleteObject( (HBITMAP) m_ResId);
+        if ( m_ResInstance==NULL )
+            DeleteObject( (HBITMAP) m_ResId);
 
-		m_ResInstance = NULL;
-		m_ResId       = (UINT) hBmp;
+        m_ResInstance = NULL;
+        m_ResId       = (UINT) hBmp;
 
-		return TRUE;
-	}
-	else
-		return FALSE;
+        return TRUE;
+    }
+    else
+        return FALSE;
 }
 

@@ -36,7 +36,7 @@ public:
             return;
 
         HRSRC hRsc = FindResource(hModule, MAKEINTRESOURCE(resid), RT_BITMAP);
-        
+
         if ( hRsc )
         {
             m_pDIB  = (const BITMAPINFO *) LockResource(LoadResource(hModule, hRsc));
@@ -46,10 +46,10 @@ public:
 
     int StretchDIBits(HDC hDC, int dx, int dy, int dw, int dh, int sx, int sy, int sw, int sh, int coloruse, DWORD rop)
     {
-        return ::StretchDIBits(hDC, dx, dy, dw, dh, sx, sy, sw, sh, 
-                    m_pBits, m_pDIB, coloruse, rop);
+        return ::StretchDIBits(hDC, dx, dy, dw, dh, sx, sy, sw, sh,
+                               m_pBits, m_pDIB, coloruse, rop);
     }
-   
+
 };
 
 

@@ -25,65 +25,75 @@
 // hue		  [0..359)
 void KColor::ToHLS(void)
 {
-	double mn, mx; 
-	int	   major;
-	
-	if ( red < green )
-	{
-		mn = red; mx = green; major = Green;
-	}
-	else
-	{
-		mn = green; mx = red; major = Red;
-	}
+    double mn, mx;
+    int	   major;
 
-	if ( blue < mn )
-		mn = blue;
-	else if ( blue > mx )
-	{
-		mx = blue; major = Blue;
-	}
-	
-    if ( mn==mx ) 
+    if ( red < green )
     {
-		lightness    = mn/255;
-		saturation   = 0;
-		hue          = 0; 
-    }   
-    else 
-    { 
-	    lightness = (mn+mx) / 510;
+        mn = red;
+        mx = green;
+        major = Green;
+    }
+    else
+    {
+        mn = green;
+        mx = red;
+        major = Red;
+    }
 
-		if ( lightness <= 0.5 )
-			saturation = (mx-mn) / (mn+mx); 
-		else
-			saturation = (mx-mn) / (510-mn-mx);
+    if ( blue < mn )
+        mn = blue;
+    else if ( blue > mx )
+    {
+        mx = blue;
+        major = Blue;
+    }
 
-		switch ( major )
-		{
-			case Red  : hue = (green-blue) * 60 / (mx-mn) + 360; break;
-			case Green: hue = (blue-red) * 60  / (mx-mn) + 120;  break;
-			case Blue : hue = (red-green) * 60 / (mx-mn) + 240;
-		}
+    if ( mn==mx )
+    {
+        lightness    = mn/255;
+        saturation   = 0;
+        hue          = 0;
+    }
+    else
+    {
+        lightness = (mn+mx) / 510;
 
-		if (hue >= 360)
-			hue = hue - 360;
+        if ( lightness <= 0.5 )
+            saturation = (mx-mn) / (mn+mx);
+        else
+            saturation = (mx-mn) / (510-mn-mx);
+
+        switch ( major )
+        {
+        case Red  :
+            hue = (green-blue) * 60 / (mx-mn) + 360;
+            break;
+        case Green:
+            hue = (blue-red) * 60  / (mx-mn) + 120;
+            break;
+        case Blue :
+            hue = (red-green) * 60 / (mx-mn) + 240;
+        }
+
+        if (hue >= 360)
+            hue = hue - 360;
     }
 }
 
 unsigned char Value(double m1, double m2, double h)
 {
-	while (h >= 360) h -= 360;
-	while (h <    0) h += 360;
- 
-	if (h < 60) 
-		m1 = m1 + (m2 - m1) * h / 60;   
-	else if (h < 180) 
-		m1 = m2;
-	else if (h < 240) 
-		m1 = m1 + (m2 - m1) * (240 - h) / 60;      
-                   
-	return (unsigned char)(m1 * 255);
+    while (h >= 360) h -= 360;
+    while (h <    0) h += 360;
+
+    if (h < 60)
+        m1 = m1 + (m2 - m1) * h / 60;
+    else if (h < 180)
+        m1 = m2;
+    else if (h < 240)
+        m1 = m1 + (m2 - m1) * (240 - h) / 60;
+
+    return (unsigned char)(m1 * 255);
 }
 
 
@@ -91,22 +101,22 @@ void KColor::ToRGB(void)
 {
     if (saturation == 0)
     {
-	    red = green = blue = (unsigned char) (lightness*255);
+        red = green = blue = (unsigned char) (lightness*255);
     }
     else
     {
-		double m1, m2;
-         
-		if ( lightness <= 0.5 )
-			m2 = lightness + lightness * saturation;  
-		else                     
-			m2 = lightness + saturation - lightness * saturation;
-      
-		m1 = 2 * lightness - m2;   
-      
-		red   = Value(m1, m2, hue + 120);   
-		green = Value(m1, m2, hue);
-		blue  = Value(m1, m2, hue - 120);
+        double m1, m2;
+
+        if ( lightness <= 0.5 )
+            m2 = lightness + lightness * saturation;
+        else
+            m2 = lightness + saturation - lightness * saturation;
+
+        m1 = 2 * lightness - m2;
+
+        red   = Value(m1, m2, hue + 120);
+        green = Value(m1, m2, hue);
+        blue  = Value(m1, m2, hue - 120);
     }
 }
 

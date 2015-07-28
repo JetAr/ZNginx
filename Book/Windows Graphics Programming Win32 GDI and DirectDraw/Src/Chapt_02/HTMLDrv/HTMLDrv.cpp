@@ -11,14 +11,14 @@
 //  Version    : 1.00.000, May 31, 2000                                              //
 //-----------------------------------------------------------------------------------//
 
-#define _WIN32_WINNT 0x0500 
-#define  WINVER      0x0500 
+#define _WIN32_WINNT 0x0500
+#define  WINVER      0x0500
 #define NOCRYPT
 
 #define UNICODE
 #define _UNICODE
 #define _X86_ 1
-#define WINNT 1 
+#define WINNT 1
 
 #include <windows.h>
 
@@ -27,7 +27,7 @@
 #include <winddi.h>
 
 #include "Device.h"
- 
+
 #pragma comment(lib, "win32k.lib")
 
 const DRVFN DDI_Hooks[] =
@@ -89,16 +89,16 @@ void APIENTRY DrvDisableDriver(void)
 
 
 DHPDEV APIENTRY DrvEnablePDEV(DEVMODEW *pdm,
-              LPWSTR    pwszLogAddress,
-              ULONG     cPat,
-              HSURF    *phsurfPatterns,
-              ULONG     cjCaps,
-              ULONG    *pdevcaps,
-              ULONG     cjDevInfo,
-              DEVINFO  *pdi,
-              HDEV      hdev,
-              PWSTR     pwszDeviceName,
-              HANDLE    hDriver)
+                              LPWSTR    pwszLogAddress,
+                              ULONG     cPat,
+                              HSURF    *phsurfPatterns,
+                              ULONG     cjCaps,
+                              ULONG    *pdevcaps,
+                              ULONG     cjDevInfo,
+                              DEVINFO  *pdi,
+                              HDEV      hdev,
+                              PWSTR     pwszDeviceName,
+                              HANDLE    hDriver)
 {
     if ( (cjCaps<sizeof(GDIINFO)) || (cjDevInfo<sizeof(DEVINFO)) )
     {
@@ -107,7 +107,7 @@ DHPDEV APIENTRY DrvEnablePDEV(DEVMODEW *pdm,
     }
 
     KDevice * pDevice;
-    
+
     // Allocate physical device object. Tag = HTMD
     pDevice = (KDevice *) EngAllocMem (FL_ZERO_MEMORY, sizeof(KDevice), 'DMTH');
     if (pDevice == NULL)
@@ -116,82 +116,82 @@ DHPDEV APIENTRY DrvEnablePDEV(DEVMODEW *pdm,
         return NULL;
     }
 
-	pDevice->Create();
+    pDevice->Create();
 
     pDevice->hSpooler   = hDriver;
-	pDevice->hPalette   = EngCreatePalette (PAL_BGR, 0, 0, 0, 0, 0);
+    pDevice->hPalette   = EngCreatePalette (PAL_BGR, 0, 0, 0, 0, 0);
 
     if (pdm == NULL || pdm->dmOrientation == DMORIENT_PORTRAIT)
-	{
-		pDevice->width  = PaperWidth;
-		pDevice->height = PaperHeight;
-	}
-	else
-	{
-		pDevice->width  = PaperHeight;
-		pDevice->height = PaperWidth;
-	}
+    {
+        pDevice->width  = PaperWidth;
+        pDevice->height = PaperHeight;
+    }
+    else
+    {
+        pDevice->width  = PaperHeight;
+        pDevice->height = PaperWidth;
+    }
 
-	// GDIINFO initialized by GDI before calling DrvEnablePDEV
-	PGDIINFO pgdiinfo = (PGDIINFO) pdevcaps;
-    
-	memset(pgdiinfo, 0, sizeof(GDIINFO));
+    // GDIINFO initialized by GDI before calling DrvEnablePDEV
+    PGDIINFO pgdiinfo = (PGDIINFO) pdevcaps;
 
-	pgdiinfo->ulVersion    = GDI_DRIVER_VERSION;
+    memset(pgdiinfo, 0, sizeof(GDIINFO));
+
+    pgdiinfo->ulVersion    = GDI_DRIVER_VERSION;
     pgdiinfo->ulTechnology = DT_RASPRINTER;
-	pgdiinfo->ulHorzSize   = pDevice->width  * 254 / 10;
+    pgdiinfo->ulHorzSize   = pDevice->width  * 254 / 10;
     pgdiinfo->ulVertSize   = pDevice->height * 254 / 10;
     pgdiinfo->ulHorzRes    = pDevice->width  * Dpi / 10;
     pgdiinfo->ulVertRes    = pDevice->height * Dpi / 10;
 
-	pgdiinfo->cBitsPixel   = 24;
-	pgdiinfo->cPlanes      = 1;
-	pgdiinfo->ulNumColors  = 512;
-	pgdiinfo->flRaster     = 0;
+    pgdiinfo->cBitsPixel   = 24;
+    pgdiinfo->cPlanes      = 1;
+    pgdiinfo->ulNumColors  = 512;
+    pgdiinfo->flRaster     = 0;
     pgdiinfo->ulLogPixelsX = Dpi;
-	pgdiinfo->ulLogPixelsY = Dpi;
+    pgdiinfo->ulLogPixelsY = Dpi;
 
-	pgdiinfo->ulAspectX    = 1000;
-	pgdiinfo->ulAspectY    = 1000;
-    pgdiinfo->ulAspectXY   = 1414;  
-    
-	pgdiinfo->xStyleStep   = 1;
-	pgdiinfo->yStyleStep   = 1;
-	pgdiinfo->denStyleStep = 10;
-    
-	pgdiinfo->ptlPhysOffset.x = Dpi / 4; // 0.25 inch
-	pgdiinfo->ptlPhysOffset.y = Dpi / 4; // 0.25 inch
+    pgdiinfo->ulAspectX    = 1000;
+    pgdiinfo->ulAspectY    = 1000;
+    pgdiinfo->ulAspectXY   = 1414;
+
+    pgdiinfo->xStyleStep   = 1;
+    pgdiinfo->yStyleStep   = 1;
+    pgdiinfo->denStyleStep = 10;
+
+    pgdiinfo->ptlPhysOffset.x = Dpi / 4; // 0.25 inch
+    pgdiinfo->ptlPhysOffset.y = Dpi / 4; // 0.25 inch
     pgdiinfo->szlPhysSize.cx  = pDevice->width  * Dpi / 10;
     pgdiinfo->szlPhysSize.cy  = pDevice->height * Dpi / 10;
 
-	pgdiinfo->ulDevicePelsDPI = Dpi;
-	pgdiinfo->ulPrimaryOrder  = PRIMARY_ORDER_ABC;
-	pgdiinfo->ulHTPatternSize = HT_PATSIZE_DEFAULT;
-	pgdiinfo->ulHTOutputFormat= HT_FORMAT_24BPP;
+    pgdiinfo->ulDevicePelsDPI = Dpi;
+    pgdiinfo->ulPrimaryOrder  = PRIMARY_ORDER_ABC;
+    pgdiinfo->ulHTPatternSize = HT_PATSIZE_DEFAULT;
+    pgdiinfo->ulHTOutputFormat= HT_FORMAT_24BPP;
     pgdiinfo->flHTFlags       = HT_FLAG_HAS_BLACK_DYE;
 
-	// DEVINFO, initialized by GDI, driver only set what it understands
-    pdi->flGraphicsCaps = GCAPS_BEZIERS | 
-						  GCAPS_GEOMETRICWIDE |
-						  GCAPS_ALTERNATEFILL |
-						  GCAPS_WINDINGFILL |
-						  GCAPS_HALFTONE |
-						  GCAPS_HORIZSTRIKE |
-						  GCAPS_VERTSTRIKE |
-						  GCAPS_OPAQUERECT |
-						  GCAPS_VECTORFONT;
+    // DEVINFO, initialized by GDI, driver only set what it understands
+    pdi->flGraphicsCaps = GCAPS_BEZIERS |
+                          GCAPS_GEOMETRICWIDE |
+                          GCAPS_ALTERNATEFILL |
+                          GCAPS_WINDINGFILL |
+                          GCAPS_HALFTONE |
+                          GCAPS_HORIZSTRIKE |
+                          GCAPS_VERTSTRIKE |
+                          GCAPS_OPAQUERECT |
+                          GCAPS_VECTORFONT;
     pdi->iDitherFormat = BMF_24BPP;
-	pdi->hpalDefault   = pDevice->hPalette;
-    
-	return (DHPDEV) pDevice;
+    pdi->hpalDefault   = pDevice->hPalette;
+
+    return (DHPDEV) pDevice;
 }
 
 
 void APIENTRY DrvCompletePDEV(DHPDEV dhpdev, HDEV hdev)
 {
     KDevice * pDevice = (KDevice *)dhpdev;
-    
-	pDevice->hDevice = hdev;
+
+    pDevice->hDevice = hdev;
 }
 
 
@@ -205,8 +205,8 @@ void APIENTRY DrvDisablePDEV(DHPDEV dhpdev)
 {
     KDevice * pDevice = (KDevice *)dhpdev;
 
-	if ( pDevice->hPalette )
-		EngDeletePalette(pDevice->hPalette);
+    if ( pDevice->hPalette )
+        EngDeletePalette(pDevice->hPalette);
 
     EngFreeMem(pDevice);
 }
@@ -217,17 +217,17 @@ HSURF APIENTRY DrvEnableSurface(DHPDEV dhpdev)
     KDevice * pDevice = (KDevice *) dhpdev;
 
     SIZEL sizl = { pDevice->width * Dpi / 10, pDevice->height * Dpi / 10 };
-    
-    pDevice->hSurface = (HSURF) EngCreateBitmap(sizl, sizl.cy, BMF_24BPP, 
-		                            BMF_NOZEROINIT,  NULL);
+
+    pDevice->hSurface = (HSURF) EngCreateBitmap(sizl, sizl.cy, BMF_24BPP,
+                        BMF_NOZEROINIT,  NULL);
 
     if (pDevice->hSurface == NULL)
         return NULL;
- 
-    EngAssociateSurface(pDevice->hSurface, pDevice->hDevice, 
-		HOOK_BITBLT | HOOK_STRETCHBLT | HOOK_TEXTOUT | HOOK_PAINT | 
-		HOOK_STROKEPATH | HOOK_FILLPATH | HOOK_STROKEANDFILLPATH | 
-		HOOK_COPYBITS | HOOK_LINETO);
+
+    EngAssociateSurface(pDevice->hSurface, pDevice->hDevice,
+                        HOOK_BITBLT | HOOK_STRETCHBLT | HOOK_TEXTOUT | HOOK_PAINT |
+                        HOOK_STROKEPATH | HOOK_FILLPATH | HOOK_STROKEANDFILLPATH |
+                        HOOK_COPYBITS | HOOK_LINETO);
 
     return pDevice->hSurface;
 }
@@ -238,7 +238,7 @@ void APIENTRY DrvDisableSurface(DHPDEV dhpdev)
     KDevice * pDevice = (KDevice *)dhpdev;
 
     EngDeleteSurface(pDevice->hSurface);
-	pDevice->hSurface = NULL;
+    pDevice->hSurface = NULL;
 }
 
 
@@ -248,9 +248,9 @@ BOOL  APIENTRY DrvStartPage(SURFOBJ *pso)
 
     if ( pDevice->StartPage(& pso, 1) )
     {
-		RECTL rect = { 0, 0, pDevice->width * Dpi / 10, pDevice->height * Dpi / 10 };
-		
-		EngEraseSurface(pso, & rect, 0xFFFFFF);
+        RECTL rect = { 0, 0, pDevice->width * Dpi / 10, pDevice->height * Dpi / 10 };
+
+        EngEraseSurface(pso, & rect, 0xFFFFFF);
 
         return TRUE;
     }
@@ -262,7 +262,7 @@ BOOL APIENTRY DrvStartDoc(SURFOBJ *pso, PWSTR pwszDocName, DWORD dwJobId)
 {
     KDevice * pDevice = (KDevice *) pso->dhpdev;
 
-	return pDevice->StartDoc(pwszDocName, & pso, 3);
+    return pDevice->StartDoc(pwszDocName, & pso, 3);
 }
 
 
@@ -278,42 +278,42 @@ BOOL APIENTRY DrvSendPage(SURFOBJ *pso)
 {
     KDevice * pDevice = (KDevice *) pso->dhpdev;
 
-	if ( pDevice->SendPage(& pso, 1) )
-	{
-		pDevice->DumpSurface(pso);
-		
-		return TRUE;
-	}
-	else
-		return FALSE;
+    if ( pDevice->SendPage(& pso, 1) )
+    {
+        pDevice->DumpSurface(pso);
+
+        return TRUE;
+    }
+    else
+        return FALSE;
 }
 
 
 BOOL APIENTRY DrvStrokePath(SURFOBJ   *pso,
-							PATHOBJ   *ppo,
-							CLIPOBJ   *pco,
-                            XFORMOBJ  *pxo, 
-							BRUSHOBJ  *pbo,
-							POINTL    *pptlBrushOrg,
+                            PATHOBJ   *ppo,
+                            CLIPOBJ   *pco,
+                            XFORMOBJ  *pxo,
+                            BRUSHOBJ  *pbo,
+                            POINTL    *pptlBrushOrg,
                             LINEATTRS *plineattrs,
-							MIX        mix)
+                            MIX        mix)
 {
     KDevice * pDevice = (KDevice *) pso->dhpdev;
 
     if ( pDevice->CallEngine(INDEX_DrvStrokePath, & pso, 8) )
-		return EngStrokePath(pso, ppo, pco, pxo, pbo, pptlBrushOrg, plineattrs, mix);
+        return EngStrokePath(pso, ppo, pco, pxo, pbo, pptlBrushOrg, plineattrs, mix);
     else
         return FALSE;
 }
 
 
 BOOL APIENTRY DrvFillPath(SURFOBJ  *pso,
-						  PATHOBJ  *ppo,
-						  CLIPOBJ  *pco,
-						  BRUSHOBJ *pbo,
+                          PATHOBJ  *ppo,
+                          CLIPOBJ  *pco,
+                          BRUSHOBJ *pbo,
                           POINTL   *pptlBrushOrg,
-						  MIX       mix,
-						  FLONG     flOptions)
+                          MIX       mix,
+                          FLONG     flOptions)
 {
     KDevice * pDevice = (KDevice *) pso->dhpdev;
 
@@ -332,14 +332,14 @@ BOOL APIENTRY DrvStrokeAndFillPath(SURFOBJ *pso,PATHOBJ *ppo,CLIPOBJ *pco,
     KDevice * pDevice = (KDevice *) pso->dhpdev;
 
     if ( pDevice->CallEngine(INDEX_DrvStrokeAndFillPath, &pso, 10) )
-        return EngStrokeAndFillPath(pso, ppo, pco, pxo, pboStroke, plineattrs, 
-		           pboFill, pptlBrushOrg, mixFill, flOptions);
+        return EngStrokeAndFillPath(pso, ppo, pco, pxo, pboStroke, plineattrs,
+                                    pboFill, pptlBrushOrg, mixFill, flOptions);
     else
         return FALSE;
 }
 
 
-BOOL APIENTRY DrvLineTo(SURFOBJ *pso, CLIPOBJ *pco, BRUSHOBJ *pbo, LONG x1, 
+BOOL APIENTRY DrvLineTo(SURFOBJ *pso, CLIPOBJ *pco, BRUSHOBJ *pbo, LONG x1,
                         LONG y1, LONG x2, LONG y2, RECTL *prclBounds, MIX mix)
 {
     KDevice * pDevice = (KDevice *) pso->dhpdev;
@@ -351,11 +351,11 @@ BOOL APIENTRY DrvLineTo(SURFOBJ *pso, CLIPOBJ *pco, BRUSHOBJ *pbo, LONG x1,
 }
 
 
-BOOL APIENTRY DrvPaint(SURFOBJ  *pso, 
-					   CLIPOBJ  *pco, 
-					   BRUSHOBJ *pbo,
-					   POINTL   *pptlBrushOrg,
-					   MIX       mix)
+BOOL APIENTRY DrvPaint(SURFOBJ  *pso,
+                       CLIPOBJ  *pco,
+                       BRUSHOBJ *pbo,
+                       POINTL   *pptlBrushOrg,
+                       MIX       mix)
 {
     KDevice * pDevice = (KDevice *) pso->dhpdev;
 
@@ -367,33 +367,33 @@ BOOL APIENTRY DrvPaint(SURFOBJ  *pso,
 
 
 BOOL APIENTRY DrvBitBlt(SURFOBJ  *psoTrg,
-						SURFOBJ  *psoSrc,
-						SURFOBJ  *psoMask,
+                        SURFOBJ  *psoSrc,
+                        SURFOBJ  *psoMask,
                         CLIPOBJ  *pco,
-						XLATEOBJ *pxlo,
-						RECTL    *prclTrg,
-						POINTL   *pptlSrc,
+                        XLATEOBJ *pxlo,
+                        RECTL    *prclTrg,
+                        POINTL   *pptlSrc,
                         POINTL   *pptlMask,
-						BRUSHOBJ *pbo,
-						POINTL   *pptlBrush,
-						ROP4      rop4)
+                        BRUSHOBJ *pbo,
+                        POINTL   *pptlBrush,
+                        ROP4      rop4)
 {
     KDevice * pDevice = (KDevice *) psoTrg->dhpdev;
 
     if ( pDevice->CallEngine(INDEX_DrvBitBlt, &psoTrg, 11) )
-		return EngBitBlt(psoTrg, psoSrc, psoMask, pco, pxlo, prclTrg, 
-		            pptlSrc, pptlMask, pbo, pptlBrush, rop4);
+        return EngBitBlt(psoTrg, psoSrc, psoMask, pco, pxlo, prclTrg,
+                         pptlSrc, pptlMask, pbo, pptlBrush, rop4);
     else
         return FALSE;
 }
 
 
 BOOL APIENTRY DrvCopyBits(SURFOBJ  *psoDest,
-						  SURFOBJ  *psoSrc,
-						  CLIPOBJ  *pco,
+                          SURFOBJ  *psoSrc,
+                          CLIPOBJ  *pco,
                           XLATEOBJ *pxlo,
-						  RECTL    *prclDest,
-						  POINTL   *pptlSrc)
+                          RECTL    *prclDest,
+                          POINTL   *pptlSrc)
 {
     KDevice * pDevice = (KDevice *) psoDest->dhpdev;
 
@@ -405,43 +405,43 @@ BOOL APIENTRY DrvCopyBits(SURFOBJ  *psoDest,
 
 
 BOOL APIENTRY DrvStretchBlt(SURFOBJ         *psoDest,
-							SURFOBJ         *psoSrc,
-							SURFOBJ         *psoMask,
+                            SURFOBJ         *psoSrc,
+                            SURFOBJ         *psoMask,
                             CLIPOBJ         *pco,
-							XLATEOBJ        *pxlo,
-							COLORADJUSTMENT *pca,
+                            XLATEOBJ        *pxlo,
+                            COLORADJUSTMENT *pca,
                             POINTL          *pptlHTOrg,
-							RECTL           *prclDest,
+                            RECTL           *prclDest,
                             RECTL           *prclSrc,
                             POINTL          *pptlMask,
-							ULONG            iMode)
+                            ULONG            iMode)
 {
     KDevice * pDevice = (KDevice *) psoDest->dhpdev;
 
     if ( pDevice->CallEngine(INDEX_DrvStretchBlt, & psoDest, 11) )
-        return EngStretchBlt(psoDest, psoSrc, psoMask, pco, pxlo, pca, 
-		           pptlHTOrg, prclDest, prclSrc, pptlMask, iMode);
+        return EngStretchBlt(psoDest, psoSrc, psoMask, pco, pxlo, pca,
+                             pptlHTOrg, prclDest, prclSrc, pptlMask, iMode);
     else
         return FALSE;
 }
 
 
 BOOL APIENTRY DrvTextOut(SURFOBJ  *pso,
-           STROBJ   *pstro,
-           FONTOBJ  *pfo,
-           CLIPOBJ  *pco,
-           RECTL    *prclExtra,
-           RECTL    *prclOpaque,
-           BRUSHOBJ *pboFore,
-           BRUSHOBJ *pboOpaque,
-           POINTL   *pptlOrg,
-           MIX       mix)
+                         STROBJ   *pstro,
+                         FONTOBJ  *pfo,
+                         CLIPOBJ  *pco,
+                         RECTL    *prclExtra,
+                         RECTL    *prclOpaque,
+                         BRUSHOBJ *pboFore,
+                         BRUSHOBJ *pboOpaque,
+                         POINTL   *pptlOrg,
+                         MIX       mix)
 {
     KDevice * pdevice = (KDevice *) pso->dhpdev;
 
     if ( pdevice->CallEngine(INDEX_DrvTextOut, &pso, 10) )
-		return EngTextOut(pso, pstro, pfo, pco, prclExtra, 
-		           prclOpaque, pboFore, pboOpaque, pptlOrg, mix);
+        return EngTextOut(pso, pstro, pfo, pco, prclExtra,
+                          prclOpaque, pboFore, pboOpaque, pptlOrg, mix);
     else
         return FALSE;
 }

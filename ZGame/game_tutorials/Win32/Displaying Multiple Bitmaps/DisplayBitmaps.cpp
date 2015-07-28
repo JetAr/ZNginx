@@ -145,7 +145,7 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
         DisplayBitmap(&gBuffer, hTileBitmap2, x, 200);
 
         // Now that we filled the back buffer with images, display it on screen
-		//z 绘制是绘制在　back buffer 上，要显示到前端，还需要交换。
+        //z 绘制是绘制在　back buffer 上，要显示到前端，还需要交换。
         SwapBackBuffer(&gBuffer, TRUE);
         break;
 
@@ -163,7 +163,7 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 void Init(HWND hwnd)
 {
-	//z 载入 bitmap 
+    //z 载入 bitmap
     // Load the bitmap and store it in a handle
     hTileBitmap = LoadABitmap("Bitmap.bmp");
 
@@ -232,7 +232,7 @@ void DeInit()
 //
 //z 创建双缓冲
 //z 为了第一次看起来不是那么可怕，我们对backbuffer进行了清屏
-//z 
+//z
 // 1) You need to call the CreateDoubleBuffering() function (once) to set up
 //    our double buffering.  This needs the address of BUFFER structure
 //    to fill in, and the handle to the window.  This function fills in

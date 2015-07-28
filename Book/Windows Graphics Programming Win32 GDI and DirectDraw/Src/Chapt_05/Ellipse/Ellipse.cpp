@@ -21,18 +21,18 @@
 
 int MyMessageBox(HWND hWnd, const TCHAR * text, const TCHAR * caption, DWORD style)
 {
-	MSGBOXPARAMS param;
+    MSGBOXPARAMS param;
 
-	memset(& param, 0, sizeof(param));
-	param.cbSize	  = sizeof(param);
-	param.hwndOwner   = hWnd;
-	param.hInstance   = GetModuleHandle(NULL);
-	param.lpszText    = text;
-	param.lpszCaption = caption;
-	param.dwStyle     = style | MB_USERICON;
-	param.lpszIcon    = MAKEINTRESOURCE(IDI_GRAPH);
+    memset(& param, 0, sizeof(param));
+    param.cbSize	  = sizeof(param);
+    param.hwndOwner   = hWnd;
+    param.hInstance   = GetModuleHandle(NULL);
+    param.lpszText    = text;
+    param.lpszCaption = caption;
+    param.dwStyle     = style | MB_USERICON;
+    param.lpszIcon    = MAKEINTRESOURCE(IDI_GRAPH);
 
-	return MessageBoxIndirect(&param);
+    return MessageBoxIndirect(&param);
 }
 
 
@@ -44,22 +44,22 @@ const TCHAR szEptcWin [] = _T("Elliptic Window");
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
     HWND hWnd = CreateWindow(_T("EDIT"), NULL, WS_OVERLAPPEDWINDOW,
-		10, 10, 200, 100, GetDesktopWindow(), NULL, hInst, NULL);
-	ShowWindow(hWnd, SW_SHOW);
+                             10, 10, 200, 100, GetDesktopWindow(), NULL, hInst, NULL);
+    ShowWindow(hWnd, SW_SHOW);
 
-	SetWindowText(hWnd, szRectWin);
+    SetWindowText(hWnd, szRectWin);
 
-	MyMessageBox(NULL, szRectWin, szProgram, MB_OK);
+    MyMessageBox(NULL, szRectWin, szProgram, MB_OK);
 
-	HRGN hRgn = CreateEllipticRgn(0, 0, 200, 100);
-	SetWindowRgn(hWnd, hRgn, TRUE);
-	DeleteObject(hRgn);
+    HRGN hRgn = CreateEllipticRgn(0, 0, 200, 100);
+    SetWindowRgn(hWnd, hRgn, TRUE);
+    DeleteObject(hRgn);
 
-	SetWindowText(hWnd, szEptcWin);
-	MyMessageBox(NULL, szEptcWin, szProgram, MB_OK);
+    SetWindowText(hWnd, szEptcWin);
+    MyMessageBox(NULL, szEptcWin, szProgram, MB_OK);
 
-	DestroyWindow(hWnd);
+    DestroyWindow(hWnd);
 
-	return 0;
+    return 0;
 }
 

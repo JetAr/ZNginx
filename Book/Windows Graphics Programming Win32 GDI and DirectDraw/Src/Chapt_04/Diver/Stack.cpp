@@ -29,10 +29,10 @@ KStack::KStack()
 
     nThread    = 0;
 
-	nFree      = MAXSTACKSIZE;
+    nFree      = MAXSTACKSIZE;
     FreeCell   = 0;
     InitializeCriticalSection(&cs);
-        
+
     for (i=0; i<MAXSTACKSIZE; i++)
         Cell[i].next = i+1;
     Cell[MAXSTACKSIZE-1].next = -1;
@@ -47,12 +47,12 @@ KStack::KStack()
 
 KStack::~KStack()
 {
-	assert(nFree==MAXSTACKSIZE);
+    assert(nFree==MAXSTACKSIZE);
 
     DeleteCriticalSection(&cs);
 }
-    
-    
+
+
 int KStack::LookupThread(BOOL addifmissing)
 {
     unsigned tid = GetCurrentThreadId();
@@ -65,7 +65,7 @@ int KStack::LookupThread(BOOL addifmissing)
     {
         EnterCriticalSection(&cs);
         int rslt = nThread++;
-            
+
         Thread[rslt] = tid;
         LeaveCriticalSection(&cs);
 
@@ -77,17 +77,17 @@ int KStack::LookupThread(BOOL addifmissing)
         return -1;
     }
 }
-    	
+
 
 KRoutineInfo * KStack::Push(void)
 {
     // check if stack is full
     if (nFree == 0)
     {
-	    assert(FALSE);
-		return NULL;
-	}
-		
+        assert(FALSE);
+        return NULL;
+    }
+
     int t = LookupThread(TRUE);
 
     assert(t>=0);
@@ -103,19 +103,19 @@ KRoutineInfo * KStack::Push(void)
     Cell[c].next = Tos[t];
     Tos[t]       = c;
     Depth[t] ++;
-		
+
     return & Cell[c];
 }
-	
-    
+
+
 KRoutineInfo *KStack::Lookup(int & depth)
 {
     if ( nFree == MAXSTACKSIZE )
     {
-		assert(FALSE);
-		return NULL;
-	}
-    
+        assert(FALSE);
+        return NULL;
+    }
+
     int t = LookupThread(FALSE);
 
     if (t < 0)
@@ -154,6 +154,6 @@ void KStack::Pop(void)
                 assert(FALSE);
         }
     }
-}        
+}
 
 

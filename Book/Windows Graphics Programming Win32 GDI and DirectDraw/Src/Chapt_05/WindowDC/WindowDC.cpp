@@ -21,74 +21,74 @@
 
 int MyMessageBox(HWND hWnd, const TCHAR * text, const TCHAR * caption, DWORD style)
 {
-	MSGBOXPARAMS param;
+    MSGBOXPARAMS param;
 
-	memset(& param, 0, sizeof(param));
-	param.cbSize	  = sizeof(param);
-	param.hwndOwner   = hWnd;
-	param.hInstance   = GetModuleHandle(NULL);
-	param.lpszText    = text;
-	param.lpszCaption = caption;
-	param.dwStyle     = style | MB_USERICON;
-	param.lpszIcon    = MAKEINTRESOURCE(IDI_GRAPH);
+    memset(& param, 0, sizeof(param));
+    param.cbSize	  = sizeof(param);
+    param.hwndOwner   = hWnd;
+    param.hInstance   = GetModuleHandle(NULL);
+    param.lpszText    = text;
+    param.lpszCaption = caption;
+    param.dwStyle     = style | MB_USERICON;
+    param.lpszIcon    = MAKEINTRESOURCE(IDI_GRAPH);
 
-	return MessageBoxIndirect(&param);
+    return MessageBoxIndirect(&param);
 }
 
 
 void Test(HWND hWnd, const TCHAR * mess)
 {
-	SetWindowText(hWnd, mess);
-	
-	HDC hDC1 = GetWindowDC(hWnd);
-	HDC hDC2 = GetDC(hWnd);
+    SetWindowText(hWnd, mess);
 
-	TCHAR temp[MAX_PATH];
+    HDC hDC1 = GetWindowDC(hWnd);
+    HDC hDC2 = GetDC(hWnd);
 
-	wsprintf(temp, "%s GetWindowDC=%x, GetDC=%x", mess, hDC1, hDC2);
+    TCHAR temp[MAX_PATH];
 
-	MyMessageBox(NULL, temp, _T("Window Region"), MB_OK);
+    wsprintf(temp, "%s GetWindowDC=%x, GetDC=%x", mess, hDC1, hDC2);
 
-	ReleaseDC(hWnd, hDC1);
-	ReleaseDC(hWnd, hDC2);
+    MyMessageBox(NULL, temp, _T("Window Region"), MB_OK);
+
+    ReleaseDC(hWnd, hDC1);
+    ReleaseDC(hWnd, hDC2);
 }
 
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 {
-	HDC hDC1 = CreateIC(_T("DISPLAY"), NULL, NULL, NULL);
-	HDC hDC2 = CreateDC(_T("DISPLAY"), NULL, NULL, NULL);
+    HDC hDC1 = CreateIC(_T("DISPLAY"), NULL, NULL, NULL);
+    HDC hDC2 = CreateDC(_T("DISPLAY"), NULL, NULL, NULL);
 
-	BOOL r = Rectangle(hDC1, 10, 10, 20, 200);
+    BOOL r = Rectangle(hDC1, 10, 10, 20, 200);
 
-	int rs = GetLastError();
+    int rs = GetLastError();
 
-	r = Rectangle(hDC2, 10, 10, 20, 200);
+    r = Rectangle(hDC2, 10, 10, 20, 200);
 
-	rs = GetLastError();
+    rs = GetLastError();
 
-	HWND hWnd = CreateWindow(_T("EDIT"), NULL, 
-					WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN, 
-					10, 10, 200, 100, GetDesktopWindow(), 
-					NULL, hInstance, NULL);
-	
-	HWND hWnd1 = CreateWindow(_T("EDIT"), NULL, WS_VISIBLE | WS_CHILD | WS_BORDER,
-					5, 5, 20, 20, hWnd, NULL, hInstance, NULL);
+    HWND hWnd = CreateWindow(_T("EDIT"), NULL,
+                             WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
+                             10, 10, 200, 100, GetDesktopWindow(),
+                             NULL, hInstance, NULL);
 
-	ShowWindow(hWnd, SW_SHOW);
-	
-	Test(hWnd, _T("Rectangular Window"));
+    HWND hWnd1 = CreateWindow(_T("EDIT"), NULL, WS_VISIBLE | WS_CHILD | WS_BORDER,
+                              5, 5, 20, 20, hWnd, NULL, hInstance, NULL);
 
-	HRGN hRgn = CreateEllipticRgn(0, 0, 300, 300);
+    ShowWindow(hWnd, SW_SHOW);
 
-	SetWindowRgn(hWnd, hRgn, TRUE);
+    Test(hWnd, _T("Rectangular Window"));
 
-	Test(hWnd, _T("Elliptic Window"));
-	
-	DestroyWindow(hWnd);
+    HRGN hRgn = CreateEllipticRgn(0, 0, 300, 300);
 
-	DeleteDC(hDC1);
-	DeleteDC(hDC2);
-	
-	return 0;
+    SetWindowRgn(hWnd, hRgn, TRUE);
+
+    Test(hWnd, _T("Elliptic Window"));
+
+    DestroyWindow(hWnd);
+
+    DeleteDC(hDC1);
+    DeleteDC(hDC2);
+
+    return 0;
 }

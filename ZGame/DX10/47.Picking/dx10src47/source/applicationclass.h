@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // Filename: applicationclass.h
 ////////////////////////////////////////////////////////////////////////////////
 #ifndef _APPLICATIONCLASS_H_
@@ -34,32 +34,32 @@ const float SCREEN_NEAR = 0.1f;
 class ApplicationClass
 {
 public:
-	ApplicationClass();
-	ApplicationClass(const ApplicationClass&);
-	~ApplicationClass();
+    ApplicationClass();
+    ApplicationClass(const ApplicationClass&);
+    ~ApplicationClass();
 
-	bool Initialize(HINSTANCE, HWND, int, int);
-	void Shutdown();
-	bool Frame();
-
-private:
-	bool HandleInput();
-	bool Render();
-	void TestIntersection(int, int);
-	bool RaySphereIntersect(D3DXVECTOR3, D3DXVECTOR3, float);
+    bool Initialize(HINSTANCE, HWND, int, int);
+    void Shutdown();
+    bool Frame();
 
 private:
-	InputClass* m_Input;
-	D3DClass* m_D3D;
-	CameraClass* m_Camera;
-	ModelClass* m_Model;
-	LightShaderClass* m_LightShader;
-	LightClass* m_Light;
-	TextClass* m_Text;
-	TextureShaderClass* m_TextureShader;
-	BitmapClass* m_Bitmap;
-	bool m_beginCheck;
-	int m_screenWidth, m_screenHeight;
+    bool HandleInput();
+    bool Render();
+    void TestIntersection(int, int);
+    bool RaySphereIntersect(D3DXVECTOR3, D3DXVECTOR3, float);
+
+private:
+    InputClass* m_Input;
+    D3DClass* m_D3D;
+    CameraClass* m_Camera;
+    ModelClass* m_Model;
+    LightShaderClass* m_LightShader;
+    LightClass* m_Light;
+    TextClass* m_Text;
+    TextureShaderClass* m_TextureShader;
+    BitmapClass* m_Bitmap;
+    bool m_beginCheck;
+    int m_screenWidth, m_screenHeight;
 };
 
 #endif

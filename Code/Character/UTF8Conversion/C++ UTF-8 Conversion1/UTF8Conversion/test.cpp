@@ -28,16 +28,16 @@ void Test()
     //
     // Test a simple UTF-16 <-> UTF-8 conversion
     //
-    
+
     // Source UTF-16 string
     wstring utf16(L"Euro sign (U+20AC): \x20AC");
-    
+
     // Convert from UTF-16 to UTF-8
     string utf8 = UTF8FromUTF16(utf16);
-    
+
     // Convert back from UTF-8 to UTF-16
     wstring utf16New = UTF16FromUTF8(utf8);
-    
+
     // Check conversion result
     if (utf16New != utf16)
         throw runtime_error("UTF-16 <-> UTF-8 conversion failed.");
@@ -49,7 +49,7 @@ void Test()
     //
     // Test a simple UTF-16 <-> UTF-8 conversion with raw C strings
     //
-    
+
     // Convert from UTF-16 to UTF-8 - force raw C string with c_str()
     utf8 = UTF8FromUTF16(utf16.c_str());
 
@@ -114,7 +114,7 @@ void Test()
 
     try
     {
-        // 0xC0 0xAF UTF-8 sequence is discussed in "Writing Secure Code" 
+        // 0xC0 0xAF UTF-8 sequence is discussed in "Writing Secure Code"
         // (Chapter 11, "How UTF-8 Encodes Data", page 380)
         char utf8Invalid[] = "UTF-8 invalid sequence: \xC0\xAF";
         wstring utf16Invalid = UTF16FromUTF8(utf8Invalid);
@@ -161,9 +161,9 @@ int main(int argc, char* argv[])
         {
             cerr << "Was attempting conversion from UTF-16 to UTF-8." << endl;
         }
-        
+
         cerr << "Error code: " << e.error_code() << endl;
-        
+
         cerr << endl;
         exit_code = kFail;
     }

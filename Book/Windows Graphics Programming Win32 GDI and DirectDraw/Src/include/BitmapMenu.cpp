@@ -25,37 +25,37 @@
 // process command: 0: not processed, 1: no change, 2: changed
 int KBitmapMenu::OnCommand(int nCmdId)
 {
-	int n = nCmdId - m_nFirstCommand;
+    int n = nCmdId - m_nFirstCommand;
 
-	if ( (n<0) || (n>=m_nBitmap) )
-		return 0;
+    if ( (n<0) || (n>=m_nBitmap) )
+        return 0;
 
-	if ( n==m_nChecked )
-		return 1;
+    if ( n==m_nChecked )
+        return 1;
 
-	CheckMenuItem(m_hMenu, m_nFirstCommand + m_nChecked, MF_BYCOMMAND | MF_UNCHECKED);
-	m_nChecked = n;
-	CheckMenuItem(m_hMenu, m_nFirstCommand + m_nChecked, MF_BYCOMMAND | MF_CHECKED);
+    CheckMenuItem(m_hMenu, m_nFirstCommand + m_nChecked, MF_BYCOMMAND | MF_UNCHECKED);
+    m_nChecked = n;
+    CheckMenuItem(m_hMenu, m_nFirstCommand + m_nChecked, MF_BYCOMMAND | MF_CHECKED);
 
-	return 2;
+    return 2;
 }
 
 
 void KBitmapMenu::AddToMenu(HMENU hMenu, int nCount, HMODULE hModule, const int nID[], int nFirstCommand)
 {
-	m_hMenu    = hMenu;
-	m_nBitmap  = nCount;
-	m_nChecked = 0;
-	m_nFirstCommand = nFirstCommand;
+    m_hMenu    = hMenu;
+    m_nBitmap  = nCount;
+    m_nChecked = 0;
+    m_nFirstCommand = nFirstCommand;
 
-	for (int i=0; i<nCount; i++)
-	{
-		m_hBitmap[i] = LoadBitmap(hModule, MAKEINTRESOURCE(nID[i]));
+    for (int i=0; i<nCount; i++)
+    {
+        m_hBitmap[i] = LoadBitmap(hModule, MAKEINTRESOURCE(nID[i]));
 
-		if ( m_hBitmap[i] )
-			AppendMenu(hMenu, MF_BITMAP, nFirstCommand + i, (LPCTSTR) m_hBitmap[i]);
-	}
-	
-	CheckMenuItem(m_hMenu, m_nChecked + nFirstCommand, MF_BYCOMMAND | MF_CHECKED);
+        if ( m_hBitmap[i] )
+            AppendMenu(hMenu, MF_BITMAP, nFirstCommand + i, (LPCTSTR) m_hBitmap[i]);
+    }
+
+    CheckMenuItem(m_hMenu, m_nChecked + nFirstCommand, MF_BYCOMMAND | MF_CHECKED);
 }
 

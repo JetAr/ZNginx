@@ -24,43 +24,43 @@ bool HackCopy(void * pDest, void * pSource, DWORD nSize)
 {
 #ifdef WRITE_PROCESS
 
-	static HANDLE hCurProcess = 0;
+    static HANDLE hCurProcess = 0;
 
-	DWORD dwWritten;
+    DWORD dwWritten;
 
-	bool rslt;
-	
-	if ( hCurProcess==0 )
-		hCurProcess = GetCurrentProcess();
+    bool rslt;
 
-	rslt = WriteProcessMemory(hCurProcess, pDest, pSource, nSize, & dwWritten) != 0;
+    if ( hCurProcess==0 )
+        hCurProcess = GetCurrentProcess();
 
-	return rslt && (dwWritten==nSize);
+    rslt = WriteProcessMemory(hCurProcess, pDest, pSource, nSize, & dwWritten) != 0;
+
+    return rslt && (dwWritten==nSize);
 
 #else
 
-	__try
-	{
-		memcpy(pDest, pSource, nSize);
-	}
-	__except ( EXCEPTION_EXECUTE_HANDLER )
-	{
-		__try
-		{
-			MEMORY_BASIC_INFORMATION mbi;
-            
-			VirtualQuery(pDest, & mbi, sizeof(mbi));
-			VirtualProtect(mbi.BaseAddress, mbi.RegionSize, PAGE_READWRITE, & mbi.Protect);
+    __try
+    {
+        memcpy(pDest, pSource, nSize);
+    }
+    __except ( EXCEPTION_EXECUTE_HANDLER )
+    {
+        __try
+        {
+            MEMORY_BASIC_INFORMATION mbi;
 
-			memcpy(pDest, pSource, nSize);
-		}
-		__except ( EXCEPTION_EXECUTE_HANDLER )
-		{
-			return false;
-		}
+            VirtualQuery(pDest, & mbi, sizeof(mbi));
+            VirtualProtect(mbi.BaseAddress, mbi.RegionSize, PAGE_READWRITE, & mbi.Protect);
+
+            memcpy(pDest, pSource, nSize);
+        }
+        __except ( EXCEPTION_EXECUTE_HANDLER )
+        {
+            return false;
+        }
     }
 
-	return true;
+    return true;
 
 #endif
 }
@@ -70,51 +70,51 @@ bool HackCopy(void * pDest, void * pSource, DWORD nSize)
 // the longest instruction possible, 15 bytes
 typedef struct
 {
-	unsigned char opcode;
-	unsigned long addr;
-	unsigned char nop[10];
+    unsigned char opcode;
+    unsigned long addr;
+    unsigned char nop[10];
 
 }   LongInstruction;
 
 
-bool KPatcher::Patch(HMODULE hModule, const TCHAR * name, int funcid, 
-					 void * pProxy, unsigned long * pNewAddress)
+bool KPatcher::Patch(HMODULE hModule, const TCHAR * name, int funcid,
+                     void * pProxy, unsigned long * pNewAddress)
 {
-	unsigned char * pProc = (unsigned char *) GetProcAddress(hModule, name);
+    unsigned char * pProc = (unsigned char *) GetProcAddress(hModule, name);
 
-	if ( pProc==NULL )
-		return false;
+    if ( pProc==NULL )
+        return false;
 
-	// length of first a few instructions no less than 5 bytes
-	int len = First5(pProc, name);
+    // length of first a few instructions no less than 5 bytes
+    int len = First5(pProc, name);
 
-	if (len < 5)
-		return false;
+    if (len < 5)
+        return false;
 
-	void * start = & m_buffer[m_bufpos];		// remember stub starting address
+    void * start = & m_buffer[m_bufpos];		// remember stub starting address
 
-	Asm((char) 0x68); // push					// push funcid
-	Asm((unsigned long) funcid);
+    Asm((char) 0x68); // push					// push funcid
+    Asm((unsigned long) funcid);
 
-	Asm((char) 0xE9); // jmp					// jmp pProxy
-	AsmRel(pProxy);						
+    Asm((char) 0xE9); // jmp					// jmp pProxy
+    AsmRel(pProxy);
 
-	* pNewAddress = (unsigned long ) & m_buffer[m_bufpos];	// pProxy will transfer control to here
+    * pNewAddress = (unsigned long ) & m_buffer[m_bufpos];	// pProxy will transfer control to here
 
-	// copy original function starting instructions	// original function prolog
-	memcpy(& m_buffer[m_bufpos], pProc, len); 
-	m_bufpos += len;
-	
-	// jump to instructions after the header		// jump prolog + len
-	Asm((char) 0xE9); // jmp
-	AsmRel(pProc + len);
+    // copy original function starting instructions	// original function prolog
+    memcpy(& m_buffer[m_bufpos], pProc, len);
+    m_bufpos += len;
 
-	// change header to jump to code in m_buffer
-	LongInstruction inst;
-	memset(& inst, 0x90, sizeof(inst));
-	inst.opcode = 0xE9;										// jump
-	inst.addr   = (unsigned) start - (unsigned) (pProc+5);	// stub
-	
-	return HackCopy(pProc, & inst, len);
+    // jump to instructions after the header		// jump prolog + len
+    Asm((char) 0xE9); // jmp
+    AsmRel(pProc + len);
+
+    // change header to jump to code in m_buffer
+    LongInstruction inst;
+    memset(& inst, 0x90, sizeof(inst));
+    inst.opcode = 0xE9;										// jump
+    inst.addr   = (unsigned) start - (unsigned) (pProc+5);	// stub
+
+    return HackCopy(pProc, & inst, len);
 }
 

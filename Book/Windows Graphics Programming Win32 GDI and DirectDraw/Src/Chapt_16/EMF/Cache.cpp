@@ -23,18 +23,18 @@
 
 bool KCache::Match(long size, const void * data, long & rslt)
 {
-	for (int i=0; i<CacheSize; i++)
-	{
-		rslt = m_Cache[i].Match(size, data);
-		
-		if ( rslt>=0 )
-			return true;
-	}
+    for (int i=0; i<CacheSize; i++)
+    {
+        rslt = m_Cache[i].Match(size, data);
 
-	rslt = m_total ++;
-	
-	m_Cache[rslt % CacheSize].Set(size, data, rslt);
+        if ( rslt>=0 )
+            return true;
+    }
 
-	return false;
+    rslt = m_total ++;
+
+    m_Cache[rslt % CacheSize].Set(size, data, rslt);
+
+    return false;
 }
 

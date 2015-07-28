@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // Filename: inputclass.h
 ////////////////////////////////////////////////////////////////////////////////
 #ifndef _INPUTCLASS_H_
@@ -30,33 +30,33 @@
 class InputClass
 {
 public:
-	InputClass();
-	InputClass(const InputClass&);
-	~InputClass();
+    InputClass();
+    InputClass(const InputClass&);
+    ~InputClass();
 
-	bool Initialize(HINSTANCE, HWND, int, int);
-	void Shutdown();
-	bool Frame();
+    bool Initialize(HINSTANCE, HWND, int, int);
+    void Shutdown();
+    bool Frame();
 
-	void GetMouseLocation(int&, int&);
-	bool IsEscapePressed();
-	bool IsLeftMouseButtonDown();
-
-private:
-	bool ReadKeyboard();
-	bool ReadMouse();
-	void ProcessInput();
+    void GetMouseLocation(int&, int&);
+    bool IsEscapePressed();
+    bool IsLeftMouseButtonDown();
 
 private:
-	IDirectInput8* m_directInput;
-	IDirectInputDevice8* m_keyboard;
-	IDirectInputDevice8* m_mouse;
+    bool ReadKeyboard();
+    bool ReadMouse();
+    void ProcessInput();
 
-	unsigned char m_keyboardState[256];
-	DIMOUSESTATE m_mouseState;
+private:
+    IDirectInput8* m_directInput;
+    IDirectInputDevice8* m_keyboard;
+    IDirectInputDevice8* m_mouse;
 
-	int m_screenWidth, m_screenHeight;
-	int m_mouseX, m_mouseY;
+    unsigned char m_keyboardState[256];
+    DIMOUSESTATE m_mouseState;
+
+    int m_screenWidth, m_screenHeight;
+    int m_mouseX, m_mouseY;
 };
 
 #endif

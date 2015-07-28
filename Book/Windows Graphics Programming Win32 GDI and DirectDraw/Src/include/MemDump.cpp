@@ -22,34 +22,34 @@
 
 void KMemDump::DumpLine(unsigned char * p, unsigned offset, int unitsize)
 {
-	if ( unitsize==1 )
-	{
-		wsprintf(m_line, "%08lx: "
-						 "%02lx %02lx %02lx %02lx %02lx %02lx %02lx %02lx "
-					     "%02lx %02lx %02lx %02lx %02lx %02lx %02lx %02lx",
-						p + offset, 
-						p[0], p[1],  p[2],  p[3],  p[4],  p[5],  p[6],  p[7],
-						p[8], p[9], p[10], p[11], p[12], p[13], p[14], p[15]);
+    if ( unitsize==1 )
+    {
+        wsprintf(m_line, "%08lx: "
+                 "%02lx %02lx %02lx %02lx %02lx %02lx %02lx %02lx "
+                 "%02lx %02lx %02lx %02lx %02lx %02lx %02lx %02lx",
+                 p + offset,
+                 p[0], p[1],  p[2],  p[3],  p[4],  p[5],  p[6],  p[7],
+                 p[8], p[9], p[10], p[11], p[12], p[13], p[14], p[15]);
 
-	}
-	else if ( unitsize==2 )
-	{
-		unsigned short * q = (unsigned short *) p;
+    }
+    else if ( unitsize==2 )
+    {
+        unsigned short * q = (unsigned short *) p;
 
-		wsprintf(m_line, "%08lx: "
-				        "%04lx %04lx %04lx %04lx %04lx %04lx %04lx %04lx",
-						p + offset, 
-						q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]);
-	}
-	else
-	{
-		unsigned long * r = (unsigned long *) p;
+        wsprintf(m_line, "%08lx: "
+                 "%04lx %04lx %04lx %04lx %04lx %04lx %04lx %04lx",
+                 p + offset,
+                 q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7]);
+    }
+    else
+    {
+        unsigned long * r = (unsigned long *) p;
 
-		wsprintf(m_line, "%08lx: "
-				        "%08lx %08lx %08lx %08lx",
-						p + offset, 
-						r[0], r[1], r[2], r[3]);
-	}
+        wsprintf(m_line, "%08lx: "
+                 "%08lx %08lx %08lx %08lx",
+                 p + offset,
+                 r[0], r[1], r[2], r[3]);
+    }
 
     char s[2] = { 0 };
 
@@ -63,25 +63,25 @@ void KMemDump::DumpLine(unsigned char * p, unsigned offset, int unitsize)
 
         strcat(m_line, s);
     }
-        
+
     strcat(m_line, "\r\n");
 }
 
 
 void KMemDump::OpenDump(void)
 {
-   	TCHAR TempPath[MAX_PATH];
+    TCHAR TempPath[MAX_PATH];
 
-	GetTempPath(sizeof(TempPath), TempPath);
-	
-	GetTempFileName(TempPath, "Mem", 0000, m_filename);
+    GetTempPath(sizeof(TempPath), TempPath);
+
+    GetTempFileName(TempPath, "Mem", 0000, m_filename);
 
     assert(m_stream==NULL);
 
-	m_stream = new ofstream;
+    m_stream = new ofstream;
     assert(m_stream);
 
-	m_stream->open(m_filename);
+    m_stream->open(m_filename);
 }
 
 
@@ -104,16 +104,16 @@ void KMemDump::Writeln(const TCHAR * text)
 
 void KMemDump::CloseDump(void)
 {
-   	TCHAR TempPath[MAX_PATH];
+    TCHAR TempPath[MAX_PATH];
 
-	GetTempPath(sizeof(TempPath), TempPath);
+    GetTempPath(sizeof(TempPath), TempPath);
 
     assert(m_stream);
 
-	m_stream->close();
+    m_stream->close();
 
-	wsprintf(TempPath, "notepad %s", m_filename);
-	WinExec(TempPath, SW_NORMAL);
+    wsprintf(TempPath, "notepad %s", m_filename);
+    WinExec(TempPath, SW_NORMAL);
 
     m_stream = NULL;
 }
@@ -123,39 +123,39 @@ void KMemDump::Dump(unsigned char * start, unsigned offset, int size, int unitsi
 {
     if ( offset==0 )
     {
-	    HANDLE hHeaps[10];
-	    int no = GetProcessHeaps(10, hHeaps);
-	
+        HANDLE hHeaps[10];
+        int no = GetProcessHeaps(10, hHeaps);
+
         // walk the heap if it is a heap
-	    for (int i=0; i<no; i++)
-		    if ( start == hHeaps[i] )
-		    {
-			    PROCESS_HEAP_ENTRY entry;
+        for (int i=0; i<no; i++)
+            if ( start == hHeaps[i] )
+            {
+                PROCESS_HEAP_ENTRY entry;
 
-			    entry.lpData = NULL;
+                entry.lpData = NULL;
 
-			    while ( HeapWalk(start, & entry) )
-			    {
-				    wsprintf(m_line, "%x %d+%d bytes %x\r\n", 
-                        entry.lpData, entry.cbData,
-                        entry.cbOverhead, entry.iRegionIndex);
-				
+                while ( HeapWalk(start, & entry) )
+                {
+                    wsprintf(m_line, "%x %d+%d bytes %x\r\n",
+                             entry.lpData, entry.cbData,
+                             entry.cbOverhead, entry.iRegionIndex);
+
                     * m_stream << m_line;
-			    }
-			    * m_stream << "\r\n";
-			
-			    break;
-		    }			
+                }
+                * m_stream << "\r\n";
+
+                break;
+            }
     }
 
-	* m_stream << size;
-	* m_stream << " bytes\n";
-	while (size>0)
-	{
-		DumpLine(start, offset, unitsize);
-		start += 16;
-		size  -= 16;
+    * m_stream << size;
+    * m_stream << " bytes\n";
+    while (size>0)
+    {
+        DumpLine(start, offset, unitsize);
+        start += 16;
+        size  -= 16;
 
-		* m_stream << m_line;
-	}
+        * m_stream << m_line;
+    }
 }

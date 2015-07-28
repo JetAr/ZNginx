@@ -167,13 +167,13 @@ void CD3DObj::setViewMatrix(const CPos &eye, const CPos &lookAt)
 }
 
 //z 设置投影矩阵，这控制了3d scene 是如何投影到 2d monitor上去的。
-//z 使用传入的 view、aspect ratio 以及 near clip 和 far clip plane 
+//z 使用传入的 view、aspect ratio 以及 near clip 和 far clip plane
 // Sets the projection matrix, which dictates how our 3D scene is projected onto our 2D monitor
 // using the passed in field of view, aspect ratio, near clip plane, and far clip plane
 void CD3DObj::setProjMatrix(float fov, float aspectRatio, float nearClip, float farClip)
 {
     D3DXMATRIXA16 matrix;
-    
+
     //z 创建和设置 projection matrix
     // Create and set projection matrix
     D3DXMatrixPerspectiveFovLH(&matrix, fov, aspectRatio, nearClip, farClip);

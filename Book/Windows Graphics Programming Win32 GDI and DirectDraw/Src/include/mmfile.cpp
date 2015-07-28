@@ -19,17 +19,17 @@
 
 bool KMemoryMappedFile::Open(LPCTSTR szFileName)
 {
-	m_hFile = CreateFile(szFileName, GENERIC_READ, 
-        FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    m_hFile = CreateFile(szFileName, GENERIC_READ,
+                         FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
-	if ( m_hFile == INVALID_HANDLE_VALUE )
-		return false;
+    if ( m_hFile == INVALID_HANDLE_VALUE )
+        return false;
 
-	m_hMapping = CreateFileMapping(m_hFile, NULL, PAGE_READONLY, 0, 0, NULL);
+    m_hMapping = CreateFileMapping(m_hFile, NULL, PAGE_READONLY, 0, 0, NULL);
 
-	if ( m_hMapping )
+    if ( m_hMapping )
     {
-		m_View = (const unsigned char *) MapViewOfFile(m_hMapping, FILE_MAP_READ, 0, 0, 0);
+        m_View = (const unsigned char *) MapViewOfFile(m_hMapping, FILE_MAP_READ, 0, 0, 0);
 
         return m_View != NULL;
     }
@@ -40,21 +40,21 @@ bool KMemoryMappedFile::Open(LPCTSTR szFileName)
 
 KMemoryMappedFile::~KMemoryMappedFile()
 {
-	if ( m_View )
-	{
-		UnmapViewOfFile(m_View);
-		m_View = NULL;
-	}
+    if ( m_View )
+    {
+        UnmapViewOfFile(m_View);
+        m_View = NULL;
+    }
 
-	if ( m_hMapping )
-	{
-		CloseHandle(m_hMapping);
-		m_hMapping = NULL;
-	}
+    if ( m_hMapping )
+    {
+        CloseHandle(m_hMapping);
+        m_hMapping = NULL;
+    }
 
-	if ( m_hFile!=INVALID_HANDLE_VALUE )
-	{
-		CloseHandle(m_hFile);
-		m_hFile = INVALID_HANDLE_VALUE;
-	}
+    if ( m_hFile!=INVALID_HANDLE_VALUE )
+    {
+        CloseHandle(m_hFile);
+        m_hFile = INVALID_HANDLE_VALUE;
+    }
 }

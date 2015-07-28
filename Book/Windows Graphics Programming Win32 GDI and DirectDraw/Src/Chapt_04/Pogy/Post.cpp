@@ -22,28 +22,28 @@
 
 
 int KPost::LoadModule(const char *caller, const char *callee,
-					  const char *intrfc, unsigned vtable, unsigned queryinterface,
-					  int methodno, GUID & iid)
+                      const char *intrfc, unsigned vtable, unsigned queryinterface,
+                      int methodno, GUID & iid)
 {
     KLoadModule    lm;
     memset(&lm, 0, sizeof(KLoadModule));
 
     nCopy(lm.m_caller, caller);
     nCopy(lm.m_callee, callee);
-	nCopy(lm.m_intrfc, intrfc);
+    nCopy(lm.m_intrfc, intrfc);
 
-	lm.vtable		  = vtable;
-	lm.queryinterface = queryinterface;
-	lm.methodno       = methodno;
-	lm.iid            = iid;
+    lm.vtable		  = vtable;
+    lm.queryinterface = queryinterface;
+    lm.methodno       = methodno;
+    lm.iid            = iid;
 
-	COPYDATASTRUCT cds;
+    COPYDATASTRUCT cds;
 
     cds.dwData     = C_LOADMODULE;
     cds.cbData     = sizeof(KLoadModule);
     cds.lpData     = & lm;
 
-	seq = 0;
+    seq = 0;
     return SendMessage(hReceiver, WM_COPYDATA, (WPARAM) hSender, (LPARAM) & cds);
 }
 
@@ -53,18 +53,18 @@ int KPost::AddFunc(const char *name, unsigned cls, int parano, const char * para
     KAddFunc       af;
     COPYDATASTRUCT cds;
 
-	memset(&af, 0, sizeof(af));
+    memset(&af, 0, sizeof(af));
 
     af.m_ord        = seq ++;
     af.m_cls        = cls;
     af.m_parano     = parano;
-	af.m_kind       = kind;
-	af.m_oldaddress = pOldAddr;
+    af.m_kind       = kind;
+    af.m_oldaddress = pOldAddr;
 
-	if ( strlen(paratype) < sizeof(af.m_paratype) )
-		strcpy(af.m_paratype, paratype);
-	else
-		assert(false);
+    if ( strlen(paratype) < sizeof(af.m_paratype) )
+        strcpy(af.m_paratype, paratype);
+    else
+        assert(false);
 
 //  assert(parano <= MAXPARANO);
 

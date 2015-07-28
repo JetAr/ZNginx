@@ -34,20 +34,20 @@ class KMain : public KPropertySheet
     HWND      m_hWnd;
 
 public:
-    
+
     void Run(HINSTANCE hInst)
     {
         HPROPSHEETPAGE hPage[MAXPAGES];
 
         hInstance = hInst;
-    
+
         Pogy = CreatePogy();
 
         Pogy->InitProcess(hInst);
         Pogy->Initialize(hInstance);
 
         int pn = Pogy->GetPropertySheetPages(hInst, hPage);
-        
+
         propertySheet(hInstance, NULL, IDI_SPY, pn, hPage, "Pogy");
 
         Pogy->TermProcess(hInst);
@@ -63,7 +63,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR lpCmdLine,	int nCmdShow
     InitCommonControls();
 
     KMain Main;
-   
+
     Main.Run(hInstance);
 
     return TRUE;

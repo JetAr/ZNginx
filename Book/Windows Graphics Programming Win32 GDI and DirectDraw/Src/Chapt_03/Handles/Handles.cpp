@@ -21,13 +21,13 @@
 #include "creator.h"
 #include "handles.h"
 
-const LPCTSTR Numbers[] = 
+const LPCTSTR Numbers[] =
 {
     _T("1"),
     _T("16"),
     _T("256"),
     _T("4096"),
-	_T("65536")
+    _T("65536")
 };
 
 
@@ -39,20 +39,20 @@ const LPCTSTR ObjTypes[] =
     _T("OBJ_DC"),
     _T("OBJ_METADC"),
     _T("OBJ_PAL"),
-    _T("OBJ_FONT"),       
-    _T("OBJ_BITMAP"),     
-    _T("OBJ_REGION"),     
-    _T("OBJ_METAFILE"),   
-    _T("OBJ_MEMDC"),      
-    _T("OBJ_EXTPEN"),     
-    _T("OBJ_ENHMETADC"),  
+    _T("OBJ_FONT"),
+    _T("OBJ_BITMAP"),
+    _T("OBJ_REGION"),
+    _T("OBJ_METAFILE"),
+    _T("OBJ_MEMDC"),
+    _T("OBJ_EXTPEN"),
+    _T("OBJ_ENHMETADC"),
     _T("OBJ_ENHMETAFILE")
 };
 
 
 LPCTSTR GetObjectTypeName(HGDIOBJ Handle)
 {
-	return ObjTypes[GetObjectType(Handle)];
+    return ObjTypes[GetObjectType(Handle)];
 }
 
 
@@ -70,30 +70,30 @@ BOOL KHGDIOBJ::Generate(HWND rslt, bool search)
     for (i=0; i<repeat; i++)
     {
         TCHAR temp[64];
-		HGDIOBJ handle = CreateObject(m_nCreator, m_hDCScreen, i);
+        HGDIOBJ handle = CreateObject(m_nCreator, m_hDCScreen, i);
 
         if ( (handle == last) || (handle == (HGDIOBJ) 0xFFFFFFFF) )
             break;
 
         wsprintf(temp, "%08lx %s %d", handle, Commands[m_nCreator], i);
         SendMessage(rslt, LB_ADDSTRING, 0, (LPARAM) temp);
-            
+
         last = handle;
     }
 
     if ( last)
-	{
-		// find all top level dialog box ( propertysheet )
-		for (HWND hWnd = NULL; hWnd = FindWindowEx(NULL, hWnd, WC_DIALOG, NULL); )
-		{
-			// locate it's fisrt child ( propertypage 0 )
-			HWND hChild = GetWindow(hWnd, GW_CHILD);
+    {
+        // find all top level dialog box ( propertysheet )
+        for (HWND hWnd = NULL; hWnd = FindWindowEx(NULL, hWnd, WC_DIALOG, NULL); )
+        {
+            // locate it's fisrt child ( propertypage 0 )
+            HWND hChild = GetWindow(hWnd, GW_CHILD);
 
-			// send a message to it
-			if (hChild)
-				SendMessage(hChild, WM_SHAREHANDLE, (WPARAM) last, GetCurrentProcessId());
-		}
-	}
+            // send a message to it
+            if (hChild)
+                SendMessage(hChild, WM_SHAREHANDLE, (WPARAM) last, GetCurrentProcessId());
+        }
+    }
 
     return TRUE;
 }
@@ -101,66 +101,66 @@ BOOL KHGDIOBJ::Generate(HWND rslt, bool search)
 
 HRESULT DirectDrawTest(HWND hWnd)
 {
-	LPDIRECTDRAW lpdd;
+    LPDIRECTDRAW lpdd;
 
-	HRESULT hr = DirectDrawCreate(NULL, & lpdd, NULL);
+    HRESULT hr = DirectDrawCreate(NULL, & lpdd, NULL);
 
-	DWORD i = GetCurrentThreadId();
+    DWORD i = GetCurrentThreadId();
 
-	if ( hr == DD_OK )
-	{
-		LPDIRECTDRAW lpdd2;
+    if ( hr == DD_OK )
+    {
+        LPDIRECTDRAW lpdd2;
 
-		hr = DirectDrawCreate(NULL, & lpdd2, NULL);
+        hr = DirectDrawCreate(NULL, & lpdd2, NULL);
 
-		lpdd->SetCooperativeLevel(hWnd, DDSCL_NORMAL);
-	
-		DDSURFACEDESC ddsd;
-		ddsd.dwSize = sizeof(ddsd);
-		ddsd.dwFlags = DDSD_CAPS;
-		ddsd.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
-	
-		LPDIRECTDRAWSURFACE lpddsprimary;
+        lpdd->SetCooperativeLevel(hWnd, DDSCL_NORMAL);
 
-		hr = lpdd->CreateSurface(&ddsd, &lpddsprimary, NULL);
-		if ( hr == DD_OK )
-		{
-			char mess[MAX_PATH];
+        DDSURFACEDESC ddsd;
+        ddsd.dwSize = sizeof(ddsd);
+        ddsd.dwFlags = DDSD_CAPS;
+        ddsd.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
 
-			wsprintf(mess, 
-				"DirectDraw object at %x, vtable at %x\n"
-	            "DirectDraw surface object at %x, vtable at %x",
-				lpdd, * (unsigned *) lpdd, 
-				lpddsprimary, * (unsigned *) lpddsprimary);
-			MessageBox(NULL, mess, "DirectDrawTest", MB_OK);
+        LPDIRECTDRAWSURFACE lpddsprimary;
 
-			lpddsprimary->Release();
-		}
+        hr = lpdd->CreateSurface(&ddsd, &lpddsprimary, NULL);
+        if ( hr == DD_OK )
+        {
+            char mess[MAX_PATH];
 
-		lpdd->Release();
-	}
+            wsprintf(mess,
+                     "DirectDraw object at %x, vtable at %x\n"
+                     "DirectDraw surface object at %x, vtable at %x",
+                     lpdd, * (unsigned *) lpdd,
+                     lpddsprimary, * (unsigned *) lpddsprimary);
+            MessageBox(NULL, mess, "DirectDrawTest", MB_OK);
 
-	return hr;
+            lpddsprimary->Release();
+        }
+
+        lpdd->Release();
+    }
+
+    return hr;
 }
 
 
 BOOL KHGDIOBJ::OnInitDialog(HWND hWnd, WPARAM wParam, LPARAM lParam)
 {
-	m_hWnd		   = hWnd;
-	m_hDCScreen    = GetDC(hWnd);
+    m_hWnd		   = hWnd;
+    m_hDCScreen    = GetDC(hWnd);
     WM_SHAREHANDLE = RegisterWindowMessage("WM_SHAREHANDLE");
 
     for (int i=0; i<nTotalCommands; i++)
-		SendDlgItemMessage(hWnd, IDC_COMMAND, CB_ADDSTRING, 0, (LPARAM) Commands[i]);
+        SendDlgItemMessage(hWnd, IDC_COMMAND, CB_ADDSTRING, 0, (LPARAM) Commands[i]);
     SendDlgItemMessage(hWnd, IDC_COMMAND, CB_SETCURSEL, 0, 0);
 
     for (i=0; i<sizeof(Numbers)/sizeof(Numbers[0]); i++)
-		SendDlgItemMessage(hWnd, IDC_NUMBER, CB_ADDSTRING, 0, (LPARAM) Numbers[i]);
+        SendDlgItemMessage(hWnd, IDC_NUMBER, CB_ADDSTRING, 0, (LPARAM) Numbers[i]);
     SendDlgItemMessage(hWnd, IDC_NUMBER, CB_SETCURSEL, 0, 0);
 
-	DirectDrawTest(hWnd);
+    DirectDrawTest(hWnd);
 
-	return TRUE;
+    return TRUE;
 }
 
 
@@ -176,7 +176,7 @@ BOOL KHGDIOBJ::OnCommand(HWND hWnd, WPARAM wParam, LPARAM lParam)
         return TRUE;
     }
 
-	return FALSE;
+    return FALSE;
 }
 
 
@@ -187,11 +187,11 @@ BOOL KHGDIOBJ::DlgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         TCHAR Mess[MAX_PATH];
 
         wsprintf(Mess, "Object created in process 0x%X, GetObjectType (0x%x) returns %d, %s",
-                            lParam, wParam, GetObjectType((HGDIOBJ) wParam),
-                            GetObjectTypeName((HGDIOBJ) wParam));
+                 lParam, wParam, GetObjectType((HGDIOBJ) wParam),
+                 GetObjectTypeName((HGDIOBJ) wParam));
 
-		if ( GetObjectType((HGDIOBJ) wParam)==OBJ_REGION )
-			wsprintf(Mess+strlen(Mess), "rgnsize %d", GetRegionData((HRGN) wParam, 0, NULL));
+        if ( GetObjectType((HGDIOBJ) wParam)==OBJ_REGION )
+            wsprintf(Mess+strlen(Mess), "rgnsize %d", GetRegionData((HRGN) wParam, 0, NULL));
 
         SetDlgItemText(hWnd, IDC_SHAREHANDLE, Mess);
 
@@ -200,13 +200,13 @@ BOOL KHGDIOBJ::DlgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     switch (uMsg)
     {
-	    case WM_INITDIALOG:
-		    return OnInitDialog(hWnd, wParam, lParam);
+    case WM_INITDIALOG:
+        return OnInitDialog(hWnd, wParam, lParam);
 
-	    case WM_COMMAND:
-		    return OnCommand(hWnd, wParam, lParam);
+    case WM_COMMAND:
+        return OnCommand(hWnd, wParam, lParam);
     }
-    
+
     return FALSE;
 }
 

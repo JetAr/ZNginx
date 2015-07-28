@@ -27,14 +27,14 @@ const TCHAR szHint[]    = _T("Press ESC to quit.");
 const TCHAR szProgram[] = _T("HelloWorld4");
 
 
-void CenterText(HDC hDC, int x, int y, LPCTSTR szFace, 
+void CenterText(HDC hDC, int x, int y, LPCTSTR szFace,
                 LPCTSTR szMessage, int point)
 {
     HFONT hFont = CreateFont(
-        - point * GetDeviceCaps(hDC, LOGPIXELSY) / 72,
-        0, 0, 0, FW_BOLD, TRUE, FALSE, FALSE, 
-        ANSI_CHARSET, OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, 
-        PROOF_QUALITY, VARIABLE_PITCH, szFace);
+                      - point * GetDeviceCaps(hDC, LOGPIXELSY) / 72,
+                      0, 0, 0, FW_BOLD, TRUE, FALSE, FALSE,
+                      ANSI_CHARSET, OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS,
+                      PROOF_QUALITY, VARIABLE_PITCH, szFace);
     assert(hFont);
 
     HGDIOBJ hOld = SelectObject(hDC, hFont);
@@ -46,7 +46,7 @@ void CenterText(HDC hDC, int x, int y, LPCTSTR szFace,
     TextOut(hDC, x, y, szMessage, _tcslen(szMessage));
 
     SelectObject(hDC, hOld);
-	DeleteObject(hFont);
+    DeleteObject(hFont);
 }
 
 
@@ -54,7 +54,7 @@ class KDDrawWindow : public KWindow
 {
     LPDIRECTDRAW        lpdd;
     LPDIRECTDRAWSURFACE lpddsprimary;
-    
+
     void OnKeyDown(WPARAM wParam, LPARAM lParam)
     {
         if ( wParam==VK_ESCAPE )
@@ -67,8 +67,8 @@ class KDDrawWindow : public KWindow
     {
         TextOut(hDC, 0, 0, szHint, lstrlen(szHint));
         CenterText(hDC, GetSystemMetrics(SM_CXSCREEN)/2,
-	    GetSystemMetrics(SM_CYSCREEN)/2,
-	    szFace, szMessage, 48);
+                   GetSystemMetrics(SM_CYSCREEN)/2,
+                   szFace, szMessage, 48);
 
         Blend(80, 560, 160, 250);
     }
@@ -104,15 +104,15 @@ bool KDDrawWindow::CreateSurface(void)
     HRESULT hr;
 
     hr = DirectDrawCreate(NULL, &lpdd, NULL);
-    if (hr!=DD_OK) 
+    if (hr!=DD_OK)
         return false;
 
     hr = lpdd->SetCooperativeLevel(m_hWnd, DDSCL_FULLSCREEN | DDSCL_EXCLUSIVE);
-    if (hr!=DD_OK) 
+    if (hr!=DD_OK)
         return false;
 
     hr = lpdd->SetDisplayMode(640, 480, 32);
-    if (hr!=DD_OK) 
+    if (hr!=DD_OK)
         return false;
 
     DDSURFACEDESC ddsd;
@@ -129,11 +129,11 @@ void inline Blend(unsigned char *dest, unsigned char *src)
 {
     dest[0] = (dest[0] + src[0])/2;
     dest[1] = (dest[1] + src[1])/2;
-    dest[2] = (dest[2] + src[2])/2; 
+    dest[2] = (dest[2] + src[2])/2;
 }
 
 
-void KDDrawWindow::Blend(int left, int right, 
+void KDDrawWindow::Blend(int left, int right,
                          int top, int bottom)
 {
     DDSURFACEDESC ddsd;
@@ -141,20 +141,20 @@ void KDDrawWindow::Blend(int left, int right,
     memset(&ddsd, 0, sizeof(ddsd));
     ddsd.dwSize = sizeof(ddsd);
 
-    HRESULT hr = lpddsprimary->Lock(NULL, &ddsd, 
-        DDLOCK_SURFACEMEMORYPTR | DDLOCK_WAIT, NULL);
+    HRESULT hr = lpddsprimary->Lock(NULL, &ddsd,
+                                    DDLOCK_SURFACEMEMORYPTR | DDLOCK_WAIT, NULL);
     assert(hr==DD_OK);
 
     unsigned char *screen = (unsigned char *) ddsd.lpSurface;
 
     for (int y=top; y<bottom; y++)
     {
-        unsigned char * pixel = screen + y * ddsd.lPitch 
-           + left * 4;
+        unsigned char * pixel = screen + y * ddsd.lPitch
+                                + left * 4;
 
         for (int x=left; x<right; x++, pixel+=4)
-            if ( pixel[0]!=255 || pixel[1]!=255 || 
-               pixel[2]!=255 ) // non white
+            if ( pixel[0]!=255 || pixel[1]!=255 ||
+                    pixel[2]!=255 ) // non white
             {
                 ::Blend(pixel-4, pixel);           // left
                 ::Blend(pixel+4, pixel);           // right
@@ -168,23 +168,23 @@ void KDDrawWindow::Blend(int left, int right,
 }
 
 
-int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, 
+int WINAPI WinMain(HINSTANCE hInst, HINSTANCE,
                    LPSTR lpCmd, int nShow)
 {
     KDDrawWindow win;
 
     win.CreateEx(0, szProgram, szProgram,
-	             WS_POPUP,
-	             0, 0,
-	             GetSystemMetrics( SM_CXSCREEN ),
-	             GetSystemMetrics( SM_CYSCREEN ),
-	             NULL, NULL, hInst);
+                 WS_POPUP,
+                 0, 0,
+                 GetSystemMetrics( SM_CXSCREEN ),
+                 GetSystemMetrics( SM_CYSCREEN ),
+                 NULL, NULL, hInst);
 
     if ( ! win.CreateSurface() )
-	{
-		MessageBox(NULL, _T("DirectDraw Initialization failed!"), _T("Hello4"), MB_OK);
-		return -1;
-	}
+    {
+        MessageBox(NULL, _T("DirectDraw Initialization failed!"), _T("Hello4"), MB_OK);
+        return -1;
+    }
 
     win.ShowWindow(nShow);
     win.UpdateWindow();

@@ -25,75 +25,75 @@
 
 int MyMessageBox(HWND hWnd, const TCHAR * text, const TCHAR * caption, DWORD style)
 {
-	MSGBOXPARAMS param;
+    MSGBOXPARAMS param;
 
-	memset(& param, 0, sizeof(param));
-	param.cbSize	  = sizeof(param);
-	param.hwndOwner   = hWnd;
-	param.hInstance   = GetModuleHandle(NULL);
-	param.lpszText    = text;
-	param.lpszCaption = caption;
-	param.dwStyle     = style | MB_USERICON;
-	param.lpszIcon    = MAKEINTRESOURCE(IDI_GRAPH);
+    memset(& param, 0, sizeof(param));
+    param.cbSize	  = sizeof(param);
+    param.hwndOwner   = hWnd;
+    param.hInstance   = GetModuleHandle(NULL);
+    param.lpszText    = text;
+    param.lpszCaption = caption;
+    param.dwStyle     = style | MB_USERICON;
+    param.lpszIcon    = MAKEINTRESOURCE(IDI_GRAPH);
 
-	return MessageBoxIndirect(&param);
+    return MessageBoxIndirect(&param);
 }
 
 class KPeriscopeClient : public KDevice
 {
 public:
-	KPeriscopeClient(const TCHAR * DeviceName) : KDevice(DeviceName)
-	{
-	}
+    KPeriscopeClient(const TCHAR * DeviceName) : KDevice(DeviceName)
+    {
+    }
 
-	bool Read(void * dst, const void * src, unsigned len);
+    bool Read(void * dst, const void * src, unsigned len);
 };
 
 
 bool KPeriscopeClient::Read(void * dst, const void * src, unsigned len)
 {
-	unsigned      cmd[2] = { (unsigned) src, len };
-	unsigned long dwRead;
-   
-	return IoControl(IOCTL_PERISCOPE, cmd, sizeof(cmd), dst, len, &dwRead) && (dwRead==len);
+    unsigned      cmd[2] = { (unsigned) src, len };
+    unsigned long dwRead;
+
+    return IoControl(IOCTL_PERISCOPE, cmd, sizeof(cmd), dst, len, &dwRead) && (dwRead==len);
 }
 
 
 void GetFullName(HINSTANCE hInstance, const TCHAR * module, TCHAR fullname[])
 {
-	GetModuleFileName(hInstance, fullname, MAX_PATH);
+    GetModuleFileName(hInstance, fullname, MAX_PATH);
 
-	TCHAR * pName = fullname;
+    TCHAR * pName = fullname;
 
-	while ( _tcschr(pName, ':') || _tcschr(pName, '\\') )
-		if ( _tcschr(pName, ':') )
-			pName = _tcschr(pName, ':') + 1;
-		else
-			pName = _tcschr(pName, '\\') + 1;
+    while ( _tcschr(pName, ':') || _tcschr(pName, '\\') )
+        if ( _tcschr(pName, ':') )
+            pName = _tcschr(pName, ':') + 1;
+        else
+            pName = _tcschr(pName, '\\') + 1;
 
-	if ( pName )
-		_tcscpy(pName, module);
+    if ( pName )
+        _tcscpy(pName, module);
 }
 
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
-	KPeriscopeClient scope("PeriScope");
+    KPeriscopeClient scope("PeriScope");
 
-	TCHAR fullname[MAX_PATH];
-	GetFullName(hInst, "periscope.sys", fullname);
-	
-	if ( scope.Load(fullname)==ERROR_SUCCESS )
-	{
-		unsigned char buf[256];
+    TCHAR fullname[MAX_PATH];
+    GetFullName(hInst, "periscope.sys", fullname);
 
-		scope.Read(buf, (void *) 0xa000004E, sizeof(buf));
-		scope.Close();
+    if ( scope.Load(fullname)==ERROR_SUCCESS )
+    {
+        unsigned char buf[256];
 
-		MyMessageBox(NULL, (char *) buf, "Mem[0xa000004e]", MB_OK);
-	}
-	else
-		MyMessageBox(NULL, fullname, "Unable to load kernel mode driver", MB_OK);
+        scope.Read(buf, (void *) 0xa000004E, sizeof(buf));
+        scope.Close();
 
-	return 0;
+        MyMessageBox(NULL, (char *) buf, "Mem[0xa000004e]", MB_OK);
+    }
+    else
+        MyMessageBox(NULL, fullname, "Unable to load kernel mode driver", MB_OK);
+
+    return 0;
 }

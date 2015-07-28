@@ -77,7 +77,7 @@ BOOL KProfile::Write(const TCHAR *section, const TCHAR *key, int value) const
     TCHAR temp[10];
 
     wsprintf(temp, "%d", value);
-    
+
     return WritePrivateProfileString(section, key, temp, sFileName);
 }
 
@@ -90,7 +90,7 @@ BOOL KProfile::Write(const TCHAR *section, const TCHAR *key, const TCHAR *value)
 
 BOOL KProfile::ReadDelimiter(TCHAR ch)
 {
-    // skip white space 
+    // skip white space
     while ( p && isspace(*p) )
         p ++;
 
@@ -104,25 +104,25 @@ BOOL KProfile::ReadDelimiter(TCHAR ch)
 }
 
 
-// read the next <nondex> <hexdigit> 
+// read the next <nondex> <hexdigit>
 unsigned KProfile::ReadHex(void)
 {
     unsigned rslt = 0;
 
-	if ( p )
-	{
-		while ( *p && !isxdigit(*p) )
-			p ++;
+    if ( p )
+    {
+        while ( *p && !isxdigit(*p) )
+            p ++;
 
-		while ( isxdigit(*p) )
-		{
-			if (*p<='9')
-				rslt = (rslt << 4) | (*p - '0');
-			else
-				rslt = (rslt << 4) | ( (*p - 'A') % 32 + 10 );
-			p++;
-		}
-	}
+        while ( isxdigit(*p) )
+        {
+            if (*p<='9')
+                rslt = (rslt << 4) | (*p - '0');
+            else
+                rslt = (rslt << 4) | ( (*p - 'A') % 32 + 10 );
+            p++;
+        }
+    }
 
     return rslt;
 }
@@ -169,13 +169,13 @@ int KProfile::ReadIdentifier(TCHAR *name, int maxlength, TCHAR extra)
             }
             else
                 len ++;
-            
+
             p ++;
         }
     }
 
     if (name)
-      name[len] = 0;
+        name[len] = 0;
 
     return len;
 }
@@ -186,12 +186,15 @@ BOOL KProfile::ReadGuid(GUID & guid)
 {
     if ( ReadDelimiter('{') )
     {
-        guid.Data1 = ReadHex();   ReadDelimiter('-');
-        guid.Data2 = ReadHex();   ReadDelimiter('-');
-        guid.Data3 = ReadHex();   ReadDelimiter('-');
+        guid.Data1 = ReadHex();
+        ReadDelimiter('-');
+        guid.Data2 = ReadHex();
+        ReadDelimiter('-');
+        guid.Data3 = ReadHex();
+        ReadDelimiter('-');
 
         ReadDelimiter('-');
-        
+
         for (int i=0; i<8; i++)
         {
             guid.Data4[i] = ReadHex();

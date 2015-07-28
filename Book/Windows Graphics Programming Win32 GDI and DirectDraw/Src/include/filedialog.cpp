@@ -25,78 +25,78 @@
 // Example: "Bitmaps|Enhanced Metafiles" "bmp|emf"
 void KFileDialog::SetupOFN(OPENFILENAME & ofn, TCHAR Filter[], HWND hWnd, const TCHAR * pExtension, const TCHAR * pClass)
 {
-	memset(& ofn, 0, sizeof(ofn));
+    memset(& ofn, 0, sizeof(ofn));
 
-	ofn.lStructSize		= sizeof(OPENFILENAME);
-	ofn.hwndOwner		= hWnd;
-	ofn.lpstrFilter		= Filter; // _T("Bitmaps (*.bmp)\0*.bmp\0\0");
-	ofn.lpstrFile		= m_FileName;
-	ofn.nMaxFile		= MAX_PATH;
-	ofn.lpstrFileTitle	= m_TitleName;
-	ofn.nMaxFileTitle	= MAX_PATH;
-	ofn.lpstrDefExt		= NULL; // _T("bmp");
-	ofn.nFilterIndex	= 1;
+    ofn.lStructSize		= sizeof(OPENFILENAME);
+    ofn.hwndOwner		= hWnd;
+    ofn.lpstrFilter		= Filter; // _T("Bitmaps (*.bmp)\0*.bmp\0\0");
+    ofn.lpstrFile		= m_FileName;
+    ofn.nMaxFile		= MAX_PATH;
+    ofn.lpstrFileTitle	= m_TitleName;
+    ofn.nMaxFileTitle	= MAX_PATH;
+    ofn.lpstrDefExt		= NULL; // _T("bmp");
+    ofn.nFilterIndex	= 1;
 
-	int len = 0;
+    int len = 0;
 
-	while ( (pExtension!=NULL) && (pClass!=NULL) )
-	{
-		TCHAR klass[MAX_PATH];
-		TCHAR ext  [MAX_PATH];
+    while ( (pExtension!=NULL) && (pClass!=NULL) )
+    {
+        TCHAR klass[MAX_PATH];
+        TCHAR ext  [MAX_PATH];
 
-		_tcscpy(klass, pClass);
-		TCHAR * p = _tcschr(klass, '|');
-		if ( p ) 
-		{
-			* p = 0;
-			pClass = _tcschr(pClass, '|') + 1;
-		}
-		else 
-			pClass = NULL;
+        _tcscpy(klass, pClass);
+        TCHAR * p = _tcschr(klass, '|');
+        if ( p )
+        {
+            * p = 0;
+            pClass = _tcschr(pClass, '|') + 1;
+        }
+        else
+            pClass = NULL;
 
-		_tcscpy(ext, pExtension);
-		p = _tcschr(ext, '|');
-		if ( p ) 
-		{
-			* p = 0;
-			pExtension = _tcschr(pExtension, '|') + 1;
-		}
-		else
-			pExtension = NULL;
+        _tcscpy(ext, pExtension);
+        p = _tcschr(ext, '|');
+        if ( p )
+        {
+            * p = 0;
+            pExtension = _tcschr(pExtension, '|') + 1;
+        }
+        else
+            pExtension = NULL;
 
-		Filter += wsprintf(Filter, _T("%s (*.%s)%c*."), klass, ext, 0);
-		
-		if ( ofn.lpstrDefExt==NULL )
-			ofn.lpstrDefExt = Filter;
+        Filter += wsprintf(Filter, _T("%s (*.%s)%c*."), klass, ext, 0);
 
-		Filter += wsprintf(Filter, _T("%s%c"), ext, 0);
-	}
+        if ( ofn.lpstrDefExt==NULL )
+            ofn.lpstrDefExt = Filter;
 
-	m_FileName[0] = 0;
+        Filter += wsprintf(Filter, _T("%s%c"), ext, 0);
+    }
+
+    m_FileName[0] = 0;
 }
 
 
 BOOL KFileDialog::GetOpenFileName(HWND hWnd, const TCHAR * pExtension, const TCHAR * pClass)
 {
-	OPENFILENAME ofn;
-	TCHAR Filter[MAX_PATH];
+    OPENFILENAME ofn;
+    TCHAR Filter[MAX_PATH];
 
-	SetupOFN(ofn, Filter, hWnd, pExtension, pClass);
+    SetupOFN(ofn, Filter, hWnd, pExtension, pClass);
 
-	ofn.Flags	= OFN_HIDEREADONLY | OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-			
-	return ::GetOpenFileName(&ofn);
+    ofn.Flags	= OFN_HIDEREADONLY | OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+    return ::GetOpenFileName(&ofn);
 }
 
 
 BOOL KFileDialog::GetSaveFileName(HWND hWnd, const TCHAR * pExtension, const TCHAR * pClass)
 {
-	OPENFILENAME ofn;
-	TCHAR Filter[MAX_PATH];
+    OPENFILENAME ofn;
+    TCHAR Filter[MAX_PATH];
 
-	SetupOFN(ofn, Filter, hWnd, pExtension, pClass);
+    SetupOFN(ofn, Filter, hWnd, pExtension, pClass);
 
-	ofn.Flags  = OFN_HIDEREADONLY | OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT;
-	
-	return ::GetSaveFileName(&ofn);
+    ofn.Flags  = OFN_HIDEREADONLY | OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT;
+
+    return ::GetSaveFileName(&ofn);
 }

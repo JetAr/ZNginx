@@ -5,12 +5,12 @@
 	is aimed at being the first step to understanding D3D lighting.
 
 	A D3D light comes in three main flavors.  Here's a quick break down of each:
-        
+
         //z 点光源
 		Point Light - Also sometimes called an omni light.  This light is a point
 					  in space and it emanates light in all directions.  An example
 					  would be a fire.
-        
+
         //z 射灯
 		Spot Light - A spot light emanates light in a focused direction within a
 					 limited cone.  An example (besides of course a spot light :) would
@@ -72,8 +72,8 @@
 	color is influenced by the lights (or lack of lights) in the scene.  In general, the lighting value
 	for a vertex is determined by a dot product between the light's direction vector and the normal of
 	each vertex.  You MUST have a normal defined for your vertex, or lighting will not work correctly.
-    
-    //z 光类型，光颜色， vertex color ， objects material 属性， 光的 position，range 和 atenuation 
+
+    //z 光类型，光颜色， vertex color ， objects material 属性， 光的 position，range 和 atenuation
 	Other factors that determine the final color of the vertex are:  light type, light color,
 	vertex color, an objects material properties, position/range/attenuation of light,
 	and direction of light.
@@ -204,7 +204,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprev, PSTR cmdline, int ishow
 
             g3D->begin(); // Begin drawing
             g3D->clear();
-            
+
             //z 设置灯位置
             g3D->setLightPos(0, gLightPos); // Set the light position
             //z 是否启用灯

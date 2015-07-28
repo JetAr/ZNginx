@@ -33,156 +33,178 @@ BOOL SaveWindow(HWND hWnd, bool bClient, int nFrame, COLORREF crFrame);
 
 class KDIBView : public KScrollCanvas
 {
-	typedef enum { GAP = 16 };
+    typedef enum { GAP = 16 };
 
-	virtual void    OnDraw(HDC hDC, const RECT * rcPaint);
-	virtual LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-	void			GetWndClassEx(WNDCLASSEX & wc);
-	
-	HMENU			m_hViewMenu;
-	int				m_nViewOpt;
+    virtual void    OnDraw(HDC hDC, const RECT * rcPaint);
+    virtual LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+    void			GetWndClassEx(WNDCLASSEX & wc);
+
+    HMENU			m_hViewMenu;
+    int				m_nViewOpt;
 
 public:
 
-	HINSTANCE		m_hInst;
-	KDIB			m_DIB;
+    HINSTANCE		m_hInst;
+    KDIB			m_DIB;
 
-	KDIBView(void)
-	{
-		m_hViewMenu = NULL;
-		m_nViewOpt  = IDM_VIEW_STRETCHDIBITS;
-	}
+    KDIBView(void)
+    {
+        m_hViewMenu = NULL;
+        m_nViewOpt  = IDM_VIEW_STRETCHDIBITS;
+    }
 
-	bool Initialize(const TCHAR * pFileName, HINSTANCE hInstance, KStatusWindow * pStatus)
-	{
-		if ( m_DIB.LoadFile(pFileName) )
-		{
-			SetSize(m_DIB.GetWidth()  + GAP*2,
-					m_DIB.GetHeight() + GAP*2, 5, 5);
+    bool Initialize(const TCHAR * pFileName, HINSTANCE hInstance, KStatusWindow * pStatus)
+    {
+        if ( m_DIB.LoadFile(pFileName) )
+        {
+            SetSize(m_DIB.GetWidth()  + GAP*2,
+                    m_DIB.GetHeight() + GAP*2, 5, 5);
 
-			m_hInst   = hInstance;
-			m_pStatus = pStatus;
+            m_hInst   = hInstance;
+            m_pStatus = pStatus;
 
-			RegisterClass(_T("DIBView"), hInstance);
-			
-			return true;
-		}
-		else
-			return false;
-	}
+            RegisterClass(_T("DIBView"), hInstance);
 
-	bool GetTitle(const TCHAR * pFileName, TCHAR * pTitle)
-	{
-		if ( pFileName )
-		{
-			wsprintf(pTitle, "%s, %d x %d pixel, %d bits", pFileName,
-				m_DIB.GetWidth(), m_DIB.GetHeight(), m_DIB.GetDepth());
+            return true;
+        }
+        else
+            return false;
+    }
 
-			return true;
-		}
-		else
-			return false;
-	}
+    bool GetTitle(const TCHAR * pFileName, TCHAR * pTitle)
+    {
+        if ( pFileName )
+        {
+            wsprintf(pTitle, "%s, %d x %d pixel, %d bits", pFileName,
+                     m_DIB.GetWidth(), m_DIB.GetHeight(), m_DIB.GetDepth());
+
+            return true;
+        }
+        else
+            return false;
+    }
 };
 
 
 void KDIBView::GetWndClassEx(WNDCLASSEX & wc)
 {
-	memset(& wc, 0, sizeof(wc));
+    memset(& wc, 0, sizeof(wc));
 
-	wc.cbSize         = sizeof(WNDCLASSEX);
-	wc.style          = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc    = WindowProc;
-	wc.cbClsExtra     = 0;
-	wc.cbWndExtra     = 0;       
-	wc.hInstance      = NULL;
-	wc.hIcon          = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_IMAGE));
-	wc.hCursor        = LoadCursor(NULL, IDC_ARROW);
-	wc.hbrBackground  = (HBRUSH) (COLOR_GRAYTEXT + 1);
-	wc.lpszMenuName   = NULL;
-	wc.lpszClassName  = NULL;
-	wc.hIconSm        = NULL;
+    wc.cbSize         = sizeof(WNDCLASSEX);
+    wc.style          = CS_HREDRAW | CS_VREDRAW;
+    wc.lpfnWndProc    = WindowProc;
+    wc.cbClsExtra     = 0;
+    wc.cbWndExtra     = 0;
+    wc.hInstance      = NULL;
+    wc.hIcon          = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_IMAGE));
+    wc.hCursor        = LoadCursor(NULL, IDC_ARROW);
+    wc.hbrBackground  = (HBRUSH) (COLOR_GRAYTEXT + 1);
+    wc.lpszMenuName   = NULL;
+    wc.lpszClassName  = NULL;
+    wc.hIconSm        = NULL;
 }
 
 
 LRESULT KDIBView::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	switch( uMsg )
-	{
-		case WM_CREATE:
-			m_hWnd		= hWnd;
-			m_hViewMenu = LoadMenu(m_hInst, MAKEINTRESOURCE(IDR_DIBVIEW));
-			return 0;
+    switch( uMsg )
+    {
+    case WM_CREATE:
+        m_hWnd		= hWnd;
+        m_hViewMenu = LoadMenu(m_hInst, MAKEINTRESOURCE(IDR_DIBVIEW));
+        return 0;
 
-		case WM_PAINT:
-			return KScrollCanvas::WndProc(hWnd, uMsg, wParam, lParam);
+    case WM_PAINT:
+        return KScrollCanvas::WndProc(hWnd, uMsg, wParam, lParam);
 
-		case WM_SIZE:
-		case WM_HSCROLL:
-		case WM_VSCROLL:
-		{
-			LRESULT lr = KScrollCanvas::WndProc(hWnd, uMsg, wParam, lParam);
+    case WM_SIZE:
+    case WM_HSCROLL:
+    case WM_VSCROLL:
+    {
+        LRESULT lr = KScrollCanvas::WndProc(hWnd, uMsg, wParam, lParam);
 
-			int nMin, nMax, nPos;
+        int nMin, nMax, nPos;
 
-			GetScrollRange(m_hWnd, SB_VERT, &nMin, &nMax);
+        GetScrollRange(m_hWnd, SB_VERT, &nMin, &nMax);
 
-			nPos = GetScrollPos(m_hWnd, SB_VERT);
+        nPos = GetScrollPos(m_hWnd, SB_VERT);
 
-			TCHAR mess[32];
-			wsprintf(mess, "%d %d %d", nMin, nPos, nMax);
-			m_pStatus->SetText(0, mess);
+        TCHAR mess[32];
+        wsprintf(mess, "%d %d %d", nMin, nPos, nMax);
+        m_pStatus->SetText(0, mess);
 
-			return lr;
-		}
+        return lr;
+    }
 
-		case WM_COMMAND:
-			switch ( LOWORD(wParam) )
-			{
-				case IDM_VIEW_STRETCHDIBITS:
-				case IDM_VIEW_STRETCHDIBITS4:
-				case IDM_VIEW_SETDIBITSTODEVICE:
-				case IDM_VIEW_FITWINDOW:
-					if ( LOWORD(wParam)!= m_nViewOpt )
-					{
-						m_nViewOpt = LOWORD(wParam);
+    case WM_COMMAND:
+        switch ( LOWORD(wParam) )
+        {
+        case IDM_VIEW_STRETCHDIBITS:
+        case IDM_VIEW_STRETCHDIBITS4:
+        case IDM_VIEW_SETDIBITSTODEVICE:
+        case IDM_VIEW_FITWINDOW:
+            if ( LOWORD(wParam)!= m_nViewOpt )
+            {
+                m_nViewOpt = LOWORD(wParam);
 
-						switch ( LOWORD(wParam) )
-						{
-							case IDM_VIEW_STRETCHDIBITS:
-							case IDM_VIEW_SETDIBITSTODEVICE:
-								SetSize(m_DIB.GetWidth() + GAP*2, m_DIB.GetHeight() + GAP*2, 5, 5, true);
-								break;
+                switch ( LOWORD(wParam) )
+                {
+                case IDM_VIEW_STRETCHDIBITS:
+                case IDM_VIEW_SETDIBITSTODEVICE:
+                    SetSize(m_DIB.GetWidth() + GAP*2, m_DIB.GetHeight() + GAP*2, 5, 5, true);
+                    break;
 
-							case IDM_VIEW_STRETCHDIBITS4:
-								SetSize(m_DIB.GetWidth()*2 + GAP*3, m_DIB.GetHeight()*2 + GAP*3, 5, 5, true);
-						}
+                case IDM_VIEW_STRETCHDIBITS4:
+                    SetSize(m_DIB.GetWidth()*2 + GAP*3, m_DIB.GetHeight()*2 + GAP*3, 5, 5, true);
+                }
 
-						InvalidateRect(hWnd, NULL, TRUE);
-					}
-					return 0;
+                InvalidateRect(hWnd, NULL, TRUE);
+            }
+            return 0;
 
-				case IDM_FILE_SAVEDIB1BPP:	SaveWindowToDIB(hWnd,  1, BI_RGB); return 0;
-				case IDM_FILE_SAVEDIB4BPP:	SaveWindowToDIB(hWnd,  4, BI_RGB); return 0;
-				case IDM_FILE_SAVEDIB4RLE:	SaveWindowToDIB(hWnd,  4, BI_RLE4); return 0;
-				case IDM_FILE_SAVEDIB8BPP:	SaveWindowToDIB(hWnd,  8, BI_RGB); return 0;
-				case IDM_FILE_SAVEDIB8RLE:	SaveWindowToDIB(hWnd,  8, BI_RLE8); return 0;
-				case IDM_FILE_SAVEDIB16BPP: SaveWindowToDIB(hWnd, 16, BI_RGB); return 0;
-		  case IDM_FILE_SAVEDIB16BITFIELDS: SaveWindowToDIB(hWnd, 16, BI_BITFIELDS); return 0;
-				case IDM_FILE_SAVEDIB24BPP: SaveWindowToDIB(hWnd, 24, BI_RGB); return 0;
-				case IDM_FILE_SAVEDIB32BPP: SaveWindowToDIB(hWnd, 32, BI_RGB); return 0;
-		  case IDM_FILE_SAVEDIB32BITFIELDS: SaveWindowToDIB(hWnd, 32, BI_BITFIELDS); return 0;
+        case IDM_FILE_SAVEDIB1BPP:
+            SaveWindowToDIB(hWnd,  1, BI_RGB);
+            return 0;
+        case IDM_FILE_SAVEDIB4BPP:
+            SaveWindowToDIB(hWnd,  4, BI_RGB);
+            return 0;
+        case IDM_FILE_SAVEDIB4RLE:
+            SaveWindowToDIB(hWnd,  4, BI_RLE4);
+            return 0;
+        case IDM_FILE_SAVEDIB8BPP:
+            SaveWindowToDIB(hWnd,  8, BI_RGB);
+            return 0;
+        case IDM_FILE_SAVEDIB8RLE:
+            SaveWindowToDIB(hWnd,  8, BI_RLE8);
+            return 0;
+        case IDM_FILE_SAVEDIB16BPP:
+            SaveWindowToDIB(hWnd, 16, BI_RGB);
+            return 0;
+        case IDM_FILE_SAVEDIB16BITFIELDS:
+            SaveWindowToDIB(hWnd, 16, BI_BITFIELDS);
+            return 0;
+        case IDM_FILE_SAVEDIB24BPP:
+            SaveWindowToDIB(hWnd, 24, BI_RGB);
+            return 0;
+        case IDM_FILE_SAVEDIB32BPP:
+            SaveWindowToDIB(hWnd, 32, BI_RGB);
+            return 0;
+        case IDM_FILE_SAVEDIB32BITFIELDS:
+            SaveWindowToDIB(hWnd, 32, BI_BITFIELDS);
+            return 0;
 
-			case IDM_FILE_SAVEDIBSECTION:  SaveWindow(hWnd, true, 25, RGB(209, 177, 80)); return 0;
+        case IDM_FILE_SAVEDIBSECTION:
+            SaveWindow(hWnd, true, 25, RGB(209, 177, 80));
+            return 0;
 
-				case IDM_VIEW_DIBHEXDUMP:
-					SendMessage(GetParent(GetParent(hWnd)), WM_USER+1, (WPARAM) & m_DIB, 0);	
-			}
-			return 0;
+        case IDM_VIEW_DIBHEXDUMP:
+            SendMessage(GetParent(GetParent(hWnd)), WM_USER+1, (WPARAM) & m_DIB, 0);
+        }
+        return 0;
 
-		default:
-			return CommonMDIChildProc(hWnd, uMsg, wParam, lParam, m_hViewMenu, 3);
-	}
+    default:
+        return CommonMDIChildProc(hWnd, uMsg, wParam, lParam, m_hViewMenu, 3);
+    }
 }
 
 void KDIBView::OnDraw(HDC hDC, const RECT * rcPaint)
@@ -196,227 +218,230 @@ void KDIBView::OnDraw(HDC hDC, const RECT * rcPaint)
 //	SetStretchBltMode(hMemDC, STRETCH_DELETESCANS);
 //	m_DIB.StretchDIBits(hMemDC, 0, 0, SRCCOPY);
 
-//	BitBlt(hDC, GAP, GAP, m_DIB.GetWidth(), m_DIB.GetHeight(), 
+//	BitBlt(hDC, GAP, GAP, m_DIB.GetWidth(), m_DIB.GetHeight(),
 //		        hMemDC, 0, 0, SRCCOPY);
 
 //	SelectObject(hMemDC, hOld);
 //	DeleteObject(hBitmap);
 //	DeleteObject(hMemDC);
 
-	SaveDC(hDC);
+    SaveDC(hDC);
 //	CAffine affine;
 //	affine.Rotate(5);
 //	affine.Translate(20, 20);
 //	SetGraphicsMode(hDC, GM_ADVANCED);
 //	SetWorldTransform(hDC, & affine.m_xm);
 
-	int w = m_DIB.GetWidth();
-	int h = m_DIB.GetHeight();
+    int w = m_DIB.GetWidth();
+    int h = m_DIB.GetHeight();
 
-	switch ( m_nViewOpt )
-	{
-		case IDM_VIEW_FITWINDOW:
-			{
-				RECT rect;
+    switch ( m_nViewOpt )
+    {
+    case IDM_VIEW_FITWINDOW:
+    {
+        RECT rect;
 
-				GetClientRect(m_hWnd, & rect);
-				m_DIB.DrawDIB(hDC, 0, 0, rect.right, rect.bottom, 0, 0, w, h, SRCCOPY);
-			}
-			break;
+        GetClientRect(m_hWnd, & rect);
+        m_DIB.DrawDIB(hDC, 0, 0, rect.right, rect.bottom, 0, 0, w, h, SRCCOPY);
+    }
+    break;
 
-		case IDM_VIEW_STRETCHDIBITS:
-			m_DIB.DrawDIB(hDC, GAP,   GAP,    w, h, 0, 0,  w,  h, SRCCOPY);
-			break;
+    case IDM_VIEW_STRETCHDIBITS:
+        m_DIB.DrawDIB(hDC, GAP,   GAP,    w, h, 0, 0,  w,  h, SRCCOPY);
+        break;
 
-		case IDM_VIEW_STRETCHDIBITS4:
-			m_DIB.DrawDIB(hDC, GAP,     GAP,     w, h, 0, 0,  w,  h, SRCCOPY);
-			m_DIB.DrawDIB(hDC, GAP*2+w, GAP,     w, h, w, 0, -w,  h, SRCCOPY);
-			m_DIB.DrawDIB(hDC, GAP,     GAP*2+h, w, h, 0, h,  w, -h, SRCCOPY);
-			m_DIB.DrawDIB(hDC, GAP*2+w, GAP*2+h, w, h, w, h, -w, -h, SRCCOPY);
-			break;
+    case IDM_VIEW_STRETCHDIBITS4:
+        m_DIB.DrawDIB(hDC, GAP,     GAP,     w, h, 0, 0,  w,  h, SRCCOPY);
+        m_DIB.DrawDIB(hDC, GAP*2+w, GAP,     w, h, w, 0, -w,  h, SRCCOPY);
+        m_DIB.DrawDIB(hDC, GAP,     GAP*2+h, w, h, 0, h,  w, -h, SRCCOPY);
+        m_DIB.DrawDIB(hDC, GAP*2+w, GAP*2+h, w, h, w, h, -w, -h, SRCCOPY);
+        break;
 
-		case IDM_VIEW_SETDIBITSTODEVICE:
-			if ( ! m_DIB.IsCompressed() )
-			{
-				int  bps      = m_DIB.GetBPS();
-				BYTE * buffer = new BYTE[bps];
+    case IDM_VIEW_SETDIBITSTODEVICE:
+        if ( ! m_DIB.IsCompressed() )
+        {
+            int  bps      = m_DIB.GetBPS();
+            BYTE * buffer = new BYTE[bps];
 
-				for (int i=0; i<m_DIB.GetHeight(); i++)
-				{
-					memcpy(buffer, m_DIB.GetBits() + bps*i, bps);
+            for (int i=0; i<m_DIB.GetHeight(); i++)
+            {
+                memcpy(buffer, m_DIB.GetBits() + bps*i, bps);
 
-					for (int j=0; j<bps; j++)
-						buffer[j] = ~ buffer[j];
+                for (int j=0; j<bps; j++)
+                    buffer[j] = ~ buffer[j];
 
-					m_DIB.SetDIB(hDC, GAP, GAP, i, 1, buffer);
-				}
-				delete [] buffer;
-			}
-			break;
-	}
+                m_DIB.SetDIB(hDC, GAP, GAP, i, 1, buffer);
+            }
+            delete [] buffer;
+        }
+        break;
+    }
 
-	RestoreDC(hDC, -1);
+    RestoreDC(hDC, -1);
 }
 
 
 
 //////////////////////
 
-const int TextureID[] = 
-{ 
-	IDB_BRICK01, 
-	IDB_BRICK02, 
-	IDB_WOOD01, 
-	IDB_WOOD02, 
-	IDB_ROCK01, 
-	IDB_MARBLE01, 
-	IDB_PAPER01 
+const int TextureID[] =
+{
+    IDB_BRICK01,
+    IDB_BRICK02,
+    IDB_WOOD01,
+    IDB_WOOD02,
+    IDB_ROCK01,
+    IDB_MARBLE01,
+    IDB_PAPER01
 };
 
 class KDDBView : public KScrollCanvas
 {
-	typedef enum { GAP = 16 };
+    typedef enum { GAP = 16 };
 
-	virtual void    OnDraw(HDC hDC, const RECT * rcPaint);
-	virtual LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-	void			GetWndClassEx(WNDCLASSEX & wc);
-	
-	HMENU			m_hViewMenu;
-	int				m_nViewOpt;
+    virtual void    OnDraw(HDC hDC, const RECT * rcPaint);
+    virtual LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+    void			GetWndClassEx(WNDCLASSEX & wc);
 
-	void			TouchMenu(HMENU hMenu);
-	KCheckMark		m_uibmp;
-	KBitmapMenu     m_texture;
+    HMENU			m_hViewMenu;
+    int				m_nViewOpt;
+
+    void			TouchMenu(HMENU hMenu);
+    KCheckMark		m_uibmp;
+    KBitmapMenu     m_texture;
 
 public:
 
-	KDDBView(void)
-	{
-		m_hViewMenu = NULL;
-		m_nViewOpt  = IDM_VIEW_CREATEBITMAP;
-	}
+    KDDBView(void)
+    {
+        m_hViewMenu = NULL;
+        m_nViewOpt  = IDM_VIEW_CREATEBITMAP;
+    }
 
-	bool Initialize(HINSTANCE hInstance, KStatusWindow * pStatus)
-	{
-		// SetSize(m_DIB.GetWidth()  + GAP*2,	m_DIB.GetHeight() + GAP*2, 5, 5);
+    bool Initialize(HINSTANCE hInstance, KStatusWindow * pStatus)
+    {
+        // SetSize(m_DIB.GetWidth()  + GAP*2,	m_DIB.GetHeight() + GAP*2, 5, 5);
 
-		m_hInst   = hInstance;
-		m_pStatus = pStatus;
+        m_hInst   = hInstance;
+        m_pStatus = pStatus;
 
-		RegisterClass(_T("DDBView"), hInstance);
-			
-		return true;
-	}
+        RegisterClass(_T("DDBView"), hInstance);
 
-	void Test_CreateBitmap(HDC hDC, const RECT * rcPaint);
-	void Test_LargestDDB(HDC hDC, const RECT * rcPaint);
-	void Test_LoadBitmap(HDC hDC, const RECT * rcPaint);
-	void Test_Blt(HDC hDC, const RECT * rcPaint);
-	void Test_Blt_Color(HDC hDC, const RECT * rcPaint);
-	void Test_Blt_GenMask(HDC hDC, const RECT * rcPaint);
+        return true;
+    }
+
+    void Test_CreateBitmap(HDC hDC, const RECT * rcPaint);
+    void Test_LargestDDB(HDC hDC, const RECT * rcPaint);
+    void Test_LoadBitmap(HDC hDC, const RECT * rcPaint);
+    void Test_Blt(HDC hDC, const RECT * rcPaint);
+    void Test_Blt_Color(HDC hDC, const RECT * rcPaint);
+    void Test_Blt_GenMask(HDC hDC, const RECT * rcPaint);
 };
 
 
 void KDDBView::TouchMenu(HMENU hMainMenu)
 {
-	HMENU hMenu = GetSubMenu(hMainMenu, 3);
+    HMENU hMenu = GetSubMenu(hMainMenu, 3);
 
-	m_uibmp.LoadToolbar(m_hInst, IDB_LICON, true);
+    m_uibmp.LoadToolbar(m_hInst, IDB_LICON, true);
 
-	for (int i=0; i<20; i++)
-		m_uibmp.SetCheckMarks(hMenu, i, MF_BYPOSITION, i, -1);
+    for (int i=0; i<20; i++)
+        m_uibmp.SetCheckMarks(hMenu, i, MF_BYPOSITION, i, -1);
 
-	m_texture.AddToMenu(GetSubMenu(hMainMenu, 4), 7, m_hInst, TextureID, 10);
+    m_texture.AddToMenu(GetSubMenu(hMainMenu, 4), 7, m_hInst, TextureID, 10);
 }
 
 
 void KDDBView::GetWndClassEx(WNDCLASSEX & wc)
 {
-	memset(& wc, 0, sizeof(wc));
+    memset(& wc, 0, sizeof(wc));
 
-	wc.cbSize         = sizeof(WNDCLASSEX);
-	wc.style          = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc    = WindowProc;
-	wc.cbClsExtra     = 0;
-	wc.cbWndExtra     = 0;       
-	wc.hInstance      = NULL;
-	wc.hIcon          = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_IMAGE));
-	wc.hCursor        = LoadCursor(NULL, IDC_ARROW);
-	wc.hbrBackground  = (HBRUSH) GetStockObject(WHITE_BRUSH);
-	wc.lpszMenuName   = NULL;
-	wc.lpszClassName  = NULL;
-	wc.hIconSm        = NULL;
+    wc.cbSize         = sizeof(WNDCLASSEX);
+    wc.style          = CS_HREDRAW | CS_VREDRAW;
+    wc.lpfnWndProc    = WindowProc;
+    wc.cbClsExtra     = 0;
+    wc.cbWndExtra     = 0;
+    wc.hInstance      = NULL;
+    wc.hIcon          = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_IMAGE));
+    wc.hCursor        = LoadCursor(NULL, IDC_ARROW);
+    wc.hbrBackground  = (HBRUSH) GetStockObject(WHITE_BRUSH);
+    wc.lpszMenuName   = NULL;
+    wc.lpszClassName  = NULL;
+    wc.hIconSm        = NULL;
 }
 
 
 LRESULT KDDBView::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	switch( uMsg )
-	{
-		case WM_CREATE:
-			m_hWnd		= hWnd;
-			m_hViewMenu = LoadMenu(m_hInst, MAKEINTRESOURCE(IDR_DDBVIEW));
-			TouchMenu(m_hViewMenu);
-			return 0;
+    switch( uMsg )
+    {
+    case WM_CREATE:
+        m_hWnd		= hWnd;
+        m_hViewMenu = LoadMenu(m_hInst, MAKEINTRESOURCE(IDR_DDBVIEW));
+        TouchMenu(m_hViewMenu);
+        return 0;
 
-		case WM_PAINT:
-			return KScrollCanvas::WndProc(hWnd, uMsg, wParam, lParam);
+    case WM_PAINT:
+        return KScrollCanvas::WndProc(hWnd, uMsg, wParam, lParam);
 
-		case WM_SIZE:
-		case WM_HSCROLL:
-		case WM_VSCROLL:
-		{
-			LRESULT lr = KScrollCanvas::WndProc(hWnd, uMsg, wParam, lParam);
+    case WM_SIZE:
+    case WM_HSCROLL:
+    case WM_VSCROLL:
+    {
+        LRESULT lr = KScrollCanvas::WndProc(hWnd, uMsg, wParam, lParam);
 
-			int nMin, nMax, nPos;
+        int nMin, nMax, nPos;
 
-			GetScrollRange(m_hWnd, SB_VERT, &nMin, &nMax);
+        GetScrollRange(m_hWnd, SB_VERT, &nMin, &nMax);
 
-			nPos = GetScrollPos(m_hWnd, SB_VERT);
+        nPos = GetScrollPos(m_hWnd, SB_VERT);
 
-			TCHAR mess[32];
-			wsprintf(mess, "%d %d %d", nMin, nPos, nMax);
-			m_pStatus->SetText(0, mess);
+        TCHAR mess[32];
+        wsprintf(mess, "%d %d %d", nMin, nPos, nMax);
+        m_pStatus->SetText(0, mess);
 
-			return lr;
-		}
+        return lr;
+    }
 
-		case WM_COMMAND:
-			switch ( LOWORD(wParam) )
-			{
-				case IDM_VIEW_CREATEBITMAP:
-				case IDM_VIEW_LARGESTDDB:
-				case IDM_VIEW_LOADBITMAP:
-				case IDM_VIEW_LOADBITMAPHEX:
-				case IDM_VIEW_CREATEDIBITMAP:
-				case IDM_VIEW_CREATEDIBITMAPHEX:
+    case WM_COMMAND:
+        switch ( LOWORD(wParam) )
+        {
+        case IDM_VIEW_CREATEBITMAP:
+        case IDM_VIEW_LARGESTDDB:
+        case IDM_VIEW_LOADBITMAP:
+        case IDM_VIEW_LOADBITMAPHEX:
+        case IDM_VIEW_CREATEDIBITMAP:
+        case IDM_VIEW_CREATEDIBITMAPHEX:
 
-				case IDM_VIEW_BLT_NORMAL:
-				case IDM_VIEW_BLT_CENTER:
-				case IDM_VIEW_BLT_STRETCH:
-				case IDM_VIEW_BLT_TILE:
-				case IDM_VIEW_BLT_STRETCHPROP:
-				case IDM_VIEW_BITBLT_COLOR:
-				case IDM_VIEW_GENMASK:
-					if ( LOWORD(wParam)!= m_nViewOpt )
-					{
-						m_nViewOpt = LOWORD(wParam);
+        case IDM_VIEW_BLT_NORMAL:
+        case IDM_VIEW_BLT_CENTER:
+        case IDM_VIEW_BLT_STRETCH:
+        case IDM_VIEW_BLT_TILE:
+        case IDM_VIEW_BLT_STRETCHPROP:
+        case IDM_VIEW_BITBLT_COLOR:
+        case IDM_VIEW_GENMASK:
+            if ( LOWORD(wParam)!= m_nViewOpt )
+            {
+                m_nViewOpt = LOWORD(wParam);
 
-						InvalidateRect(hWnd, NULL, TRUE);
-					}
-					return 0;
-				
-				default:
-					switch ( m_texture.OnCommand(LOWORD(wParam)) )
-					{
-						case 1: return 0;
-						case 2: InvalidateRect(hWnd, NULL, TRUE); return 0;
-					}
-					break;
-			}
-	}
+                InvalidateRect(hWnd, NULL, TRUE);
+            }
+            return 0;
 
-	return CommonMDIChildProc(hWnd, uMsg, wParam, lParam, m_hViewMenu, 3);
+        default:
+            switch ( m_texture.OnCommand(LOWORD(wParam)) )
+            {
+            case 1:
+                return 0;
+            case 2:
+                InvalidateRect(hWnd, NULL, TRUE);
+                return 0;
+            }
+            break;
+        }
+    }
+
+    return CommonMDIChildProc(hWnd, uMsg, wParam, lParam, m_hViewMenu, 3);
 }
 
 
@@ -424,343 +449,348 @@ LRESULT KDDBView::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 // special routine to display a 8x8 DDB as 32x32
 void TestDDB88(HDC hDC, int x, int y, HBITMAP hBmp, const TCHAR * desp)
 {
-	HDC hMemDC = CreateCompatibleDC(hDC);
-	SelectObject(hMemDC, hBmp);
+    HDC hMemDC = CreateCompatibleDC(hDC);
+    SelectObject(hMemDC, hBmp);
 
-	StretchBlt(hDC, x, y, 32, 32, hMemDC, 0, 0, 8, 8, SRCCOPY);
-	
-	TCHAR mess[64];
+    StretchBlt(hDC, x, y, 32, 32, hMemDC, 0, 0, 8, 8, SRCCOPY);
 
-	TextOut(hDC, x+50, y, desp, _tcslen(desp));
-		
-	DecodeDDB(hBmp, mess);
-	TextOut(hDC, x+50, y+20, mess, _tcslen(mess));
+    TCHAR mess[64];
 
-	DeleteObject(hMemDC);
-	DeleteObject(hBmp);
+    TextOut(hDC, x+50, y, desp, _tcslen(desp));
+
+    DecodeDDB(hBmp, mess);
+    TextOut(hDC, x+50, y+20, mess, _tcslen(mess));
+
+    DeleteObject(hMemDC);
+    DeleteObject(hBmp);
 }
 
 
 void KDDBView::Test_CreateBitmap(HDC hDC, const RECT * rcPaint)
 {
-	// Test supported DDB format	
-	const SIZE format[] = { 
-			{ 1, 0 }, { 1, 1 }, { 1, 2 }, { 1, 4 }, { 1, 8 }, 
-			{ 1, 15 }, { 1, 16}, { 1, 24 }, { 1, 32 }, { 1, 48 },
-			{ 2, 2 }, { 3, 3 }, { 4, 4 }, { 5, 5 }, { 6, 6 } };
+    // Test supported DDB format
+    const SIZE format[] =
+    {
+        { 1, 0 }, { 1, 1 }, { 1, 2 }, { 1, 4 }, { 1, 8 },
+        { 1, 15 }, { 1, 16}, { 1, 24 }, { 1, 32 }, { 1, 48 },
+        { 2, 2 }, { 3, 3 }, { 4, 4 }, { 5, 5 }, { 6, 6 }
+    };
 
-	TextOut(hDC, 100, 10, "Supported DDB Formats", 21);
+    TextOut(hDC, 100, 10, "Supported DDB Formats", 21);
 
-	for (int i=0; i<sizeof(format)/sizeof(format[0]); i++)
-	{
-		TCHAR mess[128];
-	
-		HBITMAP hBmp = CreateBitmap(16, 16, format[i].cx, format[i].cy, NULL);
+    for (int i=0; i<sizeof(format)/sizeof(format[0]); i++)
+    {
+        TCHAR mess[128];
 
-		wsprintf(mess, "CreateBitmap(16, 16, %d, %d, NULL) ", format[i].cx, format[i].cy);
-		TextOut(hDC, 10, 30+i*17, mess, _tcslen(mess));
+        HBITMAP hBmp = CreateBitmap(16, 16, format[i].cx, format[i].cy, NULL);
 
-		DecodeDDB(hBmp, mess);
-		TextOut(hDC, 250, 30+i*17, mess, _tcslen(mess));
-		DeleteObject(hBmp);
-	}
+        wsprintf(mess, "CreateBitmap(16, 16, %d, %d, NULL) ", format[i].cx, format[i].cy);
+        TextOut(hDC, 10, 30+i*17, mess, _tcslen(mess));
 
-	
-	SetViewportOrgEx(hDC, 150, 0, NULL);
+        DecodeDDB(hBmp, mess);
+        TextOut(hDC, 250, 30+i*17, mess, _tcslen(mess));
+        DeleteObject(hBmp);
+    }
 
-	// Initialized 1 bpp
-	const WORD Chess44_WORD [] = { 0xCC, 0xCC, 0x33, 0x33, 0xCC, 0xCC, 0x33, 0x33 };
-	
-	TestDDB88(hDC, 300, 20, CreateBitmap(8, 8, 1, 1, Chess44_WORD), _T("CreateBitmap(8, 8, 1, 1, Chess44_WORD)"));
 
-	// Uninitialized 1 bpp
-	TestDDB88(hDC, 300, 70, CreateBitmap(8, 8, 1, 1, NULL), _T("CreateBitmap(8, 8, 1, 1, NULL)"));
+    SetViewportOrgEx(hDC, 150, 0, NULL);
 
-	// CreateBitmapIndirect, 1 bpp, DWORD aligned pixel array
-	DWORD Chess44_DWORD [] = { 0xCC, 0xCC, 0x33, 0x33, 0xCC, 0xCC, 0x33, 0x33 };
-	
-	BITMAP bbp = { 0, 8, 8, sizeof(DWORD), 1, 1, Chess44_DWORD };
+    // Initialized 1 bpp
+    const WORD Chess44_WORD [] = { 0xCC, 0xCC, 0x33, 0x33, 0xCC, 0xCC, 0x33, 0x33 };
 
-	TestDDB88(hDC, 300, 120, CreateBitmapIndirect(&bbp), _T("CreateBitmapIndirect({0,8,8,sizeof(DWORD),1,1,Chess44_DWORD})"));
+    TestDDB88(hDC, 300, 20, CreateBitmap(8, 8, 1, 1, Chess44_WORD), _T("CreateBitmap(8, 8, 1, 1, Chess44_WORD)"));
 
-	// CreateCompatibleBitmap: Mem DC
-	HDC hMemDC = CreateCompatibleDC(hDC);
-	TestDDB88(hDC, 300, 170, CreateCompatibleBitmap(hMemDC, 8, 8), _T("CreateCompatibleBitmap(hMemDC, 8, 8)"));
-	DeleteObject(hMemDC);
+    // Uninitialized 1 bpp
+    TestDDB88(hDC, 300, 70, CreateBitmap(8, 8, 1, 1, NULL), _T("CreateBitmap(8, 8, 1, 1, NULL)"));
 
-	SetViewportOrgEx(hDC, 0, 0, NULL);
+    // CreateBitmapIndirect, 1 bpp, DWORD aligned pixel array
+    DWORD Chess44_DWORD [] = { 0xCC, 0xCC, 0x33, 0x33, 0xCC, 0xCC, 0x33, 0x33 };
+
+    BITMAP bbp = { 0, 8, 8, sizeof(DWORD), 1, 1, Chess44_DWORD };
+
+    TestDDB88(hDC, 300, 120, CreateBitmapIndirect(&bbp), _T("CreateBitmapIndirect({0,8,8,sizeof(DWORD),1,1,Chess44_DWORD})"));
+
+    // CreateCompatibleBitmap: Mem DC
+    HDC hMemDC = CreateCompatibleDC(hDC);
+    TestDDB88(hDC, 300, 170, CreateCompatibleBitmap(hMemDC, 8, 8), _T("CreateCompatibleBitmap(hMemDC, 8, 8)"));
+    DeleteObject(hMemDC);
+
+    SetViewportOrgEx(hDC, 0, 0, NULL);
 }
-	
+
 
 void KDDBView::Test_LargestDDB(HDC hDC, const RECT * rcPaint)
 {
-	HDC hMemDC = CreateCompatibleDC(hDC);
-		
-	// Calculate largest DDB size
-	TCHAR mess[128];
-	HDC DC[2] = { hMemDC, hDC };
+    HDC hMemDC = CreateCompatibleDC(hDC);
 
-	for (int y=0; y<2; y++)
-	{
-		const TCHAR * desp[] = { "Largest monochrome",
-		"Largest screen compatible bitmap" };
+    // Calculate largest DDB size
+    TCHAR mess[128];
+    HDC DC[2] = { hMemDC, hDC };
 
-		HBITMAP hBmp = LargestDDB(DC[y]);
+    for (int y=0; y<2; y++)
+    {
+        const TCHAR * desp[] = { "Largest monochrome",
+                                 "Largest screen compatible bitmap"
+                               };
 
-		TextOut(hDC, 20, 10+y*20, desp[y], _tcslen(desp[y]));
+        HBITMAP hBmp = LargestDDB(DC[y]);
 
-		DecodeDDB(hBmp, mess);
-		TextOut(hDC, 280, 10+y*20, mess, _tcslen(mess));
+        TextOut(hDC, 20, 10+y*20, desp[y], _tcslen(desp[y]));
 
-		DeleteObject(hBmp);
-	}
+        DecodeDDB(hBmp, mess);
+        TextOut(hDC, 280, 10+y*20, mess, _tcslen(mess));
 
-	// test maximum number of DDB that can be created
-	for (y=0; y<2; y++)
-	{
-		HBITMAP hBmp[1024];
+        DeleteObject(hBmp);
+    }
 
-		for (int x=0; x<1024; x++)
-		{
-			hBmp[x] = CreateCompatibleBitmap(DC[y], GetSystemMetrics(SM_CXSCREEN), 
-				GetSystemMetrics(SM_CYSCREEN));
-			if ( hBmp[x]==NULL )
-				break;
-		}
+    // test maximum number of DDB that can be created
+    for (y=0; y<2; y++)
+    {
+        HBITMAP hBmp[1024];
 
-		wsprintf(mess, "Maximum number of DDB: %d, each of them is ", x);
-		TextOut(hDC,  20, 60 + y*20, mess, _tcslen(mess));
+        for (int x=0; x<1024; x++)
+        {
+            hBmp[x] = CreateCompatibleBitmap(DC[y], GetSystemMetrics(SM_CXSCREEN),
+                                             GetSystemMetrics(SM_CYSCREEN));
+            if ( hBmp[x]==NULL )
+                break;
+        }
 
-		DecodeDDB(hBmp[0], mess);
-		TextOut(hDC, 340, 60 + y*20, mess, _tcslen(mess));
+        wsprintf(mess, "Maximum number of DDB: %d, each of them is ", x);
+        TextOut(hDC,  20, 60 + y*20, mess, _tcslen(mess));
 
-		x--;
-		while ( x>=0 )
-		{
-			DeleteObject(hBmp[x]);
-			x --;
-		}
-	}
+        DecodeDDB(hBmp[0], mess);
+        TextOut(hDC, 340, 60 + y*20, mess, _tcslen(mess));
 
-	DeleteObject(hMemDC);
+        x--;
+        while ( x>=0 )
+        {
+            DeleteObject(hBmp[x]);
+            x --;
+        }
+    }
+
+    DeleteObject(hMemDC);
 }
 
 
 void KDDBView::Test_LoadBitmap(HDC hDC, const RECT * rcPaint)
 {
-	TCHAR mess[128];
+    TCHAR mess[128];
 
-	HDC hMemDC = CreateCompatibleDC(hDC);
+    HDC hMemDC = CreateCompatibleDC(hDC);
 
-	// load difference BITMAP as resource
-	HPALETTE hPal = CreateHalftonePalette(hDC);
-	HPALETTE hOld = SelectPalette(hDC, hPal, FALSE);
-	RealizePalette(hDC);
+    // load difference BITMAP as resource
+    HPALETTE hPal = CreateHalftonePalette(hDC);
+    HPALETTE hOld = SelectPalette(hDC, hPal, FALSE);
+    RealizePalette(hDC);
 
-	for (int i=0; i<6; i++)
-	{
-		int x = 10 + (i%3) * 320;
-		int y = 10 + (i/3) * 320;
+    for (int i=0; i<6; i++)
+    {
+        int x = 10 + (i%3) * 320;
+        int y = 10 + (i/3) * 320;
 
-		KDIB dib;
+        KDIB dib;
 
-		dib.LoadBitmap(m_hInst, MAKEINTRESOURCE(i+IDB_BITMAP1));
+        dib.LoadBitmap(m_hInst, MAKEINTRESOURCE(i+IDB_BITMAP1));
 
-		HBITMAP hBmp;
+        HBITMAP hBmp;
 
-		if ( (m_nViewOpt==IDM_VIEW_LOADBITMAP) || (m_nViewOpt==IDM_VIEW_LOADBITMAPHEX) )
-			hBmp = LoadBitmap(m_hInst, MAKEINTRESOURCE(i+IDB_BITMAP1));
-		else
-			hBmp = dib.ConvertToDDB(hDC);
+        if ( (m_nViewOpt==IDM_VIEW_LOADBITMAP) || (m_nViewOpt==IDM_VIEW_LOADBITMAPHEX) )
+            hBmp = LoadBitmap(m_hInst, MAKEINTRESOURCE(i+IDB_BITMAP1));
+        else
+            hBmp = dib.ConvertToDDB(hDC);
 
-		KGDIObject bmp(hMemDC, hBmp);
+        KGDIObject bmp(hMemDC, hBmp);
 
-		if ( hBmp==NULL ) break;
+        if ( hBmp==NULL ) break;
 
-		BITMAP info;
-		GetObject(hBmp, sizeof(BITMAP), & info);
+        BITMAP info;
+        GetObject(hBmp, sizeof(BITMAP), & info);
 
-		BitBlt(hDC, x, y, info.bmWidth, info.bmHeight, hMemDC, 0, 0, SRCCOPY);
+        BitBlt(hDC, x, y, info.bmWidth, info.bmHeight, hMemDC, 0, 0, SRCCOPY);
 
-		dib.DecodeDIBFormat(mess);
-		TextOut(hDC, x, y + info.bmHeight+20, mess, _tcslen(mess));
-		
-		DecodeDDB(bmp.m_hObj, mess);
-		TextOut(hDC, x, y + info.bmHeight+40, mess, _tcslen(mess));
+        dib.DecodeDIBFormat(mess);
+        TextOut(hDC, x, y + info.bmHeight+20, mess, _tcslen(mess));
 
-		int size = GetBitmapBits(hBmp, 0, NULL);
-		wsprintf(mess, "DDB %d bytes", size);
-		TextOut(hDC, x, y+ info.bmHeight+60, mess, _tcslen(mess));
+        DecodeDDB(bmp.m_hObj, mess);
+        TextOut(hDC, x, y + info.bmHeight+40, mess, _tcslen(mess));
 
-		if ( (m_nViewOpt==IDM_VIEW_LOADBITMAPHEX) || (m_nViewOpt==IDM_VIEW_CREATEDIBITMAPHEX) )
-			SendMessage(GetParent(GetParent(m_hWnd)), WM_USER+1, (WPARAM) hBmp, 1);
-	}
-	SelectPalette(hDC, hOld, FALSE);
-	RealizePalette(hDC);
-	DeleteObject(hPal);
+        int size = GetBitmapBits(hBmp, 0, NULL);
+        wsprintf(mess, "DDB %d bytes", size);
+        TextOut(hDC, x, y+ info.bmHeight+60, mess, _tcslen(mess));
 
-	DeleteObject(hMemDC);
+        if ( (m_nViewOpt==IDM_VIEW_LOADBITMAPHEX) || (m_nViewOpt==IDM_VIEW_CREATEDIBITMAPHEX) )
+            SendMessage(GetParent(GetParent(m_hWnd)), WM_USER+1, (WPARAM) hBmp, 1);
+    }
+    SelectPalette(hDC, hOld, FALSE);
+    RealizePalette(hDC);
+    DeleteObject(hPal);
+
+    DeleteObject(hMemDC);
 }
 
 
 void KDDBView::Test_Blt(HDC hDC, const RECT * rcPaint)
 {
-	KDDB ddb;
+    KDDB ddb;
 
-	int nSeq;
+    int nSeq;
 
-	m_texture.GetChecked(nSeq);
+    m_texture.GetChecked(nSeq);
 
-	ddb.LoadBitmap(m_hInst, TextureID[nSeq]);
+    ddb.LoadBitmap(m_hInst, TextureID[nSeq]);
 
-	RECT rect;
+    RECT rect;
 
-	GetClientRect(m_hWnd, & rect);
-	int cwidth = rect.right;
-	int cheight = rect.bottom;
+    GetClientRect(m_hWnd, & rect);
+    int cwidth = rect.right;
+    int cheight = rect.bottom;
 
-	switch ( m_nViewOpt )
-	{
-		case IDM_VIEW_BLT_NORMAL:
-			ddb.Draw(hDC, 0, 0, cwidth, cheight, SRCCOPY, KDDB::draw_normal);
-			break;
+    switch ( m_nViewOpt )
+    {
+    case IDM_VIEW_BLT_NORMAL:
+        ddb.Draw(hDC, 0, 0, cwidth, cheight, SRCCOPY, KDDB::draw_normal);
+        break;
 
-		case IDM_VIEW_BLT_CENTER:
-			ddb.Draw(hDC, 0, 0, cwidth, cheight, SRCCOPY, KDDB::draw_center);
-			break;
+    case IDM_VIEW_BLT_CENTER:
+        ddb.Draw(hDC, 0, 0, cwidth, cheight, SRCCOPY, KDDB::draw_center);
+        break;
 
-		case IDM_VIEW_BLT_STRETCH:
-			ddb.Draw(hDC, 0, 0, cwidth, cheight, SRCCOPY, KDDB::draw_stretch);
-			break;
+    case IDM_VIEW_BLT_STRETCH:
+        ddb.Draw(hDC, 0, 0, cwidth, cheight, SRCCOPY, KDDB::draw_stretch);
+        break;
 
-		case IDM_VIEW_BLT_TILE:
-			ddb.Draw(hDC, 0, 0, cwidth, cheight, SRCCOPY, KDDB::draw_tile);
-			break;
+    case IDM_VIEW_BLT_TILE:
+        ddb.Draw(hDC, 0, 0, cwidth, cheight, SRCCOPY, KDDB::draw_tile);
+        break;
 
-		case IDM_VIEW_BLT_STRETCHPROP:
-			ddb.Draw(hDC, 0, 0, cwidth, cheight, SRCCOPY, KDDB::draw_stretchprop);
-	}
+    case IDM_VIEW_BLT_STRETCHPROP:
+        ddb.Draw(hDC, 0, 0, cwidth, cheight, SRCCOPY, KDDB::draw_stretchprop);
+    }
 }
 
 
 void KDDBView::Test_Blt_Color(HDC hDC, const RECT * rcPaint)
 {
-	KDDB ddb;
+    KDDB ddb;
 
-	ddb.LoadBitmap(m_hInst, IDB_LION);
-	RECT rect;
+    ddb.LoadBitmap(m_hInst, IDB_LION);
+    RECT rect;
 
-	GetClientRect(m_hWnd, & rect);
-	int cwidth = rect.right;
-	int cheight = rect.bottom;
+    GetClientRect(m_hWnd, & rect);
+    int cwidth = rect.right;
+    int cheight = rect.bottom;
 
-	BITMAP bmp;
-	GetObject(ddb.GetBitmap(), sizeof(bmp), & bmp);
-	
-	HDC hMemDC = CreateCompatibleDC(hDC);
-	SelectObject(hMemDC, ddb.GetBitmap());
+    BITMAP bmp;
+    GetObject(ddb.GetBitmap(), sizeof(bmp), & bmp);
 
-	COLORREF ColorTable[] = { 
-		RGB(0xFF, 0, 0),    RGB(0, 0xFF, 0),    RGB(0, 0, 0xFF),
-		RGB(0xFF, 0xFF, 0), RGB(0, 0xFF, 0xFF), RGB(0xFF, 0, 0xFF) 
-	};
+    HDC hMemDC = CreateCompatibleDC(hDC);
+    SelectObject(hMemDC, ddb.GetBitmap());
 
-	for (int j=0; j<cheight; j+= bmp.bmHeight )
-	for (int i=0; i<cwidth;  i+= bmp.bmWidth  )
-	{
-		SetTextColor(hDC, ColorTable[j/bmp.bmHeight]);
-		SetBkColor(hDC,   ColorTable[i/bmp.bmWidth] | RGB(0xC0, 0xC0, 0xC0));
+    COLORREF ColorTable[] =
+    {
+        RGB(0xFF, 0, 0),    RGB(0, 0xFF, 0),    RGB(0, 0, 0xFF),
+        RGB(0xFF, 0xFF, 0), RGB(0, 0xFF, 0xFF), RGB(0xFF, 0, 0xFF)
+    };
 
-		BitBlt(hDC, i, j, bmp.bmWidth, bmp.bmHeight, hMemDC, 0, 0, SRCCOPY);
-	}
+    for (int j=0; j<cheight; j+= bmp.bmHeight )
+        for (int i=0; i<cwidth;  i+= bmp.bmWidth  )
+        {
+            SetTextColor(hDC, ColorTable[j/bmp.bmHeight]);
+            SetBkColor(hDC,   ColorTable[i/bmp.bmWidth] | RGB(0xC0, 0xC0, 0xC0));
 
-	DeleteObject(hMemDC);
+            BitBlt(hDC, i, j, bmp.bmWidth, bmp.bmHeight, hMemDC, 0, 0, SRCCOPY);
+        }
+
+    DeleteObject(hMemDC);
 }
 
 
 void KDDBView::Test_Blt_GenMask(HDC hDC, const RECT * rcPaint)
 {
-	KDDB ddb;
+    KDDB ddb;
 
-	KGDIObject brush(hDC, CreateSolidBrush(RGB(0xFF, 0xFF, 0)));
+    KGDIObject brush(hDC, CreateSolidBrush(RGB(0xFF, 0xFF, 0)));
 
-	
-	ddb.LoadBitmap(m_hInst, IDB_CUBE);
-	BITMAP bmp;
-	GetObject(ddb.GetBitmap(), sizeof(bmp), & bmp); 
 
-	PatBlt(hDC, 0, 0, bmp.bmWidth * 5 + 70, bmp.bmHeight * 2 + 30, PATCOPY);
+    ddb.LoadBitmap(m_hInst, IDB_CUBE);
+    BITMAP bmp;
+    GetObject(ddb.GetBitmap(), sizeof(bmp), & bmp);
 
-	ddb.Draw(hDC, 10, 10, 0, 0, SRCCOPY, KDDB::draw_normal);
+    PatBlt(hDC, 0, 0, bmp.bmWidth * 5 + 70, bmp.bmHeight * 2 + 30, PATCOPY);
 
-	COLORREF ct[] = {
-		RGB(128, 128, 128), RGB(192, 192, 192), RGB(255, 255, 255),
-		RGB(255, 0, 0), RGB(0, 255, 0), RGB(0, 0, 255),
-		RGB(255, 255, 0), RGB(0, 255, 255), RGB(255, 0, 255)
-	};
+    ddb.Draw(hDC, 10, 10, 0, 0, SRCCOPY, KDDB::draw_normal);
 
-	HDC hMemDC = CreateCompatibleDC(hDC);
+    COLORREF ct[] =
+    {
+        RGB(128, 128, 128), RGB(192, 192, 192), RGB(255, 255, 255),
+        RGB(255, 0, 0), RGB(0, 255, 0), RGB(0, 0, 255),
+        RGB(255, 255, 0), RGB(0, 255, 255), RGB(255, 0, 255)
+    };
 
-	for (int i=0; i<sizeof(ct)/sizeof(COLORREF); i++)
-	{
-		HBITMAP hOld = ddb.CreateMask(ct[i], hMemDC);
+    HDC hMemDC = CreateCompatibleDC(hDC);
 
-		SetBkColor(hDC, RGB(0xFF, 0xFF, 0xFF));
-		SetTextColor(hDC, RGB(0, 0, 0));
+    for (int i=0; i<sizeof(ct)/sizeof(COLORREF); i++)
+    {
+        HBITMAP hOld = ddb.CreateMask(ct[i], hMemDC);
 
-		BitBlt(hDC, ((i+1)%5)* (bmp.bmWidth+10)+10, ((i+1)/5)* (bmp.bmHeight+10)+10, bmp.bmWidth, bmp.bmHeight,
-			hMemDC, 0, 0, SRCCOPY);
+        SetBkColor(hDC, RGB(0xFF, 0xFF, 0xFF));
+        SetTextColor(hDC, RGB(0, 0, 0));
 
-		DeleteObject(SelectObject(hMemDC, hOld));
-	}
+        BitBlt(hDC, ((i+1)%5)* (bmp.bmWidth+10)+10, ((i+1)/5)* (bmp.bmHeight+10)+10, bmp.bmWidth, bmp.bmHeight,
+               hMemDC, 0, 0, SRCCOPY);
 
-	DeleteObject(hMemDC);
+        DeleteObject(SelectObject(hMemDC, hOld));
+    }
+
+    DeleteObject(hMemDC);
 }
 
 
 void KDDBView::OnDraw(HDC hDC, const RECT * rcPaint)
 {
-	switch ( m_nViewOpt )
-	{
-		case IDM_VIEW_CREATEBITMAP:
-			Test_CreateBitmap(hDC, rcPaint);
-			break;
+    switch ( m_nViewOpt )
+    {
+    case IDM_VIEW_CREATEBITMAP:
+        Test_CreateBitmap(hDC, rcPaint);
+        break;
 
-		case IDM_VIEW_LARGESTDDB:
-			Test_LargestDDB(hDC, rcPaint);
-			break;
+    case IDM_VIEW_LARGESTDDB:
+        Test_LargestDDB(hDC, rcPaint);
+        break;
 
-		case IDM_VIEW_LOADBITMAP:
-		case IDM_VIEW_CREATEDIBITMAP:
-			Test_LoadBitmap(hDC, rcPaint);
-			break;
+    case IDM_VIEW_LOADBITMAP:
+    case IDM_VIEW_CREATEDIBITMAP:
+        Test_LoadBitmap(hDC, rcPaint);
+        break;
 
-		case IDM_VIEW_LOADBITMAPHEX:
-			Test_LoadBitmap(hDC, rcPaint);
-			m_nViewOpt = IDM_VIEW_LOADBITMAP;
-			break;
+    case IDM_VIEW_LOADBITMAPHEX:
+        Test_LoadBitmap(hDC, rcPaint);
+        m_nViewOpt = IDM_VIEW_LOADBITMAP;
+        break;
 
-		case IDM_VIEW_CREATEDIBITMAPHEX:
-			Test_LoadBitmap(hDC, rcPaint);
-			m_nViewOpt = IDM_VIEW_CREATEDIBITMAP;
-			break;
+    case IDM_VIEW_CREATEDIBITMAPHEX:
+        Test_LoadBitmap(hDC, rcPaint);
+        m_nViewOpt = IDM_VIEW_CREATEDIBITMAP;
+        break;
 
-		case IDM_VIEW_BLT_NORMAL:
-		case IDM_VIEW_BLT_CENTER:
-		case IDM_VIEW_BLT_STRETCH:
-		case IDM_VIEW_BLT_TILE:
-		case IDM_VIEW_BLT_STRETCHPROP:
-			Test_Blt(hDC, rcPaint);
-			break;
+    case IDM_VIEW_BLT_NORMAL:
+    case IDM_VIEW_BLT_CENTER:
+    case IDM_VIEW_BLT_STRETCH:
+    case IDM_VIEW_BLT_TILE:
+    case IDM_VIEW_BLT_STRETCHPROP:
+        Test_Blt(hDC, rcPaint);
+        break;
 
-		case IDM_VIEW_BITBLT_COLOR:
-			Test_Blt_Color(hDC, rcPaint);
-			break;
+    case IDM_VIEW_BITBLT_COLOR:
+        Test_Blt_Color(hDC, rcPaint);
+        break;
 
-		case IDM_VIEW_GENMASK:
-			Test_Blt_GenMask(hDC, rcPaint);
-			break;
-	}
+    case IDM_VIEW_GENMASK:
+        Test_Blt_GenMask(hDC, rcPaint);
+        break;
+    }
 }
 
 //////////////////////
@@ -769,478 +799,478 @@ void KDDBView::OnDraw(HDC hDC, const RECT * rcPaint)
 
 class KDIBSectionView : public KScrollCanvas
 {
-	typedef enum { GAP = 16 };
+    typedef enum { GAP = 16 };
 
-	virtual void    OnDraw(HDC hDC, const RECT * rcPaint);
-	virtual LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-	void			GetWndClassEx(WNDCLASSEX & wc);
-	
-	HMENU			m_hViewMenu;
-	int				m_nViewOpt;
+    virtual void    OnDraw(HDC hDC, const RECT * rcPaint);
+    virtual LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+    void			GetWndClassEx(WNDCLASSEX & wc);
+
+    HMENU			m_hViewMenu;
+    int				m_nViewOpt;
 
 public:
 
-	KDIBSectionView(void)
-	{
-		m_hViewMenu = NULL;
-		m_nViewOpt  = IDM_VIEW_CREATEBITMAP;
-	}
+    KDIBSectionView(void)
+    {
+        m_hViewMenu = NULL;
+        m_nViewOpt  = IDM_VIEW_CREATEBITMAP;
+    }
 
-	bool Initialize(HINSTANCE hInstance, KStatusWindow * pStatus)
-	{
-		m_hInst   = hInstance;
-		m_pStatus = pStatus;
+    bool Initialize(HINSTANCE hInstance, KStatusWindow * pStatus)
+    {
+        m_hInst   = hInstance;
+        m_pStatus = pStatus;
 
-		RegisterClass(_T("DIBSectionView"), hInstance);
-			
-		return true;
-	}
+        RegisterClass(_T("DIBSectionView"), hInstance);
 
-	void Test_CreateDIBSection(HDC hDC, const RECT * rcPaint);
+        return true;
+    }
+
+    void Test_CreateDIBSection(HDC hDC, const RECT * rcPaint);
 };
 
 
 void KDIBSectionView::Test_CreateDIBSection(HDC hDC, const RECT * rcPaint)
 {
-	TextOut(hDC, 10, 10, "CreateDIBSection", 10);
+    TextOut(hDC, 10, 10, "CreateDIBSection", 10);
 
-	TCHAR temp[128];
-	KDIBSection dibsection[11];
+    TCHAR temp[128];
+    KDIBSection dibsection[11];
 
-	for (int i=0; i<11; i++)
-	{
-		const int static bitcount   [] = { 0,      1,      4,       4,      8,       8,      16,     16,           24,     32    , 32};
-		const int static compression[] = { BI_PNG, BI_RGB, BI_RLE4, BI_RGB, BI_RLE8, BI_RGB, BI_RGB, BI_BITFIELDS, BI_RGB, BI_RGB, BI_BITFIELDS };
+    for (int i=0; i<11; i++)
+    {
+        const int static bitcount   [] = { 0,      1,      4,       4,      8,       8,      16,     16,           24,     32    , 32};
+        const int static compression[] = { BI_PNG, BI_RGB, BI_RLE4, BI_RGB, BI_RLE8, BI_RGB, BI_RGB, BI_BITFIELDS, BI_RGB, BI_RGB, BI_BITFIELDS };
 
-		KBitmapInfo bmi;
+        KBitmapInfo bmi;
 
-		bmi.SetFormat(125, 125, bitcount[i], compression[i]);
+        bmi.SetFormat(125, 125, bitcount[i], compression[i]);
 
-		dibsection[i].CreateDIBSection(hDC, bmi.GetBMI(), DIB_RGB_COLORS, NULL, NULL);
-		
-		dibsection[i].DecodeDIBSectionFormat(temp);
-		TextOut(hDC, 20, 40 + i*20, temp, _tcslen(temp));
+        dibsection[i].CreateDIBSection(hDC, bmi.GetBMI(), DIB_RGB_COLORS, NULL, NULL);
 
-		if ( dibsection[i].GetBitmap() )
-		{
-			HBITMAP hBig = LargestDIBSection(bmi.GetBMI());
+        dibsection[i].DecodeDIBSectionFormat(temp);
+        TextOut(hDC, 20, 40 + i*20, temp, _tcslen(temp));
 
-			DecodeDDB(hBig, temp);
-			TextOut(hDC, 720, 40 + i*20, temp, _tcslen(temp));
+        if ( dibsection[i].GetBitmap() )
+        {
+            HBITMAP hBig = LargestDIBSection(bmi.GetBMI());
 
-			DeleteObject(hBig);
-		}
-	}
+            DecodeDDB(hBig, temp);
+            TextOut(hDC, 720, 40 + i*20, temp, _tcslen(temp));
+
+            DeleteObject(hBig);
+        }
+    }
 }
 
 
 class KRipDialog : public KDialog
 {
-	int m_width;
-	int m_height;
+    int m_width;
+    int m_height;
 
     virtual BOOL DlgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
-    	switch (uMsg)
-	    {
-		    case WM_INITDIALOG:
-				{
-					for (int i=1; i<10; i++)
-					{
-						TCHAR mess[64];
+        switch (uMsg)
+        {
+        case WM_INITDIALOG:
+        {
+            for (int i=1; i<10; i++)
+            {
+                TCHAR mess[64];
 
-						wsprintf(mess, "%d%c % %d x %d pixels, %d Kb", i*100, '%', i*m_width, i*m_height,
-							(m_width*i*3+3)/4*4*m_height*i/1024);
-						SendDlgItemMessage(hWnd, IDC_LIST, LB_ADDSTRING, 0, (LPARAM) mess);
-						SendDlgItemMessage(hWnd, IDC_LIST, LB_SETCURSEL, 0, 0);
-					}
-				}
-				return TRUE;
-	
-		    case WM_COMMAND:
-				if ( LOWORD(wParam)==IDOK )
-				{
-					EndDialog(hWnd, 1 + SendDlgItemMessage(hWnd, IDC_LIST, LB_GETCURSEL, 0, 0));
-					return TRUE;
-				}
-				else if ( LOWORD(wParam)==IDCANCEL )
-				{
-					EndDialog(hWnd, 0);
-					return TRUE;
-				}
-	    }
+                wsprintf(mess, "%d%c % %d x %d pixels, %d Kb", i*100, '%', i*m_width, i*m_height,
+                         (m_width*i*3+3)/4*4*m_height*i/1024);
+                SendDlgItemMessage(hWnd, IDC_LIST, LB_ADDSTRING, 0, (LPARAM) mess);
+                SendDlgItemMessage(hWnd, IDC_LIST, LB_SETCURSEL, 0, 0);
+            }
+        }
+        return TRUE;
 
-	    return FALSE;
+        case WM_COMMAND:
+            if ( LOWORD(wParam)==IDOK )
+            {
+                EndDialog(hWnd, 1 + SendDlgItemMessage(hWnd, IDC_LIST, LB_GETCURSEL, 0, 0));
+                return TRUE;
+            }
+            else if ( LOWORD(wParam)==IDCANCEL )
+            {
+                EndDialog(hWnd, 0);
+                return TRUE;
+            }
+        }
+
+        return FALSE;
     }
 
 public:
-	KRipDialog(int width, int height)
-	{
-		m_width  = width;
-		m_height = height;
-	}
+    KRipDialog(int width, int height)
+    {
+        m_width  = width;
+        m_height = height;
+    }
 };
 
 
 BOOL RenderEMF(HINSTANCE hInstance)
 {
-	KFileDialog fd;
+    KFileDialog fd;
 
-	if ( ! fd.GetOpenFileName(NULL, "emf", "Enhanced Metafiles") )
-		return FALSE;
+    if ( ! fd.GetOpenFileName(NULL, "emf", "Enhanced Metafiles") )
+        return FALSE;
 
-	HENHMETAFILE hemf = GetEnhMetaFile(fd.m_TitleName);
+    HENHMETAFILE hemf = GetEnhMetaFile(fd.m_TitleName);
 
-	if ( hemf==NULL )
-		return FALSE;
+    if ( hemf==NULL )
+        return FALSE;
 
-	if ( ! fd.GetSaveFileName(NULL, "tga", "Targa 24 bit Image") )
-	{
-		DeleteEnhMetaFile(hemf);
-		return FALSE;
-	}
+    if ( ! fd.GetSaveFileName(NULL, "tga", "Targa 24 bit Image") )
+    {
+        DeleteEnhMetaFile(hemf);
+        return FALSE;
+    }
 
-	ENHMETAHEADER emfheader;
+    ENHMETAHEADER emfheader;
 
-	GetEnhMetaFileHeader(hemf, sizeof(ENHMETAHEADER), & emfheader);
+    GetEnhMetaFileHeader(hemf, sizeof(ENHMETAHEADER), & emfheader);
 
-	int width  = emfheader.rclBounds.right  - emfheader.rclBounds.left;
-	int height = emfheader.rclBounds.bottom - emfheader.rclBounds.top;
+    int width  = emfheader.rclBounds.right  - emfheader.rclBounds.left;
+    int height = emfheader.rclBounds.bottom - emfheader.rclBounds.top;
 
-	KRipDialog sizedialog(width, height);
+    KRipDialog sizedialog(width, height);
 
-	int scale = sizedialog.Dialogbox(hInstance, MAKEINTRESOURCE(IDD_RIP), NULL);
-	BOOL rslt;
+    int scale = sizedialog.Dialogbox(hInstance, MAKEINTRESOURCE(IDD_RIP), NULL);
+    BOOL rslt;
 
-	if ( scale )
-		rslt = RenderEMF(hemf, width * scale, height * scale, fd.m_TitleName);
-	else
-		rslt = FALSE;
+    if ( scale )
+        rslt = RenderEMF(hemf, width * scale, height * scale, fd.m_TitleName);
+    else
+        rslt = FALSE;
 
-	DeleteEnhMetaFile(hemf);
+    DeleteEnhMetaFile(hemf);
 
-	return rslt;
+    return rslt;
 }
 
 
 void KDIBSectionView::GetWndClassEx(WNDCLASSEX & wc)
 {
-	memset(& wc, 0, sizeof(wc));
+    memset(& wc, 0, sizeof(wc));
 
-	wc.cbSize         = sizeof(WNDCLASSEX);
-	wc.style          = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc    = WindowProc;
-	wc.cbClsExtra     = 0;
-	wc.cbWndExtra     = 0;       
-	wc.hInstance      = NULL;
-	wc.hIcon          = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_IMAGE));
-	wc.hCursor        = LoadCursor(NULL, IDC_ARROW);
-	wc.hbrBackground  = (HBRUSH) GetStockObject(WHITE_BRUSH);
-	wc.lpszMenuName   = NULL;
-	wc.lpszClassName  = NULL;
-	wc.hIconSm        = NULL;
+    wc.cbSize         = sizeof(WNDCLASSEX);
+    wc.style          = CS_HREDRAW | CS_VREDRAW;
+    wc.lpfnWndProc    = WindowProc;
+    wc.cbClsExtra     = 0;
+    wc.cbWndExtra     = 0;
+    wc.hInstance      = NULL;
+    wc.hIcon          = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_IMAGE));
+    wc.hCursor        = LoadCursor(NULL, IDC_ARROW);
+    wc.hbrBackground  = (HBRUSH) GetStockObject(WHITE_BRUSH);
+    wc.lpszMenuName   = NULL;
+    wc.lpszClassName  = NULL;
+    wc.hIconSm        = NULL;
 }
 
 
 LRESULT KDIBSectionView::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	switch( uMsg )
-	{
-		case WM_CREATE:
-			m_hWnd		= hWnd;
-			m_hViewMenu = LoadMenu(m_hInst, MAKEINTRESOURCE(IDR_DIBSECTIONVIEW));
-			return 0;
+    switch( uMsg )
+    {
+    case WM_CREATE:
+        m_hWnd		= hWnd;
+        m_hViewMenu = LoadMenu(m_hInst, MAKEINTRESOURCE(IDR_DIBSECTIONVIEW));
+        return 0;
 
-		case WM_PAINT:
-			return KScrollCanvas::WndProc(hWnd, uMsg, wParam, lParam);
+    case WM_PAINT:
+        return KScrollCanvas::WndProc(hWnd, uMsg, wParam, lParam);
 
-		case WM_SIZE:
-		case WM_HSCROLL:
-		case WM_VSCROLL:
-		{
-			LRESULT lr = KScrollCanvas::WndProc(hWnd, uMsg, wParam, lParam);
+    case WM_SIZE:
+    case WM_HSCROLL:
+    case WM_VSCROLL:
+    {
+        LRESULT lr = KScrollCanvas::WndProc(hWnd, uMsg, wParam, lParam);
 
-			int nMin, nMax, nPos;
+        int nMin, nMax, nPos;
 
-			GetScrollRange(m_hWnd, SB_VERT, &nMin, &nMax);
+        GetScrollRange(m_hWnd, SB_VERT, &nMin, &nMax);
 
-			nPos = GetScrollPos(m_hWnd, SB_VERT);
+        nPos = GetScrollPos(m_hWnd, SB_VERT);
 
-			TCHAR mess[32];
-			wsprintf(mess, "%d %d %d", nMin, nPos, nMax);
-			m_pStatus->SetText(0, mess);
+        TCHAR mess[32];
+        wsprintf(mess, "%d %d %d", nMin, nPos, nMax);
+        m_pStatus->SetText(0, mess);
 
-			return lr;
-		}
+        return lr;
+    }
 
-		case WM_COMMAND:
-			switch ( LOWORD(wParam) )
-			{
-				case IDM_VIEW_CREATEDIBSECTION:
-					if ( LOWORD(wParam)!= m_nViewOpt )
-					{
-						m_nViewOpt = LOWORD(wParam);
+    case WM_COMMAND:
+        switch ( LOWORD(wParam) )
+        {
+        case IDM_VIEW_CREATEDIBSECTION:
+            if ( LOWORD(wParam)!= m_nViewOpt )
+            {
+                m_nViewOpt = LOWORD(wParam);
 
-						InvalidateRect(hWnd, NULL, TRUE);
-					}
-					return 0;
+                InvalidateRect(hWnd, NULL, TRUE);
+            }
+            return 0;
 
-				case IDM_VIEW_RIP:
-					RenderEMF(m_hInst);
-					return 0;
-			}
-	}
+        case IDM_VIEW_RIP:
+            RenderEMF(m_hInst);
+            return 0;
+        }
+    }
 
-	return CommonMDIChildProc(hWnd, uMsg, wParam, lParam, m_hViewMenu, 3);
+    return CommonMDIChildProc(hWnd, uMsg, wParam, lParam, m_hViewMenu, 3);
 }
 
 
 void KDIBSectionView::OnDraw(HDC hDC, const RECT * rcPaint)
 {
-	switch ( m_nViewOpt )
-	{
-		case IDM_VIEW_CREATEBITMAP:
-			Test_CreateDIBSection(hDC, rcPaint);
-			break;
-	}
+    switch ( m_nViewOpt )
+    {
+    case IDM_VIEW_CREATEBITMAP:
+        Test_CreateDIBSection(hDC, rcPaint);
+        break;
+    }
 }
 
 
 const int Translate[] =
 {
-	IDM_FILE_CLOSE,
-	IDM_FILE_EXIT,
-	IDM_WINDOW_TILE,
-	IDM_WINDOW_CASCADE,
-	IDM_WINDOW_ARRANGE,
-	IDM_WINDOW_CLOSEALL
+    IDM_FILE_CLOSE,
+    IDM_FILE_EXIT,
+    IDM_WINDOW_TILE,
+    IDM_WINDOW_CASCADE,
+    IDM_WINDOW_ARRANGE,
+    IDM_WINDOW_CLOSEALL
 };
 
 
 class KMyMDIFRame : public KMDIFrame
 {
-	int				m_nCount;
-	KDDBBackground  m_background;
+    int				m_nCount;
+    KDDBBackground  m_background;
 
-	void CreateMDIChild(KScrollCanvas * canvas, const TCHAR * klass, const TCHAR * filename, const TCHAR * title)
-	{
-		MDICREATESTRUCT mdic;
+    void CreateMDIChild(KScrollCanvas * canvas, const TCHAR * klass, const TCHAR * filename, const TCHAR * title)
+    {
+        MDICREATESTRUCT mdic;
 
-		TCHAR Temp[MAX_PATH];
+        TCHAR Temp[MAX_PATH];
 
-		if ( ! canvas->GetTitle(filename, Temp) )
-		{
-			m_nCount ++;
-			wsprintf(Temp, title, m_nCount);
-		}
+        if ( ! canvas->GetTitle(filename, Temp) )
+        {
+            m_nCount ++;
+            wsprintf(Temp, title, m_nCount);
+        }
 
-		mdic.szClass = klass;
-		mdic.szTitle = Temp;
-		mdic.hOwner  = m_hInst;
-		mdic.x       = CW_USEDEFAULT;
-		mdic.y       = CW_USEDEFAULT;
-		mdic.cx      = CW_USEDEFAULT;
-		mdic.cy      = CW_USEDEFAULT;
-		mdic.style   = WS_VISIBLE | WS_BORDER;
-		mdic.lParam  = (LPARAM) canvas;
+        mdic.szClass = klass;
+        mdic.szTitle = Temp;
+        mdic.hOwner  = m_hInst;
+        mdic.x       = CW_USEDEFAULT;
+        mdic.y       = CW_USEDEFAULT;
+        mdic.cx      = CW_USEDEFAULT;
+        mdic.cy      = CW_USEDEFAULT;
+        mdic.style   = WS_VISIBLE | WS_BORDER;
+        mdic.lParam  = (LPARAM) canvas;
 
-		SendMessage(m_hMDIClient, WM_MDICREATE, 0, (LPARAM) & mdic);
-	}
+        SendMessage(m_hMDIClient, WM_MDICREATE, 0, (LPARAM) & mdic);
+    }
 
-	void CreateDIBView(const TCHAR * pFileName)
-	{
-		KDIBView * pDIBView = new KDIBView();
+    void CreateDIBView(const TCHAR * pFileName)
+    {
+        KDIBView * pDIBView = new KDIBView();
 
-		if ( pDIBView )
-			if ( pDIBView->Initialize(pFileName, m_hInst, m_pStatus) )
-				CreateMDIChild(pDIBView, _T("DIBView"), pFileName, _T("DIB %d"));
-			else
-				delete pDIBView;
-	}
-	
-	void CreateDDBView(void)
-	{
-		KDDBView * pDDBView = new KDDBView();
+        if ( pDIBView )
+            if ( pDIBView->Initialize(pFileName, m_hInst, m_pStatus) )
+                CreateMDIChild(pDIBView, _T("DIBView"), pFileName, _T("DIB %d"));
+            else
+                delete pDIBView;
+    }
 
-		if ( pDDBView )
-			if ( pDDBView->Initialize(m_hInst, m_pStatus) )
-				CreateMDIChild(pDDBView, _T("DDBView"), NULL, _T("DDB %d"));
-			else
-				delete pDDBView;
-	}
+    void CreateDDBView(void)
+    {
+        KDDBView * pDDBView = new KDDBView();
 
-	void CreateDIBSectionView(void)
-	{
-		KDIBSectionView * pDIBSectionView = new KDIBSectionView();
+        if ( pDDBView )
+            if ( pDDBView->Initialize(m_hInst, m_pStatus) )
+                CreateMDIChild(pDDBView, _T("DDBView"), NULL, _T("DDB %d"));
+            else
+                delete pDDBView;
+    }
 
-		if ( pDIBSectionView )
-			if ( pDIBSectionView->Initialize(m_hInst, m_pStatus) )
-				CreateMDIChild(pDIBSectionView, _T("DIBSectionView"), NULL, _T("DIBSection %d"));
-			else
-				delete pDIBSectionView;
-	}
+    void CreateDIBSectionView(void)
+    {
+        KDIBSectionView * pDIBSectionView = new KDIBSectionView();
 
-	void CreateHexView(WPARAM wParam, LPARAM lParam)
-	{
-		KEditView * pEditView = new KEditView();
+        if ( pDIBSectionView )
+            if ( pDIBSectionView->Initialize(m_hInst, m_pStatus) )
+                CreateMDIChild(pDIBSectionView, _T("DIBSectionView"), NULL, _T("DIBSection %d"));
+            else
+                delete pDIBSectionView;
+    }
 
-		if ( pEditView )
-			if ( pEditView->Initialize(m_hInst) )
-			{
-				CreateMDIChild(pEditView, _T("EditView"), NULL, _T("Hex Dump %d"));
-				pEditView->Decode(wParam, lParam);
-			}
-			else
-				delete pEditView;
-	}
+    void CreateHexView(WPARAM wParam, LPARAM lParam)
+    {
+        KEditView * pEditView = new KEditView();
 
-	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam)
-	{
-		switch ( LOWORD(wParam) )
-		{
-			case IDM_FILE_NEW:
-				CreateDIBView(NULL);
-				return TRUE;
+        if ( pEditView )
+            if ( pEditView->Initialize(m_hInst) )
+            {
+                CreateMDIChild(pEditView, _T("EditView"), NULL, _T("Hex Dump %d"));
+                pEditView->Decode(wParam, lParam);
+            }
+            else
+                delete pEditView;
+    }
 
-			case IDM_FILE_NEWDDB:
-				CreateDDBView();
-				return TRUE;
+    virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam)
+    {
+        switch ( LOWORD(wParam) )
+        {
+        case IDM_FILE_NEW:
+            CreateDIBView(NULL);
+            return TRUE;
 
-			case IDM_FILE_NEW_DIBSECTION:
-				CreateDIBSectionView();
-				return TRUE;
+        case IDM_FILE_NEWDDB:
+            CreateDDBView();
+            return TRUE;
 
-			case IDM_FILE_OPEN:
-			{
-				KFileDialog fo;
+        case IDM_FILE_NEW_DIBSECTION:
+            CreateDIBSectionView();
+            return TRUE;
 
-				if ( fo.GetOpenFileName(m_hWnd, "bmp", "Bitmap Files") )
-					CreateDIBView(fo.m_TitleName);
-				
-				return TRUE;
-			}
-		}
+        case IDM_FILE_OPEN:
+        {
+            KFileDialog fo;
 
-		return FALSE; // not processed
-	}
+            if ( fo.GetOpenFileName(m_hWnd, "bmp", "Bitmap Files") )
+                CreateDIBView(fo.m_TitleName);
 
-	virtual LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-	{
-		if ( uMsg==WM_USER + 1)
-		{
-			CreateHexView(wParam, lParam);
-			return 0;
-		}
-		
-		LRESULT lr = KMDIFrame::WndProc(hWnd, uMsg, wParam, lParam);
+            return TRUE;
+        }
+        }
 
-		if ( uMsg == WM_CREATE )
-		{
-			m_background.SetBitmap(m_hInst, IDB_PUZZLE);
-			m_background.Attach(m_hMDIClient);
-		}
+        return FALSE; // not processed
+    }
 
-		return lr;
-	}
+    virtual LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+    {
+        if ( uMsg==WM_USER + 1)
+        {
+            CreateHexView(wParam, lParam);
+            return 0;
+        }
 
-	void GetWndClassEx(WNDCLASSEX & wc)
-	{
-		KFrame::GetWndClassEx(wc);
+        LRESULT lr = KMDIFrame::WndProc(hWnd, uMsg, wParam, lParam);
 
-		wc.hIcon = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_IMAGE));
-	}
+        if ( uMsg == WM_CREATE )
+        {
+            m_background.SetBitmap(m_hInst, IDB_PUZZLE);
+            m_background.Attach(m_hMDIClient);
+        }
+
+        return lr;
+    }
+
+    void GetWndClassEx(WNDCLASSEX & wc)
+    {
+        KFrame::GetWndClassEx(wc);
+
+        wc.hIcon = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_IMAGE));
+    }
 
 public:
-	KMyMDIFRame(HINSTANCE hInstance, const TBBUTTON * pButtons, int nCount,
-		KToolbar * pToolbar, KStatusWindow * pStatus) :
-		KMDIFrame(hInstance, pButtons, nCount, pToolbar, pStatus, Translate)
-	{
-		m_nCount = 0;
-	}
+    KMyMDIFRame(HINSTANCE hInstance, const TBBUTTON * pButtons, int nCount,
+                KToolbar * pToolbar, KStatusWindow * pStatus) :
+        KMDIFrame(hInstance, pButtons, nCount, pToolbar, pStatus, Translate)
+    {
+        m_nCount = 0;
+    }
 };
 
 
 const TBBUTTON tbButtons[] =
 {
-	{ STD_FILENEW,	 IDM_FILE_NEW,   TBSTATE_ENABLED, TBSTYLE_BUTTON, { 0, 0 }, IDS_FILENEW,  0 },
-	{ STD_FILEOPEN,  IDM_FILE_OPEN,  TBSTATE_ENABLED, TBSTYLE_BUTTON, { 0, 0 }, IDS_FILEOPEN, 0 }
+    { STD_FILENEW,	 IDM_FILE_NEW,   TBSTATE_ENABLED, TBSTYLE_BUTTON, { 0, 0 }, IDS_FILENEW,  0 },
+    { STD_FILEOPEN,  IDM_FILE_OPEN,  TBSTATE_ENABLED, TBSTYLE_BUTTON, { 0, 0 }, IDS_FILEOPEN, 0 }
 };
 
 
 class KMyDialog : public KDialog
 {
-	KDDBBackground whole;
-	KDDBBackground groupbox;
-	KDDBBackground frame;
-	KDDBBackground button;
+    KDDBBackground whole;
+    KDDBBackground groupbox;
+    KDDBBackground frame;
+    KDDBBackground button;
 
-	HINSTANCE      m_hInstance;
+    HINSTANCE      m_hInstance;
 
     virtual BOOL DlgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
-    	switch (uMsg)
-	    {
-		    case WM_INITDIALOG:
-				m_hWnd = hWnd;
-				
-				whole.SetBitmap(m_hInstance, IDB_PAPER01);
-				whole.SetStyle(KDDB::draw_tile);
-				whole.Attach(hWnd);
-				
-				groupbox.SetBitmap(m_hInstance, IDB_BRICK02);
-				groupbox.SetStyle(KDDB::draw_center);
-				groupbox.Attach(GetDlgItem(hWnd, IDC_GROUPBOX));
+        switch (uMsg)
+        {
+        case WM_INITDIALOG:
+            m_hWnd = hWnd;
 
-				frame.SetBitmap(m_hInstance, IDB_BRICK02);
-				frame.SetStyle(KDDB::draw_stretchprop);
-				frame.Attach(GetDlgItem(hWnd, IDC_FRAME)); 
-				return TRUE;
-	
-		    case WM_COMMAND:
-				if ( LOWORD(wParam)==IDOK )
-				{
-					EndDialog(hWnd, 1);
-					return TRUE;
-				}
-	    }
+            whole.SetBitmap(m_hInstance, IDB_PAPER01);
+            whole.SetStyle(KDDB::draw_tile);
+            whole.Attach(hWnd);
 
-	    return FALSE;
+            groupbox.SetBitmap(m_hInstance, IDB_BRICK02);
+            groupbox.SetStyle(KDDB::draw_center);
+            groupbox.Attach(GetDlgItem(hWnd, IDC_GROUPBOX));
+
+            frame.SetBitmap(m_hInstance, IDB_BRICK02);
+            frame.SetStyle(KDDB::draw_stretchprop);
+            frame.Attach(GetDlgItem(hWnd, IDC_FRAME));
+            return TRUE;
+
+        case WM_COMMAND:
+            if ( LOWORD(wParam)==IDOK )
+            {
+                EndDialog(hWnd, 1);
+                return TRUE;
+            }
+        }
+
+        return FALSE;
     }
 
 public:
-	KMyDialog(HINSTANCE hInst)
-	{
-		m_hInstance = hInst;
-	}
+    KMyDialog(HINSTANCE hInst)
+    {
+        m_hInstance = hInst;
+    }
 };
 
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nShow)
 {
-	KToolbar      toolbar;
-	KStatusWindow status;
-	KMyDialog	  testdialog(hInst);
+    KToolbar      toolbar;
+    KStatusWindow status;
+    KMyDialog	  testdialog(hInst);
 
-	testdialog.Dialogbox(hInst, MAKEINTRESOURCE(IDD_BACKGROUND), NULL);
+    testdialog.Dialogbox(hInst, MAKEINTRESOURCE(IDD_BACKGROUND), NULL);
 
-	KMyMDIFRame frame(hInst, tbButtons, 2, & toolbar, & status);
+    KMyMDIFRame frame(hInst, tbButtons, 2, & toolbar, & status);
 
-	TCHAR title[MAX_PATH];
+    TCHAR title[MAX_PATH];
 
-	HDC hDC = GetDC(NULL);
-	wsprintf(title, "DIBShop (%s)", PixelFormatName(PixelFormat(hDC)));
-	ReleaseDC(NULL, hDC);
+    HDC hDC = GetDC(NULL);
+    wsprintf(title, "DIBShop (%s)", PixelFormatName(PixelFormat(hDC)));
+    ReleaseDC(NULL, hDC);
 
-	frame.CreateEx(0, _T("ClassName"), title,
-		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
-	    CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, 
-	    NULL, LoadMenu(hInst, MAKEINTRESOURCE(IDR_MAIN)), hInst);
-	
+    frame.CreateEx(0, _T("ClassName"), title,
+                   WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
+                   CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+                   NULL, LoadMenu(hInst, MAKEINTRESOURCE(IDR_MAIN)), hInst);
+
 
     frame.ShowWindow(nShow);
     frame.UpdateWindow();
 
     frame.MessageLoop();
 
-	return 0;
+    return 0;
 }

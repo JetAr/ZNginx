@@ -1,0 +1,34 @@
+﻿////////////////////////////////////////////////////////////////////////////////
+// Filename: texturearrayclass.h
+////////////////////////////////////////////////////////////////////////////////
+#ifndef _TEXTUREARRAYCLASS_H_
+#define _TEXTUREARRAYCLASS_H_
+
+
+//////////////
+// INCLUDES //
+//////////////
+#include <d3d10.h>
+#include <d3dx10.h>
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Class name: TextureArrayClass
+////////////////////////////////////////////////////////////////////////////////
+class TextureArrayClass
+{
+public:
+    TextureArrayClass();
+    TextureArrayClass(const TextureArrayClass&);
+    ~TextureArrayClass();
+
+    bool Initialize(ID3D10Device*, WCHAR*, WCHAR*);
+    void Shutdown();
+
+    ID3D10ShaderResourceView** GetTextureArray();
+
+private:
+    ID3D10ShaderResourceView* m_textures[2];
+};
+
+#endif

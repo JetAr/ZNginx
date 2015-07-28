@@ -21,7 +21,7 @@
 
 #include "listview.h"
 
-    
+
 void KListView::FromDlgItem(HWND hWnd, int id)
 {
     m_hWnd = GetDlgItem(hWnd, id);
@@ -31,11 +31,11 @@ void KListView::FromDlgItem(HWND hWnd, int id)
 
 HWND KListView::Create(HWND hParent, int id, int left, int top, int width, int height, HINSTANCE hInst)
 {
-	m_hWnd = CreateWindowEx(0, WC_LISTVIEW, _T(""), WS_CHILD | WS_VISIBLE | LVS_REPORT | WS_BORDER, 
-				left, top, width, height, hParent, (HMENU) id, hInst, NULL);
-	nRow   = -1;
+    m_hWnd = CreateWindowEx(0, WC_LISTVIEW, _T(""), WS_CHILD | WS_VISIBLE | LVS_REPORT | WS_BORDER,
+                            left, top, width, height, hParent, (HMENU) id, hInst, NULL);
+    nRow   = -1;
 
-	return m_hWnd;
+    return m_hWnd;
 }
 
 
@@ -45,21 +45,21 @@ void KListView::AddIcon(int iImageList, HINSTANCE hInst, int iIcon)
 
     switch (iImageList)
     {
-        case LVSIL_NORMAL: 
-            phImage = & hImage_Normal;
-            break;
+    case LVSIL_NORMAL:
+        phImage = & hImage_Normal;
+        break;
 
-        case LVSIL_SMALL:
-            phImage = & hImage_Small;
-            break;
+    case LVSIL_SMALL:
+        phImage = & hImage_Small;
+        break;
 
-        case LVSIL_STATE:
-            phImage = & hImage_State;
-            break;
+    case LVSIL_STATE:
+        phImage = & hImage_State;
+        break;
 
-        default:
-            assert(FALSE);
-            return;
+    default:
+        assert(FALSE);
+        return;
     }
 
     if (*phImage==NULL)
@@ -83,20 +83,20 @@ void KListView::AddColumn(int col, int width, const TCHAR *title, BOOL left)
     c.cx       = width;
     c.pszText  = (TCHAR *) title;
     c.iSubItem = col;
-                    
+
     ListView_InsertColumn(m_hWnd, col, &c);
 }
 
 
 void KListView::AddItem(int col, int value, int iImage)
 {
-	TCHAR temp[32];
+    TCHAR temp[32];
 
-	wsprintf(temp, _T("%d"), value);
+    wsprintf(temp, _T("%d"), value);
 
-	AddItem(col, temp, iImage);
+    AddItem(col, temp, iImage);
 }
-    
+
 
 void KListView::AddItem(int col, const TCHAR *text, int iImage)
 {
@@ -115,7 +115,7 @@ void KListView::AddItem(int col, const TCHAR *text, int iImage)
     item.iItem    = nRow;
     item.iSubItem = col;
     item.iImage   = iImage;
-        
+
     if (col==0)
         ListView_InsertItem(m_hWnd, &item);
     else
@@ -127,13 +127,13 @@ void KListView::SetItem(int row, int col, int value)
 {
     LV_ITEM item;
 
-	TCHAR mess[32];
-	wsprintf(mess, _T("%d"), value);
+    TCHAR mess[32];
+    wsprintf(mess, _T("%d"), value);
 
     item.mask     = LVIF_TEXT;
     item.pszText  = mess;
     item.iItem    = row;
     item.iSubItem = col;
-        
+
     ListView_SetItem(m_hWnd, &item);
 }

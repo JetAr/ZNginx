@@ -1,19 +1,19 @@
 ﻿/*
     Copyright (C) 1996-2008 by Jan Eric Kyprianidis <www.kyprianidis.com>
     All rights reserved.
-    
-    This program is free  software: you can redistribute it and/or modify 
-    it under the terms of the GNU Lesser General Public License as published 
-    by the Free Software Foundation, either version 2.1 of the License, or 
+
+    This program is free  software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published
+    by the Free Software Foundation, either version 2.1 of the License, or
     (at your option) any later version.
 
-    Thisprogram  is  distributed in the hope that it will be useful, 
-    but WITHOUT ANY WARRANTY; without even the implied warranty of 
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+    Thisprogram  is  distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
     GNU Lesser General Public License for more details.
-    
+
     You should  have received a copy of the GNU Lesser General Public License
-    along with  this program; If not, see <http://www.gnu.org/licenses/>. 
+    along with  this program; If not, see <http://www.gnu.org/licenses/>.
 */
 #include <lib3ds.h>
 #include <string.h>
@@ -95,7 +95,8 @@ static void solidCylinder(double r, double h, int slices);
 static const char *Basename(const char *filename);
 
 
-typedef struct {
+typedef struct
+{
     GLuint tex_id; //OpenGL texture ID
     GLint w;
     GLint h;
@@ -114,7 +115,8 @@ typedef struct {
 
 
 static void
-menu_cb(int value) {
+menu_cb(int value)
+{
     call_callback(value, 0);
 }
 
@@ -123,7 +125,8 @@ menu_cb(int value) {
 * Switch cameras based on user's menu choice.
 */
 static void
-camera_menu(int menu, int value, void *client) {
+camera_menu(int menu, int value, void *client)
+{
     Lib3dsCamera *c = (Lib3dsCamera*)client;
     view_rotx = view_roty = view_rotz = anim_rotz = 0.;
     camera = c->name;
@@ -134,7 +137,8 @@ camera_menu(int menu, int value, void *client) {
 * Toggle an arbitrary int (bool) variable
 */
 static void
-toggle_bool(int menu, int value, void *client) {
+toggle_bool(int menu, int value, void *client)
+{
     int *var = (int*)client;
     *var = !*var;
     glutPostRedisplay();
@@ -146,7 +150,8 @@ toggle_bool(int menu, int value, void *client) {
 * Build the menu
 */
 static void
-build_menu() {
+build_menu()
+{
     int i;
     menu_id = glutCreateMenu(menu_cb);
 
@@ -165,8 +170,10 @@ build_menu() {
 * Time function, called every frame
 */
 static void
-timer_cb(int value) {
-    if (!halt) {
+timer_cb(int value)
+{
+    if (!halt)
+    {
         view_rotz += anim_rotz;
         current_frame+= 1;
         if (current_frame > file->frames)
@@ -179,8 +186,10 @@ timer_cb(int value) {
 }
 
 static void
-set_halt(int h) {
-    if (h != halt) {
+set_halt(int h)
+{
+    if (h != halt)
+    {
         halt = h;
         if (!halt)
             glutTimerFunc(10, timer_cb, 0);
@@ -193,7 +202,8 @@ set_halt(int h) {
 * Initialize OpenGL
 */
 static void
-init(void) {
+init(void)
+{
     glClearColor(0.5, 0.5, 0.5, 1.0);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
@@ -211,18 +221,22 @@ init(void) {
 * Load the model from .3ds file.
 */
 static void
-load_model(void) {
+load_model(void)
+{
     file = lib3ds_file_open(filepath);
-    if (!file) {
+    if (!file)
+    {
         puts("3dsplayer: Error: Loading 3DS file failed.\n");
         exit(1);
     }
 
     /* No nodes?  Fabricate nodes to display all the meshes. */
-    if (!file->nodes) {
+    if (!file->nodes)
+    {
         Lib3dsNode *node;
         int i;
-        for (i = 0; i < file->nmeshes; ++i) {
+        for (i = 0; i < file->nmeshes; ++i)
+        {
             Lib3dsMesh *mesh = file->meshes[i];
             node = lib3ds_node_new(LIB3DS_NODE_MESH_INSTANCE);
             strcpy(node->name, mesh->name);
@@ -244,7 +258,8 @@ load_model(void) {
 
     /* No cameras in the file?  Add four */
 
-    if (!file->ncameras) {
+    if (!file->ncameras)
+    {
 
         /* Add some cameras that encompass the bounding box */
 
@@ -296,7 +311,8 @@ load_model(void) {
 
     /* No lights in the file?  Add some. */
 
-    if (!file->nlights) {
+    if (!file->nlights)
+    {
         Lib3dsLight *light;
 
         light = lib3ds_light_new("light0");
@@ -341,9 +357,11 @@ load_model(void) {
 
     camera = file->cameras[0]->name;
 
-    for (int i = 0; i < file->nmaterials; ++i) {
+    for (int i = 0; i < file->nmaterials; ++i)
+    {
         Lib3dsMaterial *mat = file->materials[i];
-        if (mat->texture1_map.name[0]) {  /* texture map? */
+        if (mat->texture1_map.name[0])    /* texture map? */
+        {
             Lib3dsTextureMap *tex = &mat->texture1_map;
 
             char texname[1024];
@@ -354,7 +372,8 @@ load_model(void) {
             strcat(texname, tex->name);
 
             printf("Loading %s\n", texname);
-            if (tga_load(texname, &pt->pixels, &pt->w, &pt->h)) {
+            if (tga_load(texname, &pt->pixels, &pt->w, &pt->h))
+            {
                 glGenTextures(1, &pt->tex_id);
 
                 glBindTexture(GL_TEXTURE_2D, pt->tex_id);
@@ -364,7 +383,9 @@ load_model(void) {
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                 glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-            } else {
+            }
+            else
+            {
                 fprintf(stderr, "Loading '%s' failed!\n", texname);
             }
         }
@@ -379,33 +400,39 @@ load_model(void) {
 * Each node receives its own OpenGL display list.
 */
 static void
-render_node(Lib3dsNode *node) {
+render_node(Lib3dsNode *node)
+{
     assert(file);
 
     {
         Lib3dsNode *p;
-        for (p = node->childs; p != 0; p = p->next) {
+        for (p = node->childs; p != 0; p = p->next)
+        {
             render_node(p);
         }
     }
-    if (node->type == LIB3DS_NODE_MESH_INSTANCE) {
+    if (node->type == LIB3DS_NODE_MESH_INSTANCE)
+    {
         int index;
         Lib3dsMesh *mesh;
         Lib3dsMeshInstanceNode *n = (Lib3dsMeshInstanceNode*)node;
 
-        if (strcmp(node->name, "$$$DUMMY") == 0) {
+        if (strcmp(node->name, "$$$DUMMY") == 0)
+        {
             return;
         }
 
         index = lib3ds_file_mesh_by_name(file, n->instance_name);
         if (index < 0)
             index = lib3ds_file_mesh_by_name(file, node->name);
-        if (index < 0) {
+        if (index < 0)
+        {
             return;
         }
         mesh = file->meshes[index];
 
-        if (!mesh->user_id) {
+        if (!mesh->user_id)
+        {
             assert(mesh);
 
             mesh->user_id = glGenLists(1);
@@ -423,15 +450,19 @@ render_node(Lib3dsNode *node) {
                 }
                 lib3ds_mesh_calculate_vertex_normals(mesh, normalL);
 
-                for (p = 0; p < mesh->nfaces; ++p) {
+                for (p = 0; p < mesh->nfaces; ++p)
+                {
                     Lib3dsMaterial *mat = 0;
 
-                    if (mesh->faces[p].material >= 0) {
+                    if (mesh->faces[p].material >= 0)
+                    {
                         mat = file->materials[mesh->faces[p].material];
                     }
 
-                    if (mat != oldmat) {
-                        if (mat) {
+                    if (mat != oldmat)
+                    {
+                        if (mat)
+                        {
                             //if (mat->two_sided)
                             //    glDisable(GL_CULL_FACE);
                             //else
@@ -439,31 +470,37 @@ render_node(Lib3dsNode *node) {
                             //
                             //glDisable(GL_CULL_FACE);
 
-                            if (mat->texture1_map.user_ptr) {
+                            if (mat->texture1_map.user_ptr)
+                            {
                                 PlayerTexture* pt = (PlayerTexture*)mat->texture1_map.user_ptr;
                                 glEnable(GL_TEXTURE_2D);
                                 glBindTexture(GL_TEXTURE_2D, pt->tex_id);
-                            } else {
+                            }
+                            else
+                            {
                                 glDisable(GL_TEXTURE_2D);
                             }
 
                             {
                                 float a[4], d[4], s[4];
                                 int i;
-                                for (i=0; i<3; ++i) {
+                                for (i=0; i<3; ++i)
+                                {
                                     a[i] = mat->ambient[i];
                                     d[i] = mat->diffuse[i];
                                     s[i] = mat->specular[i];
                                 }
                                 a[3] = d[3] = s[3] = 1.0f;
-                                
+
                                 glMaterialfv(GL_FRONT, GL_AMBIENT, a);
                                 glMaterialfv(GL_FRONT, GL_DIFFUSE, d);
                                 glMaterialfv(GL_FRONT, GL_SPECULAR, s);
                             }
                             float shininess = pow(2, 10.0*mat->shininess);
                             glMaterialf(GL_FRONT, GL_SHININESS, shininess <= 128? shininess : 128);
-                        } else {
+                        }
+                        else
+                        {
                             static const float a[4] = {0.7, 0.7, 0.7, 1.0};
                             static const float d[4] = {0.7, 0.7, 0.7, 1.0};
                             static const float s[4] = {1.0, 1.0, 1.0, 1.0};
@@ -491,10 +528,12 @@ render_node(Lib3dsNode *node) {
                         }*/
 
                         glBegin(GL_TRIANGLES);
-                        for (int i = 0; i < 3; ++i) {
+                        for (int i = 0; i < 3; ++i)
+                        {
                             glNormal3fv(normalL[3*p+i]);
 
-                            if (mat->texture1_map.user_ptr) {
+                            if (mat->texture1_map.user_ptr)
+                            {
                                 glTexCoord2f(
                                     mesh->texcos[mesh->faces[p].index[i]][0],
                                     1-mesh->texcos[mesh->faces[p].index[i]][1] );
@@ -513,7 +552,8 @@ render_node(Lib3dsNode *node) {
             glEndList();
         }
 
-        if (mesh->user_id) {
+        if (mesh->user_id)
+        {
             glPushMatrix();
             glMultMatrixf(&node->matrix[0][0]);
             glTranslatef(-n->pivot[0], -n->pivot[1], -n->pivot[2]);
@@ -535,19 +575,22 @@ render_node(Lib3dsNode *node) {
 */
 
 static void
-light_update(Lib3dsLight *l) {
+light_update(Lib3dsLight *l)
+{
     Lib3dsNode *ln, *sn;
 
     ln = lib3ds_file_node_by_name(file, l->name, LIB3DS_NODE_SPOTLIGHT);
     sn = lib3ds_file_node_by_name(file, l->name, LIB3DS_NODE_SPOTLIGHT_TARGET);
 
-    if (ln != NULL) {
+    if (ln != NULL)
+    {
         Lib3dsSpotlightNode *n = (Lib3dsSpotlightNode*)ln;
         memcpy(l->color, n->color, 3 * sizeof(float));
         memcpy(l->position, n->pos, 3 * sizeof(float));
     }
 
-    if (sn != NULL) {
+    if (sn != NULL)
+    {
         Lib3dsTargetNode *n = (Lib3dsTargetNode*)sn;
         memcpy(l->target, n->pos, 3* sizeof(float));
     }
@@ -557,7 +600,8 @@ light_update(Lib3dsLight *l) {
 
 
 static void
-draw_bounds(float tgt[3]) {
+draw_bounds(float tgt[3])
+{
     double cx, cy, cz;
     double lx, ly, lz;
 
@@ -630,7 +674,8 @@ draw_bounds(float tgt[3]) {
 
 
 static void
-draw_light(const GLfloat *pos, const GLfloat *color) {
+draw_light(const GLfloat *pos, const GLfloat *color)
+{
     glMaterialfv(GL_FRONT, GL_EMISSION, color);
     glPushMatrix();
     glTranslatef(pos[0], pos[1], pos[2]);
@@ -645,7 +690,8 @@ draw_light(const GLfloat *pos, const GLfloat *color) {
 * Main display function; called whenever the scene needs to be redrawn.
 */
 static void
-display(void) {
+display(void)
+{
     Lib3dsTargetNode *t;
     Lib3dsCameraNode *c;
     float fov, roll;
@@ -673,7 +719,8 @@ display(void) {
         glDisable(GL_POLYGON_SMOOTH);
 
 
-    if (!file) {
+    if (!file)
+    {
         return;
     }
 
@@ -682,10 +729,12 @@ display(void) {
     c = (Lib3dsCameraNode*)lib3ds_file_node_by_name(file, camera, LIB3DS_NODE_CAMERA);
     t = (Lib3dsTargetNode*)lib3ds_file_node_by_name(file, camera, LIB3DS_NODE_CAMERA_TARGET);
 
-    if (t != NULL) {
+    if (t != NULL)
+    {
         tgt = t->pos;
     }
-    if (c != NULL) {
+    if (c != NULL)
+    {
         fov = c->fov;
         roll = c->roll;
         campos = c->pos;
@@ -698,8 +747,10 @@ display(void) {
     near = cam->near_range;
     far = cam->far_range;
 
-    if (c == NULL || t == NULL) {
-        if (c == NULL) {
+    if (c == NULL || t == NULL)
+    {
+        if (c == NULL)
+        {
             fov = cam->fov;
             roll = cam->roll;
             campos = cam->position;
@@ -752,7 +803,8 @@ display(void) {
         int i;
 
         int li = GL_LIGHT0;
-        for (i = 0; i < file->nlights; ++i) {
+        for (i = 0; i < file->nlights; ++i)
+        {
             l = file->lights[i];
             glEnable(li);
             light_update(l);
@@ -769,7 +821,8 @@ display(void) {
             p[2] = l->position[2];
             glLightfv(li, GL_POSITION, p);
 
-            if (l->spot_light) {
+            if (l->spot_light)
+            {
                 p[0] = l->target[0] - l->position[0];
                 p[1] = l->target[1] - l->position[1];
                 p[2] = l->target[2] - l->position[2];
@@ -779,8 +832,10 @@ display(void) {
         }
     }
 
-    if (show_object) {
-        for (p = file->nodes; p != 0; p = p->next) {
+    if (show_object)
+    {
+        for (p = file->nodes; p != 0; p = p->next)
+        {
             render_node(p);
         }
     }
@@ -788,9 +843,11 @@ display(void) {
     if (show_bounds)
         draw_bounds(tgt);
 
-    if (show_cameras) {
+    if (show_cameras)
+    {
         int i;
-        for (i = 0; i < file->ncameras; ++i) {
+        for (i = 0; i < file->ncameras; ++i)
+        {
             cam = file->cameras[i];
             lib3ds_matrix_camera(M, cam->position, cam->target, cam->roll);
             lib3ds_matrix_inv(M);
@@ -803,10 +860,12 @@ display(void) {
         }
     }
 
-    if (show_lights) {
+    if (show_lights)
+    {
         Lib3dsLight *light;
         int i;
-        for (i = 0; i < file->nlights; ++i) {
+        for (i = 0; i < file->nlights; ++i)
+        {
             light = file->lights[i];
             draw_light(light->position, light->color);
         }
@@ -822,7 +881,8 @@ display(void) {
 *
 */
 static void
-reshape(int w, int h) {
+reshape(int w, int h)
+{
     gl_width = w;
     gl_height = h;
     glViewport(0, 0, w, h);
@@ -833,38 +893,40 @@ reshape(int w, int h) {
 *
 */
 static void
-keyboard(unsigned char key, int x, int y) {
-    switch (key) {
-        case 27:
-            exit(0);
-            break;
-        case 'h':
-            set_halt(!halt);
-            break;
-        case 'a':
-            anim_rotz += .05;
-            break;
-        case 'A':
-            anim_rotz -= .05;
-            break;
-        case 'r':
-            view_rotx = view_roty = view_rotz = anim_rotz = 0.;
-            break;
-        case 'z':
-            view_roty += 5.;
-            break;
-        case 'Z':
-            view_roty -= 5.;
-            break;
-        case 'b':
-            show_bounds = !show_bounds;
-            break;
-        case 'o':
-            show_object = !show_object;
-            break;
-        case '\001':
-            anti_alias = !anti_alias;
-            break;
+keyboard(unsigned char key, int x, int y)
+{
+    switch (key)
+    {
+    case 27:
+        exit(0);
+        break;
+    case 'h':
+        set_halt(!halt);
+        break;
+    case 'a':
+        anim_rotz += .05;
+        break;
+    case 'A':
+        anim_rotz -= .05;
+        break;
+    case 'r':
+        view_rotx = view_roty = view_rotz = anim_rotz = 0.;
+        break;
+    case 'z':
+        view_roty += 5.;
+        break;
+    case 'Z':
+        view_roty -= 5.;
+        break;
+    case 'b':
+        show_bounds = !show_bounds;
+        break;
+    case 'o':
+        show_object = !show_object;
+        break;
+    case '\001':
+        anti_alias = !anti_alias;
+        break;
     }
     lib3ds_file_eval(file, current_frame);
     glutPostRedisplay();
@@ -875,21 +937,24 @@ keyboard(unsigned char key, int x, int y) {
 * Respond to mouse buttons.  Action depends on current operating mode.
 */
 static void
-mouse_cb(int button, int state, int x, int y) {
+mouse_cb(int button, int state, int x, int y)
+{
     mx = x;
     my = y;
-    switch (button) {
-        case GLUT_LEFT_BUTTON:
-            switch (runMode) {
-                case ROTATING:
-                    rotating = state == GLUT_DOWN;
-                    break;
-                default:
-                    break;
-            }
+    switch (button)
+    {
+    case GLUT_LEFT_BUTTON:
+        switch (runMode)
+        {
+        case ROTATING:
+            rotating = state == GLUT_DOWN;
             break;
         default:
             break;
+        }
+        break;
+    default:
+        break;
     }
 }
 
@@ -899,8 +964,10 @@ mouse_cb(int button, int state, int x, int y) {
 * other action according to current operating mode.
 */
 static void
-drag_cb(int x, int y) {
-    if (rotating) {
+drag_cb(int x, int y)
+{
+    if (rotating)
+    {
         view_rotz += MOUSE_SCALE * (x - mx);
         view_rotx += MOUSE_SCALE * (y - my);
         mx = x;
@@ -914,7 +981,8 @@ drag_cb(int x, int y) {
 * Create camera and light icons
 */
 static void
-create_icons() {
+create_icons()
+{
     GLUquadricObj *qobj;
 
 #define CBX .25 // camera body dimensions
@@ -963,13 +1031,17 @@ create_icons() {
 }
 
 
-void decompose_datapath(const char *fn) {
+void decompose_datapath(const char *fn)
+{
     const char *ptr = strrchr(fn, '/');
 
-    if (ptr == NULL) {
+    if (ptr == NULL)
+    {
         strcpy(datapath, ".");
         strcpy(filename, fn);
-    } else {
+    }
+    else
+    {
         strcpy(filename, ptr + 1);
         strcpy(datapath, fn);
         datapath[ptr - fn] = '\0';
@@ -981,29 +1053,35 @@ void decompose_datapath(const char *fn) {
 *
 */
 int
-main(int argc, char** argv) {
+main(int argc, char** argv)
+{
     char *progname = argv[0];
 
     glutInit(&argc, argv);
 
-    for (++argv; --argc > 0; ++argv) {
-        if (strcmp(*argv, "-help") ==  0 || strcmp(*argv, "--help") == 0) {
+    for (++argv; --argc > 0; ++argv)
+    {
+        if (strcmp(*argv, "-help") ==  0 || strcmp(*argv, "--help") == 0)
+        {
             fputs("View a 3DS model file using OpenGL.\n", stderr);
             fputs("Usage: 3dsplayer [-nodb|-aa|-flush] <filename>\n", stderr);
             exit(0);
-        } else if (strcmp(*argv, "-nodb") == 0)
+        }
+        else if (strcmp(*argv, "-nodb") == 0)
             dbuf = 0;
         else if (strcmp(*argv, "-aa") == 0)
             anti_alias = 1;
         else if (strcmp(*argv, "-flush") == 0)
             flush = 1;
-        else {
+        else
+        {
             filepath = *argv;
             decompose_datapath(filepath);
         }
     }
 
-    if (filepath == NULL) {
+    if (filepath == NULL)
+    {
         fputs("3dsplayer: Error: No 3DS file specified\n", stderr);
         exit(1);
     }
@@ -1044,7 +1122,8 @@ main(int argc, char** argv) {
 * Box may be rendered with face culling enabled.
 */
 static void
-solidBox(double bx, double by, double bz) {
+solidBox(double bx, double by, double bz)
+{
     glBegin(GL_POLYGON);
     glNormal3d(0., 0., 1.);
     glVertex3d(bx, by, bz);
@@ -1097,7 +1176,8 @@ solidBox(double bx, double by, double bz) {
 * Cylinder may be rendered with face culling enabled.
 */
 static void
-solidCylinder(double r, double h, int slices) {
+solidCylinder(double r, double h, int slices)
+{
     GLUquadricObj *qobj = gluNewQuadric();
     gluQuadricDrawStyle(qobj, GLU_FILL);
     gluQuadricNormals(qobj, GLU_SMOOTH);
@@ -1116,7 +1196,8 @@ solidCylinder(double r, double h, int slices) {
 
 
 static const char *
-Basename(const char *filename) {
+Basename(const char *filename)
+{
     const char *ptr = strrchr(filename, '/');
     return ptr != NULL ? ptr + 1 : filename;
 }
@@ -1132,7 +1213,8 @@ Basename(const char *filename) {
 
 #define MAX_CALLBACKS 100
 
-typedef struct {
+typedef struct
+{
     void (*cb)(int, int, void *);
     void *client;
 } Callback;
@@ -1151,12 +1233,16 @@ static int  ncb = 0;
 * \return integer callback id
 */
 static int
-callback(void (*cb)(int, int, void *client), void *client) {
-    if (ncb == 0) {
+callback(void (*cb)(int, int, void *client), void *client)
+{
+    if (ncb == 0)
+    {
         int i;
         for (i = 0; i < NA(callbacks); ++i)
             callbacks[i].cb = NULL;
-    } else if (ncb >= NA(callbacks)) {
+    }
+    else if (ncb >= NA(callbacks))
+    {
         fprintf(stderr,
                 "callback() out of callbacks, try changing MAX_CALLBACKS\n");
     }
@@ -1174,7 +1260,8 @@ callback(void (*cb)(int, int, void *client), void *client) {
 * \param data Data to be passed to the callback
 */
 static void
-call_callback(int idx, int data) {
+call_callback(int idx, int data)
+{
     if (idx >= 0 && idx < NA(callbacks) && callbacks[idx].cb != NULL)
         callbacks[idx].cb(idx, data, callbacks[idx].client);
 }

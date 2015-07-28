@@ -13,7 +13,7 @@
 
 #define NOCRYPT
 
-#include <windows.h> 
+#include <windows.h>
 #include <string.h>
 #include <assert.h>
 
@@ -24,12 +24,12 @@
 KAtomTable::KAtomTable(void)
 {
     m_bufpos = 2; // empty name is of offset 0
- 
-	m_buffer[0] = 0;
+
+    m_buffer[0] = 0;
     m_buffer[1] = 0;
 
-	m_names   = 1;
-	m_name[0] = m_buffer;
+    m_names   = 1;
+    m_name[0] = m_buffer;
 }
 
 
@@ -39,22 +39,22 @@ ATOM KAtomTable::AddAtom(const char *name)
     if ( (name==NULL) || (name[0]==0) )
         return (ATOM) 0;
 
-	int len = strlen(name);
+    int len = strlen(name);
 
-	// search for it
-	for (int i=1; i<m_names; i++)
-		if ( stricmp(name, m_name[i])==0 )
-			return (ATOM) i;
+    // search for it
+    for (int i=1; i<m_names; i++)
+        if ( stricmp(name, m_name[i])==0 )
+            return (ATOM) i;
 
     if ( m_bufpos+len >= MAX_BUFFER )
     {
         assert(false);
         return (ATOM) 0;
     }
-           
+
     m_name[m_names] = m_buffer + m_bufpos;
-    
-	strcpy(m_buffer + m_bufpos, name);
+
+    strcpy(m_buffer + m_bufpos, name);
     m_bufpos += len;
     m_buffer[m_bufpos++] = 0;
 

@@ -49,7 +49,7 @@ public:
             return;
 
         HRSRC hRsc = FindResource(hModule, MAKEINTRESOURCE(resid), RT_BITMAP);
-        
+
         if ( hRsc )
         {
             m_pDIB  = (const BITMAPINFO *) LockResource(LoadResource(hModule, hRsc));
@@ -59,10 +59,10 @@ public:
 
     int StretchDIBits(HDC hDC, int dx, int dy, int dw, int dh, int sx, int sy, int sw, int sh, int coloruse, DWORD rop)
     {
-        return ::StretchDIBits(hDC, dx, dy, dw, dh, sx, sy, sw, sh, 
-                    m_pBits, m_pDIB, coloruse, rop);
+        return ::StretchDIBits(hDC, dx, dy, dw, dh, sx, sy, sw, sh,
+                               m_pBits, m_pDIB, coloruse, rop);
     }
-   
+
 };
 
 
@@ -70,52 +70,55 @@ void OnDraw(HDC hDC)
 {
     HRGN hRegion = NULL;
 
-	HGDIOBJ hObj[1] = { NULL };
-	
-	// Header
-	
-	static KDIB Dib_1; Dib_1.Load(IDB_BITMAP1);// 350x250x8
-	Dib_1.StretchDIBits(hDC, 10,10,350,250, 0,0,350,250, DIB_RGB_COLORS, SRCCOPY);
-	
-	Dib_1.StretchDIBits(hDC, 10,270,350,250, 0,0,350,250, DIB_RGB_COLORS, SRCCOPY);
-	
-	static KDIB Dib_2; Dib_2.Load(IDB_BITMAP2);// 350x129x8
-	Dib_2.StretchDIBits(hDC, 370,10,350,125, 0,4,350,125, DIB_RGB_COLORS, SRCCOPY);
-	
-	static KDIB Dib_3; Dib_3.Load(IDB_BITMAP3);// 350x129x8
-	Dib_3.StretchDIBits(hDC, 370,136,350,125, 0,0,350,125, DIB_RGB_COLORS, SRCCOPY);
-	
-	Dib_1.StretchDIBits(hDC, 370,270,175,125, 0,125,175,125, DIB_RGB_COLORS, SRCCOPY);
-	
-	Dib_1.StretchDIBits(hDC, 370,396,175,125, 0,0,175,125, DIB_RGB_COLORS, SRCCOPY);
-	
-	Dib_1.StretchDIBits(hDC, 546,270,175,125, 175,125,175,125, DIB_RGB_COLORS, SRCCOPY);
-	
-	Dib_1.StretchDIBits(hDC, 546,396,175,125, 175,0,175,125, DIB_RGB_COLORS, SRCCOPY);
-	// EMREOF(0, 16, 20)
+    HGDIOBJ hObj[1] = { NULL };
+
+    // Header
+
+    static KDIB Dib_1;
+    Dib_1.Load(IDB_BITMAP1);// 350x250x8
+    Dib_1.StretchDIBits(hDC, 10,10,350,250, 0,0,350,250, DIB_RGB_COLORS, SRCCOPY);
+
+    Dib_1.StretchDIBits(hDC, 10,270,350,250, 0,0,350,250, DIB_RGB_COLORS, SRCCOPY);
+
+    static KDIB Dib_2;
+    Dib_2.Load(IDB_BITMAP2);// 350x129x8
+    Dib_2.StretchDIBits(hDC, 370,10,350,125, 0,4,350,125, DIB_RGB_COLORS, SRCCOPY);
+
+    static KDIB Dib_3;
+    Dib_3.Load(IDB_BITMAP3);// 350x129x8
+    Dib_3.StretchDIBits(hDC, 370,136,350,125, 0,0,350,125, DIB_RGB_COLORS, SRCCOPY);
+
+    Dib_1.StretchDIBits(hDC, 370,270,175,125, 0,125,175,125, DIB_RGB_COLORS, SRCCOPY);
+
+    Dib_1.StretchDIBits(hDC, 370,396,175,125, 0,0,175,125, DIB_RGB_COLORS, SRCCOPY);
+
+    Dib_1.StretchDIBits(hDC, 546,270,175,125, 175,125,175,125, DIB_RGB_COLORS, SRCCOPY);
+
+    Dib_1.StretchDIBits(hDC, 546,396,175,125, 175,0,175,125, DIB_RGB_COLORS, SRCCOPY);
+    // EMREOF(0, 16, 20)
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch ( uMsg )
     {
-        case WM_PAINT:
-            {
-                PAINTSTRUCT ps;
+    case WM_PAINT:
+    {
+        PAINTSTRUCT ps;
 
-                HDC hDC = BeginPaint(hWnd, & ps);
-                OnDraw(hDC);
-                EndPaint(hWnd, & ps);
+        HDC hDC = BeginPaint(hWnd, & ps);
+        OnDraw(hDC);
+        EndPaint(hWnd, & ps);
 
-                return 0;
-            }
+        return 0;
+    }
 
-        case WM_DESTROY:
-            PostQuitMessage(0);
-            return 0;
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        return 0;
 
-        default:
-            return DefWindowProc(hWnd, uMsg, wParam, lParam);
+    default:
+        return DefWindowProc(hWnd, uMsg, wParam, lParam);
     }
 }
 
@@ -137,8 +140,8 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPTSTR, int nCmdShow)
     hModule = hInst;
 
     HWND hWnd = CreateWindowEx(0, "EMFDC", "Decompiled EMF", WS_OVERLAPPEDWINDOW,
-                    CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
-                    NULL, NULL, hInst, NULL);
+                               CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+                               NULL, NULL, hInst, NULL);
 
     ShowWindow(hWnd, nCmdShow);
     UpdateWindow(hWnd);

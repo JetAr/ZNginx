@@ -30,7 +30,7 @@
     _asm                _emit 0x31               \
     _asm                mov Low, eax             \
     _asm                mov High, edx            \
-}                                                                
+}
 
 unsigned long  InitCycleHigh;
 unsigned long  InitCycleLow;
@@ -41,15 +41,15 @@ unsigned NestedTimer::GetCPUSpeed(void)
     {
         unsigned l0, h0;
         unsigned l1, h1;
-            
+
         GetCycleCountInto(l0, h0);
-    
+
         // delay for 800 ms
         Sleep(800);
-        // for (unsigned t1=timeGetTime()+800; timeGetTime()<t1; ) 
-    
-        GetCycleCountInto(l1, h1);    
-    
+        // for (unsigned t1=timeGetTime()+800; timeGetTime()<t1; )
+
+        GetCycleCountInto(l1, h1);
+
         CPUSpeed16 = (l1 - l0 + 5000)/50000;   // clock speed (Mhz) *16
         CPUSpeed10 = (l1 - l0 + 8000)/80000;   // clock speed (Mhz) *10
     }
@@ -60,10 +60,10 @@ unsigned NestedTimer::GetCPUSpeed(void)
 #pragma enable_asm
 
 void ResetTimer(void)
-{   
+{
     // ensure CPUSpeed10, CPUSpeed16 get calculated
     nTimer.GetCPUSpeed();
-    
+
     GetCycleCountInto(InitCycleLow, InitCycleHigh); // starting cycle count
 }
 
@@ -77,27 +77,27 @@ unsigned __declspec(naked) GetMicroSecond(void)
 {
     __asm       _emit 0x0F                      // RDTSC: read clock counter into EDX:EAX
     __asm       _emit 0x31                      // 32 bit EAX: 21 sec on 200 Mhz machine
-                                                // EDX CycleHigh
-                                                // EAX CycleLow
-                                                     
-    __asm       sub eax, InitCycleLow                                                     
-    __asm       sbb edx, InitCycleHigh          // Cycle-=InitCycle                                        
-                                                // relative to first GetCPUSpeed call           
-        
+    // EDX CycleHigh
+    // EAX CycleLow
+
+    __asm       sub eax, InitCycleLow
+    __asm       sbb edx, InitCycleHigh          // Cycle-=InitCycle
+    // relative to first GetCPUSpeed call
+
     __asm       add eax, eax
     __asm       adc edx, edx
-        
+
     __asm       add eax, eax
     __asm       adc edx, edx
-                            
+
     __asm       add eax, eax
     __asm       adc edx, edx
-                            
+
     __asm       add eax, eax
     __asm       adc edx, edx
-                            
+
     __asm       div nTimer.CPUSpeed16            // EAX=[CycleHigh,CycleLow] / CPUSpeed
-                                                 // rslt=EAX
+    // rslt=EAX
     __asm       ret
 }
 
@@ -109,7 +109,7 @@ NestedTimer nTimer;
 
 
 void _stdcall timer_Uninitialize(void)   //     uninitialized the timer to avoid overflow
-{   
+{
     ResetTimer();
     nTimer.started = FALSE;
 }

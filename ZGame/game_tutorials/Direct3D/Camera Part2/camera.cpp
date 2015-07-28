@@ -26,7 +26,7 @@ void CCamera::pitch(float angle)
     	Now when we pitch the camera up/down we need to make sure we keep all
     	the camera axes perpendicular to each other, otherwise we loose the
     	fact that they represent the camera's coordinate system.
-        
+
         //z 旋转 forward vector 后，需要重新计算 up vector。因为其也会旋转。
         //z 此时 right 轴不会变动
     	Thus when we rotate the forward vector, we also have to recalculate

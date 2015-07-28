@@ -40,23 +40,23 @@ KImageModule::~KImageModule()
 
 bool KImageModule::Load(char * filename, char *sympath)
 {
-	m_pidi = MapDebugInformation(NULL, filename, sympath, 0); 
+    m_pidi = MapDebugInformation(NULL, filename, sympath, 0);
 
-	if ( m_pidi==NULL ) 
+    if ( m_pidi==NULL )
         return false;
 
-    if ( !SymInitialize(m_hProcess, sympath, FALSE) ) 
+    if ( !SymInitialize(m_hProcess, sympath, FALSE) )
         return false;
-	
-	if ( !SymLoadModule(m_hProcess, NULL, filename, 0, (DWORD)m_pidi->ReservedMappedBase, 0 ) ) 
+
+    if ( !SymLoadModule(m_hProcess, NULL, filename, 0, (DWORD)m_pidi->ReservedMappedBase, 0 ) )
         return false;
 
     IMAGEHLP_MODULE im;
     im.SizeOfStruct = sizeof(im);
 
     SymGetModuleInfo( m_hProcess, (DWORD)m_pidi->ReservedMappedBase, &im );
-	
-	theHost.ExtOutput("""%s"" loaded.\n", im.LoadedImageName);
+
+    theHost.ExtOutput("""%s"" loaded.\n", im.LoadedImageName);
     return true;
 }
 
@@ -65,32 +65,32 @@ void KImageModule::Unload(void)
 {
     if ( m_pidi )
     {
-	    SymUnloadModule(m_hProcess, (DWORD)m_pidi->ReservedMappedBase);
+        SymUnloadModule(m_hProcess, (DWORD)m_pidi->ReservedMappedBase);
         SymCleanup(m_hProcess);
         UnmapDebugInformation(m_pidi);
 
         m_pidi = NULL;
     }
-} 
+}
 
 
 const IMAGEHLP_SYMBOL * KImageModule::ImageGetSymbol(const char * name)
 {
-	char localname[MAX_PATH];
+    char localname[MAX_PATH];
 
     memset(m_is, 0, sizeof(m_is));
     m_is[0].SizeOfStruct  = sizeof(IMAGEHLP_SYMBOL);
     m_is[0].MaxNameLength = sizeof(m_is) - sizeof(m_is[0]);
-    
-	// The silly implementation in imagehlp.dll will try to change the '!' in name
-	// to 0, which generates an access violation, because name would came from read-only
-	// constant data. Make a local copy to solve the problem
-	strcpy(localname, name);
-    
-	if ( SymGetSymFromName(m_hProcess, localname, m_is) )
+
+    // The silly implementation in imagehlp.dll will try to change the '!' in name
+    // to 0, which generates an access violation, because name would came from read-only
+    // constant data. Make a local copy to solve the problem
+    strcpy(localname, name);
+
+    if ( SymGetSymFromName(m_hProcess, localname, m_is) )
     {
         m_is[0].Address += (unsigned) m_pidi->ImageBase - (unsigned) m_pidi->ReservedMappedBase;
-        
+
         return & m_is[0];
     }
     else

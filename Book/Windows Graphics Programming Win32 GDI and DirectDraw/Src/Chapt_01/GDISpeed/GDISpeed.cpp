@@ -22,18 +22,18 @@
 
 int MyMessageBox(HWND hWnd, const TCHAR * text, const TCHAR * caption, DWORD style)
 {
-	MSGBOXPARAMS param;
+    MSGBOXPARAMS param;
 
-	memset(& param, 0, sizeof(param));
-	param.cbSize	  = sizeof(param);
-	param.hwndOwner   = hWnd;
-	param.hInstance   = GetModuleHandle(NULL);
-	param.lpszText    = text;
-	param.lpszCaption = caption;
-	param.dwStyle     = style | MB_USERICON;
-	param.lpszIcon    = MAKEINTRESOURCE(IDI_GRAPH);
+    memset(& param, 0, sizeof(param));
+    param.cbSize	  = sizeof(param);
+    param.hwndOwner   = hWnd;
+    param.hInstance   = GetModuleHandle(NULL);
+    param.lpszText    = text;
+    param.lpszCaption = caption;
+    param.dwStyle     = style | MB_USERICON;
+    param.lpszIcon    = MAKEINTRESOURCE(IDI_GRAPH);
 
-	return MessageBoxIndirect(&param);
+    return MessageBoxIndirect(&param);
 }
 
 
@@ -42,21 +42,21 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmd, int nShow)
     KTimer timer;
     TCHAR  mess[128];
 
-    timer.Start(); 
-	Sleep(1000); 
+    timer.Start();
+    Sleep(1000);
     unsigned cpuspeed10 = (unsigned)(timer.Stop()/100000);
-    
-    timer.Start(); 
+
+    timer.Start();
     CreateSolidBrush(RGB(0xAA, 0xAA, 0xAA));
     unsigned time = (unsigned) timer.Stop();
 
     wsprintf(mess, _T("CPU speed       %d.%d mhz\n")
-        _T("KTimer overhead %d clock cycles\n")
-        _T("CreateSolidBrush %d clock cycles %d ns"),
-        cpuspeed10 / 10,  cpuspeed10 % 10,
-        (unsigned) timer.m_overhead,
-        time, time * 10000 / cpuspeed10);
-        
+             _T("KTimer overhead %d clock cycles\n")
+             _T("CreateSolidBrush %d clock cycles %d ns"),
+             cpuspeed10 / 10,  cpuspeed10 % 10,
+             (unsigned) timer.m_overhead,
+             time, time * 10000 / cpuspeed10);
+
     MyMessageBox(NULL, mess, _T("How fast is GDI?"), MB_OK);
 
     return 0;

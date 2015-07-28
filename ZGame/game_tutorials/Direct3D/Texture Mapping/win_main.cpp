@@ -6,7 +6,7 @@
 	placing the image perspective correct onto a piece of geometry (map the
 	texture to a polygon).  So before we get to far, lets define some
 	common terminology associated with texture maps.
-        
+
         //z 纹理全屏时，每个像素点是一个 texel 。
 		Texel = Each individual color of a texture map.  Or another
 				way to look at it, if a texture was displayed to the
@@ -16,7 +16,7 @@
 		UV = A "UV" is a set of texture coordinates, commonly in the
 			 range of 0.0 - 1.0.  These coordinates specify where
 			 each texel should be mapped to.
-        
+
         在一个pass中，D3D能够渲染8个纹理，
         当在一个object上使用多个纹理时，每个就有其自己的“texture stage”。
 		Texture Stage = D3D can blend as many as 8 textures onto primitives in a single pass.

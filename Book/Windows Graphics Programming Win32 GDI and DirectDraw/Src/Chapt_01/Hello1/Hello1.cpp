@@ -25,7 +25,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmd, int nShow)
 {
     HINSTANCE hRslt = ShellExecute(NULL, szOperation, szAddress, NULL, NULL, SW_SHOWNORMAL);
 
-	assert( hRslt > (HINSTANCE) HINSTANCE_ERROR);
-    
-	return 0;
+    assert( hRslt > (HINSTANCE) HINSTANCE_ERROR);
+
+    return 0;
 }

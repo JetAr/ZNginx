@@ -20,96 +20,96 @@
 
 const int MaxEmrField = 16384;         // 16K*sizeof(DWORD), maximum 64 Kb
 
-typedef struct 
+typedef struct
 {
-	DWORD   iType;                // Enhanced metafile record type
-	DWORD   nSize;                // Length of the record in bytes.
-			                          // This must be a multiple of 4.
-	DWORD   Para[MaxEmrField-2];  // Parameter
+    DWORD   iType;                // Enhanced metafile record type
+    DWORD   nSize;                // Length of the record in bytes.
+    // This must be a multiple of 4.
+    DWORD   Para[MaxEmrField-2];  // Parameter
 } EmrRecord;
 
 
 // check if input file is a valid NT spooler emf file
 BOOL CheckNTSpoolEmfFile(KInputFile *emf, ENHMETAHEADER *header)
 {
-	EmrRecord rec;
+    EmrRecord rec;
 
-	emf->Reset();
+    emf->Reset();
 
-	// 0x00010000 len 
-	emf->read((char *) & rec, 8);
+    // 0x00010000 len
+    emf->read((char *) & rec, 8);
 
-	if (rec.iType!=0x10000) return FALSE;
+    if (rec.iType!=0x10000) return FALSE;
 
-	// appname document name port
-	emf->read((char *) & rec.Para, rec.nSize-8);
+    // appname document name port
+    emf->read((char *) & rec.Para, rec.nSize-8);
 
-	while (true)
-	{
-		// 0x000000001 EMF_Stream_len
-		emf->read((char *) & rec, 8);
-	
-		if ( (rec.iType==1) || (rec.iType==12) ) break;
+    while (true)
+    {
+        // 0x000000001 EMF_Stream_len
+        emf->read((char *) & rec, 8);
 
-		if (rec.iType < 0xFFFF)
-		{
-			if ( rec.iType==2 )
-				emf->read(NULL, rec.nSize);  // embedded font
-			else
-				emf->read(NULL, rec.nSize-8);
-		}
-	}
-	
-	emf->read((char *)header, sizeof(ENHMETAHEADER));
+        if ( (rec.iType==1) || (rec.iType==12) ) break;
 
-	return header->iType==1;
+        if (rec.iType < 0xFFFF)
+        {
+            if ( rec.iType==2 )
+                emf->read(NULL, rec.nSize);  // embedded font
+            else
+                emf->read(NULL, rec.nSize-8);
+        }
+    }
+
+    emf->read((char *)header, sizeof(ENHMETAHEADER));
+
+    return header->iType==1;
 }
 
 
 BOOL PlayNTEnhMetaFile(HDC hDC, KInputFile *emf, RECT *rect)
 {
-	EmrRecord rec;
-	
-	emf->Reset();
-	// 0x00010000 len 
-	emf->read((char *) & rec, 8);
+    EmrRecord rec;
 
-	if (rec.iType!=0x10000) return FALSE;
+    emf->Reset();
+    // 0x00010000 len
+    emf->read((char *) & rec, 8);
 
-	// appname document name port
-	emf->read((char *) & rec.Para, rec.nSize-8);
+    if (rec.iType!=0x10000) return FALSE;
 
-	while (true)
-	{
-		// 0x000000001 EMF_Stream_len
-		emf->read((char *) & rec, 8);
-	
-		if ( (rec.iType==1) || (rec.iType==12) ) break;
+    // appname document name port
+    emf->read((char *) & rec.Para, rec.nSize-8);
 
-		if (rec.iType < 0xFFFF)
-			if ( rec.iType==2 )
-				emf->read(NULL, rec.nSize);  // embedded font
-			else
-				emf->read(NULL, rec.nSize-8);
-	}
-	
+    while (true)
+    {
+        // 0x000000001 EMF_Stream_len
+        emf->read((char *) & rec, 8);
+
+        if ( (rec.iType==1) || (rec.iType==12) ) break;
+
+        if (rec.iType < 0xFFFF)
+            if ( rec.iType==2 )
+                emf->read(NULL, rec.nSize);  // embedded font
+            else
+                emf->read(NULL, rec.nSize-8);
+    }
+
 
 //	// 0x000000001 EMF_Stream_len
 //	emf->read((char *) & rec, 8);
 //	if (rec.iType!=1) return FALSE;
 
-	if (hDC==NULL)
-		return TRUE;
+    if (hDC==NULL)
+        return TRUE;
 
-	byte * bits = (byte *) malloc(rec.nSize);
-	if ( bits == NULL )
-		return FALSE;
+    byte * bits = (byte *) malloc(rec.nSize);
+    if ( bits == NULL )
+        return FALSE;
 
-	emf->read((char *) bits, rec.nSize);
-	HENHMETAFILE hEmf = SetEnhMetaFileBits(rec.nSize, bits);
-	PlayEnhMetaFile(hDC, hEmf, rect);
-	DeleteEnhMetaFile(hEmf);
-	free(bits);
+    emf->read((char *) bits, rec.nSize);
+    HENHMETAFILE hEmf = SetEnhMetaFileBits(rec.nSize, bits);
+    PlayEnhMetaFile(hDC, hEmf, rect);
+    DeleteEnhMetaFile(hEmf);
+    free(bits);
 
-	return TRUE;
+    return TRUE;
 }

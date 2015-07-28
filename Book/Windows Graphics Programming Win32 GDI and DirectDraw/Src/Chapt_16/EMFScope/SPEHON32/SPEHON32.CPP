@@ -26,18 +26,18 @@ HINSTANCE h_instance;
 
 BOOL InitializeAPISpy32(void)
 {
-	// if called by SPOOL32.EXE, SPOOLSS.DLL is already loaded
-	HMODULE hModule = GetModuleHandle("SPOOLSS.DLL");
-	
-	if ( hModule )
-	{
-		KPEFile pe(hModule);
-	
-		return pe.SetImportAddress("GDI32.DLL", "gdiPlaySpoolStream", (FARPROC) MygdiPlaySpoolStream)!=NULL;
-	}
+    // if called by SPOOL32.EXE, SPOOLSS.DLL is already loaded
+    HMODULE hModule = GetModuleHandle("SPOOLSS.DLL");
 
-	// if SPOOLSS.DLL not loaded, we are in EmfScope process
-	return FALSE;
+    if ( hModule )
+    {
+        KPEFile pe(hModule);
+
+        return pe.SetImportAddress("GDI32.DLL", "gdiPlaySpoolStream", (FARPROC) MygdiPlaySpoolStream)!=NULL;
+    }
+
+    // if SPOOLSS.DLL not loaded, we are in EmfScope process
+    return FALSE;
 }
 
 
@@ -45,20 +45,20 @@ int WINAPI DllMain(HINSTANCE hInst, ULONG ul_reason_being_called, LPVOID lpReser
 {
     switch (ul_reason_being_called)
     {
-        case DLL_PROCESS_ATTACH:
-            h_instance = hInst;
+    case DLL_PROCESS_ATTACH:
+        h_instance = hInst;
 
-            InitializeAPISpy32();
-            break;
+        InitializeAPISpy32();
+        break;
 
-        case DLL_THREAD_ATTACH:
-            break;
+    case DLL_THREAD_ATTACH:
+        break;
 
-        case DLL_THREAD_DETACH:
-            break;
+    case DLL_THREAD_DETACH:
+        break;
 
-        case DLL_PROCESS_DETACH:
-            break;
+    case DLL_PROCESS_DETACH:
+        break;
     }
 
     return 1;
@@ -77,54 +77,54 @@ HWND  hwnd_Spooler  = NULL;
 
 LRESULT CALLBACK GetMsgProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
-	if (g_firsttime)
-	{
-		MSG *m;
+    if (g_firsttime)
+    {
+        MSG *m;
 
-		g_firsttime = FALSE;
-		
-		m = (MSG *)lParam;             // refer to help on GetMsgProc
-		if (m->message==WM_NULL)
-			hwnd_Spooler  = (HWND) m->wParam;
+        g_firsttime = FALSE;
 
-		// server does not have a window for the moment
-		// set dialog window handler into spool32.exe USERDATA, so that loader find us
-		if (hwnd_Spooler)
-			SetProp(hwnd_Spooler, Prop_Server, (HANDLE) id_seed);
-	}
+        m = (MSG *)lParam;             // refer to help on GetMsgProc
+        if (m->message==WM_NULL)
+            hwnd_Spooler  = (HWND) m->wParam;
 
-	return CallNextHookEx(g_hhook, nCode, wParam, lParam);
+        // server does not have a window for the moment
+        // set dialog window handler into spool32.exe USERDATA, so that loader find us
+        if (hwnd_Spooler)
+            SetProp(hwnd_Spooler, Prop_Server, (HANDLE) id_seed);
+    }
+
+    return CallNextHookEx(g_hhook, nCode, wParam, lParam);
 }
 
 
 LIBAPI BOOL WINAPI SetSpoolerHook(DWORD dwThreadId, HWND hwnd_Spooler)
 {
-	if (dwThreadId!=0)
-	{
-		if (g_hhook)
-			return TRUE;
+    if (dwThreadId!=0)
+    {
+        if (g_hhook)
+            return TRUE;
 
-		g_hhook = SetWindowsHookEx(WH_GETMESSAGE, (HOOKPROC)GetMsgProc, h_instance, dwThreadId);
+        g_hhook = SetWindowsHookEx(WH_GETMESSAGE, (HOOKPROC)GetMsgProc, h_instance, dwThreadId);
 
-		if (g_hhook==NULL)
-			return FALSE;
+        if (g_hhook==NULL)
+            return FALSE;
 
-		// the hook was installed successfully; 
-		// force a message to the thread's queue so the hook function gets called
-		return PostThreadMessage(dwThreadId, WM_NULL, 
-								 (WPARAM)hwnd_Spooler, 0);
-	}
-	else
-	{
-		BOOL rslt;
+        // the hook was installed successfully;
+        // force a message to the thread's queue so the hook function gets called
+        return PostThreadMessage(dwThreadId, WM_NULL,
+                                 (WPARAM)hwnd_Spooler, 0);
+    }
+    else
+    {
+        BOOL rslt;
 
-		if (g_hhook==NULL)
-			return TRUE;
-		
-		rslt = UnhookWindowsHookEx(g_hhook);
+        if (g_hhook==NULL)
+            return TRUE;
 
-		g_hhook = NULL;
+        rslt = UnhookWindowsHookEx(g_hhook);
 
-		return rslt;
-	}
+        g_hhook = NULL;
+
+        return rslt;
+    }
 }

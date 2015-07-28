@@ -19,25 +19,25 @@
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, PSTR, int)
 {
-	HDC hDC = GetDC(NULL);
-	
-	int width  = GetSystemMetrics(SM_CXSCREEN);
-	int height = GetSystemMetrics(SM_CYSCREEN);
+    HDC hDC = GetDC(NULL);
 
-	for (int i=0; i<2000; i++)
-	{
-		HBRUSH hBrush = CreateSolidBrush(RGB(rand()%256, rand()%256, rand()%256));
-		SelectObject(hDC, hBrush);
+    int width  = GetSystemMetrics(SM_CXSCREEN);
+    int height = GetSystemMetrics(SM_CYSCREEN);
 
-		BOOL rslt = StretchBlt(hDC, rand() % width, rand() % height, -64, -64, 
-							   hDC, rand() % width, rand() % height, 32, 32, (rand() % 256) << 16);
-		SelectObject(hDC, GetStockObject(WHITE_BRUSH));
-		DeleteObject(hBrush);
-		Sleep(1);
-	}
+    for (int i=0; i<2000; i++)
+    {
+        HBRUSH hBrush = CreateSolidBrush(RGB(rand()%256, rand()%256, rand()%256));
+        SelectObject(hDC, hBrush);
 
-	ReleaseDC(NULL, hDC);
+        BOOL rslt = StretchBlt(hDC, rand() % width, rand() % height, -64, -64,
+                               hDC, rand() % width, rand() % height, 32, 32, (rand() % 256) << 16);
+        SelectObject(hDC, GetStockObject(WHITE_BRUSH));
+        DeleteObject(hBrush);
+        Sleep(1);
+    }
 
-	RedrawWindow(NULL, NULL, NULL, RDW_INVALIDATE | RDW_ALLCHILDREN);
-	return 0;
+    ReleaseDC(NULL, hDC);
+
+    RedrawWindow(NULL, NULL, NULL, RDW_INVALIDATE | RDW_ALLCHILDREN);
+    return 0;
 }

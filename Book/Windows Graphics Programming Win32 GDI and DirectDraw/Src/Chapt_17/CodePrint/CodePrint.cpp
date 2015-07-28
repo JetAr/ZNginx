@@ -41,135 +41,135 @@
 
 const int Translate[] =
 {
-	IDM_FILE_CLOSE,
-	IDM_FILE_EXIT,
-	IDM_WINDOW_TILE,
-	IDM_WINDOW_CASCADE,
-	IDM_WINDOW_ARRANGE,
-	IDM_WINDOW_CLOSEALL
+    IDM_FILE_CLOSE,
+    IDM_FILE_EXIT,
+    IDM_WINDOW_TILE,
+    IDM_WINDOW_CASCADE,
+    IDM_WINDOW_ARRANGE,
+    IDM_WINDOW_CLOSEALL
 };
 
 class KMyMDIFrame : public KMDIFrame
 {
-	void CreateMDIChild(KCanvas * canvas, const TCHAR * klass, const TCHAR * title)
-	{
-		MDICREATESTRUCT mdic;
+    void CreateMDIChild(KCanvas * canvas, const TCHAR * klass, const TCHAR * title)
+    {
+        MDICREATESTRUCT mdic;
 
-		mdic.szClass = klass;
-		mdic.szTitle = title;
-		mdic.hOwner  = m_hInst;
-		mdic.x       = CW_USEDEFAULT;
-		mdic.y       = CW_USEDEFAULT;
-		mdic.cx      = CW_USEDEFAULT;
-		mdic.cy      = CW_USEDEFAULT;
-		mdic.style   = WS_VISIBLE | WS_BORDER;
-		mdic.lParam  = (LPARAM) canvas;
+        mdic.szClass = klass;
+        mdic.szTitle = title;
+        mdic.hOwner  = m_hInst;
+        mdic.x       = CW_USEDEFAULT;
+        mdic.y       = CW_USEDEFAULT;
+        mdic.cx      = CW_USEDEFAULT;
+        mdic.cy      = CW_USEDEFAULT;
+        mdic.style   = WS_VISIBLE | WS_BORDER;
+        mdic.lParam  = (LPARAM) canvas;
 
-		HWND hWnd = (HWND) SendMessage(m_hMDIClient, WM_MDICREATE, 0, (LPARAM) & mdic);
-	}
+        HWND hWnd = (HWND) SendMessage(m_hMDIClient, WM_MDICREATE, 0, (LPARAM) & mdic);
+    }
 
-	BOOL CreatePageCanvas(const TCHAR * Title, char * buffer, int size)
-	{
-		KPageCanvas  * pCanvas;
-		
-		pCanvas = new KProgramPageCanvas(buffer, size, GetSysColorBrush(COLOR_BTNSHADOW));
+    BOOL CreatePageCanvas(const TCHAR * Title, char * buffer, int size)
+    {
+        KPageCanvas  * pCanvas;
 
-		if ( pCanvas )
-		{
-			if ( pCanvas->Initialize(m_hInst, m_pStatus, IDR_DEMO) )
-			{
-				CreateMDIChild(pCanvas, pCanvas->GetClassName(), Title);
-				return TRUE;
-			}
+        pCanvas = new KProgramPageCanvas(buffer, size, GetSysColorBrush(COLOR_BTNSHADOW));
 
-			delete pCanvas;
-		}
+        if ( pCanvas )
+        {
+            if ( pCanvas->Initialize(m_hInst, m_pStatus, IDR_DEMO) )
+            {
+                CreateMDIChild(pCanvas, pCanvas->GetClassName(), Title);
+                return TRUE;
+            }
 
-		return FALSE;
-	}
+            delete pCanvas;
+        }
 
-	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam)
-	{
-		switch ( LOWORD(wParam) )
-		{
-			case IDM_FILE_OPEN:
-			{
-				KFileDialog fd;
+        return FALSE;
+    }
 
-				if ( ! fd.GetOpenFileName(m_hWnd, "cpp", "C++ Programs") )
-					return TRUE;
+    virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam)
+    {
+        switch ( LOWORD(wParam) )
+        {
+        case IDM_FILE_OPEN:
+        {
+            KFileDialog fd;
 
-				HANDLE hFile = CreateFile(fd.m_TitleName, GENERIC_READ, FILE_SHARE_READ, NULL,
-				      OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+            if ( ! fd.GetOpenFileName(m_hWnd, "cpp", "C++ Programs") )
+                return TRUE;
 
-				if (hFile == INVALID_HANDLE_VALUE)
-					return TRUE;
+            HANDLE hFile = CreateFile(fd.m_TitleName, GENERIC_READ, FILE_SHARE_READ, NULL,
+                                      OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
-				int size = GetFileSize(hFile, NULL);
-				char * buffer = new char[size+1];
-					
-				if ( buffer )
-				{
-					buffer[size] = 0;
+            if (hFile == INVALID_HANDLE_VALUE)
+                return TRUE;
 
-					DWORD dwRead;
-					ReadFile(hFile, buffer, size, & dwRead, NULL);
+            int size = GetFileSize(hFile, NULL);
+            char * buffer = new char[size+1];
 
-					CreatePageCanvas(fd.m_TitleName, buffer, size);
-				}
+            if ( buffer )
+            {
+                buffer[size] = 0;
 
-				CloseHandle(hFile);
-			}
-			return TRUE;
-		}
+                DWORD dwRead;
+                ReadFile(hFile, buffer, size, & dwRead, NULL);
 
-		return FALSE;
-	}
+                CreatePageCanvas(fd.m_TitleName, buffer, size);
+            }
 
-	virtual LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-	{
-		return KMDIFrame::WndProc(hWnd, uMsg, wParam, lParam);
-	}
+            CloseHandle(hFile);
+        }
+        return TRUE;
+        }
 
-	void GetWndClassEx(WNDCLASSEX & wc)
-	{
-		KMDIFrame::GetWndClassEx(wc);
+        return FALSE;
+    }
 
-		wc.hIcon = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_PRINT));
-	}
+    virtual LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+    {
+        return KMDIFrame::WndProc(hWnd, uMsg, wParam, lParam);
+    }
+
+    void GetWndClassEx(WNDCLASSEX & wc)
+    {
+        KMDIFrame::GetWndClassEx(wc);
+
+        wc.hIcon = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_PRINT));
+    }
 
 public:
-	KMyMDIFrame(HINSTANCE hInstance, const TBBUTTON * pButtons, int nCount,
-		KToolbar * pToolbar, KStatusWindow * pStatus) :
-		KMDIFrame(hInstance, pButtons, nCount, pToolbar, pStatus, Translate)
-	{
-	}
+    KMyMDIFrame(HINSTANCE hInstance, const TBBUTTON * pButtons, int nCount,
+                KToolbar * pToolbar, KStatusWindow * pStatus) :
+        KMDIFrame(hInstance, pButtons, nCount, pToolbar, pStatus, Translate)
+    {
+    }
 };
 
 
 const TBBUTTON tbButtons[] =
 {
-	{ STD_FILENEW,	 IDM_FILE_NEW,   TBSTATE_ENABLED, TBSTYLE_BUTTON, { 0, 0 }, IDS_FILENEW,  0 },
-	{ STD_FILEOPEN,  IDM_FILE_OPEN,  TBSTATE_ENABLED, TBSTYLE_BUTTON, { 0, 0 }, IDS_FILEOPEN, 0 }
+    { STD_FILENEW,	 IDM_FILE_NEW,   TBSTATE_ENABLED, TBSTYLE_BUTTON, { 0, 0 }, IDS_FILENEW,  0 },
+    { STD_FILEOPEN,  IDM_FILE_OPEN,  TBSTATE_ENABLED, TBSTYLE_BUTTON, { 0, 0 }, IDS_FILEOPEN, 0 }
 };
 
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nShow)
 {
-	KToolbar      toolbar;
-	KStatusWindow status;
+    KToolbar      toolbar;
+    KStatusWindow status;
 
-	KMyMDIFrame frame(hInst, tbButtons, 2, & toolbar, & status);
-	
-	frame.CreateEx(0, _T("ClassName"), _T("CodePrint"),
-		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
-	    CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, 
-	    NULL, LoadMenu(hInst, MAKEINTRESOURCE(IDR_MAIN)), hInst);
+    KMyMDIFrame frame(hInst, tbButtons, 2, & toolbar, & status);
+
+    frame.CreateEx(0, _T("ClassName"), _T("CodePrint"),
+                   WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
+                   CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+                   NULL, LoadMenu(hInst, MAKEINTRESOURCE(IDR_MAIN)), hInst);
 
     frame.ShowWindow(nShow);
     frame.UpdateWindow();
 
     frame.MessageLoop();
 
-	return 0;
+    return 0;
 }

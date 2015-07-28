@@ -552,3 +552,1430 @@ Changes to be committed:
 	modified:   ZGame/DX10/47.Picking/dx10src47/source/applicationclass.cpp
 	modified:   ZGame/DX10/47.Picking/dx10src47/source/fontclass.cpp
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+dx10_150728.2015/07/28.16_27_56.84.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25401\347\253\240/0102/scommtest/MSCOMM.CPP"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25401\347\253\240/0102/scommtest/SCommTest.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25401\347\253\240/0102/scommtest/SCommTestDlg.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25401\347\253\240/0103/comrx.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25402\347\253\240/0201/SerialPort_demo\345\216\237\344\275\234\350\200\205/CommTest/COMMTEST.CPP"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25402\347\253\240/0201/SerialPort_demo\345\216\237\344\275\234\350\200\205/CommTest/ColorStatic.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25402\347\253\240/0201/SerialPort_demo\345\216\237\344\275\234\350\200\205/CommTest/ConfigDlg.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25402\347\253\240/0201/SerialPort_demo\345\216\237\344\275\234\350\200\205/CommTest/SerialPort.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25402\347\253\240/0201/SerialPort_demo\345\216\237\344\275\234\350\200\205/CommTest/commtestDlg.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25402\347\253\240/0201/Serialport\347\261\273\346\226\207\344\273\266\345\216\237\344\275\234\350\200\205/SerialPort.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25402\347\253\240/0202/SerialPortTest/SerialPort.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25402\347\253\240/0202/SerialPortTest/SerialPortTest.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25402\347\253\240/0202/SerialPortTest/SerialPortTestDlg.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25402\347\253\240/0203/SerialPortTest2/MainFrm.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25402\347\253\240/0203/SerialPortTest2/SerialPort.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25402\347\253\240/0203/SerialPortTest2/SerialPortTest2.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25402\347\253\240/0203/SerialPortTest2/SerialPortTest2Doc.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25402\347\253\240/0203/SerialPortTest2/SerialPortTest2View.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25402\347\253\240/0204/NNTest/NNTest.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25402\347\253\240/0204/NNTest/NNTestDlg.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25402\347\253\240/0204/NNTest/SerialPort.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25402\347\253\240/0204/\346\224\271\350\277\233\345\220\216\347\232\204\347\261\273\346\226\207\344\273\266/SerialPort.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25403\347\253\240/0303/SDIComm/MSCOMM.CPP"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25403\347\253\240/0303/SDIComm/MainFrm.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25403\347\253\240/0303/SDIComm/SDIComm.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25403\347\253\240/0303/SDIComm/SDICommDoc.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25403\347\253\240/0303/SDIComm/SDICommView.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25403\347\253\240/0304/MSCommMultiPort/MSCOMM.CPP"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25403\347\253\240/0304/MSCommMultiPort/MSCommMultiPort.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25403\347\253\240/0304/MSCommMultiPort/MSCommMultiPortDlg.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25403\347\253\240/0305/ModemComm/ModemComm.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25403\347\253\240/0305/ModemComm/ModemCommDlg.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25403\347\253\240/0305/ModemComm/mscomm.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25404\347\253\240/Term/MainFrm.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25404\347\253\240/Term/SetupDlg.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25404\347\253\240/Term/Term.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25404\347\253\240/Term/TermDoc.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25404\347\253\240/Term/TermView.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25405\347\253\240/SCOMMV23/AnimateDlgIcon.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25405\347\253\240/SCOMMV23/HYPERLINK.CPP"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25405\347\253\240/SCOMMV23/LABEL.CPP"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25405\347\253\240/SCOMMV23/PushPin.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25405\347\253\240/SCOMMV23/SCOMMDlg.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25405\347\253\240/SCOMMV23/Scomm.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25405\347\253\240/SCOMMV23/SerialPort.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25406\347\253\240/0603/GSerial.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25406\347\253\240/0604/GSerial.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25406\347\253\240/comrxtx.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25407\347\253\240/SerialPortTest/SerialPort.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25407\347\253\240/SerialPortTest/SerialPortTest.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25407\347\253\240/SerialPortTest/SerialPortTestDlg.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25409\347\253\240/0904/SClient/MySocket.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25409\347\253\240/0904/SClient/SClient.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25409\347\253\240/0904/SClient/SClientDlg.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25409\347\253\240/0904/SServer/AcceptSocket.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25409\347\253\240/0904/SServer/ListenSocket.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25409\347\253\240/0904/SServer/SServer.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25409\347\253\240/0904/SServer/SServerDlg.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25409\347\253\240/0904/SServer/SerialPort.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25409\347\253\240/0905/CommSocket/CommSocket.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25409\347\253\240/0905/CommSocket/CommSocketDlg.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25409\347\253\240/0905/CommSocket/WSocket.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25409\347\253\240/0906/DisplayCon/DisplayCon.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25409\347\253\240/0906/DisplayCon/DisplayConDlg.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25409\347\253\240/0906/DisplayCon/mscomm.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25409\347\253\240/0906/RemoteCon/RemoteCon.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25409\347\253\240/0906/RemoteCon/RemoteConDlg.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25409\347\253\240/0906/RemoteCon/mscomm.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25410\347\253\240/1001/SmsTest/Comm.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25410\347\253\240/1001/SmsTest/MainFrm.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25410\347\253\240/1001/SmsTest/SettingsDlg.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25410\347\253\240/1001/SmsTest/Sms.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25410\347\253\240/1001/SmsTest/SmsTest.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25410\347\253\240/1001/SmsTest/SmsTestDoc.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25410\347\253\240/1001/SmsTest/SmsTestView.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25410\347\253\240/1001/SmsTest/SmsTraffic.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25412\347\253\240/SerialPortVxD/MyListCtrl.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25412\347\253\240/SerialPortVxD/SerialPortVxD.cpp"
+	modified:   "Book/Visual C++ \344\270\262\345\217\243\351\200\232\344\277\241\347\274\226\347\250\213\345\256\236\350\267\265/\347\254\25412\347\253\240/SerialPortVxD/SerialPortVxDDlg.cpp"
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_01/GDISpeed/GDISpeed.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_01/Hello1/Hello1.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_01/Hello2/Hello2.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_01/Hello3/Hello3.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_01/Hello4/Hello4.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_01/SetProc/SetProc.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_02/HTMLDrv/Device.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_02/HTMLDrv/HTMLDrv.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_02/SysCall/SysCall.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_02/Timer/Timer.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_03/Fosterer/Extension.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_03/Fosterer/Fosterer.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_03/Fosterer/Host.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_03/Fosterer/ImageModule.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_03/Handles/FindTab.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_03/Handles/GDI.CPP
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_03/Handles/Handles.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_03/Handles/Main.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_03/Handles/MemView.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_03/Handles/Snapshot.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_03/Handles/creator.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_03/Handles/dcdtable.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_03/Periscope/periscope.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_03/QueryTab/QueryTab.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_03/TestPeriscope/TestPeriscope.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/DDISpy/DDIProxy.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/DDISpy/DDISpy.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/DDIWatcher/DDIWatcher.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Diver/Diver.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Diver/Dump.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Diver/Format.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Diver/Function.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Diver/Module.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Diver/Proxy.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Diver/Stack.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Diver/Timer.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Diver/functable.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Patcher/DisAsm.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Patcher/OpCode.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Patcher/Patcher.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Patcher/main.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Pogy/ApiPage.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Pogy/ApiTable.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Pogy/Event.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Pogy/Main.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Pogy/Pogy.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Pogy/Post.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Pogy/Setup.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/PogyGDI/PogyGDI.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/QueryDDraw/QueryDDraw.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/Skimmer/Skimmer.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_04/TestDDraw/TestDDraw.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_05/Device/DCAttr.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_05/Device/DevCaps.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_05/Device/DevPage.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_05/Device/Device.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_05/Ellipse/Ellipse.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_05/FrameWindow/FrameTest.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_05/FrameWindow/FrameWindow.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_05/WinPaint/WinPaint.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_05/WindowDC/WindowDC.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_06/CoordinateSpace/CoordinateSpace.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_06/WeiQi/WeiQi.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_07/ClipRegion/ClipRegion.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_07/ColorSpace/ColorSpace.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_07/GDIObj/GDIObj.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_07/Mandelbrot/Mandelbrot.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_07/PixelSpeed/PixelSpeed.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_08/LineCurve/LineCurve.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_09/Areas/Area.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_10/Bitmaps/Bitmaps.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_10/Scrambler/Scrambler.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_11/AdvBitmap/AdvBitmap.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_11/AdvBitmap/RopChart.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_12/Imaging/Imaging.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_13/Palette/Palette.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_14/Font/Charset.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_14/Font/Font.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_14/Font/FontFamily.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_14/Font/Raster.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_14/Font/TrueType.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_14/FontEmbed/FontEmbed.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_15/Text/ChooseFont.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_15/Text/Panose.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_15/Text/Text.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_15/Text/TextDemo.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMF/Cache.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMF/EMFMain.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMF/EMFView.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMF/EmfDC.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMF/Formator.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMF/OutPipe.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMF/Res/post.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMF/Res/pre.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMFDCTest/panda.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMFScope/CANVAS.CPP
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMFScope/EMFSCOPE.CPP
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMFScope/EXAMEMF.CPP
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMFScope/FILELIST.CPP
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMFScope/PROGRESS.CPP
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMFScope/SPEHON32/PLAYSPL.CPP
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMFScope/SPEHON32/SPEHON32.CPP
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMFScope/SPOOLFIL.CPP
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMFScope/STREAM.CPP
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMFScope/TOOLBAR.CPP
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_16/EMFScope/WINPP.CPP
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_17/CodePrint/CodePrint.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_17/CodePrint/progview.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_17/ImagePrint/ImagePrint.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_17/ImagePrint/imageview.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_17/Printer/Printer.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_17/PrinterDevice/DCAttr.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_17/PrinterDevice/DevCaps.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_17/PrinterDevice/DevPage.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_17/PrinterDevice/PrinterDevice.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_18/DemoD3D/DemoD3D.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_18/DemoDD/DemoDD.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/Chapt_18/ddbasic/ddbasic.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/Affine.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/Background.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/BezierCurve.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/BitmapInfo.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/BitmapMenu.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/Canvas.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/CheckMark.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/Color.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/DDB.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/DIBSection.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/Dib.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/EditView.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/FontText.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/Framewnd.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/Image.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/ImageModule.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/LogWindow.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/Lookup.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/MemDump.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/Octree.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/PalLoadBitmap.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/Profile.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/Rop.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/ScrollCanvas.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/Status.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/Toolbar.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/areafill.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/atom.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/axis.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/basicdib.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/crc.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/curve.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/ddsurf.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/ddwrap.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/device.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/dialog.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/emf.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/filedialog.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/gditable.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jcapimin.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jcapistd.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jccoefct.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jccolor.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jcdctmgr.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jchuff.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jcinit.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jcmainct.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jcmarker.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jcmaster.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jcomapi.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jcparam.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jcphuff.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jcprepct.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jcsample.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jctrans.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jdapimin.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jdapistd.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jdatadst.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jdatasrc.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jdcoefct.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jdcolor.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jddctmgr.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jdhuff.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jdinput.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jdmainct.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jdmarker.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jdmaster.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jdmerge.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jdphuff.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jdpostct.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jdsample.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jdtrans.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jerror.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jfdctflt.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jfdctfst.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jfdctint.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jidctflt.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jidctfst.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jidctint.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jidctred.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jmemmgr.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jmemnobs.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jquant1.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jquant2.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jlib/jutils.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/jpeg.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/listview.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/mmfile.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/outputsetup.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/pagecanvas.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/pefile.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/pehack.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/service.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/toolbarb.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/treeview.cpp
+	modified:   Book/Windows Graphics Programming Win32 GDI and DirectDraw/Src/include/win.cpp
+	modified:   Code/Character/UTF8Conversion/C++ UTF-8 Conversion1/UTF8Conversion/test.cpp
+	modified:   "Code/Cpp/\346\265\213\350\257\225\345\237\272\347\261\273\345\255\220\347\261\273\346\214\207\351\222\210\350\260\203\347\224\250\350\231\232\345\207\275\346\225\260/TestDerived.cpp"
+	modified:   History.txt
+	modified:   ZGame/3dsMax/lib3ds_2_0/bin/CMakeFiles/3.0.2/CompilerIdCXX/CMakeCXXCompilerId.cpp
+	modified:   ZGame/3dsMax/lib3ds_2_0/examples/3dsplay/3dsplay.cpp
+	modified:   ZGame/AI/AI_by_Example/src/VS8 projects/Common/Messaging/MessageDispatcher.cpp
+	new file:   ZGame/DX10/02.Frame&Window/dx10src02/graphicsclass.cpp
+	new file:   ZGame/DX10/02.Frame&Window/dx10src02/graphicsclass.h
+	new file:   ZGame/DX10/02.Frame&Window/dx10src02/inputclass.cpp
+	new file:   ZGame/DX10/02.Frame&Window/dx10src02/inputclass.h
+	new file:   ZGame/DX10/02.Frame&Window/dx10src02/main.cpp
+	new file:   ZGame/DX10/02.Frame&Window/dx10src02/systemclass.cpp
+	new file:   ZGame/DX10/02.Frame&Window/dx10src02/systemclass.h
+	new file:   ZGame/DX10/03.Init/d3dclass.cpp
+	new file:   ZGame/DX10/03.Init/d3dclass.h
+	new file:   ZGame/DX10/03.Init/graphicsclass.cpp
+	new file:   ZGame/DX10/03.Init/graphicsclass.h
+	new file:   ZGame/DX10/03.Init/inputclass.cpp
+	new file:   ZGame/DX10/03.Init/inputclass.h
+	new file:   ZGame/DX10/03.Init/main.cpp
+	new file:   ZGame/DX10/03.Init/systemclass.cpp
+	new file:   ZGame/DX10/03.Init/systemclass.h
+	new file:   ZGame/DX10/04/cameraclass.cpp
+	new file:   ZGame/DX10/04/cameraclass.h
+	new file:   ZGame/DX10/04/color.fx
+	new file:   ZGame/DX10/04/colorshaderclass.cpp
+	new file:   ZGame/DX10/04/colorshaderclass.h
+	new file:   ZGame/DX10/04/d3dclass.cpp
+	new file:   ZGame/DX10/04/d3dclass.h
+	new file:   ZGame/DX10/04/graphicsclass.cpp
+	new file:   ZGame/DX10/04/graphicsclass.h
+	new file:   ZGame/DX10/04/inputclass.cpp
+	new file:   ZGame/DX10/04/inputclass.h
+	new file:   ZGame/DX10/04/main.cpp
+	new file:   ZGame/DX10/04/modelclass.cpp
+	new file:   ZGame/DX10/04/modelclass.h
+	new file:   ZGame/DX10/04/systemclass.cpp
+	new file:   ZGame/DX10/04/systemclass.h
+	new file:   ZGame/DX10/05/cameraclass.cpp
+	new file:   ZGame/DX10/05/cameraclass.h
+	new file:   ZGame/DX10/05/d3dclass.cpp
+	new file:   ZGame/DX10/05/d3dclass.h
+	new file:   ZGame/DX10/05/graphicsclass.cpp
+	new file:   ZGame/DX10/05/graphicsclass.h
+	new file:   ZGame/DX10/05/inputclass.cpp
+	new file:   ZGame/DX10/05/inputclass.h
+	new file:   ZGame/DX10/05/main.cpp
+	new file:   ZGame/DX10/05/modelclass.cpp
+	new file:   ZGame/DX10/05/modelclass.h
+	new file:   ZGame/DX10/05/systemclass.cpp
+	new file:   ZGame/DX10/05/systemclass.h
+	new file:   ZGame/DX10/05/texture.fx
+	new file:   ZGame/DX10/05/textureclass.cpp
+	new file:   ZGame/DX10/05/textureclass.h
+	new file:   ZGame/DX10/05/textureshaderclass.cpp
+	new file:   ZGame/DX10/05/textureshaderclass.h
+	new file:   ZGame/DX10/06/cameraclass.cpp
+	new file:   ZGame/DX10/06/cameraclass.h
+	new file:   ZGame/DX10/06/d3dclass.cpp
+	new file:   ZGame/DX10/06/d3dclass.h
+	new file:   ZGame/DX10/06/graphicsclass.cpp
+	new file:   ZGame/DX10/06/graphicsclass.h
+	new file:   ZGame/DX10/06/inputclass.cpp
+	new file:   ZGame/DX10/06/inputclass.h
+	new file:   ZGame/DX10/06/light.fx
+	new file:   ZGame/DX10/06/lightclass.cpp
+	new file:   ZGame/DX10/06/lightclass.h
+	new file:   ZGame/DX10/06/lightshaderclass.cpp
+	new file:   ZGame/DX10/06/lightshaderclass.h
+	new file:   ZGame/DX10/06/main.cpp
+	new file:   ZGame/DX10/06/modelclass.cpp
+	new file:   ZGame/DX10/06/modelclass.h
+	new file:   ZGame/DX10/06/systemclass.cpp
+	new file:   ZGame/DX10/06/systemclass.h
+	new file:   ZGame/DX10/06/textureclass.cpp
+	new file:   ZGame/DX10/06/textureclass.h
+	new file:   ZGame/DX10/07/cameraclass.cpp
+	new file:   ZGame/DX10/07/cameraclass.h
+	new file:   ZGame/DX10/07/d3dclass.cpp
+	new file:   ZGame/DX10/07/d3dclass.h
+	new file:   ZGame/DX10/07/graphicsclass.cpp
+	new file:   ZGame/DX10/07/graphicsclass.h
+	new file:   ZGame/DX10/07/inputclass.cpp
+	new file:   ZGame/DX10/07/inputclass.h
+	new file:   ZGame/DX10/07/light.fx
+	new file:   ZGame/DX10/07/lightclass.cpp
+	new file:   ZGame/DX10/07/lightclass.h
+	new file:   ZGame/DX10/07/lightshaderclass.cpp
+	new file:   ZGame/DX10/07/lightshaderclass.h
+	new file:   ZGame/DX10/07/main.cpp
+	new file:   ZGame/DX10/07/modelclass.cpp
+	new file:   ZGame/DX10/07/modelclass.h
+	new file:   ZGame/DX10/07/systemclass.cpp
+	new file:   ZGame/DX10/07/systemclass.h
+	new file:   ZGame/DX10/07/textureclass.cpp
+	new file:   ZGame/DX10/07/textureclass.h
+	new file:   ZGame/DX10/08/main.cpp
+	new file:   ZGame/DX10/09/cameraclass.cpp
+	new file:   ZGame/DX10/09/cameraclass.h
+	new file:   ZGame/DX10/09/d3dclass.cpp
+	new file:   ZGame/DX10/09/d3dclass.h
+	new file:   ZGame/DX10/09/graphicsclass.cpp
+	new file:   ZGame/DX10/09/graphicsclass.h
+	new file:   ZGame/DX10/09/inputclass.cpp
+	new file:   ZGame/DX10/09/inputclass.h
+	new file:   ZGame/DX10/09/light.fx
+	new file:   ZGame/DX10/09/lightclass.cpp
+	new file:   ZGame/DX10/09/lightclass.h
+	new file:   ZGame/DX10/09/lightshaderclass.cpp
+	new file:   ZGame/DX10/09/lightshaderclass.h
+	new file:   ZGame/DX10/09/main.cpp
+	new file:   ZGame/DX10/09/modelclass.cpp
+	new file:   ZGame/DX10/09/modelclass.h
+	new file:   ZGame/DX10/09/systemclass.cpp
+	new file:   ZGame/DX10/09/systemclass.h
+	new file:   ZGame/DX10/09/textureclass.cpp
+	new file:   ZGame/DX10/09/textureclass.h
+	new file:   ZGame/DX10/10/cameraclass.cpp
+	new file:   ZGame/DX10/10/cameraclass.h
+	new file:   ZGame/DX10/10/d3dclass.cpp
+	new file:   ZGame/DX10/10/d3dclass.h
+	new file:   ZGame/DX10/10/graphicsclass.cpp
+	new file:   ZGame/DX10/10/graphicsclass.h
+	new file:   ZGame/DX10/10/inputclass.cpp
+	new file:   ZGame/DX10/10/inputclass.h
+	new file:   ZGame/DX10/10/light.fx
+	new file:   ZGame/DX10/10/lightclass.cpp
+	new file:   ZGame/DX10/10/lightclass.h
+	new file:   ZGame/DX10/10/lightshaderclass.cpp
+	new file:   ZGame/DX10/10/lightshaderclass.h
+	new file:   ZGame/DX10/10/main.cpp
+	new file:   ZGame/DX10/10/modelclass.cpp
+	new file:   ZGame/DX10/10/modelclass.h
+	new file:   ZGame/DX10/10/systemclass.cpp
+	new file:   ZGame/DX10/10/systemclass.h
+	new file:   ZGame/DX10/10/textureclass.cpp
+	new file:   ZGame/DX10/10/textureclass.h
+	new file:   ZGame/DX10/11/bitmapclass.cpp
+	new file:   ZGame/DX10/11/bitmapclass.h
+	new file:   ZGame/DX10/11/cameraclass.cpp
+	new file:   ZGame/DX10/11/cameraclass.h
+	new file:   ZGame/DX10/11/d3dclass.cpp
+	new file:   ZGame/DX10/11/d3dclass.h
+	new file:   ZGame/DX10/11/graphicsclass.cpp
+	new file:   ZGame/DX10/11/graphicsclass.h
+	new file:   ZGame/DX10/11/inputclass.cpp
+	new file:   ZGame/DX10/11/inputclass.h
+	new file:   ZGame/DX10/11/main.cpp
+	new file:   ZGame/DX10/11/systemclass.cpp
+	new file:   ZGame/DX10/11/systemclass.h
+	new file:   ZGame/DX10/11/texture.fx
+	new file:   ZGame/DX10/11/textureclass.cpp
+	new file:   ZGame/DX10/11/textureclass.h
+	new file:   ZGame/DX10/11/textureshaderclass.cpp
+	new file:   ZGame/DX10/11/textureshaderclass.h
+	new file:   ZGame/DX10/12/cameraclass.cpp
+	new file:   ZGame/DX10/12/cameraclass.h
+	new file:   ZGame/DX10/12/d3dclass.cpp
+	new file:   ZGame/DX10/12/d3dclass.h
+	new file:   ZGame/DX10/12/font.fx
+	new file:   ZGame/DX10/12/fontclass.cpp
+	new file:   ZGame/DX10/12/fontclass.h
+	new file:   ZGame/DX10/12/fontshaderclass.cpp
+	new file:   ZGame/DX10/12/fontshaderclass.h
+	new file:   ZGame/DX10/12/graphicsclass.cpp
+	new file:   ZGame/DX10/12/graphicsclass.h
+	new file:   ZGame/DX10/12/inputclass.cpp
+	new file:   ZGame/DX10/12/inputclass.h
+	new file:   ZGame/DX10/12/main.cpp
+	new file:   ZGame/DX10/12/systemclass.cpp
+	new file:   ZGame/DX10/12/systemclass.h
+	new file:   ZGame/DX10/12/textclass.cpp
+	new file:   ZGame/DX10/12/textclass.h
+	new file:   ZGame/DX10/12/textureclass.cpp
+	new file:   ZGame/DX10/12/textureclass.h
+	new file:   ZGame/DX10/13/cameraclass.cpp
+	new file:   ZGame/DX10/13/cameraclass.h
+	new file:   ZGame/DX10/13/d3dclass.cpp
+	new file:   ZGame/DX10/13/d3dclass.h
+	new file:   ZGame/DX10/13/font.fx
+	new file:   ZGame/DX10/13/fontclass.cpp
+	new file:   ZGame/DX10/13/fontclass.h
+	new file:   ZGame/DX10/13/fontshaderclass.cpp
+	new file:   ZGame/DX10/13/fontshaderclass.h
+	new file:   ZGame/DX10/13/graphicsclass.cpp
+	new file:   ZGame/DX10/13/graphicsclass.h
+	new file:   ZGame/DX10/13/inputclass.cpp
+	new file:   ZGame/DX10/13/inputclass.h
+	new file:   ZGame/DX10/13/main.cpp
+	new file:   ZGame/DX10/13/systemclass.cpp
+	new file:   ZGame/DX10/13/systemclass.h
+	new file:   ZGame/DX10/13/textclass.cpp
+	new file:   ZGame/DX10/13/textclass.h
+	new file:   ZGame/DX10/13/textureclass.cpp
+	new file:   ZGame/DX10/13/textureclass.h
+	new file:   ZGame/DX10/14/cameraclass.cpp
+	new file:   ZGame/DX10/14/cameraclass.h
+	new file:   ZGame/DX10/14/d3dclass.cpp
+	new file:   ZGame/DX10/14/d3dclass.h
+	new file:   ZGame/DX10/14/graphicsclass.cpp
+	new file:   ZGame/DX10/14/graphicsclass.h
+	new file:   ZGame/DX10/14/inputclass.cpp
+	new file:   ZGame/DX10/14/inputclass.h
+	new file:   ZGame/DX10/14/main.cpp
+	new file:   ZGame/DX10/14/soundclass.cpp
+	new file:   ZGame/DX10/14/soundclass.h
+	new file:   ZGame/DX10/14/systemclass.cpp
+	new file:   ZGame/DX10/14/systemclass.h
+	new file:   ZGame/DX10/15/cameraclass.cpp
+	new file:   ZGame/DX10/15/cameraclass.h
+	new file:   ZGame/DX10/15/cpuclass.cpp
+	new file:   ZGame/DX10/15/cpuclass.h
+	new file:   ZGame/DX10/15/d3dclass.cpp
+	new file:   ZGame/DX10/15/d3dclass.h
+	new file:   ZGame/DX10/15/font.fx
+	new file:   ZGame/DX10/15/fontclass.cpp
+	new file:   ZGame/DX10/15/fontclass.h
+	new file:   ZGame/DX10/15/fontshaderclass.cpp
+	new file:   ZGame/DX10/15/fontshaderclass.h
+	new file:   ZGame/DX10/15/fpsclass.cpp
+	new file:   ZGame/DX10/15/fpsclass.h
+	new file:   ZGame/DX10/15/graphicsclass.cpp
+	new file:   ZGame/DX10/15/graphicsclass.h
+	new file:   ZGame/DX10/15/inputclass.cpp
+	new file:   ZGame/DX10/15/inputclass.h
+	new file:   ZGame/DX10/15/main.cpp
+	new file:   ZGame/DX10/15/systemclass.cpp
+	new file:   ZGame/DX10/15/systemclass.h
+	new file:   ZGame/DX10/15/textclass.cpp
+	new file:   ZGame/DX10/15/textclass.h
+	new file:   ZGame/DX10/15/textureclass.cpp
+	new file:   ZGame/DX10/15/textureclass.h
+	new file:   ZGame/DX10/15/timerclass.cpp
+	new file:   ZGame/DX10/15/timerclass.h
+	new file:   ZGame/DX10/16/cameraclass.cpp
+	new file:   ZGame/DX10/16/cameraclass.h
+	new file:   ZGame/DX10/16/d3dclass.cpp
+	new file:   ZGame/DX10/16/d3dclass.h
+	new file:   ZGame/DX10/16/font.fx
+	new file:   ZGame/DX10/16/fontclass.cpp
+	new file:   ZGame/DX10/16/fontclass.h
+	new file:   ZGame/DX10/16/fontshaderclass.cpp
+	new file:   ZGame/DX10/16/fontshaderclass.h
+	new file:   ZGame/DX10/16/frustumclass.cpp
+	new file:   ZGame/DX10/16/frustumclass.h
+	new file:   ZGame/DX10/16/graphicsclass.cpp
+	new file:   ZGame/DX10/16/graphicsclass.h
+	new file:   ZGame/DX10/16/inputclass.cpp
+	new file:   ZGame/DX10/16/inputclass.h
+	new file:   ZGame/DX10/16/light.fx
+	new file:   ZGame/DX10/16/lightclass.cpp
+	new file:   ZGame/DX10/16/lightclass.h
+	new file:   ZGame/DX10/16/lightshaderclass.cpp
+	new file:   ZGame/DX10/16/lightshaderclass.h
+	new file:   ZGame/DX10/16/main.cpp
+	new file:   ZGame/DX10/16/modelclass.cpp
+	new file:   ZGame/DX10/16/modelclass.h
+	new file:   ZGame/DX10/16/modellistclass.cpp
+	new file:   ZGame/DX10/16/modellistclass.h
+	new file:   ZGame/DX10/16/positionclass.cpp
+	new file:   ZGame/DX10/16/positionclass.h
+	new file:   ZGame/DX10/16/systemclass.cpp
+	new file:   ZGame/DX10/16/systemclass.h
+	new file:   ZGame/DX10/16/textclass.cpp
+	new file:   ZGame/DX10/16/textclass.h
+	new file:   ZGame/DX10/16/textureclass.cpp
+	new file:   ZGame/DX10/16/textureclass.h
+	new file:   ZGame/DX10/16/timerclass.cpp
+	new file:   ZGame/DX10/16/timerclass.h
+	new file:   ZGame/DX10/17/cameraclass.cpp
+	new file:   ZGame/DX10/17/cameraclass.h
+	new file:   ZGame/DX10/17/d3dclass.cpp
+	new file:   ZGame/DX10/17/d3dclass.h
+	new file:   ZGame/DX10/17/graphicsclass.cpp
+	new file:   ZGame/DX10/17/graphicsclass.h
+	new file:   ZGame/DX10/17/inputclass.cpp
+	new file:   ZGame/DX10/17/inputclass.h
+	new file:   ZGame/DX10/17/main.cpp
+	new file:   ZGame/DX10/17/modelclass.cpp
+	new file:   ZGame/DX10/17/modelclass.h
+	new file:   ZGame/DX10/17/multitexture.fx
+	new file:   ZGame/DX10/17/multitextureshaderclass.cpp
+	new file:   ZGame/DX10/17/multitextureshaderclass.h
+	new file:   ZGame/DX10/17/systemclass.cpp
+	new file:   ZGame/DX10/17/systemclass.h
+	new file:   ZGame/DX10/17/texturearrayclass.cpp
+	new file:   ZGame/DX10/17/texturearrayclass.h
+	new file:   ZGame/DX10/18/cameraclass.cpp
+	new file:   ZGame/DX10/18/cameraclass.h
+	new file:   ZGame/DX10/18/d3dclass.cpp
+	new file:   ZGame/DX10/18/d3dclass.h
+	new file:   ZGame/DX10/18/graphicsclass.cpp
+	new file:   ZGame/DX10/18/graphicsclass.h
+	new file:   ZGame/DX10/18/inputclass.cpp
+	new file:   ZGame/DX10/18/inputclass.h
+	new file:   ZGame/DX10/18/lightmap.fx
+	new file:   ZGame/DX10/18/lightmapshaderclass.cpp
+	new file:   ZGame/DX10/18/lightmapshaderclass.h
+	new file:   ZGame/DX10/18/main.cpp
+	new file:   ZGame/DX10/18/modelclass.cpp
+	new file:   ZGame/DX10/18/modelclass.h
+	new file:   ZGame/DX10/18/systemclass.cpp
+	new file:   ZGame/DX10/18/systemclass.h
+	new file:   ZGame/DX10/18/texturearrayclass.cpp
+	new file:   ZGame/DX10/18/texturearrayclass.h
+	new file:   ZGame/DX10/19/alphamap.fx
+	new file:   ZGame/DX10/19/alphamapshaderclass.cpp
+	new file:   ZGame/DX10/19/alphamapshaderclass.h
+	new file:   ZGame/DX10/19/cameraclass.cpp
+	new file:   ZGame/DX10/19/cameraclass.h
+	new file:   ZGame/DX10/19/d3dclass.cpp
+	new file:   ZGame/DX10/19/d3dclass.h
+	new file:   ZGame/DX10/19/graphicsclass.cpp
+	new file:   ZGame/DX10/19/graphicsclass.h
+	new file:   ZGame/DX10/19/inputclass.cpp
+	new file:   ZGame/DX10/19/inputclass.h
+	new file:   ZGame/DX10/19/main.cpp
+	new file:   ZGame/DX10/19/modelclass.cpp
+	new file:   ZGame/DX10/19/modelclass.h
+	new file:   ZGame/DX10/19/systemclass.cpp
+	new file:   ZGame/DX10/19/systemclass.h
+	new file:   ZGame/DX10/19/texturearrayclass.cpp
+	new file:   ZGame/DX10/19/texturearrayclass.h
+	new file:   ZGame/DX10/20/data/bump01.dds
+	new file:   ZGame/DX10/20/data/cube.txt
+	new file:   ZGame/DX10/20/data/stone01.dds
+	new file:   ZGame/DX10/20/source/bumpmap.fx
+	new file:   ZGame/DX10/20/source/bumpmapshaderclass.cpp
+	new file:   ZGame/DX10/20/source/bumpmapshaderclass.h
+	new file:   ZGame/DX10/20/source/cameraclass.cpp
+	new file:   ZGame/DX10/20/source/cameraclass.h
+	new file:   ZGame/DX10/20/source/d3dclass.cpp
+	new file:   ZGame/DX10/20/source/d3dclass.h
+	new file:   ZGame/DX10/20/source/graphicsclass.cpp
+	new file:   ZGame/DX10/20/source/graphicsclass.h
+	new file:   ZGame/DX10/20/source/inputclass.cpp
+	new file:   ZGame/DX10/20/source/inputclass.h
+	new file:   ZGame/DX10/20/source/lightclass.cpp
+	new file:   ZGame/DX10/20/source/lightclass.h
+	new file:   ZGame/DX10/20/source/main.cpp
+	new file:   ZGame/DX10/20/source/modelclass.cpp
+	new file:   ZGame/DX10/20/source/modelclass.h
+	new file:   ZGame/DX10/20/source/systemclass.cpp
+	new file:   ZGame/DX10/20/source/systemclass.h
+	new file:   ZGame/DX10/20/source/texturearrayclass.cpp
+	new file:   ZGame/DX10/20/source/texturearrayclass.h
+	new file:   ZGame/DX10/21/cameraclass.cpp
+	new file:   ZGame/DX10/21/cameraclass.h
+	new file:   ZGame/DX10/21/d3dclass.cpp
+	new file:   ZGame/DX10/21/d3dclass.h
+	new file:   ZGame/DX10/21/graphicsclass.cpp
+	new file:   ZGame/DX10/21/graphicsclass.h
+	new file:   ZGame/DX10/21/inputclass.cpp
+	new file:   ZGame/DX10/21/inputclass.h
+	new file:   ZGame/DX10/21/lightclass.cpp
+	new file:   ZGame/DX10/21/lightclass.h
+	new file:   ZGame/DX10/21/main.cpp
+	new file:   ZGame/DX10/21/modelclass.cpp
+	new file:   ZGame/DX10/21/modelclass.h
+	new file:   ZGame/DX10/21/specmap.fx
+	new file:   ZGame/DX10/21/specmapshaderclass.cpp
+	new file:   ZGame/DX10/21/specmapshaderclass.h
+	new file:   ZGame/DX10/21/systemclass.cpp
+	new file:   ZGame/DX10/21/systemclass.h
+	new file:   ZGame/DX10/21/texturearrayclass.cpp
+	new file:   ZGame/DX10/21/texturearrayclass.h
+	new file:   ZGame/DX10/22/cameraclass.cpp
+	new file:   ZGame/DX10/22/cameraclass.h
+	new file:   ZGame/DX10/22/d3dclass.cpp
+	new file:   ZGame/DX10/22/d3dclass.h
+	new file:   ZGame/DX10/22/debugwindowclass.cpp
+	new file:   ZGame/DX10/22/debugwindowclass.h
+	new file:   ZGame/DX10/22/graphicsclass.cpp
+	new file:   ZGame/DX10/22/graphicsclass.h
+	new file:   ZGame/DX10/22/inputclass.cpp
+	new file:   ZGame/DX10/22/inputclass.h
+	new file:   ZGame/DX10/22/light.fx
+	new file:   ZGame/DX10/22/lightclass.cpp
+	new file:   ZGame/DX10/22/lightclass.h
+	new file:   ZGame/DX10/22/lightshaderclass.cpp
+	new file:   ZGame/DX10/22/lightshaderclass.h
+	new file:   ZGame/DX10/22/main.cpp
+	new file:   ZGame/DX10/22/modelclass.cpp
+	new file:   ZGame/DX10/22/modelclass.h
+	new file:   ZGame/DX10/22/rendertextureclass.cpp
+	new file:   ZGame/DX10/22/rendertextureclass.h
+	new file:   ZGame/DX10/22/systemclass.cpp
+	new file:   ZGame/DX10/22/systemclass.h
+	new file:   ZGame/DX10/22/texture.fx
+	new file:   ZGame/DX10/22/textureclass.cpp
+	new file:   ZGame/DX10/22/textureclass.h
+	new file:   ZGame/DX10/22/textureshaderclass.cpp
+	new file:   ZGame/DX10/22/textureshaderclass.h
+	new file:   ZGame/DX10/23/cameraclass.cpp
+	new file:   ZGame/DX10/23/cameraclass.h
+	new file:   ZGame/DX10/23/d3dclass.cpp
+	new file:   ZGame/DX10/23/d3dclass.h
+	new file:   ZGame/DX10/23/fog.fx
+	new file:   ZGame/DX10/23/fogshaderclass.cpp
+	new file:   ZGame/DX10/23/fogshaderclass.h
+	new file:   ZGame/DX10/23/graphicsclass.cpp
+	new file:   ZGame/DX10/23/graphicsclass.h
+	new file:   ZGame/DX10/23/inputclass.cpp
+	new file:   ZGame/DX10/23/inputclass.h
+	new file:   ZGame/DX10/23/main.cpp
+	new file:   ZGame/DX10/23/modelclass.cpp
+	new file:   ZGame/DX10/23/modelclass.h
+	new file:   ZGame/DX10/23/systemclass.cpp
+	new file:   ZGame/DX10/23/systemclass.h
+	new file:   ZGame/DX10/23/textureclass.cpp
+	new file:   ZGame/DX10/23/textureclass.h
+	new file:   ZGame/DX10/24/cameraclass.cpp
+	new file:   ZGame/DX10/24/cameraclass.h
+	new file:   ZGame/DX10/24/clipplane.fx
+	new file:   ZGame/DX10/24/clipplaneshaderclass.cpp
+	new file:   ZGame/DX10/24/clipplaneshaderclass.h
+	new file:   ZGame/DX10/24/d3dclass.cpp
+	new file:   ZGame/DX10/24/d3dclass.h
+	new file:   ZGame/DX10/24/graphicsclass.cpp
+	new file:   ZGame/DX10/24/graphicsclass.h
+	new file:   ZGame/DX10/24/inputclass.cpp
+	new file:   ZGame/DX10/24/inputclass.h
+	new file:   ZGame/DX10/24/main.cpp
+	new file:   ZGame/DX10/24/modelclass.cpp
+	new file:   ZGame/DX10/24/modelclass.h
+	new file:   ZGame/DX10/24/systemclass.cpp
+	new file:   ZGame/DX10/24/systemclass.h
+	new file:   ZGame/DX10/24/textureclass.cpp
+	new file:   ZGame/DX10/24/textureclass.h
+	new file:   ZGame/DX10/25/cameraclass.cpp
+	new file:   ZGame/DX10/25/cameraclass.h
+	new file:   ZGame/DX10/25/d3dclass.cpp
+	new file:   ZGame/DX10/25/d3dclass.h
+	new file:   ZGame/DX10/25/graphicsclass.cpp
+	new file:   ZGame/DX10/25/graphicsclass.h
+	new file:   ZGame/DX10/25/inputclass.cpp
+	new file:   ZGame/DX10/25/inputclass.h
+	new file:   ZGame/DX10/25/main.cpp
+	new file:   ZGame/DX10/25/modelclass.cpp
+	new file:   ZGame/DX10/25/modelclass.h
+	new file:   ZGame/DX10/25/systemclass.cpp
+	new file:   ZGame/DX10/25/systemclass.h
+	new file:   ZGame/DX10/25/textureclass.cpp
+	new file:   ZGame/DX10/25/textureclass.h
+	new file:   ZGame/DX10/25/translate.fx
+	new file:   ZGame/DX10/25/translateshaderclass.cpp
+	new file:   ZGame/DX10/25/translateshaderclass.h
+	new file:   ZGame/DX10/26/cameraclass.cpp
+	new file:   ZGame/DX10/26/cameraclass.h
+	new file:   ZGame/DX10/26/d3dclass.cpp
+	new file:   ZGame/DX10/26/d3dclass.h
+	new file:   ZGame/DX10/26/graphicsclass.cpp
+	new file:   ZGame/DX10/26/graphicsclass.h
+	new file:   ZGame/DX10/26/inputclass.cpp
+	new file:   ZGame/DX10/26/inputclass.h
+	new file:   ZGame/DX10/26/main.cpp
+	new file:   ZGame/DX10/26/modelclass.cpp
+	new file:   ZGame/DX10/26/modelclass.h
+	new file:   ZGame/DX10/26/systemclass.cpp
+	new file:   ZGame/DX10/26/systemclass.h
+	new file:   ZGame/DX10/26/texture.fx
+	new file:   ZGame/DX10/26/textureclass.cpp
+	new file:   ZGame/DX10/26/textureclass.h
+	new file:   ZGame/DX10/26/textureshaderclass.cpp
+	new file:   ZGame/DX10/26/textureshaderclass.h
+	new file:   ZGame/DX10/26/transparent.fx
+	new file:   ZGame/DX10/26/transparentshaderclass.cpp
+	new file:   ZGame/DX10/26/transparentshaderclass.h
+	new file:   ZGame/DX10/27/cameraclass.cpp
+	new file:   ZGame/DX10/27/cameraclass.h
+	new file:   ZGame/DX10/27/d3dclass.cpp
+	new file:   ZGame/DX10/27/d3dclass.h
+	new file:   ZGame/DX10/27/graphicsclass.cpp
+	new file:   ZGame/DX10/27/graphicsclass.h
+	new file:   ZGame/DX10/27/inputclass.cpp
+	new file:   ZGame/DX10/27/inputclass.h
+	new file:   ZGame/DX10/27/main.cpp
+	new file:   ZGame/DX10/27/modelclass.cpp
+	new file:   ZGame/DX10/27/modelclass.h
+	new file:   ZGame/DX10/27/reflection.fx
+	new file:   ZGame/DX10/27/reflectionshaderclass.cpp
+	new file:   ZGame/DX10/27/reflectionshaderclass.h
+	new file:   ZGame/DX10/27/rendertextureclass.cpp
+	new file:   ZGame/DX10/27/rendertextureclass.h
+	new file:   ZGame/DX10/27/systemclass.cpp
+	new file:   ZGame/DX10/27/systemclass.h
+	new file:   ZGame/DX10/27/texture.fx
+	new file:   ZGame/DX10/27/textureclass.cpp
+	new file:   ZGame/DX10/27/textureclass.h
+	new file:   ZGame/DX10/27/textureshaderclass.cpp
+	new file:   ZGame/DX10/27/textureshaderclass.h
+	new file:   ZGame/DX10/28/bitmapclass.cpp
+	new file:   ZGame/DX10/28/bitmapclass.h
+	new file:   ZGame/DX10/28/cameraclass.cpp
+	new file:   ZGame/DX10/28/cameraclass.h
+	new file:   ZGame/DX10/28/d3dclass.cpp
+	new file:   ZGame/DX10/28/d3dclass.h
+	new file:   ZGame/DX10/28/fade.fx
+	new file:   ZGame/DX10/28/fadeshaderclass.cpp
+	new file:   ZGame/DX10/28/fadeshaderclass.h
+	new file:   ZGame/DX10/28/graphicsclass.cpp
+	new file:   ZGame/DX10/28/graphicsclass.h
+	new file:   ZGame/DX10/28/inputclass.cpp
+	new file:   ZGame/DX10/28/inputclass.h
+	new file:   ZGame/DX10/28/main.cpp
+	new file:   ZGame/DX10/28/modelclass.cpp
+	new file:   ZGame/DX10/28/modelclass.h
+	new file:   ZGame/DX10/28/rendertextureclass.cpp
+	new file:   ZGame/DX10/28/rendertextureclass.h
+	new file:   ZGame/DX10/28/systemclass.cpp
+	new file:   ZGame/DX10/28/systemclass.h
+	new file:   ZGame/DX10/28/texture.fx
+	new file:   ZGame/DX10/28/textureclass.cpp
+	new file:   ZGame/DX10/28/textureclass.h
+	new file:   ZGame/DX10/28/textureshaderclass.cpp
+	new file:   ZGame/DX10/28/textureshaderclass.h
+	new file:   ZGame/DX10/28/timerclass.cpp
+	new file:   ZGame/DX10/28/timerclass.h
+	new file:   ZGame/DX10/29/cameraclass.cpp
+	new file:   ZGame/DX10/29/cameraclass.h
+	new file:   ZGame/DX10/29/d3dclass.cpp
+	new file:   ZGame/DX10/29/d3dclass.h
+	new file:   ZGame/DX10/29/graphicsclass.cpp
+	new file:   ZGame/DX10/29/graphicsclass.h
+	new file:   ZGame/DX10/29/inputclass.cpp
+	new file:   ZGame/DX10/29/inputclass.h
+	new file:   ZGame/DX10/29/light.fx
+	new file:   ZGame/DX10/29/lightclass.cpp
+	new file:   ZGame/DX10/29/lightclass.h
+	new file:   ZGame/DX10/29/lightshaderclass.cpp
+	new file:   ZGame/DX10/29/lightshaderclass.h
+	new file:   ZGame/DX10/29/main.cpp
+	new file:   ZGame/DX10/29/modelclass.cpp
+	new file:   ZGame/DX10/29/modelclass.h
+	new file:   ZGame/DX10/29/refraction.fx
+	new file:   ZGame/DX10/29/refractionshaderclass.cpp
+	new file:   ZGame/DX10/29/refractionshaderclass.h
+	new file:   ZGame/DX10/29/rendertextureclass.cpp
+	new file:   ZGame/DX10/29/rendertextureclass.h
+	new file:   ZGame/DX10/29/systemclass.cpp
+	new file:   ZGame/DX10/29/systemclass.h
+	new file:   ZGame/DX10/29/textureclass.cpp
+	new file:   ZGame/DX10/29/textureclass.h
+	new file:   ZGame/DX10/29/water.fx
+	new file:   ZGame/DX10/29/watershaderclass.cpp
+	new file:   ZGame/DX10/29/watershaderclass.h
+	new file:   ZGame/DX10/30/cameraclass.cpp
+	new file:   ZGame/DX10/30/cameraclass.h
+	new file:   ZGame/DX10/30/d3dclass.cpp
+	new file:   ZGame/DX10/30/d3dclass.h
+	new file:   ZGame/DX10/30/graphicsclass.cpp
+	new file:   ZGame/DX10/30/graphicsclass.h
+	new file:   ZGame/DX10/30/inputclass.cpp
+	new file:   ZGame/DX10/30/inputclass.h
+	new file:   ZGame/DX10/30/light.fx
+	new file:   ZGame/DX10/30/lightclass.cpp
+	new file:   ZGame/DX10/30/lightclass.h
+	new file:   ZGame/DX10/30/lightshaderclass.cpp
+	new file:   ZGame/DX10/30/lightshaderclass.h
+	new file:   ZGame/DX10/30/main.cpp
+	new file:   ZGame/DX10/30/modelclass.cpp
+	new file:   ZGame/DX10/30/modelclass.h
+	new file:   ZGame/DX10/30/systemclass.cpp
+	new file:   ZGame/DX10/30/systemclass.h
+	new file:   ZGame/DX10/30/textureclass.cpp
+	new file:   ZGame/DX10/30/textureclass.h
+	new file:   ZGame/DX10/31/cameraclass.cpp
+	new file:   ZGame/DX10/31/cameraclass.h
+	new file:   ZGame/DX10/31/d3dclass.cpp
+	new file:   ZGame/DX10/31/d3dclass.h
+	new file:   ZGame/DX10/31/graphicsclass.cpp
+	new file:   ZGame/DX10/31/graphicsclass.h
+	new file:   ZGame/DX10/31/inputclass.cpp
+	new file:   ZGame/DX10/31/inputclass.h
+	new file:   ZGame/DX10/31/main.cpp
+	new file:   ZGame/DX10/31/soundclass.cpp
+	new file:   ZGame/DX10/31/soundclass.h
+	new file:   ZGame/DX10/31/systemclass.cpp
+	new file:   ZGame/DX10/31/systemclass.h
+	new file:   ZGame/DX10/32/cameraclass.cpp
+	new file:   ZGame/DX10/32/cameraclass.h
+	new file:   ZGame/DX10/32/d3dclass.cpp
+	new file:   ZGame/DX10/32/d3dclass.h
+	new file:   ZGame/DX10/32/glass.fx
+	new file:   ZGame/DX10/32/glassshaderclass.cpp
+	new file:   ZGame/DX10/32/glassshaderclass.h
+	new file:   ZGame/DX10/32/graphicsclass.cpp
+	new file:   ZGame/DX10/32/graphicsclass.h
+	new file:   ZGame/DX10/32/inputclass.cpp
+	new file:   ZGame/DX10/32/inputclass.h
+	new file:   ZGame/DX10/32/main.cpp
+	new file:   ZGame/DX10/32/modelclass.cpp
+	new file:   ZGame/DX10/32/modelclass.h
+	new file:   ZGame/DX10/32/rendertextureclass.cpp
+	new file:   ZGame/DX10/32/rendertextureclass.h
+	new file:   ZGame/DX10/32/systemclass.cpp
+	new file:   ZGame/DX10/32/systemclass.h
+	new file:   ZGame/DX10/32/texture.fx
+	new file:   ZGame/DX10/32/textureclass.cpp
+	new file:   ZGame/DX10/32/textureclass.h
+	new file:   ZGame/DX10/32/textureshaderclass.cpp
+	new file:   ZGame/DX10/32/textureshaderclass.h
+	new file:   ZGame/DX10/33/cameraclass.cpp
+	new file:   ZGame/DX10/33/cameraclass.h
+	new file:   ZGame/DX10/33/d3dclass.cpp
+	new file:   ZGame/DX10/33/d3dclass.h
+	new file:   ZGame/DX10/33/fire.fx
+	new file:   ZGame/DX10/33/fireshaderclass.cpp
+	new file:   ZGame/DX10/33/fireshaderclass.h
+	new file:   ZGame/DX10/33/graphicsclass.cpp
+	new file:   ZGame/DX10/33/graphicsclass.h
+	new file:   ZGame/DX10/33/inputclass.cpp
+	new file:   ZGame/DX10/33/inputclass.h
+	new file:   ZGame/DX10/33/main.cpp
+	new file:   ZGame/DX10/33/modelclass.cpp
+	new file:   ZGame/DX10/33/modelclass.h
+	new file:   ZGame/DX10/33/systemclass.cpp
+	new file:   ZGame/DX10/33/systemclass.h
+	new file:   ZGame/DX10/33/textureclass.cpp
+	new file:   ZGame/DX10/33/textureclass.h
+	new file:   ZGame/DX10/34/data/floor.txt
+	new file:   ZGame/DX10/34/data/grid01.dds
+	new file:   ZGame/DX10/34/data/seafloor.dds
+	new file:   ZGame/DX10/34/data/square.txt
+	new file:   ZGame/DX10/34/source/cameraclass.cpp
+	new file:   ZGame/DX10/34/source/cameraclass.h
+	new file:   ZGame/DX10/34/source/d3dclass.cpp
+	new file:   ZGame/DX10/34/source/d3dclass.h
+	new file:   ZGame/DX10/34/source/graphicsclass.cpp
+	new file:   ZGame/DX10/34/source/graphicsclass.h
+	new file:   ZGame/DX10/34/source/inputclass.cpp
+	new file:   ZGame/DX10/34/source/inputclass.h
+	new file:   ZGame/DX10/34/source/main.cpp
+	new file:   ZGame/DX10/34/source/modelclass.cpp
+	new file:   ZGame/DX10/34/source/modelclass.h
+	new file:   ZGame/DX10/34/source/positionclass.cpp
+	new file:   ZGame/DX10/34/source/positionclass.h
+	new file:   ZGame/DX10/34/source/systemclass.cpp
+	new file:   ZGame/DX10/34/source/systemclass.h
+	new file:   ZGame/DX10/34/source/texture.fx
+	new file:   ZGame/DX10/34/source/textureclass.cpp
+	new file:   ZGame/DX10/34/source/textureclass.h
+	new file:   ZGame/DX10/34/source/textureshaderclass.cpp
+	new file:   ZGame/DX10/34/source/textureshaderclass.h
+	new file:   ZGame/DX10/34/source/timerclass.cpp
+	new file:   ZGame/DX10/34/source/timerclass.h
+	new file:   ZGame/DX10/35/cameraclass.cpp
+	new file:   ZGame/DX10/35/cameraclass.h
+	new file:   ZGame/DX10/35/d3dclass.cpp
+	new file:   ZGame/DX10/35/d3dclass.h
+	new file:   ZGame/DX10/35/depth.fx
+	new file:   ZGame/DX10/35/depthshaderclass.cpp
+	new file:   ZGame/DX10/35/depthshaderclass.h
+	new file:   ZGame/DX10/35/graphicsclass.cpp
+	new file:   ZGame/DX10/35/graphicsclass.h
+	new file:   ZGame/DX10/35/inputclass.cpp
+	new file:   ZGame/DX10/35/inputclass.h
+	new file:   ZGame/DX10/35/main.cpp
+	new file:   ZGame/DX10/35/modelclass.cpp
+	new file:   ZGame/DX10/35/modelclass.h
+	new file:   ZGame/DX10/35/systemclass.cpp
+	new file:   ZGame/DX10/35/systemclass.h
+	new file:   ZGame/DX10/36/cameraclass.cpp
+	new file:   ZGame/DX10/36/cameraclass.h
+	new file:   ZGame/DX10/36/d3dclass.cpp
+	new file:   ZGame/DX10/36/d3dclass.h
+	new file:   ZGame/DX10/36/graphicsclass.cpp
+	new file:   ZGame/DX10/36/graphicsclass.h
+	new file:   ZGame/DX10/36/horizontalblur.fx
+	new file:   ZGame/DX10/36/horizontalblurshaderclass.cpp
+	new file:   ZGame/DX10/36/horizontalblurshaderclass.h
+	new file:   ZGame/DX10/36/inputclass.cpp
+	new file:   ZGame/DX10/36/inputclass.h
+	new file:   ZGame/DX10/36/main.cpp
+	new file:   ZGame/DX10/36/modelclass.cpp
+	new file:   ZGame/DX10/36/modelclass.h
+	new file:   ZGame/DX10/36/orthowindowclass.cpp
+	new file:   ZGame/DX10/36/orthowindowclass.h
+	new file:   ZGame/DX10/36/rendertextureclass.cpp
+	new file:   ZGame/DX10/36/rendertextureclass.h
+	new file:   ZGame/DX10/36/systemclass.cpp
+	new file:   ZGame/DX10/36/systemclass.h
+	new file:   ZGame/DX10/36/texture.fx
+	new file:   ZGame/DX10/36/textureclass.cpp
+	new file:   ZGame/DX10/36/textureclass.h
+	new file:   ZGame/DX10/36/textureshaderclass.cpp
+	new file:   ZGame/DX10/36/textureshaderclass.h
+	new file:   ZGame/DX10/36/verticalblur.fx
+	new file:   ZGame/DX10/36/verticalblurshaderclass.cpp
+	new file:   ZGame/DX10/36/verticalblurshaderclass.h
+	new file:   ZGame/DX10/37/cameraclass.cpp
+	new file:   ZGame/DX10/37/cameraclass.h
+	new file:   ZGame/DX10/37/d3dclass.cpp
+	new file:   ZGame/DX10/37/d3dclass.h
+	new file:   ZGame/DX10/37/graphicsclass.cpp
+	new file:   ZGame/DX10/37/graphicsclass.h
+	new file:   ZGame/DX10/37/inputclass.cpp
+	new file:   ZGame/DX10/37/inputclass.h
+	new file:   ZGame/DX10/37/main.cpp
+	new file:   ZGame/DX10/37/modelclass.cpp
+	new file:   ZGame/DX10/37/modelclass.h
+	new file:   ZGame/DX10/37/systemclass.cpp
+	new file:   ZGame/DX10/37/systemclass.h
+	new file:   ZGame/DX10/37/texture.fx
+	new file:   ZGame/DX10/37/textureclass.cpp
+	new file:   ZGame/DX10/37/textureclass.h
+	new file:   ZGame/DX10/37/textureshaderclass.cpp
+	new file:   ZGame/DX10/37/textureshaderclass.h
+	new file:   ZGame/DX10/39/cameraclass.cpp
+	new file:   ZGame/DX10/39/cameraclass.h
+	new file:   ZGame/DX10/39/d3dclass.cpp
+	new file:   ZGame/DX10/39/d3dclass.h
+	new file:   ZGame/DX10/39/graphicsclass.cpp
+	new file:   ZGame/DX10/39/graphicsclass.h
+	new file:   ZGame/DX10/39/inputclass.cpp
+	new file:   ZGame/DX10/39/inputclass.h
+	new file:   ZGame/DX10/39/main.cpp
+	new file:   ZGame/DX10/39/particle.fx
+	new file:   ZGame/DX10/39/particleshaderclass.cpp
+	new file:   ZGame/DX10/39/particleshaderclass.h
+	new file:   ZGame/DX10/39/particlesystemclass.cpp
+	new file:   ZGame/DX10/39/particlesystemclass.h
+	new file:   ZGame/DX10/39/systemclass.cpp
+	new file:   ZGame/DX10/39/systemclass.h
+	new file:   ZGame/DX10/39/textureclass.cpp
+	new file:   ZGame/DX10/39/textureclass.h
+	new file:   ZGame/DX10/39/timerclass.cpp
+	new file:   ZGame/DX10/39/timerclass.h
+	new file:   ZGame/DX10/40/data/cube.txt
+	new file:   ZGame/DX10/40/data/ice.dds
+	new file:   ZGame/DX10/40/data/metal001.dds
+	new file:   ZGame/DX10/40/data/plane01.txt
+	new file:   ZGame/DX10/40/data/sphere.txt
+	new file:   ZGame/DX10/40/data/wall01.dds
+	new file:   ZGame/DX10/40/source/cameraclass.cpp
+	new file:   ZGame/DX10/40/source/cameraclass.h
+	new file:   ZGame/DX10/40/source/d3dclass.cpp
+	new file:   ZGame/DX10/40/source/d3dclass.h
+	new file:   ZGame/DX10/40/source/depth.fx
+	new file:   ZGame/DX10/40/source/depthshaderclass.cpp
+	new file:   ZGame/DX10/40/source/depthshaderclass.h
+	new file:   ZGame/DX10/40/source/graphicsclass.cpp
+	new file:   ZGame/DX10/40/source/graphicsclass.h
+	new file:   ZGame/DX10/40/source/inputclass.cpp
+	new file:   ZGame/DX10/40/source/inputclass.h
+	new file:   ZGame/DX10/40/source/lightclass.cpp
+	new file:   ZGame/DX10/40/source/lightclass.h
+	new file:   ZGame/DX10/40/source/main.cpp
+	new file:   ZGame/DX10/40/source/modelclass.cpp
+	new file:   ZGame/DX10/40/source/modelclass.h
+	new file:   ZGame/DX10/40/source/positionclass.cpp
+	new file:   ZGame/DX10/40/source/positionclass.h
+	new file:   ZGame/DX10/40/source/rendertextureclass.cpp
+	new file:   ZGame/DX10/40/source/rendertextureclass.h
+	new file:   ZGame/DX10/40/source/shadow.fx
+	new file:   ZGame/DX10/40/source/shadowshaderclass.cpp
+	new file:   ZGame/DX10/40/source/shadowshaderclass.h
+	new file:   ZGame/DX10/40/source/systemclass.cpp
+	new file:   ZGame/DX10/40/source/systemclass.h
+	new file:   ZGame/DX10/40/source/textureclass.cpp
+	new file:   ZGame/DX10/40/source/textureclass.h
+	new file:   ZGame/DX10/40/source/timerclass.cpp
+	new file:   ZGame/DX10/40/source/timerclass.h
+	new file:   ZGame/DX10/41/data/cube.txt
+	new file:   ZGame/DX10/41/data/ice.dds
+	new file:   ZGame/DX10/41/data/metal001.dds
+	new file:   ZGame/DX10/41/data/plane01.txt
+	new file:   ZGame/DX10/41/data/sphere.txt
+	new file:   ZGame/DX10/41/data/wall01.dds
+	new file:   ZGame/DX10/41/source/cameraclass.cpp
+	new file:   ZGame/DX10/41/source/cameraclass.h
+	new file:   ZGame/DX10/41/source/d3dclass.cpp
+	new file:   ZGame/DX10/41/source/d3dclass.h
+	new file:   ZGame/DX10/41/source/depth.fx
+	new file:   ZGame/DX10/41/source/depthshaderclass.cpp
+	new file:   ZGame/DX10/41/source/depthshaderclass.h
+	new file:   ZGame/DX10/41/source/graphicsclass.cpp
+	new file:   ZGame/DX10/41/source/graphicsclass.h
+	new file:   ZGame/DX10/41/source/inputclass.cpp
+	new file:   ZGame/DX10/41/source/inputclass.h
+	new file:   ZGame/DX10/41/source/lightclass.cpp
+	new file:   ZGame/DX10/41/source/lightclass.h
+	new file:   ZGame/DX10/41/source/main.cpp
+	new file:   ZGame/DX10/41/source/modelclass.cpp
+	new file:   ZGame/DX10/41/source/modelclass.h
+	new file:   ZGame/DX10/41/source/positionclass.cpp
+	new file:   ZGame/DX10/41/source/positionclass.h
+	new file:   ZGame/DX10/41/source/rendertextureclass.cpp
+	new file:   ZGame/DX10/41/source/rendertextureclass.h
+	new file:   ZGame/DX10/41/source/shadow.fx
+	new file:   ZGame/DX10/41/source/shadowshaderclass.cpp
+	new file:   ZGame/DX10/41/source/shadowshaderclass.h
+	new file:   ZGame/DX10/41/source/systemclass.cpp
+	new file:   ZGame/DX10/41/source/systemclass.h
+	new file:   ZGame/DX10/41/source/textureclass.cpp
+	new file:   ZGame/DX10/41/source/textureclass.h
+	new file:   ZGame/DX10/41/source/timerclass.cpp
+	new file:   ZGame/DX10/41/source/timerclass.h
+	new file:   ZGame/DX10/42/data/cube.txt
+	new file:   ZGame/DX10/42/data/ice.dds
+	new file:   ZGame/DX10/42/data/metal001.dds
+	new file:   ZGame/DX10/42/data/plane01.txt
+	new file:   ZGame/DX10/42/data/sphere.txt
+	new file:   ZGame/DX10/42/data/wall01.dds
+	new file:   ZGame/DX10/42/source/cameraclass.cpp
+	new file:   ZGame/DX10/42/source/cameraclass.h
+	new file:   ZGame/DX10/42/source/d3dclass.cpp
+	new file:   ZGame/DX10/42/source/d3dclass.h
+	new file:   ZGame/DX10/42/source/depth.fx
+	new file:   ZGame/DX10/42/source/depthshaderclass.cpp
+	new file:   ZGame/DX10/42/source/depthshaderclass.h
+	new file:   ZGame/DX10/42/source/graphicsclass.cpp
+	new file:   ZGame/DX10/42/source/graphicsclass.h
+	new file:   ZGame/DX10/42/source/horizontalblur.fx
+	new file:   ZGame/DX10/42/source/horizontalblurshaderclass.cpp
+	new file:   ZGame/DX10/42/source/horizontalblurshaderclass.h
+	new file:   ZGame/DX10/42/source/inputclass.cpp
+	new file:   ZGame/DX10/42/source/inputclass.h
+	new file:   ZGame/DX10/42/source/lightclass.cpp
+	new file:   ZGame/DX10/42/source/lightclass.h
+	new file:   ZGame/DX10/42/source/main.cpp
+	new file:   ZGame/DX10/42/source/modelclass.cpp
+	new file:   ZGame/DX10/42/source/modelclass.h
+	new file:   ZGame/DX10/42/source/orthowindowclass.cpp
+	new file:   ZGame/DX10/42/source/orthowindowclass.h
+	new file:   ZGame/DX10/42/source/positionclass.cpp
+	new file:   ZGame/DX10/42/source/positionclass.h
+	new file:   ZGame/DX10/42/source/rendertextureclass.cpp
+	new file:   ZGame/DX10/42/source/rendertextureclass.h
+	new file:   ZGame/DX10/42/source/shadow.fx
+	new file:   ZGame/DX10/42/source/shadowshaderclass.cpp
+	new file:   ZGame/DX10/42/source/shadowshaderclass.h
+	new file:   ZGame/DX10/42/source/softshadow.fx
+	new file:   ZGame/DX10/42/source/softshadowshaderclass.cpp
+	new file:   ZGame/DX10/42/source/softshadowshaderclass.h
+	new file:   ZGame/DX10/42/source/systemclass.cpp
+	new file:   ZGame/DX10/42/source/systemclass.h
+	new file:   ZGame/DX10/42/source/texture.fx
+	new file:   ZGame/DX10/42/source/textureclass.cpp
+	new file:   ZGame/DX10/42/source/textureclass.h
+	new file:   ZGame/DX10/42/source/textureshaderclass.cpp
+	new file:   ZGame/DX10/42/source/textureshaderclass.h
+	new file:   ZGame/DX10/42/source/timerclass.cpp
+	new file:   ZGame/DX10/42/source/timerclass.h
+	new file:   ZGame/DX10/42/source/verticalblur.fx
+	new file:   ZGame/DX10/42/source/verticalblurshaderclass.cpp
+	new file:   ZGame/DX10/42/source/verticalblurshaderclass.h
+	new file:   ZGame/DX10/43/data/cube.txt
+	new file:   ZGame/DX10/43/data/dx10.dds
+	new file:   ZGame/DX10/43/data/floor.txt
+	new file:   ZGame/DX10/43/data/seafloor.dds
+	new file:   ZGame/DX10/43/data/stone.dds
+	new file:   ZGame/DX10/43/source/cameraclass.cpp
+	new file:   ZGame/DX10/43/source/cameraclass.h
+	new file:   ZGame/DX10/43/source/d3dclass.cpp
+	new file:   ZGame/DX10/43/source/d3dclass.h
+	new file:   ZGame/DX10/43/source/graphicsclass.cpp
+	new file:   ZGame/DX10/43/source/graphicsclass.h
+	new file:   ZGame/DX10/43/source/inputclass.cpp
+	new file:   ZGame/DX10/43/source/inputclass.h
+	new file:   ZGame/DX10/43/source/lightclass.cpp
+	new file:   ZGame/DX10/43/source/lightclass.h
+	new file:   ZGame/DX10/43/source/main.cpp
+	new file:   ZGame/DX10/43/source/modelclass.cpp
+	new file:   ZGame/DX10/43/source/modelclass.h
+	new file:   ZGame/DX10/43/source/projection.fx
+	new file:   ZGame/DX10/43/source/projectionshaderclass.cpp
+	new file:   ZGame/DX10/43/source/projectionshaderclass.h
+	new file:   ZGame/DX10/43/source/systemclass.cpp
+	new file:   ZGame/DX10/43/source/systemclass.h
+	new file:   ZGame/DX10/43/source/textureclass.cpp
+	new file:   ZGame/DX10/43/source/textureclass.h
+	new file:   ZGame/DX10/43/source/viewpointclass.cpp
+	new file:   ZGame/DX10/43/source/viewpointclass.h
+	new file:   ZGame/DX10/44/data/cube.txt
+	new file:   ZGame/DX10/44/data/floor.txt
+	new file:   ZGame/DX10/44/data/grate.dds
+	new file:   ZGame/DX10/44/data/seafloor.dds
+	new file:   ZGame/DX10/44/data/stone.dds
+	new file:   ZGame/DX10/44/source/cameraclass.cpp
+	new file:   ZGame/DX10/44/source/cameraclass.h
+	new file:   ZGame/DX10/44/source/d3dclass.cpp
+	new file:   ZGame/DX10/44/source/d3dclass.h
+	new file:   ZGame/DX10/44/source/graphicsclass.cpp
+	new file:   ZGame/DX10/44/source/graphicsclass.h
+	new file:   ZGame/DX10/44/source/inputclass.cpp
+	new file:   ZGame/DX10/44/source/inputclass.h
+	new file:   ZGame/DX10/44/source/lightclass.cpp
+	new file:   ZGame/DX10/44/source/lightclass.h
+	new file:   ZGame/DX10/44/source/main.cpp
+	new file:   ZGame/DX10/44/source/modelclass.cpp
+	new file:   ZGame/DX10/44/source/modelclass.h
+	new file:   ZGame/DX10/44/source/projection.fx
+	new file:   ZGame/DX10/44/source/projectionshaderclass.cpp
+	new file:   ZGame/DX10/44/source/projectionshaderclass.h
+	new file:   ZGame/DX10/44/source/systemclass.cpp
+	new file:   ZGame/DX10/44/source/systemclass.h
+	new file:   ZGame/DX10/44/source/textureclass.cpp
+	new file:   ZGame/DX10/44/source/textureclass.h
+	new file:   ZGame/DX10/44/source/viewpointclass.cpp
+	new file:   ZGame/DX10/44/source/viewpointclass.h
+	new file:   ZGame/DX10/45/data/cube.txt
+	new file:   ZGame/DX10/45/data/marble.dds
+	new file:   ZGame/DX10/45/data/metal.dds
+	new file:   ZGame/DX10/45/data/normal.dds
+	new file:   ZGame/DX10/45/data/stone.dds
+	new file:   ZGame/DX10/45/source/bumpmap.fx
+	new file:   ZGame/DX10/45/source/bumpmapshaderclass.cpp
+	new file:   ZGame/DX10/45/source/bumpmapshaderclass.h
+	new file:   ZGame/DX10/45/source/bumpmodelclass.cpp
+	new file:   ZGame/DX10/45/source/bumpmodelclass.h
+	new file:   ZGame/DX10/45/source/cameraclass.cpp
+	new file:   ZGame/DX10/45/source/cameraclass.h
+	new file:   ZGame/DX10/45/source/d3dclass.cpp
+	new file:   ZGame/DX10/45/source/d3dclass.h
+	new file:   ZGame/DX10/45/source/graphicsclass.cpp
+	new file:   ZGame/DX10/45/source/graphicsclass.h
+	new file:   ZGame/DX10/45/source/inputclass.cpp
+	new file:   ZGame/DX10/45/source/inputclass.h
+	new file:   ZGame/DX10/45/source/light.fx
+	new file:   ZGame/DX10/45/source/lightclass.cpp
+	new file:   ZGame/DX10/45/source/lightclass.h
+	new file:   ZGame/DX10/45/source/lightshaderclass.cpp
+	new file:   ZGame/DX10/45/source/lightshaderclass.h
+	new file:   ZGame/DX10/45/source/main.cpp
+	new file:   ZGame/DX10/45/source/modelclass.cpp
+	new file:   ZGame/DX10/45/source/modelclass.h
+	new file:   ZGame/DX10/45/source/shadermanagerclass.cpp
+	new file:   ZGame/DX10/45/source/shadermanagerclass.h
+	new file:   ZGame/DX10/45/source/systemclass.cpp
+	new file:   ZGame/DX10/45/source/systemclass.h
+	new file:   ZGame/DX10/45/source/texture.fx
+	new file:   ZGame/DX10/45/source/textureclass.cpp
+	new file:   ZGame/DX10/45/source/textureclass.h
+	new file:   ZGame/DX10/45/source/textureshaderclass.cpp
+	new file:   ZGame/DX10/45/source/textureshaderclass.h
+	new file:   ZGame/DX10/46/data/glowmap.dds
+	new file:   ZGame/DX10/46/data/test.dds
+	new file:   ZGame/DX10/46/source/bitmapclass.cpp
+	new file:   ZGame/DX10/46/source/bitmapclass.h
+	new file:   ZGame/DX10/46/source/cameraclass.cpp
+	new file:   ZGame/DX10/46/source/cameraclass.h
+	new file:   ZGame/DX10/46/source/d3dclass.cpp
+	new file:   ZGame/DX10/46/source/d3dclass.h
+	new file:   ZGame/DX10/46/source/glow.fx
+	new file:   ZGame/DX10/46/source/glowmap.fx
+	new file:   ZGame/DX10/46/source/glowmapshaderclass.cpp
+	new file:   ZGame/DX10/46/source/glowmapshaderclass.h
+	new file:   ZGame/DX10/46/source/glowshaderclass.cpp
+	new file:   ZGame/DX10/46/source/glowshaderclass.h
+	new file:   ZGame/DX10/46/source/graphicsclass.cpp
+	new file:   ZGame/DX10/46/source/graphicsclass.h
+	new file:   ZGame/DX10/46/source/horizontalblur.fx
+	new file:   ZGame/DX10/46/source/horizontalblurshaderclass.cpp
+	new file:   ZGame/DX10/46/source/horizontalblurshaderclass.h
+	new file:   ZGame/DX10/46/source/inputclass.cpp
+	new file:   ZGame/DX10/46/source/inputclass.h
+	new file:   ZGame/DX10/46/source/main.cpp
+	new file:   ZGame/DX10/46/source/orthowindowclass.cpp
+	new file:   ZGame/DX10/46/source/orthowindowclass.h
+	new file:   ZGame/DX10/46/source/rendertextureclass.cpp
+	new file:   ZGame/DX10/46/source/rendertextureclass.h
+	new file:   ZGame/DX10/46/source/systemclass.cpp
+	new file:   ZGame/DX10/46/source/systemclass.h
+	new file:   ZGame/DX10/46/source/texture.fx
+	new file:   ZGame/DX10/46/source/textureclass.cpp
+	new file:   ZGame/DX10/46/source/textureclass.h
+	new file:   ZGame/DX10/46/source/textureshaderclass.cpp
+	new file:   ZGame/DX10/46/source/textureshaderclass.h
+	new file:   ZGame/DX10/46/source/verticalblur.fx
+	new file:   ZGame/DX10/46/source/verticalblurshaderclass.cpp
+	new file:   ZGame/DX10/46/source/verticalblurshaderclass.h
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/applicationclass.cpp
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/applicationclass.h
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/bitmapclass.cpp
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/bitmapclass.h
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/cameraclass.cpp
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/cameraclass.h
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/d3dclass.cpp
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/d3dclass.h
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/fontclass.cpp
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/fontclass.h
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/fontshaderclass.cpp
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/fontshaderclass.h
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/inputclass.cpp
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/inputclass.h
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/lightclass.cpp
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/lightclass.h
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/lightshaderclass.cpp
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/lightshaderclass.h
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/main.cpp
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/modelclass.cpp
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/modelclass.h
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/systemclass.cpp
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/systemclass.h
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/textclass.cpp
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/textclass.h
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/textureclass.cpp
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/textureclass.h
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/textureshaderclass.cpp
+	modified:   ZGame/DX10/47.Picking/dx10src47/source/textureshaderclass.h
+	new file:   ZGame/DX10/48/data/cube.txt
+	new file:   ZGame/DX10/48/data/ice.dds
+	new file:   ZGame/DX10/48/data/metal001.dds
+	new file:   ZGame/DX10/48/data/plane01.txt
+	new file:   ZGame/DX10/48/data/sphere.txt
+	new file:   ZGame/DX10/48/data/wall01.dds
+	new file:   ZGame/DX10/48/source/cameraclass.cpp
+	new file:   ZGame/DX10/48/source/cameraclass.h
+	new file:   ZGame/DX10/48/source/d3dclass.cpp
+	new file:   ZGame/DX10/48/source/d3dclass.h
+	new file:   ZGame/DX10/48/source/depth.fx
+	new file:   ZGame/DX10/48/source/depthshaderclass.cpp
+	new file:   ZGame/DX10/48/source/depthshaderclass.h
+	new file:   ZGame/DX10/48/source/graphicsclass.cpp
+	new file:   ZGame/DX10/48/source/graphicsclass.h
+	new file:   ZGame/DX10/48/source/inputclass.cpp
+	new file:   ZGame/DX10/48/source/inputclass.h
+	new file:   ZGame/DX10/48/source/lightclass.cpp
+	new file:   ZGame/DX10/48/source/lightclass.h
+	new file:   ZGame/DX10/48/source/main.cpp
+	new file:   ZGame/DX10/48/source/modelclass.cpp
+	new file:   ZGame/DX10/48/source/modelclass.h
+	new file:   ZGame/DX10/48/source/positionclass.cpp
+	new file:   ZGame/DX10/48/source/positionclass.h
+	new file:   ZGame/DX10/48/source/rendertextureclass.cpp
+	new file:   ZGame/DX10/48/source/rendertextureclass.h
+	new file:   ZGame/DX10/48/source/shadow.fx
+	new file:   ZGame/DX10/48/source/shadowshaderclass.cpp
+	new file:   ZGame/DX10/48/source/shadowshaderclass.h
+	new file:   ZGame/DX10/48/source/systemclass.cpp
+	new file:   ZGame/DX10/48/source/systemclass.h
+	new file:   ZGame/DX10/48/source/textureclass.cpp
+	new file:   ZGame/DX10/48/source/textureclass.h
+	new file:   ZGame/DX10/48/source/timerclass.cpp
+	new file:   ZGame/DX10/48/source/timerclass.h
+	new file:   ZGame/DX10/49/applicationclass.cpp
+	new file:   ZGame/DX10/49/applicationclass.h
+	new file:   ZGame/DX10/49/cameraclass.cpp
+	new file:   ZGame/DX10/49/cameraclass.h
+	new file:   ZGame/DX10/49/d3dclass.cpp
+	new file:   ZGame/DX10/49/d3dclass.h
+	new file:   ZGame/DX10/49/data/dirt.dds
+	new file:   ZGame/DX10/49/data/plane01.txt
+	new file:   ZGame/DX10/49/data/trees/leaf001.dds
+	new file:   ZGame/DX10/49/data/trees/leaf001.txt
+	new file:   ZGame/DX10/49/data/trees/trunk001.dds
+	new file:   ZGame/DX10/49/data/trees/trunk001.txt
+	new file:   ZGame/DX10/49/depth.fx
+	new file:   ZGame/DX10/49/depthshaderclass.cpp
+	new file:   ZGame/DX10/49/depthshaderclass.h
+	new file:   ZGame/DX10/49/inputclass.cpp
+	new file:   ZGame/DX10/49/inputclass.h
+	new file:   ZGame/DX10/49/lightclass.cpp
+	new file:   ZGame/DX10/49/lightclass.h
+	new file:   ZGame/DX10/49/main.cpp
+	new file:   ZGame/DX10/49/modelclass.cpp
+	new file:   ZGame/DX10/49/modelclass.h
+	new file:   ZGame/DX10/49/positionclass.cpp
+	new file:   ZGame/DX10/49/positionclass.h
+	new file:   ZGame/DX10/49/rendertextureclass.cpp
+	new file:   ZGame/DX10/49/rendertextureclass.h
+	new file:   ZGame/DX10/49/shadow.fx
+	new file:   ZGame/DX10/49/shadowshaderclass.cpp
+	new file:   ZGame/DX10/49/shadowshaderclass.h
+	new file:   ZGame/DX10/49/systemclass.cpp
+	new file:   ZGame/DX10/49/systemclass.h
+	new file:   ZGame/DX10/49/textureclass.cpp
+	new file:   ZGame/DX10/49/textureclass.h
+	new file:   ZGame/DX10/49/timerclass.cpp
+	new file:   ZGame/DX10/49/timerclass.h
+	new file:   ZGame/DX10/49/transparentdepth.fx
+	new file:   ZGame/DX10/49/transparentdepthshaderclass.cpp
+	new file:   ZGame/DX10/49/transparentdepthshaderclass.h
+	new file:   ZGame/DX10/49/treeclass.cpp
+	new file:   ZGame/DX10/49/treeclass.h
+	new file:   ZGame/DX10/50/data/cube.txt
+	new file:   ZGame/DX10/50/data/seafloor.dds
+	new file:   ZGame/DX10/50/source/applicationclass.cpp
+	new file:   ZGame/DX10/50/source/applicationclass.h
+	new file:   ZGame/DX10/50/source/cameraclass.cpp
+	new file:   ZGame/DX10/50/source/cameraclass.h
+	new file:   ZGame/DX10/50/source/d3dclass.cpp
+	new file:   ZGame/DX10/50/source/d3dclass.h
+	new file:   ZGame/DX10/50/source/deferred.fx
+	new file:   ZGame/DX10/50/source/deferredbuffersclass.cpp
+	new file:   ZGame/DX10/50/source/deferredbuffersclass.h
+	new file:   ZGame/DX10/50/source/deferredshaderclass.cpp
+	new file:   ZGame/DX10/50/source/deferredshaderclass.h
+	new file:   ZGame/DX10/50/source/inputclass.cpp
+	new file:   ZGame/DX10/50/source/inputclass.h
+	new file:   ZGame/DX10/50/source/light.fx
+	new file:   ZGame/DX10/50/source/lightclass.cpp
+	new file:   ZGame/DX10/50/source/lightclass.h
+	new file:   ZGame/DX10/50/source/lightshaderclass.cpp
+	new file:   ZGame/DX10/50/source/lightshaderclass.h
+	new file:   ZGame/DX10/50/source/main.cpp
+	new file:   ZGame/DX10/50/source/modelclass.cpp
+	new file:   ZGame/DX10/50/source/modelclass.h
+	new file:   ZGame/DX10/50/source/orthowindowclass.cpp
+	new file:   ZGame/DX10/50/source/orthowindowclass.h
+	new file:   ZGame/DX10/50/source/systemclass.cpp
+	new file:   ZGame/DX10/50/source/systemclass.h
+	new file:   ZGame/DX10/50/source/textureclass.cpp
+	new file:   ZGame/DX10/50/source/textureclass.h
+	modified:   ZGame/game_tutorials/Direct3D/Camera Part2/camera.cpp
+	modified:   ZGame/game_tutorials/Direct3D/Camera Part2/win_main.cpp
+	modified:   ZGame/game_tutorials/Direct3D/Camera/win_main.cpp
+	modified:   ZGame/game_tutorials/Direct3D/First Direct3D Program/win_main.cpp
+	modified:   ZGame/game_tutorials/Direct3D/Matrices/d3d_obj.cpp
+	modified:   ZGame/game_tutorials/Direct3D/Matrices/win_main.cpp
+	modified:   ZGame/game_tutorials/Direct3D/Multi-Texturing/win_main.cpp
+	modified:   ZGame/game_tutorials/Direct3D/Texture Mapping/win_main.cpp
+	modified:   ZGame/game_tutorials/Direct3D/Vertex Lighting/win_main.cpp
+	modified:   ZGame/game_tutorials/Win32/Adding an Icon/win_main.cpp
+	modified:   ZGame/game_tutorials/Win32/Displaying Multiple Bitmaps/DisplayBitmaps.cpp
+	modified:   ZGame/game_tutorials/Win32/Horizontal Scroll Bar/win_main.cpp
+	modified:   ZGame/game_tutorials/Win32/Map Editor Part2/Main.cpp
+	modified:   ZGame/game_tutorials/Win32/Map Editor Part3/Bitmap.cpp
+	modified:   ZGame/game_tutorials/Win32/Map Editor/Init.cpp
+	modified:   ZGame/game_tutorials/Win32/Map Editor/Main.cpp
+	modified:   ZGame/game_tutorials/Win32/Map Editor/Tile.cpp
+	modified:   ZGame/game_tutorials/Win32/Menus Part2/win_main.cpp
+	modified:   ZGame/game_tutorials/Win32/Menus/Menu.cpp
+	modified:   ZGame/game_tutorials/Win32/Moving a Bitmap/DisplayBitmaps.cpp
+

@@ -25,68 +25,68 @@ const TCHAR Prop_KBackground[] = _T("KBackground Instance");
 
 LRESULT KBackground::EraseBackground(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	return DefWindowProc(hWnd, uMsg, wParam, lParam);
+    return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
 LRESULT KBackground::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	if ( uMsg == WM_ERASEBKGND )
-		return EraseBackground(hWnd, uMsg, wParam, lParam);
-	else
-		return CallWindowProc(m_OldProc, hWnd, uMsg, wParam, lParam);
+    if ( uMsg == WM_ERASEBKGND )
+        return EraseBackground(hWnd, uMsg, wParam, lParam);
+    else
+        return CallWindowProc(m_OldProc, hWnd, uMsg, wParam, lParam);
 }
 
 LRESULT KBackground::BackGroundWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	KBackground * pThis = (KBackground *) GetProp(hWnd, Prop_KBackground);
+    KBackground * pThis = (KBackground *) GetProp(hWnd, Prop_KBackground);
 
-	if ( pThis )
-		return pThis->WndProc(hWnd, uMsg, wParam, lParam);
-	else
-		return DefWindowProc(hWnd, uMsg, wParam, lParam);
+    if ( pThis )
+        return pThis->WndProc(hWnd, uMsg, wParam, lParam);
+    else
+        return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
 BOOL KBackground::Attach(HWND hWnd)
 {
-	SetProp(hWnd, Prop_KBackground, this);
-	m_OldProc = (WNDPROC) SetWindowLong(hWnd, GWL_WNDPROC, (LONG) BackGroundWindowProc);
+    SetProp(hWnd, Prop_KBackground, this);
+    m_OldProc = (WNDPROC) SetWindowLong(hWnd, GWL_WNDPROC, (LONG) BackGroundWindowProc);
 
-	return m_OldProc!=NULL;
+    return m_OldProc!=NULL;
 }
 
 
 BOOL KBackground::Detatch(HWND hWnd)
 {
-	RemoveProp(hWnd, Prop_KBackground);
+    RemoveProp(hWnd, Prop_KBackground);
 
-	if ( m_OldProc )
-		return SetWindowLong(hWnd, GWL_WNDPROC, (LONG) m_OldProc) == (LONG) BackGroundWindowProc;
-	else
-		return FALSE;
+    if ( m_OldProc )
+        return SetWindowLong(hWnd, GWL_WNDPROC, (LONG) m_OldProc) == (LONG) BackGroundWindowProc;
+    else
+        return FALSE;
 }
 
 
 LRESULT KDDBBackground::EraseBackground(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	if ( m_DDB.GetBitmap() )
-	{
-		RECT rect;
-		HDC hDC = (HDC) wParam;
+    if ( m_DDB.GetBitmap() )
+    {
+        RECT rect;
+        HDC hDC = (HDC) wParam;
 
-		GetClientRect(hWnd, & rect);
-		HRGN hRgn = CreateRectRgnIndirect(&rect);
+        GetClientRect(hWnd, & rect);
+        HRGN hRgn = CreateRectRgnIndirect(&rect);
 
-		SaveDC(hDC);
-		SelectClipRgn(hDC, hRgn);
-		DeleteObject(hRgn);
+        SaveDC(hDC);
+        SelectClipRgn(hDC, hRgn);
+        DeleteObject(hRgn);
 
-		m_DDB.Draw(hDC, rect.left, rect.top, rect.right - rect.left, 
-			rect.bottom - rect.top, SRCCOPY, m_nStyle);
-		RestoreDC(hDC, -1);
+        m_DDB.Draw(hDC, rect.left, rect.top, rect.right - rect.left,
+                   rect.bottom - rect.top, SRCCOPY, m_nStyle);
+        RestoreDC(hDC, -1);
 
-		return 1;	// processed
-	}
-	else
-		return DefWindowProc(hWnd, uMsg, wParam, lParam);
+        return 1;	// processed
+    }
+    else
+        return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 

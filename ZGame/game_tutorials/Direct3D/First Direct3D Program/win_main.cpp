@@ -39,7 +39,7 @@
 			  mathematical definition.  In 3D programming this definition holds up pretty well
 			  expect that quite often additional data (such as a color, texture coordinates,
 			  bone weights, etc) are added to each vertex.
-    
+
     图元，用于渲染的基本图形形状
 	Primitive -- A base geometric shape to render.  Examples are a point, a line, or a triangle
 
@@ -219,7 +219,7 @@ LRESULT CALLBACK WinProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
 	already have a good grasp of C/C++ and Win32 programming.  I say this not to
 	discourage you, but to prevent you from hours and hours of frustration and hair pulling.
 	But do come back when you've brushed up on those topics %)
-    
+
     2015-07-02 14:42 未进行任何的优化。
 	Okay if you are still reading this you must be ready for the full 3D experience.  So
 	I wanted to just touch on a few things before I close this tutorial out.  First,

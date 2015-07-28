@@ -29,28 +29,28 @@
 
 const TBBUTTON tbButtons[] =
 {
-	{ STD_FILENEW,	 IDM_FILE_NEW,   TBSTATE_ENABLED, TBSTYLE_BUTTON, { 0, 0 }, IDS_FILENEW,   0 },
-	{ STD_HELP,      IDM_APP_ABOUT,  TBSTATE_ENABLED, TBSTYLE_BUTTON, { 0, 0 }, IDS_HELPABOUT, 0 }
+    { STD_FILENEW,	 IDM_FILE_NEW,   TBSTATE_ENABLED, TBSTYLE_BUTTON, { 0, 0 }, IDS_FILENEW,   0 },
+    { STD_HELP,      IDM_APP_ABOUT,  TBSTATE_ENABLED, TBSTYLE_BUTTON, { 0, 0 }, IDS_HELPABOUT, 0 }
 };
 
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR lpCmd, int nShow)
 {
-	KToolbar       toolbar;
-	KCanvas        canvas;
-	KStatusWindow  status;
+    KToolbar       toolbar;
+    KCanvas        canvas;
+    KStatusWindow  status;
 
-	KFrame frame(hInst, tbButtons, 2, & toolbar, & canvas, & status);
+    KFrame frame(hInst, tbButtons, 2, & toolbar, & canvas, & status);
 
-	frame.CreateEx(0, _T("ClassName"), _T("Program Name"),
-	             WS_OVERLAPPEDWINDOW,
-	             CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, 
-	             NULL, LoadMenu(hInst, MAKEINTRESOURCE(IDR_MAIN)), hInst);
+    frame.CreateEx(0, _T("ClassName"), _T("Program Name"),
+                   WS_OVERLAPPEDWINDOW,
+                   CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+                   NULL, LoadMenu(hInst, MAKEINTRESOURCE(IDR_MAIN)), hInst);
 
     frame.ShowWindow(nShow);
     frame.UpdateWindow();
 
     frame.MessageLoop();
 
-	return 0;
+    return 0;
 }

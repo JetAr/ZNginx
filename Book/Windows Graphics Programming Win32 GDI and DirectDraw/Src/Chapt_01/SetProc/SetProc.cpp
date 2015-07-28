@@ -17,47 +17,47 @@
 #include <windows.h>
 #include "..\..\include\pehack.h"
 
-int WINAPI MyMessageBoxA(HWND hWnd, LPCSTR pText, LPCSTR pCaption, 
-						 UINT uType)
+int WINAPI MyMessageBoxA(HWND hWnd, LPCSTR pText, LPCSTR pCaption,
+                         UINT uType)
 {
-	WCHAR wText[MAX_PATH];
-	WCHAR wCaption[MAX_PATH];
+    WCHAR wText[MAX_PATH];
+    WCHAR wCaption[MAX_PATH];
 
-	MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, pText, 
-		-1, wText,    MAX_PATH);
-	wcscat(wText, L" - intercepted");
+    MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, pText,
+                        -1, wText,    MAX_PATH);
+    wcscat(wText, L" - intercepted");
 
-	MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, pCaption,
-		-1, wCaption, MAX_PATH);
-	wcscat(wCaption, L" - intercepted");
+    MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, pCaption,
+                        -1, wCaption, MAX_PATH);
+    wcscat(wCaption, L" - intercepted");
 
-	return MessageBoxW(hWnd, wText, wCaption, uType);
+    return MessageBoxW(hWnd, wText, wCaption, uType);
 }
- 
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 {
-	{
-		KPEFile pe(hInstance);
-	
-		pe.SetImportAddress("user32.dll", "MessageBoxA", (FARPROC) MyMessageBoxA);
+    {
+        KPEFile pe(hInstance);
 
-		MessageBoxA(NULL, "Test", "SetImportAddress", MB_OK);
-	}
+        pe.SetImportAddress("user32.dll", "MessageBoxA", (FARPROC) MyMessageBoxA);
 
-	HMODULE hUser = GetModuleHandle("user32.dll");
+        MessageBoxA(NULL, "Test", "SetImportAddress", MB_OK);
+    }
 
-	KPEFile user32(hUser);
+    HMODULE hUser = GetModuleHandle("user32.dll");
 
-	FARPROC oldproc = GetProcAddress(hUser, "MessageBoxA");
+    KPEFile user32(hUser);
 
-	user32.SetExportAddress("MessageBoxA", (FARPROC) MyMessageBoxA);
+    FARPROC oldproc = GetProcAddress(hUser, "MessageBoxA");
 
-	FARPROC newproc = GetProcAddress(hUser, "MessageBoxA");
+    user32.SetExportAddress("MessageBoxA", (FARPROC) MyMessageBoxA);
 
-	char temp[64];
-	wsprintf(temp, "GetProcAddress(MessageBoxA)\n"
-		"changes from %x to %x", oldproc, newproc);
-	MessageBoxA(NULL, temp, "SetExportAddress", MB_OK);
+    FARPROC newproc = GetProcAddress(hUser, "MessageBoxA");
 
-	return 0;
+    char temp[64];
+    wsprintf(temp, "GetProcAddress(MessageBoxA)\n"
+             "changes from %x to %x", oldproc, newproc);
+    MessageBoxA(NULL, temp, "SetExportAddress", MB_OK);
+
+    return 0;
 }

@@ -32,7 +32,7 @@ HDC WINAPI gdiPlaySpoolStream(
 
 /*
   Header: 1A 1B 1B 53 70 6F 6F 6C					     ...Spool
-  DC:	  05 00 00 02 len          data^(len-8)  	
+  DC:	  05 00 00 02 len          data^(len-8)
   STD:    53 54 44 02 len		   num1 num2 title^(len-16)
   {
     STP:    53 54 50 02 len        data^(len-8)
@@ -124,139 +124,139 @@ int Slient = FALSE;
 
 void Report_Dword(int id, DWORD val)
 {
-	HWND hwnd_EmfScope;
+    HWND hwnd_EmfScope;
 
-	if (Slient) return;
+    if (Slient) return;
 
-	hwnd_EmfScope = (HWND) GetProp(hwnd_Spooler, Prop_Client);
+    hwnd_EmfScope = (HWND) GetProp(hwnd_Spooler, Prop_Client);
 
-	if (IsWindow(hwnd_EmfScope))
-		SendMessage(hwnd_EmfScope, WM_USER, id, val);
+    if (IsWindow(hwnd_EmfScope))
+        SendMessage(hwnd_EmfScope, WM_USER, id, val);
 }
 
 void CopyData(unsigned typ, void *buffer, int length)
 {
-	HWND hwnd_EmfScope;
+    HWND hwnd_EmfScope;
 
-	hwnd_EmfScope = (HWND) GetProp(hwnd_Spooler, Prop_Client);
+    hwnd_EmfScope = (HWND) GetProp(hwnd_Spooler, Prop_Client);
 
-	if (IsWindow(hwnd_EmfScope))
-	{
-		COPYDATASTRUCT cd;
+    if (IsWindow(hwnd_EmfScope))
+    {
+        COPYDATASTRUCT cd;
 
-		cd.dwData = typ;
-		cd.cbData = length;
-		cd.lpData = buffer;
+        cd.dwData = typ;
+        cd.cbData = length;
+        cd.lpData = buffer;
 
-		SendMessage(hwnd_EmfScope, WM_COPYDATA, (WPARAM)hwnd_Spooler, (LPARAM)&cd);
-	}
+        SendMessage(hwnd_EmfScope, WM_COPYDATA, (WPARAM)hwnd_Spooler, (LPARAM)&cd);
+    }
 }
 
 
 void Report_String(int id, const char *filename)
 {
-	HWND  hwnd_EmfScope;
-	
-	// check for special ItsMe tag to ignore
-	if (id==id_title)
-		Slient = strncmp(filename, ItsMe, sizeof(ItsMe))==0;
-	
-	if (Slient) return;
+    HWND  hwnd_EmfScope;
 
-	hwnd_EmfScope = (HWND) GetProp(hwnd_Spooler, Prop_Client); 
+    // check for special ItsMe tag to ignore
+    if (id==id_title)
+        Slient = strncmp(filename, ItsMe, sizeof(ItsMe))==0;
 
-	if (IsWindow(hwnd_EmfScope)) 
-	{
-		DWORD curname[32];
-		int   i;
+    if (Slient) return;
 
-		memset(curname, 0, sizeof(curname));
-		strcpy((char *)curname, filename);
+    hwnd_EmfScope = (HWND) GetProp(hwnd_Spooler, Prop_Client);
 
-		for (i=0; curname[i]; i++)
-			SendMessage(hwnd_EmfScope, WM_USER, id, curname[i]);
-		
-		SendMessage(hwnd_EmfScope, WM_USER, id, 0);
-	}		
+    if (IsWindow(hwnd_EmfScope))
+    {
+        DWORD curname[32];
+        int   i;
+
+        memset(curname, 0, sizeof(curname));
+        strcpy((char *)curname, filename);
+
+        for (i=0; curname[i]; i++)
+            SendMessage(hwnd_EmfScope, WM_USER, id, curname[i]);
+
+        SendMessage(hwnd_EmfScope, WM_USER, id, 0);
+    }
 }
 
 
 BOOL ListEmfFiles(DWORD *lpcbBuf, LPSTR lpszSpoolFile)
 {
-	BOOL HasEmf = FALSE;
+    BOOL HasEmf = FALSE;
 
-	// if lpcbBuf!=NULL, lpszSpoolFile is the .spl file data
-	if (lpcbBuf)
-	{
-		DWORD len = *lpcbBuf;
+    // if lpcbBuf!=NULL, lpszSpoolFile is the .spl file data
+    if (lpcbBuf)
+    {
+        DWORD len = *lpcbBuf;
 
-		// check for valid pointer
-		if (len>=8 && (!IsBadReadPtr(lpszSpoolFile, len)))
-		{
-			DWORD    *p;
-			BOOL     more;
+        // check for valid pointer
+        if (len>=8 && (!IsBadReadPtr(lpszSpoolFile, len)))
+        {
+            DWORD    *p;
+            BOOL     more;
 
-			// check if we still have page to despool, may reach 'END'
-			if (strncmp(lpszSpoolFile, "\x1A\x1B\x1BSpool", 8)==0)
-			{
-				p = (DWORD *)(lpszSpoolFile + 8);         // first record;
-			}
-			else
-				p = (DWORD *)lpszSpoolFile;
+            // check if we still have page to despool, may reach 'END'
+            if (strncmp(lpszSpoolFile, "\x1A\x1B\x1BSpool", 8)==0)
+            {
+                p = (DWORD *)(lpszSpoolFile + 8);         // first record;
+            }
+            else
+                p = (DWORD *)lpszSpoolFile;
 
-			do 
-			{
-				more = TRUE;
+            do
+            {
+                more = TRUE;
 
-				if ((*p==REC_DC) || (*p==REC_STD))
-					CopyData(*p, p, p[1]);
-				
-				switch (*p)
-				{
-					case REC_DC:
-					case REC_STP:
-					case REC_ENP: 
-						p = (DWORD *)((char *)p + p[1]);
-						break;
+                if ((*p==REC_DC) || (*p==REC_STD))
+                    CopyData(*p, p, p[1]);
 
-					case REC_FTM:
-						Report_String(id_emffile, (LPCTSTR) (p+2)); 
-						p = (DWORD *)((char *)p + p[1]);
-						HasEmf = TRUE;
-						more = FALSE;					// one page at a time, we will be called again
-						break;
+                switch (*p)
+                {
+                case REC_DC:
+                case REC_STP:
+                case REC_ENP:
+                    p = (DWORD *)((char *)p + p[1]);
+                    break;
 
-					case REC_STD:
-						Report_String(id_title, (LPCTSTR)(p+4));
-						p = (DWORD *)((char *)p + p[1]);
-						break;
-							
-					case REC_END: 
-					default:
-						more = FALSE;
-						break;
-				}
-			}
-			while (more);
-		}
-	}
-	else
-	{
-		// lpszSpoolFile should be actual .spl file name			
-		if (lpszSpoolFile)
-		{
-			Report_String(id_emffile, lpszSpoolFile);
-			HasEmf = TRUE;
-		}
-	}
+                case REC_FTM:
+                    Report_String(id_emffile, (LPCTSTR) (p+2));
+                    p = (DWORD *)((char *)p + p[1]);
+                    HasEmf = TRUE;
+                    more = FALSE;					// one page at a time, we will be called again
+                    break;
 
-	return HasEmf;
+                case REC_STD:
+                    Report_String(id_title, (LPCTSTR)(p+4));
+                    p = (DWORD *)((char *)p + p[1]);
+                    break;
+
+                case REC_END:
+                default:
+                    more = FALSE;
+                    break;
+                }
+            }
+            while (more);
+        }
+    }
+    else
+    {
+        // lpszSpoolFile should be actual .spl file name
+        if (lpszSpoolFile)
+        {
+            Report_String(id_emffile, lpszSpoolFile);
+            HasEmf = TRUE;
+        }
+    }
+
+    return HasEmf;
 }
 
 
 inline void Report_Activity(int act)
 {
-	Report_Dword(id_activity, act);
+    Report_Dword(id_activity, act);
 }
 
 
@@ -269,34 +269,34 @@ HDC WINAPI MygdiPlaySpoolStream(
     HDC     hDC
 )
 {
-	HDC   rslt;
-	DWORD timing;
-	
-	if (lpszDevice)
-	{		
-		Report_String(id_device, lpszDevice);
-		timing = ListEmfFiles(lpcbBuf, lpszSpoolFile);
+    HDC   rslt;
+    DWORD timing;
 
-		Report_Dword(id_activity, act_despool); 
-	}
-	else
-	{
-		Report_Dword(id_activity, act_delete);
+    if (lpszDevice)
+    {
+        Report_String(id_device, lpszDevice);
+        timing = ListEmfFiles(lpcbBuf, lpszSpoolFile);
 
-		timing = 0;
-	}
-	
-	if (timing)
-		timing = GetTickCount();
+        Report_Dword(id_activity, act_despool);
+    }
+    else
+    {
+        Report_Dword(id_activity, act_delete);
 
-	rslt  = gdiPlaySpoolStream(lpszDevice, lpszOutput, lpszSpoolFile, JobId, lpcbBuf, hDC);
+        timing = 0;
+    }
 
-	if (timing)
-		Report_Dword(id_time, GetTickCount() - timing);
-	
-	Report_Dword(id_activity, act_done);
+    if (timing)
+        timing = GetTickCount();
 
-	return rslt;
+    rslt  = gdiPlaySpoolStream(lpszDevice, lpszOutput, lpszSpoolFile, JobId, lpcbBuf, hDC);
+
+    if (timing)
+        Report_Dword(id_time, GetTickCount() - timing);
+
+    Report_Dword(id_activity, act_done);
+
+    return rslt;
 }
 
 

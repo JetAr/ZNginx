@@ -125,8 +125,8 @@ bool LoadABitmap(BMP *Bmp, char *szFile)
 {
     memset(Bmp,0, sizeof(BMP));								// This sets the structure to 0.  memset means "memory set()"
     // The sizeof() function gets the size in bytes of the structure BMP
-	
-	//z bitmap在image之前都有一个头，存放了bitmap的类型信息
+
+    //z bitmap在image之前都有一个头，存放了bitmap的类型信息
     // The rest of this stuff is reading in the bitmap.  Each bitmap has
     // A header before the image in the file that holds the information about the type of bitmap.
     // I won't go into to much detail about it, because you can get the information off the internet.
@@ -134,7 +134,7 @@ bool LoadABitmap(BMP *Bmp, char *szFile)
     // Then the image bits.  The image bits are the actual pixels.
 
     // This opens the file and assigns a file pointer to our structure.  Just like fopen(), but this is better.
-	// 打开文件。
+    // 打开文件。
     Bmp->hFilePointer = CreateFile(szFile, GENERIC_READ, FILE_SHARE_READ, NULL,
                                    OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL|FILE_FLAG_SEQUENTIAL_SCAN, NULL);
     // This checks if the file pointer is valid, if we didn't find the file, return FALSE , or 0.
@@ -142,7 +142,7 @@ bool LoadABitmap(BMP *Bmp, char *szFile)
     // This function returns a handle to the file.  We can choose to view ALL of the file, or parts of it.
     // Later, in animation we will utilize the option to only view parts of the image with this function.
     //z 使用 filemapping ，有什么好处了？看过很多遍了，总是忘记哈。。。
-	Bmp->hFileMapping = CreateFileMapping(Bmp->hFilePointer, NULL, PAGE_READONLY, 0, 0, NULL);
+    Bmp->hFileMapping = CreateFileMapping(Bmp->hFilePointer, NULL, PAGE_READONLY, 0, 0, NULL);
     // Here we get a handle to the beginning of the file, so we know where to start reading in the header information.
     Bmp->BeginOfFile  = (PUCHAR)MapViewOfFile(Bmp->hFileMapping, FILE_MAP_READ, 0, 0, 0);
     // Now we cast the handle to the beginning of the file as a bitmap header structure.  Now we have the file header stored.

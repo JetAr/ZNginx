@@ -7,7 +7,7 @@
 //		Environment:
 //			Microsoft Windows NT 4.0, Visual C++ 5.0
 //
-//		Revision 
+//		Revision
 #include "stdafx.h"
 #include "ColorStatic.h"
 
@@ -22,10 +22,10 @@ static char THIS_FILE[] = __FILE__;
 //
 CColorStatic::CColorStatic()
 {
-	m_Font = NULL;
-	m_BackgroundColor = RGB(255, 255, 255);	// white color
-	m_TextColor = RGB(0, 0, 0);				// black text
-	m_brBackgroundBrush.CreateSolidBrush(m_BackgroundColor);
+    m_Font = NULL;
+    m_BackgroundColor = RGB(255, 255, 255);	// white color
+    m_TextColor = RGB(0, 0, 0);				// black text
+    m_brBackgroundBrush.CreateSolidBrush(m_BackgroundColor);
 }
 
 //
@@ -33,20 +33,20 @@ CColorStatic::CColorStatic()
 //
 BOOL CColorStatic::Attach(CWnd* pParent, UINT nID, CFont* font, COLORREF textcolor, COLORREF backgroundcolor)
 {
-	if (!SubclassDlgItem(nID, pParent))
-		return FALSE;
+    if (!SubclassDlgItem(nID, pParent))
+        return FALSE;
 
-	m_Font = font;
-	m_BackgroundColor = backgroundcolor;	
-	m_TextColor = textcolor;
+    m_Font = font;
+    m_BackgroundColor = backgroundcolor;
+    m_TextColor = textcolor;
 
-	m_brBackgroundBrush.DeleteObject();
-	m_brBackgroundBrush.CreateSolidBrush(m_BackgroundColor);
+    m_brBackgroundBrush.DeleteObject();
+    m_brBackgroundBrush.CreateSolidBrush(m_BackgroundColor);
 
-	if (m_Font)
-		SetFont(m_Font);
+    if (m_Font)
+        SetFont(m_Font);
 
-	return TRUE;
+    return TRUE;
 }
 
 //
@@ -54,14 +54,14 @@ BOOL CColorStatic::Attach(CWnd* pParent, UINT nID, CFont* font, COLORREF textcol
 //
 CColorStatic::~CColorStatic()
 {
-	m_brBackgroundBrush.DeleteObject();
+    m_brBackgroundBrush.DeleteObject();
 }
 
 
 BEGIN_MESSAGE_MAP(CColorStatic, CStatic)
-	//{{AFX_MSG_MAP(CColorStatic)
-	ON_WM_CTLCOLOR_REFLECT()
-	//}}AFX_MSG_MAP
+    //{{AFX_MSG_MAP(CColorStatic)
+    ON_WM_CTLCOLOR_REFLECT()
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 //
@@ -69,7 +69,7 @@ END_MESSAGE_MAP()
 //
 void CColorStatic::SetText(CString text)
 {
-	SetWindowText(text);
+    SetWindowText(text);
 }
 
 //
@@ -77,10 +77,10 @@ void CColorStatic::SetText(CString text)
 //
 void CColorStatic::SetBkColor(COLORREF color)
 {
-	m_brBackgroundBrush.DeleteObject();
-	m_brBackgroundBrush.CreateSolidBrush(color);
-	m_BackgroundColor = color;
-	Invalidate();
+    m_brBackgroundBrush.DeleteObject();
+    m_brBackgroundBrush.CreateSolidBrush(color);
+    m_BackgroundColor = color;
+    Invalidate();
 }
 
 //
@@ -88,17 +88,17 @@ void CColorStatic::SetBkColor(COLORREF color)
 //
 void CColorStatic::SetTextColor(COLORREF color)
 {
-	m_TextColor = color;
-	Invalidate();
+    m_TextColor = color;
+    Invalidate();
 }
-   
+
 //
 // Respond to the WM_CTLCOLOR message which is called when the control need
 // to be painted
 //
-HBRUSH CColorStatic::CtlColor(CDC* pDC, UINT nCtlColor) 
+HBRUSH CColorStatic::CtlColor(CDC* pDC, UINT nCtlColor)
 {
-	pDC->SetTextColor(m_TextColor);
-	pDC->SetBkColor(m_BackgroundColor);
-	return (HBRUSH) m_brBackgroundBrush;
+    pDC->SetTextColor(m_TextColor);
+    pDC->SetBkColor(m_BackgroundColor);
+    return (HBRUSH) m_brBackgroundBrush;
 }

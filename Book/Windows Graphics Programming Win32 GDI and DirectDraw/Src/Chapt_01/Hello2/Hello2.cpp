@@ -21,9 +21,9 @@
 void CenterText(HDC hDC, int x, int y, LPCTSTR szFace, LPCTSTR szMessage, int point)
 {
     HFONT hFont = CreateFont(- point * GetDeviceCaps(hDC, LOGPIXELSY) / 72,
-							 0, 0, 0, FW_BOLD, TRUE, FALSE, FALSE, 
-							 ANSI_CHARSET, OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, 
-							 PROOF_QUALITY, VARIABLE_PITCH, szFace);
+                             0, 0, 0, FW_BOLD, TRUE, FALSE, FALSE,
+                             ANSI_CHARSET, OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS,
+                             PROOF_QUALITY, VARIABLE_PITCH, szFace);
     assert(hFont);
 
     HGDIOBJ hOld = SelectObject(hDC, hFont);
@@ -50,9 +50,9 @@ extern "C" void WinMainCRTStartup()
     assert(hDC);
 
     CenterText(hDC, GetSystemMetrics(SM_CXSCREEN) / 2,
-		    GetSystemMetrics(SM_CYSCREEN) / 2,
-		    szFace, szMessage, 72);
-    
+               GetSystemMetrics(SM_CYSCREEN) / 2,
+               szFace, szMessage, 72);
+
     ReleaseDC(NULL, hDC);
     ExitProcess(0);
 }

@@ -19,7 +19,7 @@
 #include <ddraw.h>
 #include <stdio.h>
 
-// IDirectDraw 
+// IDirectDraw
 // IDirectDraw2
 // IDirectDraw4
 
@@ -37,105 +37,105 @@
 
 void DumpInterface(const char * name, const IID & iid, const void * vtbl, int size)
 {
-	static int first = 1;
+    static int first = 1;
 
-	if ( first )
-	{
-		printf("[ddraw]\n");
-		first = 0;
-	}
+    if ( first )
+    {
+        printf("[ddraw]\n");
+        first = 0;
+    }
 
-	const unsigned * vTable = (const unsigned *) vtbl;
+    const unsigned * vTable = (const unsigned *) vtbl;
 
-	printf("%08x %08x %d, %s\n", vTable, vTable[0], size/4, name);
+    printf("%08x %08x %d, %s\n", vTable, vTable[0], size/4, name);
 
-	printf("         {%08x-%04x-%04x-%02x-%02x-%02x-%02x-%02x-%02x-%02x-%02x}\n",
-		iid.Data1, iid.Data2, iid.Data3, 
-		iid.Data4[0], iid.Data4[1], iid.Data4[2], iid.Data4[3],
-		iid.Data4[4], iid.Data4[5], iid.Data4[6], iid.Data4[7]);
+    printf("         {%08x-%04x-%04x-%02x-%02x-%02x-%02x-%02x-%02x-%02x-%02x}\n",
+           iid.Data1, iid.Data2, iid.Data3,
+           iid.Data4[0], iid.Data4[1], iid.Data4[2], iid.Data4[3],
+           iid.Data4[4], iid.Data4[5], iid.Data4[6], iid.Data4[7]);
 }
 
 
 HRESULT QueryDirectDrawVTables(HWND hWnd)
 {
-	IDirectDraw * lpdd;
+    IDirectDraw * lpdd;
 
-	HRESULT hr = DirectDrawCreate(NULL, & lpdd, NULL);
+    HRESULT hr = DirectDrawCreate(NULL, & lpdd, NULL);
 
-	if ( hr!=DD_OK )
-		return hr;
+    if ( hr!=DD_OK )
+        return hr;
 
-	IDirectDraw_SetCooperativeLevel(lpdd, hWnd, DDSCL_NORMAL);
-	IDirectDraw_SetDisplayMode(lpdd, 1152, 864, 24);
+    IDirectDraw_SetCooperativeLevel(lpdd, hWnd, DDSCL_NORMAL);
+    IDirectDraw_SetDisplayMode(lpdd, 1152, 864, 24);
 
-	DumpInterface("IID_IDirectDraw", IID_IDirectDraw, lpdd->lpVtbl, sizeof(* lpdd->lpVtbl) );
+    DumpInterface("IID_IDirectDraw", IID_IDirectDraw, lpdd->lpVtbl, sizeof(* lpdd->lpVtbl) );
 
-	{
-		IDirectDraw2 * lpdd2;
+    {
+        IDirectDraw2 * lpdd2;
 
-		IDirectDraw_QueryInterface(lpdd, IID_IDirectDraw2, (void **) & lpdd2);
+        IDirectDraw_QueryInterface(lpdd, IID_IDirectDraw2, (void **) & lpdd2);
 
-		DumpInterface("IID_IDirectDraw2", IID_IDirectDraw2, lpdd2->lpVtbl, sizeof(* lpdd2->lpVtbl));
+        DumpInterface("IID_IDirectDraw2", IID_IDirectDraw2, lpdd2->lpVtbl, sizeof(* lpdd2->lpVtbl));
 
-		IDirectDraw2_Release(lpdd2);
-	}
+        IDirectDraw2_Release(lpdd2);
+    }
 
-	{
-		IDirectDraw4 * lpdd4;
+    {
+        IDirectDraw4 * lpdd4;
 
-		IDirectDraw_QueryInterface(lpdd, IID_IDirectDraw4, (void **) & lpdd4);
+        IDirectDraw_QueryInterface(lpdd, IID_IDirectDraw4, (void **) & lpdd4);
 
-		DumpInterface("IID_IDirectDraw4", IID_IDirectDraw4, lpdd4->lpVtbl, sizeof(* lpdd4->lpVtbl));
+        DumpInterface("IID_IDirectDraw4", IID_IDirectDraw4, lpdd4->lpVtbl, sizeof(* lpdd4->lpVtbl));
 
-		IDirectDraw4_Release(lpdd4);
-	}
+        IDirectDraw4_Release(lpdd4);
+    }
 
-	{
-		DDSURFACEDESC ddsd;
-		ddsd.dwSize = sizeof(ddsd);
-		ddsd.dwFlags = DDSD_CAPS;
-		ddsd.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
+    {
+        DDSURFACEDESC ddsd;
+        ddsd.dwSize = sizeof(ddsd);
+        ddsd.dwFlags = DDSD_CAPS;
+        ddsd.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
 
-		IDirectDrawSurface * p;
+        IDirectDrawSurface * p;
 
-		hr = IDirectDraw_CreateSurface(lpdd, &ddsd, & p, NULL);
+        hr = IDirectDraw_CreateSurface(lpdd, &ddsd, & p, NULL);
 
-		if ( hr==DD_OK )
-		{
-			DumpInterface("IID_IDirectDrawSurface", IID_IDirectDrawSurface, p->lpVtbl, sizeof(* p->lpVtbl));
+        if ( hr==DD_OK )
+        {
+            DumpInterface("IID_IDirectDrawSurface", IID_IDirectDrawSurface, p->lpVtbl, sizeof(* p->lpVtbl));
 
-			IDirectDrawSurface_Release(p);
-		}
-	}
+            IDirectDrawSurface_Release(p);
+        }
+    }
 
-	{
-		DDSURFACEDESC2 ddsd;
-		ddsd.dwSize = sizeof(ddsd);
-		ddsd.dwFlags = DDSD_CAPS;
-		ddsd.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
+    {
+        DDSURFACEDESC2 ddsd;
+        ddsd.dwSize = sizeof(ddsd);
+        ddsd.dwFlags = DDSD_CAPS;
+        ddsd.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
 
-		IDirectDrawSurface4 * p;
+        IDirectDrawSurface4 * p;
 
-		IDirectDraw4 * lpdd4;
+        IDirectDraw4 * lpdd4;
 
-		IDirectDraw_QueryInterface(lpdd, IID_IDirectDraw4, (void **) & lpdd4);
+        IDirectDraw_QueryInterface(lpdd, IID_IDirectDraw4, (void **) & lpdd4);
 
-		hr = IDirectDraw4_CreateSurface(lpdd4, &ddsd, & p, NULL);
+        hr = IDirectDraw4_CreateSurface(lpdd4, &ddsd, & p, NULL);
 
-		if ( hr==DD_OK )
-		{
-			DumpInterface("IID_IDirectDrawSurface4", IID_IDirectDrawSurface4, p->lpVtbl, sizeof(* p->lpVtbl));
+        if ( hr==DD_OK )
+        {
+            DumpInterface("IID_IDirectDrawSurface4", IID_IDirectDrawSurface4, p->lpVtbl, sizeof(* p->lpVtbl));
 
-			IDirectDrawSurface4_Release(p);
-		}
+            IDirectDrawSurface4_Release(p);
+        }
 
-		IDirectDraw4_Release(lpdd4);
-	}
+        IDirectDraw4_Release(lpdd4);
+    }
 
 
-	IDirectDraw_Release(lpdd);
+    IDirectDraw_Release(lpdd);
 
-	return DD_OK;
+    return DD_OK;
 }
 
 #define DEF_GUID(name, l, w1, w2, b1, b2, b3, b4, b5, b6, b7, b8)  const GUID name = { l, w1, w2, { b1, b2,  b3,  b4,  b5,  b6,  b7,  b8 } };
@@ -155,9 +155,9 @@ DEF_GUID( IID_IDirectDrawGammaControl,  0x69C11C3E,0xB46B,0x11D1,0xAD,0x7A,0x00,
 
 int main(int argc, char * argv[], char * envp[])
 {
-	QueryDirectDrawVTables(GetDesktopWindow());
-	
-	return 0;
+    QueryDirectDrawVTables(GetDesktopWindow());
+
+    return 0;
 }
 
 

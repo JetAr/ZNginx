@@ -26,18 +26,19 @@
 #include "Rop.h"
 
 typedef struct
-  { unsigned long  ropcode;
+{
+    unsigned long  ropcode;
     char          *formula;
     char          *name;
-  } RopItem;
-    
-   
+} RopItem;
+
+
 const RopItem RopDict[256] =
 {
     { 0x00000042, "0",          "BLACKNESS"     },
     { 0x00010289, "DPSoon",     NULL            },
     { 0x00020C89, "DPSona",     NULL            },
-    { 0x000300AA, "PSon",       NULL            },  
+    { 0x000300AA, "PSon",       NULL            },
     { 0x00040C88, "SDPona",     NULL            },
     { 0x000500A9, "DPon",       NULL            },
     { 0x00060865, "PDSxnon",    NULL            },
@@ -50,7 +51,7 @@ const RopItem RopDict[256] =
     { 0x000D0B25, "PDSnaon",    NULL            },
     { 0x000E08A5, "PDSonon",    NULL            },
     { 0x000F0001, "Pn",         NULL            },
-    
+
     { 0x00100C85, "PDSona",     NULL            },
     { 0x001100A6, "DSon",       "NOTSRCERASE"   },
     { 0x00120868, "SDPxnon",    NULL            },
@@ -67,7 +68,7 @@ const RopItem RopDict[256] =
     { 0x001D0766, "DSPDxaxn",   NULL            },
     { 0x001E01A5, "PDSox",      NULL            },
     { 0x001F0385, "PDSoan",     NULL            },
-    
+
     { 0x00200F09, "DPSnaa",     NULL            },
     { 0x00210248, "SDPxon",     NULL            },
     { 0x00220326, "DSna",       NULL            },
@@ -85,7 +86,7 @@ const RopItem RopDict[256] =
     { 0x002E064A, "PSDPxox",    NULL            },
     { 0x002F0E2A, "PSDnoan",    NULL            },
 
-    
+
     { 0x0030032A, "PSna",       NULL            },
     { 0x00310B28, "SDPnaon",    NULL            },
     { 0x00320688, "SDPSoox",    NULL            },
@@ -102,7 +103,7 @@ const RopItem RopDict[256] =
     { 0x003D18A4, "SPDSonox",   NULL            },
     { 0x003E1B24, "SPDSnaox",   NULL            },
     { 0x003F00EA, "PSan",       NULL            },
-    
+
     { 0x00400F0A, "PSDnaa",     NULL            },
     { 0x00410249, "DPSxon",     NULL            },
     { 0x00420D5D, "SDxPDxa",    NULL            },
@@ -119,13 +120,13 @@ const RopItem RopDict[256] =
     { 0x004D1954, "SSPxDSxoxn", NULL            },
     { 0x004E0645, "PDSPxox",    NULL            },
     { 0x004F0E25, "PDSnoan",    NULL            },
-    
+
     { 0x00500325, "PDna",       NULL            },
     { 0x00510B26, "DSPnaon",    NULL            },
     { 0x005206C9, "DPSDaox",    NULL            },
     { 0x00530764, "SPDSxaxn",   NULL            },
     { 0x005408A9, "DPSonon",    NULL            },
-    { 0x00550009, "Dn",         "DSTINVERT"     }, 
+    { 0x00550009, "Dn",         "DSTINVERT"     },
     { 0x005601A9, "DPSox",      NULL            },
     { 0x00570389, "DPSoan",     NULL            },
     { 0x00580785, "PDSPoax",    NULL            },
@@ -136,7 +137,7 @@ const RopItem RopDict[256] =
     { 0x005D0E29, "DPSnoan",    NULL            },
     { 0x005E1B29, "DPSDnaox",   NULL            },
     { 0x005F00E9, "DPan",       NULL            },
-    
+
     { 0x00600365, "PDSxa",      NULL            },
     { 0x006116C6, "DSPDSaoxxn", NULL            },
     { 0x00620786, "DSPDoax",    NULL            },
@@ -153,7 +154,7 @@ const RopItem RopDict[256] =
     { 0x006D1785, "PDSPDoaxxn", NULL            },
     { 0x006E1E28, "SDPSnoax",   NULL            },
     { 0x006F0C65, "PDSxnan",    NULL            },
-    
+
     { 0x00700CC5, "PDSana",     NULL            },
     { 0x00711D5C, "SSDxPDxaxn", NULL            },
     { 0x00720648, "SDPSxox",    NULL            },
@@ -170,7 +171,7 @@ const RopItem RopDict[256] =
     { 0x007D0C69, "DPSxnan",    NULL            },
     { 0x007E0955, "SPxDSxo",    NULL            },
     { 0x007F03C9, "DPSaan",     NULL            },
-    
+
     { 0x008003E9, "DPSaa",      NULL            },
     { 0x00810975, "SPxDSxon",   NULL            },
     { 0x00820C49, "DPSxna",     NULL            },
@@ -187,7 +188,7 @@ const RopItem RopDict[256] =
     { 0x008D0668, "SDPSxoxn",   NULL            },
     { 0x008E1D7C, "SSDxPDxax",  NULL            },
     { 0x008F0CE5, "PDSanan",    NULL            },
-    
+
     { 0x00900C45, "PDSxna",     NULL            },
     { 0x00911E08, "SDPSnoaxn",  NULL            },
     { 0x009217A9, "DPSDPoaxx",  NULL            },
@@ -220,7 +221,7 @@ const RopItem RopDict[256] =
     { 0x00AD06E9, "DPSDaoxn",   NULL            },
     { 0x00AE0B06, "DSPnao",     NULL            },
     { 0x00AF0229, "DPno",       NULL            },
-    
+
     { 0x00B00E05, "PDSnoa",     NULL            },
     { 0x00B10665, "PDSPxoxn",   NULL            },
     { 0x00B21974, "SSPxDSxox",  NULL            },
@@ -237,7 +238,7 @@ const RopItem RopDict[256] =
     { 0x00BD0D7D, "SDxPDxan",   NULL            },
     { 0x00BE0269, "DPSxo",      NULL            },
     { 0x00BF08C9, "DPSano",     NULL            },
-    
+
     { 0x00C000CA, "PSa",        "MERGECOPY"     },
     { 0x00C11B04, "SPDSnaoxn",  NULL            },
     { 0x00C21884, "SPDSonoxn",  NULL            },
@@ -254,7 +255,7 @@ const RopItem RopDict[256] =
     { 0x00CD0888, "SDPono",     NULL            },
     { 0x00CE0B08, "SDPnao",     NULL            },
     { 0x00CF0224, "SPno",       NULL            },
-    
+
     { 0x00D00E0A, "PSDnoa",     NULL            },
     { 0x00D1066A, "PSDPxoxn",   NULL            },
     { 0x00D20705, "PDSnax",     NULL            },
@@ -271,7 +272,7 @@ const RopItem RopDict[256] =
     { 0x00DD0228, "SDno",       NULL            },
     { 0x00DE0268, "SDPxo",      NULL            },
     { 0x00DF08C8, "SDPano",     NULL            },
-    
+
     { 0x00E003A5, "PDSoa",      NULL            },
     { 0x00E10185, "PDSoxn",     NULL            },
     { 0x00E20746, "DSPDxax",    NULL            },
@@ -288,7 +289,7 @@ const RopItem RopDict[256] =
     { 0x00ED0848, "SDPxno",     NULL            },
     { 0x00EE0086, "DSo",        "SRCPAINT"      },
     { 0x00EF0A08, "SDPnoo",     NULL            },
-    
+
     { 0x00F00021, "P",          "PATCOPY"       },
     { 0x00F10885, "PDSono",     NULL            },
     { 0x00F20B05, "PDSnao",     NULL            },
@@ -309,38 +310,38 @@ const RopItem RopDict[256] =
 
 DWORD GetRopCode(BYTE ropindex)
 {
-	return RopDict[ropindex].ropcode;
+    return RopDict[ropindex].ropcode;
 }
 
 
 void ChannelSplit(KDIB & dib, HDC hDC)
 {
-	KBitmapInfo bmi;
-	KDIBSection dibsec;
-	int			width, height;
+    KBitmapInfo bmi;
+    KDIBSection dibsec;
+    int			width, height;
 
-	bmi.SetFormat(dib.GetWidth(), dib.GetHeight(), 8, BI_RGB);
-	bmi.SetGrayScale(RGB(0xFF, 0, 0));
+    bmi.SetFormat(dib.GetWidth(), dib.GetHeight(), 8, BI_RGB);
+    bmi.SetGrayScale(RGB(0xFF, 0, 0));
 
-	dibsec.CreateDIBSection(NULL, bmi.GetBMI(), DIB_RGB_COLORS, NULL, NULL);
-	
-	dibsec.Prepare(width, height);
-	dibsec.SetColorTable();
+    dibsec.CreateDIBSection(NULL, bmi.GetBMI(), DIB_RGB_COLORS, NULL, NULL);
 
-	KGDIObject red(hDC, CreateSolidBrush(RGB(0xFF, 0, 0)));
-	dib.DrawDIB(dibsec.m_hMemDC, 0, 0, width, height, 0, 0, width, height, MERGECOPY);
+    dibsec.Prepare(width, height);
+    dibsec.SetColorTable();
 
-	RGBQUAD gray[256];
-	for (int i=0; i<256; i++)
-	{
-		gray[i].rgbRed		= i;
-		gray[i].rgbGreen	= i;
-		gray[i].rgbBlue		= i;
-		gray[i].rgbReserved = 0;
-	}		
-	SetDIBColorTable(dibsec.m_hMemDC, 0, 256, gray);
+    KGDIObject red(hDC, CreateSolidBrush(RGB(0xFF, 0, 0)));
+    dib.DrawDIB(dibsec.m_hMemDC, 0, 0, width, height, 0, 0, width, height, MERGECOPY);
 
-	BitBlt(hDC, 0, 0, width, height, dibsec.m_hMemDC, 0, 0, SRCCOPY);
+    RGBQUAD gray[256];
+    for (int i=0; i<256; i++)
+    {
+        gray[i].rgbRed		= i;
+        gray[i].rgbGreen	= i;
+        gray[i].rgbBlue		= i;
+        gray[i].rgbReserved = 0;
+    }
+    SetDIBColorTable(dibsec.m_hMemDC, 0, 256, gray);
+
+    BitBlt(hDC, 0, 0, width, height, dibsec.m_hMemDC, 0, 0, SRCCOPY);
 }
 
 
@@ -348,426 +349,432 @@ void ChannelSplit(KDIB & dib, HDC hDC)
 // Mask should be RGB(255, 0, 0), RGB(0, 255, 0), or RGB(0, 0, 255)
 HBITMAP ChannelSplit(const BITMAPINFO * pBMI, const void * pBits, COLORREF Mask, HDC hMemDC)
 {
-	typedef struct { BITMAPINFOHEADER bmiHeader;
-				     RGBQUAD		  bmiColor[256];
-	} BMI8BPP;
+    typedef struct
+    {
+        BITMAPINFOHEADER bmiHeader;
+        RGBQUAD		  bmiColor[256];
+    } BMI8BPP;
 
-	int width  = pBMI->bmiHeader.biWidth;
-	int height = pBMI->bmiHeader.biHeight;
+    int width  = pBMI->bmiHeader.biWidth;
+    int height = pBMI->bmiHeader.biHeight;
 
-	BMI8BPP bmi8bpp;
+    BMI8BPP bmi8bpp;
 
-	memset(&bmi8bpp, 0, sizeof(bmi8bpp));
+    memset(&bmi8bpp, 0, sizeof(bmi8bpp));
 
-	bmi8bpp.bmiHeader.biSize        = sizeof(BITMAPINFOHEADER);
-	bmi8bpp.bmiHeader.biWidth       = width;
-	bmi8bpp.bmiHeader.biHeight      = height;
-	bmi8bpp.bmiHeader.biPlanes      = 1;
-	bmi8bpp.bmiHeader.biBitCount    = 8;
-	bmi8bpp.bmiHeader.biCompression = BI_RGB;
+    bmi8bpp.bmiHeader.biSize        = sizeof(BITMAPINFOHEADER);
+    bmi8bpp.bmiHeader.biWidth       = width;
+    bmi8bpp.bmiHeader.biHeight      = height;
+    bmi8bpp.bmiHeader.biPlanes      = 1;
+    bmi8bpp.bmiHeader.biBitCount    = 8;
+    bmi8bpp.bmiHeader.biCompression = BI_RGB;
 
-	for (int i=0; i<256; i++) // color table for one of the RGB channels
-	{
-		bmi8bpp.bmiColor[i].rgbRed	 = i & GetRValue(Mask);
-		bmi8bpp.bmiColor[i].rgbGreen = i & GetGValue(Mask);
-		bmi8bpp.bmiColor[i].rgbBlue	 = i & GetBValue(Mask);
-	}		
+    for (int i=0; i<256; i++) // color table for one of the RGB channels
+    {
+        bmi8bpp.bmiColor[i].rgbRed	 = i & GetRValue(Mask);
+        bmi8bpp.bmiColor[i].rgbGreen = i & GetGValue(Mask);
+        bmi8bpp.bmiColor[i].rgbBlue	 = i & GetBValue(Mask);
+    }
 
-	HBITMAP hRslt = CreateDIBSection(NULL, (BITMAPINFO *) & bmi8bpp, NULL, DIB_RGB_COLORS, NULL, NULL);
-	
-	if ( hRslt==NULL )
-		return NULL;
+    HBITMAP hRslt = CreateDIBSection(NULL, (BITMAPINFO *) & bmi8bpp, NULL, DIB_RGB_COLORS, NULL, NULL);
 
-	SelectObject(hMemDC, hRslt);
-	
-	HBRUSH hBrush = CreateSolidBrush(Mask);			// solid red, green, or blue
-	HGDIOBJ hOld  = SelectObject(hMemDC, hBrush);
-	
-	StretchDIBits(hMemDC, 0, 0, width, height, 0, 0, width, height, pBits, pBMI, DIB_RGB_COLORS, MERGECOPY);
+    if ( hRslt==NULL )
+        return NULL;
 
-	for (i=0; i<256; i++)	// convert to real grayscale color table
-	{
-		bmi8bpp.bmiColor[i].rgbRed	 = i;
-		bmi8bpp.bmiColor[i].rgbGreen = i;
-		bmi8bpp.bmiColor[i].rgbBlue	 = i;
-	}
-	SetDIBColorTable(hMemDC, 0, 256, bmi8bpp.bmiColor);
+    SelectObject(hMemDC, hRslt);
 
-	SelectObject(hMemDC, hOld);
-	DeleteObject(hBrush);
+    HBRUSH hBrush = CreateSolidBrush(Mask);			// solid red, green, or blue
+    HGDIOBJ hOld  = SelectObject(hMemDC, hBrush);
 
-	return hRslt;
+    StretchDIBits(hMemDC, 0, 0, width, height, 0, 0, width, height, pBits, pBMI, DIB_RGB_COLORS, MERGECOPY);
+
+    for (i=0; i<256; i++)	// convert to real grayscale color table
+    {
+        bmi8bpp.bmiColor[i].rgbRed	 = i;
+        bmi8bpp.bmiColor[i].rgbGreen = i;
+        bmi8bpp.bmiColor[i].rgbBlue	 = i;
+    }
+    SetDIBColorTable(hMemDC, 0, 256, bmi8bpp.bmiColor);
+
+    SelectObject(hMemDC, hOld);
+    DeleteObject(hBrush);
+
+    return hRslt;
 }
 
 // Gradually display a DIB on a destination surface in 4 steps
 void FadeIn(HDC hDC, int x, int y, int w, int h, const BITMAPINFO * pBMI, const void * pBits)
 {
-	const WORD Mask11[8] = { 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-	const WORD Mask22[8] = { 0x88, 0x00, 0x00, 0x00, 0x88, 0x00, 0x00, 0x00 };
-	const WORD Mask44[8] = { 0xAA, 0x00, 0xAA, 0x00, 0xAA, 0x00, 0xAA, 0x00 };
-	const WORD Mask88[8] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
-	
-	const WORD * Mask[4] = { Mask11, Mask22, Mask44, Mask88 };
+    const WORD Mask11[8] = { 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+    const WORD Mask22[8] = { 0x88, 0x00, 0x00, 0x00, 0x88, 0x00, 0x00, 0x00 };
+    const WORD Mask44[8] = { 0xAA, 0x00, 0xAA, 0x00, 0xAA, 0x00, 0xAA, 0x00 };
+    const WORD Mask88[8] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 
-	for (int i=0; i<4; i++)
-	{
-		HBITMAP hMask = CreateBitmap(8, 8, 1, 1, Mask[i]);
-		HBRUSH  hBrush= CreatePatternBrush(hMask);
-		DeleteObject(hMask);
+    const WORD * Mask[4] = { Mask11, Mask22, Mask44, Mask88 };
 
-		HGDIOBJ hOld  = SelectObject(hDC, hBrush);
-		// D^(P&(S^D)), if P then S else D
-		StretchDIBits(hDC, x, y, w, h, 0, 0, w, h, pBits, pBMI, DIB_RGB_COLORS, 0xCA07A9);
-				
-		SelectObject(hDC, hOld);
-		DeleteObject(hBrush);
-	}
+    for (int i=0; i<4; i++)
+    {
+        HBITMAP hMask = CreateBitmap(8, 8, 1, 1, Mask[i]);
+        HBRUSH  hBrush= CreatePatternBrush(hMask);
+        DeleteObject(hMask);
+
+        HGDIOBJ hOld  = SelectObject(hDC, hBrush);
+        // D^(P&(S^D)), if P then S else D
+        StretchDIBits(hDC, x, y, w, h, 0, 0, w, h, pBits, pBMI, DIB_RGB_COLORS, 0xCA07A9);
+
+        SelectObject(hDC, hOld);
+        DeleteObject(hBrush);
+    }
 }
 
 // dx, dy, dw, dh defines a destination rectangle
 // sw, sh is the dimension of source rectangle
 // sx, sy is the starting point winthin the source bitmap, which will be tiled to sw x sh in size
-BOOL StretchTile(HDC      hDC, int dx, int dy, int dw, int dh, 
-				 HBITMAP hSrc, int sx, int sy, int sw, int sh, 
-				 DWORD rop)
+BOOL StretchTile(HDC      hDC, int dx, int dy, int dw, int dh,
+                 HBITMAP hSrc, int sx, int sy, int sw, int sh,
+                 DWORD rop)
 {
-	BITMAP bmp;
+    BITMAP bmp;
 
-	if ( ! GetObject(hSrc, sizeof(BITMAP), & bmp) )
-		return FALSE;
-	
-	HDC   hMemDC = CreateCompatibleDC(NULL);
-	HGDIOBJ hOld = SelectObject(hMemDC, hSrc);
-	
-	int sy0 = sy % bmp.bmHeight;						// current tile y origin
-	
-	for (int y=0; y<sh; y+=(bmp.bmHeight - sy0))
-	{
-		int height = min(bmp.bmHeight - sy0, sh - y);	// current tile height
-		int sx0    = sx % bmp.bmWidth;					// current tile x origin
-		
-		for (int x=0; x<sw; x+=(bmp.bmWidth  - sx0))
-		{
-			int width = min(bmp.bmWidth - sx0, sw - x); // current tile width
-		
-			StretchBlt(hDC,    dx+x*dw/sw, dy+y*dh/sh, dw*width/sw, dh*height/sh, 
-					   hMemDC, sx0,        sy0,        width,       height, 
-					   rop);
-			sx0 = 0;	// after the first tile in a row, change to full tile width
-		}
-		sy0 = 0; // after the the first row, change to full tile height
-	}
+    if ( ! GetObject(hSrc, sizeof(BITMAP), & bmp) )
+        return FALSE;
 
-	SelectObject(hMemDC, hOld);
-	DeleteObject(hMemDC);
-		
-	return TRUE;
+    HDC   hMemDC = CreateCompatibleDC(NULL);
+    HGDIOBJ hOld = SelectObject(hMemDC, hSrc);
+
+    int sy0 = sy % bmp.bmHeight;						// current tile y origin
+
+    for (int y=0; y<sh; y+=(bmp.bmHeight - sy0))
+    {
+        int height = min(bmp.bmHeight - sy0, sh - y);	// current tile height
+        int sx0    = sx % bmp.bmWidth;					// current tile x origin
+
+        for (int x=0; x<sw; x+=(bmp.bmWidth  - sx0))
+        {
+            int width = min(bmp.bmWidth - sx0, sw - x); // current tile width
+
+            StretchBlt(hDC,    dx+x*dw/sw, dy+y*dh/sh, dw*width/sw, dh*height/sh,
+                       hMemDC, sx0,        sy0,        width,       height,
+                       rop);
+            sx0 = 0;	// after the first tile in a row, change to full tile width
+        }
+        sy0 = 0; // after the the first row, change to full tile height
+    }
+
+    SelectObject(hMemDC, hOld);
+    DeleteObject(hMemDC);
+
+    return TRUE;
 }
 
 
-BOOL G_PlgBlt(HDC hdcDest, const POINT * pPoint, 
-			HDC hdcSrc, int nXSrc, int nYSrc, int nWidth, int nHeight, 
-			HBITMAP hbmMask, int xMask, int yMask)
+BOOL G_PlgBlt(HDC hdcDest, const POINT * pPoint,
+              HDC hdcSrc, int nXSrc, int nYSrc, int nWidth, int nHeight,
+              HBITMAP hbmMask, int xMask, int yMask)
 {
-	KReverseAffine map(pPoint);
+    KReverseAffine map(pPoint);
 
-	if ( map.Simple() ) // no shear and rotation
-	{
-		int x = pPoint[0].x;
-		int y = pPoint[0].y;
-		int w = pPoint[1].x-pPoint[0].x;
-		int h = pPoint[2].y-pPoint[0].y;
+    if ( map.Simple() ) // no shear and rotation
+    {
+        int x = pPoint[0].x;
+        int y = pPoint[0].y;
+        int w = pPoint[1].x-pPoint[0].x;
+        int h = pPoint[2].y-pPoint[0].y;
 
-		if ( hbmMask ) // has a mask bitmap, if (M) the S else D, S ^ (~M & (S^D))
-		{
-		 	StretchBlt(hdcDest, x, y, w, h, hdcSrc, nXSrc, nYSrc, nWidth, nHeight, SRCINVERT);
-		  StretchTile(hdcDest, x, y, w, h,  hbmMask, xMask, yMask, nWidth, nHeight, 0x220326);
-			return StretchBlt(hdcDest, x, y, w, h, hdcSrc, nXSrc, nYSrc, nWidth, nHeight, SRCINVERT);
-		}
-		else
-			return StretchBlt(hdcDest, x, y, w, h, hdcSrc, nXSrc, nYSrc, nWidth, nHeight, SRCCOPY);
-	}
+        if ( hbmMask ) // has a mask bitmap, if (M) the S else D, S ^ (~M & (S^D))
+        {
+            StretchBlt(hdcDest, x, y, w, h, hdcSrc, nXSrc, nYSrc, nWidth, nHeight, SRCINVERT);
+            StretchTile(hdcDest, x, y, w, h,  hbmMask, xMask, yMask, nWidth, nHeight, 0x220326);
+            return StretchBlt(hdcDest, x, y, w, h, hdcSrc, nXSrc, nYSrc, nWidth, nHeight, SRCINVERT);
+        }
+        else
+            return StretchBlt(hdcDest, x, y, w, h, hdcSrc, nXSrc, nYSrc, nWidth, nHeight, SRCCOPY);
+    }
 
-	map.Setup(nXSrc, nYSrc, nWidth, nHeight);
+    map.Setup(nXSrc, nYSrc, nWidth, nHeight);
 
-	HDC hdcMask   = NULL;
-	int maskwidth = 0;
-	int maskheight= 0;
+    HDC hdcMask   = NULL;
+    int maskwidth = 0;
+    int maskheight= 0;
 
-	if ( hbmMask )
-	{
-		BITMAP bmp;
-		GetObject(hbmMask, sizeof(bmp), & bmp);
-	
-		maskwidth  = bmp.bmWidth;
-		maskheight = bmp.bmHeight;
+    if ( hbmMask )
+    {
+        BITMAP bmp;
+        GetObject(hbmMask, sizeof(bmp), & bmp);
 
-		hdcMask = CreateCompatibleDC(NULL);
-		SelectObject(hdcMask, hbmMask);
-	}
+        maskwidth  = bmp.bmWidth;
+        maskheight = bmp.bmHeight;
 
-	for (int dy=map.miny; dy<=map.maxy; dy++)
-	for (int dx=map.minx; dx<=map.maxx; dx++)
-	{
-		float sx, sy;
-		map.Map(dx, dy, sx, sy);
+        hdcMask = CreateCompatibleDC(NULL);
+        SelectObject(hdcMask, hbmMask);
+    }
 
-		if ( (sx>=nXSrc) && (sx<=(nXSrc+nWidth))  )
-		if ( (sy>=nYSrc) && (sy<=(nYSrc+nHeight)) )
-			if ( hbmMask )
-			{
-				if ( GetPixel(hdcMask, ((int)sx+xMask) % maskwidth, ((int)sy+yMask) % maskheight) )
-					SetPixel(hdcDest, dx, dy, GetPixel(hdcSrc, (int)sx, (int)sy));
-			}
-			else
-				SetPixel(hdcDest, dx, dy, GetPixel(hdcSrc, (int)sx, (int)sy));
-	}
+    for (int dy=map.miny; dy<=map.maxy; dy++)
+        for (int dx=map.minx; dx<=map.maxx; dx++)
+        {
+            float sx, sy;
+            map.Map(dx, dy, sx, sy);
 
-	if ( hdcMask )
-		DeleteObject(hdcMask);
+            if ( (sx>=nXSrc) && (sx<=(nXSrc+nWidth))  )
+                if ( (sy>=nYSrc) && (sy<=(nYSrc+nHeight)) )
+                    if ( hbmMask )
+                    {
+                        if ( GetPixel(hdcMask, ((int)sx+xMask) % maskwidth, ((int)sy+yMask) % maskheight) )
+                            SetPixel(hdcDest, dx, dy, GetPixel(hdcSrc, (int)sx, (int)sy));
+                    }
+                    else
+                        SetPixel(hdcDest, dx, dy, GetPixel(hdcSrc, (int)sx, (int)sy));
+        }
 
-	return TRUE;
+    if ( hdcMask )
+        DeleteObject(hdcMask);
+
+    return TRUE;
 }
 
 
-BOOL AffineBlt(HDC hdcDest, const POINT * pPoint, 
-			   HDC hdcSrc, int nXSrc, int nYSrc, int nWidth, int nHeight, DWORD rop)
+BOOL AffineBlt(HDC hdcDest, const POINT * pPoint,
+               HDC hdcSrc, int nXSrc, int nYSrc, int nWidth, int nHeight, DWORD rop)
 {
-	KReverseAffine map(pPoint);
+    KReverseAffine map(pPoint);
 
-	if ( map.Simple() ) // no shear and rotation
-		return StretchBlt(hdcDest, pPoint[0].x, pPoint[0].y, 
-				   pPoint[1].x-pPoint[0].x, pPoint[2].y-pPoint[0].y, hdcSrc, nXSrc, nYSrc, nWidth, nHeight, rop);
-	else
-	{
-		map.Setup(nXSrc, nYSrc, nWidth, nHeight);
+    if ( map.Simple() ) // no shear and rotation
+        return StretchBlt(hdcDest, pPoint[0].x, pPoint[0].y,
+                          pPoint[1].x-pPoint[0].x, pPoint[2].y-pPoint[0].y, hdcSrc, nXSrc, nYSrc, nWidth, nHeight, rop);
+    else
+    {
+        map.Setup(nXSrc, nYSrc, nWidth, nHeight);
 
-		for (int dy=map.miny; dy<=map.maxy; dy++)
-		for (int dx=map.minx; dx<=map.maxx; dx++)
-		{
-			float sx, sy;
-			map.Map(dx, dy, sx, sy);
+        for (int dy=map.miny; dy<=map.maxy; dy++)
+            for (int dx=map.minx; dx<=map.maxx; dx++)
+            {
+                float sx, sy;
+                map.Map(dx, dy, sx, sy);
 
-			if ( (sx>=nXSrc) && (sx<=(nXSrc+nWidth))  )
-			if ( (sy>=nYSrc) && (sy<=(nYSrc+nHeight)) )
-			{
-				COLORREF s = GetPixel(hdcSrc, (int)sx, (int)sy);
+                if ( (sx>=nXSrc) && (sx<=(nXSrc+nWidth))  )
+                    if ( (sy>=nYSrc) && (sy<=(nYSrc+nHeight)) )
+                    {
+                        COLORREF s = GetPixel(hdcSrc, (int)sx, (int)sy);
 
-				switch ( rop )
-				{
-					case SRCCOPY: 
-						SetPixel(hdcDest, dx, dy, s); break;
+                        switch ( rop )
+                        {
+                        case SRCCOPY:
+                            SetPixel(hdcDest, dx, dy, s);
+                            break;
 
-					case SRCAND:
-						SetPixel(hdcDest, dx, dy, s & GetPixel(hdcDest, dx, dy) ); break;
+                        case SRCAND:
+                            SetPixel(hdcDest, dx, dy, s & GetPixel(hdcDest, dx, dy) );
+                            break;
 
-					case SRCINVERT:
-						SetPixel(hdcDest, dx, dy, s ^ GetPixel(hdcDest, dx, dy) ); break;
-					
-					default:
-						return FALSE;
-				}
-			}
-		}
+                        case SRCINVERT:
+                            SetPixel(hdcDest, dx, dy, s ^ GetPixel(hdcDest, dx, dy) );
+                            break;
 
-		return TRUE;
-	}
+                        default:
+                            return FALSE;
+                        }
+                    }
+            }
+
+        return TRUE;
+    }
 }
 
 
-BOOL AffineTile(HDC hdcDest, const POINT * pPoint, 
-			    HBITMAP hSrc, int xMask, int yMask, int nWidth, int nHeight, DWORD rop)
+BOOL AffineTile(HDC hdcDest, const POINT * pPoint,
+                HBITMAP hSrc, int xMask, int yMask, int nWidth, int nHeight, DWORD rop)
 {
-	KReverseAffine map(pPoint);
+    KReverseAffine map(pPoint);
 
-	if ( map.Simple() ) // no shear and rotation
-		return StretchTile(hdcDest, pPoint[0].x, pPoint[0].y, 
-				   pPoint[1].x-pPoint[0].x, pPoint[2].y-pPoint[0].y, hSrc, xMask, yMask, nWidth, nHeight, rop);
-	else
-	{
-		map.Setup(0, 0, nWidth, nHeight);
+    if ( map.Simple() ) // no shear and rotation
+        return StretchTile(hdcDest, pPoint[0].x, pPoint[0].y,
+                           pPoint[1].x-pPoint[0].x, pPoint[2].y-pPoint[0].y, hSrc, xMask, yMask, nWidth, nHeight, rop);
+    else
+    {
+        map.Setup(0, 0, nWidth, nHeight);
 
-		BITMAP bmp;
-		GetObject(hSrc, sizeof(bmp), & bmp);
-		
-		HDC hdcSrc = CreateCompatibleDC(NULL);
-		SelectObject(hdcSrc, hSrc);
+        BITMAP bmp;
+        GetObject(hSrc, sizeof(bmp), & bmp);
 
-		for (int dy=map.miny; dy<=map.maxy; dy++)
-		for (int dx=map.minx; dx<=map.maxx; dx++)
-		{
-			float sx, sy;
-			map.Map(dx, dy, sx, sy);
+        HDC hdcSrc = CreateCompatibleDC(NULL);
+        SelectObject(hdcSrc, hSrc);
 
-			if ( (sx>=0) && (sx<=nWidth)  )
-			if ( (sy>=0) && (sy<=nHeight) )
-			{
-				COLORREF s = GetPixel(hdcSrc, ((int)sx+xMask) % bmp.bmWidth, 
-											  ((int)sy+yMask) % bmp.bmHeight);
+        for (int dy=map.miny; dy<=map.maxy; dy++)
+            for (int dx=map.minx; dx<=map.maxx; dx++)
+            {
+                float sx, sy;
+                map.Map(dx, dy, sx, sy);
 
-				switch ( rop )
-				{
-					case SRCAND:
-						SetPixel(hdcDest, dx, dy, s & GetPixel(hdcDest, dx, dy) ); break;
+                if ( (sx>=0) && (sx<=nWidth)  )
+                    if ( (sy>=0) && (sy<=nHeight) )
+                    {
+                        COLORREF s = GetPixel(hdcSrc, ((int)sx+xMask) % bmp.bmWidth,
+                                              ((int)sy+yMask) % bmp.bmHeight);
 
-					case 0x220326: // ~S & D
-						if ( s==RGB(0xFF, 0xFF, 0xFF) )
-							SetPixel(hdcDest, dx, dy, RGB(0, 0, 0));
-						else if ( s!=0 )
-							SetPixel(hdcDest, dx, dy, (~s & GetPixel(hdcDest, dx, dy)) & 0xFFFFFF ); 
-						break;
+                        switch ( rop )
+                        {
+                        case SRCAND:
+                            SetPixel(hdcDest, dx, dy, s & GetPixel(hdcDest, dx, dy) );
+                            break;
 
-					default:
-						DeleteObject(hdcSrc);
-						return FALSE;
-				}
-			}
-		}
-		
-		DeleteObject(hdcSrc);
-		return TRUE;
-	}
+                        case 0x220326: // ~S & D
+                            if ( s==RGB(0xFF, 0xFF, 0xFF) )
+                                SetPixel(hdcDest, dx, dy, RGB(0, 0, 0));
+                            else if ( s!=0 )
+                                SetPixel(hdcDest, dx, dy, (~s & GetPixel(hdcDest, dx, dy)) & 0xFFFFFF );
+                            break;
+
+                        default:
+                            DeleteObject(hdcSrc);
+                            return FALSE;
+                        }
+                    }
+            }
+
+        DeleteObject(hdcSrc);
+        return TRUE;
+    }
 }
 
-BOOL C_PlgBlt(HDC hdcDest, const POINT * pPoint, 
-			HDC hdcSrc, int nXSrc, int nYSrc, int nWidth, int nHeight, 
-			HBITMAP hbmMask, int xMask, int yMask)
+BOOL C_PlgBlt(HDC hdcDest, const POINT * pPoint,
+              HDC hdcSrc, int nXSrc, int nYSrc, int nWidth, int nHeight,
+              HBITMAP hbmMask, int xMask, int yMask)
 {
-	if ( hbmMask )	// has a mask bitmap, if (M) the S else D, S ^ (~M & (S^D))
-	{
-		        AffineBlt(hdcDest, pPoint, hdcSrc,  nXSrc, nYSrc, nWidth, nHeight, SRCINVERT);
-		       AffineTile(hdcDest, pPoint, hbmMask, xMask, yMask, nWidth, nHeight, 0x220326);
-		return  AffineBlt(hdcDest, pPoint, hdcSrc,  nXSrc, nYSrc, nWidth, nHeight, SRCINVERT);
-	}
-	else
-		return AffineBlt(hdcDest, pPoint, hdcSrc, nXSrc, nYSrc, nWidth, nHeight, SRCCOPY);
+    if ( hbmMask )	// has a mask bitmap, if (M) the S else D, S ^ (~M & (S^D))
+    {
+        AffineBlt(hdcDest, pPoint, hdcSrc,  nXSrc, nYSrc, nWidth, nHeight, SRCINVERT);
+        AffineTile(hdcDest, pPoint, hbmMask, xMask, yMask, nWidth, nHeight, 0x220326);
+        return  AffineBlt(hdcDest, pPoint, hdcSrc,  nXSrc, nYSrc, nWidth, nHeight, SRCINVERT);
+    }
+    else
+        return AffineBlt(hdcDest, pPoint, hdcSrc, nXSrc, nYSrc, nWidth, nHeight, SRCCOPY);
 }
 
 
 void DrawCube(HDC hDC, int x, int y, int dh, int dx, int dy, HDC hMemDC, int w, int h, HBITMAP hMask, bool bSimulate)
 {
-	SetStretchBltMode(hDC, HALFTONE);
+    SetStretchBltMode(hDC, HALFTONE);
 
-	//         6
-	//    0         4
-	//         1
-	//    2         5
-	//         3 
-	POINT P[3] = { { x - dx, y - dy }, { x, y }, { x - dx, y - dy + dh } }; // 012
-	POINT Q[3] = { { x, y }, { x + dx, y - dy }, { x, y + dh } };			// 143
-	POINT R[3] = { { x - dx, y - dy }, { x, y - dy - dy }, { x, y } };		// 061
+    //         6
+    //    0         4
+    //         1
+    //    2         5
+    //         3
+    POINT P[3] = { { x - dx, y - dy }, { x, y }, { x - dx, y - dy + dh } }; // 012
+    POINT Q[3] = { { x, y }, { x + dx, y - dy }, { x, y + dh } };			// 143
+    POINT R[3] = { { x - dx, y - dy }, { x, y - dy - dy }, { x, y } };		// 061
 
-	if ( bSimulate )
-	{
-		G_PlgBlt(hDC, P, hMemDC, 0, 0, w, h, hMask, 0, 0);
-		G_PlgBlt(hDC, Q, hMemDC, 0, 0, w, h, hMask, 0, 0);
-		G_PlgBlt(hDC, R, hMemDC, 0, 0, w, h, hMask, 0, 0);
-	}
-	else
-	{
-		PlgBlt(hDC, P, hMemDC, 0, 0, w, h, hMask, 0, 0);
-		PlgBlt(hDC, Q, hMemDC, 0, 0, w, h, hMask, 0, 0);
-		PlgBlt(hDC, R, hMemDC, 0, 0, w, h, hMask, 0, 0);
-	}
+    if ( bSimulate )
+    {
+        G_PlgBlt(hDC, P, hMemDC, 0, 0, w, h, hMask, 0, 0);
+        G_PlgBlt(hDC, Q, hMemDC, 0, 0, w, h, hMask, 0, 0);
+        G_PlgBlt(hDC, R, hMemDC, 0, 0, w, h, hMask, 0, 0);
+    }
+    else
+    {
+        PlgBlt(hDC, P, hMemDC, 0, 0, w, h, hMask, 0, 0);
+        PlgBlt(hDC, Q, hMemDC, 0, 0, w, h, hMask, 0, 0);
+        PlgBlt(hDC, R, hMemDC, 0, 0, w, h, hMask, 0, 0);
+    }
 }
 
 void MaskCube(HDC hDC, int size, int x, int y, int w, int h, HBITMAP hBmp, HDC hMemDC, bool mask, bool bSimulate)
 {
-	HBITMAP hMask = NULL;
-	
-	if ( mask )
-	{
-		hMask = CreateBitmap(w, h, 1, 1, NULL);
-		SelectObject(hMemDC, hMask);
-		PatBlt(hMemDC, 0, 0, w, h, BLACKNESS);
-		RoundRect(hMemDC, 0, 0, w, h, w/2, h/2); // white
-	}
+    HBITMAP hMask = NULL;
 
-	int dx  = size * 94 / 100; // cos(20)
-	int dy  = size * 34 / 100; // sin(20)
-	SelectObject(hMemDC, hBmp);
-	DrawCube(hDC, x+dx, y+size, size, dx, dy, hMemDC, w, h, hMask, bSimulate);
-	
-	if ( hMask )
-		DeleteObject(hMask);
+    if ( mask )
+    {
+        hMask = CreateBitmap(w, h, 1, 1, NULL);
+        SelectObject(hMemDC, hMask);
+        PatBlt(hMemDC, 0, 0, w, h, BLACKNESS);
+        RoundRect(hMemDC, 0, 0, w, h, w/2, h/2); // white
+    }
+
+    int dx  = size * 94 / 100; // cos(20)
+    int dy  = size * 34 / 100; // sin(20)
+    SelectObject(hMemDC, hBmp);
+    DrawCube(hDC, x+dx, y+size, size, dx, dy, hMemDC, w, h, hMask, bSimulate);
+
+    if ( hMask )
+        DeleteObject(hMask);
 }
 
 
-BOOL TriBitBlt(HDC hdcDest, int nXDest, int nYDest, int nWidth, int nHeight, 
-			   HDC hdcSrc, int nXSrc, int nYSrc,
-			   HBITMAP hbmMask, int xMask, int yMask, 
-			   DWORD rop1, DWORD rop2, DWORD rop3)
+BOOL TriBitBlt(HDC hdcDest, int nXDest, int nYDest, int nWidth, int nHeight,
+               HDC hdcSrc, int nXSrc, int nYSrc,
+               HBITMAP hbmMask, int xMask, int yMask,
+               DWORD rop1, DWORD rop2, DWORD rop3)
 {
-	HDC hMemDC = CreateCompatibleDC(hdcDest);
-	SelectObject(hMemDC, hbmMask);
+    HDC hMemDC = CreateCompatibleDC(hdcDest);
+    SelectObject(hMemDC, hbmMask);
 
-	if ( (rop1>>16)!=0xAA ) // not D
-		BitBlt(hdcDest, nXDest, nYDest, nWidth, nHeight, hdcSrc, nXSrc, nYSrc, rop1);
+    if ( (rop1>>16)!=0xAA ) // not D
+        BitBlt(hdcDest, nXDest, nYDest, nWidth, nHeight, hdcSrc, nXSrc, nYSrc, rop1);
 
-	BitBlt(hdcDest, nXDest, nYDest, nWidth, nHeight, hMemDC, xMask, yMask, rop2);
+    BitBlt(hdcDest, nXDest, nYDest, nWidth, nHeight, hMemDC, xMask, yMask, rop2);
 
-	DeleteObject(hMemDC);
+    DeleteObject(hMemDC);
 
-	if ( (rop3>>16)!=0xAA ) // not D
-		return BitBlt(hdcDest, nXDest, nYDest, nWidth, nHeight, hdcSrc, nXSrc, nYSrc, rop3);
-	else
-		return TRUE;
+    if ( (rop3>>16)!=0xAA ) // not D
+        return BitBlt(hdcDest, nXDest, nYDest, nWidth, nHeight, hdcSrc, nXSrc, nYSrc, rop3);
+    else
+        return TRUE;
 }
 
 
 BOOL G_MaskBlt(HDC hdcDest, int nXDest, int nYDest, int nWidth, int nHeight,
-			 HDC hdcSrc,  int nXSrc,  int nYSrc, 
-			 HBITMAP hbmMask, int xMask, int yMask,
-			 DWORD dwRop
-)
+               HDC hdcSrc,  int nXSrc,  int nYSrc,
+               HBITMAP hbmMask, int xMask, int yMask,
+               DWORD dwRop
+              )
 {
-	DWORD back = (dwRop >> 24) & 0xFF;
-	DWORD fore = (dwRop >> 16) & 0xFF;
+    DWORD back = (dwRop >> 24) & 0xFF;
+    DWORD fore = (dwRop >> 16) & 0xFF;
 
-	if ( back==fore ) // foreground=background, hbmMask not needed
-		return BitBlt(hdcDest, nXDest, nYDest, nWidth, nHeight, hdcSrc, nXSrc, nYSrc, dwRop & 0xFFFFFF);
+    if ( back==fore ) // foreground=background, hbmMask not needed
+        return BitBlt(hdcDest, nXDest, nYDest, nWidth, nHeight, hdcSrc, nXSrc, nYSrc, dwRop & 0xFFFFFF);
 
-	// if (M) D=fore(P,S,D) else D=back(P,S,D)
-	
-	if ( D_independent(back) )	// back independent of D
-		return TriBitBlt(hdcDest, nXDest, nYDest, nWidth, nHeight, hdcSrc, nXSrc, nYSrc, hbmMask, xMask, yMask,
-			fore^back << 16,	// ( fore^back, fore^back )
-			SRCAND,				// ( fore^back, 0 )
-			(back^0xAA) << 16); // { fore, back }
+    // if (M) D=fore(P,S,D) else D=back(P,S,D)
 
-	if ( D_independent(fore) )  // fore independent of D
-		return TriBitBlt(hdcDest, nXDest, nYDest, nWidth, nHeight, hdcSrc, nXSrc, nYSrc, hbmMask, xMask, yMask,
-			(fore^back) << 16,  // ( fore^back, fore^back )
-			0x22 << 16,			// ( 0, fore^back )
-			(fore^0xAA) << 16); // { fore, back }
+    if ( D_independent(back) )	// back independent of D
+        return TriBitBlt(hdcDest, nXDest, nYDest, nWidth, nHeight, hdcSrc, nXSrc, nYSrc, hbmMask, xMask, yMask,
+                         fore^back << 16,	// ( fore^back, fore^back )
+                         SRCAND,				// ( fore^back, 0 )
+                         (back^0xAA) << 16); // { fore, back }
 
-	// both foreground and background depend on D
-	if ( S_independent(back) && S_independent(fore) )
-		return TriBitBlt(hdcDest, nXDest, nYDest, nWidth, nHeight, NULL, 0, 0, hbmMask, xMask, yMask,
-			0xAA << 16,			// ( D, D )
-			( (fore & 0xCC) || (back & 0x33) ) << 16,
-			0xAA << 16);
-	
-	// both foreground and background depend on D
-	// either foregounr or background depends on S
-	HBITMAP hTemp  = CreateCompatibleBitmap(hdcDest, nWidth, nHeight);
-	HDC     hMemDC = CreateCompatibleDC(hdcDest);
-	SelectObject(hMemDC, hTemp);
-	BitBlt(hMemDC, 0, 0, nWidth, nHeight, hdcDest, nXDest, nYDest, SRCCOPY);
-	SelectObject(hMemDC, GetCurrentObject(hdcDest, OBJ_BRUSH));
-	BitBlt(hMemDC, 0, 0, nWidth, nHeight, hdcSrc,  nXSrc, nYSrc, back << 16); // hMemDC contains final background image
+    if ( D_independent(fore) )  // fore independent of D
+        return TriBitBlt(hdcDest, nXDest, nYDest, nWidth, nHeight, hdcSrc, nXSrc, nYSrc, hbmMask, xMask, yMask,
+                         (fore^back) << 16,  // ( fore^back, fore^back )
+                         0x22 << 16,			// ( 0, fore^back )
+                         (fore^0xAA) << 16); // { fore, back }
 
-	BitBlt(hdcDest, 0, 0, nWidth, nHeight, hdcSrc, nXSrc, nYSrc, fore << 16);  // foreground image
+    // both foreground and background depend on D
+    if ( S_independent(back) && S_independent(fore) )
+        return TriBitBlt(hdcDest, nXDest, nYDest, nWidth, nHeight, NULL, 0, 0, hbmMask, xMask, yMask,
+                         0xAA << 16,			// ( D, D )
+                         ( (fore & 0xCC) || (back & 0x33) ) << 16,
+                         0xAA << 16);
 
-	TriBitBlt(hdcDest, nXDest, nYDest, nWidth, nHeight, hMemDC, 0, 0, hbmMask, xMask, yMask,
-			SRCINVERT,	// ( fore^back, fore^back )
-			SRCAND,		// ( fore^back, 0 )
-			SRCINVERT); // { fore, back }
+    // both foreground and background depend on D
+    // either foregounr or background depends on S
+    HBITMAP hTemp  = CreateCompatibleBitmap(hdcDest, nWidth, nHeight);
+    HDC     hMemDC = CreateCompatibleDC(hdcDest);
+    SelectObject(hMemDC, hTemp);
+    BitBlt(hMemDC, 0, 0, nWidth, nHeight, hdcDest, nXDest, nYDest, SRCCOPY);
+    SelectObject(hMemDC, GetCurrentObject(hdcDest, OBJ_BRUSH));
+    BitBlt(hMemDC, 0, 0, nWidth, nHeight, hdcSrc,  nXSrc, nYSrc, back << 16); // hMemDC contains final background image
 
-	DeleteObject(hMemDC);
-	DeleteObject(hTemp);
-	
-	return TRUE;
+    BitBlt(hdcDest, 0, 0, nWidth, nHeight, hdcSrc, nXSrc, nYSrc, fore << 16);  // foreground image
+
+    TriBitBlt(hdcDest, nXDest, nYDest, nWidth, nHeight, hMemDC, 0, 0, hbmMask, xMask, yMask,
+              SRCINVERT,	// ( fore^back, fore^back )
+              SRCAND,		// ( fore^back, 0 )
+              SRCINVERT); // { fore, back }
+
+    DeleteObject(hMemDC);
+    DeleteObject(hTemp);
+
+    return TRUE;
 }
 
 // Use TransparentBlt to draw Icon
@@ -785,7 +792,7 @@ void TransparentBltDrawIcon(HDC hDC, int x, int y, HICON hIcon)
 
 	COLORREF crTrans = GetPixel(hMemDC, 0, 0);
 
-	TransparentBlt(hDC,    x, y, bmp.bmWidth, bmp.bmHeight, 
+	TransparentBlt(hDC,    x, y, bmp.bmWidth, bmp.bmHeight,
 		           hMemDC, 0, 0, bmp.bmWidth, bmp.bmHeight,
 		           crTrans);
 
@@ -799,36 +806,36 @@ void TransparentBltDrawIcon(HDC hDC, int x, int y, HICON hIcon)
 // big pattern brush
 void MaskBitmapNT(HDC hDC, int x, int y, int width, int height, HBITMAP hMask, HDC hMemDC)
 {
-	HBRUSH hBrush = CreatePatternBrush(hMask);
-	HGDIOBJ hOld  = SelectObject(hDC, hBrush);
+    HBRUSH hBrush = CreatePatternBrush(hMask);
+    HGDIOBJ hOld  = SelectObject(hDC, hBrush);
 
-	POINT org = { x, y };
-	LPtoDP(hDC, &org, 1);
-	SetBrushOrgEx(hDC, org.x, org.y, NULL);
+    POINT org = { x, y };
+    LPtoDP(hDC, &org, 1);
+    SetBrushOrgEx(hDC, org.x, org.y, NULL);
 
-	BitBlt(hDC, x, y, width, height, hMemDC, 0, 0, 0x6C01E8); // S^(P&D)
+    BitBlt(hDC, x, y, width, height, hMemDC, 0, 0, 0x6C01E8); // S^(P&D)
 
-	SelectObject(hDC, hOld);
-	DeleteObject(hBrush);
+    SelectObject(hDC, hOld);
+    DeleteObject(hBrush);
 }
 
 void MaskBltDrawIcon(HDC hDC, int x, int y, HICON hIcon)
 {
-	ICONINFO iconinfo;
-	GetIconInfo(hIcon, & iconinfo);
+    ICONINFO iconinfo;
+    GetIconInfo(hIcon, & iconinfo);
 
-	BITMAP bmp;
-	GetObject(iconinfo.hbmMask, sizeof(bmp), & bmp);
+    BITMAP bmp;
+    GetObject(iconinfo.hbmMask, sizeof(bmp), & bmp);
 
-	HDC hMemDC = CreateCompatibleDC(NULL);
-	HGDIOBJ hOld = SelectObject(hMemDC, iconinfo.hbmColor);
+    HDC hMemDC = CreateCompatibleDC(NULL);
+    HGDIOBJ hOld = SelectObject(hMemDC, iconinfo.hbmColor);
 
-	MaskBlt(hDC, x, y, bmp.bmWidth, bmp.bmHeight, hMemDC, 0, 0, 
-		iconinfo.hbmMask, 0, 0, MAKEROP4(SRCINVERT, SRCCOPY));
+    MaskBlt(hDC, x, y, bmp.bmWidth, bmp.bmHeight, hMemDC, 0, 0,
+            iconinfo.hbmMask, 0, 0, MAKEROP4(SRCINVERT, SRCCOPY));
 
-	SelectObject(hMemDC, hOld);
-	DeleteObject(iconinfo.hbmMask);
-	DeleteObject(iconinfo.hbmColor);
-	DeleteObject(hMemDC);
+    SelectObject(hMemDC, hOld);
+    DeleteObject(iconinfo.hbmMask);
+    DeleteObject(iconinfo.hbmColor);
+    DeleteObject(hMemDC);
 }
 

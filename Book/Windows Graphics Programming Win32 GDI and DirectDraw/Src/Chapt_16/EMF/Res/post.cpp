@@ -5,23 +5,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch ( uMsg )
     {
-        case WM_PAINT:
-            {
-                PAINTSTRUCT ps;
+    case WM_PAINT:
+    {
+        PAINTSTRUCT ps;
 
-                HDC hDC = BeginPaint(hWnd, & ps);
-                OnDraw(hDC);
-                EndPaint(hWnd, & ps);
+        HDC hDC = BeginPaint(hWnd, & ps);
+        OnDraw(hDC);
+        EndPaint(hWnd, & ps);
 
-                return 0;
-            }
+        return 0;
+    }
 
-        case WM_DESTROY:
-            PostQuitMessage(0);
-            return 0;
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        return 0;
 
-        default:
-            return DefWindowProc(hWnd, uMsg, wParam, lParam);
+    default:
+        return DefWindowProc(hWnd, uMsg, wParam, lParam);
     }
 }
 
@@ -43,8 +43,8 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPTSTR, int nCmdShow)
     hModule = hInst;
 
     HWND hWnd = CreateWindowEx(0, "EMFDC", "Decompiled EMF", WS_OVERLAPPEDWINDOW,
-                    CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
-                    NULL, NULL, hInst, NULL);
+                               CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+                               NULL, NULL, hInst, NULL);
 
     ShowWindow(hWnd, nCmdShow);
     UpdateWindow(hWnd);

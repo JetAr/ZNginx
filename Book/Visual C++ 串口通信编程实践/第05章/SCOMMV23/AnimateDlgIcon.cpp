@@ -1,5 +1,5 @@
 // AnimateIcon.cpp : implementation of the CAnimateDlgIcon class
-// written by Rajesh Parikh 
+// written by Rajesh Parikh
 // email : rparikh@usa.net
 // Not protected by any copyright, use it freely
 //
@@ -11,15 +11,15 @@
 // default constructor
 CAnimateDlgIcon::CAnimateDlgIcon()
 {
-	m_iImageCounter = -1;
-	m_iMaxNoOfImages = -99;
-	m_imgList.m_hImageList = NULL;
+    m_iImageCounter = -1;
+    m_iMaxNoOfImages = -99;
+    m_imgList.m_hImageList = NULL;
 }
 
 // default do nothing destructor
 CAnimateDlgIcon::~CAnimateDlgIcon()
 {
-	DestroyIcon(hPrevIcon);
+    DestroyIcon(hPrevIcon);
 }
 
 // This is the first function which needs to be called in order
@@ -32,11 +32,11 @@ CAnimateDlgIcon::~CAnimateDlgIcon()
 // transparentColor        - RGB value of color you want to be transparent
 BOOL CAnimateDlgIcon::SetImageList(int IDOfImgListResource,int numberOfImages,COLORREF transparentColor)
 {
-	if(numberOfImages <= 0)
-		return FALSE;
-	m_iMaxNoOfImages = numberOfImages;
-	VERIFY(m_imgList.Create(IDOfImgListResource,16,1,transparentColor));
-	return TRUE;
+    if(numberOfImages <= 0)
+        return FALSE;
+    m_iMaxNoOfImages = numberOfImages;
+    VERIFY(m_imgList.Create(IDOfImgListResource,16,1,transparentColor));
+    return TRUE;
 }
 
 // This function needs to be called repetatively to show next image
@@ -46,16 +46,16 @@ BOOL CAnimateDlgIcon::SetImageList(int IDOfImgListResource,int numberOfImages,CO
 
 BOOL CAnimateDlgIcon::ShowNextImage()
 {
-	if(m_imgList.m_hImageList == NULL)
-		return FALSE;
-	m_iImageCounter++;
-	if(m_iImageCounter >= m_iMaxNoOfImages)
-		m_iImageCounter =0;
-	// extract the icon from imagelist
-	hIcon = m_imgList.ExtractIcon(m_iImageCounter);
-	// send the message to frame to update icon
-	HICON hPrevIcon = (HICON) AfxGetMainWnd()->SetIcon(hIcon,FALSE);	
-	// Free the previous icon resource
-	DestroyIcon(hPrevIcon);
-	return TRUE;
+    if(m_imgList.m_hImageList == NULL)
+        return FALSE;
+    m_iImageCounter++;
+    if(m_iImageCounter >= m_iMaxNoOfImages)
+        m_iImageCounter =0;
+    // extract the icon from imagelist
+    hIcon = m_imgList.ExtractIcon(m_iImageCounter);
+    // send the message to frame to update icon
+    HICON hPrevIcon = (HICON) AfxGetMainWnd()->SetIcon(hIcon,FALSE);
+    // Free the previous icon resource
+    DestroyIcon(hPrevIcon);
+    return TRUE;
 }

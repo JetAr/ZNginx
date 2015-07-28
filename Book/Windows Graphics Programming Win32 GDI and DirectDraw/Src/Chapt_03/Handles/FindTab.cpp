@@ -58,67 +58,67 @@ BOOL KLocateGdiTablePage::DlgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 {
     switch (uMsg)
     {
-	    case WM_INITDIALOG:
-			m_hWnd = hWnd;
-            
-			m_Regions.FromDlgItem(hWnd, IDC_REGIONS);
-			
-			m_Regions.AddIcon(LVSIL_SMALL, m_hInst, IDI_EMPTY);
-            m_Regions.AddIcon(LVSIL_SMALL, m_hInst, IDI_EQUAL);
-            m_Regions.AddIcon(LVSIL_SMALL, m_hInst, IDI_CHANGE);
+    case WM_INITDIALOG:
+        m_hWnd = hWnd;
 
-			m_Regions.AddColumn(0, 62, "oldCRC");
-			m_Regions.AddColumn(1, 46, "CRC");
-                
-            m_Regions.AddColumn(2, 76, "Base");
-            m_Regions.AddColumn(3, 76, "Size");
-            m_Regions.AddColumn(4, 60, "Type");
-            m_Regions.AddColumn(5, 100, "Module");
-			return TRUE;
-		
-		case WM_COMMAND:
-			if (LOWORD(wParam) == IDC_QUERY)
-			{
-				m_Regions.DeleteAll();
+        m_Regions.FromDlgItem(hWnd, IDC_REGIONS);
 
-				m_snapshot.Shot(& m_Regions);
-				return TRUE;
-			}
-            else if ( LOWORD(wParam)==IDC_GDIQUERY )
+        m_Regions.AddIcon(LVSIL_SMALL, m_hInst, IDI_EMPTY);
+        m_Regions.AddIcon(LVSIL_SMALL, m_hInst, IDI_EQUAL);
+        m_Regions.AddIcon(LVSIL_SMALL, m_hInst, IDI_CHANGE);
+
+        m_Regions.AddColumn(0, 62, "oldCRC");
+        m_Regions.AddColumn(1, 46, "CRC");
+
+        m_Regions.AddColumn(2, 76, "Base");
+        m_Regions.AddColumn(3, 76, "Size");
+        m_Regions.AddColumn(4, 60, "Type");
+        m_Regions.AddColumn(5, 100, "Module");
+        return TRUE;
+
+    case WM_COMMAND:
+        if (LOWORD(wParam) == IDC_QUERY)
+        {
+            m_Regions.DeleteAll();
+
+            m_snapshot.Shot(& m_Regions);
+            return TRUE;
+        }
+        else if ( LOWORD(wParam)==IDC_GDIQUERY )
+        {
+            GdiQueryTable();
+            return TRUE;
+        }
+        break;
+
+    case WM_NOTIFY:
+        if (wParam == IDC_REGIONS)
+        {
+            NM_LISTVIEW * pInfo = (NM_LISTVIEW *) lParam;
+
+            if ( (pInfo->hdr.code == NM_DBLCLK) && (pInfo->iItem != -1) )
             {
-                GdiQueryTable();
+                TCHAR Start[16], Size[16];
+
+                m_Regions.GetItemText(pInfo->iItem, 2, Start, sizeof(Start));
+                m_Regions.GetItemText(pInfo->iItem, 3, Size,  sizeof(Size));
+
+                unsigned nStart, nSize;
+
+                sscanf(Start, "%x", & nStart);
+                sscanf(Size,  "%x", & nSize);
+
+                m_snapshot.ShowDetail(m_hInst, nStart, nSize);
                 return TRUE;
             }
-			break;
+        }
+        break;
 
-		case WM_NOTIFY:
-			if (wParam == IDC_REGIONS)
-			{
-				NM_LISTVIEW * pInfo = (NM_LISTVIEW *) lParam;
-				
-				if ( (pInfo->hdr.code == NM_DBLCLK) && (pInfo->iItem != -1) )  
-				{
-					TCHAR Start[16], Size[16];
-
-					m_Regions.GetItemText(pInfo->iItem, 2, Start, sizeof(Start));
-					m_Regions.GetItemText(pInfo->iItem, 3, Size,  sizeof(Size));
-
-					unsigned nStart, nSize;
-
-					sscanf(Start, "%x", & nStart);
-					sscanf(Size,  "%x", & nSize);
-
-					m_snapshot.ShowDetail(m_hInst, nStart, nSize);
-					return TRUE;
-				}
-			}
-			break;
-
-		case WM_DESTROY:
-			m_Regions.DeleteAll();
-			return TRUE;
+    case WM_DESTROY:
+        m_Regions.DeleteAll();
+        return TRUE;
     }
-    
+
     return FALSE;
 }
 

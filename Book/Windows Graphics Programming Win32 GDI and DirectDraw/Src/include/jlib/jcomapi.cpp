@@ -37,28 +37,31 @@
 GLOBAL(void)
 jpeg_abort (j_common_ptr cinfo)
 {
-  int pool;
+    int pool;
 
-  /* Do nothing if called on a not-initialized or destroyed JPEG object. */
-  if (cinfo->mem == NULL)
-    return;
+    /* Do nothing if called on a not-initialized or destroyed JPEG object. */
+    if (cinfo->mem == NULL)
+        return;
 
-  /* Releasing pools in reverse order might help avoid fragmentation
-   * with some (brain-damaged) malloc libraries.
-   */
-	for (pool = JPOOL_NUMPOOLS-1; pool > JPOOL_PERMANENT; pool--) 
-		cinfo->mem->free_pool(pool);
-
-  /* Reset overall state for possible reuse of object */
-  if (cinfo->is_decompressor) {
-    cinfo->global_state = DSTATE_START;
-    /* Try to keep application from accessing now-deleted marker list.
-     * A bit kludgy to do it here, but this is the most central place.
+    /* Releasing pools in reverse order might help avoid fragmentation
+     * with some (brain-damaged) malloc libraries.
      */
-    ((j_decompress_ptr) cinfo)->marker_list = NULL;
-  } else {
-    cinfo->global_state = CSTATE_START;
-  }
+    for (pool = JPOOL_NUMPOOLS-1; pool > JPOOL_PERMANENT; pool--)
+        cinfo->mem->free_pool(pool);
+
+    /* Reset overall state for possible reuse of object */
+    if (cinfo->is_decompressor)
+    {
+        cinfo->global_state = DSTATE_START;
+        /* Try to keep application from accessing now-deleted marker list.
+         * A bit kludgy to do it here, but this is the most central place.
+         */
+        ((j_decompress_ptr) cinfo)->marker_list = NULL;
+    }
+    else
+    {
+        cinfo->global_state = CSTATE_START;
+    }
 }
 
 
@@ -75,18 +78,18 @@ jpeg_abort (j_common_ptr cinfo)
 
 void jpeg_common_struct::jpeg_destroy(void)
 {
-	/* We need only tell the memory manager to release everything. */
-	/* NB: mem pointer is NULL if memory mgr failed to initialize. */
-	if ( mem != NULL )
-	{
-		delete mem;
-		mem = NULL;
-	}
-	
-	global_state = 0;	/* mark it destroyed */
+    /* We need only tell the memory manager to release everything. */
+    /* NB: mem pointer is NULL if memory mgr failed to initialize. */
+    if ( mem != NULL )
+    {
+        delete mem;
+        mem = NULL;
+    }
+
+    global_state = 0;	/* mark it destroyed */
 
 //	if ( err ) delete err;
-	err = NULL;
+    err = NULL;
 }
 
 
@@ -98,20 +101,20 @@ void jpeg_common_struct::jpeg_destroy(void)
 GLOBAL(JQUANT_TBL *)
 jpeg_alloc_quant_table (j_common_ptr cinfo)
 {
-  JQUANT_TBL *tbl;
+    JQUANT_TBL *tbl;
 
-  tbl = (JQUANT_TBL *) cinfo->mem->alloc_small(JPOOL_PERMANENT, sizeof(JQUANT_TBL));
-  tbl->sent_table = FALSE;	/* make sure this is false in any new table */
-  return tbl;
+    tbl = (JQUANT_TBL *) cinfo->mem->alloc_small(JPOOL_PERMANENT, sizeof(JQUANT_TBL));
+    tbl->sent_table = FALSE;	/* make sure this is false in any new table */
+    return tbl;
 }
 
 
 GLOBAL(JHUFF_TBL *)
 jpeg_alloc_huff_table (j_common_ptr cinfo)
 {
-  JHUFF_TBL *tbl;
+    JHUFF_TBL *tbl;
 
-  tbl = (JHUFF_TBL *) cinfo->mem->alloc_small(JPOOL_PERMANENT, sizeof(JHUFF_TBL));
-  tbl->sent_table = FALSE;	/* make sure this is false in any new table */
-  return tbl;
+    tbl = (JHUFF_TBL *) cinfo->mem->alloc_small(JPOOL_PERMANENT, sizeof(JHUFF_TBL));
+    tbl->sent_table = FALSE;	/* make sure this is false in any new table */
+    return tbl;
 }

@@ -27,15 +27,15 @@ bool Lookup(unsigned index, const DicItem *dic, TCHAR * szResult)
     while (dic->name!=NULL)
     {
         if (dic->key==index)
-		{
-			_tcscpy(szResult, dic->name);
-			return true;
-		}
-        dic++;            
-    }            
-    
-    wsprintf(szResult, TEXT("Unknown(%lx)"), index);    
-    
+        {
+            _tcscpy(szResult, dic->name);
+            return true;
+        }
+        dic++;
+    }
+
+    wsprintf(szResult, TEXT("Unknown(%lx)"), index);
+
     return false;
 }
 
@@ -43,32 +43,32 @@ bool Lookup(unsigned index, const DicItem *dic, TCHAR * szResult)
 const TCHAR *Lookup(unsigned index, const DicItem *dic)
 {
     static TCHAR mess_Rslt[64];
-    
-	mess_Rslt[0] = 0;
-    
-	while (dic->name!=NULL)
+
+    mess_Rslt[0] = 0;
+
+    while (dic->name!=NULL)
     {
         if ((index & dic->mask) == dic->key)
-		{
-			if ( dic->mask == 0xffffffff)
-				return dic->name;
+        {
+            if ( dic->mask == 0xffffffff)
+                return dic->name;
 
-			if ( mess_Rslt[0] )
-			{
-				lstrcat(mess_Rslt, _T(" | "));
-				lstrcat(mess_Rslt, dic->name);
-			}
-			else
-				lstrcat(mess_Rslt, dic->name);
-		}
-        
-		dic++;            
-    }            
-    
-	if ( mess_Rslt[0] == 0)
-		wsprintf(mess_Rslt, TEXT("0x%x /*Unknown*/"), index);    
-    
-    return mess_Rslt;    
+            if ( mess_Rslt[0] )
+            {
+                lstrcat(mess_Rslt, _T(" | "));
+                lstrcat(mess_Rslt, dic->name);
+            }
+            else
+                lstrcat(mess_Rslt, dic->name);
+        }
+
+        dic++;
+    }
+
+    if ( mess_Rslt[0] == 0)
+        wsprintf(mess_Rslt, TEXT("0x%x /*Unknown*/"), index);
+
+    return mess_Rslt;
 }
 
 
@@ -80,6 +80,6 @@ unsigned Decode(const TCHAR *item, const DicItem *dic)
             return dic->key;
         dic++;
     }
-    
+
     return 0xFFFFFFFF;
 }

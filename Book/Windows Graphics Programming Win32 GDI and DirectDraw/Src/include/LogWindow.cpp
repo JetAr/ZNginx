@@ -26,46 +26,46 @@
 
 void KLogWindow::Create(HINSTANCE hInst, const TCHAR * pTitle, HICON hIcon)
 {
-	m_hInst = hInst;
-	m_hIcon = hIcon;
+    m_hInst = hInst;
+    m_hIcon = hIcon;
 
-	CreateEx(0, _T("LOGWINDOW"), pTitle, WS_VISIBLE | WS_OVERLAPPEDWINDOW, 
-		0, 0, 240, 600, NULL, NULL, hInst);
+    CreateEx(0, _T("LOGWINDOW"), pTitle, WS_VISIBLE | WS_OVERLAPPEDWINDOW,
+             0, 0, 240, 600, NULL, NULL, hInst);
 }
 
 
 LRESULT KLogWindow::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	switch( uMsg )
-	{
-		case WM_CREATE:
-			{
-				m_hWnd	   = hWnd;
+    switch( uMsg )
+    {
+    case WM_CREATE:
+    {
+        m_hWnd	   = hWnd;
 
-				RECT rect;
-				GetClientRect(m_hWnd, & rect);
+        RECT rect;
+        GetClientRect(m_hWnd, & rect);
 
-				m_hEditWnd = CreateWindow(_T("EDIT"), NULL,  
-					WS_VISIBLE | WS_CHILD | ES_MULTILINE | ES_AUTOHSCROLL | ES_AUTOVSCROLL, 
-					0, 0, rect.right, rect.bottom, m_hWnd, NULL, m_hInst, NULL);
+        m_hEditWnd = CreateWindow(_T("EDIT"), NULL,
+                                  WS_VISIBLE | WS_CHILD | ES_MULTILINE | ES_AUTOHSCROLL | ES_AUTOVSCROLL,
+                                  0, 0, rect.right, rect.bottom, m_hWnd, NULL, m_hInst, NULL);
 
-				SendMessage(m_hEditWnd, WM_SETFONT, (LPARAM) GetStockObject(SYSTEM_FIXED_FONT), 0);
-				SendMessage(m_hEditWnd, EM_LIMITTEXT, 2 * 1024 * 1024, 0);
-			}
+        SendMessage(m_hEditWnd, WM_SETFONT, (LPARAM) GetStockObject(SYSTEM_FIXED_FONT), 0);
+        SendMessage(m_hEditWnd, EM_LIMITTEXT, 2 * 1024 * 1024, 0);
+    }
 
-			return 0;
+    return 0;
 
-		case WM_SIZE:
-			MoveWindow(m_hEditWnd, 0, 0, LOWORD(lParam), HIWORD(lParam), TRUE);	
-			return 0;
+    case WM_SIZE:
+        MoveWindow(m_hEditWnd, 0, 0, LOWORD(lParam), HIWORD(lParam), TRUE);
+        return 0;
 
-		case WM_NCDESTROY:
-			delete this; // deallocate itself
-			return 0;
+    case WM_NCDESTROY:
+        delete this; // deallocate itself
+        return 0;
 
-		default:
-			return DefWindowProc(hWnd, uMsg, wParam, lParam);
-	}
+    default:
+        return DefWindowProc(hWnd, uMsg, wParam, lParam);
+    }
 }
 
 
@@ -75,70 +75,74 @@ void KLogWindow::Log(const char * format, ...)
 
     va_list ap;
 
-	va_start(ap, format);
-	vsprintf(buffer, format, ap);
-	SendMessage(m_hEditWnd, EM_SETSEL, 0xFFFFFF, 0xFFFFFF);
-	SendMessage(m_hEditWnd, EM_REPLACESEL, 0, (LPARAM) buffer);
+    va_start(ap, format);
+    vsprintf(buffer, format, ap);
+    SendMessage(m_hEditWnd, EM_SETSEL, 0xFFFFFF, 0xFFFFFF);
+    SendMessage(m_hEditWnd, EM_REPLACESEL, 0, (LPARAM) buffer);
 
-	va_end(ap);
+    va_end(ap);
 }
 
 
 void KLogWindow::DumpRegion(const char * mess, HRGN hRgn, bool detail, int p1)
 {
-	if ( mess )
-		Log(mess, p1);
+    if ( mess )
+        Log(mess, p1);
 
-	if ( hRgn==NULL )
-		Log(" NULL");
-	else
-	{
-		RECT rect;
+    if ( hRgn==NULL )
+        Log(" NULL");
+    else
+    {
+        RECT rect;
 
-		memset(& rect, 0, sizeof(rect));
-	
-		switch ( GetRgnBox(hRgn, & rect) )
-		{
-			case NULLREGION: 
-				Log(" NULLREGION "); break;
+        memset(& rect, 0, sizeof(rect));
 
-			case SIMPLEREGION:
-				Log(" SIMPLEREGION "); break;
+        switch ( GetRgnBox(hRgn, & rect) )
+        {
+        case NULLREGION:
+            Log(" NULLREGION ");
+            break;
 
-			case COMPLEXREGION:
-				Log(" COMPLEXREGION "); break;
+        case SIMPLEREGION:
+            Log(" SIMPLEREGION ");
+            break;
 
-			default:
-				Log(" Error "); break;
-		}
+        case COMPLEXREGION:
+            Log(" COMPLEXREGION ");
+            break;
 
-		Log(" RgnBox=[%d, %d, %d, %d) ", rect.left, rect.top, rect.right, rect.bottom);
+        default:
+            Log(" Error ");
+            break;
+        }
 
-		int size = GetRegionData(hRgn, 0, NULL);
-		int rectcount = 0;
+        Log(" RgnBox=[%d, %d, %d, %d) ", rect.left, rect.top, rect.right, rect.bottom);
 
-		if ( size )
-		{
-			RGNDATA * pRegion = (RGNDATA *) new char[size];
-			GetRegionData(hRgn, size, pRegion);
+        int size = GetRegionData(hRgn, 0, NULL);
+        int rectcount = 0;
 
-			const RECT * pRect = (const RECT *) & pRegion->Buffer;
-			rectcount = pRegion->rdh.nCount;
+        if ( size )
+        {
+            RGNDATA * pRegion = (RGNDATA *) new char[size];
+            GetRegionData(hRgn, size, pRegion);
 
-			Log("%d rectangles", rectcount);
+            const RECT * pRect = (const RECT *) & pRegion->Buffer;
+            rectcount = pRegion->rdh.nCount;
 
-			if ( detail )
-			{
-				Log("\r\n");
-				for (unsigned i=0; i<pRegion->rdh.nCount; i++)
-					Log("rect %d [%d, %d, %d, %d)\r\n", i, pRect[i].left, pRect[i].top, pRect[i].right, pRect[i].bottom);
-			}
+            Log("%d rectangles", rectcount);
 
-			delete [] (char *) pRegion;
-		}
-		else
-			Log("0 rectangle");
-	}
+            if ( detail )
+            {
+                Log("\r\n");
+                for (unsigned i=0; i<pRegion->rdh.nCount; i++)
+                    Log("rect %d [%d, %d, %d, %d)\r\n", i, pRect[i].left, pRect[i].top, pRect[i].right, pRect[i].bottom);
+            }
 
-	Log("\r\n");
+            delete [] (char *) pRegion;
+        }
+        else
+            Log("0 rectangle");
+    }
+
+    Log("\r\n");
 }

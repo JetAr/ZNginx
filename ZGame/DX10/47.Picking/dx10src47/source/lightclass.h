@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // Filename: lightclass.h
 ////////////////////////////////////////////////////////////////////////////////
 #ifndef _LIGHTCLASS_H_
@@ -17,16 +17,16 @@
 class LightClass
 {
 public:
-	LightClass();
-	LightClass(const LightClass&);
-	~LightClass();
+    LightClass();
+    LightClass(const LightClass&);
+    ~LightClass();
 
-	void SetDirection(float, float, float);
+    void SetDirection(float, float, float);
 
-	D3DXVECTOR3 GetDirection();
+    D3DXVECTOR3 GetDirection();
 
 private:
-	D3DXVECTOR3 m_direction;
+    D3DXVECTOR3 m_direction;
 };
 
 #endif

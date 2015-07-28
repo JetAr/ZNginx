@@ -41,7 +41,7 @@ class KPogyAplet : public KAplet
     KSetupPogyPage   SetupPogyPage;
     KApiPage         ApiPage;
     KEventPage       EventPage;
-    
+
 public:
     void InitProcess(HINSTANCE hInstance);
     void TermProcess(HINSTANCE hInstance);
@@ -55,8 +55,8 @@ void KPogyAplet::InitProcess(HINSTANCE hInstance)
     SetupPogyPage.ReadOptions(hInstance);
 
     SetupDiver(Diver_Install, NULL);
-} 
-    
+}
+
 
 void KPogyAplet::TermProcess(HINSTANCE hInstance)
 {
@@ -64,14 +64,14 @@ void KPogyAplet::TermProcess(HINSTANCE hInstance)
 
     SetupPogyPage.SaveOptions(hInstance);
 }
-    
+
 
 int KPogyAplet::GetPropertySheetPages(HINSTANCE hInst, HPROPSHEETPAGE *hPage)
 {
     hPage[0] =     EventPage.createPropertySheetPage(hInst, IDD_EVENT);
     hPage[1] = SetupPogyPage.createPropertySheetPage(hInst, IDD_SETUPPOGY);
     hPage[2] =       ApiPage.createPropertySheetPage(hInst, IDD_API);
-    
+
     return 3;
 }
 

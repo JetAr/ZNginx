@@ -81,7 +81,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprev, PSTR cmdline, int ishow
     //								 received from the resource file into it's corresponding string
     //								 version that LoadMenu() can then use
     //z 载入菜单
-	gMenu = LoadMenu(hinstance,MAKEINTRESOURCE(IDR_MENU1));
+    gMenu = LoadMenu(hinstance,MAKEINTRESOURCE(IDR_MENU1));
 
     // Create the window
     hwnd = CreateWindowEx(WS_EX_APPWINDOW,
@@ -102,7 +102,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprev, PSTR cmdline, int ishow
     // Error Check
     if(!hwnd)
     {
-		//z 创建的菜单资源要记得释放
+        //z 创建的菜单资源要记得释放
         DestroyMenu(gMenu); // This frees the menu that we created
         return EXIT_FAILURE;
     }
@@ -154,7 +154,7 @@ LRESULT CALLBACK WinProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
     // This message gets sent if a "command item" from a menu is selected
     // (it also gets sent for other stuff but this is what we care about)
     //z 在选中一个菜单的时候，会发送该消息。
-	case WM_COMMAND:
+    case WM_COMMAND:
 
         switch(LOWORD(wparam)) // The LOWORD(wparam) will equal the "identifier" of
         {
