@@ -3269,3 +3269,14 @@ Changes to be committed:
 	new file:   ZGame/Terrain11/tersrc19/source/userinterfaceclass.cpp
 	new file:   ZGame/Terrain11/tersrc19/source/userinterfaceclass.h
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/07/28.17_01_08.15.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	modified:   ZGame/DX10/03.Init/d3dclass.cpp
+

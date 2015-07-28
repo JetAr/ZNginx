@@ -320,6 +320,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
     depthBufferDesc.CPUAccessFlags = 0;
     depthBufferDesc.MiscFlags = 0;
 
+    //z 创建一个 texture 2d 。
     // Create the texture for the depth buffer using the filled out description.
     result = m_device->CreateTexture2D(&depthBufferDesc, NULL, &m_depthStencilBuffer);
     if(FAILED(result))
@@ -503,7 +504,6 @@ void D3DClass::BeginScene(float red, float green, float blue, float alpha)
     return;
 }
 
-
 void D3DClass::EndScene()
 {
     // Present the back buffer to the screen since rendering is complete.
@@ -551,7 +551,9 @@ void D3DClass::GetOrthoMatrix(D3DXMATRIX& orthoMatrix)
 
 void D3DClass::GetVideoCardInfo(char* cardName, int& memory)
 {
+    //z 得到描述
     strcpy_s(cardName, 128, m_videoCardDescription);
+    //z 内存
     memory = m_videoCardMemory;
     return;
 }
