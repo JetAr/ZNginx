@@ -1,0 +1,20 @@
+Texture Count: 7
+
+0: ../Engine/data/texture01.dds
+1: ../Engine/data/texture02.dds
+2: ../Engine/data/texture03.dds
+3: ../Engine/data/alpha01.dds
+4: ../Engine/data/alpha02.dds
+5: ../Engine/data/alpha03.dds
+6: ../Engine/data/alpha04.dds
+
+Material Count: 8
+
+0: 0 -1 -1   0 255   0
+1: 1 -1 -1 255   0   0
+2: 1  0  4   0   0 255
+3: 1  0  3   0 255 255
+4: 2 -1 -1 255 255 255
+5: 0  2  3 128 128 128
+6: 0  2  5 128   0   0
+7: 0  2  6   0   0 128
