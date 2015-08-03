@@ -3302,3 +3302,14 @@ Changes to be committed:
 	modified:   Doc/K/T.2015.BugFree.cs
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/08/03.08_46_06.20.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	new file:   "Doc/Tools/\350\236\272\344\270\235\345\210\200\350\247\204\346\240\274.txt"
+	modified:   History.txt
+
