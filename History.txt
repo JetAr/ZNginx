@@ -3324,3 +3324,54 @@ Changes to be committed:
 
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+shadow_mapping.2015/08/04.14_27_53.66.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Doc/K/T.2015.BugFree.cs
+	modified:   History.txt
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10.zip
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping.sln
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/Camera.cpp
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/Camera.h
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/DX10ExternalControls.cpp
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/DX10InitializeScene.cpp
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/DX10RenderFrame.cpp
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/DX10Renderer.cpp
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/DX10Renderer.h
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/DX10Resources.cpp
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/DX10Resources.h
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/HRTimer.h
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/NMD_Types.h
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/OBJLoader.cpp
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/OBJLoader.h
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/RawInput.h
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/Shadow Mapping.vcxproj
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/Shadow Mapping.vcxproj.filters
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/ShadowMap.fx
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/ShadowMap.fxo
+	new file:   ZGame/DX10/Shadow/Ahieve/tutorial10/Shadow Mapping/Shadow Mapping/main.cpp
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping.sln
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/Camera.cpp
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/Camera.h
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/DX10ExternalControls.cpp
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/DX10InitializeScene.cpp
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/DX10RenderFrame.cpp
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/DX10Renderer.cpp
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/DX10Renderer.h
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/DX10Resources.cpp
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/DX10Resources.h
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/HRTimer.h
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/NMD_Types.h
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/OBJLoader.cpp
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/OBJLoader.h
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/RawInput.h
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/Shadow Mapping.vcxproj
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/Shadow Mapping.vcxproj.filters
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/ShadowMap.fx
+	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/main.cpp
+
