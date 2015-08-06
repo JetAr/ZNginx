@@ -3375,3 +3375,14 @@ Changes to be committed:
 	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/ShadowMap.fx
 	new file:   ZGame/DX10/Shadow/Shadow Mapping/Shadow Mapping/main.cpp
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/08/06.09_04_20.96.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Doc/K/T.2015.BugFree.cs
+	modified:   History.txt
+
