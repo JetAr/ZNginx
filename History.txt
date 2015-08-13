@@ -3418,3 +3418,14 @@ Changes not staged for commit:
 It took 8.41 seconds to enumerate untracked files. 'status -uno'
 may speed it up, but you have to be careful not to forget to add
 new files yourself (see 'git help status').
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/08/13.18_01_43.45.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Doc/K/T.2015.BugFree.cs
+	modified:   History.txt
+
