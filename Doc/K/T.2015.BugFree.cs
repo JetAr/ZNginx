@@ -93,7 +93,7 @@
       L538, 32:zitem dx 10 的例子
       L542, 33:R#.24   @leetcode
       L581, 34:R#.25   @一些 game engine 
-     Zndex_E : //z 2015-08-13 17:36:39 L.140'23001 T3396814815.K ~590 +----+----+----+----+----+
+     Zndex_E : //z 2015-08-14 18:07:08 L.139'21172 T457594939 .K ~624 +----+----+----+----+----+
      TimeCnt : //z 2015-08-13 17:32:04 L.140'23276 T3396670963.K ~27  +----+----+----+----+----+
      Reg.Cnt : //z 2015-08-13 17:31:56 L.140'23284 T3396635193.K ~27  +----+----+----+----+----+
      #27  R+ : //z 2015-08-13 17:31:56 L.140'23284 T3396635193.K ~27    V+.583  L+.642  
@@ -126,7 +126,9 @@
      File.Op : //z 2015-08-06 08:25:11 L.147'56089 T2984249525.K ~2   +----+----+----+----+----+
      #2   O+ : //z 2015-08-06 08:25:11 L.147'56089 T2984249525.K ~2     V+.572  L+.1    
      #1   O+ : //z 2015-06-18 08:36:17 L.196'55423 T2695262750.K ~1     V+.374  L+.1    
-     Version : //z 2015-08-13 17:36:39 L.140'23001 T3396814815.K ~617   R+.27   L+.661  --+----+
+     Version : //z 2015-08-14 18:07:08 L.139'21172 T457594939 .K ~651   R+.27   L+.684  --+----+
+     #34  V+ : //z 2015-08-14 18:05:48 L.139'21252 T457523197 .K ~646   R+.27   L+.679  
+     #33  V+ : //z 2015-08-14 18:04:33 L.139'21327 T457487222 .K ~627   R+.27   L+.669  
      #32  V+ : //z 2015-08-13 17:34:45 L.140'23115 T3396742970.K ~608   R+.27   L+.657  
      #31  V+ : //z 2015-08-13 17:32:10 L.140'23270 T3396670992.K ~589   R+.27   L+.644  
      #30  R+ : //z 2015-08-13 17:31:56 L.140'23284 T3396635193.K ~583   R+.27   L+.643  V+.583  
@@ -659,4 +661,26 @@ http://www.grapecookie.com/code/metaball-cocos2d-shader-cocos2dx/
 其实无非就是不适合CPU去进行的图形运算，交给GPU去做，GPU处理流程中允许程序员控制的只有顶点着色阶段和片段着色阶段，就有了opengl shader里的vsh和fsh，顶点着色器确定要花的东西的形状，形成一个闭合图形，片段着色器则是根据各种参数处理闭合图形内的颜色，亮度、透明度等东西，网上还有其他的类似helloworld例子，都是很好的帮助了解shader的资料，人不可能学会所有东西，不可能把所有程序工具的api记下来，所以要根据需要来，比如现在需要的是2D游戏的渲染，那么只需要搜集2Dshader的资料就可以了，很多大块头的书真正对我们有用的就几十页而已，再比如opengl的很多特性，既可以直接写opengl代码，也可以写shader代码，前者就没必要费时间学习了，直接研究shader如何处理就可以了，shader兼容性更强，很多特性在这个平台上可以使用，在另一个平台上就不能用了，比如把游戏移植到手机，这个时候很多东西只能用shader，shader在opengl和opengl-es都是通用的，而传统opengl函数不可以，带着需求去选择性地学习东西，更事半功倍。
 
 用HLSL，入门推荐《the complete effect and hlsl guide》，高级的看《Shader X》系列吧，另外，Render Monkey是创作shader 的不错工具。
+
+The Complete Effect and HLSL Guide
+http://book.douban.com/subject/2370836/
+The Complete Effect and HLSL Guide 翻译连载
+http://blog.csdn.net/soilwork/article/category/257400
+Using Shaders in Direct3D 10
+https://msdn.microsoft.com/en-us/library/windows/desktop/bb509703(v=vs.85).aspx
+Shader Stages
+https://msdn.microsoft.com/en-us/library/windows/desktop/bb205146(v=vs.85).aspx
+Tutorial 4: Buffers, Shaders, and HLSL
+http://www.rastertek.com/dx10tut04.html
+DirectX10 Tutorial 9: The Geometry Shader
+https://takinginitiative.wordpress.com/2011/01/12/directx10-tutorial-9-the-geometry-shader/
+DirectX10 Tutorial 3: Textures
+https://takinginitiative.wordpress.com/2008/11/29/directx-10-tutorial-3-textures/
+https://takinginitiative.wordpress.com/category/graphics-programming/directx-10-tutorials/
+
+Introduction to DirectX Shader
+http://gamedevelop.eu/en/tutorials/introduction-to-directx-shader.htm
+
+Lesson 35: Direct3D 11 Billboarding (Geometry Shader)
+http://www.braynzarsoft.net/index.php?p=D3D11BILLBOARDS
 #endregion //z 2015-08-13 17:31:56 L.140'23284 BG57IV3@XCL T3396635193.K.F4146951713-+----+----+
