@@ -93,9 +93,10 @@
       L538, 32:zitem dx 10 的例子
       L542, 33:R#.24   @leetcode
       L581, 34:R#.25   @一些 game engine 
-     Zndex_E : //z 2015-08-14 18:07:08 L.139'21172 T457594939 .K ~624 +----+----+----+----+----+
-     TimeCnt : //z 2015-08-13 17:32:04 L.140'23276 T3396670963.K ~27  +----+----+----+----+----+
-     Reg.Cnt : //z 2015-08-13 17:31:56 L.140'23284 T3396635193.K ~27  +----+----+----+----+----+
+     Zndex_E : //z 2015-08-18 18:08:42 L.135'21078 T728836510 .K ~640 +----+----+----+----+----+
+     TimeCnt : //z 2015-08-18 18:06:27 L.135'21213 T728764575 .K ~28  +----+----+----+----+----+
+     Reg.Cnt : //z 2015-08-18 18:06:06 L.135'21234 T728764508 .K ~28  +----+----+----+----+----+
+     #28  R+ : //z 2015-08-18 18:06:06 L.135'21234 T728764508 .K ~28    V+.653  L+.691  
      #27  R+ : //z 2015-08-13 17:31:56 L.140'23284 T3396635193.K ~27    V+.583  L+.642  
      #26  R+ : //z 2015-08-06 08:25:18 L.147'56082 T2984249532.K ~26    V+.573  L+.634  
      #25  R+ : //z 2015-07-21 13:07:21 L.163'39159 T3292602638.K ~25    V+.501  L+.570  
@@ -126,7 +127,9 @@
      File.Op : //z 2015-08-06 08:25:11 L.147'56089 T2984249525.K ~2   +----+----+----+----+----+
      #2   O+ : //z 2015-08-06 08:25:11 L.147'56089 T2984249525.K ~2     V+.572  L+.1    
      #1   O+ : //z 2015-06-18 08:36:17 L.196'55423 T2695262750.K ~1     V+.374  L+.1    
-     Version : //z 2015-08-14 18:07:08 L.139'21172 T457594939 .K ~651   R+.27   L+.684  --+----+
+     Version : //z 2015-08-18 18:08:42 L.135'21078 T728836510 .K ~668   R+.28   L+.705  --+----+
+     #35  V+ : //z 2015-08-18 18:08:10 L.135'21110 T728836409 .K ~665   R+.28   L+.701  
+     #34  R+ : //z 2015-08-18 18:06:06 L.135'21234 T728764508 .K ~653   R+.28   L+.692  V+.653  
      #34  V+ : //z 2015-08-14 18:05:48 L.139'21252 T457523197 .K ~646   R+.27   L+.679  
      #33  V+ : //z 2015-08-14 18:04:33 L.139'21327 T457487222 .K ~627   R+.27   L+.669  
      #32  V+ : //z 2015-08-13 17:34:45 L.140'23115 T3396742970.K ~608   R+.27   L+.657  
@@ -684,3 +687,20 @@ http://gamedevelop.eu/en/tutorials/introduction-to-directx-shader.htm
 Lesson 35: Direct3D 11 Billboarding (Geometry Shader)
 http://www.braynzarsoft.net/index.php?p=D3D11BILLBOARDS
 #endregion //z 2015-08-13 17:31:56 L.140'23284 BG57IV3@XCL T3396635193.K.F4146951713-+----+----+
+
+#region 08-18 18:06 R#.28   @DirectX Tool Kit
+//z 2015-08-18 18:06:27 L.135'21213 T728764575 .K[T28,L691,R28,V656]
+01. CodePlex July 2014 Refresh
+http://blogs.msdn.com/b/chuckw/archive/2014/07/31/codeplex-july-2014-refresh.aspx
+
+Games for Windows and the DirectX SDK
+http://blogs.msdn.com/b/chuckw/
+
+DirectX Engine
+Project Description
+DirectX engine for support version 9, 10, 11 libraries Microsoft SDK.
+Features: camera view, lighting, load mesh, animation, skinning, hierarchy interface, animation controlller, mesh container, collision system.
+https://directx.codeplex.com/
+
+https://github.com/Microsoft
+#endregion //z 2015-08-18 18:06:06 L.135'21234 BG57IV3@XCL T728764508 .K.F4146951713-+----+----+
