@@ -3462,3 +3462,17 @@ Changes to be committed:
 	modified:   History.txt
 	new file:   ToolKit/Cpp/AutoRecovery.cpp
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+tga.2015/08/21.17_12_49.04.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	new file:   Code/File/TGA(opengl)/TGALoader.cpp
+	new file:   Code/File/TGA(opengl)/Tga.h
+	new file:   Code/File/TGA(opengl)/ToBmp.cpp
+	modified:   Doc/K/T.2015.BugFree.cs
+	modified:   History.txt
+
