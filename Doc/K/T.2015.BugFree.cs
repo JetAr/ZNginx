@@ -93,8 +93,8 @@
       L538, 32:zitem dx 10 的例子
       L542, 33:R#.24   @leetcode
       L581, 34:R#.25   @一些 game engine 
-     Zndex_E : //z 2015-08-20 18:18:07 L.133'20513 T2425056729.K ~642 +----+----+----+----+----+
-     TimeCnt : //z 2015-08-18 18:06:27 L.135'21213 T728764575 .K ~28  +----+----+----+----+----+
+     Zndex_E : //z 2015-08-25 17:59:00 L.128'21660 T1477375259.K ~702 +----+----+----+----+----+
+     TimeCnt : //z 2015-08-25 17:45:36 L.128'22464 T1476045695.K ~29  +----+----+----+----+----+
      Reg.Cnt : //z 2015-08-18 18:06:06 L.135'21234 T728764508 .K ~28  +----+----+----+----+----+
      #28  R+ : //z 2015-08-18 18:06:06 L.135'21234 T728764508 .K ~28    V+.653  L+.691  
      #27  R+ : //z 2015-08-13 17:31:56 L.140'23284 T3396635193.K ~27    V+.583  L+.642  
@@ -127,7 +127,10 @@
      File.Op : //z 2015-08-06 08:25:11 L.147'56089 T2984249525.K ~2   +----+----+----+----+----+
      #2   O+ : //z 2015-08-06 08:25:11 L.147'56089 T2984249525.K ~2     V+.572  L+.1    
      #1   O+ : //z 2015-06-18 08:36:17 L.196'55423 T2695262750.K ~1     V+.374  L+.1    
-     Version : //z 2015-08-20 18:18:07 L.133'20513 T2425056729.K ~670   R+.27   L+.690  --+----+
+     Version : //z 2015-08-25 17:59:00 L.128'21660 T1477375259.K ~730   R+.28   L+.761  --+----+
+     #38  V+ : //z 2015-08-25 17:58:14 L.128'21706 T1477339359.K ~722   R+.28   L+.757  
+     #37  V+ : //z 2015-08-25 17:49:09 L.128'22251 T1476189347.K ~703   R+.28   L+.738  
+     #36  V+ : //z 2015-08-25 17:33:38 L.128'23182 T1474787902.K ~684   R+.28   L+.726  
      #35  V+ : //z 2015-08-18 18:08:10 L.135'21110 T728836409 .K ~665   R+.28   L+.701  
      #34  R+ : //z 2015-08-18 18:06:06 L.135'21234 T728764508 .K ~653   R+.28   L+.692  V+.653  
      #34  V+ : //z 2015-08-14 18:05:48 L.139'21252 T457523197 .K ~646   R+.27   L+.679  
@@ -706,4 +709,55 @@ Features: camera view, lighting, load mesh, animation, skinning, hierarchy inter
 https://directx.codeplex.com/
 
 https://github.com/Microsoft
+
+有几篇数学变换值得一看
+http://www.cppblog.com/lovedday
+较多DX文章
+http://www.cnblogs.com/lancidie
+
+过时，了解一些基础概念
+http://17de.com/library/d3d_6im/d3dindex.htm
+
+GPUGI: Global Illumination Effects on the GPU
+Abstract:
+In this tutorial we explain how global illumination rendering methods can be implemented on Shader Model 3.0 GPUs. These algorithms do not follow the conventional local illumination model of DirectX/OpenGL pipelines, but require global geometric or illumination information when shading a point. In addition to the theory and state of the art of these approaches, we go into the details of a few algorithms, including mirror reflections, reflactions, caustics, diffuse/glossy indirect illumination, precomputation aided global illumination for surface and volumetric models, obscurances and tone mapping, also giving their GPU implementation in HLSL or Cg language.
+Keywords:
+Global illumination, GPU programming, HLSL, Radiosity, Soft shadow algorithms, Environment mapping, Diffuse/Glossy indirect illumination, Mirror
+Reflection/Refraction, Caustics generation, Monte-carlo methods, Pre-computation aided global illumination, PRT, Ambient Occlusion, Obscurances, Participating Media, Multiple scattering.
+http://sirkan.iit.bme.hu/~szirmay/gpugi_link.htm
+
+Ray Tracing News Guide
+http://www.realtimerendering.com/resources/RTNews/html/
+3d tech news, programming, pixel hacking and demoscene
+http://www.geeks3d.com/
+
+//z 2015-08-25 17:45:36 L.128'22464 T1476045695.K[T29,L732,R28,V695]
+This section contains DirectX SDK tutorials and samples.
+https://msdn.microsoft.com/en-us/library/ee416804(VS.85).aspx
+DirectX SDK Samples Catalog
+http://blogs.msdn.com/b/chuckw/archive/2013/09/20/directx-sdk-samples-catalog.aspx
+Direct3D Tutorial Win32 Sample
+https://code.msdn.microsoft.com/windowsdesktop/Direct3D-Tutorial-Win32-829979ef
+dx 9.0 samples
+https://msdn.microsoft.com/en-us/library/windows/desktop/bb153264(v=vs.85).aspx
+Direct3D tutorial sample
+https://code.msdn.microsoft.com/windowsapps/Direct3D-Tutorial-Sample-08667fb0
+
+Beginning Direct3D 10
+http://www.codeproject.com/Articles/25143/Beginning-Direct-D
+cp 上与 directx 相关的例子
+http://www.codeproject.com/KB/directx/
+
+3D Game Engine Programming
+http://www.3dgep.com/
+http://www.3dgep.com/introduction-to-directx-11/
+
+directx-sdk-samples，收集了相当多的 dx sdk 的例子
+https://github.com/walbourn/directx-sdk-samples/wiki
+
+microsoft dx ut
+https://github.com/Microsoft/DXUT
+
+dx samples from codeplex
+https://dxut.codeplex.com/wikipage?title=Samples
 #endregion //z 2015-08-18 18:06:06 L.135'21234 BG57IV3@XCL T728764508 .K.F4146951713-+----+----+
