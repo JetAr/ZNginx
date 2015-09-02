@@ -4,6 +4,7 @@
 #ifndef _SYSTEMCLASS_H_
 #define _SYSTEMCLASS_H_
 
+//z 2015-09-02 17:12
 
 ///////////////////////////////
 // PRE-PROCESSING DIRECTIVES //

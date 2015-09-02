@@ -25,7 +25,7 @@ D3DClass::~D3DClass()
 {
 }
 
-
+//z 2015-09-02 17:22 
 bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hwnd, bool fullscreen,
                           float screenDepth, float screenNear)
 {
@@ -51,6 +51,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
     m_vsync_enabled = vsync;
 
     // Create a DirectX graphics interface factory.
+    //z 创建一个 dx graphics interface factory.
     result = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
     if(FAILED(result))
     {
@@ -58,6 +59,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
     }
 
     // Use the factory to create an adapter for the primary graphics interface (video card).
+    //z 枚举 adapter
     result = factory->EnumAdapters(0, &adapter);
     if(FAILED(result))
     {
@@ -65,6 +67,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
     }
 
     // Enumerate the primary adapter output (monitor).
+    //z 枚举 monitor
     result = adapter->EnumOutputs(0, &adapterOutput);
     if(FAILED(result))
     {
@@ -114,9 +117,11 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
     }
 
     // Store the dedicated video card memory in megabytes.
+    //z 显卡内存有多少M。
     m_videoCardMemory = (int)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
 
     // Convert the name of the video card to a character array and store it.
+    //z 得到 adapter 的 description 并且保存到 m_videoCardDescription
     error = wcstombs_s(&stringLength, m_videoCardDescription, 128, adapterDesc.Description, 128);
     if(error != 0)
     {
@@ -150,6 +155,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
     swapChainDesc.BufferDesc.Height = screenHeight;
 
     // Set regular 32-bit surface for the back buffer.
+    //z 设置 back buffer 的格式
     swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
     // Set the refresh rate of the back buffer.
@@ -338,6 +344,8 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
     // Initialize the world matrix to the identity matrix.
     D3DXMatrixIdentity(&m_worldMatrix);
 
+    //z 2015-09-02 17:53 不知道意思和含义。
+    //z 为 2d rendering 创建一个 orthographic projection matrix。
     // Create an orthographic projection matrix for 2D rendering.
     D3DXMatrixOrthoLH(&m_orthoMatrix, (float)screenWidth, (float)screenHeight, screenNear, screenDepth);
 

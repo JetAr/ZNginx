@@ -8,6 +8,7 @@
 /////////////
 // LINKING //
 /////////////
+//z 2015-09-02 17:20 目前不清楚这几个lib具体对应的功能。
 #pragma comment(lib, "d3d10.lib")
 #pragma comment(lib, "d3dx10.lib")
 #pragma comment(lib, "dxgi.lib")

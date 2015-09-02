@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "modelclass.h"
 
+//z 2015-09-02 17:13
 
 ModelClass::ModelClass()
 {
@@ -90,6 +91,7 @@ bool ModelClass::InitializeBuffers(ID3D10Device* device)
         return false;
     }
 
+    //z 定义了三个 point
     // Load the vertex array with data.
     vertices[0].position = D3DXVECTOR3(-1.0f, -1.0f, 0.0f);  // Bottom left.
     vertices[0].color = D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.0f);
@@ -115,6 +117,7 @@ bool ModelClass::InitializeBuffers(ID3D10Device* device)
     // Give the subresource structure a pointer to the vertex data.
     vertexData.pSysMem = vertices;
 
+    //z 通过 desc 以及 subresource 创建 buffer
     // Now finally create the vertex buffer.
     result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
     if(FAILED(result))
@@ -133,6 +136,7 @@ bool ModelClass::InitializeBuffers(ID3D10Device* device)
     indexData.pSysMem = indices;
 
     // Create the index buffer.
+    //z 2015-09-02 17:17 创建 index buffer
     result = device->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
     if(FAILED(result))
     {
@@ -152,6 +156,7 @@ bool ModelClass::InitializeBuffers(ID3D10Device* device)
 
 void ModelClass::ShutdownBuffers()
 {
+    //z 关闭 buffer 2015-09-02 17:18
     // Release the index buffer.
     if(m_indexBuffer)
     {
@@ -187,6 +192,7 @@ void ModelClass::RenderBuffers(ID3D10Device* device)
     device->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
     // Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
+    //z 进行渲染
     device->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     return;
