@@ -59,42 +59,45 @@
        Zcl_S : //z 2015-04-27 11:28:04 L.248'45116 T1418964723.K ~0   +----+----+----+----+----+
        Zcl_E : //z 2015-04-27 11:28:04 L.248'45116 T1418964723.K ~0   +----+----+----+----+----+
      Zndex_S : //z 2015-04-27 11:28:04 L.248'45116 T1418964723.K ~0   +----+----+----+----+----+
-      L193,  1:R#.1    @日知录
-      L201,  2:R#.2    @第17周总结 2015-04-26 --> 2015-05-02
-      L205,  3:zdo focus windows system programming 以及工程实践。
-      L208,  4:zkaizen 纯粹的肥肉还是别吃了；肉食类不要吃冷的。饭店吃饭尽量点热的。
-      L219,  5:R#.3    @国务院办公厅关于2015年部分节假日安排的通知
-      L239,  6:R#.4    @流程图 软件推荐
-      L261,  7:todo 阅读《我用VISIO制图》done 2015-04-28 16:26 当晚未看。
-      L264,  8:R#.5    @绘制类图，类继承
-      L269,  9:R#.6    @EA公司发表自制的EASTL规格 游戏开发方面对STL的性能及功能需求的特点
-      L273, 10:R#.7    @参考下 cp 上的 tl 功能，看能否增强n.tl
-      L278, 11:R#.8    @收集方方面面的模式和实例。
-      L284, 12:R#.9    @收集一份vc6的常用插件
-      L289, 13:R#.10   @zdo 使用 libcurl 写个http post[简繁转化]的例子
-      L294, 14:R#.11   @关灯吃面
-      L302, 15:R#.12   @znote astyle -A1 -R -z1 -n *.cpp
-      L306, 16:R#.13   @zlog hosts
-      L309, 17:zkz Moving from Research to Practice to Close the Achievement Gap
-      L312, 18:R#.14   @3ds max
-      L364, 19:zitem haptix/evolution3d googlecode
-      L367, 20:R#.15   @CMakeFile
-      L404, 21:R#.16   @3ds
-      L414, 22:zitem freeimage 结合play，载入其他类型素材（不限于tga）
-      L417, 23:R#.17   @high performance lock
-      L428, 24:R#.18   @3ds
-      L437, 25:R#.19   @znote BookList
-      L440, 26:todo 深入理解nginx redis设计与实现
-      L484, 27:todo http://download.csdn.net/download/chengdz599/8792741 ??
-      L501, 28:R#.20   @书评
-      L514, 29:R#.21   @Game tmp
-      L528, 30:R#.22   @了解下 markdown 以及 lua
-      L532, 31:R#.23   @Matthew Fisher graphics project
-      L538, 32:zitem dx 10 的例子
-      L542, 33:R#.24   @leetcode
-      L581, 34:R#.25   @一些 game engine 
-     Zndex_E : //z 2015-08-25 17:59:00 L.128'21660 T1477375259.K ~702 +----+----+----+----+----+
-     TimeCnt : //z 2015-08-25 17:45:36 L.128'22464 T1476045695.K ~29  +----+----+----+----+----+
+      L211,  1:R#.1    @日知录
+      L219,  2:R#.2    @第17周总结 2015-04-26 --> 2015-05-02
+      L223,  3:zdo focus windows system programming 以及工程实践。
+      L226,  4:zkaizen 纯粹的肥肉还是别吃了；肉食类不要吃冷的。饭店吃饭尽量点热的。
+      L237,  5:R#.3    @国务院办公厅关于2015年部分节假日安排的通知
+      L257,  6:R#.4    @流程图 软件推荐
+      L279,  7:todo 阅读《我用VISIO制图》done 2015-04-28 16:26 当晚未看。
+      L282,  8:R#.5    @绘制类图，类继承
+      L287,  9:R#.6    @EA公司发表自制的EASTL规格 游戏开发方面对STL的性能及功能需求的特点
+      L291, 10:R#.7    @参考下 cp 上的 tl 功能，看能否增强n.tl
+      L296, 11:R#.8    @收集方方面面的模式和实例。
+      L302, 12:R#.9    @收集一份vc6的常用插件
+      L307, 13:R#.10   @zdo 使用 libcurl 写个http post[简繁转化]的例子
+      L312, 14:R#.11   @关灯吃面
+      L320, 15:R#.12   @znote astyle -A1 -R -z1 -n *.cpp
+      L324, 16:R#.13   @zlog hosts
+      L327, 17:zkz Moving from Research to Practice to Close the Achievement Gap
+      L330, 18:R#.14   @3ds max
+      L382, 19:zitem haptix/evolution3d googlecode
+      L385, 20:R#.15   @CMakeFile
+      L422, 21:R#.16   @3ds
+      L432, 22:zitem freeimage 结合play，载入其他类型素材（不限于tga）
+      L435, 23:R#.17   @high performance lock
+      L446, 24:R#.18   @3ds
+      L455, 25:R#.19   @znote BookList
+      L458, 26:todo 深入理解nginx redis设计与实现
+      L502, 27:todo http://download.csdn.net/download/chengdz599/8792741 ??
+      L519, 28:R#.20   @书评
+      L532, 29:R#.21   @Game tmp
+      L546, 30:R#.22   @了解下 markdown 以及 lua
+      L550, 31:R#.23   @Matthew Fisher graphics project
+      L556, 32:zitem dx 10 的例子
+      L560, 33:R#.24   @leetcode
+      L599, 34:R#.25   @一些 game engine 
+      L648, 35:R#.26   @znote merida 山地车
+      L654, 36:R#.27   @shader
+      L700, 37:R#.28   @DirectX Tool Kit
+     Zndex_E : //z 2015-09-04 22:40:37 L.118'4763  T66166933  .K ~719 +----+----+----+----+----+
+     TimeCnt : //z 2015-09-04 21:25:12 L.118'9288  T3067474032.K ~30  +----+----+----+----+----+
      Reg.Cnt : //z 2015-08-18 18:06:06 L.135'21234 T728764508 .K ~28  +----+----+----+----+----+
      #28  R+ : //z 2015-08-18 18:06:06 L.135'21234 T728764508 .K ~28    V+.653  L+.691  
      #27  R+ : //z 2015-08-13 17:31:56 L.140'23284 T3396635193.K ~27    V+.583  L+.642  
@@ -124,10 +127,12 @@
      #3   R+ : //z 2015-04-27 11:35:34 L.248'44666 T1420042932.K ~3     V+.29   L+.108  
      #2   R+ : //z 2015-04-27 11:31:41 L.248'44899 T1419899214.K ~2     V+.19   L+.104  
      #1   R+ : //z 2015-04-27 11:28:08 L.248'45112 T1418964727.K ~1     V+.3    L+.62   
-     File.Op : //z 2015-08-06 08:25:11 L.147'56089 T2984249525.K ~2   +----+----+----+----+----+
+     File.Op : //z 2015-09-04 21:24:47 L.118'9313  T3067438199.K ~3   +----+----+----+----+----+
+     #3   O+ : //z 2015-09-04 21:24:47 L.118'9313  T3067438199.K ~3     V+.731  L+.1    
      #2   O+ : //z 2015-08-06 08:25:11 L.147'56089 T2984249525.K ~2     V+.572  L+.1    
      #1   O+ : //z 2015-06-18 08:36:17 L.196'55423 T2695262750.K ~1     V+.374  L+.1    
-     Version : //z 2015-08-25 17:59:00 L.128'21660 T1477375259.K ~730   R+.28   L+.761  --+----+
+     Version : //z 2015-09-04 22:40:37 L.118'4763  T66166933  .K ~747   R+.28   L+.778  --+----+
+     #39  V+ : //z 2015-09-04 22:39:16 L.118'4844  T65304378  .K ~741   R+.28   L+.779  
      #38  V+ : //z 2015-08-25 17:58:14 L.128'21706 T1477339359.K ~722   R+.28   L+.757  
      #37  V+ : //z 2015-08-25 17:49:09 L.128'22251 T1476189347.K ~703   R+.28   L+.738  
      #36  V+ : //z 2015-08-25 17:33:38 L.128'23182 T1474787902.K ~684   R+.28   L+.726  
@@ -760,4 +765,22 @@ https://github.com/Microsoft/DXUT
 
 dx samples from codeplex
 https://dxut.codeplex.com/wikipage?title=Samples
+
+//z 2015-09-04 21:25:12 L.118'9288  T3067474032.K[T30,L768,R28,V732]
+DirectX SDK Tools Catalog
+http://blogs.msdn.com/b/chuckw/archive/2014/10/28/directx-sdk-tools-catalog.aspx
+DirectX SDK Samples Catalog
+http://blogs.msdn.com/b/chuckw/archive/2013/09/20/directx-sdk-samples-catalog.aspx
+一些 dx sdk 中的例子
+https://github.com/walbourn/directx-sdk-samples
+
+dx9
+http://www.chadvernon.com/blog/resources/directx9/
+http://www.drunkenhyena.com/cgi-bin/dx9.pl
+http://www.codesampler.com/dx9src.htm
+DX9 C++ Tutorial 
+http://zophusx.byethost11.com/tutorial.php?lan=dx9&num=0&ckattempt=1
+http://www.win32developer.com/tutorial.shtm
+http://www.overclock.net/t/1292832/directx-9-tutorials-1-initializing-directx-9-in-c-non-oop
+http://ftp.train2game.com/showthread.php/20147-Useful-Link-For-DirectX-9-Tutorial-VERY-IN-DEPTH-)
 #endregion //z 2015-08-18 18:06:06 L.135'21234 BG57IV3@XCL T728764508 .K.F4146951713-+----+----+
