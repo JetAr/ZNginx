@@ -3576,3 +3576,14 @@ Changes to be committed:
 	new file:   ZGame/DX9/dx9_view_ports/resource.h
 	new file:   ZGame/DX9/dx9_view_ports/teapot.x
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015-09-05.22_31_38.31.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Doc/K/T.2015.BugFree.cs
+	modified:   History.txt
+
