@@ -3535,3 +3535,44 @@ Changes to be committed:
 	modified:   Doc/K/T.2015.BugFree.cs
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+dx9_eg.2015-09-05.20_27_36.00.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Doc/K/T.2015.BugFree.cs
+	modified:   History.txt
+	new file:   ZGame/DX9/dx9_fullscreen/codesampler.ico
+	new file:   ZGame/DX9/dx9_fullscreen/dx9_fullscreen.cpp
+	new file:   ZGame/DX9/dx9_fullscreen/dx9_fullscreen.exe
+	new file:   ZGame/DX9/dx9_fullscreen/dx9_fullscreen.rc
+	new file:   ZGame/DX9/dx9_fullscreen/dx9_fullscreen.sln
+	new file:   ZGame/DX9/dx9_fullscreen/dx9_fullscreen.vcproj
+	new file:   ZGame/DX9/dx9_fullscreen/resource.h
+	new file:   ZGame/DX9/dx9_initialization/codesampler.ico
+	new file:   ZGame/DX9/dx9_initialization/dx9_initialization.cpp
+	new file:   ZGame/DX9/dx9_initialization/dx9_initialization.exe
+	new file:   ZGame/DX9/dx9_initialization/dx9_initialization.rc
+	new file:   ZGame/DX9/dx9_initialization/dx9_initialization.sln
+	new file:   ZGame/DX9/dx9_initialization/dx9_initialization.vcproj
+	new file:   ZGame/DX9/dx9_initialization/resource.h
+	new file:   ZGame/DX9/dx9_swap_chains/codesampler.ico
+	new file:   ZGame/DX9/dx9_swap_chains/dx9_swap_chains.cpp
+	new file:   ZGame/DX9/dx9_swap_chains/dx9_swap_chains.exe
+	new file:   ZGame/DX9/dx9_swap_chains/dx9_swap_chains.rc
+	new file:   ZGame/DX9/dx9_swap_chains/dx9_swap_chains.sln
+	new file:   ZGame/DX9/dx9_swap_chains/dx9_swap_chains.vcproj
+	new file:   ZGame/DX9/dx9_swap_chains/resource.h
+	new file:   ZGame/DX9/dx9_swap_chains/teapot.x
+	new file:   ZGame/DX9/dx9_view_ports/codesampler.ico
+	new file:   ZGame/DX9/dx9_view_ports/dx9_view_ports.cpp
+	new file:   ZGame/DX9/dx9_view_ports/dx9_view_ports.exe
+	new file:   ZGame/DX9/dx9_view_ports/dx9_view_ports.rc
+	new file:   ZGame/DX9/dx9_view_ports/dx9_view_ports.sln
+	new file:   ZGame/DX9/dx9_view_ports/dx9_view_ports.vcproj
+	new file:   ZGame/DX9/dx9_view_ports/resource.h
+	new file:   ZGame/DX9/dx9_view_ports/teapot.x
+
