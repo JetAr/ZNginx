@@ -15,9 +15,13 @@ bool SkipBytes(size_t sizeInBytes);
 bool ParseString(char str[kMaxStringLen]);
 
 // 3DS Chunk Parsing Functions
+//z 2015-09-14 22:32 得到 3ds 文具的版本信息
 bool ParseVersionNumber(); // Parses version number of 3DS file
+//z 得到当前素材名称
 bool ParseMaterialName(); // Parses material name for current mesh object
+//z 得到当前 mesh obj 的纹理名称
 bool ParseMaterialTextureName(); // Parses texture name for current mesh object
+//z 通过id得到素材颜色
 bool ParseMaterialColor(int id); // Parses material color based on "id" passed in
 bool ParseObjectName(); // Parses Max name for object
 bool ParseVertexList(); // Parses list of vertices for mesh object
