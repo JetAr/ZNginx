@@ -3688,3 +3688,14 @@ Changes to be committed:
 	modified:   History.txt
 	new file:   "ZGame/game_tutorials/OpenGL/3DS Animation/\346\201\220\351\276\231\345\212\250\347\224\273.3DS"
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/09/29.00_27_06.84.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Doc/K/T.2015.BugFree.cs
+	new file:   Doc/Npp/Npp.ChangeLog.cs
+	modified:   History.txt
+

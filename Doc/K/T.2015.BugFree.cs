@@ -96,9 +96,11 @@
       L648, 35:R#.26   @znote merida 山地车
       L654, 36:R#.27   @shader
       L700, 37:R#.28   @DirectX Tool Kit
-     Zndex_E : //z 2015-09-28 18:10:38 L.94 '20962 T3841470   .K ~764 +----+----+----+----+----+
-     TimeCnt : //z 2015-09-28 18:10:22 L.94 '20978 T3841431   .K ~37  +----+----+----+----+----+
-     Reg.Cnt : //z 2015-09-24 20:55:24 L.98 '11076 T1959487447.K ~30  +----+----+----+----+----+
+     Zndex_E : //z 2015-09-29 00:26:44 L.93 '84796 T2957432538.K ~788 +----+----+----+----+----+
+     TimeCnt : //z 2015-09-29 00:04:26 L.93 '86134 T2954988758.K ~39  +----+----+----+----+----+
+     Reg.Cnt : //z 2015-09-29 00:25:55 L.93 '84845 T2957396635.K ~32  +----+----+----+----+----+
+     #32  R+ : //z 2015-09-29 00:25:55 L.93 '84845 T2957396635.K ~32    V+.816  L+.888  
+     #31  R+ : //z 2015-09-29 00:10:42 L.93 '85758 T2956030993.K ~31    V+.809  L+.858  
      #30  R+ : //z 2015-09-24 20:55:24 L.98 '11076 T1959487447.K ~30    V+.779  L+.821  
      #29  R+ : //z 2015-09-22 17:22:14 L.100'23866 T2601790260.K ~29    V+.776  L+.813  
      #28  R+ : //z 2015-08-18 18:06:06 L.135'21234 T728764508 .K ~28    V+.653  L+.691  
@@ -133,7 +135,11 @@
      #3   O+ : //z 2015-09-04 21:24:47 L.118'9313  T3067438199.K ~3     V+.731  L+.1    
      #2   O+ : //z 2015-08-06 08:25:11 L.147'56089 T2984249525.K ~2     V+.572  L+.1    
      #1   O+ : //z 2015-06-18 08:36:17 L.196'55423 T2695262750.K ~1     V+.374  L+.1    
-     Version : //z 2015-09-28 18:10:38 L.94 '20962 T3841470   .K ~794   R+.30   L+.833  --+----+
+     Version : //z 2015-09-29 00:26:44 L.93 '84796 T2957432538.K ~820   R+.32   L+.890  --+----+
+     #43  V+ : //z 2015-09-29 00:25:56 L.93 '84844 T2957396636.K ~817   R+.32   L+.890  
+     #42  R+ : //z 2015-09-29 00:25:55 L.93 '84845 T2957396635.K ~816   R+.32   L+.889  V+.816  
+     #42  R+ : //z 2015-09-29 00:10:42 L.93 '85758 T2956030993.K ~809   R+.31   L+.859  V+.809  
+     #42  V+ : //z 2015-09-29 00:04:27 L.93 '86133 T2954988759.K ~798   R+.30   L+.841  
      #41  R+ : //z 2015-09-24 20:55:24 L.98 '11076 T1959487447.K ~779   R+.30   L+.822  V+.779  
      #40  R+ : //z 2015-09-22 17:22:14 L.100'23866 T2601790260.K ~776   R+.29   L+.814  V+.776  
      #40  V+ : //z 2015-09-07 09:52:04 L.115'50876 T1383629914.K ~760   R+.28   L+.798  
@@ -829,7 +835,57 @@ https://github.com/gamedevforks/ozz-animation
 Godot is a fully featured, open source, MIT licensed, game engine.
 https://github.com/gamedevforks/godot.git
 
+http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToAngle/
+
+Lesson 31: Direct3D 11 Simple Third Person Camera
+http://www.braynzarsoft.net/index.php?p=D3D11ThirdPersonCam
+
 //z 2015-09-28 18:10:22 L.94 '20978 T3841431   .K[T37,L832,R30,V792]
 导入导出各种 3ds 模型
 https://github.com/assimp/assimp.git
+
+//z 2015-09-28 23:59:03 L.94 '57    BG57IV3@BYH T1810273247.K.F4146951713[T38,L836,R30,V798]
+3D racing game developed for games programming class at university of calgary
+https://github.com/Knio/eRacer.git
+
+//z 2015-09-29 00:04:26 L.93 '86134 T2954988758.K[T39,L840,R30,V798]
+Living without D3DX
+http://blogs.msdn.com/b/chuckw/archive/2013/08/21/living-without-d3dx.aspx
+The Mysteries of the DirectX Roll Pitch Yaw Matrix
+http://blogs.msdn.com/b/mikepelton/archive/2004/10/29/249501.aspx
+
+Advanced 3D Game Programming with DirectX 10.0 By Peter Walsh
 #endregion //z 2015-09-24 20:55:24 L.98 '11076 BG57IV3@BYH T1959487447.K.F4146951713-+----+----+
+
+#region 09-29 00:10 R#.31   @Get pitch, yaw, roll from Quaternion
+01. 
+Get pitch, yaw, roll from Quaternion
+
+Gets the angle from the quaternion. You may think the following ways at first.
+Calculates the pitch angle and the yaw angle, that a direction you give and another direction of the quaternion make. (Ignores Z-ROLL)
+Gives two vectors that are the front direction and the up direction, makes a projection and calculates pitch, yaw and roll angle.
+
+On the other hand, here is an expression to get angles from x, y, z and w of the quaternion:
+
+float Quaternion::getPitch()
+{
+  return atan2(2*(y*z + w*x), w*w - x*x - y*y + z*z);
+}
+
+float Quaternion::getYaw()
+{
+  return asin(-2*(x*z - w*y));
+}
+
+float Quaternion::getRoll()
+{
+  return atan2(2*(x*y + w*z), w*w + x*x - y*y - z*z);
+}
+
+The angles gotten by this expression are the shortest possible path. These may be not the value that you hope and not good for re-calculation. But, it's useful for dump and monitor.
+#endregion //z 2015-09-29 00:10:42 L.93 '85758 BG57IV3@BYH T2956030993.K.F4146951713-+----+----+
+
+#region 09-29 00:25 R#.32   @
+01. 
+todo tmp 检查下纹理映射；放置到第一帧；
+#endregion //z 2015-09-29 00:25:55 L.93 '84845 BG57IV3@BYH T2957396635.K.F4146951713-+----+----+
