@@ -96,8 +96,8 @@
       L648, 35:R#.26   @znote merida 山地车
       L654, 36:R#.27   @shader
       L700, 37:R#.28   @DirectX Tool Kit
-     Zndex_E : //z 2015-09-29 00:26:44 L.93 '84796 T2957432538.K ~788 +----+----+----+----+----+
-     TimeCnt : //z 2015-09-29 00:04:26 L.93 '86134 T2954988758.K ~39  +----+----+----+----+----+
+     Zndex_E : //z 2015-09-29 17:37:34 L.93 '22946 T3077765571.K ~831 +----+----+----+----+----+
+     TimeCnt : //z 2015-09-29 17:21:43 L.93 '23897 T3076364060.K ~43  +----+----+----+----+----+
      Reg.Cnt : //z 2015-09-29 00:25:55 L.93 '84845 T2957396635.K ~32  +----+----+----+----+----+
      #32  R+ : //z 2015-09-29 00:25:55 L.93 '84845 T2957396635.K ~32    V+.816  L+.888  
      #31  R+ : //z 2015-09-29 00:10:42 L.93 '85758 T2956030993.K ~31    V+.809  L+.858  
@@ -135,7 +135,9 @@
      #3   O+ : //z 2015-09-04 21:24:47 L.118'9313  T3067438199.K ~3     V+.731  L+.1    
      #2   O+ : //z 2015-08-06 08:25:11 L.147'56089 T2984249525.K ~2     V+.572  L+.1    
      #1   O+ : //z 2015-06-18 08:36:17 L.196'55423 T2695262750.K ~1     V+.374  L+.1    
-     Version : //z 2015-09-29 00:26:44 L.93 '84796 T2957432538.K ~820   R+.32   L+.890  --+----+
+     Version : //z 2015-09-29 17:37:34 L.93 '22946 T3077765571.K ~863   R+.32   L+.918  --+----+
+     #45  V+ : //z 2015-09-29 17:35:28 L.93 '23072 T3077693668.K ~855   R+.32   L+.916  
+     #44  V+ : //z 2015-09-29 17:21:25 L.93 '23915 T3076363996.K ~836   R+.32   L+.903  
      #43  V+ : //z 2015-09-29 00:25:56 L.93 '84844 T2957396636.K ~817   R+.32   L+.890  
      #42  R+ : //z 2015-09-29 00:25:55 L.93 '84845 T2957396635.K ~816   R+.32   L+.889  V+.816  
      #42  R+ : //z 2015-09-29 00:10:42 L.93 '85758 T2956030993.K ~809   R+.31   L+.859  V+.809  
@@ -883,9 +885,35 @@ float Quaternion::getRoll()
 }
 
 The angles gotten by this expression are the shortest possible path. These may be not the value that you hope and not good for re-calculation. But, it's useful for dump and monitor.
+
+//z 2015-09-29 15:38:30 L.93 '30090 T494865566 .K[T40,L887,R31,V822]
+一些文件格式说明
+http://www.martinreddy.net/gfx/3d-hi.html
+
+//z 2015-09-29 15:41:15 L.93 '29925 T495799867 .K[T41,L891,R31,V825]
+osg 插件（编译好的）
+http://openscenegraph.alphapixel.com/osg/downloads/openscenegraph-third-party-library-downloads
 #endregion //z 2015-09-29 00:10:42 L.93 '85758 BG57IV3@BYH T2956030993.K.F4146951713-+----+----+
 
-#region 09-29 00:25 R#.32   @
+#region 09-29 00:25 R#.32   @3ds max exporter
 01. 
-todo tmp 检查下纹理映射；放置到第一帧；
+Panda Directx Exporter x64 (6.2012.72.0) for 3DS Max 2012 (64 bit)
+http://www.andytather.co.uk/Panda/directxmax_downloads.aspx
+http://www.andytather.co.uk/Panda/directxmax.aspx
+
+//z 2015-09-29 17:21:14 L.93 '23926 T3076363962.K[T42,L901,R32,V833]
+AXE v1.9.8, a new version of X-File exporter for 3ds Max is released!
+http://www.cgdev.net/download.php
+http://forums.autodesk.com/t5/news-and-announcements/directx-exporter-for-3ds-max-2013-2014/td-p/4298459
+
+//z 2015-09-29 17:21:43 L.93 '23897 T3076364060.K[T43,L907,R32,V838]
+This is an updated version of the Kilowatt DirectX Exporter for 3ds Max originally developed by Jon Watte.   Why this new version?  Well, development on the Panda exporter and the original Kilowatt exporter have seemingly stopped, they haven’ t been updated since 2011. Those of us using game engines that require X files still need a way to get our model data out of newer versions of 3ds Max.
+http://mjblosser.com/kw-x-port-for-3ds-max/
+
+The kW X-port 3ds Max X file exporter
+http://www.kwxport.org/
+https://github.com/jwatte/kwxport.git
+
+wine 中的 D3DXMatrixDecompose 的实现；对于了解具体是如何运算出来有参考意义。
+https://www.winehq.org/pipermail/wine-cvs/2008-September/047460.html
 #endregion //z 2015-09-29 00:25:55 L.93 '84845 BG57IV3@BYH T2957396635.K.F4146951713-+----+----+
