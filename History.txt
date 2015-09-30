@@ -3710,3 +3710,15 @@ Changes to be committed:
 	modified:   Doc/K/T.2015.BugFree.cs
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/09/30.08_45_39.99.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	new file:   "Doc/DX/\350\256\241\347\256\227yaw\343\200\201pitch\343\200\201roll\350\247\222\345\272\246.cs"
+	modified:   History.txt
+	modified:   ZGame/game_tutorials/Direct3D/Matrices/d3d_obj.cpp
+	modified:   ZGame/game_tutorials/Direct3D/Matrices/win_main.cpp
+

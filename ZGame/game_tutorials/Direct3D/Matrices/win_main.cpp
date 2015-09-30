@@ -15,10 +15,12 @@
 	So that's the short explanation of what a matrix is.
 
 	In D3D, there are three main types of matrices:
-
+	//z 标准的 4*4 matrix
 	D3DMATRIX // This is your standard 4x4 matrix
+	//z 有了更多的一些操作 2015-09-29 21:32
 	D3DXMATRIX // This is the same as D3DMATRIX (notice no X), however it has been decked out
 			  // with some C++ operator overloading goodies.  This makes it easier to work with.
+	//z 效率高
 	D3DXMATRIXA16 // This is the same as a D3DXMATRIX with the exception that it is 16-byte
 				 // aligned.  The reason we care that its 16-byte aligned is because structures
 				// in D3D that are 16-byte aligned are significantly faster than ones that are
@@ -28,16 +30,17 @@
 	The end result of this tutorial is to get a spinning triangle on the screen, however,
 	we'll have to go through a couple of steps (using matrices of course) to get there.
 
+	//z 设置 projection matrix，设置投影矩阵
 	First we'll be setting up our "projection matrix".  This dictates how 3D coordinates (our
 	triangle) is to be projected into 2D coordinates (our computer screen)
-
+	//z 设置 view matrix ，如何看 3d scene
 	Then we'll need to set up our "view matrix".  This dictates how we want to view our
 	3D scene.  Whenever you hear a about a "3D camera" what eventually happens is the
 	data associated with that 3D camera is used to create the "view matrix".
-
+	//z 设置 world matrix ，通过
 	Last but not least, we'll use a matrix to set up our "world matrix".  By changing the
 	world matrix we'll be able to spin our triangle.
-
+	2015-09-29 22:03
 	Okay, it's time to enter the matrix...
 */
 
@@ -50,7 +53,7 @@
 /////////////
 // Macros //
 ///////////
-
+//z 定义两个宏，转换角度和弧度
 #define DEG2RAD(x) (x * (D3DX_PI / 180.0f)) // Converts degrees to radians
 #define RAD2DEG(x) (x * (180.0f / D3DX_PI)) // Converts radians to degrees
 
@@ -139,6 +142,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprev, PSTR cmdline, int ishow
 
     // Set up our projection matrix
     // **NOTE** We only need to do this once cause we're not going to change it ever
+	//z 角度，比例，近端和远端
     g3D->setProjMatrix(DEG2RAD(60), (float)kWinWid / (float)kWinHgt, 1.0f, 8192.0f);
 
     // Set up our view matrix

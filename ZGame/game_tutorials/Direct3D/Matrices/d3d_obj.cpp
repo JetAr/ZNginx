@@ -177,7 +177,7 @@ void CD3DObj::setProjMatrix(float fov, float aspectRatio, float nearClip, float 
     //z 创建和设置 projection matrix
     // Create and set projection matrix
     D3DXMatrixPerspectiveFovLH(&matrix, fov, aspectRatio, nearClip, farClip);
-    //z 设置 projection matrix ，作用？
+    //z 设置 projection matrix ，作用？投影变换矩阵
     mDevice->SetTransform(D3DTS_PROJECTION, &matrix);
 }
 
