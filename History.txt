@@ -3722,3 +3722,15 @@ Changes to be committed:
 	modified:   ZGame/game_tutorials/Direct3D/Matrices/d3d_obj.cpp
 	modified:   ZGame/game_tutorials/Direct3D/Matrices/win_main.cpp
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/09/30.14_35_11.06.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Doc/K/T.2015.BugFree.cs
+	new file:   "Doc/Math/\347\220\206\350\247\243\347\237\251\351\230\265.txt"
+	modified:   History.txt
+
