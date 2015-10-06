@@ -3776,3 +3776,13 @@ Changes to be committed:
 
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/10/06.20_51_03.71.K.MzM.T@WS 
+On branch master
+Your branch is ahead of 'origin/master' by 3 commits.
+  (use "git push" to publish your local commits)
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+
