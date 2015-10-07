@@ -3796,3 +3796,13 @@ Changes to be committed:
 
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/10/07.12_06_37.44.K.MzM.T@WS 
+On branch master
+Your branch is ahead of 'origin/master' by 5 commits.
+  (use "git push" to publish your local commits)
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+
