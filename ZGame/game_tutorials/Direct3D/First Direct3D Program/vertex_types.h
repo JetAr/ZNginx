@@ -2,7 +2,10 @@
 #define VERTEX_TYPES_H
 
 /*
-
+定义顶点数据类型。
+需要顶点来组成3d world中的objects。
+不同models需要不同类型的 vertex 数据。
+这正是 fvf 的威力所在。
 This file is all about defining our ONE vertex type for this tutorial.  We know we need
 vertices to make up all the objects that we'll want in our 3D world.  This includes
 everything from characters, to the set, the particles, to the HUD.  However, it would
@@ -10,18 +13,26 @@ be a real drag if all the vertices had to be of the same type.  I mean does ever
 that goes into a character need to go into a HUD power bar?  Of course not.  Different
 models will have different vertex needs and this is where the power of FVF shines.
 
+使用FVF的另一个优点是限制数据为此种vertices，能够降低memory的使用，并且在降低在渲染模型时所需要的带宽。
+降低内存占用，提升速度。
 Another advantage to using FVF is that by limiting the data in certain vertices you
 decrease memory usage and minimize the processing bandwidth required to render models.  And
 whenever you can reduce memory and gain speed, you do it!
 
+明白了其重要意义（why）之后，接着来了解如何来使用（how）。
 Okay so now we are staring to understand that FVF (Flexible Vertex Format for all that forgot)
 is important to use, but what exactly is it and how do we use it?
 
+通过D3DFVF代码，定义我们自己的 vertices。
 Well D3D has a predefined way all vertices must be laid out.  This is shown at the bottom
 of this file.  If you peek and look at the "chart" you'll see that you can, if you wanted,
 include a butt-load of data with each vertex.  Having all of these things present would
 certainly slow down the app.  So by making D3DFVF codes we define our own vertices.
 
+定义我们的 vertex 数据类型：
+结构，包含我们需要哪些数据
+（数据的layout必须保持一致）
+使用一个D3DFVF flag 来宣告“我们的顶点数据中具有这些数据”
 To define our own vertex is not too difficult.  First we need to make a struct that
 contains what we want our vertices to have.  We MUST layout the data in the struct
 in the EXACT SAME ORDER it is expected to be laid out (as specified at the bottom of this file).
@@ -53,9 +64,11 @@ struct SVertex
     // same coordinate system the window uses).  This way we can very easily draw
     // something to the screen.  The 'w' servers as a flag to say that we are in
     // screen space, not 3D space and is set to 1.0f
+    //z 2015-10-19 16:50 w 表示是在 screen space ，而非 3d space ，其值设置为 1.0f。
     DWORD color; // Our diffuse color
 };
 
+// 2015-10-19 16:53 所应遵循的顺序
 // FVF Vertex Order
 // This is the grand master order that all D3D Vertices must adhere to or else %)
 

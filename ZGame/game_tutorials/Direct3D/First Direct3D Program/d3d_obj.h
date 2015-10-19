@@ -7,6 +7,13 @@
 
 //z 2015-07-02 13:32
 //z 创建 3D Ojbect 。
+//z 2015-10-19 16:54 创建我们所需的 D3D 接口
+/*
+    创建 d3d 接口，允许渲染我们一序列的 vertex type 的顶点数据
+    所有数据都是 static 的，我们只需要 CD3DObj 的一个实例。
+    
+    16:57 最重要的还是 概念，模型 和 流程。
+*/
 // Here is our 3D Object to handle all of our 3D needs -- It will create our needed D3D interfaces
 // and allow us to render a list or vertices of a vertex type that we created.
 // You'll notice that all of the functions/variables are static.  This is because
@@ -30,6 +37,7 @@ public:
     static bool render(SVertex *vertList, int numVerts);
 
     // Clears the viewport's color
+    //z 2015-10-19 16:58 
     static bool clearColor(int color);
 
     static void deinit(); // Free up our 3D Object

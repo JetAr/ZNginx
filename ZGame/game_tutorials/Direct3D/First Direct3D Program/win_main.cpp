@@ -1,5 +1,25 @@
-﻿// Done by TheTutor
+﻿#region 10-19 17:49 R#.0    @Ver.Info
+       Zey_S : //z 2015-10-19 17:49:18 L.73 '22242 T2735888799.K ~0   +----+----+----+----+----+
+		R#
+        znote
+        zsum
+       Zey_E : //z 2015-10-19 17:49:18 L.73 '22242 T2735888799.K ~0   +----+----+----+----+----+
+       Zcl_S : //z 2015-10-19 17:49:18 L.73 '22242 T2735888799.K ~0   +----+----+----+----+----+
+       Zcl_E : //z 2015-10-19 17:49:18 L.73 '22242 T2735888799.K ~0   +----+----+----+----+----+
+     Zndex_S : //z 2015-10-19 17:49:18 L.73 '22242 T2735888799.K ~0   +----+----+----+----+----+
+     Zndex_E : //z 2015-10-19 18:01:19 L.73 '21521 T4022325589.K ~56  +----+----+----+----+----+
+#endregion //z 2015-10-19 17:49:18 L.73 '22242 BG57IV3@XCL T2735888799.K.F41382423  -+----+----+
 
+// Done by TheTutor
+
+/*  2015-10-19 17:50 zsum 本教程总结：
+    功能 ： Draw a white triangle to the screen. 在屏幕上绘制一个白色的三角形
+    指定顶点格式
+    创建d3d环境（设备，显示方式等），和窗口关联
+    组织顶点数据
+    渲染顶点数据
+    渲染结束，释放d3d资源
+*/
 /*
 	This tutorial is an intro to the wacky world of 3D programming using D3D (Direct 3D).
 	D3D is Microsoft's API that allows programmers to make sweet looking 3D graphics.
@@ -119,7 +139,8 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprev, PSTR cmdline, int ishow
     // This function modifies "rect" so it contains the exact dimensions we
     // need to create a window that has a client rect of kWinWid x kWinHgt
     AdjustWindowRectEx(&rect, winStyle, false, winStyleEx);
-
+    
+    //z 创建窗口
     // Create the window
     hwnd = CreateWindowEx(winStyleEx,
                           kClassName,
@@ -134,6 +155,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprev, PSTR cmdline, int ishow
                           hinstance,
                           NULL);
 
+    //z 2015-10-19 初始化全局 CD3DObj 。
     // Init the global CD3DObj
     if(g3D->init(hwnd) == false)
         return EXIT_FAILURE; // There's been an error
@@ -145,6 +167,8 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprev, PSTR cmdline, int ishow
     // Here's where we create our triangle.  By using a little math
     // we'll center the triangle based on the width of the window.
     //z 2015-07-02 14:36 定义三角形。
+    //z 创建三角形。
+    //z 根据顶点格式创建三角形。
     SVertex triangle[] =
     {
         // x, y, z, w, color
@@ -170,6 +194,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprev, PSTR cmdline, int ishow
         }
         else
         {
+            //z 2015-10-19 18:00 渲染部分。
             g3D->begin(); // Begin the scene
             g3D->clearColor(D3DCOLOR_ARGB(255, 0, 0, 0)); // Clear our viewport to black
 
@@ -255,7 +280,3 @@ LRESULT CALLBACK WinProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
 |  Programmed by:  TheTutor |
 |  ©2000-2006 GameTutorials |
 \*-------------------------*/
-
-
-
-
