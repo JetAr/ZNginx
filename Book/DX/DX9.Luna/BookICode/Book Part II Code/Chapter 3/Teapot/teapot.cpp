@@ -20,6 +20,7 @@
 
 IDirect3DDevice9* Device = 0;
 
+//z 窗口大小
 const int Width  = 640;
 const int Height = 480;
 
@@ -35,24 +36,25 @@ bool Setup()
     //
     // Create the teapot geometry.
     //
-
+    //z 创建 Teapot 
     D3DXCreateTeapot(Device, &Teapot, 0);
 
     //
     // Position and aim the camera.
     //
-
+    
     D3DXVECTOR3 position(0.0f, 0.0f, -3.0f);
     D3DXVECTOR3 target(0.0f, 0.0f, 0.0f);
     D3DXVECTOR3 up(0.0f, 1.0f, 0.0f);
     D3DXMATRIX V;
+    //z 初始化和设置 view matrix
     D3DXMatrixLookAtLH(&V, &position, &target, &up);
     Device->SetTransform(D3DTS_VIEW, &V);
 
     //
     // Set projection matrix.
     //
-
+    //z 2015-10-20 09:54 设置和初始化 D3DTS_PROJECTION 
     D3DXMATRIX proj;
     D3DXMatrixPerspectiveFovLH(
         &proj,
@@ -65,7 +67,7 @@ bool Setup()
     //
     // Switch to wireframe mode.
     //
-
+    //z 设置填充方式
     Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
     return true;
@@ -86,11 +88,13 @@ bool Display(float timeDelta)
         D3DXMATRIX Ry;
         static float y = 0.0f;
         D3DXMatrixRotationY(&Ry, y);
-
+        
         y += timeDelta;
-        if(y >= 6.28f)
+        if(y >= 6.28f)//z 2*PI，一圈的样子
             y = 0.0f;
 
+        //z 2015-10-20 09:57
+        //z 变换世界坐标系，每次都重新设置世界坐标系。实际的App中是如何进行设置的了？
         Device->SetTransform(D3DTS_WORLD, &Ry);
 
         //

@@ -25,10 +25,12 @@ const int Width  = 640;
 const int Height = 480;
 
 // Store 5 objects.
+//z 创建了 5 个 ID3DXMesh object 。
 ID3DXMesh* Objects[5] = {0, 0, 0, 0, 0};
 
 // World matrices for each object.  These matrices
 // specify the locations of the objects in the world.
+//z 2015-10-20 09:59 object 在 world 中的位置。
 D3DXMATRIX ObjWorldMatrices[5];
 
 //
@@ -39,12 +41,13 @@ bool Setup()
     //
     // Create the objects.
     //
-
+    //z 2015-10-20 09:59 创建 teapot
     D3DXCreateTeapot(
         Device,
         &Objects[0],
         0);
-
+    
+    //z 创建 box
     D3DXCreateBox(
         Device,
         2.0f, // width
@@ -54,6 +57,7 @@ bool Setup()
         0);
 
     // cylinder is built aligned on z-axis
+    //z 创建 cylinder
     D3DXCreateCylinder(
         Device,
         1.0f, // radius at negative z end
@@ -64,6 +68,7 @@ bool Setup()
         &Objects[2],
         0);
 
+    //z 创建 torus
     D3DXCreateTorus(
         Device,
         1.0f, // inner radius
@@ -72,7 +77,8 @@ bool Setup()
         10,   // rings
         &Objects[3],
         0);
-
+    
+    //z 创建 sphere
     D3DXCreateSphere(
         Device,
         1.0f, // radius
@@ -87,7 +93,7 @@ bool Setup()
     // (-5, 0, 5).  Likewise, ObjWorldMatrices[2] will position
     // Objects[2] at (5, 0, 5).
     //
-
+    //z 构建世界坐标系 matrices，将 objects 放置到 world space 中去。
     D3DXMatrixTranslation(&ObjWorldMatrices[0],  0.0f, 0.0f,  0.0f);
     D3DXMatrixTranslation(&ObjWorldMatrices[1], -5.0f, 0.0f,  5.0f);
     D3DXMatrixTranslation(&ObjWorldMatrices[2],  5.0f, 0.0f,  5.0f);
@@ -97,7 +103,7 @@ bool Setup()
     //
     // Set the projection matrix.
     //
-
+    //z 设置 projection matrix 2015-10-20 10:01
     D3DXMATRIX proj;
     D3DXMatrixPerspectiveFovLH(
         &proj,
@@ -110,13 +116,14 @@ bool Setup()
     //
     // Switch to wireframe mode.
     //
-
+    ///z 设置填充样式
     Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
     return true;
 }
 void Cleanup()
 {
+    //z 使用完毕后，清理程序申请的资源
     for(int i = 0; i < 5; i++)
         d3d::Release<ID3DXMesh*>(Objects[i]);
 }
@@ -125,18 +132,24 @@ bool Display(float timeDelta)
 {
     if( Device )
     {
-        // Animate the camera:
+        //z 总感觉还是比较抽象，不能太理解；估计得找找基本的图形学的书看看才好的。
+        //z 2015-10-20 10:02 让摄像机动起来
+        // Animate the camera: （详细描述了了 camera 是如何动的）
         // The camera will circle around the center of the scene.  We use the
         // sin and cos functions to generate points on the circle, then scale them
         // by 10 to further the radius.  In addition the camera will move up and down
         // as it circles about the scene.
+        //z 
         static float angle = (3.0f * D3DX_PI) / 2.0f;
+        //z camera height 以及 camera height direction ，方向
         static float cameraHeight = 0.0f;
         static float cameraHeightDirection = 5.0f;
 
+        //z angel 以及 camera 等会发生变化。
         D3DXVECTOR3 position( cosf(angle) * 10.0f, cameraHeight, sinf(angle) * 10.0f );
 
         // the camera is targetted at the origin of the world
+        //z target 为 world 的原点
         D3DXVECTOR3 target(0.0f, 0.0f, 0.0f);
 
         // the worlds up vector
@@ -168,6 +181,7 @@ bool Display(float timeDelta)
 
         for(int i = 0; i < 5; i++)
         {
+            //z 绘制生成的各个 mesh 。
             // Set the world matrix that positions the object.
             Device->SetTransform(D3DTS_WORLD, &ObjWorldMatrices[i]);
 

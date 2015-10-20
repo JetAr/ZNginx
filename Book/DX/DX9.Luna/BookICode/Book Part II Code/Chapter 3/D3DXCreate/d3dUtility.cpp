@@ -63,6 +63,8 @@ bool d3d::InitD3D(
 
     HRESULT hr = 0;
 
+    //z 2015-10-20 09:58
+    //z 首先创建 d3d9 object
     // Step 1: Create the IDirect3D9 object.
 
     IDirect3D9* d3d9 = 0;
@@ -75,6 +77,7 @@ bool d3d::InitD3D(
     }
 
     // Step 2: Check for hardware vp.
+    //z 检查硬件能力
 
     D3DCAPS9 caps;
     d3d9->GetDeviceCaps(D3DADAPTER_DEFAULT, deviceType, &caps);
@@ -104,7 +107,7 @@ bool d3d::InitD3D(
     d3dpp.PresentationInterval       = D3DPRESENT_INTERVAL_IMMEDIATE;
 
     // Step 4: Create the device.
-
+    //z 根据参数创建 device 
     hr = d3d9->CreateDevice(
              D3DADAPTER_DEFAULT, // primary adapter
              deviceType,         // device type

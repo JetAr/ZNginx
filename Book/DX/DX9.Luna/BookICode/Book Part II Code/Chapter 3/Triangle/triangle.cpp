@@ -79,7 +79,7 @@ bool Setup()
     //
     // Set the projection matrix.
     //
-
+    //z 2015-10-20 09:49 设置 projection matrix
     D3DXMATRIX proj;
     D3DXMatrixPerspectiveFovLH(
         &proj,                        // result
@@ -92,7 +92,7 @@ bool Setup()
     //
     // Set wireframe mode render state.
     //
-
+    //z 2015-10-20 09:50 设置填充模式
     Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
     return true;
@@ -102,20 +102,25 @@ void Cleanup()
     d3d::Release<IDirect3DVertexBuffer9*>(Triangle);
 }
 
-bool Display(float timeDelta)
+bool Display(float timeDelta)//z 时间间隔，目前未用到
 {
     if( Device )
     {
+        //z 2015-10-20 09:50 属于 clear ，很多地方的封装是单独放置的
         Device->Clear(0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xffffffff, 1.0f, 0);
         Device->BeginScene();
-
+        
+        //z 2015-10-20 09:50 stream source
         Device->SetStreamSource(0, Triangle, 0, sizeof(Vertex));
+        //z 顶点数据格式
         Device->SetFVF(Vertex::FVF);
 
         // Draw one triangle.
+        //z 开始绘制
         Device->DrawPrimitive(D3DPT_TRIANGLELIST, 0, 1);
 
         Device->EndScene();
+        //z 呈现
         Device->Present(0, 0, 0, 0);
     }
     return true;
@@ -129,6 +134,7 @@ LRESULT CALLBACK d3d::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     switch( msg )
     {
+        //z 2015-10-20 09:51 关闭程序
     case WM_DESTROY:
         ::PostQuitMessage(0);
         break;

@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=""
+				AdditionalIncludeDirectories="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\src;E:\Lib\glut_3.7\include;E:\Program Files (x86)\NVIDIA Corporation\Cg\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,8 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="lib3ds-2_0d.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories=""
+				AdditionalLibraryDirectories="E:\Lib\glut_3.7\lib;E:\Program Files (x86)\NVIDIA Corporation\Cg\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -117,7 +118,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				InlineFunctionExpansion="2"
+				FavorSizeOrSpeed="1"
+				AdditionalIncludeDirectories="E:\MyDoc\Work\Work\Defect\3dsmax_XFile\lib3ds\lib3ds\src;E:\Lib\glut_3.7\include;E:\Program Files (x86)\NVIDIA Corporation\Cg\include"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;LIB3DS_STATIC;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -135,8 +139,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="lib3ds_s_R.lib"
 				LinkIncremental="1"
-				GenerateDebugInformation="true"
+				AdditionalLibraryDirectories="E:\Lib\glut_3.7\lib;E:\Program Files (x86)\NVIDIA Corporation\Cg\lib;E:\Lib\Lib3DS_2.0\Lib;"
+				GenerateDebugInformation="false"
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -181,6 +187,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\glText.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\tga.c"
 				>
 			</File>
@@ -190,6 +200,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\glText.h"
+				>
+			</File>
 			<File
 				RelativePath=".\lib3ds.h"
 				>

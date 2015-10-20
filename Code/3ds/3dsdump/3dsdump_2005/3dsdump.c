@@ -1,28 +1,32 @@
 ﻿/*
     Copyright (C) 1996-2008 by Jan Eric Kyprianidis <www.kyprianidis.com>
     All rights reserved.
-
-    This program is free  software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published
-    by the Free Software Foundation, either version 2.1 of the License, or
+    
+    2015 bg57iv3#github show me more dump ... 
+    
+    This program is free  software: you can redistribute it and/or modify 
+    it under the terms of the GNU Lesser General Public License as published 
+    by the Free Software Foundation, either version 2.1 of the License, or 
     (at your option) any later version.
 
-    Thisprogram  is  distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    Thisprogram  is  distributed in the hope that it will be useful, 
+    but WITHOUT ANY WARRANTY; without even the implied warranty of 
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
     GNU Lesser General Public License for more details.
 
     You should  have received a copy of the GNU Lesser General Public License
-    along with  this program; If not, see <http://www.gnu.org/licenses/>.
+    along with  this program; If not, see <http://www.gnu.org/licenses/>. 
 */
 
 /*
 History:
 2015-05-29 （BG57IV3）
 	1. 添加 track 及 key 的 dump。
+2015-10-20
+    2. （BG57IV3） 添加 pivot 以及 matrix 信息。
 */
 
-/**	@file 3dsdump.c
+/**	@file 3dsdump.c 
 	Implementation of 3DS dump utility. */
 /** @example 3dsdump.c
     A utility to display information about the content of a 3DS file. */
@@ -39,8 +43,7 @@ History:
 
 
 static void
-help()
-{
+help() {
     fprintf(stderr,
             "The 3D Studio File Format Library - 3dsdump\n"
             "Copyright (C) 1996-2007 by Jan Eric Kyprianidis <www.kyprianidis.com>\n"
@@ -64,8 +67,7 @@ help()
 }
 
 
-typedef enum Flags
-{
+typedef enum Flags {
     LIB3DSDUMP_MATERIALS  = 0x0004,
     LIB3DSDUMP_TRIMESHES  = 0x0008,
     LIB3DSDUMP_INSTANCES  = 0x0010,
@@ -82,131 +84,96 @@ static int  log_level = LIB3DS_LOG_INFO;
 
 
 static void
-parse_args(int argc, char **argv)
-{
+parse_args(int argc, char **argv) {
     int i;
 
-    for (i = 1; i < argc; ++i)
-    {
-        if (argv[i][0] == '-')
-        {
-            if ((strcmp(argv[i], "-h") == 0) || (strcmp(argv[i], "--help") == 0))
-            {
+    for (i = 1; i < argc; ++i) {
+        if (argv[i][0] == '-') {
+            if ((strcmp(argv[i], "-h") == 0) || (strcmp(argv[i], "--help") == 0)) {
                 help();
-            }
-            else if ((argv[i][1] == 'd') && (argv[i][2] == '='))
-            {
+            } else if ((argv[i][1] == 'd') && (argv[i][2] == '='))  {
                 log_level =  atoi(&argv[i][3]);
-            }
-            else if (argv[i][1] == 'm')
-            {
+            } else if (argv[i][1] == 'm') {
                 flags |= LIB3DSDUMP_MATERIALS;
-            }
-            else if (argv[i][1] == 't')
-            {
+            } else if (argv[i][1] == 't') {
                 flags |= LIB3DSDUMP_TRIMESHES;
-            }
-            else if (argv[i][1] == 'i')
-            {
+            } else if (argv[i][1] == 'i') {
                 flags |= LIB3DSDUMP_INSTANCES;
-            }
-            else if (argv[i][1] == 'c')
-            {
+            } else if (argv[i][1] == 'c') {
                 flags |= LIB3DSDUMP_CAMERAS;
-            }
-            else if (argv[i][1] == 'l')
-            {
+            } else if (argv[i][1] == 'l') {
                 flags |= LIB3DSDUMP_LIGHTS;
-            }
-            else if (argv[i][1] == 'n')
-            {
+            } else if (argv[i][1] == 'n') {
                 flags |= LIB3DSDUMP_NODES;
-            }
-            else if (argv[i][1] == 'x')
-            {
-                flags = LIB3DSDUMP_MATERIALS | LIB3DSDUMP_TRIMESHES | LIB3DSDUMP_INSTANCES | LIB3DSDUMP_CAMERAS |LIB3DSDUMP_LIGHTS | LIB3DSDUMP_NODES;
-            }
-            else if ((argv[i][1] == 'w') && (argv[i][2] == '='))
-            {
+            } else if (argv[i][1] == 'x') {
+				flags = LIB3DSDUMP_MATERIALS | LIB3DSDUMP_TRIMESHES | LIB3DSDUMP_INSTANCES | LIB3DSDUMP_CAMERAS |LIB3DSDUMP_LIGHTS | LIB3DSDUMP_NODES;
+			} else if ((argv[i][1] == 'w') && (argv[i][2] == '='))  {
                 output =  &argv[i][3];
-            }
-            else
-            {
+            } else {
                 help();
             }
-        }
-        else
-        {
-            if (filename)
-            {
+        } else {
+            if (filename) {
                 help();
             }
             filename = argv[i];
         }
     }
-    if (!filename)
-    {
+    if (!filename) {
         help();
     }
 }
 
 
 static long
-fileio_seek_func(void *self, long offset, Lib3dsIoSeek origin)
-{
+fileio_seek_func(void *self, long offset, Lib3dsIoSeek origin) {
     FILE *f = (FILE*)self;
     int o = SEEK_SET;
-    switch (origin)
-    {
-    case LIB3DS_SEEK_SET:
-        o = SEEK_SET;
-        break;
+    switch (origin) {
+        case LIB3DS_SEEK_SET:
+            o = SEEK_SET;
+            break;
 
-    case LIB3DS_SEEK_CUR:
-        o = SEEK_CUR;
-        break;
+        case LIB3DS_SEEK_CUR:
+            o = SEEK_CUR;
+            break;
 
-    case LIB3DS_SEEK_END:
-        o = SEEK_END;
-        break;
+        case LIB3DS_SEEK_END:
+            o = SEEK_END;
+            break;
     }
     return (fseek(f, offset, o));
 }
 
 
 static long
-fileio_tell_func(void *self)
-{
+fileio_tell_func(void *self) {
     FILE *f = (FILE*)self;
     return(ftell(f));
 }
 
 
 static size_t
-fileio_read_func(void *self, void *buffer, size_t size)
-{
+fileio_read_func(void *self, void *buffer, size_t size) {
     FILE *f = (FILE*)self;
     return (fread(buffer, 1, size, f));
 }
 
 
 static size_t
-fileio_write_func(void *self, const void *buffer, size_t size)
-{
+fileio_write_func(void *self, const void *buffer, size_t size) {
     FILE *f = (FILE*)self;
     return (fwrite(buffer, 1, size, f));
 }
 
 
-static void
+static void 
 fileio_log_func(void *self, Lib3dsLogLevel level, int indent, const char *msg)
 {
-    static const char * level_str[] =
-    {
+    static const char * level_str[] = {
         "ERROR", "WARN", "INFO", "DEBUG"
     };
-    if (log_level >=  level)
-    {
+    if (log_level >=  level) {
         int i;
         printf("%5s : ", level_str[level]);
         for (i = 1; i < indent; ++i) printf("\t");
@@ -216,24 +183,36 @@ fileio_log_func(void *self, Lib3dsLogLevel level, int indent, const char *msg)
 
 
 static void
-matrix_dump(float matrix[4][4])
-{
+matrix_dump(float matrix[4][4]) {
     int i, j;
 
-    for (i = 0; i < 4; ++i)
-    {
-        for (j = 0; j < 4; ++j)
-        {
+    for (i = 0; i < 4; ++i) {
+        for (j = 0; j < 4; ++j) {
             printf("%f ", matrix[j][i]);
         }
         printf("\n");
     }
 }
 
+static void
+matrix_dump_level(float matrix[4][4],int level) {
+	int i, j;
+	char l[128];
+
+	memset(l, ' ', 2*level);
+	l[2*level] = 0;
+
+	for (i = 0; i < 4; ++i) {
+		printf("%s",l);
+		for (j = 0; j < 4; ++j) {
+			printf("%f ", matrix[j][i]);
+		}
+		printf("\n");
+	}
+}
 
 static void
-viewport_dump(Lib3dsViewport *vp)
-{
+viewport_dump(Lib3dsViewport *vp) {
     Lib3dsView *view;
     int i;
     assert(vp);
@@ -248,8 +227,7 @@ viewport_dump(Lib3dsViewport *vp)
     printf("      size:        %d,%d\n", vp->layout_size[0], vp->layout_size[1]);
     printf("      views:       %ld\n", vp->layout_nviews);
 
-    for (i = 0; i < vp->layout_nviews; ++i)
-    {
+    for (i = 0; i < vp->layout_nviews; ++i) {
         view = &vp->layout_views[i];
 
         printf("        view %d:\n", i);
@@ -276,11 +254,9 @@ viewport_dump(Lib3dsViewport *vp)
 
 
 static void
-texture_dump(const char *maptype, Lib3dsTextureMap *texture)
-{
+texture_dump(const char *maptype, Lib3dsTextureMap *texture) {
     assert(texture);
-    if (strlen(texture->name) == 0)
-    {
+    if (strlen(texture->name) == 0) {
         return;
     }
     printf("  %s:\n", maptype);
@@ -292,29 +268,28 @@ texture_dump(const char *maptype, Lib3dsTextureMap *texture)
     printf("    offset:        (%f, %f)\n", texture->offset[0], texture->offset[1]);
     printf("    rotation:      %f\n", texture->rotation);
     printf("    tint_1:        (%f, %f, %f)\n",
-           texture->tint_1[0], texture->tint_1[1], texture->tint_1[2]);
+        texture->tint_1[0], texture->tint_1[1], texture->tint_1[2]);
     printf("    tint_2:        (%f, %f, %f)\n",
-           texture->tint_2[0], texture->tint_2[1], texture->tint_2[2]);
+        texture->tint_2[0], texture->tint_2[1], texture->tint_2[2]);
     printf("    tint_r:        (%f, %f, %f)\n",
-           texture->tint_r[0], texture->tint_r[1], texture->tint_r[2]);
+        texture->tint_r[0], texture->tint_r[1], texture->tint_r[2]);
     printf("    tint_g:        (%f, %f, %f)\n",
-           texture->tint_g[0], texture->tint_g[1], texture->tint_g[2]);
+        texture->tint_g[0], texture->tint_g[1], texture->tint_g[2]);
     printf("    tint_b:        (%f, %f, %f)\n",
-           texture->tint_b[0], texture->tint_b[1], texture->tint_b[2]);
+        texture->tint_b[0], texture->tint_b[1], texture->tint_b[2]);
 }
 
 
 static void
-material_dump(Lib3dsMaterial *material)
-{
+material_dump(Lib3dsMaterial *material) {
     assert(material);
     printf("  name:            %s\n", material->name);
     printf("  ambient:         (%f, %f, %f)\n",
-           material->ambient[0], material->ambient[1], material->ambient[2]);
+        material->ambient[0], material->ambient[1], material->ambient[2]);
     printf("  diffuse:         (%f, %f, %f)\n",
-           material->diffuse[0], material->diffuse[1], material->diffuse[2]);
+        material->diffuse[0], material->diffuse[1], material->diffuse[2]);
     printf("  specular:        (%f, %f, %f)\n",
-           material->specular[0], material->specular[1], material->specular[2]);
+        material->specular[0], material->specular[1], material->specular[2]);
     printf("  shininess:       %f\n", material->shininess);
     printf("  shin_strength:   %f\n", material->shin_strength);
     printf("  use_blur:        %s\n", material->use_blur ? "yes" : "no");
@@ -358,14 +333,13 @@ material_dump(Lib3dsMaterial *material)
 
 
 static void
-camera_dump(Lib3dsCamera *camera)
-{
+camera_dump(Lib3dsCamera *camera) {
     assert(camera);
     printf("  name:       %s\n", camera->name);
     printf("  position:   (%f, %f, %f)\n",
-           camera->position[0], camera->position[1], camera->position[2]);
+        camera->position[0], camera->position[1], camera->position[2]);
     printf("  target      (%f, %f, %f)\n",
-           camera->target[0], camera->target[1], camera->target[2]);
+        camera->target[0], camera->target[1], camera->target[2]);
     printf("  roll:       %f\n", camera->roll);
     printf("  fov:        %f\n", camera->fov);
     printf("  see_cone:   %s\n", camera->see_cone ? "yes" : "no");
@@ -376,18 +350,17 @@ camera_dump(Lib3dsCamera *camera)
 
 
 static void
-light_dump(Lib3dsLight *light)
-{
+light_dump(Lib3dsLight *light) {
     assert(light);
     printf("  name:             %s\n", light->name);
     printf("  spot_light:       %s\n", light->spot_light ? "yes" : "no");
     printf("  see_cone:         %s\n", light->see_cone ? "yes" : "no");
     printf("  color:            (%f, %f, %f)\n",
-           light->color[0], light->color[1], light->color[2]);
+        light->color[0], light->color[1], light->color[2]);
     printf("  position          (%f, %f, %f)\n",
-           light->position[0], light->position[1], light->position[2]);
+        light->position[0], light->position[1], light->position[2]);
     printf("  target              (%f, %f, %f)\n",
-           light->target[0], light->target[1], light->target[2]);
+        light->target[0], light->target[1], light->target[2]);
     printf("  roll:             %f\n", light->roll);
     printf("  off:              %s\n", light->off ? "yes" : "no");
     printf("  outer_range:      %f\n", light->outer_range);
@@ -412,67 +385,80 @@ light_dump(Lib3dsLight *light)
 
 
 static void
-mesh_dump(Lib3dsMesh *mesh)
-{
+mesh_dump(Lib3dsMesh *mesh) {
     int i;
     float p[3];
 
     assert(mesh);
     printf("  %s vertices=%ld faces=%ld\n",
-           mesh->name,
-           mesh->nvertices,
-           mesh->nfaces);
+        mesh->name,
+        mesh->nvertices,
+        mesh->nfaces);
     printf("  matrix:\n");
     matrix_dump(mesh->matrix);
     printf("  vertices (x, y, z, u, v):\n");
-    for (i = 0; i < mesh->nvertices; ++i)
-    {
+    for (i = 0; i < mesh->nvertices; ++i) {
         lib3ds_vector_copy(p, mesh->vertices[i]);
         printf("    %10.5f %10.5f %10.5f", p[0], p[1], p[2]);
-        if (mesh->texcos)
-        {
+        if (mesh->texcos) {
             printf("%10.5f %10.5f", mesh->texcos[i][0], mesh->texcos[i][1]);
         }
         printf("\n");
     }
     printf("  facelist:\n");
-    for (i = 0; i < mesh->nfaces; ++i)
-    {
+    for (i = 0; i < mesh->nfaces; ++i) {
         printf("    %4d %4d %4d  flags:%X  smoothing:%X  material:\"%d\"\n",
-               mesh->faces[i].index[0],
-               mesh->faces[i].index[1],
-               mesh->faces[i].index[2],
-               mesh->faces[i].flags,
-               mesh->faces[i].smoothing_group,
-               mesh->faces[i].material
-              );
+            mesh->faces[i].index[0],
+            mesh->faces[i].index[1],
+            mesh->faces[i].index[2],
+            mesh->faces[i].flags,
+            mesh->faces[i].smoothing_group,
+            mesh->faces[i].material
+            );
     }
 }
 
 
 static void
-dump_instances(Lib3dsNode *node, const char* parent)
-{
+dump_instances(Lib3dsNode *node, const char* parent) {
     Lib3dsNode *p;
     char name[255];
 
     strcpy(name, parent);
     strcat(name, ".");
     strcat(name, node->name);
-    if (node->type == LIB3DS_NODE_MESH_INSTANCE)
-    {
+    if (node->type == LIB3DS_NODE_MESH_INSTANCE) {
         Lib3dsMeshInstanceNode *n = (Lib3dsMeshInstanceNode*)node;
         printf("  %s : %s\n", name, n->instance_name);
     }
-    for (p = node->childs; p != 0; p = p->next)
-    {
+    for (p = node->childs; p != 0; p = p->next) {
         dump_instances(p, parent);
     }
 }
 
+static void
+dump_instances_level(Lib3dsNode *node, const char* parent,int level) {
+	Lib3dsNode *p;
+	char name[255];
+	char l[128];
 
-static const char* node_names_table[] =
-{
+	memset(l, ' ', 2*level);
+	l[2*level] = 0;
+
+	strcpy(name, parent);
+	strcat(name, ".");
+	strcat(name, node->name);
+	if (node->type == LIB3DS_NODE_MESH_INSTANCE) {
+		Lib3dsMeshInstanceNode *n = (Lib3dsMeshInstanceNode*)node;
+		printf("  %s%s : %s\n", l,name, n->instance_name);
+	}
+	for (p = node->childs; p != 0; p = p->next) {
+		dump_instances_level(p, parent,level+1);
+	}
+}
+
+
+static const char* node_names_table[] = {
     "Ambient",
     "Mesh",
     "Camera",
@@ -482,34 +468,34 @@ static const char* node_names_table[] =
     "Spotlight Target"
 };
 
-static void
+static void 
 key_dump(Lib3dsKey *key,int level)
 {
-    char l[128];
+	char l[128];
 
-    assert(key);
-    memset(l, ' ', 2*level);
-    l[2*level] = 0;
+	assert(key);
+	memset(l, ' ', 2*level);
+	l[2*level] = 0;
 
-    printf("%skey Frame:%d , t %f , c %f, b %f, easefrom %f, easeto %f, value : %f %f %f %f\n",
-           l,
-           key->frame,
-           key->tens,
-           key->cont,
-           key->bias,
-           key->ease_from,
-           key->ease_to,
-           key->value[0],
-           key->value[1],
-           key->value[2],
-           key->value[3]
-          );
+	printf("%skey Frame:%d , t %f , c %f, b %f, easefrom %f, easeto %f, value : %f %f %f %f\n",
+		l,
+		key->frame,
+		key->tens,
+		key->cont,
+		key->bias,
+		key->ease_from,
+		key->ease_to,
+		key->value[0],
+		key->value[1],
+		key->value[2],
+		key->value[3]
+		);
 }
 
 /*
 typedef struct Lib3dsTrack {
 unsigned        flags;
-Lib3dsTrackType type;
+Lib3dsTrackType type; 
 //z 共有多少个key
 int             nkeys;
 //z 存放 key 数据
@@ -517,82 +503,81 @@ Lib3dsKey*      keys;
 } Lib3dsTrack;
 */
 
-static const char* track_flags_table[] =
+static const char* track_flags_table[] = 
 {
-    "REPEAT",
-    "SMOOTH",
-    "LOCK_X",
-    "LOCK_Y",
-    "LOCK_Z",
-    "UNLINK_X",
-    "UNLINK_Y",
-    "UNLINK_Z",
+	"REPEAT",
+	"SMOOTH",
+	"LOCK_X",
+	"LOCK_Y",
+	"LOCK_Z",
+	"UNLINK_X",
+	"UNLINK_Y",
+	"UNLINK_Z",
 };
 
-static void
+static void 
 track_dump(Lib3dsTrack *track, int level,const char* trackname)
 {
-    Lib3dsNode *p;
-    char l[128];
-    int i = 0;
-    int trackflagscnt = 0;
+	//z Lib3dsNode *p;
+	char l[128];
+	int i = 0;
+	int trackflagscnt = 0;
 
-    assert(track);
-    memset(l, ' ', 2*level);
-    l[2*level] = 0;
+	assert(track);
+	memset(l, ' ', 2*level);
+	l[2*level] = 0;
+	
+	if (trackname)
+	{
+		printf("%strack %s nkeys %d\n",l,trackname,track->nkeys);
+	}
+	else
+	{
+		printf("%strack nkeys %d\n",l,track->nkeys);
+	}
+	/*typedef enum {
+		LIB3DS_TRACK_REPEAT   = 0x0001,
+		LIB3DS_TRACK_SMOOTH   = 0x0002,
+		LIB3DS_TRACK_LOCK_X   = 0x0008,
+		LIB3DS_TRACK_LOCK_Y   = 0x0010,
+		LIB3DS_TRACK_LOCK_Z   = 0x0020,
+		LIB3DS_TRACK_UNLINK_X = 0x0100,
+		LIB3DS_TRACK_UNLINK_Y = 0x0200,
+		LIB3DS_TRACK_UNLINK_Z = 0x0400
+	} Lib3dsTrackFlags;*/
 
-    if (trackname)
-    {
-        printf("%strack %s nkeys %d\n",l,trackname,track->nkeys);
-    }
-    else
-    {
-        printf("%strack nkeys %d\n",l,track->nkeys);
-    }
-    /*typedef enum {
-    	LIB3DS_TRACK_REPEAT   = 0x0001,
-    	LIB3DS_TRACK_SMOOTH   = 0x0002,
-    	LIB3DS_TRACK_LOCK_X   = 0x0008,
-    	LIB3DS_TRACK_LOCK_Y   = 0x0010,
-    	LIB3DS_TRACK_LOCK_Z   = 0x0020,
-    	LIB3DS_TRACK_UNLINK_X = 0x0100,
-    	LIB3DS_TRACK_UNLINK_Y = 0x0200,
-    	LIB3DS_TRACK_UNLINK_Z = 0x0400
-    } Lib3dsTrackFlags;*/
+	if (track->nkeys)
+	{
+		for (i=0;i<8;++i)
+		{
+			int j = i << i;
 
-    if (track->nkeys)
-    {
-        for (i=0; i<8; ++i)
-        {
-            int j = i << i;
+			if (i == 0 && track->flags)
+			{
+				printf("%s",l);
+			}
 
-            if (i == 0 && track->flags)
-            {
-                printf("%s",l);
-            }
+			if (track->flags&j)
+			{
+				++trackflagscnt;
+				printf("%s",track_flags_table[i]);
+			}
 
-            if (track->flags&j)
-            {
-                ++trackflagscnt;
-                printf("%s",track_flags_table[i]);
-            }
+			if (i == 7 && trackflagscnt)
+			{
+				printf("\n");
+			}
+		}
+	}
 
-            if (i == 7 && trackflagscnt)
-            {
-                printf("\n");
-            }
-        }
-    }
-
-    for (i = 0 ; i < track->nkeys; ++i)
-    {
-        key_dump(&(track->keys[i]),level+1);
-    }
+	for (i = 0 ; i < track->nkeys;++i)
+	{
+		key_dump(&(track->keys[i]),level+1);
+	}
 }
 
 static void
-node_dump(Lib3dsNode *node, int level)
-{
+node_dump(Lib3dsNode *node, int level) {
     Lib3dsNode *p;
     char l[128];
 
@@ -600,40 +585,44 @@ node_dump(Lib3dsNode *node, int level)
     memset(l, ' ', 2*level);
     l[2*level] = 0;
 
-    if (node->type == LIB3DS_NODE_MESH_INSTANCE)
-    {
-        Lib3dsMeshInstanceNode *n = (Lib3dsMeshInstanceNode*)node;
+    if (node->type == LIB3DS_NODE_MESH_INSTANCE) {
+        Lib3dsMeshInstanceNode *n = (Lib3dsMeshInstanceNode*)node; 
         printf("%s%s [%s] (%s)\n",
-               l,
-               node->name,
-               n->instance_name,
-               node_names_table[node->type]
-              );
+            l,
+            node->name,
+            n->instance_name,
+            node_names_table[node->type]
+        );
 
-        track_dump(&n->pos_track,level+1,"pos");
-        track_dump(&n->rot_track,level+1,"rot");
-        track_dump(&n->scl_track,level+1,"scl");
-        track_dump(&n->hide_track,level+1,"hide");
-    }
-    else
-    {
+		printf("%smatrix:\n",l);
+		matrix_dump_level(node->matrix,level);
+		printf("%sPivot value : %f %f %f\n",
+			l,
+			n->pivot[0],
+			n->pivot[1],
+			n->pivot[2]
+		);
+
+		track_dump(&n->pos_track,level+1,"pos");
+		track_dump(&n->rot_track,level+1,"rot");
+		track_dump(&n->scl_track,level+1,"scl");
+		track_dump(&n->hide_track,level+1,"hide");
+    } else {
         printf("%s%s (%s)\n",
-               l,
-               node->name,
-               node_names_table[node->type]
-              );
+            l,
+            node->name,
+            node_names_table[node->type]
+        );
     }
 
-    for (p = node->childs; p != 0; p = p->next)
-    {
+    for (p = node->childs; p != 0; p = p->next) {
         node_dump(p, level + 1);
     }
 }
 
 
 int
-main(int argc, char **argv)
-{
+main(int argc, char **argv) {
     FILE *file;
     Lib3dsFile *f = 0;
     Lib3dsIo io;
@@ -643,14 +632,13 @@ main(int argc, char **argv)
     parse_args(argc, argv);
 
     file = fopen(filename, "rb");
-    if (!file)
-    {
+    if (!file) {
         fprintf(stderr, "***ERROR***\nFile not found: %s\n", filename);
         exit(1);
     }
 
     f = lib3ds_file_new();
-
+ 
     memset(&io, 0, sizeof(io));
     io.self = file;
     io.seek_func = fileio_seek_func;
@@ -662,61 +650,50 @@ main(int argc, char **argv)
     result =  lib3ds_file_read(f, &io);
 
     fclose(file);
-
-    if (!result)
-    {
+ 
+    if (!result) {
         fprintf(stderr, "***ERROR***\nLoading file failed: %s\n", filename);
         exit(1);
     }
 
-    if (flags & LIB3DSDUMP_MATERIALS)
-    {
+    if (flags & LIB3DSDUMP_MATERIALS) {
         printf("Dumping materials:\n");
         for (i = 0; i < f->nmaterials; ++i) material_dump(f->materials[i]);
         printf("\n");
     }
-    if (flags & LIB3DSDUMP_TRIMESHES)
-    {
+    if (flags & LIB3DSDUMP_TRIMESHES) {
         printf("Dumping meshes:\n");
         for (i = 0; i < f->nmeshes; ++i) mesh_dump(f->meshes[i]);
         printf("\n");
     }
-    if (flags & LIB3DSDUMP_INSTANCES)
-    {
-        Lib3dsNode *p;
-        printf("Dumping instances:\n");
-        for (p = f->nodes; p != 0; p = p->next)
-        {
-            dump_instances(p, "");
-        }
-        printf("\n");
-    }
-    if (flags & LIB3DSDUMP_CAMERAS)
-    {
+    if (flags & LIB3DSDUMP_CAMERAS) {
         printf("Dumping cameras:\n");
         for (i = 0; i < f->ncameras; ++i) camera_dump(f->cameras[i]);
         printf("\n");
     }
-    if (flags & LIB3DSDUMP_LIGHTS)
-    {
+    if (flags & LIB3DSDUMP_LIGHTS) {
         printf("Dumping lights:\n");
         for (i = 0; i < f->nlights; ++i) light_dump(f->lights[i]);
         printf("\n");
     }
-    if (flags & LIB3DSDUMP_NODES)
-    {
+	if (flags & LIB3DSDUMP_INSTANCES) {
+		Lib3dsNode *p;
+		printf("Dumping instances:\n");
+		for (p = f->nodes; p != 0; p = p->next) {
+			dump_instances_level(p, "",0);
+		}
+		printf("\n");
+	}
+    if (flags & LIB3DSDUMP_NODES) {
         Lib3dsNode *p;
         printf("Dumping node hierarchy:\n");
-        for (p = f->nodes; p != 0; p = p->next)
-        {
+        for (p = f->nodes; p != 0; p = p->next) {
             node_dump(p, 1);
         }
         printf("\n");
     }
-    if (output)
-    {
-        if (!lib3ds_file_save(f, output))
-        {
+    if (output) {
+        if (!lib3ds_file_save(f, output)) {
             printf("***ERROR**** Writing %s\n", output);
         }
     }
