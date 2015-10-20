@@ -217,6 +217,7 @@ HRESULT InitDevice()
         return hr;
     }
 
+    //z 得到一个 technique
     // Obtain the technique
     g_pTechnique = g_pEffect->GetTechniqueByName( "Render" );
 
@@ -228,12 +229,14 @@ HRESULT InitDevice()
     UINT numElements = sizeof(layout)/sizeof(layout[0]);
 
     // Create the input layout
+    //z 创建 input layout 
     D3D10_PASS_DESC PassDesc;
     g_pTechnique->GetPassByIndex( 0 )->GetDesc( &PassDesc );
     hr = g_pd3dDevice->CreateInputLayout( layout, numElements, PassDesc.pIAInputSignature, PassDesc.IAInputSignatureSize, &g_pVertexLayout );
     if( FAILED( hr ) )
         return hr;
 
+    //z 设置 input layout
     // Set the input layout
     g_pd3dDevice->IASetInputLayout( g_pVertexLayout );
 

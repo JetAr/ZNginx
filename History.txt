@@ -4131,3 +4131,15 @@ Changes to be committed:
 	modified:   ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial02/Tutorial02.cpp
 	modified:   ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial02/Tutorial02.fx
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/10/20.18_00_43.06.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	modified:   ZGame/Dx.Sdk/Dx10.07aug.Tut/T.dx10.tut.07.aug.cs
+	modified:   ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial02/Tutorial02.cpp
+
