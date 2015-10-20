@@ -4115,3 +4115,19 @@ Changes to be committed:
 	new file:   ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial14/Tutorial14_2005.vcproj
 	new file:   ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial14/directx.ico
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/10/20.16_44_03.71.K.MzM.T@WS 
+On branch master
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Doc/K/T.2015.BugFree.cs
+	modified:   History.txt
+	modified:   ZGame/Dx.Sdk/Dx10.07aug.Tut/T.dx10.tut.07.aug.cs
+	new file:   ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial02/Tutorial 2 Rendering a Triangle.txt
+	modified:   ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial02/Tutorial02.cpp
+	modified:   ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial02/Tutorial02.fx
+

@@ -132,6 +132,7 @@ HRESULT InitDevice()
 
     UINT createDeviceFlags = 0;
 #ifdef _DEBUG
+    //z 创 debug 方式，有什么好处了？含义以及其所对应的调试办法。
     createDeviceFlags |= D3D10_CREATE_DEVICE_DEBUG;
 #endif
 
@@ -140,8 +141,10 @@ HRESULT InitDevice()
         D3D10_DRIVER_TYPE_HARDWARE,
         D3D10_DRIVER_TYPE_REFERENCE,
     };
+    //z 类型
     UINT numDriverTypes = sizeof(driverTypes) / sizeof(driverTypes[0]);
 
+    //z 2015-10-20 15:25 设置 DXGI_SWAP_CHAIN_DESC 结构。
     DXGI_SWAP_CHAIN_DESC sd;
     ZeroMemory( &sd, sizeof(sd) );
     sd.BufferCount = 1;
@@ -156,6 +159,7 @@ HRESULT InitDevice()
     sd.SampleDesc.Quality = 0;
     sd.Windowed = TRUE;
 
+    //z 根据 sd 来创建 swap chain 
     for( UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++ )
     {
         g_driverType = driverTypes[driverTypeIndex];
@@ -168,19 +172,24 @@ HRESULT InitDevice()
         return hr;
 
     // Create a render target view
+    //z 2015-10-20 15:27 创建 target view 。
     ID3D10Texture2D *pBuffer;
+    //z 由 g_pSwapChain 得到 buffer 。
     hr = g_pSwapChain->GetBuffer( 0, __uuidof( ID3D10Texture2D ), (LPVOID*)&pBuffer );
     if( FAILED(hr) )
         return hr;
 
+    //z 2015-10-20 15:27 根据 buffer 来创建 target view 。
     hr = g_pd3dDevice->CreateRenderTargetView( pBuffer, NULL, &g_pRenderTargetView );
     pBuffer->Release();
     if( FAILED( hr ) )
         return hr;
-
+    
+    //z 2015-10-20 15:28 创建 target view
     g_pd3dDevice->OMSetRenderTargets( 1, &g_pRenderTargetView, NULL );
 
     // Setup the viewport
+    //z 设立 viewport 
     D3D10_VIEWPORT vp;
     vp.Width = width;
     vp.Height = height;
@@ -199,6 +208,7 @@ HRESULT InitDevice()
     // the release configuration of this program.
     dwShaderFlags |= D3D10_SHADER_DEBUG;
 #endif
+    //z 从文件中创建 effect 。
     hr = D3DX10CreateEffectFromFile( L"Tutorial02.fx", NULL, NULL, "fx_4_0", dwShaderFlags, 0,
                                      g_pd3dDevice, NULL, NULL, &g_pEffect, NULL, NULL );
     if( FAILED( hr ) )
