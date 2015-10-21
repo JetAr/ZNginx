@@ -9,12 +9,14 @@ Tutorial00 Win32 Basics done 2015-10-20 11:09
     2015-10-20 11:09 浏览    
 Tutorial01 Direct3D 10 Basics done 2015-10-20 13:43
     2015-10-20 13:43 learn & comment
+
 Tutorial02 Rendering a Triangle 2015-10-20 16:53
-Tutorial03 Shaders and Effect System
-Tutorial04
-Tutorial05
-Tutorial06
-Tutorial07
+Tutorial03 Shaders and Effect System doc
+Tutorial04 3D Spaces 2015-10-21 13:32 doc
+Tutorial05 3D Transformation 2015-10-21 13:32 doc
+Tutorial06 Lighting 2015-10-21 13:31 doc
+Tutorial07 Texture Mapping and Constant Buffers 2015-10-21 14:57 doc
+ 
 Tutorial08
 Tutorial09
 Tutorial10
