@@ -47,7 +47,9 @@ HINSTANCE g_hInstance;									// This holds the global hInstance for Unregister
 // Right Arrow Key - Spins the model to the right
 // Escape - Quits
 
-#define FILE_NAME  "Character.3ds"						// This is the 3D file we will load.
+//z #define FILE_NAME  "Character.3ds"						// This is the 3D file we will load.
+//z #define FILE_NAME  "Character.3ds"						// This is the 3D file we will load.
+#define FILE_NAME  "月球反贴.3DS"						// This is the 3D file we will load.
 
 //////////// *** NEW *** ////////// *** NEW *** ///////////// *** NEW *** ////////////////////
 
