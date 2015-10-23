@@ -1,0 +1,51 @@
+﻿书籍和常用学习资料介绍
+
+C 语言学习
+
+"The C Programming Language"，经典中的经典，C 语言学习书籍中的圣经。推 荐所有学习 C 语言的人看，原因很简单，本书的作者发明了 C 语言。如果你还没有 仔细看过这本书，找个时间好好洗礼一下吧。
+"Lions' Commentary on Unix"，莱昂氏 UNIX 源代码分析，该书的上半部分是完 整的 UNIX 源代码（版本 6，较早期的版本），下半部分是莱昂氏对代码的详细分析。 很多时候 UNIX 不仅仅只是一个系统，从源代码中能够学到更多 C 语言的知识。
+LINUX 源代码，如果你想进一步提高你 C 语言的水平，那么去看 LINUX 源代 码吧。附带还能学习一下代码风格。http://www.kernel.org/
+C++ 语言学习
+
+"The C++ Programming Language"，由 C++ 之父：Bjarne Stroustrup 所写的书，不 过起点较高，不太适合入门用，但是如果你能把它看完，一定会受益匪浅。推荐该书 的读法，不要追求一次都看懂，隔一段时间再读，会有新的体会。
+"Programming: Principles and Practice Using C++"，同样由 Bjarne Stroustrup 编写，2009 年底问世，这次的目标读者是入门者。
+"The C++ Standard Library: A Tutorial and Reference"，懂封装懂继承懂多态，这 样就算掌握 C++ 了么？恐怕不行，因为除了 OOP（面向对象编程），GP（泛型编程） 同样是 C++ 语言不可或缺甚至是比 OOP 更具活力的机制，STL（Standard Template Library，标准模板库）作为 GP 的优秀代表就是所有 C++ 程序员手中有力的武器，这 本书就是告诉你怎么使用这把武器的。
+"STL 源码剖析"，知名华人 C++ 专家、台湾同胞侯捷先生的作品，市面上难得的 C++ 中文原创佳作，如果你已经掌握了 STL 这把武器的用法但并不满足，还想拆开 一探武器内部的究竟，那么这本书你不能错过。
+图形学基础学习
+
+"Computer Graphics: Principles and Practice in C"，本书介绍了图形学基础算法， 包含了计算机图形学的方方面面，如果你想从基础学起，那么这本书不能不看。
+"Real-Time Rendering"，实时绘制方面最好的教材，该书按照图形绘制流水线的 各个部分，讲述了实时绘制中的经典算法。
+" 计算机真实感图形的算法基础"，真实感图形学的经典教材，里面详细介绍了 真实感绘制的经典算法，包括光线跟踪和辐射度算法。（可能现在已经绝版）
+OpenGL 学习
+
+"OpenGL Programming Guide: The Official Guide to Learning OpenGL"，俗称红宝 书，学习 OpenGL 的入门书籍，但是它不仅仅是入门书籍，更是一本工作手册，当你遇到 OpenGL 问题的时候，翻一翻红宝书，总会有惊喜。（本书的版本通常会随着 OpenGL 版本一起更新，本指南编写时，为第 7 版。）
+"OpenGL SuperBible: Comprehensive Tutorial and Reference"，俗称蓝宝书，红宝书更像是字典，而该书以实例的方式讲述 OpenGL，喜欢从例子入门的同学可以看这本书入门。
+"OpenGL Shading Language"，橙宝书，GLSL 的入门教材（可能是唯一的 GLSL 教材）。
+NeHe OpenGL Course，NeHe 的 openGL 教程，http://nehe.gamedev.net/， 共有 48 课，每课讲述一个主题，并且提供源代码，是除了以上三本书之外最好的OpenGL 教学资料。
+Direct3D 学习
+
+D3D 学习资源不 少，但是最好的一定是 DirectX 的帮助文档，该文档随 DirectX SDK 一起提供，里面包含了入门知识，入门例程，高级应用实例等等，学习 Direct3D， 只需要查看帮助文档就可以了，不在需要看任何其他的书籍。包括 HLSL 都可以通过该文档学习。
+CG 语言学习
+
+学习 cg 语言不是必须的，GLSL 和 HLSL 都能代替它的作用，但是学习 cg 语言 之前必须学好 OpenGL 或者 Direct3D。
+"The Cg Tutorial"。Nvidia 官方的 cg 语言入门教材，写的深入浅出，适合初学者 学习。现在免费能够在 Nvidia 网站上可以阅读。
+GPU 编程学习
+
+GPU 编程学习除了需要学习 GLSL，HLSL，CG 等 GPU 编程语言外，还可以通过学习他人的例子来进一步优化自己的程序执行顺序，数据结构，或者学习一些最新的 GPU 编程技巧。
+"GPU Gems I,II,III"，这一个系列三本书是讲述 GPU 编程技巧，书中有大量的实例以及现成的代码，通过对这些实例的学习和研究，能够提高自己在 GPU 编程方面 的技巧，提高自己编写的 GPU 代码执行效率。
+CUDA 编程学习
+
+"CUDA Programming Guide"，Nvidia 官方的 CUDA 学习资料，包含于 CUDA Toolkit 内，可以在 Nvidia 网站上下载到。
+MFC 编程学习
+
+"Programming Windows with MFC"，微软出版社出品，MFC 学习中的精品之作。 看此书切忌浮躁，多想多实践，MFC 其实不难学。 学习 MFC 时遇到不懂的时候，可以使用 MSDN。
+QT 编程学习
+
+"C++ GUI Programming with Qt 4"，学习 QT 的好资料。
+编程杂书推荐
+
+" 程序员修炼之道"，将宏观思想理念，不讲编码细节。
+" 算法导论"，系统学习算法的好书，也是诸位将来应聘 IT 技术岗位时必备之宝典。
+"Code Optimization: Effective Memory Usage"，代码优化中的代表之作，值得一 看。
+"the Art of UNIX Programming"，UNIX 的艺术可以让人一生受用，这本书不止是讲述 UNIX 编程，更是讲述 UNIX 文化，UNIX 之美。
+" 深入理解计算机系统"，本书的副标题就是推荐的原因：从程序员视角。

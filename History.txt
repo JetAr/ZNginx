@@ -4176,3 +4176,14 @@ Changes to be committed:
 	modified:   History.txt
 	modified:   ZGame/game_tutorials/OpenGL/3DS Animation/Main.cpp
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/10/23.17_26_29.15.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	new file:   Doc/Book/vg guide wiki.txt
+	modified:   History.txt
+
