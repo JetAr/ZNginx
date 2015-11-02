@@ -4221,3 +4221,361 @@ Changes to be committed:
 	modified:   Doc/K/T.2015.BugFree.cs
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/11/02.14_55_15.63.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Doc/K/T.2015.pXr.cs
+	modified:   History.txt
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Core/DXUT.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Core/DXUT.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Core/DXUTCore_2003.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Core/DXUTCore_2003.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Core/DXUTCore_2005.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Core/DXUTCore_2005.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Core/DXUTenum.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Core/DXUTenum.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Core/DXUTmisc.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Core/DXUTmisc.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/DXUTOptional_2003.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/DXUTOptional_2003.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/DXUTOptional_2005.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/DXUTOptional_2005.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/DXUTShapes.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/DXUTShapes.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/DXUTcamera.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/DXUTcamera.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/DXUTgui.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/DXUTgui.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/DXUTguiIME.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/DXUTguiIME.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/DXUTres.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/DXUTres.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/DXUTsettingsdlg.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/DXUTsettingsdlg.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/ImeUi.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/ImeUi.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/SDKmesh.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/SDKmesh.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/SDKmisc.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/SDKmisc.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/SDKsound.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/SDKsound.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/SDKwavefile.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/SDKwavefile.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/Optional/directx.ico
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/DXUT/ReadMe.txt
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/T.dx10.tut.07.aug.cs
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial00/Resource.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial00/Tutorial00.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial00/Tutorial00.jpg
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial00/Tutorial00.rc
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial00/Tutorial00_2003.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial00/Tutorial00_2003.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial00/Tutorial00_2005.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial00/Tutorial00_2005.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial00/directx.ico
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial01/Resource.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial01/Tutorial01.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial01/Tutorial01.jpg
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial01/Tutorial01.rc
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial01/Tutorial01_2003.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial01/Tutorial01_2003.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial01/Tutorial01_2005.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial01/Tutorial01_2005.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial01/directx.ico
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial02/Resource.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial02/Tutorial 2 Rendering a Triangle.txt
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial02/Tutorial02.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial02/Tutorial02.fx
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial02/Tutorial02.jpg
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial02/Tutorial02.rc
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial02/Tutorial02_2003.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial02/Tutorial02_2003.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial02/Tutorial02_2005.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial02/Tutorial02_2005.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial02/directx.ico
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial03/Resource.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial03/Tutorial03.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial03/Tutorial03.fx
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial03/Tutorial03.jpg
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial03/Tutorial03.rc
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial03/Tutorial03_2003.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial03/Tutorial03_2003.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial03/Tutorial03_2005.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial03/Tutorial03_2005.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial03/directx.ico
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial04/Resource.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial04/Tutorial04.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial04/Tutorial04.fx
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial04/Tutorial04.jpg
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial04/Tutorial04.rc
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial04/Tutorial04_2003.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial04/Tutorial04_2003.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial04/Tutorial04_2005.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial04/Tutorial04_2005.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial04/directx.ico
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial05/Resource.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial05/Tutorial05.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial05/Tutorial05.fx
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial05/Tutorial05.jpg
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial05/Tutorial05.rc
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial05/Tutorial05_2003.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial05/Tutorial05_2003.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial05/Tutorial05_2005.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial05/Tutorial05_2005.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial05/directx.ico
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial06/Resource.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial06/Tutorial06.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial06/Tutorial06.fx
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial06/Tutorial06.jpg
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial06/Tutorial06.rc
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial06/Tutorial06_2003.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial06/Tutorial06_2003.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial06/Tutorial06_2005.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial06/Tutorial06_2005.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial06/directx.ico
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial07/Resource.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial07/Tutorial07.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial07/Tutorial07.fx
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial07/Tutorial07.jpg
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial07/Tutorial07.rc
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial07/Tutorial07_2003.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial07/Tutorial07_2003.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial07/Tutorial07_2005.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial07/Tutorial07_2005.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial07/directx.ico
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial07/seafloor.dds
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial08/Resource.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial08/Tutorial08.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial08/Tutorial08.fx
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial08/Tutorial08.jpg
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial08/Tutorial08.rc
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial08/Tutorial08_2003.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial08/Tutorial08_2003.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial08/Tutorial08_2005.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial08/Tutorial08_2005.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial08/directx.ico
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial08/seafloor.dds
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial09/Resource.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial09/Tutorial09.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial09/Tutorial09.fx
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial09/Tutorial09.jpg
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial09/Tutorial09.rc
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial09/Tutorial09_2003.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial09/Tutorial09_2003.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial09/Tutorial09_2005.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial09/Tutorial09_2005.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial09/directx.ico
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial10/Resource.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial10/Tutorial10.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial10/Tutorial10.fx
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial10/Tutorial10.jpg
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial10/Tutorial10.rc
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial10/Tutorial10_2003.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial10/Tutorial10_2003.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial10/Tutorial10_2005.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial10/Tutorial10_2005.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial10/directx.ico
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial11/Resource.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial11/Tutorial11.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial11/Tutorial11.fx
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial11/Tutorial11.jpg
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial11/Tutorial11.rc
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial11/Tutorial11_2003.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial11/Tutorial11_2003.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial11/Tutorial11_2005.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial11/Tutorial11_2005.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial11/directx.ico
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial12/Resource.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial12/Tutorial12.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial12/Tutorial12.fx
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial12/Tutorial12.jpg
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial12/Tutorial12.rc
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial12/Tutorial12_2003.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial12/Tutorial12_2003.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial12/Tutorial12_2005.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial12/Tutorial12_2005.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial12/directx.ico
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial13/Resource.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial13/Tutorial13.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial13/Tutorial13.fx
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial13/Tutorial13.jpg
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial13/Tutorial13.rc
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial13/Tutorial13_2003.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial13/Tutorial13_2003.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial13/Tutorial13_2005.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial13/Tutorial13_2005.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial13/directx.ico
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial14/Resource.h
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial14/Tutorial14.cpp
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial14/Tutorial14.fx
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial14/Tutorial14.jpg
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial14/Tutorial14.rc
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial14/Tutorial14_2003.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial14/Tutorial14_2003.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial14/Tutorial14_2005.sln
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial14/Tutorial14_2005.vcproj
+	new file:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial14/directx.ico
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/T.dx10.tut.07.aug.cs
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial00/Resource.h
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial00/Tutorial00.cpp
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial00/Tutorial00.jpg
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial00/Tutorial00.rc
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial00/Tutorial00_2003.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial00/Tutorial00_2003.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial00/Tutorial00_2005.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial00/Tutorial00_2005.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial00/directx.ico
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial01/Resource.h
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial01/Tutorial01.cpp
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial01/Tutorial01.jpg
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial01/Tutorial01.rc
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial01/Tutorial01_2003.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial01/Tutorial01_2003.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial01/Tutorial01_2005.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial01/Tutorial01_2005.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial01/directx.ico
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial02/Resource.h
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial02/Tutorial 2 Rendering a Triangle.txt
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial02/Tutorial02.cpp
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial02/Tutorial02.fx
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial02/Tutorial02.jpg
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial02/Tutorial02.rc
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial02/Tutorial02_2003.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial02/Tutorial02_2003.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial02/Tutorial02_2005.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial02/Tutorial02_2005.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial02/directx.ico
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial03/Resource.h
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial03/Tutorial03.cpp
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial03/Tutorial03.fx
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial03/Tutorial03.jpg
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial03/Tutorial03.rc
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial03/Tutorial03_2003.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial03/Tutorial03_2003.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial03/Tutorial03_2005.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial03/Tutorial03_2005.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial03/directx.ico
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial04/Resource.h
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial04/Tutorial04.cpp
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial04/Tutorial04.fx
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial04/Tutorial04.jpg
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial04/Tutorial04.rc
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial04/Tutorial04_2003.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial04/Tutorial04_2003.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial04/Tutorial04_2005.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial04/Tutorial04_2005.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial04/directx.ico
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial05/Resource.h
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial05/Tutorial05.cpp
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial05/Tutorial05.fx
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial05/Tutorial05.jpg
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial05/Tutorial05.rc
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial05/Tutorial05_2003.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial05/Tutorial05_2003.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial05/Tutorial05_2005.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial05/Tutorial05_2005.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial05/directx.ico
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial06/Resource.h
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial06/Tutorial06.cpp
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial06/Tutorial06.fx
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial06/Tutorial06.jpg
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial06/Tutorial06.rc
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial06/Tutorial06_2003.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial06/Tutorial06_2003.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial06/Tutorial06_2005.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial06/Tutorial06_2005.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial06/directx.ico
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial07/Resource.h
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial07/Tutorial07.cpp
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial07/Tutorial07.fx
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial07/Tutorial07.jpg
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial07/Tutorial07.rc
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial07/Tutorial07_2003.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial07/Tutorial07_2003.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial07/Tutorial07_2005.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial07/Tutorial07_2005.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial07/directx.ico
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial07/seafloor.dds
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial08/Resource.h
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial08/Tutorial08.cpp
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial08/Tutorial08.fx
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial08/Tutorial08.jpg
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial08/Tutorial08.rc
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial08/Tutorial08_2003.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial08/Tutorial08_2003.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial08/Tutorial08_2005.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial08/Tutorial08_2005.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial08/directx.ico
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial08/seafloor.dds
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial09/Resource.h
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial09/Tutorial09.cpp
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial09/Tutorial09.fx
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial09/Tutorial09.jpg
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial09/Tutorial09.rc
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial09/Tutorial09_2003.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial09/Tutorial09_2003.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial09/Tutorial09_2005.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial09/Tutorial09_2005.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial09/directx.ico
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial10/Resource.h
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial10/Tutorial10.cpp
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial10/Tutorial10.fx
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial10/Tutorial10.jpg
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial10/Tutorial10.rc
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial10/Tutorial10_2003.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial10/Tutorial10_2003.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial10/Tutorial10_2005.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial10/Tutorial10_2005.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial10/directx.ico
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial11/Resource.h
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial11/Tutorial11.cpp
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial11/Tutorial11.fx
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial11/Tutorial11.jpg
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial11/Tutorial11.rc
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial11/Tutorial11_2003.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial11/Tutorial11_2003.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial11/Tutorial11_2005.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial11/Tutorial11_2005.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial11/directx.ico
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial12/Resource.h
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial12/Tutorial12.cpp
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial12/Tutorial12.fx
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial12/Tutorial12.jpg
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial12/Tutorial12.rc
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial12/Tutorial12_2003.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial12/Tutorial12_2003.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial12/Tutorial12_2005.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial12/Tutorial12_2005.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial12/directx.ico
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial13/Resource.h
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial13/Tutorial13.cpp
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial13/Tutorial13.fx
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial13/Tutorial13.jpg
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial13/Tutorial13.rc
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial13/Tutorial13_2003.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial13/Tutorial13_2003.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial13/Tutorial13_2005.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial13/Tutorial13_2005.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial13/directx.ico
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial14/Resource.h
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial14/Tutorial14.cpp
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial14/Tutorial14.fx
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial14/Tutorial14.jpg
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial14/Tutorial14.rc
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial14/Tutorial14_2003.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial14/Tutorial14_2003.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial14/Tutorial14_2005.sln
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial14/Tutorial14_2005.vcproj
+	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial14/directx.ico
+
