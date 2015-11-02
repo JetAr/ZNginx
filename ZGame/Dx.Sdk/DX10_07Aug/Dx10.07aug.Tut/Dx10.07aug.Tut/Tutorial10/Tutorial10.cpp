@@ -116,6 +116,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
 //--------------------------------------------------------------------------------------
 // Initialize the app
 //--------------------------------------------------------------------------------------
+//z 对 sampleUI 进行设置，
 void InitApp()
 {
     g_fModelPuffiness = 0.0f;
@@ -163,10 +164,13 @@ HRESULT CALLBACK OnD3D10CreateDevice( ID3D10Device* pd3dDevice, const DXGI_SURFA
 
     V_RETURN( g_DialogResourceManager.OnD3D10CreateDevice( pd3dDevice ) );
     V_RETURN( g_D3DSettingsDlg.OnD3D10CreateDevice( pd3dDevice ) );
+	//z 创建字体
     V_RETURN( D3DX10CreateFont( pd3dDevice, 15, 0, FW_BOLD, 1, FALSE, DEFAULT_CHARSET,
                                 OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE,
                                 L"Arial", &g_pFont ) );
-    V_RETURN( D3DX10CreateSprite( pd3dDevice, 512, &g_pSprite ) );
+    //z 创建 sprite
+	V_RETURN( D3DX10CreateSprite( pd3dDevice, 512, &g_pSprite ) );
+	//z 使用 font 和 sprite 来创建 texthelper 
     g_pTxtHelper = new CDXUTTextHelper( NULL, NULL, g_pFont, g_pSprite, 15 );
 
     DWORD dwShaderFlags = D3D10_SHADER_ENABLE_STRICTNESS;
@@ -227,7 +231,7 @@ HRESULT CALLBACK OnD3D10CreateDevice( ID3D10Device* pd3dDevice, const DXGI_SURFA
     return S_OK;
 }
 
-
+//z 每次在变更窗口尺寸之后都需要变更一些参数。
 //--------------------------------------------------------------------------------------
 // Create any D3D10 resources that depend on the back buffer
 //--------------------------------------------------------------------------------------
@@ -238,12 +242,14 @@ HRESULT CALLBACK OnD3D10ResizedSwapChain( ID3D10Device* pd3dDevice, IDXGISwapCha
     V_RETURN( g_DialogResourceManager.OnD3D10ResizedSwapChain( pd3dDevice, pBufferSurfaceDesc ) );
     V_RETURN( g_D3DSettingsDlg.OnD3D10ResizedSwapChain( pd3dDevice, pBufferSurfaceDesc ) );
 
+	//z 设置 camera 信息
     // Setup the camera's projection parameters
     float fAspectRatio = static_cast<float>(pBufferSurfaceDesc->Width) / static_cast<float>(pBufferSurfaceDesc->Height);
     g_Camera.SetProjParams( D3DX_PI/4, fAspectRatio, 0.1f, 5000.0f );
     g_Camera.SetWindow( pBufferSurfaceDesc->Width, pBufferSurfaceDesc->Height );
     g_Camera.SetButtonMasks( MOUSE_LEFT_BUTTON, MOUSE_WHEEL, MOUSE_MIDDLE_BUTTON );
 
+	//z 对 UI dialog 设置位置和尺寸。
     g_HUD.SetLocation( pBufferSurfaceDesc->Width-170, 0 );
     g_HUD.SetSize( 170, 170 );
     g_SampleUI.SetLocation( pBufferSurfaceDesc->Width-170, pBufferSurfaceDesc->Height-300 );
@@ -342,6 +348,7 @@ void CALLBACK OnD3D10FrameRender( ID3D10Device* pd3dDevice, double fTime, float 
 //--------------------------------------------------------------------------------------
 // Render the help and statistics text
 //--------------------------------------------------------------------------------------
+//z 渲染文件
 void RenderText()
 {
     g_pTxtHelper->Begin();

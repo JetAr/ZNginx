@@ -4579,3 +4579,16 @@ Changes not staged for commit:
 	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial14/Tutorial14_2005.vcproj
 	deleted:    ZGame/Dx.Sdk/Dx10.07aug.Tut/Tutorial14/directx.ico
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/11/02.18_15_29.27.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	modified:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial09/Tutorial09.cpp
+	modified:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial10/Tutorial10.cpp
+	modified:   ZGame/Dx.Sdk/DX10_07Aug/Dx10.07aug.Tut/Dx10.07aug.Tut/Tutorial11/Tutorial11.fx
+

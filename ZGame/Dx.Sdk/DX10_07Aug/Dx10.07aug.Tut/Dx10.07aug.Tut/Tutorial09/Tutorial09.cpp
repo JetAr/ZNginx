@@ -98,6 +98,7 @@ HRESULT CALLBACK OnD3D10CreateDevice( ID3D10Device* pd3dDevice, const DXGI_SURFA
 {
     HRESULT hr;
 
+	//z 找到特效文件
     // Find the D3DX effect file
     WCHAR str[MAX_PATH];
     V_RETURN( DXUTFindDXSDKMediaFileCch( str, MAX_PATH, L"Tutorial09.fx" ) );
@@ -109,7 +110,8 @@ HRESULT CALLBACK OnD3D10CreateDevice( ID3D10Device* pd3dDevice, const DXGI_SURFA
     // the release configuration of this program.
     dwShaderFlags |= D3D10_SHADER_DEBUG;
 #endif
-    V_RETURN( D3DX10CreateEffectFromFile( str, NULL, NULL, "fx_4_0", dwShaderFlags, 0, pd3dDevice, NULL, NULL, &g_pEffect, NULL, NULL ) );
+    //z 从文件创建 effect 。
+	V_RETURN( D3DX10CreateEffectFromFile( str, NULL, NULL, "fx_4_0", dwShaderFlags, 0, pd3dDevice, NULL, NULL, &g_pEffect, NULL, NULL ) );
 
     // Obtain the technique
     g_pTechnique = g_pEffect->GetTechniqueByName( "Render" );
