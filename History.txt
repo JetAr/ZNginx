@@ -5203,3 +5203,478 @@ Changes not staged for commit:
 	deleted:    ZGame/3dsMax/lib3ds_2_0/src/lib3ds_vector.c
 	deleted:    ZGame/3dsMax/lib3ds_2_0/src/lib3ds_viewport.c
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/11/23.19_33_28.25.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	new file:   ZGame/3dsMax/FBX/contentexporter/.gitignore
+	new file:   ZGame/3dsMax/FBX/contentexporter/ContentExporter_2012.sln
+	new file:   ZGame/3dsMax/FBX/contentexporter/ContentExporter_2013.sln
+	new file:   ZGame/3dsMax/FBX/contentexporter/ContentExporter_2015.sln
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMesh.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMesh.inl
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMeshAdjacency.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMeshClean.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMeshGSAdjacency.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMeshNormals.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMeshOptimize.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMeshP.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMeshRemap.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMeshTangentFrame.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMeshUtil.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMeshVBReader.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMeshVBWriter.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMeshValidate.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMesh_Desktop_2012.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMesh_Desktop_2012.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMesh_Desktop_2013.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMesh_Desktop_2013.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMesh_Desktop_2015.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMesh_Desktop_2015.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/MIT.txt
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/ReadMe.txt
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/scoped.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/BC.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/BC.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/BC4BC5.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/BC6HBC7.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/BCDirectCompute.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/BCDirectCompute.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DDS.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTex.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTex.inl
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTexCompress.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTexCompressGPU.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTexConvert.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTexD3D11.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTexDDS.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTexFlipRotate.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTexImage.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTexMipmaps.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTexMisc.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTexNormalMaps.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTexP.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTexPMAlpha.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTexResize.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTexTGA.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTexUtil.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTexWIC.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTex_Desktop_2012.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTex_Desktop_2012.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTex_Desktop_2013.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTex_Desktop_2013.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTex_Desktop_2015.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTex_Desktop_2015.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/Filters.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/MIT.txt
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/ReadMe.txt
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/Shaders/BC6HEncode.hlsl
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/Shaders/BC7Encode.hlsl
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/Shaders/CompileShaders.cmd
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/Shaders/Compiled/BC6HEncode_EncodeBlockCS.inc
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/Shaders/Compiled/BC6HEncode_TryModeG10CS.inc
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/Shaders/Compiled/BC6HEncode_TryModeLE10CS.inc
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/Shaders/Compiled/BC7Encode_EncodeBlockCS.inc
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/Shaders/Compiled/BC7Encode_TryMode02CS.inc
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/Shaders/Compiled/BC7Encode_TryMode137CS.inc
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/Shaders/Compiled/BC7Encode_TryMode456CS.inc
+	new file:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/scoped.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/LICENSE
+	new file:   ZGame/3dsMax/FBX/contentexporter/ReadMe.txt
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/MIT.txt
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/Readme.txt
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/UVAtlas_2012.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/UVAtlas_2012.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/UVAtlas_2013.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/UVAtlas_2013.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/UVAtlas_2015.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/UVAtlas_2015.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/geodesics/ApproximateOneToAll.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/geodesics/ApproximateOneToAll.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/geodesics/ExactOneToAll.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/geodesics/ExactOneToAll.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/geodesics/datatypes.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/geodesics/mathutils.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/geodesics/mathutils.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/geodesics/minheap.hpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/inc/UVAtlas.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/SymmetricMatrix.hpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/UVAtlas.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/UVAtlasRepacker.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/UVAtlasRepacker.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/Vis_Maxflow.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/Vis_Maxflow.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/barycentricparam.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/basemeshinfo.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/basemeshinfo.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/callbackschemer.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/graphcut.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/graphcut.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/imtcomputation.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/isochart.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/isochart.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/isochartconfig.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/isochartengine.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/isochartengine.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/isochartmesh.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/isochartmesh.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/isochartutil.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/isochartutil.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/isomap.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/isomap.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/lscmparam.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/mergecharts.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/meshapplyisomap.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/meshcommon.inl
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/meshoptimizeboundaries.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/meshoptimizestretch.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/meshpartitionchart.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/packingcharts.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/progressivemesh.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/progressivemesh.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/sparsematrix.hpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/vertiter.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/isochart/vertiter.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/maxheap.hpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/pch.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exporterglobals.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/ExportAnimation.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/ExportObjects2012.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/ExportObjects2012.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/ExportObjects2013.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/ExportObjects2013.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/ExportObjects2015.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/ExportObjects2015.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportanimation.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportbase.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportbase.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportcamera.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportcamera.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportconsoledialog.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportconsoledialog.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportdialogs.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportdialogs.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportdialogutils.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportdialogutils.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportframe.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportframe.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportlight.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportlight.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportlog.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportlog.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportmanifest.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportmanifest.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportmaterial.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportmaterial.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportmaterialdatabase.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportmaterialdatabase.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportmesh.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportmesh.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportobjects.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportpath.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportpath.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportprogress.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportprogress.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportresources.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportresources.rc
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportscene.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportscene.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportsettings.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportsettings.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportsettingsdialog.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportsettingsdialog.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportstring.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportsubd.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportsubd.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportxmlparser.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportxmlparser.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/stdafx.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/exportobjects/stdafx.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/Anim.assxml
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/Anim.fbx
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/Anim.sdkmesh
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/Anim.sdkmesh_anim
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/FBXImportMain.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/ImportFBX2012.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/ImportFBX2012.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/ImportFBX2013.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/ImportFBX2013.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/ImportFBX2015.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/ImportFBX2015.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/ParseAnimation.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/consolemain.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/contentexporter.rc
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/fbximportmain.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/parseanimation.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/parsematerial.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/parsematerial.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/parsemesh.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/parsemesh.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/parsemisc.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/parsemisc.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/stdafx.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/stdafx.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/sdkmeshfilewriter/SDKMeshFileWriter2012.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/sdkmeshfilewriter/SDKMeshFileWriter2012.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/sdkmeshfilewriter/SDKMeshFileWriter2013.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/sdkmeshfilewriter/SDKMeshFileWriter2013.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/sdkmeshfilewriter/SDKMeshFileWriter2015.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/sdkmeshfilewriter/SDKMeshFileWriter2015.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/sdkmeshfilewriter/sdkmesh.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/sdkmeshfilewriter/sdkmeshfilewriter.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/sdkmeshfilewriter/sdkmeshfilewriter.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/sdkmeshfilewriter/stdafx.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/sdkmeshfilewriter/stdafx.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/xatgfilewriter/XATGFileWriter2012.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/xatgfilewriter/XATGFileWriter2012.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/xatgfilewriter/XATGFileWriter2013.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/xatgfilewriter/XATGFileWriter2013.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/xatgfilewriter/XATGFileWriter2015.vcxproj
+	new file:   ZGame/3dsMax/FBX/contentexporter/xatgfilewriter/XATGFileWriter2015.vcxproj.filters
+	new file:   ZGame/3dsMax/FBX/contentexporter/xatgfilewriter/stdafx.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/xatgfilewriter/stdafx.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/xatgfilewriter/xatgfilewriter.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/xatgfilewriter/xatgfilewriter.h
+	new file:   ZGame/3dsMax/FBX/contentexporter/xatgfilewriter/xmlwriter.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/xatgfilewriter/xmlwriter.h
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	deleted:    ZGame/3dsMax/FBX/.gitignore
+	deleted:    ZGame/3dsMax/FBX/ContentExporter_2012.sln
+	deleted:    ZGame/3dsMax/FBX/ContentExporter_2013.sln
+	deleted:    ZGame/3dsMax/FBX/ContentExporter_2015.sln
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMesh.h
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMesh.inl
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMeshAdjacency.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMeshClean.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMeshGSAdjacency.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMeshNormals.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMeshOptimize.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMeshP.h
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMeshRemap.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMeshTangentFrame.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMeshUtil.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMeshVBReader.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMeshVBWriter.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMeshValidate.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMesh_Desktop_2012.vcxproj
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMesh_Desktop_2012.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMesh_Desktop_2013.vcxproj
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMesh_Desktop_2013.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMesh_Desktop_2015.vcxproj
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/DirectXMesh_Desktop_2015.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/MIT.txt
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/ReadMe.txt
+	deleted:    ZGame/3dsMax/FBX/DirectXMesh/scoped.h
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/BC.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/BC.h
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/BC4BC5.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/BC6HBC7.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/BCDirectCompute.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/BCDirectCompute.h
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DDS.h
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTex.h
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTex.inl
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTexCompress.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTexCompressGPU.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTexConvert.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTexD3D11.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTexDDS.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTexFlipRotate.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTexImage.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTexMipmaps.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTexMisc.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTexNormalMaps.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTexP.h
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTexPMAlpha.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTexResize.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTexTGA.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTexUtil.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTexWIC.cpp
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTex_Desktop_2012.vcxproj
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTex_Desktop_2012.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTex_Desktop_2013.vcxproj
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTex_Desktop_2013.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTex_Desktop_2015.vcxproj
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/DirectXTex_Desktop_2015.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/Filters.h
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/MIT.txt
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/ReadMe.txt
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/Shaders/BC6HEncode.hlsl
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/Shaders/BC7Encode.hlsl
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/Shaders/CompileShaders.cmd
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/Shaders/Compiled/BC6HEncode_EncodeBlockCS.inc
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/Shaders/Compiled/BC6HEncode_TryModeG10CS.inc
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/Shaders/Compiled/BC6HEncode_TryModeLE10CS.inc
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/Shaders/Compiled/BC7Encode_EncodeBlockCS.inc
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/Shaders/Compiled/BC7Encode_TryMode02CS.inc
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/Shaders/Compiled/BC7Encode_TryMode137CS.inc
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/Shaders/Compiled/BC7Encode_TryMode456CS.inc
+	deleted:    ZGame/3dsMax/FBX/DirectXTex/scoped.h
+	deleted:    ZGame/3dsMax/FBX/LICENSE
+	deleted:    ZGame/3dsMax/FBX/ReadMe.txt
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/MIT.txt
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/Readme.txt
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/UVAtlas_2012.vcxproj
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/UVAtlas_2012.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/UVAtlas_2013.vcxproj
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/UVAtlas_2013.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/UVAtlas_2015.vcxproj
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/UVAtlas_2015.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/geodesics/ApproximateOneToAll.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/geodesics/ApproximateOneToAll.h
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/geodesics/ExactOneToAll.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/geodesics/ExactOneToAll.h
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/geodesics/datatypes.h
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/geodesics/mathutils.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/geodesics/mathutils.h
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/geodesics/minheap.hpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/inc/UVAtlas.h
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/SymmetricMatrix.hpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/UVAtlas.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/UVAtlasRepacker.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/UVAtlasRepacker.h
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/Vis_Maxflow.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/Vis_Maxflow.h
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/barycentricparam.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/basemeshinfo.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/basemeshinfo.h
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/callbackschemer.h
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/graphcut.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/graphcut.h
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/imtcomputation.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/isochart.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/isochart.h
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/isochartconfig.h
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/isochartengine.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/isochartengine.h
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/isochartmesh.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/isochartmesh.h
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/isochartutil.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/isochartutil.h
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/isomap.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/isomap.h
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/lscmparam.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/mergecharts.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/meshapplyisomap.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/meshcommon.inl
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/meshoptimizeboundaries.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/meshoptimizestretch.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/meshpartitionchart.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/packingcharts.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/progressivemesh.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/progressivemesh.h
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/sparsematrix.hpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/vertiter.cpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/isochart/vertiter.h
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/maxheap.hpp
+	deleted:    ZGame/3dsMax/FBX/UVAtlas/pch.h
+	deleted:    ZGame/3dsMax/FBX/exporterglobals.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/ExportAnimation.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/ExportObjects2012.vcxproj
+	deleted:    ZGame/3dsMax/FBX/exportobjects/ExportObjects2012.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/exportobjects/ExportObjects2013.vcxproj
+	deleted:    ZGame/3dsMax/FBX/exportobjects/ExportObjects2013.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/exportobjects/ExportObjects2015.vcxproj
+	deleted:    ZGame/3dsMax/FBX/exportobjects/ExportObjects2015.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportanimation.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportbase.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportbase.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportcamera.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportcamera.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportconsoledialog.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportconsoledialog.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportdialogs.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportdialogs.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportdialogutils.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportdialogutils.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportframe.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportframe.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportlight.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportlight.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportlog.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportlog.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportmanifest.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportmanifest.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportmaterial.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportmaterial.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportmaterialdatabase.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportmaterialdatabase.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportmesh.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportmesh.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportobjects.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportpath.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportpath.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportprogress.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportprogress.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportresources.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportresources.rc
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportscene.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportscene.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportsettings.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportsettings.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportsettingsdialog.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportsettingsdialog.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportstring.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportsubd.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportsubd.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportxmlparser.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/exportxmlparser.h
+	deleted:    ZGame/3dsMax/FBX/exportobjects/stdafx.cpp
+	deleted:    ZGame/3dsMax/FBX/exportobjects/stdafx.h
+	deleted:    ZGame/3dsMax/FBX/importfbx/Anim.assxml
+	deleted:    ZGame/3dsMax/FBX/importfbx/Anim.fbx
+	deleted:    ZGame/3dsMax/FBX/importfbx/Anim.sdkmesh
+	deleted:    ZGame/3dsMax/FBX/importfbx/Anim.sdkmesh_anim
+	deleted:    ZGame/3dsMax/FBX/importfbx/FBXImportMain.cpp
+	deleted:    ZGame/3dsMax/FBX/importfbx/ImportFBX2012.vcxproj
+	deleted:    ZGame/3dsMax/FBX/importfbx/ImportFBX2012.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/importfbx/ImportFBX2013.vcxproj
+	deleted:    ZGame/3dsMax/FBX/importfbx/ImportFBX2013.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/importfbx/ImportFBX2015.vcxproj
+	deleted:    ZGame/3dsMax/FBX/importfbx/ImportFBX2015.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/importfbx/ParseAnimation.cpp
+	deleted:    ZGame/3dsMax/FBX/importfbx/consolemain.cpp
+	deleted:    ZGame/3dsMax/FBX/importfbx/contentexporter.rc
+	deleted:    ZGame/3dsMax/FBX/importfbx/fbximportmain.h
+	deleted:    ZGame/3dsMax/FBX/importfbx/parseanimation.h
+	deleted:    ZGame/3dsMax/FBX/importfbx/parsematerial.cpp
+	deleted:    ZGame/3dsMax/FBX/importfbx/parsematerial.h
+	deleted:    ZGame/3dsMax/FBX/importfbx/parsemesh.cpp
+	deleted:    ZGame/3dsMax/FBX/importfbx/parsemesh.h
+	deleted:    ZGame/3dsMax/FBX/importfbx/parsemisc.cpp
+	deleted:    ZGame/3dsMax/FBX/importfbx/parsemisc.h
+	deleted:    ZGame/3dsMax/FBX/importfbx/stdafx.cpp
+	deleted:    ZGame/3dsMax/FBX/importfbx/stdafx.h
+	deleted:    ZGame/3dsMax/FBX/sdkmeshfilewriter/SDKMeshFileWriter2012.vcxproj
+	deleted:    ZGame/3dsMax/FBX/sdkmeshfilewriter/SDKMeshFileWriter2012.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/sdkmeshfilewriter/SDKMeshFileWriter2013.vcxproj
+	deleted:    ZGame/3dsMax/FBX/sdkmeshfilewriter/SDKMeshFileWriter2013.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/sdkmeshfilewriter/SDKMeshFileWriter2015.vcxproj
+	deleted:    ZGame/3dsMax/FBX/sdkmeshfilewriter/SDKMeshFileWriter2015.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/sdkmeshfilewriter/sdkmesh.h
+	deleted:    ZGame/3dsMax/FBX/sdkmeshfilewriter/sdkmeshfilewriter.cpp
+	deleted:    ZGame/3dsMax/FBX/sdkmeshfilewriter/sdkmeshfilewriter.h
+	deleted:    ZGame/3dsMax/FBX/sdkmeshfilewriter/stdafx.cpp
+	deleted:    ZGame/3dsMax/FBX/sdkmeshfilewriter/stdafx.h
+	deleted:    ZGame/3dsMax/FBX/xatgfilewriter/XATGFileWriter2012.vcxproj
+	deleted:    ZGame/3dsMax/FBX/xatgfilewriter/XATGFileWriter2012.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/xatgfilewriter/XATGFileWriter2013.vcxproj
+	deleted:    ZGame/3dsMax/FBX/xatgfilewriter/XATGFileWriter2013.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/xatgfilewriter/XATGFileWriter2015.vcxproj
+	deleted:    ZGame/3dsMax/FBX/xatgfilewriter/XATGFileWriter2015.vcxproj.filters
+	deleted:    ZGame/3dsMax/FBX/xatgfilewriter/stdafx.cpp
+	deleted:    ZGame/3dsMax/FBX/xatgfilewriter/stdafx.h
+	deleted:    ZGame/3dsMax/FBX/xatgfilewriter/xatgfilewriter.cpp
+	deleted:    ZGame/3dsMax/FBX/xatgfilewriter/xatgfilewriter.h
+	deleted:    ZGame/3dsMax/FBX/xatgfilewriter/xmlwriter.cpp
+	deleted:    ZGame/3dsMax/FBX/xatgfilewriter/xmlwriter.h
+
