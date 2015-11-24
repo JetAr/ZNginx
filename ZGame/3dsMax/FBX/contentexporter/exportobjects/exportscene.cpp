@@ -93,12 +93,16 @@ ExportScene::~ExportScene()
     }
 }
 
+//z 添加 Export Animation 到 Export Scene 
 bool ExportScene::AddAnimation( ExportAnimation* pAnimation )
 {
+	//z 指针是否为空，为NULL返回
     if( !pAnimation )
         return false;
+	//z 查找是否已经存在了。如果已存在，返回
     if( FindAnimation( pAnimation->GetName() ) )
         return false;
+	//z 否则加入到 vector 中去
     m_vAnimations.push_back( pAnimation );
     return true;
 }

@@ -149,44 +149,57 @@ void CaptureAnimation( ScanList& scanlist, ExportAnimation* pAnim, FbxScene* pFb
     }
 }
 
+//z strAnimStackName 待解析 anim stack 名称
 void ParseAnimStack( FbxScene* pFbxScene, FbxString* strAnimStackName )
 {
     // TODO - Ignore "Default"? FBXSDK_TAKENODE_DEFAULT_NAME
-
+	//z 得到 找到对应的 anim stack ，查找类型为 FbxAnimStack 
     auto curAnimStack = pFbxScene->FindMember<FbxAnimStack>( strAnimStackName->Buffer() );
     if ( !curAnimStack )
         return;
 
+	//z 处理不同版本 sdk 调用，如果 FBX SDK 版本 为 2014 并且 minor > 1 
 #if (FBXSDK_VERSION_MAJOR > 2014 || ((FBXSDK_VERSION_MAJOR==2014) && (FBXSDK_VERSION_MINOR>1) ) )
-    pFbxScene->GetAnimationEvaluator()->Reset();
+    //z reset evaluator
+	pFbxScene->GetAnimationEvaluator()->Reset();
 #else
     pFbxScene->GetEvaluator()->SetContext( curAnimStack );
 #endif
 
+	//z 得到 take info ； Get information about an animation stack
     auto pTakeInfo = pFbxScene->GetTakeInfo( *strAnimStackName  );
 
     ExportLog::LogMsg( 2, "Parsing animation \"%s\"", strAnimStackName->Buffer() );
 
     auto pAnim = new ExportAnimation();
+	//z 设置为 anim stack name
     pAnim->SetName( strAnimStackName->Buffer() );
+	//? 暂时不清楚这个 dcobject 是做啥用的
     pAnim->SetDCCObject( pTakeInfo );
     g_pScene->AddAnimation( pAnim );
 
     FbxTime FrameTime;
+	//z void SetTime(int pHour, int pMinute, int pSecond, int pFrame=0, int pField=0, EMode pTimeMode=eDefaultMode);
+	//z 根据 global settings 得到 time mode ；
     FrameTime.SetTime( 0, 0, 0, 1, 0, pFbxScene->GetGlobalSettings().GetTimeMode() );
 
+	//z 根据模式和帧，得到每帧时间？FrameTime 已经设置为 1 帧，然后得到其所占用的秒的时间。
     float fFrameTime = (float)FrameTime.GetSecondDouble();
+	//z 每帧 anim sample 的数目。得到每个 sample 的时间。
     float fSampleTime = fFrameTime / (float)g_pScene->Settings().iAnimSampleCountPerFrame;
     assert( fSampleTime > 0 );
 
     float fStartTime, fEndTime;
-    if( pTakeInfo )
+	if( pTakeInfo )
     {
+		//z mLocalTimeSpan : Local time span, set to animation interval if it is left at the default value.
+		//z 得到时间周期。
         fStartTime = (float)pTakeInfo->mLocalTimeSpan.GetStart().GetSecondDouble();
         fEndTime = (float)pTakeInfo->mLocalTimeSpan.GetStop().GetSecondDouble();
     }
     else
     {
+		//z 没有 takeinfo ，采用默认设置。
         FbxTimeSpan tlTimeSpan;
         pFbxScene->GetGlobalSettings().GetTimelineDefaultTimeSpan( tlTimeSpan );
 
@@ -196,17 +209,22 @@ void ParseAnimStack( FbxScene* pFbxScene, FbxString* strAnimStackName )
         ExportLog::LogWarning( "Animation take \"%s\" has no takeinfo; using defaults.", pAnim->GetName().SafeString() );
     }
 
+	//z 设置起讫时间
     pAnim->fStartTime = fStartTime;
     pAnim->fEndTime = fEndTime;
+	//z 每个 frame 多少时间
     pAnim->fSourceFrameInterval = fFrameTime;
+	//z 每个 anim sample 多长时间；一个 frame 里面可能渲染多个 sample ？
     pAnim->fSourceSamplingInterval = fSampleTime;
 
+	//z 是否包含了所有的节点；如果 strAnimationRootNodeName 为空，那么不包含所有 nodes 。
     bool bIncludeAllNodes = true;
     if( strlen( g_pScene->Settings().strAnimationRootNodeName ) > 0 )
     {
         bIncludeAllNodes = false;
     }
 
+	//z 扫描节点
     ScanList scanlist;
     ParseNode( pFbxScene->GetRootNode(), scanlist, 0, -1, bIncludeAllNodes );
 
@@ -232,14 +250,18 @@ void ParseAnimation( FbxScene* pFbxScene )
     assert( pFbxScene != nullptr );
 
     // set animation quality settings
+	//z 设置精度？公差
     ExportAnimation::SetAnimationExportQuality( g_pScene->Settings().iAnimPositionExportQuality, g_pScene->Settings().iAnimOrientationExportQuality, 50 );
 
     FbxArray<FbxString*> AnimStackNameArray;
+	//z 得到所有 anim stack name 。填充 anim stack name array
     pFbxScene->FillAnimStackNameArray( AnimStackNameArray );
 
+	//z 得到其长度
     DWORD dwAnimStackCount = static_cast<DWORD>( AnimStackNameArray.GetCount() );
     for( DWORD i = 0; i < dwAnimStackCount; ++i )
     {
+		//z 解析所有的 anim stack
         ParseAnimStack( pFbxScene, AnimStackNameArray.GetAt(i) );
     }
 }
