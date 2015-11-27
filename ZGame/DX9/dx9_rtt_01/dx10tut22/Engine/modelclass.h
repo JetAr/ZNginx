@@ -24,6 +24,7 @@ using namespace std;
 class ModelClass
 {
 private:
+    //z 顶点数据
 	struct VertexType
 	{
 		D3DXVECTOR3 position;

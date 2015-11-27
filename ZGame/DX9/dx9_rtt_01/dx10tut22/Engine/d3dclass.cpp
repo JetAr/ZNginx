@@ -51,12 +51,15 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	m_vsync_enabled = vsync;
 
 	// Create a DirectX graphics interface factory.
+    //z 创建 graphics interface factory。
 	result = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
 	if(FAILED(result))
 	{
 		return false;
 	}
 
+    //z 使用 factory 来创建 primary graphics interface。
+    //z 第一张显卡
 	// Use the factory to create an adapter for the primary graphics interface (video card).
 	result = factory->EnumAdapters(0, &adapter);
 	if(FAILED(result))
@@ -64,6 +67,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 		return false;
 	}
 
+    //z 卡0输出0 
 	// Enumerate the primary adapter output (monitor).
 	result = adapter->EnumOutputs(0, &adapterOutput);
 	if(FAILED(result))
@@ -71,6 +75,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 		return false;
 	}
 
+    //z 得到得到适配显示格式的模式数量
 	// Get the number of modes that fit the DXGI_FORMAT_R8G8B8A8_UNORM display format for the adapter output (monitor).
 	result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, NULL);
 	if(FAILED(result))
@@ -122,6 +127,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	factory->Release();
 	factory = 0;
 
+    //z 创建 swap chain 
 	// Initialize the swap chain description.
     ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
 
@@ -147,9 +153,11 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 		swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
 	}
 
+    //z 设置 back buffer 的 usage
 	// Set the usage of the back buffer.
     swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 
+    //z 渲染到的哪个窗口
 	// Set the handle for the window to render to.
     swapChainDesc.OutputWindow = hwnd;
 
@@ -164,6 +172,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	}
 	else
 	{
+        //z 窗口模式
 		swapChainDesc.Windowed = true;
 	}
 
@@ -172,12 +181,14 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 
 	// Discard the back buffer contents after presenting.
+    //z 在呈现之后忽略 back buffer contents。
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 
 	// Don't set the advanced flags.
 	swapChainDesc.Flags = 0;
 
 	// Create the swap chain and the Direct3D device.
+    //z 创建 swap chain
 	result = D3D10CreateDeviceAndSwapChain(NULL, D3D10_DRIVER_TYPE_HARDWARE, NULL, 0, D3D10_SDK_VERSION, 
 										   &swapChainDesc, &m_swapChain, &m_device);
 	if(FAILED(result))
@@ -193,6 +204,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	}
 
 	// Create the render target view with the back buffer pointer.
+    //z 根据 back buffer pointer 创建 render target view 。
 	result = m_device->CreateRenderTargetView(backBufferPtr, NULL, &m_renderTargetView);
 	if(FAILED(result))
 	{
@@ -219,6 +231,7 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
 	depthBufferDesc.CPUAccessFlags = 0;
 	depthBufferDesc.MiscFlags = 0;
 
+    //z 使用填充的 desc 创建一个 texture 。
 	// Create the texture for the depth buffer using the filled out description.
 	result = m_device->CreateTexture2D(&depthBufferDesc, NULL, &m_depthStencilBuffer);
 	if(FAILED(result))
@@ -309,24 +322,30 @@ bool D3DClass::Initialize(int screenWidth, int screenHeight, bool vsync, HWND hw
     viewport.TopLeftY = 0;
 
 	// Create the viewport.
+    //z 创建 view port 。
     m_device->RSSetViewports(1, &viewport);
 
 	// Setup the projection matrix.
 	fieldOfView = (float)D3DX_PI / 4.0f;
+    //z 屏幕比例
 	screenAspect = (float)screenWidth / (float)screenHeight;
 
+    //z 创建 projection matrix 。
 	// Create the projection matrix for 3D rendering.
 	D3DXMatrixPerspectiveFovLH(&m_projectionMatrix, fieldOfView, screenAspect, screenNear, screenDepth);
 
     // Initialize the world matrix to the identity matrix.
+    //z 创建 world matrix 
     D3DXMatrixIdentity(&m_worldMatrix);
 
 	// Create an orthographic projection matrix for 2D rendering.
+    //z 创建 orthographic projection matrix 。
 	D3DXMatrixOrthoLH(&m_orthoMatrix, (float)screenWidth, (float)screenHeight, screenNear, screenDepth);
 
 	// Clear the second depth stencil state before setting the parameters.
 	ZeroMemory(&depthDisabledStencilDesc, sizeof(depthDisabledStencilDesc));
 
+    //z 创建另一个 depth stencil state 。
 	// Now create a second depth stencil state which turns off the Z buffer for 2D rendering.  The only difference is 
 	// that DepthEnable is set to false, all other parameters are the same as the other depth stencil state.
 	depthDisabledStencilDesc.DepthEnable = false;

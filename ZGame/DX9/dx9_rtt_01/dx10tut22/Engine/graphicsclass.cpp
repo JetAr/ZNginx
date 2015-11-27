@@ -40,6 +40,11 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Initialize the Direct3D object.
+    //z 指定屏幕宽和高
+    //z 是否启用 vsync
+    //z 窗口句柄
+    //z 是否全屏
+    //z 景深，近点和远点
 	result = m_D3D->Initialize(screenWidth, screenHeight, VSYNC_ENABLED, hwnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
 	if(!result)
 	{

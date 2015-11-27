@@ -62,7 +62,6 @@ bool DebugWindowClass::Render(ID3D10Device* device, int positionX, int positionY
 {
 	bool result;
 
-
 	// Re-build the dynamic vertex buffer for rendering to possibly a different location on the screen.
 	result = UpdateBuffers(positionX, positionY);
 	if(!result)
@@ -82,7 +81,7 @@ int DebugWindowClass::GetIndexCount()
 	return m_indexCount;
 }
 
-
+//z 创建的这个 vertex buffer 以及 index buffer 用于何处？
 bool DebugWindowClass::InitializeBuffers(ID3D10Device* device)
 {
 	VertexType* vertices;
@@ -91,7 +90,6 @@ bool DebugWindowClass::InitializeBuffers(ID3D10Device* device)
     D3D10_SUBRESOURCE_DATA vertexData, indexData;
 	HRESULT result;
 	int i;
-
 
 	// Set the number of vertices in the vertex array.
 	m_vertexCount = 6;
@@ -166,7 +164,6 @@ bool DebugWindowClass::InitializeBuffers(ID3D10Device* device)
 	return true;
 }
 
-
 void DebugWindowClass::ShutdownBuffers()
 {
 	// Release the index buffer.
@@ -186,14 +183,12 @@ void DebugWindowClass::ShutdownBuffers()
 	return;
 }
 
-
 bool DebugWindowClass::UpdateBuffers(int positionX, int positionY)
 {
 	float left, right, top, bottom;
 	VertexType* vertices;
 	void* verticesPtr;
 	HRESULT result;
-
 
 	// If the position we are rendering this bitmap to has not changed then don't update the vertex buffer since it
 	// currently has the correct parameters.
@@ -269,17 +264,15 @@ bool DebugWindowClass::UpdateBuffers(int positionX, int positionY)
 	return true;
 }
 
-
 void DebugWindowClass::RenderBuffers(ID3D10Device* device)
 {
 	unsigned int stride;
 	unsigned int offset;
 
-
 	// Set vertex buffer stride and offset.
     stride = sizeof(VertexType); 
 	offset = 0;
-    
+
 	// Set the vertex buffer to active in the input assembler so it can be rendered.
 	device->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 

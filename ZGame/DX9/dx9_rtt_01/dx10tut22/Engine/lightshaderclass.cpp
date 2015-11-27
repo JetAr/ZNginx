@@ -81,6 +81,7 @@ bool LightShaderClass::InitializeShader(ID3D10Device* device, HWND hwnd, WCHAR* 
 	// Initialize the error message.
 	errorMessage = 0;
 
+    //z 从文件创建 shader 。
 	// Load the shader in from the file.
 	result = D3DX10CreateEffectFromFile(filename, NULL, NULL, "fx_4_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, 
 										device, NULL, NULL, &m_effect, &errorMessage, NULL);
@@ -107,7 +108,9 @@ bool LightShaderClass::InitializeShader(ID3D10Device* device, HWND hwnd, WCHAR* 
 		return false;
 	}
 
+    //z 描述将进入 shader 的数据的布局
 	// Now setup the layout of the data that goes into the shader.
+    //z 需要适配 modelclass 的顶点格式定义
 	// This setup needs to match the VertexType stucture in the ModelClass and in the shader.
 	polygonLayout[0].SemanticName = "POSITION";
 	polygonLayout[0].SemanticIndex = 0;
@@ -136,6 +139,7 @@ bool LightShaderClass::InitializeShader(ID3D10Device* device, HWND hwnd, WCHAR* 
 	// Get a count of the elements in the layout.
     numElements = sizeof(polygonLayout) / sizeof(polygonLayout[0]);
 
+    //z 得到 shader technique 中第一个 pass 所需的 description 。
 	// Get the description of the first pass described in the shader technique.
     m_technique->GetPassByIndex(0)->GetDesc(&passDesc);
 

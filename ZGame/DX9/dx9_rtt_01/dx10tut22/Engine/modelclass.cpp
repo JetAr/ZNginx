@@ -88,7 +88,7 @@ ID3D10ShaderResourceView* ModelClass::GetTexture()
 	return m_Texture->GetTexture();
 }
 
-
+//z 读入模型 vertex data 之后
 bool ModelClass::InitializeBuffers(ID3D10Device* device)
 {
 	VertexType* vertices;
@@ -98,7 +98,6 @@ bool ModelClass::InitializeBuffers(ID3D10Device* device)
 	HRESULT result;
 	int i;
 
-	
 	// Create the vertex array.
 	vertices = new VertexType[m_vertexCount];
 	if(!vertices)
@@ -123,9 +122,11 @@ bool ModelClass::InitializeBuffers(ID3D10Device* device)
 		indices[i] = i;
 	}
 
+    //z 设立 vertex buffer 的 desc 。
 	// Set up the description of the vertex buffer.
     vertexBufferDesc.Usage = D3D10_USAGE_DEFAULT;
     vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
+    //z 绑定的 vertex buffer。
     vertexBufferDesc.BindFlags = D3D10_BIND_VERTEX_BUFFER;
     vertexBufferDesc.CPUAccessFlags = 0;
     vertexBufferDesc.MiscFlags = 0;
@@ -133,6 +134,7 @@ bool ModelClass::InitializeBuffers(ID3D10Device* device)
 	// Give the subresource structure a pointer to the vertex data.
     vertexData.pSysMem = vertices;
 
+    //z 根据 desc 创建 vertex buffer 。
 	// Now finally create the vertex buffer.
     result = device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
 	if(FAILED(result))
@@ -158,6 +160,7 @@ bool ModelClass::InitializeBuffers(ID3D10Device* device)
 	}
 
 	// Release the arrays now that the vertex and index buffers have been created and loaded.
+    //z 创建 vertex buffer 以及 index buffer ，原来的 vertices 以及 indices 就可以删除了。
 	delete [] vertices;
 	vertices = 0;
 
@@ -223,6 +226,7 @@ bool ModelClass::LoadTexture(ID3D10Device* device, WCHAR* filename)
 	}
 
 	// Initialize the texture object.
+    //z 初始化 纹理 对象
 	result = m_Texture->Initialize(device, filename);
 	if(!result)
 	{
@@ -291,6 +295,7 @@ bool ModelClass::LoadModel(char* filename)
 	fin.get(input);
 
 	// Read in the vertex data.
+    //z 读入 vertex data 。
 	for(i=0; i<m_vertexCount; i++)
 	{
 		fin >> m_model[i].x >> m_model[i].y >> m_model[i].z;

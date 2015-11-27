@@ -41,10 +41,12 @@ bool RenderTextureClass::Initialize(ID3D10Device* device, int textureWidth, int 
 	textureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 	textureDesc.SampleDesc.Count = 1;
 	textureDesc.Usage = D3D10_USAGE_DEFAULT;
+    //z 在这里设置为 render target 。
 	textureDesc.BindFlags = D3D10_BIND_RENDER_TARGET | D3D10_BIND_SHADER_RESOURCE;
 	textureDesc.CPUAccessFlags = 0;
     textureDesc.MiscFlags = 0;
 
+    //z 根据 desc 创建 render target texture 。
 	// Create the render target texture.
 	result = device->CreateTexture2D(&textureDesc, NULL, &m_renderTargetTexture);
 	if(FAILED(result))
@@ -57,6 +59,7 @@ bool RenderTextureClass::Initialize(ID3D10Device* device, int textureWidth, int 
 	renderTargetViewDesc.ViewDimension = D3D10_RTV_DIMENSION_TEXTURE2D;
 	renderTargetViewDesc.Texture2D.MipSlice = 0;
 
+    //z 根据 render target view desc 创建 target view 。
 	// Create the render target view.
 	result = device->CreateRenderTargetView(m_renderTargetTexture, &renderTargetViewDesc, &m_renderTargetView);
 	if(FAILED(result))
@@ -64,6 +67,7 @@ bool RenderTextureClass::Initialize(ID3D10Device* device, int textureWidth, int 
 		return false;
 	}
 
+    //z 创建 shader resource view 。
 	// Setup the description of the shader resource view.
 	shaderResourceViewDesc.Format = textureDesc.Format;
 	shaderResourceViewDesc.ViewDimension = D3D10_SRV_DIMENSION_TEXTURE2D;
