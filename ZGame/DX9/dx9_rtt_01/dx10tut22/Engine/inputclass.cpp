@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // Filename: inputclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
 #include "inputclass.h"
@@ -156,11 +156,9 @@ bool InputClass::Frame()
 	return true;
 }
 
-
 bool InputClass::ReadKeyboard()
 {
 	HRESULT result;
-
 
 	// Read the keyboard device.
 	result = m_keyboard->GetDeviceState(sizeof(m_keyboardState), (LPVOID)&m_keyboardState);
@@ -180,11 +178,9 @@ bool InputClass::ReadKeyboard()
 	return true;
 }
 
-
 bool InputClass::ReadMouse()
 {
 	HRESULT result;
-
 
 	// Read the mouse device.
 	result = m_mouse->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)&m_mouseState);
@@ -207,6 +203,7 @@ bool InputClass::ReadMouse()
 
 void InputClass::ProcessInput()
 {
+    //z 只是更新了对鼠标的控制
 	// Update the location of the mouse cursor based on the change of the mouse location during the frame.
 	m_mouseX += m_mouseState.lX;
 	m_mouseY += m_mouseState.lY;

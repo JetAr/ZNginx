@@ -5744,3 +5744,39 @@ Changes to be committed:
 	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/textureshaderclass.cpp
 	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/textureshaderclass.h
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+rtt.2015/11/27.11_43_25.47.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/Engine.vcproj
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/cameraclass.cpp
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/cameraclass.h
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/d3dclass.cpp
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/d3dclass.h
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/debugwindowclass.cpp
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/debugwindowclass.h
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/graphicsclass.cpp
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/graphicsclass.h
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/inputclass.cpp
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/inputclass.h
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/lightclass.cpp
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/lightclass.h
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/lightshaderclass.cpp
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/lightshaderclass.h
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/main.cpp
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/modelclass.cpp
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/modelclass.h
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/rendertextureclass.cpp
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/rendertextureclass.h
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/systemclass.cpp
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/systemclass.h
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/textureclass.cpp
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/textureclass.h
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/textureshaderclass.cpp
+	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/textureshaderclass.h
+
