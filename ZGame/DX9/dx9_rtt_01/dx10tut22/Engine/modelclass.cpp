@@ -210,11 +210,10 @@ void ModelClass::RenderBuffers(ID3D10Device* device)
 	return;
 }
 
-
+//z 从文件载入 texture 。
 bool ModelClass::LoadTexture(ID3D10Device* device, WCHAR* filename)
 {
 	bool result;
-
 
 	// Create the texture object.
 	m_Texture = new TextureClass;
