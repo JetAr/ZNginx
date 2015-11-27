@@ -5701,3 +5701,46 @@ Changes to be committed:
 	modified:   Doc/K/T.2015.BugFree.cs
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/11/27.10_55_53.85.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	new file:   ZGame/DX9/dx9_rtt_01/RendertoTexture_DynamicScene.exe
+	new file:   ZGame/DX9/dx9_rtt_01/ZeadMe.txt
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine.sln
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/Engine.vcproj
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/cameraclass.cpp
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/cameraclass.h
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/d3dclass.cpp
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/d3dclass.h
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/data/cube.txt
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/data/seafloor.dds
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/debugwindowclass.cpp
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/debugwindowclass.h
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/graphicsclass.cpp
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/graphicsclass.h
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/inputclass.cpp
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/inputclass.h
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/light.fx
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/lightclass.cpp
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/lightclass.h
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/lightshaderclass.cpp
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/lightshaderclass.h
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/main.cpp
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/modelclass.cpp
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/modelclass.h
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/rendertextureclass.cpp
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/rendertextureclass.h
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/systemclass.cpp
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/systemclass.h
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/texture.fx
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/textureclass.cpp
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/textureclass.h
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/textureshaderclass.cpp
+	new file:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/textureshaderclass.h
+
