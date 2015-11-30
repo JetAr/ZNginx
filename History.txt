@@ -5811,3 +5811,14 @@ Changes to be committed:
 	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/systemclass.cpp
 	modified:   ZGame/DX9/dx9_rtt_01/dx10tut22/Engine/textureclass.cpp
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/11/30.09_24_07.71.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Doc/K/T.2015.pXr.cs
+	modified:   History.txt
+
