@@ -31,6 +31,7 @@ struct AnimationScanNode
 
 typedef std::vector<AnimationScanNode> ScanList;
 
+//z 扫描一遍树节点，保存了父子关系等。
 void ParseNode( FbxNode* pNode, ScanList& scanlist, DWORD dwFlags, INT iParentIndex, bool bIncludeNode )
 {
     INT iCurrentIndex = iParentIndex;
@@ -174,7 +175,7 @@ void ParseAnimStack( FbxScene* pFbxScene, FbxString* strAnimStackName )
     auto pAnim = new ExportAnimation();
 	//z 设置为 anim stack name
     pAnim->SetName( strAnimStackName->Buffer() );
-	//? 暂时不清楚这个 dcobject 是做啥用的
+	//? 暂时不清楚这个 dcobject 是做啥用的， pTakeInfo 是属于 fbx 的数据。
     pAnim->SetDCCObject( pTakeInfo );
     g_pScene->AddAnimation( pAnim );
 
@@ -185,7 +186,7 @@ void ParseAnimStack( FbxScene* pFbxScene, FbxString* strAnimStackName )
 
 	//z 根据模式和帧，得到每帧时间？FrameTime 已经设置为 1 帧，然后得到其所占用的秒的时间。
     float fFrameTime = (float)FrameTime.GetSecondDouble();
-	//z 每帧 anim sample 的数目。得到每个 sample 的时间。
+	//z 每帧 anim sample 的数目。得到每个 sample 的时间。默认30 frames/s，每一帧有一个 sample。
     float fSampleTime = fFrameTime / (float)g_pScene->Settings().iAnimSampleCountPerFrame;
     assert( fSampleTime > 0 );
 
@@ -193,7 +194,7 @@ void ParseAnimStack( FbxScene* pFbxScene, FbxString* strAnimStackName )
 	if( pTakeInfo )
     {
 		//z mLocalTimeSpan : Local time span, set to animation interval if it is left at the default value.
-		//z 得到时间周期。
+		//z 得到时间周期。0s--1s
         fStartTime = (float)pTakeInfo->mLocalTimeSpan.GetStart().GetSecondDouble();
         fEndTime = (float)pTakeInfo->mLocalTimeSpan.GetStop().GetSecondDouble();
     }
@@ -226,6 +227,8 @@ void ParseAnimStack( FbxScene* pFbxScene, FbxString* strAnimStackName )
 
 	//z 扫描节点
     ScanList scanlist;
+	//z void ParseNode(FbxNode* pNode, ScanList& scanlist, DWORD dwFlags, INT iParentIndex, bool bIncludeNode)
+	//z 解析节点，
     ParseNode( pFbxScene->GetRootNode(), scanlist, 0, -1, bIncludeAllNodes );
 
     size_t dwTrackCount = scanlist.size();
@@ -254,6 +257,7 @@ void ParseAnimation( FbxScene* pFbxScene )
     ExportAnimation::SetAnimationExportQuality( g_pScene->Settings().iAnimPositionExportQuality, g_pScene->Settings().iAnimOrientationExportQuality, 50 );
 
     FbxArray<FbxString*> AnimStackNameArray;
+	//z 这里的 stack 相当于组
 	//z 得到所有 anim stack name 。填充 anim stack name array
     pFbxScene->FillAnimStackNameArray( AnimStackNameArray );
 

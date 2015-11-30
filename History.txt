@@ -5822,3 +5822,18 @@ Changes to be committed:
 	modified:   Doc/K/T.2015.pXr.cs
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/11/30.18_44_05.14.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	modified:   ZGame/3dsMax/FBX/contentexporter/DirectXMesh/DirectXMesh_Desktop_2013.vcxproj
+	modified:   ZGame/3dsMax/FBX/contentexporter/DirectXTex/DirectXTex_Desktop_2013.vcxproj
+	modified:   ZGame/3dsMax/FBX/contentexporter/UVAtlas/UVAtlas_2013.vcxproj
+	modified:   ZGame/3dsMax/FBX/contentexporter/importfbx/ParseAnimation.cpp
+	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/humanoid.fbx
+
