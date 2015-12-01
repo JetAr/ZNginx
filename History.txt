@@ -5850,3 +5850,114 @@ Changes to be committed:
 	modified:   ZGame/3dsMax/FBX/contentexporter/importfbx/FBXImportMain.cpp
 	modified:   ZGame/3dsMax/FBX/contentexporter/importfbx/ImportFBX2015.vcxproj
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/12/01.19_37_14.51.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	new file:   ZGame/3dsMax/FBX/fbx-conv/.gitignore
+	new file:   ZGame/3dsMax/FBX/fbx-conv/AUTHORS
+	new file:   ZGame/3dsMax/FBX/fbx-conv/CC-LICENSE
+	new file:   ZGame/3dsMax/FBX/fbx-conv/CHANGES
+	new file:   ZGame/3dsMax/FBX/fbx-conv/LICENSE
+	new file:   ZGame/3dsMax/FBX/fbx-conv/README.md
+	new file:   ZGame/3dsMax/FBX/fbx-conv/generate_makefile
+	new file:   ZGame/3dsMax/FBX/fbx-conv/generate_vs2010.bat
+	new file:   ZGame/3dsMax/FBX/fbx-conv/generate_xcode
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/libpng/LICENSE.txt
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/libpng/include/png.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/libpng/include/pngconf.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/libpng/include/pngpriv.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/libpng/lib/windows/x64/libpng14.lib
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/libpng/lib/windows/x86/libpng14.lib
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/libpng/version.txt
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/zlib/LICENSE.txt
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/zlib/include/crc32.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/zlib/include/deflate.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/zlib/include/gzguts.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/zlib/include/inffast.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/zlib/include/inffixed.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/zlib/include/inflate.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/zlib/include/inftrees.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/zlib/include/trees.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/zlib/include/zconf.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/zlib/include/zlib.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/zlib/include/zutil.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/zlib/lib/windows/x64/zlib.lib
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/zlib/lib/windows/x86/zlib.lib
+	new file:   ZGame/3dsMax/FBX/fbx-conv/libs/zlib/version.txt
+	new file:   ZGame/3dsMax/FBX/fbx-conv/premake.lua
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/3dsmax/animation.FBX
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/3dsmax/animation_bin.FBX
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/3dsmax/mineShaftWall001.png
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/3dsmax/redSpec.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/3dsmax/redSpec_bin.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/3dsmax/textured.FBX
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/3dsmax/textured_bin.FBX
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/Knight.png
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/attribution.txt
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/blender/WoodenBoxOpen02.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/blender/cube-single-bone.blend
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/blender/cube-single-bone.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/blender/cube-two-bones.blend
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/blender/cube-two-bones.blend1
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/blender/cube-two-bones.blend2
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/blender/cube-two-bones.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/blender/cube.dae
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/blender/cube.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/blender/cube.mtl
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/blender/cubes.blend
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/blender/cubes.blend1
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/blender/cubes.blend2
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/blender/cubes.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/blender/fighter.blend
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/knight.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/softimage/bump.png
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/softimage/checkboard.png
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/softimage/checkboard1.png
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/softimage/cube_anim.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/softimage/cube_anim_2clips.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/softimage/cube_anim_2clips_ascii.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/softimage/cube_anim_linear.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/softimage/cube_multi_uv.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/softimage/cube_single_uv.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/softimage/cube_single_uv_bump.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/softimage/cube_single_uv_flipped.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/softimage/cube_single_uv_multi_material.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/softimage/head.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/softimage/head2.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/softimage/head_color.png
+	new file:   ZGame/3dsMax/FBX/fbx-conv/samples/softimage/head_parented.fbx
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/FbxConv.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/FbxConvCommand.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/Settings.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/json/BaseJSONWriter.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/json/JSONWriter.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/json/UBJSON.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/json/UBJSONWriter.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/log/codes.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/log/log.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/log/messages.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/main.cpp
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/modeldata/Animation.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/modeldata/Attributes.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/modeldata/Keyframe.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/modeldata/Material.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/modeldata/Mesh.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/modeldata/MeshPart.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/modeldata/Model.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/modeldata/Node.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/modeldata/NodeAnimation.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/modeldata/NodePart.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/modeldata/Serialization.cpp
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/readers/FbxAnimation.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/readers/FbxConverter.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/readers/FbxMeshInfo.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/readers/Reader.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/readers/matrix3.h
+	new file:   ZGame/3dsMax/FBX/fbx-conv/src/readers/util.h
+
