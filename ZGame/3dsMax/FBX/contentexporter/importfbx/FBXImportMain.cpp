@@ -76,7 +76,8 @@ void FBXTransformer::TransformMatrix( XMFLOAT4X4* pDestMatrix, const XMFLOAT4X4*
     // The end result of those multiplications is that the third row and the third
     // column are negated (so element _33 is left alone).  So instead of actually
     // carrying out the multiplication, we just negate the 6 matrix elements.
-    if ( m_bFlipZ )
+
+	if ( m_bFlipZ )
     {
         pDestMatrix->_13 = -pSrcMatrix->_13;
         pDestMatrix->_23 = -pSrcMatrix->_23;

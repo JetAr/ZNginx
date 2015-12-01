@@ -104,8 +104,8 @@
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(FBX_SDK)\include;$(FBX_SDK)\include\kbaselib;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(FBX_SDK)\lib\vs2015\x64\debug;$(LibraryPath);$(DXSDK_DIR)Lib\x64</LibraryPath>
     <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ExecutablePath);$(DXSDK_DIR)Utilities\bin\x86</ExecutablePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(FBX_SDK)\include;$(FBX_SDK)\include\kbaselib;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(FBX_SDK)\lib\vs2015\x86\debug;$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(FBX_SDK_2016)\include;$(FBX_SDK_2016)\include\kbaselib;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(FBX_SDK_2016)\lib\vs2015\x86\debug;$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
     <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ExecutablePath);$(DXSDK_DIR)Utilities\bin\x86</ExecutablePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(FBX_SDK)\include;$(FBX_SDK)\include\kbaselib;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(FBX_SDK)\lib\vs2015\x86\release;$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>

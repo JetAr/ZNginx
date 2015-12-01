@@ -5837,3 +5837,16 @@ Changes to be committed:
 	modified:   ZGame/3dsMax/FBX/contentexporter/importfbx/ParseAnimation.cpp
 	new file:   ZGame/3dsMax/FBX/contentexporter/importfbx/humanoid.fbx
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/12/01.18_01_39.36.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	modified:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportsettings.cpp
+	modified:   ZGame/3dsMax/FBX/contentexporter/importfbx/FBXImportMain.cpp
+	modified:   ZGame/3dsMax/FBX/contentexporter/importfbx/ImportFBX2015.vcxproj
+
