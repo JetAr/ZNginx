@@ -105,9 +105,11 @@
       L963, 44:R#.34   @腿长和车架上管计算公式 腿长*0.65=上管cm，例子 75*0.65=48.75cm
       L972, 45:R#.35   @svn E155037 以前的操作没有完成
       L980, 46:R#.36   @matrix 操作
-     Zndex_E : //z 2015-11-24 20:09:43 L.37 '13817 T884673712 .K ~983 +----+----+----+----+----+
-     TimeCnt : //z 2015-11-23 13:10:42 L.38 '38958 T728401416 .K ~57  +----+----+----+----+----+
-     Reg.Cnt : //z 2015-11-24 20:09:36 L.37 '13824 T884673682 .K ~39  +----+----+----+----+----+
+     Zndex_E : //z 2015-12-04 14:55:27 L.27 '32673 T3244298901.K ~1025+----+----+----+----+----+
+     TimeCnt : //z 2015-12-04 14:37:03 L.27 '33777 T3241998863.K ~60  +----+----+----+----+----+
+     Reg.Cnt : //z 2015-12-04 11:46:13 L.27 '44027 T3663712269.K ~41  +----+----+----+----+----+
+     #41  R+ : //z 2015-12-04 11:46:13 L.27 '44027 T3663712269.K ~41    V+.1032 L+.1096 
+     #40  R+ : //z 2015-12-03 14:32:34 L.28 '34046 T3174017901.K ~40    V+.1024 L+.1086 
      #39  R+ : //z 2015-11-24 20:09:36 L.37 '13824 T884673682 .K ~39    V+.1020 L+.1070 
      #38  R+ : //z 2015-11-23 13:10:33 L.38 '38967 T728401384 .K ~38    V+.1014 L+.1072 
      #37  R+ : //z 2015-10-19 15:53:24 L.73 '29196 T153923189 .K ~37    V+.961  L+.1021 
@@ -151,7 +153,12 @@
      #3   O+ : //z 2015-09-04 21:24:47 L.118'9313  T3067438199.K ~3     V+.731  L+.1    
      #2   O+ : //z 2015-08-06 08:25:11 L.147'56089 T2984249525.K ~2     V+.572  L+.1    
      #1   O+ : //z 2015-06-18 08:36:17 L.196'55423 T2695262750.K ~1     V+.374  L+.1    
-     Version : //z 2015-11-24 20:09:43 L.37 '13817 T884673712 .K ~1022  R+.39   L+.1069 --+----+
+     Version : //z 2015-12-04 14:55:27 L.27 '32673 T3244298901.K ~1066  R+.41   L+.1121 --+----+
+     #56  V+ : //z 2015-12-04 14:53:58 L.27 '32762 T3244227127.K ~1064  R+.41   L+.1117 
+     #55  V+ : //z 2015-12-04 11:50:30 L.27 '43770 T3664682631.K ~1045  R+.41   L+.1108 
+     #54  R+ : //z 2015-12-04 11:46:13 L.27 '44027 T3663712269.K ~1032  R+.41   L+.1097 V+.1032 
+     #54  V+ : //z 2015-12-03 14:32:35 L.28 '34045 T3174017902.K ~1026  R+.40   L+.1086 
+     #53  R+ : //z 2015-12-03 14:32:34 L.28 '34046 T3174017901.K ~1024  R+.40   L+.1087 V+.1024 
      #53  R+ : //z 2015-11-24 20:09:36 L.37 '13824 T884673682 .K ~1020  R+.39   L+.1071 V+.1020 
      #53  R+ : //z 2015-11-23 13:10:33 L.38 '38967 T728401384 .K ~1014  R+.38   L+.1073 V+.1014 
      #53  V+ : //z 2015-11-19 16:42:32 L.42 '26248 T2775797748.K ~1007  R+.37   L+.1062 
@@ -1079,3 +1086,47 @@ svn checkout http://dx11-engine.googlecode.com/svn/trunk/ dx11-engine
 https://code.google.com/archive/p/fbxviewer/
 https://github.com/shaderjp
 #endregion //z 2015-11-24 20:09:36 L.37 '13824 BG57IV3@XCL T884673682 .K.F4146951713-+----+----+
+
+#region 12-03 14:32 R#.40   @dx？ 课程
+//z 2015-12-03 14:32:35 L.28 '34045 T3174017902.K[T58,L1086,R40,V1026]
+01. 
+http://faculty.ycp.edu/~dbabcock/PastCourses/cs470/labs/lab08.html
+http://faculty.ycp.edu/~dbabcock/PastCourses/cs470/labs/index.html
+#endregion //z 2015-12-03 14:32:34 L.28 '34046 BG57IV3@XCL T3174017901.K.F4146951713-+----+----+
+
+#region 12-04 11:46 R#.41   @MS dx 资源整理
+//z 2015-12-04 11:46:16 L.27 '44024 T3663712272.K[T59,L1096,R41,V1034]
+01. 处理纹理
+https://github.com/Microsoft/DirectXTex/wiki
+DirectXTex library
+Texconv utility
+Texassemble utility
+DDSView sample
+Resources
+
+02. 处理 mesh 
+https://github.com/Microsoft/DirectXMesh/wiki
+https://github.com/Microsoft/DirectXMesh
+
+03. directxtk
+https://github.com/Microsoft/DirectXTK/wiki
+https://directxtk.codeplex.com/wikipage?title=DDSTextureLoader
+
+contentexporter
+https://github.com/walbourn/contentexporter/wiki
+
+A SDKMESH/CMO model viewer using DirectX Tool Kit
+https://github.com/walbourn/directxtkmodelviewer
+
+https://github.com/Microsoft/DirectXMesh/wiki/Meshconvert
+
+04. ms graphics samples
+//z 2015-12-04 14:37:03 L.27 '33777 T3241998863.K[T60,L1113,R41,V1048]
+https://github.com/Microsoft/DirectX-Graphics-Samples
+
+intel graphics analyzer 
+Intel® GPA Frame Analyzer
+
+Deferred Shading in DirectX 10 (with Ambient Occlusion)
+http://blog.shayanjaved.com/2011/06/26/deferred-shading-dx10/
+#endregion //z 2015-12-04 11:46:13 L.27 '44027 BG57IV3@XCL T3663712269.K.F4146951713-+----+----+
