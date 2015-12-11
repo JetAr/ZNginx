@@ -105,9 +105,10 @@
       L963, 44:R#.34   @腿长和车架上管计算公式 腿长*0.65=上管cm，例子 75*0.65=48.75cm
       L972, 45:R#.35   @svn E155037 以前的操作没有完成
       L980, 46:R#.36   @matrix 操作
-     Zndex_E : //z 2015-12-07 14:40:13 L.24 '33587 T3446337389.K ~1041+----+----+----+----+----+
-     TimeCnt : //z 2015-12-07 14:04:12 L.24 '35748 T3441737452.K ~61  +----+----+----+----+----+
-     Reg.Cnt : //z 2015-12-07 14:04:10 L.24 '35750 T3441737450.K ~42  +----+----+----+----+----+
+     Zndex_E : //z 2015-12-11 17:22:17 L.20 '23863 T559143919 .K ~1054+----+----+----+----+----+
+     TimeCnt : //z 2015-12-11 17:21:44 L.20 '23896 T559108078 .K ~64  +----+----+----+----+----+
+     Reg.Cnt : //z 2015-12-11 17:20:18 L.20 '23982 T559072046 .K ~43  +----+----+----+----+----+
+     #43  R+ : //z 2015-12-11 17:20:18 L.20 '23982 T559072046 .K ~43    V+.1085 L+.1146 
      #42  R+ : //z 2015-12-07 14:04:10 L.24 '35750 T3441737450.K ~42    V+.1068 L+.1137 
      #41  R+ : //z 2015-12-04 11:46:13 L.27 '44027 T3663712269.K ~41    V+.1032 L+.1096 
      #40  R+ : //z 2015-12-03 14:32:34 L.28 '34046 T3174017901.K ~40    V+.1024 L+.1086 
@@ -154,7 +155,8 @@
      #3   O+ : //z 2015-09-04 21:24:47 L.118'9313  T3067438199.K ~3     V+.731  L+.1    
      #2   O+ : //z 2015-08-06 08:25:11 L.147'56089 T2984249525.K ~2     V+.572  L+.1    
      #1   O+ : //z 2015-06-18 08:36:17 L.196'55423 T2695262750.K ~1     V+.374  L+.1    
-     Version : //z 2015-12-07 14:40:13 L.24 '33587 T3446337389.K ~1083  R+.42   L+.1140 --+----+
+     Version : //z 2015-12-11 17:22:17 L.20 '23863 T559143919 .K ~1097  R+.43   L+.1149 --+----+
+     #57  R+ : //z 2015-12-11 17:20:18 L.20 '23982 T559072046 .K ~1085  R+.43   L+.1147 V+.1085 
      #57  V+ : //z 2015-12-07 14:40:13 L.24 '33587 T3446337389.K ~1083  R+.42   L+.1140 
      #56  R+ : //z 2015-12-07 14:04:10 L.24 '35750 T3441737450.K ~1068  R+.42   L+.1138 V+.1068 
      #56  V+ : //z 2015-12-04 14:53:58 L.27 '32762 T3244227127.K ~1064  R+.41   L+.1117 
@@ -1139,3 +1141,18 @@ http://blog.shayanjaved.com/2011/06/26/deferred-shading-dx10/
 01. nvidia 例子
 https://github.com/nvpro-samples
 #endregion //z 2015-12-07 14:04:10 L.24 '35750 BG57IV3@XCL T3441737450.K.F4146951713-+----+----+
+
+#region 12-11 17:20 R#.43   @fbx animation
+//z 2015-12-11 17:21:44 L.20 '23896 T559108078 .K[T64,L1146,R43,V1094]
+http://www.gamedev.net/topic/658450-fbx-and-skinned-animation/
+http://www.gamedev.net/topic/624013-bones-animation-matrices-and-calculations/
+http://gamedev.stackexchange.com/questions/31079/how-to-port-animation-from-one-skeleton-to-another
+
+//z 2015-12-11 17:20:20 L.20 '23980 T559072071 .K[T62,L1146,R43,V1087]
+01. Skinned Mesh Animation Using Matrices
+http://www.gamedev.net/page/resources/_/technical/graphics-programming-and-theory/skinned-mesh-animation-using-matrices-r3577
+
+//z 2015-12-11 17:20:46 L.20 '23954 T559072143 .K[T63,L1150,R43,V1092]
+02. A Blending Animation Controller for a Skinned Mesh
+http://www.gamedev.net/page/resources/_/technical/graphics-programming-and-theory/a-blending-animation-controller-for-a-skinned-mesh-r3592
+#endregion //z 2015-12-11 17:20:18 L.20 '23982 BG57IV3@XCL T559072046 .K.F4146951713-+----+----+
