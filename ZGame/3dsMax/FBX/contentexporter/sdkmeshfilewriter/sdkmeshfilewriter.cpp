@@ -706,7 +706,8 @@ namespace ATG
             {
                 StartKey = EndKey;
                 ++dwCurrentSrcKey;
-                if( dwCurrentSrcKey >= dwKeyCount )
+                //z zbugfix
+				if( dwCurrentSrcKey >= (dwKeyCount - 1) )
                     bEndKey = false;
                 else
                     EndKey = pKeys[dwCurrentSrcKey + 1];
@@ -755,7 +756,8 @@ namespace ATG
             {
                 StartKey = EndKey;
                 ++dwCurrentSrcKey;
-                if( dwCurrentSrcKey >= dwKeyCount )
+				//z zbugfix
+                if( dwCurrentSrcKey >= (dwKeyCount - 1) )
                     bEndKey = false;
                 else
                     EndKey = pKeys[dwCurrentSrcKey + 1];
@@ -804,7 +806,8 @@ namespace ATG
             {
                 StartKey = EndKey;
                 ++dwCurrentSrcKey;
-                if( dwCurrentSrcKey >= dwKeyCount )
+				//z zbugfix
+                if( dwCurrentSrcKey >= (dwKeyCount - 1) )
                     bEndKey = false;
                 else
                     EndKey = pKeys[dwCurrentSrcKey + 1];

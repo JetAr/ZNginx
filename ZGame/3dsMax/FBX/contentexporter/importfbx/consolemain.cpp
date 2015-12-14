@@ -794,8 +794,8 @@ int __cdecl main(_In_ int argc, _In_z_count_(argc) char* argv[])
 #else
     sprintf_s( g_strExporterName, "%s version %d.%d.%d", CONTENT_EXPORTER_TITLE, CONTENT_EXPORTER_MAJOR_VERSION, CONTENT_EXPORTER_MINOR_VERSION, CONTENT_EXPORTER_REVISION );
 #endif
-	ExportLog::SetLogLevel( 1 );
-    //z ExportLog::SetLogLevel( 10 );
+	//z ExportLog::SetLogLevel( 1 );
+    ExportLog::SetLogLevel( 10 );
     ExportLog::EnableLogging( true );
 
     ExportLog::LogMsg( 0, "----------------------------------------------------------" );
