@@ -325,7 +325,8 @@ namespace ATG
             SDKMESH_SUBSET Subset = {0};
             Subset.IndexStart = 0;
             Subset.IndexCount = static_cast<UINT64>( dwMaxIndexCount );
-            Subset.MaterialID = 0;
+			//z zbugfix 151216
+            Subset.MaterialID = INVALID_MATERIAL;
             Subset.VertexStart = 0;
             Subset.VertexCount = static_cast<UINT64>( dwMaxVertexCount );
             Subset.PrimitiveType = PT_TRIANGLE_LIST;
@@ -706,7 +707,7 @@ namespace ATG
             {
                 StartKey = EndKey;
                 ++dwCurrentSrcKey;
-                //z zbugfix
+                //z zbugfix 15121
 				if( dwCurrentSrcKey >= (dwKeyCount - 1) )
                     bEndKey = false;
                 else
