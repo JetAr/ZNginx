@@ -6286,3 +6286,15 @@ Changes to be committed:
 	modified:   ZGame/3dsMax/FBX/contentexporter/importfbx/consolemain.cpp
 	modified:   ZGame/3dsMax/FBX/contentexporter/sdkmeshfilewriter/sdkmeshfilewriter.cpp
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/12/16.17_36_47.21.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	modified:   ZGame/3dsMax/FBX/contentexporter/exportobjects/exportscene.cpp
+	modified:   ZGame/3dsMax/FBX/contentexporter/sdkmeshfilewriter/sdkmeshfilewriter.cpp
+

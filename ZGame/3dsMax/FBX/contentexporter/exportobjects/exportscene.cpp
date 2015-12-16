@@ -102,6 +102,7 @@ bool ExportScene::AddAnimation( ExportAnimation* pAnimation )
 	//z 查找是否已经存在了。如果已存在，返回
     if( FindAnimation( pAnimation->GetName() ) )
         return false;
+
 	//z 否则加入到 vector 中去
     m_vAnimations.push_back( pAnimation );
     return true;
