@@ -6320,3 +6320,555 @@ Changes to be committed:
 	modified:   Doc/K/T.2015.pXr.cs
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+DX10.Luna.2015/12/22.18_59_36.10.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	new file:   Book/DX/DX10.Luna/PartI/D3DXMATRIX/D3DXMATRIX.sln
+	new file:   Book/DX/DX10.Luna/PartI/D3DXMATRIX/D3DXMATRIX.vcproj
+	new file:   Book/DX/DX10.Luna/PartI/D3DXMATRIX/d3dxmatrix.cpp
+	new file:   Book/DX/DX10.Luna/PartI/D3DXVec3/D3DXVec3.sln
+	new file:   Book/DX/DX10.Luna/PartI/D3DXVec3/D3DXVec3.vcproj
+	new file:   Book/DX/DX10.Luna/PartI/D3DXVec3/d3dxvec3.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/Box.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/Box.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/Light.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/PeaksAndValleys.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/PeaksAndValleys.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/Tree Billboards.sln
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/Tree Billboards.vcproj
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/Tree Demo.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/TreeSprites.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/TreeSprites.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/Vertex.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/Waves.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/Waves.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/WireFence.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/WoodCrate01.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/clip.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/defaultspec.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/grass.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/lighthelper.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/tree.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/tree0.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/tree1.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/tree2.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/tree3.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 10/Tree Billboards/water2a.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 4/Init Direct3D/Init Direct3D.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 4/Init Direct3D/Init Direct3D.sln
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 4/Init Direct3D/Init Direct3D.vcproj
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Colored Cube/Box.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Colored Cube/Box.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Colored Cube/Colored Cube App.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Colored Cube/Colored Cube.sln
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Colored Cube/Colored Cube.vcproj
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Colored Cube/Vertex.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Colored Cube/color.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Peaks and Valleys/Peaks and Valleys App.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Peaks and Valleys/Peaks and Valleys.sln
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Peaks and Valleys/Peaks and Valleys.vcproj
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Peaks and Valleys/PeaksAndValleys.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Peaks and Valleys/PeaksAndValleys.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Peaks and Valleys/Vertex.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Peaks and Valleys/color.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Waves/PeaksAndValleys.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Waves/PeaksAndValleys.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Waves/Vertex.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Waves/Waves.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Waves/Waves.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Waves/Waves.sln
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Waves/Waves.vcproj
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Waves/WavesApp.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 5/Waves/color.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 6/Lighting/Light.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 6/Lighting/Lighting.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 6/Lighting/Lighting.sln
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 6/Lighting/Lighting.vcproj
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 6/Lighting/PeaksAndValleys.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 6/Lighting/PeaksAndValleys.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 6/Lighting/Vertex.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 6/Lighting/Waves.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 6/Lighting/Waves.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 6/Lighting/lighthelper.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 6/Lighting/lighting.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Crate/Box.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Crate/Box.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Crate/Crate.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Crate/Crate.sln
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Crate/Crate.vcproj
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Crate/Light.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Crate/Vertex.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Crate/WoodCrate01.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Crate/WoodCrate02.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Crate/defaultspec.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Crate/lighthelper.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Crate/tex.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire001.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire002.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire003.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire004.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire005.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire006.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire007.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire008.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire009.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire010.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire011.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire012.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire013.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire014.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire015.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire016.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire017.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire018.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire019.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire020.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire021.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire022.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire023.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire024.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire025.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire026.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire027.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire028.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire029.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire030.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire031.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire032.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire033.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire034.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire035.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire036.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire037.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire038.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire039.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire040.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire041.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire042.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire043.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire044.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire045.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire046.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire047.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire048.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire049.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire050.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire051.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire052.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire053.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire054.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire055.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire056.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire057.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire058.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire059.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire060.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire061.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire062.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire063.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire064.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire065.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire066.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire067.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire068.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire069.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire070.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire071.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire072.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire073.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire074.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire075.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire076.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire077.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire078.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire079.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire080.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire081.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire082.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire083.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire084.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire085.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire086.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire087.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire088.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire089.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire090.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire091.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire092.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire093.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire094.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire095.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire096.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire097.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire098.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire099.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire100.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire101.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire102.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire103.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire104.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire105.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire106.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire107.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire108.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire109.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire110.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire111.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire112.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire113.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire114.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire115.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire116.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire117.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire118.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire119.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/FireAnim/Fire120.bmp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Land Tex/Land Tex.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Land Tex/Land Tex.sln
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Land Tex/Land Tex.vcproj
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Land Tex/Light.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Land Tex/PeaksAndValleys.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Land Tex/PeaksAndValleys.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Land Tex/Vertex.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Land Tex/Waves.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Land Tex/Waves.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Land Tex/defaultspec.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Land Tex/grass.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Land Tex/lighthelper.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Land Tex/tex.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Land Tex/water1.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/Land Tex/water2.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/flare.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/flarealpha.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 7/mipmaps.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Clip Pixel/Box.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Clip Pixel/Box.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Clip Pixel/Clip Pixel.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Clip Pixel/Clip Pixel.sln
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Clip Pixel/Clip Pixel.vcproj
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Clip Pixel/Light.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Clip Pixel/PeaksAndValleys.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Clip Pixel/PeaksAndValleys.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Clip Pixel/Vertex.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Clip Pixel/Waves.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Clip Pixel/Waves.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Clip Pixel/WireFence.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Clip Pixel/clip.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Clip Pixel/defaultspec.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Clip Pixel/grass.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Clip Pixel/lighthelper.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Clip Pixel/water2a.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Fog/Box.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Fog/Box.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Fog/Fog.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Fog/Fog.sln
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Fog/Fog.vcproj
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Fog/Light.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Fog/PeaksAndValleys.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Fog/PeaksAndValleys.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Fog/Vertex.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Fog/Waves.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Fog/Waves.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Fog/WireFence.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Fog/defaultspec.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Fog/fog.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Fog/grass.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Fog/lighthelper.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Fog/water2a.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Transparent Water/Box.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Transparent Water/Box.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Transparent Water/Light.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Transparent Water/PeaksAndValleys.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Transparent Water/PeaksAndValleys.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Transparent Water/Transparent Water.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Transparent Water/Transparent Water.sln
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Transparent Water/Transparent Water.vcproj
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Transparent Water/Vertex.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Transparent Water/Waves.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Transparent Water/Waves.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Transparent Water/WoodCrate01.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Transparent Water/defaultspec.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Transparent Water/grass.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Transparent Water/lighthelper.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Transparent Water/texAlpha.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 8/Transparent Water/water2a.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 9/Mirror/Box.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 9/Mirror/Box.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 9/Mirror/Light.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 9/Mirror/Mirror.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 9/Mirror/Mirror.sln
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 9/Mirror/Mirror.vcproj
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 9/Mirror/Vertex.h
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 9/Mirror/WoodCrate01.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 9/Mirror/WoodCrate02.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 9/Mirror/brick01.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 9/Mirror/checkboard.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 9/Mirror/defaultspec.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 9/Mirror/ice.dds
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 9/Mirror/lighthelper.fx
+	new file:   Book/DX/DX10.Luna/PartII/Chapter 9/Mirror/tex.fx
+	new file:   Book/DX/DX10.Luna/PartII/Common/GameTimer.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Common/GameTimer.h
+	new file:   Book/DX/DX10.Luna/PartII/Common/d3dApp.cpp
+	new file:   Book/DX/DX10.Luna/PartII/Common/d3dApp.h
+	new file:   Book/DX/DX10.Luna/PartII/Common/d3dUtil.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/Box.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/Box.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/Cube Map Demo.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/CubeMap.sln
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/CubeMap.vcproj
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/Cylinder.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/Cylinder.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/Effects.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/Effects.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/InputLayouts.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/InputLayouts.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/Light.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/Quad.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/Quad.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/Sky.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/Sky.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/Sphere.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/Sphere.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/Vertex.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/blackdiffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/bricks.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/cubemap.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/defaultspec.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/floor.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/grassenvmap1024.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/lighthelper.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/sky.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/spec.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 11/CubeMap/stone.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/Box.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/Box.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/Cylinder.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/Cylinder.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/Effects.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/Effects.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/InputLayouts.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/InputLayouts.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/Light.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/Normal Map Demo.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/NormalMap.sln
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/NormalMap.vcproj
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/Quad.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/Quad.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/Sky.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/Sky.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/Sphere.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/Sphere.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/Vertex.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/blackdiffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/bricks_diffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/bricks_normal.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/default_normal.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/defaultspec.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/floor_diffuse.DDS
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/floor_normal.DDS
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/grassenvmap1024.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/lighthelper.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/normalmap.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/sky.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/spec.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/stone_diffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 12/NormalMap/stone_normal.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/Box.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/Box.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/Cylinder.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/Cylinder.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/DrawableTex2D.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/DrawableTex2D.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/Effects.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/Effects.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/InputLayouts.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/InputLayouts.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/Light.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/Quad.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/Quad.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/Shadow Map Demo.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/ShadowMap.sln
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/ShadowMap.vcproj
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/Sky.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/Sky.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/Sphere.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/Sphere.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/Vertex.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/blackdiffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/bricks_diffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/bricks_normal.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/buildshadowmap.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/default_normal.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/defaultspec.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/drawshadowmap.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/floor_diffuse.DDS
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/floor_normal.DDS
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/grassenvmap1024.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/lighthelper.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/shadow.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/sky.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/spec.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/stone_diffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 13/ShadowMap/stone_normal.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/DrawableTex2D.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/DrawableTex2D.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/Effects.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/Effects.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/InputLayouts.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/InputLayouts.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/Light.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/Mesh Viewer.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/Mesh Viewer.sln
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/Mesh Viewer.vcproj
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/Mesh.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/Mesh.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/Pillar06.m3d
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/Sky.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/Sky.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/buildshadowmap.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/default_normal.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/default_spec.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/grassenvmap1024.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/lighthelper.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/mesh.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/pillar06_diffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/pillar06_normal.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/pillar06_spec.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/sky.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/templeBase01_diffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/templeBase01_normal.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/templeBase01_spec.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/templeBase02_diffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/templeBase02_normal.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/templeBase02_spec.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/templeBase03_diffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/templeBase03_spec.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/templeBaseTree.m3d
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/tree.m3d
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/tree01-bark_diffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 14/Mesh Viewer/tree01-leaves_diffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/DrawableTex2D.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/DrawableTex2D.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/Effects.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/Effects.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/InputLayouts.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/InputLayouts.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/Light.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/Mesh.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/Mesh.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/Picking.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/Picking.sln
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/Picking.vcproj
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/Pillar06.m3d
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/Sky.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/Sky.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/buildshadowmap.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/default_normal.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/default_spec.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/grassenvmap1024.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/lighthelper.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/mesh.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/picked.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/pillar06_diffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/pillar06_normal.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/pillar06_spec.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/sky.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/templeBase01_diffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/templeBase01_normal.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/templeBase01_spec.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/templeBase02_diffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/templeBase02_normal.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/templeBase02_spec.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/templeBase03_diffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/templeBase03_spec.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/templeBaseTree.m3d
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/tree.m3d
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/tree01-bark_diffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 15/Picking/tree01-leaves_diffuse.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/DrawableTex2D.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/DrawableTex2D.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/Effects.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/Effects.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/InputLayouts.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/InputLayouts.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/Light.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/Mesh.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/Mesh.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/Sky.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/Sky.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/Terrain Demo.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/Terrain.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/Terrain.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/Terrain.sln
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/Terrain.vcproj
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/blend.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/buildshadowmap.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/coastMountain513.raw
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/darkdirt.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/default_normal.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/default_spec.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/grass.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/grassenvmap1024.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/lightdirt.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/lighthelper.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/mesh.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/sky.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/snow.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/stone.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 16/Terrain/terrain.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/DrawableTex2D.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/DrawableTex2D.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/Effects.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/Effects.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/InputLayouts.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/InputLayouts.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/Light.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/Mesh.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/Mesh.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/PSystem.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/PSystem.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/Particle System Demo.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/Particle System.sln
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/Particle System.vcproj
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/Sky.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/Sky.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/Terrain.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/Terrain.h
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/blend.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/buildshadowmap.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/coastMountain513.raw
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/darkdirt.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/default_normal.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/default_spec.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/fire.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/flare0.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/grass.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/grassenvmap1024.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/lightdirt.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/lighthelper.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/mesh.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/rain.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/raindrop.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/sky.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/snow.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/stone.dds
+	new file:   Book/DX/DX10.Luna/PartIII/Chapter 17/Particle System/terrain.fx
+	new file:   Book/DX/DX10.Luna/PartIII/Common/Camera.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Common/Camera.h
+	new file:   Book/DX/DX10.Luna/PartIII/Common/GameTimer.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Common/GameTimer.h
+	new file:   Book/DX/DX10.Luna/PartIII/Common/TextureMgr.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Common/TextureMgr.h
+	new file:   Book/DX/DX10.Luna/PartIII/Common/d3dApp.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Common/d3dApp.h
+	new file:   Book/DX/DX10.Luna/PartIII/Common/d3dUtil.cpp
+	new file:   Book/DX/DX10.Luna/PartIII/Common/d3dUtil.h
+	modified:   Doc/K/T.2015.BugFree.cs
+	modified:   History.txt
+
