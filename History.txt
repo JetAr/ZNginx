@@ -11464,3 +11464,14 @@ Changes to be committed:
 	new file:   Book/real-time-3d-rendering-with-directx-and-hlsl/external/assimp/lib/assimp_release-dll_win32/assimp.lib
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2015/12/23.17_11_24.30.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Doc/K/T.2015.BugFree.cs
+	modified:   History.txt
+
