@@ -66,6 +66,7 @@
 // Convenience functions.
 //*****************************************************************************
 
+//z 2016-01-04 17:59 在两种不同颜色格式之间进行转换。
 // Converts ARGB 32-bit color format to ABGR 32-bit color format.
 D3DX10INLINE UINT ARGB2ABGR(UINT argb)
 {
@@ -78,6 +79,7 @@ D3DX10INLINE UINT ARGB2ABGR(UINT argb)
 }
 
 // Returns random float in [0, 1).
+//z 返回一个随机的小数，在[0,1)之间
 D3DX10INLINE float RandF()
 {
     return (float)(rand()) / (float)RAND_MAX;
@@ -125,11 +127,12 @@ D3DX10INLINE T Clamp(const T& x, const T& low, const T& high)
 //*****************************************************************************
 // Constants
 //*****************************************************************************
-
+//z float 数大小。
 const float INFINITY = FLT_MAX;
 const float PI       = 3.14159265358979323f;
 const float MATH_EPS = 0.0001f;
 
+//z 预先定义了各种颜色。
 const D3DXCOLOR WHITE(1.0f, 1.0f, 1.0f, 1.0f);
 const D3DXCOLOR BLACK(0.0f, 0.0f, 0.0f, 1.0f);
 const D3DXCOLOR RED(1.0f, 0.0f, 0.0f, 1.0f);
