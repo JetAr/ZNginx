@@ -11519,3 +11519,14 @@ Changes to be committed:
 	modified:   Book/DX/DX10.Luna/PartII/Common/d3dUtil.h
 	modified:   History.txt
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2016/01/06.15_35_10.81.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   History.txt
+	new file:   ZGame/DX9/dx9_pipeline/DX9_Pipeline.png
+
