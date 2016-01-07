@@ -105,8 +105,8 @@
       L963, 44:R#.34   @腿长和车架上管计算公式 腿长*0.65=上管cm，例子 75*0.65=48.75cm
       L972, 45:R#.35   @svn E155037 以前的操作没有完成
       L980, 46:R#.36   @matrix 操作
-     Zndex_E : //z 2016-01-07 20:12:23 L.359'13657 T119833449 .K ~1098+----+----+----+----+----+
-     TimeCnt : //z 2015-12-25 16:59:06 L.6  '25254 T1780136187.K ~69  +----+----+----+----+----+
+     Zndex_E : //z 2016-01-07 20:36:48 L.359'12192 T122349110 .K ~1105+----+----+----+----+----+
+     TimeCnt : //z 2016-01-07 20:36:13 L.359'12227 T122349006 .K ~70  +----+----+----+----+----+
      Reg.Cnt : //z 2015-12-15 17:48:47 L.16 '22273 T832936990 .K ~44  +----+----+----+----+----+
      #44  R+ : //z 2015-12-15 17:48:47 L.16 '22273 T832936990 .K ~44    V+.1104 L+.1169 
      #43  R+ : //z 2015-12-11 17:20:18 L.20 '23982 T559072046 .K ~43    V+.1085 L+.1146 
@@ -156,7 +156,7 @@
      #3   O+ : //z 2015-09-04 21:24:47 L.118'9313  T3067438199.K ~3     V+.731  L+.1    
      #2   O+ : //z 2015-08-06 08:25:11 L.147'56089 T2984249525.K ~2     V+.572  L+.1    
      #1   O+ : //z 2015-06-18 08:36:17 L.196'55423 T2695262750.K ~1     V+.374  L+.1    
-     Version : //z 2016-01-07 20:12:23 L.359'13657 T119833449 .K ~1142  R+.27   L+.749  --+----+
+     Version : //z 2016-01-07 20:36:48 L.359'12192 T122349110 .K ~1149  R+.25   L+.725  --+----+
      #60  V+ : //z 2016-01-07 20:11:46 L.359'13694 T119797581 .K ~1140  R+.27   L+.748  
      #59  V+ : //z 2015-12-22 17:50:39 L.9  '22161 T2867876694.K ~1121  R+.42   L+.1152 
      #58  R+ : //z 2015-12-15 17:48:47 L.16 '22273 T832936990 .K ~1104  R+.44   L+.1170 V+.1104 
@@ -721,6 +721,10 @@ http://www.toymaker.info/index.html
 dx 例子，有 dx9 以及 dx11 的例子
 http://www.directxtutorial.com/default.aspx
 
+//z 2016-01-07 20:36:13 L.359'12227 T122349006 .K[T70,L724,R25,V1145]
+2016-01-07 20:36 znote 一系列的 how to ，如 How to: Create a Constant Buffer
+https://msdn.microsoft.com/en-us/library/windows/desktop/ff476896(v=vs.85).aspx
+
 //z 2015-08-04 12:52:36 L.149'40044 T3361993589.K[T25,L616,R25,V555]
 windows game dx10 graphics ai 
 https://takinginitiative.wordpress.com/
@@ -748,6 +752,8 @@ windows 下的shader开发环境有 rendermonkey
 
 2016-01-07 20:11 znote an introduction to hlsl。一步一步，易懂好理解。
 http://www.neatware.com/lbstudio/web/hlsl.html
+讲述了 contant buffer 和 effect framework 之间的区别与联系
+http://gamedev.stackexchange.com/questions/40643/directx-11-constant-buffers-vs-effect-framework
 
 metaball的cocos2d-x实现：shader实现元球，片段着色器的高效渲染
 http://www.grapecookie.com/code/metaball-cocos2d-shader-cocos2dx/
