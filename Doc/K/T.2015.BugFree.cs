@@ -105,7 +105,7 @@
       L963, 44:R#.34   @腿长和车架上管计算公式 腿长*0.65=上管cm，例子 75*0.65=48.75cm
       L972, 45:R#.35   @svn E155037 以前的操作没有完成
       L980, 46:R#.36   @matrix 操作
-     Zndex_E : //z 2016-01-07 20:36:48 L.359'12192 T122349110 .K ~1105+----+----+----+----+----+
+     Zndex_E : //z 2016-01-11 10:46:50 L.355'47590 T2285402218.K ~1135+----+----+----+----+----+
      TimeCnt : //z 2016-01-07 20:36:13 L.359'12227 T122349006 .K ~70  +----+----+----+----+----+
      Reg.Cnt : //z 2015-12-15 17:48:47 L.16 '22273 T832936990 .K ~44  +----+----+----+----+----+
      #44  R+ : //z 2015-12-15 17:48:47 L.16 '22273 T832936990 .K ~44    V+.1104 L+.1169 
@@ -156,7 +156,9 @@
      #3   O+ : //z 2015-09-04 21:24:47 L.118'9313  T3067438199.K ~3     V+.731  L+.1    
      #2   O+ : //z 2015-08-06 08:25:11 L.147'56089 T2984249525.K ~2     V+.572  L+.1    
      #1   O+ : //z 2015-06-18 08:36:17 L.196'55423 T2695262750.K ~1     V+.374  L+.1    
-     Version : //z 2016-01-07 20:36:48 L.359'12192 T122349110 .K ~1149  R+.25   L+.725  --+----+
+     Version : //z 2016-01-11 10:46:50 L.355'47590 T2285402218.K ~1179  R+.27   L+.788  --+----+
+     #62  V+ : //z 2016-01-11 10:46:38 L.355'47602 T2285402160.K ~1178  R+.27   L+.788  
+     #61  V+ : //z 2016-01-11 10:28:16 L.355'48704 T2283102124.K ~1159  R+.27   L+.775  
      #60  V+ : //z 2016-01-07 20:11:46 L.359'13694 T119797581 .K ~1140  R+.27   L+.748  
      #59  V+ : //z 2015-12-22 17:50:39 L.9  '22161 T2867876694.K ~1121  R+.42   L+.1152 
      #58  R+ : //z 2015-12-15 17:48:47 L.16 '22273 T832936990 .K ~1104  R+.44   L+.1170 V+.1104 
@@ -755,10 +757,6 @@ http://www.neatware.com/lbstudio/web/hlsl.html
 讲述了 contant buffer 和 effect framework 之间的区别与联系
 http://gamedev.stackexchange.com/questions/40643/directx-11-constant-buffers-vs-effect-framework
 
-metaball的cocos2d-x实现：shader实现元球，片段着色器的高效渲染
-http://www.grapecookie.com/code/metaball-cocos2d-shader-cocos2dx/
-其实无非就是不适合CPU去进行的图形运算，交给GPU去做，GPU处理流程中允许程序员控制的只有顶点着色阶段和片段着色阶段，就有了opengl shader里的vsh和fsh，顶点着色器确定要花的东西的形状，形成一个闭合图形，片段着色器则是根据各种参数处理闭合图形内的颜色，亮度、透明度等东西，网上还有其他的类似helloworld例子，都是很好的帮助了解shader的资料，人不可能学会所有东西，不可能把所有程序工具的api记下来，所以要根据需要来，比如现在需要的是2D游戏的渲染，那么只需要搜集2Dshader的资料就可以了，很多大块头的书真正对我们有用的就几十页而已，再比如opengl的很多特性，既可以直接写opengl代码，也可以写shader代码，前者就没必要费时间学习了，直接研究shader如何处理就可以了，shader兼容性更强，很多特性在这个平台上可以使用，在另一个平台上就不能用了，比如把游戏移植到手机，这个时候很多东西只能用shader，shader在opengl和opengl-es都是通用的，而传统opengl函数不可以，带着需求去选择性地学习东西，更事半功倍。
-
 用HLSL，入门推荐《the complete effect and hlsl guide》，高级的看《Shader X》系列吧，另外，Render Monkey是创作shader 的不错工具。
 
 The Complete Effect and HLSL Guide
@@ -771,6 +769,42 @@ Shader Stages
 https://msdn.microsoft.com/en-us/library/windows/desktop/bb205146(v=vs.85).aspx
 Tutorial 4: Buffers, Shaders, and HLSL
 http://www.rastertek.com/dx10tut04.html
+
+msdn : Programming Guide for HLSLmsdn & Reference for HLSL
+https://msdn.microsoft.com/en-us/library/bb509561(v=VS.85).aspx
+gpu gems
+http://http.developer.nvidia.com/GPUGems/gpugems_part01.html
+gpu gems 1,2,3
+https://developer.nvidia.com/gpugems/GPUGems/gpugems_pref01.html
+
+Implementing Lighting Models With HLSL
+http://www.gamasutra.com/view/feature/2866/implementing_lighting_models_with_.php
+xna shader tutorial
+https://digitalerr0r.wordpress.com/2009/03/23/xna-shader-programming-tutorial-1-ambient-light/
+里面有一些 hlsl 的例子
+https://developer.nvidia.com/fx-composer
+相当多的 shader 以及 utility 例子
+https://digitalerr0r.wordpress.com/tutorials/
+Effects and HLSL Tutorials
+http://rbwhitaker.wikidot.com/hlsl-tutorials
+HLSL Development Cookbook
+hlsl 例子，循序渐进
+http://www.neatware.com/lbstudio/web/hlsl.html
+dx9 相关的各种例子
+http://www.codesampler.com/dx9src/
+http://www.codesampler.com/code/
+
+presentations from Siggraph and GDC
+
+I would personally start with Computer Graphics: Principles and Practice first and read GPU Gems on the side as well since they are free, then get GPU Pro at a later date. They are really expensive books so it might not be easy to buy them both at once.
+
+一个 silverlight 运行 shader 的例子。
+http://shazzam-tool.com/
+
+metaball的cocos2d-x实现：shader实现元球，片段着色器的高效渲染
+http://www.grapecookie.com/code/metaball-cocos2d-shader-cocos2dx/
+其实无非就是不适合CPU去进行的图形运算，交给GPU去做，GPU处理流程中允许程序员控制的只有顶点着色阶段和片段着色阶段，就有了opengl shader里的vsh和fsh，顶点着色器确定要花的东西的形状，形成一个闭合图形，片段着色器则是根据各种参数处理闭合图形内的颜色，亮度、透明度等东西，网上还有其他的类似helloworld例子，都是很好的帮助了解shader的资料，人不可能学会所有东西，不可能把所有程序工具的api记下来，所以要根据需要来，比如现在需要的是2D游戏的渲染，那么只需要搜集2Dshader的资料就可以了，很多大块头的书真正对我们有用的就几十页而已，再比如opengl的很多特性，既可以直接写opengl代码，也可以写shader代码，前者就没必要费时间学习了，直接研究shader如何处理就可以了，shader兼容性更强，很多特性在这个平台上可以使用，在另一个平台上就不能用了，比如把游戏移植到手机，这个时候很多东西只能用shader，shader在opengl和opengl-es都是通用的，而传统opengl函数不可以，带着需求去选择性地学习东西，更事半功倍。
+
 DirectX10 Tutorial 9: The Geometry Shader
 https://takinginitiative.wordpress.com/2011/01/12/directx10-tutorial-9-the-geometry-shader/
 DirectX10 Tutorial 3: Textures
