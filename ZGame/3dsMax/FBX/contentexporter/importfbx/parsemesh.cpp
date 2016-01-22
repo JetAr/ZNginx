@@ -579,7 +579,8 @@ void ParseMesh( FbxNode* pNode, FbxMesh* pFbxMesh, ExportFrame* pParentFrame, bo
     size_t dwMaterialCount = MaterialList.size();
     if( !pMesh->GetSubDMesh() )
     {
-        for( size_t dwSubset = 0; dwSubset < dwMaterialCount; ++dwSubset )
+		//z zfixme : add dwSubset < pMesh->GetSubsetCount()
+		for (size_t dwSubset = 0; dwSubset < dwMaterialCount && dwSubset < pMesh->GetSubsetCount(); ++dwSubset)
         {
             auto pMaterial = MaterialList[dwSubset];
             auto pSubset = pMesh->GetSubset( dwSubset );
