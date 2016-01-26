@@ -11619,3 +11619,14 @@ Changes to be committed:
 	modified:   History.txt
 	modified:   ZGame/3dsMax/FBX/contentexporter/importfbx/parsemesh.cpp
 
++---------+---------+---------+---------+---------+---------+---------+---------+ 
+d.2016/01/26.09_47_36.92.K.MzM.T@WS 
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   Doc/K/T.2015.pXr.cs
+	modified:   History.txt
+
