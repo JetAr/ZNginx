@@ -59,53 +59,65 @@
        Zcl_S : //z 2015-04-27 11:28:04 L.248'45116 T1418964723.K ~0   +----+----+----+----+----+
        Zcl_E : //z 2015-04-27 11:28:04 L.248'45116 T1418964723.K ~0   +----+----+----+----+----+
      Zndex_S : //z 2015-04-27 11:28:04 L.248'45116 T1418964723.K ~0   +----+----+----+----+----+
-      L245,  1:R#.1    @日知录
-      L253,  2:R#.2    @第17周总结 2015-04-26 --> 2015-05-02
-      L257,  3:zdo focus windows system programming 以及工程实践。
-      L260,  4:zkaizen 纯粹的肥肉还是别吃了；肉食类不要吃冷的。饭店吃饭尽量点热的。
-      L271,  5:R#.3    @国务院办公厅关于2015年部分节假日安排的通知
-      L291,  6:R#.4    @流程图 软件推荐
-      L313,  7:todo 阅读《我用VISIO制图》done 2015-04-28 16:26 当晚未看。
-      L316,  8:R#.5    @绘制类图，类继承
-      L321,  9:R#.6    @EA公司发表自制的EASTL规格 游戏开发方面对STL的性能及功能需求的特点
-      L325, 10:R#.7    @参考下 cp 上的 tl 功能，看能否增强n.tl
-      L330, 11:R#.8    @收集方方面面的模式和实例。
-      L336, 12:R#.9    @收集一份vc6的常用插件
-      L341, 13:R#.10   @zdo 使用 libcurl 写个http post[简繁转化]的例子
-      L346, 14:R#.11   @关灯吃面
-      L354, 15:R#.12   @znote astyle -A1 -R -z1 -n *.cpp
-      L358, 16:R#.13   @zlog hosts
-      L361, 17:zkz Moving from Research to Practice to Close the Achievement Gap
-      L364, 18:R#.14   @3ds max
-      L416, 19:zitem haptix/evolution3d googlecode
-      L419, 20:R#.15   @CMakeFile
-      L456, 21:R#.16   @3ds
-      L466, 22:zitem freeimage 结合play，载入其他类型素材（不限于tga）
-      L469, 23:R#.17   @high performance lock
-      L480, 24:R#.18   @3ds
-      L489, 25:R#.19   @znote BookList
-      L492, 26:todo 深入理解nginx redis设计与实现
-      L537, 27:todo http://download.csdn.net/download/chengdz599/8792741 ??
-      L554, 28:R#.20   @书评
-      L571, 29:R#.21   @Game tmp
-      L585, 30:R#.22   @了解下 markdown 以及 lua
-      L589, 31:R#.23   @Matthew Fisher graphics project
-      L595, 32:zitem dx 10 的例子
-      L599, 33:R#.24   @leetcode
-      L638, 34:R#.25   @一些 game engine 
-      L687, 35:R#.26   @znote merida 山地车
-      L693, 36:R#.27   @shader
-      L739, 37:R#.28   @DirectX Tool Kit
-      L828, 38:todo 把npp plugins intel slotion 给去掉。 done
-      L844, 39:R#.29   @Math
-      L850, 40:R#.30   @matrix
-      L884, 41:R#.31   @Get pitch, yaw, roll from Quaternion
-      L920, 42:R#.32   @3ds max exporter
-      L946, 43:R#.33   @骨骼动画 cal3d
-      L963, 44:R#.34   @腿长和车架上管计算公式 腿长*0.65=上管cm，例子 75*0.65=48.75cm
-      L972, 45:R#.35   @svn E155037 以前的操作没有完成
-      L980, 46:R#.36   @matrix 操作
-     Zndex_E : //z 2016-01-14 13:21:01 L.352'38339 T2065691269.K ~1138+----+----+----+----+----+
+      L287 ,   1:R#.1    @日知录
+      L295 ,   2:R#.2    @第17周总结 2015-04-26 --> 2015-05-02
+      L299 ,   3:zdo focus windows system programming 以及工程实践。
+      L302 ,   4:zkaizen 纯粹的肥肉还是别吃了；肉食类不要吃冷的。饭店吃饭尽量点热的。
+      L313 ,   5:R#.3    @国务院办公厅关于2015年部分节假日安排的通知
+      L333 ,   6:R#.4    @流程图 软件推荐
+      L355 ,   7:todo 阅读《我用VISIO制图》done 2015-04-28 16:26 当晚未看。
+      L358 ,   8:R#.5    @绘制类图，类继承
+      L363 ,   9:R#.6    @EA公司发表自制的EASTL规格 游戏开发方面对STL的性能及功能需求的特点
+      L367 ,  10:R#.7    @参考下 cp 上的 tl 功能，看能否增强n.tl
+      L372 ,  11:R#.8    @收集方方面面的模式和实例。
+      L378 ,  12:R#.9    @收集一份vc6的常用插件
+      L383 ,  13:R#.10   @zdo 使用 libcurl 写个http post[简繁转化]的例子
+      L388 ,  14:R#.11   @关灯吃面
+      L396 ,  15:R#.12   @znote astyle -A1 -R -z1 -n *.cpp
+      L400 ,  16:R#.13   @zlog hosts
+      L403 ,  17:zkz Moving from Research to Practice to Close the Achievement Gap
+      L406 ,  18:R#.14   @3ds max
+      L458 ,  19:zitem haptix/evolution3d googlecode
+      L460 ,  20:znote 3ds max 2015 中文帮助 http://help.autodesk.com/view/3DSMAX/2015/CHS/ 
+      L463 ,  21:R#.15   @CMakeFile
+      L500 ,  22:R#.16   @3ds
+      L510 ,  23:zitem freeimage 结合play，载入其他类型素材（不限于tga）
+      L525 ,  24:R#.17   @high performance lock
+      L536 ,  25:R#.18   @3ds
+      L545 ,  26:R#.19   @znote BookList
+      L548 ,  27:todo 深入理解nginx redis设计与实现
+      L593 ,  28:todo http://download.csdn.net/download/chengdz599/8792741 ??
+      L610 ,  29:R#.20   @书评
+      L627 ,  30:R#.21   @Game tmp
+      L641 ,  31:R#.22   @了解下 markdown 以及 lua
+      L645 ,  32:R#.23   @Matthew Fisher graphics project
+      L651 ,  33:zitem dx 10 的例子
+      L655 ,  34:R#.24   @leetcode
+      L694 ,  35:R#.25   @一些 game engine 
+      L739 ,  36:znote 一系列的 how to ，如 How to: Create a Constant Buffer
+      L747 ,  37:R#.26   @znote merida 山地车
+      L753 ,  38:R#.27   @shader
+      L767 ,  39:znote an introduction to hlsl。一步一步，易懂好理解。
+      L836 ,  40:R#.28   @DirectX Tool Kit
+      L927 ,  41:todo 把npp plugins intel slotion 给去掉。 done
+      L943 ,  42:R#.29   @Math
+      L949 ,  43:R#.30   @matrix
+      L983 ,  44:R#.31   @Get pitch, yaw, roll from Quaternion
+      L1019,  45:R#.32   @3ds max exporter
+      L1045,  46:R#.33   @骨骼动画 cal3d
+      L1062,  47:R#.34   @腿长和车架上管计算公式 腿长*0.65=上管cm，例子 75*0.65=48.75cm
+      L1071,  48:R#.35   @svn E155037 以前的操作没有完成
+      L1079,  49:R#.36   @matrix 操作
+      L1103,  50:R#.37   @COLLADA 动画
+      L1137,  51:R#.38   @cpp11
+      L1143,  52:R#.39   @fbx
+      L1157,  53:R#.40   @dx？ 课程
+      L1164,  54:R#.41   @MS dx 资源整理
+      L1204,  55:R#.42   @NVIDIA Professional Graphics Samples
+      L1220,  56:R#.43   @fbx animation
+      L1244,  57:R#.44   @directx sdk 一些使用说明
+      L1247,  58:todo http://blogs.msdn.com/b/chuckw/ 多看看该 blog 
+     Zndex_E : //z 2016-03-07 22:48:20 L.299'4300  T1074832307.K ~1139+----+----+----+----+----+
      TimeCnt : //z 2016-01-07 20:36:13 L.359'12227 T122349006 .K ~70  +----+----+----+----+----+
      Reg.Cnt : //z 2015-12-15 17:48:47 L.16 '22273 T832936990 .K ~44  +----+----+----+----+----+
      #44  R+ : //z 2015-12-15 17:48:47 L.16 '22273 T832936990 .K ~44    V+.1104 L+.1169 
@@ -152,11 +164,12 @@
      #3   R+ : //z 2015-04-27 11:35:34 L.248'44666 T1420042932.K ~3     V+.29   L+.108  
      #2   R+ : //z 2015-04-27 11:31:41 L.248'44899 T1419899214.K ~2     V+.19   L+.104  
      #1   R+ : //z 2015-04-27 11:28:08 L.248'45112 T1418964727.K ~1     V+.3    L+.62   
-     File.Op : //z 2015-09-04 21:24:47 L.118'9313  T3067438199.K ~3   +----+----+----+----+----+
+     File.Op : //z 2016-03-07 22:48:10 L.299'4310  T1074832274.K ~4   +----+----+----+----+----+
+     #4   O+ : //z 2016-03-07 22:48:10 L.299'4310  T1074832274.K ~4     V+.1183 L+.1    
      #3   O+ : //z 2015-09-04 21:24:47 L.118'9313  T3067438199.K ~3     V+.731  L+.1    
      #2   O+ : //z 2015-08-06 08:25:11 L.147'56089 T2984249525.K ~2     V+.572  L+.1    
      #1   O+ : //z 2015-06-18 08:36:17 L.196'55423 T2695262750.K ~1     V+.374  L+.1    
-     Version : //z 2016-01-14 13:21:01 L.352'38339 T2065691269.K ~1182  R+.41   L+.1188 --+----+
+     Version : //z 2016-03-07 22:48:20 L.299'4300  T1074832307.K ~1183  R+.44   L+.1257 --+----+
      #62  V+ : //z 2016-01-11 10:46:38 L.355'47602 T2285402160.K ~1178  R+.27   L+.788  
      #61  V+ : //z 2016-01-11 10:28:16 L.355'48704 T2283102124.K ~1159  R+.27   L+.775  
      #60  V+ : //z 2016-01-07 20:11:46 L.359'13694 T119797581 .K ~1140  R+.27   L+.748  
