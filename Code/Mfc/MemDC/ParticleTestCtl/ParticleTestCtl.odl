@@ -1,0 +1,70 @@
+// ParticleTestCtl.odl : type library source for ActiveX Control project.
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (ParticleTestCtl.tlb) that will become a resource in
+// ParticleTestCtl.ocx.
+
+#include <olectl.h>
+#include <idispids.h>
+
+[ uuid(3A4B625E-9EA6-11D3-AB75-00805FC73D05), version(1.0),
+  helpfile("ParticleTestCtl.hlp"),
+  helpstring("ParticleTestCtl ActiveX Control module"),
+  control ]
+library PARTICLETESTCTLLib
+{
+	importlib(STDOLE_TLB);
+	importlib(STDTYPE_TLB);
+
+	//  Primary dispatch interface for CParticleTestCtlCtrl
+
+	[ uuid(3A4B625F-9EA6-11D3-AB75-00805FC73D05),
+	  helpstring("Dispatch interface for ParticleTestCtl Control"), hidden ]
+	dispinterface _DParticleTestCtl
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CParticleTestCtlCtrl)
+			[id(1)] boolean FlickerFlag;
+			//}}AFX_ODL_PROP
+
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CParticleTestCtlCtrl)
+			//}}AFX_ODL_METHOD
+
+			[id(DISPID_ABOUTBOX)] void AboutBox();
+	};
+
+	//  Event dispatch interface for CParticleTestCtlCtrl
+
+	[ uuid(3A4B6260-9EA6-11D3-AB75-00805FC73D05),
+	  helpstring("Event interface for ParticleTestCtl Control") ]
+	dispinterface _DParticleTestCtlEvents
+	{
+		properties:
+			//  Event interface has no properties
+
+		methods:
+			// NOTE - ClassWizard will maintain event information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_EVENT(CParticleTestCtlCtrl)
+			//}}AFX_ODL_EVENT
+	};
+
+	//  Class information for CParticleTestCtlCtrl
+
+	[ uuid(3A4B6261-9EA6-11D3-AB75-00805FC73D05),
+	  helpstring("ParticleTestCtl Control"), control ]
+	coclass ParticleTestCtl
+	{
+		[default] dispinterface _DParticleTestCtl;
+		[default, source] dispinterface _DParticleTestCtlEvents;
+	};
+
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};
