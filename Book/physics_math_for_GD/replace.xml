@@ -1,0 +1,334 @@
+<Replace>
+<!--使用前首先需要将・替换为and-->
+<!--第1章翻译-->
+<Item><Old>// 物体の真横への移動(はね返り付き)</Old><New>// 让物体沿水平方向运动（物体碰到画面边缘时折回）</New></Item>
+<Item><Old>// 物体の真横への移動</Old><New>// 让物体沿水平方向运动</New></Item>
+
+<Item><Old>// はね返る</Old><New>// 弹回</New></Item>
+<Item><Old>// ちょうど壁の位置へ</Old><New>// 重设坐标为画面边缘</New></Item>
+
+
+<Item><Old>// キー入力による真横への移動</Old><New>// 通过键盘输入控制物体在水平方向运动</New></Item>
+<Item><Old>// プレイヤーの速さ</Old><New>// 玩家的速度</New></Item>
+<Item><Old>// プレイヤー速さ</Old><New>// 玩家的速度</New></Item>
+<Item><Old>// 左キーが押されていれば左へ</Old><New>// 左方向键被按下时向左移动</New></Item>
+<Item><Old>// 右キーが押されていれば右へ</Old><New>// 右方向键被按下时向右移动</New></Item>
+
+<Item><Old>// キー入力による縦and横への移動(斜め移動も等速)</Old><New>// 通过键盘输入控制物体在水平及垂直方向运动（斜方向移动速度不变）</New></Item>
+<Item><Old>// キー入力による縦and横への移動</Old><New>// 通过键盘输入控制物体在水平及垂直方向运动</New></Item>
+<Item><Old>// 上キーが押されていれば上へ</Old><New>// 上方向键被按下时向上移动</New></Item>
+<Item><Old>// 下キーが押されていれば下へ</Old><New>// 下方向键被按下时向下移动</New></Item>
+
+
+
+<Item><Old>// 物体の斜め30度方向への移動</Old><New>// 让物体沿30度角方向运动</New></Item>
+<Item><Old>// 円周率</Old><New>// 圆周率</New></Item>
+<Item><Old>// 初速の設定</Old><New>// 设置初始速度</New></Item>
+<Item><Old>// 実際に動かす</Old><New>// 实际运动</New></Item>
+<Item><Old>// 画面外にはみ出たら初期位置に戻す</Old><New>// 运动到画面外时回到初始位置</New></Item>
+<Item><Old>// 物体の移動方向の回転</Old><New>// 使用弧度让物体的运动方向每次都不同</New></Item>
+<Item><Old>// 角度を進める</Old><New>// 增加角的弧度</New></Item>
+<Item><Old>// 一周したら角度を戻す</Old><New>// 经过一周后弧度重置</New></Item>
+
+<Item><Old>// 物体に重力をかける</Old><New>// 在物体运动中加入重力</New></Item>
+<Item><Old>// y方向の初期位置（この場合無意味）</Old><New>// y方向的初始位置（本程序中无意义）</New></Item>
+<Item><Old>// y方向の初期位置</Old><New>// y方向的初始位置</New></Item>
+<Item><Old>// y方向の初速</Old><New>// y方向的初始速度</New></Item>
+<Item><Old>// 位置に速度を足す</Old><New>// 对位置加入速度</New></Item>
+<Item><Old>// 速度に加速度を足す</Old><New>// 为速度加上加速度</New></Item>
+<Item><Old>// 重力があるときの上への打ち上げ</Old><New>// 重力作用下的抛物运动</New></Item>
+<Item><Old>// 重力がある場合の、積分結果による軌道</Old><New>// 重力作用下基于积分计算运动轨道</New></Item>
+<Item><Old>// （この場合無意味）</Old><New>// （本程序中无意义）</New></Item>
+<Item><Old>// x方向の位置決め</Old><New>// 决定x方向的位置</New></Item>
+<Item><Old>// y方向の位置決め</Old><New>// 决定y方向的位置</New></Item>
+<Item><Old>// 物体の時刻を進める</Old><New>// 增加物体的時刻</New></Item>
+<Item><Old>// 物体の時刻</Old><New>// 物体的时刻</New></Item>
+
+<Item><Old>// 物体をランダムに打ち出す(正規分布の乱数使用)</Old><New>// 物体随机飞溅运动（使用正态分布的随机数）</New></Item>
+<Item><Old>// 物体をランダムに打ち出す(%使用)</Old><New>// 物体随机飞溅运动（使用%）</New></Item>
+<Item><Old>// 物体をランダムに打ち出す</Old><New>// 物体随机飞溅运动</New></Item>
+<Item><Old>// 最大球数</Old><New>// 球的最大数量</New></Item>
+<Item><Old>// 横方向速度幅(標準偏差)</Old><New>// 水平方向单位速度（标准差）</New></Item>
+<Item><Old>// 横方向速度幅</Old><New>// 水平方向单位速度</New></Item>
+<Item><Old>// 縦方向速度幅(標準偏差)</Old><New>// 垂直方向单位速度（标准差）</New></Item>
+<Item><Old>// 縦方向速度幅</Old><New>// 垂直方向单位速度</New></Item>
+<Item><Old>// 基礎速度</Old><New>// 基础速度</New></Item>
+<Item><Old>// 有効かどうか</Old><New>// 是否有效</New></Item>
+<Item><Old>// 球バッファ</Old><New>// 球的缓冲</New></Item>
+<Item><Old>// 球の数</Old><New>// 球的数量</New></Item>
+<Item><Old>// 全ての球を無効に</Old><New>// 将所有的球设置为无效</New></Item>
+<Item><Old>// 弾の数はゼロ</Old><New>// 飞溅的数量为0</New></Item>
+<Item><Old>// 球の移動</Old><New>// 球的移动</New></Item>
+<Item><Old>// 画面外に出れば無効に</Old><New>// 超出画面后变为无效</New></Item>
+<Item><Old>// 球の発生</Old><New>// 球的产生</New></Item>
+<Item><Old>// 画面の真ん中に</Old><New>// 画面正中</New></Item>
+<Item><Old>// 画面の下端に</Old><New>// 画面下端</New></Item>
+<Item><Old>// Vxをランダム設定</Old><New>// 随机设置Vx的初始值</New></Item>
+<Item><Old>// Vyをランダム設定</Old><New>// 随机设置Vy的初始值</New></Item>
+<Item><Old>// フレーム時間</Old><New>// 时间计数</New></Item>
+
+<Item><Old>// 物体を円運動させる</Old><New>// 让物体进行圆周运动</New></Item>
+<Item><Old>// 回転半径</Old><New>// 旋转半径</New></Item>
+<Item><Old>// 物体に加速度を掛けて円運動させる</Old><New>// 对物体施加加速度的圆周运动</New></Item>
+<Item><Old>// 回転中心からの相対位置</Old><New>// 距离旋转中心的相对位置</New></Item>
+<Item><Old>// 位置に速度を加える</Old><New>// 对位置加入速度</New></Item>
+<Item><Old>// 速度に加速度を加える</Old><New>// 为速度加上加速度</New></Item>
+
+<!--第2章翻译-->
+<Item><Old>// 背景のスクロール</Old><New>// 背景从一端卷动到另一端</New></Item>
+<Item><Old>// 背景幅</Old><New>// 背景宽度</New></Item>
+<Item><Old>// カメラ速さ</Old><New>// 镜头速度</New></Item>
+<Item><Old>// カメラの初期位置</Old><New>// 镜头的初始位置</New></Item>
+<Item><Old>// 背景の初期位置</Old><New>// 背景的初始位置</New></Item>
+<Item><Old>// 背景の位置</Old><New>// 背景的位置</New></Item>
+
+<Item><Old>// 背景の多重スクロール</Old><New>// 背景的多重卷动</New></Item>
+<Item><Old>// 背景1幅</Old><New>// 背景1宽度</New></Item>
+<Item><Old>// 背景2幅</Old><New>// 背景2宽度</New></Item>
+<Item><Old>// 背景3幅</Old><New>// 背景3宽度</New></Item>
+
+<Item><Old>// キャラの動きに合わせた背景のスクロール</Old><New>// 与角色运动联动的背景卷动</New></Item>
+<Item><Old>// キャラ幅</Old><New>// 角色宽度</New></Item>
+<Item><Old>// キャラ速さ</Old><New>// 角色速度</New></Item>
+<Item><Old>// 画面上およびフィールド上のキャラ位置</Old><New>// 角色在画面上及区域内的坐标</New></Item>
+<Item><Old>// カメラはいったんキャラの位置へ</Old><New>// 镜头暂时回到角色的位置</New></Item>
+<Item><Old>// カメラ左移動限界</Old><New>// 检查镜头的左移边界</New></Item>
+<Item><Old>// カメラ右移動限界</Old><New>// 检查镜头的右移边界</New></Item>
+<Item><Old>// スクロール開始幅</Old><New>// 卷动开始宽度</New></Item>
+<Item><Old>// カメラが左に寄っているかチェック</Old><New>// 检查镜头是否靠近了左侧</New></Item>
+<Item><Old>// カメラが右に寄っているかチェック</Old><New>// 检查镜头是否靠近了右侧</New></Item>
+
+<Item><Old>// マップのスクロール</Old><New>// 地图块组合的地图卷动</New></Item>
+<Item><Old>// マップ幅</Old><New>// 地图宽度</New></Item>
+<Item><Old>// マップ高さ</Old><New>// 地图高度</New></Item>
+<Item><Old>// チップサイズ</Old><New>// 地图块大小</New></Item>
+<Item><Old>// カメラ座標</Old><New>// 镜头坐标</New></Item>
+<Item><Old>// マップデータ</Old><New>// 地图数据</New></Item>
+<Item><Old>// マップチップの描画</Old><New>// 地图块的渲染</New></Item>
+<Item><Old>// マップの描画</Old><New>// 地图的渲染</New></Item>
+<Item><Old>// マップの表示座標</Old><New>// 地图的显示坐标</New></Item>
+<Item><Old>// 描画する左上チップ番号</Old><New>// 需要渲染的第一个地图块编号</New></Item>
+<Item><Old>// 描画する左上チップの座標</Old><New>// 需要渲染的第一个地图块坐标</New></Item>
+<Item><Old>// 描画する現在チップの座標</Old><New>// 当前渲染的地图块坐标</New></Item>
+<Item><Old>// 描画するチップ数(縦横方向)</Old><New>// 渲染的地图块数量（水平垂直方向）</New></Item>
+<Item><Old>// 描画するチップ数横</Old><New>// 渲染的横向地图块数量</New></Item>
+<Item><Old>// 描画するチップ数縦</Old><New>// 渲染的纵向地图块数量</New></Item>
+
+<Item><Old>// 単純なラスタスクロール</Old><New>// 让图像扭曲倾斜</New></Item>
+<Item><Old>// 描画ラインの位置</Old><New>// 图形线的位置</New></Item>
+<Item><Old>// 描画ラインのx座標</Old><New>// 图形线的x坐标</New></Item>
+<Item><Old>// 描画ラインのy座標</Old><New>// 图形线的y坐标</New></Item>
+<Item><Old>// ラスタスクロール</Old><New>// 将图形扭曲为波纹形状</New></Item>
+<Item><Old>// 揺らめくラスタスクロール</Old><New>// 图形随时间摇摆</New></Item>
+<Item><Old>// 遠近ラスタスクロール</Old><New>// 带有纵深感的卷动</New></Item>
+<Item><Old>// 絵の上の幅</Old><New>// 图形上边宽度</New></Item>
+<Item><Old>// 絵の下の幅</Old><New>// 图形下边宽度</New></Item>
+<Item><Old>// 現在のラインの絵の幅</Old><New>// 当前图形线的宽度</New></Item>
+<Item><Old>// ラインのベース位置</Old><New>// 图形线的基础位置</New></Item>
+<Item><Old>// ラスタ位置セット</Old><New>// 设置图形线的最后位置</New></Item>
+
+<!--第3章翻译-->
+<Item><Old>// 長方形同士の当たり判定</Old><New>// 长方形物体间的碰撞检测</New></Item>
+<Item><Old>// 矩形速さ</Old><New>// 矩形速度</New></Item>
+<Item><Old>// 当たりチェック</Old><New>// 碰撞检测</New></Item>
+<Item><Old>// キー入力で矩形Ａを移動</Old><New>// 通过键盘输入移动矩形A</New></Item>
+<Item><Old>// 円形同士の当たり判定</Old><New>// 圆形物体间的碰撞检测</New></Item>
+<Item><Old>// 円形速さ</Old><New>// 圆形速度</New></Item>
+<Item><Old>// 円形Ａ、Ｂ</Old><New>// 圆形Ａ、Ｂ</New></Item>
+<Item><Old>// 位置の差分</Old><New>// 位置坐标之差</New></Item>
+<Item><Old>// 2半径を足したもの</Old><New>// 两圆半径之和</New></Item>
+<Item><Old>// 距離の2乗計算</Old><New>// 距离的平方计算</New></Item>
+<Item><Old>// 距離の２乗</Old><New>// 距离的平方</New></Item>
+<Item><Old>// ２乗のまま比較</Old><New>// 直接使用平方进行比较</New></Item>
+
+<Item><Old>// 長方形と円形の当たり判定</Old><New>// 圆形与长方形的碰撞检测</New></Item>
+<Item><Old>// 円形Ａ</Old><New>// 圆形Ａ</New></Item>
+<Item><Old>// 円の半径</Old><New>// 圆的半径</New></Item>
+<Item><Old>// 大き目長方形チェック</Old><New>// 对长方形进行粗略检测</New></Item>
+<Item><Old>// 左端チェック</Old><New>// 左端检测</New></Item>
+<Item><Old>// 左上隅チェック</Old><New>// 左上角检测</New></Item>
+<Item><Old>// 左下隅チェック</Old><New>// 左下角检测</New></Item>
+<Item><Old>// 右端チェック</Old><New>// 右端检测</New></Item>
+<Item><Old>// 右上隅チェック</Old><New>// 右上角检测</New></Item>
+<Item><Old>// 右下隅チェック</Old><New>// 右下角检测</New></Item>
+<Item><Old>// キー入力で円形Ａを移動</Old><New>// 通过键盘输入移动圆形A</New></Item>
+
+<Item><Old>// 円と線分の当たり判定</Old><New>// 细长形物体与圆形物体间的碰撞检测</New></Item>
+<Item><Old>// 始点位置</Old><New>// 起点位置</New></Item>
+
+<Item><Old>// 当たりサイズ</Old><New>// 碰撞大小</New></Item>
+<Item><Old>// 矩形＋円Ｂ</Old><New>// 矩形+圆形Ｂ</New></Item>
+<Item><Old>// 最小の距離を与える座標</Old><New>// 最短距离的坐标</New></Item>
+<Item><Old>// tの下限</Old><New>// t的下限</New></Item>
+<Item><Old>// tの上限</Old><New>// t的上限</New></Item>
+<Item><Old>// 最小位置を与える座標</Old><New>// 最短距离线段的坐标</New></Item>
+
+<Item><Old>// 円と扇形の当たり判定</Old><New>// 圆形与扇形的碰撞检测</New></Item>
+<Item><Old>// 各ベクトルの角度</Old><New>// 各向量的角度</New></Item>
+
+<!--第4章翻译-->
+<Item><Old>// 絵を傾ける(始点変更)</Old><New>// 图形的倾斜（更改起点）</New></Item>
+<Item><Old>// 絵を傾ける</Old><New>// 图形的倾斜</New></Item>
+<Item><Old>// 簡略化光線</Old><New>// 简单光线</New></Item>
+<Item><Old>// 光線の幅</Old><New>// 光线宽度</New></Item>
+<Item><Old>// 光線</Old><New>// 光线</New></Item>
+<Item><Old>// 円形光線</Old><New>// 圆形光线</New></Item>
+<Item><Old>// 円の最小半径</Old><New>// 圆的最小半径</New></Item>
+<Item><Old>// 最大円分割数</Old><New>// 最大的圆分割数</New></Item>
+<Item><Old>// 頂点の初期位置</Old><New>// 顶点的初始位置</New></Item>
+<Item><Old>// 角度変化量</Old><New>// 角度变化量</New></Item>
+
+<Item><Old>// ホーミングレーザー</Old><New>// 带追踪效果的激光</New></Item>
+<Item><Old>// 曲線分割数</Old><New>// 曲线分割数</New></Item>
+<Item><Old>// １セグメントの長さ</Old><New>// 一小节的长度</New></Item>
+<Item><Old>// 方向回転スピード</Old><New>// 方向旋转速度</New></Item>
+<Item><Old>// 方向回転スピード</Old><New>// 方向旋转速度</New></Item>
+<Item><Old>// 滑らかなホーミングレーザー</Old><New>// 更平滑的带追踪效果的激光</New></Item>
+
+<!--第5章翻译-->
+<Item><Old>// 画面切り替え</Old><New>// 水平扫描式画面切换</New></Item>
+<Item><Old>// 2Dポリゴンの描画（色付き）</Old><New>// 渲染2D多边形（带颜色）</New></Item>
+<Item><Old>// 2Dポリゴンの描画</Old><New>// 渲染2D多边形</New></Item>
+<Item><Old>// 境界の初期位置</Old><New>// 边界的初始位置</New></Item>
+<Item><Old>// 境界のx方向の速度</Old><New>// 边界在x方向的速度</New></Item>
+<Item><Old>// 境界線を動かす</Old><New>// 移动边界线</New></Item>
+
+<Item><Old>// 斜め画面切り替え（境界ブレンド付き）</Old><New>// 带模糊效果的分界线进行画面切换</New></Item>
+<Item><Old>// 斜め画面切り替え</Old><New>// 斜向扫描式画面切换</New></Item>
+<Item><Old>// tの初期値</Old><New>// t的初始值</New></Item>
+<Item><Old>// 境界の速度</Old><New>// 边界的移动速度</New></Item>
+<Item><Old>// 上側直線上の点</Old><New>// 上侧直线上的点</New></Item>
+<Item><Old>// 下側直線上の点</Old><New>// 下侧直线上的点</New></Item>
+
+<Item><Old>// グラデーション幅</Old><New>// 模糊区域的宽度</New></Item>
+
+<Item><Old>// 円形画面切り替え（境界ブレンド付き）</Old><New>// 使用圆形进行画面切换（分界线带模糊效果）</New></Item>
+<Item><Old>// 円形画面切り替え</Old><New>// 使用圆形进行画面切换</New></Item>
+<Item><Old>// 最小円</Old><New>// 最小圆形</New></Item>
+<Item><Old>// 最大円</Old><New>// 最大圆形</New></Item>
+
+<Item><Old>// ワイパーのような画面切り替え（境界ブレンド付き）</Old><New>// 雨刷式画面切换（分界线带模糊效果）</New></Item>
+<Item><Old>// ワイパーのような画面切り替え</Old><New>// 雨刷式画面切换</New></Item>
+<Item><Old>// 角度の初期値</Old><New>// 角度的初始值</New></Item>
+<Item><Old>// 角速度の初期値</Old><New>// 角速度的初始值</New></Item>
+<Item><Old>// 境界線分１の点</Old><New>// 边界线1的点</New></Item>
+<Item><Old>// 境界線分２の点</Old><New>// 边界线2的点</New></Item>
+<Item><Old>// 左下の点</Old><New>// 左下的点</New></Item>
+<Item><Old>// 右上の点</Old><New>// 右上的点</New></Item>
+<Item><Old>// フォワードベクトル</Old><New>// 正方向向量</New></Item>
+<Item><Old>// サイドベクトル</Old><New>// 正交向量</New></Item>
+
+<!--第1章特殊-->
+<Item><Old>// 右端</Old><New>// 物体碰到右端</New></Item>
+<Item><Old>// 左端</Old><New>// 物体碰到左端</New></Item>
+
+<!--DirectX部分翻译-->
+<Item><Old>// 画面幅</Old><New>// 画面宽度</New></Item>
+<Item><Old>// 画面高さ</Old><New>// 画面高度</New></Item>
+<Item><Old>// キャラクタ幅</Old><New>// 物体宽度</New></Item>
+<Item><Old>// キャラクタ高さ</Old><New>// 物体高度</New></Item>
+<Item><Old>// 最初に１回だけ呼ばれる</Old><New>// 只在程序开始时调用一次</New></Item>
+<Item><Old>// キャラクタの初期位置</Old><New>// 物体的初始位置</New></Item>
+<Item><Old>// キャラクタのx方向の速度</Old><New>// 物体在x方向的速度</New></Item>
+<Item><Old>// 毎フレーム呼ばれる</Old><New>// 每帧调用</New></Item>
+<Item><Old>// 物体を実際に動かす</Old><New>// 实际移动物体</New></Item>
+<Item><Old>// 以下、DirectXによる表示プログラム</Old><New>// 下面通过DirectX显示</New></Item>
+<Item><Old>// Unicodeandマルチバイト文字関係</Old><New>// 处理Unicode及宽字符文本</New></Item>
+<Item><Old>// 最大バッファ頂点数</Old><New>// 最大缓冲顶点数</New></Item>
+<Item><Old>// リンクライブラリ</Old><New>// 链接库</New></Item>
+<Item><Old>// D3D11ライブラリ</Old><New>// D3D11库文件</New></Item>
+<Item><Old>// セーフリリースマクロ</Old><New>// 安全释放宏</New></Item>
+<Item><Old>// 頂点構造体</Old><New>// 顶点结构体</New></Item>
+<Item><Old>// シェーダ定数構造体</Old><New>// 着色器常数结构体</New></Item>
+<Item><Old>// テクスチャ絵構造体</Old><New>// 图片纹理结构体</New></Item>
+<Item><Old>// グローバル変数</Old><New>// 全局变量</New></Item>
+<Item><Old>// 描画領域の横幅</Old><New>// 渲染区域的宽度</New></Item>
+<Item><Old>// 描画領域の高さ</Old><New>// 渲染区域的高度</New></Item>
+<Item><Old>// ウィンドウハンドル</Old><New>// 窗口宽度</New></Item>
+<Item><Old>// DXGIスワップチェイン</Old><New>// 渲染数据暂存</New></Item>
+<Item><Old>// ラスタライザの設定</Old><New>// 设置渲染状态</New></Item>
+<Item><Old>// ラスタライザ</Old><New>// 渲染状态</New></Item>
+<Item><Old>// フィーチャーレベル</Old><New>// 适配器的功能级别</New></Item>
+<Item><Old>// 頂点バッファ</Old><New>// 顶点缓冲</New></Item>
+<Item><Old>// アルファブレンド</Old><New>// Alpha混合</New></Item>
+<Item><Old>// 頂点シェーダ</Old><New>// 顶点着色器</New></Item>
+<Item><Old>// ピクセルシェーダ</Old><New>// 像素着色器</New></Item>
+<Item><Old>// シェーダ入力レイアウト</Old><New>// 着色器输入布局</New></Item>
+<Item><Old>// サンプラステート</Old><New>// 采样器状态</New></Item>
+<Item><Old>// 描画頂点バッファ</Old><New>// 渲染顶点缓冲</New></Item>
+<Item><Old>// Direct3Dの初期化</Old><New>// Direct3D初始化</New></Item>
+<Item><Old>// デバイス作成</Old><New>// 创建适配器</New></Item>
+<Item><Old>// ファクトリの取得</Old><New>// 获得工厂</New></Item>
+<Item><Old>// スワップチェインの作成</Old><New>// 创建渲染数据</New></Item>
+<Item><Old>// レンダリングターゲットの生成</Old><New>// 生成渲染目标</New></Item>
+<Item><Old>// ラスタライザの設定</Old><New>// 设置渲染状态</New></Item>
+<Item><Old>// ビューポートの設定</Old><New>// 设置VIEWPORT</New></Item>
+<Item><Old>// プログラマブルシェーダ作成</Old><New>// 创建可编程着色器</New></Item>
+<Item><Old>// VertexShader作成</Old><New>// 创建顶点着色器</New></Item>
+<Item><Old>// PixelShader作成</Old><New>// 创建像素着色器</New></Item>
+<Item><Old>// 入力バッファの入力形式作成</Old><New>// 创建输入布局</New></Item>
+<Item><Old>// 入力バッファの入力形式</Old><New>// 输入缓冲的输入形式</New></Item>
+<Item><Old>// シェーダ定数バッファ作成</Old><New>// 创建着色器常数缓冲</New></Item>
+<Item><Old>// テクスチャロード</Old><New>// 载入纹理</New></Item>
+<Item><Old>// 描画モードオブジェクト初期化</Old><New>// 渲染模式对象初始化</New></Item>
+<Item><Old>// ブレンドステート</Old><New>// 混合状态</New></Item>
+<Item><Old>// ジオメトリの初期化</Old><New>// 图形初始化</New></Item>
+<Item><Old>// 頂点バッファ作成</Old><New>// 创建顶点缓冲</New></Item>
+<Item><Old>// テクスチャ作成</Old><New>// 创建纹理</New></Item>
+<Item><Old>// 終了処理</Old><New>// 终止处理</New></Item>
+<Item><Old>// ステータスをクリア</Old><New>// 清除状态</New></Item>
+<Item><Old>// スワップチェーン</Old><New>// 渲染数据</New></Item>
+<Item><Old>// ウィンドウプロシージャ</Old><New>// 窗口处理</New></Item>
+<Item><Old>// 絵の描画待ち行列フラッシュ</Old><New>// 顺序输出等待渲染的图形矩阵</New></Item>
+<Item><Old>// 絵の描画</Old><New>// 图形的渲染</New></Item>
+<Item><Old>// 頂点がバッファからあふれる場合は描画せず</Old><New>// 顶点从缓冲溢出时不渲染</New></Item>
+<Item><Old>// テクスチャが切り替えられていれば待ち行列フラッシュ</Old><New>// 纹理切换时输出图形矩阵</New></Item>
+<Item><Old>// 頂点セット</Old><New>// 顶点设置</New></Item>
+<Item><Old>// 画面クリア</Old><New>// 清除画面</New></Item>
+<Item><Old>// サンプラandラスタライザセット</Old><New>// 采样器初始化</New></Item>
+<Item><Old>// 描画設定</Old><New>// 渲染设置</New></Item>
+<Item><Old>// シェーダ設定</Old><New>// 着色器设置</New></Item>
+<Item><Old>// エントリポイント</Old><New>// 程序入口</New></Item>
+<Item><Old>// 現在とひとつ前の時刻</Old><New>// 当前时刻及上一次的时刻</New></Item>
+<Item><Old>// 時間単位</Old><New>// 时间单位</New></Item>
+<Item><Old>// ジオメトリ作成</Old><New>// 创建图形</New></Item>
+<Item><Old>// キャラクタ初期化</Old><New>// 物体初始化</New></Item>
+<Item><Old>// 1フレーム前時刻初期化</Old><New>// 初始化1帧前的时刻</New></Item>
+<Item><Old>// 1フレーム前時刻初期化</Old><New>// 初始化1帧前的时刻</New></Item>
+
+<!--3章特殊-->
+<Item><Old>// 絵の円形描画(色付き)</Old><New>// 渲染圆形图形（带颜色）</New></Item>
+<Item><Old>// 絵の矩形＋円形描画(色付き)</Old><New>// 渲染矩形+圆形图形（带颜色）</New></Item>
+<Item><Old>// 矩形頂点セット</Old><New>// 设置矩形顶点</New></Item>
+<Item><Old>// 半円１頂点セット</Old><New>// 设置半圆的1个顶点</New></Item>
+
+<!--fx特殊-->
+<Item><Old>// テクスチャ座標</Old><New>// 纹理坐标</New></Item>
+<Item><Old>// Simple2Dシェーダ</Old><New>// Simple2D着色器</New></Item>
+<Item><Old>// テクスチャサンプラ</Old><New>// 纹理采样</New></Item>
+<Item><Old>// 定数バッファ</Old><New>// 常数缓冲</New></Item>
+<Item><Old>// VertexShader出力形式</Old><New>// VertexShader输出形式</New></Item>
+
+<!--公共部分，最后执行-->
+<Item><Old>// デバイスコンテキスト</Old><New>// 适配器上下文</New></Item>
+<Item><Old>// デバイス</Old><New>// 适配器</New></Item>
+<Item><Old>// レンダリングターゲット</Old><New>// 渲染目标</New></Item>
+<Item><Old>// レンダリング</Old><New>// 显示到画面</New></Item>
+<Item><Old>// ラスタライザ</Old><New>// 渲染状态</New></Item>
+<Item><Old>// サンプラ</Old><New>// 采样器</New></Item>
+<Item><Old>// 変換行列</Old><New>// 变换矩阵</New></Item>
+<Item><Old>// コンパイル</Old><New>// 编译</New></Item>
+<Item><Old>// 描画</Old><New>// 渲染</New></Item>
+<Item><Old>// 表示</Old><New>// 显示</New></Item>
+<Item><Old>// 画面サイズ</Old><New>// 画面大小</New></Item>
+<Item><Old>// 幅</Old><New>// 宽度</New></Item>
+<Item><Old>// 高さ</Old><New>// 高度</New></Item>
+<Item><Old>// 時間</Old><New>// 时间</New></Item>
+<Item><Old>// ベクトル</Old><New>// 向量</New></Item>
+<Item><Old>// 色</Old><New>// 颜色</New></Item>
+<Item><Old>// テクスチャ</Old><New>// 纹理</New></Item>
+<Item><Old>// 長さ</Old><New>// 长度</New></Item>
+<Item><Old>// 外積</Old><New>// 外积</New></Item>
+</Replace>
+
+
