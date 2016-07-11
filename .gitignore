@@ -46,6 +46,7 @@
 *.user
 *.plg
 *.opt
+*.exp
 *.bsc
 *.clw
 *.tmp
