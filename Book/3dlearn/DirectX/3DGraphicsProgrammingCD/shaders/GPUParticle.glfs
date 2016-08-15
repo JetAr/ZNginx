@@ -1,0 +1,70 @@
+uniform sampler2D PositionSampler;
+uniform sampler2D VelocitySampler;
+uniform sampler2D NoiseSampler;
+
+uniform vec3 Force;
+uniform vec2 LifeRange;
+uniform vec2 SpeedRange;
+uniform vec2 SizeRange;
+uniform vec4 Rand[3];
+uniform float fTimeAdvance;
+uniform float fTan;
+
+// `發射出新的 particle`
+void EmitParticle(out vec4 position, out vec4 velocity, vec2 texcoord)
+{
+	// `從貼圖中取出亂數, CPU 所傳入的 seed 會提供亂數的 seed 效果.`
+	vec4 rand0 = texture2D(NoiseSampler, texcoord + Rand[0].xy);
+	rand0 = frac(rand0 + Rand[1]);
+	vec4 rand1 = texture2D(NoiseSampler, texcoord + Rand[0].zw);
+	rand1 = frac(rand1 + Rand[2]);
+	
+	// `下面會使用亂數來設定 particle 屬性`
+	float  fSize = SizeRange.x + rand1.z * SizeRange.y;
+	// `位置跟大小`
+	position = vec4(0.0, 0.0, 0.0, fSize);
+	// `方向跟速度`
+	vec4 dir = (rand0 - 0.5) * 2.0;
+	vec2 xz = normalize(dir.xz) * fTan * rand1.x;
+	float  fLife = LifeRange.x +  LifeRange.y * rand0.w;
+	float  fSpeed = SpeedRange.x + rand1.y * SpeedRange.y;
+	
+	velocity.xyz = normalize(vec3(xz.x, 1.0, xz.y)) * fSpeed;
+	velocity.w = fLife;
+}
+
+//
+// Pixel Shader
+//
+
+void main(void)
+{
+	// `從貼圖中取出速度值跟壽命值`
+	vec4 velocity = texture2D(VelocitySampler, gl_TexCoord[0].xy);
+	
+	vec4 NewPosition;
+	vec4 NewVelocity;
+
+	velocity.w -= fTimeAdvance;
+		
+	if ( velocity.w <= 0.0 )
+	{
+		// `壽命終止, 再產生新的 particle .`	
+		EmitParticle(NewPosition, NewVelocity, gl_TexCoord[0].xy);
+	}
+	else
+	{
+		// `從貼圖中取出位置`
+		vec4 position = texture2D(PositionSampler, gl_TexCoord[0].xy);
+
+		// `對 particle 做運動計算`
+		NewPosition.xyz = position.xyz + velocity.xyz * fTimeAdvance;
+		NewPosition.w = position.w;
+		
+		NewVelocity.xyz = velocity.xyz + Force;
+		NewVelocity.w = velocity.w;
+	}
+
+	gl_FragData[0] = NewPosition;
+	gl_FragData[1] = NewVelocity;
+}

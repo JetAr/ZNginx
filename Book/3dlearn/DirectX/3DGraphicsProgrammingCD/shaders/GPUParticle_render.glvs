@@ -1,0 +1,31 @@
+//
+// Vertex Shader
+//
+
+uniform sampler2D PositionSampler;
+uniform sampler2D VelocitySampler;
+
+uniform vec2 ScreenSize;
+uniform float fTanW;
+
+varying vec4 color;
+
+void main(void)
+{
+	// `從貼圖中取出粒子位置跟大小`
+	vec4 position = texture2D(PositionSampler, gl_Vertex.xy);
+
+	// `從貼圖中取出粒子移動速度跟壽命值`
+	vec4 velocity = texture2D(VelocitySampler, gl_Vertex.xy);
+	
+	// `經由取出的位置來做座標轉換`
+	gl_Position = gl_ModelViewProjectionMatrix * vec4(position.xyz, 1.0);
+	
+	// 畫點時 gl_PointSize 可以決定一個點的大小.
+	gl_PointSize = (ScreenSize.y * position.w) / (fTanW * abs(gl_Position.w));
+	
+	// `根據剩下的壽命長短來決定透明度, 讓快要結束生命的粒子慢慢消失.`
+	color = saturate(velocity.w * 5.0f);
+	
+	// gl_TexCoord[0] = 1;
+}

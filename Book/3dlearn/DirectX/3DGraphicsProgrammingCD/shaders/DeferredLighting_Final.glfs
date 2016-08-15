@@ -1,0 +1,37 @@
+//
+// Pixel Shader
+//
+uniform sampler2D PosSampler;
+uniform sampler2D NormalmapSampler;
+uniform sampler2D AlbedoSampler;
+
+uniform vec4 vCameraPos;
+uniform vec4 vLightPos;
+uniform vec4 vLightColor;
+uniform vec4 vLightAmbient;
+
+void main(void)
+{
+	// `把螢幕座標轉換成貼圖座標`
+	vec2 vTexcoord = (gl_TexCoord[0].xy / gl_TexCoord[0].w) * vec2(0.5, 0.5) + vec2(0.5, 0.5);
+	
+	// `從貼圖中取出這個像素的位置, 面向, 跟反光能力.`
+	vec4 vWorldPos = texture2D(PosSampler, vTexcoord);
+	vec4 vWorldNormal = texture2D(NormalmapSampler, vTexcoord);
+	vec4 vAlbedo = texture2D(AlbedoSampler, vTexcoord);
+
+	// `計算打光`
+	vec3 vLightDir = normalize(vLightPos.xyz - vWorldPos.xyz);
+	vec3 vCameraDir = normalize(vCameraPos.xyz - vWorldPos.xyz);
+	vec3 vHalfVector = normalize(vCameraDir + vLightDir);
+	
+	float fDistance = distance(vLightPos.xyz, vWorldPos.xyz);
+	float fAttenuation = 1.0 - fDistance / vLightPos.w;
+	
+	vec4 vAmbient = vAlbedo * vLightAmbient;
+	vec4 vDiffuse = vLightColor * saturate(dot(vLightDir, vWorldNormal));
+	vec4 vSpecular = vLightColor * pow(saturate(dot(vHalfVector, vWorldNormal)), 30.0) * vAlbedo.a;
+	vec4 vLighting = (vDiffuse + vSpecular) * vAlbedo * fAttenuation + vAmbient;
+	
+	gl_FragColor = vLighting;
+}

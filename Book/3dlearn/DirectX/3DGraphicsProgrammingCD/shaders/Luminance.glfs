@@ -1,0 +1,13 @@
+//
+// Pixel Shader
+//
+uniform sampler2D ImageSampler;
+uniform vec4 vLuminanceTable;
+
+void main(void)
+{
+	vec4 vImage = texture2D(ImageSampler, gl_TexCoord[0].xy);
+	vec4 vLuminance = dot(vImage.rgb, vLuminanceTable.rgb);
+	
+	gl_FragColor = vLuminance;
+}

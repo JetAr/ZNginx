@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glib", "..\..\glib\glib_vc2005.vcproj", "{12323F50-B0EE-4582-9F73-41E67A5699A6}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VertexCompression", "VertexCompression.vcproj", "{0C2D4FCB-358B-4D51-B092-EBA8B6C66A39}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+	ProjectSection(ProjectDependencies) = postProject
+		{12323F50-B0EE-4582-9F73-41E67A5699A6} = {12323F50-B0EE-4582-9F73-41E67A5699A6}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_DX10|Win32 = Debug_DX10|Win32
+		Debug|Win32 = Debug|Win32
+		Release_DX10|Win32 = Release_DX10|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12323F50-B0EE-4582-9F73-41E67A5699A6}.Debug_DX10|Win32.ActiveCfg = Debug_DX10|Win32
+		{12323F50-B0EE-4582-9F73-41E67A5699A6}.Debug_DX10|Win32.Build.0 = Debug_DX10|Win32
+		{12323F50-B0EE-4582-9F73-41E67A5699A6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{12323F50-B0EE-4582-9F73-41E67A5699A6}.Debug|Win32.Build.0 = Debug|Win32
+		{12323F50-B0EE-4582-9F73-41E67A5699A6}.Release_DX10|Win32.ActiveCfg = Release_DX10|Win32
+		{12323F50-B0EE-4582-9F73-41E67A5699A6}.Release_DX10|Win32.Build.0 = Release_DX10|Win32
+		{12323F50-B0EE-4582-9F73-41E67A5699A6}.Release|Win32.ActiveCfg = Release|Win32
+		{12323F50-B0EE-4582-9F73-41E67A5699A6}.Release|Win32.Build.0 = Release|Win32
+		{0C2D4FCB-358B-4D51-B092-EBA8B6C66A39}.Debug_DX10|Win32.ActiveCfg = Debug_DX10|Win32
+		{0C2D4FCB-358B-4D51-B092-EBA8B6C66A39}.Debug_DX10|Win32.Build.0 = Debug_DX10|Win32
+		{0C2D4FCB-358B-4D51-B092-EBA8B6C66A39}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0C2D4FCB-358B-4D51-B092-EBA8B6C66A39}.Debug|Win32.Build.0 = Debug|Win32
+		{0C2D4FCB-358B-4D51-B092-EBA8B6C66A39}.Release_DX10|Win32.ActiveCfg = Release_DX10|Win32
+		{0C2D4FCB-358B-4D51-B092-EBA8B6C66A39}.Release_DX10|Win32.Build.0 = Release_DX10|Win32
+		{0C2D4FCB-358B-4D51-B092-EBA8B6C66A39}.Release|Win32.ActiveCfg = Release|Win32
+		{0C2D4FCB-358B-4D51-B092-EBA8B6C66A39}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

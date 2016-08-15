@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "directional", "directional light\directional.vcproj", "{BFF1A523-CF1A-4808-9F44-325429FCCAEB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pyramid", "lit pyramid\pyramid.vcproj", "{2538335C-BF32-4326-A167-611B8DB86E82}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "point", "point light\point.vcproj", "{D6FBDA13-3DEB-43EC-8D05-FF815FCC716E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "spot", "spotlight\spot.vcproj", "{4899EC32-BD0F-4B2F-AAC7-5061F86DE6CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BFF1A523-CF1A-4808-9F44-325429FCCAEB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BFF1A523-CF1A-4808-9F44-325429FCCAEB}.Debug|Win32.Build.0 = Debug|Win32
+		{BFF1A523-CF1A-4808-9F44-325429FCCAEB}.Release|Win32.ActiveCfg = Release|Win32
+		{BFF1A523-CF1A-4808-9F44-325429FCCAEB}.Release|Win32.Build.0 = Release|Win32
+		{2538335C-BF32-4326-A167-611B8DB86E82}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2538335C-BF32-4326-A167-611B8DB86E82}.Debug|Win32.Build.0 = Debug|Win32
+		{2538335C-BF32-4326-A167-611B8DB86E82}.Release|Win32.ActiveCfg = Release|Win32
+		{2538335C-BF32-4326-A167-611B8DB86E82}.Release|Win32.Build.0 = Release|Win32
+		{D6FBDA13-3DEB-43EC-8D05-FF815FCC716E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D6FBDA13-3DEB-43EC-8D05-FF815FCC716E}.Debug|Win32.Build.0 = Debug|Win32
+		{D6FBDA13-3DEB-43EC-8D05-FF815FCC716E}.Release|Win32.ActiveCfg = Release|Win32
+		{D6FBDA13-3DEB-43EC-8D05-FF815FCC716E}.Release|Win32.Build.0 = Release|Win32
+		{4899EC32-BD0F-4B2F-AAC7-5061F86DE6CE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4899EC32-BD0F-4B2F-AAC7-5061F86DE6CE}.Debug|Win32.Build.0 = Debug|Win32
+		{4899EC32-BD0F-4B2F-AAC7-5061F86DE6CE}.Release|Win32.ActiveCfg = Release|Win32
+		{4899EC32-BD0F-4B2F-AAC7-5061F86DE6CE}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

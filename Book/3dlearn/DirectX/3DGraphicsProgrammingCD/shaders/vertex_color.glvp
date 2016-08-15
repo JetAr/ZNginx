@@ -1,0 +1,23 @@
+!!ARBvp1.0
+# cgc version 2.0.0001, build date Jan 22 2007 00:21:19
+# command line args: -profile arbvp1
+# source file: c:\3DGraphicsProgramming\Projects\shaders\vertex_color.shader
+#vendor NVIDIA Corporation
+#version 2.0.0.1
+#profile arbvp1
+#program VS
+#semantic viewproj_matrix : C0
+#var float4 In.Position : $vin.POSITION : POSITION : 0 : 1
+#var float4 In.Color : $vin.COLOR : COLOR0 : 0 : 1
+#var float4x4 viewproj_matrix : C0 : c[0], 4 : -1 : 1
+#var float4 VS.Position : $vout.POSITION : HPOS : -1 : 1
+#var float4 VS.Color : $vout.COLOR : COL0 : -1 : 1
+PARAM c[4] = { program.local[0..3] };
+TEMP R0;
+MUL R0, vertex.position.y, c[1];
+MAD R0, vertex.position.x, c[0], R0;
+MAD R0, vertex.position.z, c[2], R0;
+ADD result.position, R0, c[3];
+MOV result.color, vertex.color;
+END
+# 5 instructions, 1 R-regs

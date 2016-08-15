@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddressModes", "AddressModes\AddressModes.vcproj", "{F09B7419-6210-4183-BC91-0C72145A5916}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TexCube", "TexCube\TexCube.vcproj", "{EFE00706-0432-4BA8-8951-1C3445DD2623}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TexQuad", "TexQuad\TexQuad.vcproj", "{120A164F-995C-4964-BE5C-E1D5BFC22FA4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F09B7419-6210-4183-BC91-0C72145A5916}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F09B7419-6210-4183-BC91-0C72145A5916}.Debug|Win32.Build.0 = Debug|Win32
+		{F09B7419-6210-4183-BC91-0C72145A5916}.Release|Win32.ActiveCfg = Release|Win32
+		{F09B7419-6210-4183-BC91-0C72145A5916}.Release|Win32.Build.0 = Release|Win32
+		{EFE00706-0432-4BA8-8951-1C3445DD2623}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EFE00706-0432-4BA8-8951-1C3445DD2623}.Debug|Win32.Build.0 = Debug|Win32
+		{EFE00706-0432-4BA8-8951-1C3445DD2623}.Release|Win32.ActiveCfg = Release|Win32
+		{EFE00706-0432-4BA8-8951-1C3445DD2623}.Release|Win32.Build.0 = Release|Win32
+		{120A164F-995C-4964-BE5C-E1D5BFC22FA4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{120A164F-995C-4964-BE5C-E1D5BFC22FA4}.Debug|Win32.Build.0 = Debug|Win32
+		{120A164F-995C-4964-BE5C-E1D5BFC22FA4}.Release|Win32.ActiveCfg = Release|Win32
+		{120A164F-995C-4964-BE5C-E1D5BFC22FA4}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

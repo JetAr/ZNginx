@@ -1,0 +1,68 @@
+!!ARBvp1.0
+# cgc version 2.0.0001, build date Jan 22 2007 00:21:19
+# command line args: -profile arbvp1
+# source file: c:\3DGraphicsProgramming\Projects\shaders\vertex_lighting_directional.shader
+#vendor NVIDIA Corporation
+#version 2.0.0.1
+#profile arbvp1
+#program VS
+#semantic g_worldviewproj_matrix : C0
+#semantic g_world_matrix : C4
+#semantic g_camera_position : C8
+#semantic g_Ambient : C12
+#semantic g_Light_Direction : C13
+#semantic g_Light_Ambient : C14
+#semantic g_Light_Diffuse : C15
+#semantic g_Light_Specular : C16
+#semantic g_Light_Shininess : C17
+#var float4 In.Position : $vin.POSITION : POSITION : 0 : 1
+#var float3 In.Normal : $vin.Normal : NORMAL : 0 : 1
+#var float4x4 g_worldviewproj_matrix : C0 : c[0], 4 : -1 : 1
+#var float4x4 g_world_matrix : C4 : c[4], 4 : -1 : 1
+#var float4 g_camera_position : C8 : c[8] : -1 : 1
+#var float4 g_Ambient : C12 : c[12] : -1 : 1
+#var float3 g_Light_Direction : C13 : c[13] : -1 : 1
+#var float4 g_Light_Ambient : C14 : c[14] : -1 : 1
+#var float4 g_Light_Diffuse : C15 : c[15] : -1 : 1
+#var float4 g_Light_Specular : C16 : c[16] : -1 : 1
+#var float g_Light_Shininess : C17 : c[17] : -1 : 1
+#var float4 VS.Position : $vout.POSITION : HPOS : -1 : 1
+#var float4 VS.Color : $vout.COLOR : COL0 : -1 : 1
+#const c[9] = 1 0
+PARAM c[18] = { program.local[0..8],
+		{ 1, 0 },
+		program.local[10..17] };
+TEMP R0;
+TEMP R1;
+TEMP R2;
+MUL R0.xyz, vertex.position.y, c[5];
+MAD R0.xyz, vertex.position.x, c[4], R0;
+MAD R0.xyz, vertex.position.z, c[6], R0;
+MAD R0.xyz, vertex.position.w, c[7], R0;
+ADD R0.xyz, -R0, c[8];
+DP3 R0.w, R0, R0;
+RSQ R0.w, R0.w;
+MAD R0.xyz, R0.w, R0, c[13];
+DP3 R0.w, R0, R0;
+RSQ R0.w, R0.w;
+MUL R1.xyz, vertex.normal.y, c[5];
+MAD R1.xyz, vertex.normal.x, c[4], R1;
+MAD R1.xyz, vertex.normal.z, c[6], R1;
+MUL R0.xyz, R0.w, R0;
+DP3 R0.x, R0, R1;
+MIN R0.x, R0, c[9];
+MAX R1.w, R0.x, c[9].y;
+DP3 R2.y, R1, c[13];
+POW R2.x, R1.w, c[17].x;
+MUL R0, vertex.position.y, c[1];
+MAD R0, vertex.position.x, c[0], R0;
+MOV R1, c[14];
+MIN R2.y, R2, c[9].x;
+MAD R0, vertex.position.z, c[2], R0;
+ADD R1, R1, c[12];
+MAX R2.y, R2, c[9];
+MAD R1, R2.y, c[15], R1;
+MAD result.color, R2.x, c[16], R1;
+MAD result.position, vertex.position.w, c[3], R0;
+END
+# 29 instructions, 3 R-regs

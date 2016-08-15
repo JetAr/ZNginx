@@ -1,0 +1,7 @@
+作者：trcj
+Email：taoboxiang2006@yahoo.com.cn
+blog：http://blog.csdn.net/trcj1
+
+El游戏引擎为作者工作之余编写的一款羽量级3D游戏引擎，以为学习之用。
+供下载内容包含El引擎、配套3ds Max插件、演示Demo源码及资源。
+详细说明见下载包内说明文档。

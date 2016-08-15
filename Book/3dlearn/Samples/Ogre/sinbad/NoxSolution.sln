@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleBrowser", "Browser\SampleBrowser.vcproj", "{F36E03B5-ACF5-4A67-970F-5FD569B8B820}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0C5FB3AA-0702-4796-B893-F38793D4B414} = {0C5FB3AA-0702-4796-B893-F38793D4B414}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SinbadApp", "Character\Sample_Character.vcproj", "{0C5FB3AA-0702-4796-B893-F38793D4B414}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		MinSizeRel|Win32 = MinSizeRel|Win32
+		Release|Win32 = Release|Win32
+		RelWithDebInfo|Win32 = RelWithDebInfo|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F36E03B5-ACF5-4A67-970F-5FD569B8B820}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F36E03B5-ACF5-4A67-970F-5FD569B8B820}.Debug|Win32.Build.0 = Debug|Win32
+		{F36E03B5-ACF5-4A67-970F-5FD569B8B820}.MinSizeRel|Win32.ActiveCfg = MinSizeRel|Win32
+		{F36E03B5-ACF5-4A67-970F-5FD569B8B820}.MinSizeRel|Win32.Build.0 = MinSizeRel|Win32
+		{F36E03B5-ACF5-4A67-970F-5FD569B8B820}.Release|Win32.ActiveCfg = Release|Win32
+		{F36E03B5-ACF5-4A67-970F-5FD569B8B820}.Release|Win32.Build.0 = Release|Win32
+		{F36E03B5-ACF5-4A67-970F-5FD569B8B820}.RelWithDebInfo|Win32.ActiveCfg = RelWithDebInfo|Win32
+		{F36E03B5-ACF5-4A67-970F-5FD569B8B820}.RelWithDebInfo|Win32.Build.0 = RelWithDebInfo|Win32
+		{0C5FB3AA-0702-4796-B893-F38793D4B414}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0C5FB3AA-0702-4796-B893-F38793D4B414}.Debug|Win32.Build.0 = Debug|Win32
+		{0C5FB3AA-0702-4796-B893-F38793D4B414}.MinSizeRel|Win32.ActiveCfg = MinSizeRel|Win32
+		{0C5FB3AA-0702-4796-B893-F38793D4B414}.MinSizeRel|Win32.Build.0 = MinSizeRel|Win32
+		{0C5FB3AA-0702-4796-B893-F38793D4B414}.Release|Win32.ActiveCfg = Release|Win32
+		{0C5FB3AA-0702-4796-B893-F38793D4B414}.Release|Win32.Build.0 = Release|Win32
+		{0C5FB3AA-0702-4796-B893-F38793D4B414}.RelWithDebInfo|Win32.ActiveCfg = RelWithDebInfo|Win32
+		{0C5FB3AA-0702-4796-B893-F38793D4B414}.RelWithDebInfo|Win32.Build.0 = RelWithDebInfo|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

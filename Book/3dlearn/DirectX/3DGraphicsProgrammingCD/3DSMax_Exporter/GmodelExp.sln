@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GmodelExp", "GmodelExp.vcproj", "{86DA085A-A5EF-4BB2-B5DD-D1B0DBDF8D31}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Hybrid|Win32 = Hybrid|Win32
+		Hybrid|x64 = Hybrid|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{86DA085A-A5EF-4BB2-B5DD-D1B0DBDF8D31}.Debug|Win32.ActiveCfg = Debug|Win32
+		{86DA085A-A5EF-4BB2-B5DD-D1B0DBDF8D31}.Debug|Win32.Build.0 = Debug|Win32
+		{86DA085A-A5EF-4BB2-B5DD-D1B0DBDF8D31}.Debug|x64.ActiveCfg = Debug|x64
+		{86DA085A-A5EF-4BB2-B5DD-D1B0DBDF8D31}.Debug|x64.Build.0 = Debug|x64
+		{86DA085A-A5EF-4BB2-B5DD-D1B0DBDF8D31}.Hybrid|Win32.ActiveCfg = Hybrid|Win32
+		{86DA085A-A5EF-4BB2-B5DD-D1B0DBDF8D31}.Hybrid|Win32.Build.0 = Hybrid|Win32
+		{86DA085A-A5EF-4BB2-B5DD-D1B0DBDF8D31}.Hybrid|x64.ActiveCfg = Hybrid|x64
+		{86DA085A-A5EF-4BB2-B5DD-D1B0DBDF8D31}.Hybrid|x64.Build.0 = Hybrid|x64
+		{86DA085A-A5EF-4BB2-B5DD-D1B0DBDF8D31}.Release|Win32.ActiveCfg = Release|Win32
+		{86DA085A-A5EF-4BB2-B5DD-D1B0DBDF8D31}.Release|Win32.Build.0 = Release|Win32
+		{86DA085A-A5EF-4BB2-B5DD-D1B0DBDF8D31}.Release|x64.ActiveCfg = Release|x64
+		{86DA085A-A5EF-4BB2-B5DD-D1B0DBDF8D31}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

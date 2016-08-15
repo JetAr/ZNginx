@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "font", "CFont\font.vcproj", "{F09B7419-6210-4183-BC91-0C72145A5916}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "create", "D3DXCreateText\creat.vcproj", "{3A64D2ED-6B1B-4A7C-BBA5-0DB42E144C9D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dxfont", "ID3DXFont\dxfont.vcproj", "{727835F5-41E9-4AD7-B705-D8B754A2A8F1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F09B7419-6210-4183-BC91-0C72145A5916}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F09B7419-6210-4183-BC91-0C72145A5916}.Debug|Win32.Build.0 = Debug|Win32
+		{F09B7419-6210-4183-BC91-0C72145A5916}.Release|Win32.ActiveCfg = Release|Win32
+		{F09B7419-6210-4183-BC91-0C72145A5916}.Release|Win32.Build.0 = Release|Win32
+		{3A64D2ED-6B1B-4A7C-BBA5-0DB42E144C9D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3A64D2ED-6B1B-4A7C-BBA5-0DB42E144C9D}.Debug|Win32.Build.0 = Debug|Win32
+		{3A64D2ED-6B1B-4A7C-BBA5-0DB42E144C9D}.Release|Win32.ActiveCfg = Release|Win32
+		{3A64D2ED-6B1B-4A7C-BBA5-0DB42E144C9D}.Release|Win32.Build.0 = Release|Win32
+		{727835F5-41E9-4AD7-B705-D8B754A2A8F1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{727835F5-41E9-4AD7-B705-D8B754A2A8F1}.Debug|Win32.Build.0 = Debug|Win32
+		{727835F5-41E9-4AD7-B705-D8B754A2A8F1}.Release|Win32.ActiveCfg = Release|Win32
+		{727835F5-41E9-4AD7-B705-D8B754A2A8F1}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,22 @@
+//
+// Pixel Shader
+//
+
+sampler2D texShadowmapSampler;
+
+varying vec4 vLightPos;
+varying vec4 vNormal;
+
+void main(void)
+{
+	vec4  projected_pos = vLightPos / vLightPos.w;
+	float fToCenter = distance(projected_pos.xy, vec2(0.5,0.5));
+	float fSpotLightEffect = 1.0 - clamp(fToCenter/0.4, 0.0, 1.0);
+	float fLighting = fSpotLightEffect * vNormal.z;
+
+	vec4 shadowmap = texture2D(texShadowmapSampler, projected_pos.xy);
+	float fLit = shadowmap.r < projected_pos.z ? 0.0 : 1.0;
+	vec4 color = fLighting * fLit;
+	
+	gl_FragColor = color;
+}

@@ -1,0 +1,24 @@
+		static float __count = 0;
+		__count+=1.0f * timeDelta;
+		if ( (::GetAsyncKeyState('R') & 0x8000f) && (__count>=0.3))
+		{
+
+			__count=0;
+
+			DWORD dwState=-1;
+			Device->GetRenderState(D3DRS_FILLMODE , &dwState);
+			if (dwState == D3DFILL_SOLID)
+			{
+				Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME );
+			}
+			else if (dwState == D3DFILL_WIREFRAME)
+			{
+				Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_POINT );
+			}
+			else if (dwState == D3DFILL_POINT)
+			{
+				Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID );
+			}
+
+
+		}

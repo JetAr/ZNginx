@@ -1,0 +1,31 @@
+!!ARBfp1.0
+# cgc version 2.0.0001, build date Jan 22 2007 00:21:19
+# command line args: -profile arbfp1
+# source file: c:\3DGraphicsProgramming\Projects\shaders\vertex_lighting_directional.shader
+#vendor NVIDIA Corporation
+#version 2.0.0.1
+#profile arbfp1
+#program PS
+#semantic g_worldviewproj_matrix : C0
+#semantic g_world_matrix : C4
+#semantic g_camera_position : C8
+#semantic g_Ambient : C12
+#semantic g_Light_Direction : C13
+#semantic g_Light_Ambient : C14
+#semantic g_Light_Diffuse : C15
+#semantic g_Light_Specular : C16
+#semantic g_Light_Shininess : C17
+#var float4 In.Color : $vin.COLOR : COL0 : 0 : 1
+#var float4x4 g_worldviewproj_matrix : C0 : c[0], 4 : -1 : 0
+#var float4x4 g_world_matrix : C4 : c[4], 4 : -1 : 0
+#var float4 g_camera_position : C8 : c[8] : -1 : 0
+#var float4 g_Ambient : C12 : c[12] : -1 : 0
+#var float3 g_Light_Direction : C13 : c[13] : -1 : 0
+#var float4 g_Light_Ambient : C14 : c[14] : -1 : 0
+#var float4 g_Light_Diffuse : C15 : c[15] : -1 : 0
+#var float4 g_Light_Specular : C16 : c[16] : -1 : 0
+#var float g_Light_Shininess : C17 : c[17] : -1 : 0
+#var float4 PS : $vout.COLOR : COL : -1 : 1
+MOV result.color, fragment.color.primary;
+END
+# 1 instructions, 0 R-regs

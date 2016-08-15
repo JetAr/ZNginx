@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TextureBase", "01_TextureBase\TextureBase.vcproj", "{0A45181A-0EBE-4DCA-9570-BBCA25A7B676}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TexFilterMode", "02_TexFilterMode\TexFilterMode.vcproj", "{8C755EDE-D86F-49F9-91DF-733FAD95DB8B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MipTexture", "03_MipTexture\MipTexture.vcproj", "{18B7EAB9-5163-492A-9975-40CA2E59D084}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TexAddressMode", "04_TexAddressMode\TexAddressMode.vcproj", "{EF7CCE62-5B48-4FD0-8AF1-9CCED0B23569}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TexStageState", "05_TexRenderState\TexStageState.vcproj", "{F2D1299A-042C-4448-AD6E-570981DA11D8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A45181A-0EBE-4DCA-9570-BBCA25A7B676}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0A45181A-0EBE-4DCA-9570-BBCA25A7B676}.Debug|Win32.Build.0 = Debug|Win32
+		{0A45181A-0EBE-4DCA-9570-BBCA25A7B676}.Release|Win32.ActiveCfg = Release|Win32
+		{0A45181A-0EBE-4DCA-9570-BBCA25A7B676}.Release|Win32.Build.0 = Release|Win32
+		{8C755EDE-D86F-49F9-91DF-733FAD95DB8B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8C755EDE-D86F-49F9-91DF-733FAD95DB8B}.Debug|Win32.Build.0 = Debug|Win32
+		{8C755EDE-D86F-49F9-91DF-733FAD95DB8B}.Release|Win32.ActiveCfg = Release|Win32
+		{8C755EDE-D86F-49F9-91DF-733FAD95DB8B}.Release|Win32.Build.0 = Release|Win32
+		{18B7EAB9-5163-492A-9975-40CA2E59D084}.Debug|Win32.ActiveCfg = Debug|Win32
+		{18B7EAB9-5163-492A-9975-40CA2E59D084}.Debug|Win32.Build.0 = Debug|Win32
+		{18B7EAB9-5163-492A-9975-40CA2E59D084}.Release|Win32.ActiveCfg = Release|Win32
+		{18B7EAB9-5163-492A-9975-40CA2E59D084}.Release|Win32.Build.0 = Release|Win32
+		{EF7CCE62-5B48-4FD0-8AF1-9CCED0B23569}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EF7CCE62-5B48-4FD0-8AF1-9CCED0B23569}.Debug|Win32.Build.0 = Debug|Win32
+		{EF7CCE62-5B48-4FD0-8AF1-9CCED0B23569}.Release|Win32.ActiveCfg = Release|Win32
+		{EF7CCE62-5B48-4FD0-8AF1-9CCED0B23569}.Release|Win32.Build.0 = Release|Win32
+		{F2D1299A-042C-4448-AD6E-570981DA11D8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F2D1299A-042C-4448-AD6E-570981DA11D8}.Debug|Win32.Build.0 = Debug|Win32
+		{F2D1299A-042C-4448-AD6E-570981DA11D8}.Release|Win32.ActiveCfg = Release|Win32
+		{F2D1299A-042C-4448-AD6E-570981DA11D8}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

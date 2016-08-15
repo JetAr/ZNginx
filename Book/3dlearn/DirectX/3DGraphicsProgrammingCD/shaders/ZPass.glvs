@@ -1,0 +1,7 @@
+//
+// Vertex Shader
+//
+void main(void)
+{
+	gl_Position = ftransform();
+}

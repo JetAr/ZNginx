@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Mirror", "Stencil Mirror\Mirror.vcproj", "{F09B7419-6210-4183-BC91-0C72145A5916}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MirrorShadow", "Stencil Mirror Shadow\MirrorShadow.vcproj", "{2E2AE5D7-AC91-42C5-8AB4-BDE6B137B866}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shadow", "Stencil Shadow\Shadow.vcproj", "{4BE8BDF6-E05B-4E3C-BF66-99CE1E276840}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F09B7419-6210-4183-BC91-0C72145A5916}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F09B7419-6210-4183-BC91-0C72145A5916}.Debug|Win32.Build.0 = Debug|Win32
+		{F09B7419-6210-4183-BC91-0C72145A5916}.Release|Win32.ActiveCfg = Release|Win32
+		{F09B7419-6210-4183-BC91-0C72145A5916}.Release|Win32.Build.0 = Release|Win32
+		{2E2AE5D7-AC91-42C5-8AB4-BDE6B137B866}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2E2AE5D7-AC91-42C5-8AB4-BDE6B137B866}.Debug|Win32.Build.0 = Debug|Win32
+		{2E2AE5D7-AC91-42C5-8AB4-BDE6B137B866}.Release|Win32.ActiveCfg = Release|Win32
+		{2E2AE5D7-AC91-42C5-8AB4-BDE6B137B866}.Release|Win32.Build.0 = Release|Win32
+		{4BE8BDF6-E05B-4E3C-BF66-99CE1E276840}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4BE8BDF6-E05B-4E3C-BF66-99CE1E276840}.Debug|Win32.Build.0 = Debug|Win32
+		{4BE8BDF6-E05B-4E3C-BF66-99CE1E276840}.Release|Win32.ActiveCfg = Release|Win32
+		{4BE8BDF6-E05B-4E3C-BF66-99CE1E276840}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

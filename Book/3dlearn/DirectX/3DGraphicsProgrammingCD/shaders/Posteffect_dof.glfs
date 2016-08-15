@@ -1,0 +1,31 @@
+// 改變亮度
+// Pixel Shader
+//
+// PS 調整亮度參數
+uniform vec4 vDepthOfField;
+uniform vec4 vZInv;
+
+sampler2D ZBuffer;
+sampler2D Image;
+sampler2D BlurredImage;
+
+void main(void)
+{
+	vec4 zbuffer = texture2D(ZBuffer, gl_TexCoord[0].xy);
+	vec4 framebuffer = texture2D(Image, gl_TexCoord[0].xy);
+	vec4 blur = texture2D(BlurredImage, gl_TexCoord[0].xy);
+	
+	vec4 z = vec4(0.0, 0.0, (zbuffer.r-0.5)*2.0, 1.0);
+	float fLinearZ = abs(1.0/dot(z, vZInv));
+
+	float fNearBlur = clamp((vDepthOfField.x-fLinearZ)/vDepthOfField.y, 0.0, 1.0);
+	float fFarBlur = clamp((fLinearZ - vDepthOfField.z)/vDepthOfField.w, 0.0, 1.0);
+	float fBlur = max(fNearBlur, fFarBlur);
+	
+	//gl_FragColor = framebuffer * fBlur;
+	//float4 color;
+	gl_FragColor = mix(framebuffer, blur, fBlur);
+	//color = clamp(mix(framebuffer, blur, 0.001), 0.0, 1.0);
+	//gl_FragColor = fBlur * blur;
+	//gl_FragColor = framebuffer + color * 0.01;
+}

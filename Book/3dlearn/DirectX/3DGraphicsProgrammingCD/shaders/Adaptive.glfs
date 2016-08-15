@@ -1,0 +1,16 @@
+//
+// Pixel Shader
+//
+uniform sampler2D PrevSampler;
+uniform sampler2D CurrentSampler;
+
+uniform vec4 vAdaptiveSpeed;
+
+void main(void)
+{
+	float fPrevLuminance = texture2D(PrevSampler, gl_TexCoord[0].xy).r;
+	float fCurrentLuminance = texture2D(CurrentSampler, gl_TexCoord[0].xy).r;
+	float fNewLuminance = lerp(fPrevLuminance, fCurrentLuminance, vAdaptiveSpeed.x);
+	
+	gl_FragColor = fNewLuminance;
+}

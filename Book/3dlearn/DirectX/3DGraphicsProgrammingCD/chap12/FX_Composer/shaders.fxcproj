@@ -1,0 +1,99 @@
+<project>
+  <current_configuration value="Debug" />
+  <configurations>
+    <configuration name="Debug">
+      <settings category="Project\Direct3D\HLSL Compiler">
+        <CompilerOptions value="" />
+      </settings>
+      <settings category="Project\OpenGL\CgCompiler">
+        <CompilerOptions value="" />
+      </settings>
+      <settings category="Project\Paths">
+        <Includes value="" />
+        <Models value="" />
+        <Scripts value="" />
+        <Shaders value="" />
+        <Textures value="" />
+      </settings>
+      <settings category="Project\Settings">
+        <BindLightToUnboundMaterials value="False" />
+      </settings>
+      <settings category="Project\COLLADA Common Profile">
+        <EnvironmentMap value="" />
+        <DisableCommonProfileTransparency value="False" />
+      </settings>
+      <settings category="Project\Direct3D10\HLSL Compiler">
+        <CompilerOptions value="" />
+      </settings>
+    </configuration>
+    <configuration name="Release">
+      <settings category="Project\Direct3D\HLSL Compiler">
+        <CompilerOptions value="" />
+      </settings>
+      <settings category="Project\OpenGL\CgCompiler">
+        <CompilerOptions value="" />
+      </settings>
+      <settings category="Project\Paths">
+        <Includes value="" />
+        <Models value="" />
+        <Scripts value="" />
+        <Shaders value="" />
+        <Textures value="" />
+      </settings>
+      <settings category="Project\Settings">
+        <BindLightToUnboundMaterials value="False" />
+      </settings>
+      <settings category="Project\COLLADA Common Profile">
+        <EnvironmentMap value="" />
+        <DisableCommonProfileTransparency value="False" />
+      </settings>
+      <settings category="Project\Direct3D10\HLSL Compiler">
+        <CompilerOptions value="" />
+      </settings>
+    </configuration>
+  </configurations>
+  <assetFile uri="Document2.dae" referenced="False" />
+  <activeAssetCollection uri="Document2.dae" />
+  <customConfigurations>
+    <FXComposer.Scene.Services.FXRenderPortService>
+      <defaultScene sceneUri="Document2.dae#DefaultScene" />
+      <camera type="Top" scene="Document2.dae#DefaultScene">
+        <focallength>2.163295</focallength>
+        <fov>40</fov>
+        <zoomrect>0 0 1 1</zoomrect>
+        <viewtransform>1 0 0 0 0 5.960464E-08 -0.9999999 0 0 0.9999999 5.960464E-08 0 0 2.163295 0 1 </viewtransform>
+      </camera>
+      <camera type="Front" scene="Document2.dae#DefaultScene">
+        <focallength>2.163295</focallength>
+        <fov>40</fov>
+        <zoomrect>0 0 1 1</zoomrect>
+        <viewtransform>1 0 0 0 0 1 0 0 0 0 1 0 0 0 2.163295 1 </viewtransform>
+      </camera>
+      <camera type="Right" scene="Document2.dae#DefaultScene">
+        <focallength>2.163295</focallength>
+        <fov>40</fov>
+        <zoomrect>0 0 1 1</zoomrect>
+        <viewtransform>5.960464E-08 0 -0.9999999 0 0 1 0 0 0.9999999 0 5.960464E-08 0 2.163295 0 0 1 </viewtransform>
+      </camera>
+      <camera type="Perspective" scene="Document2.dae#DefaultScene">
+        <focallength>3.463162</focallength>
+        <fov>40</fov>
+        <zoomrect>0 0 1 1</zoomrect>
+        <viewtransform>0.7071062 -5.796004E-07 -0.7071074 0 -0.4082501 0.8164946 -0.4082502 0 0.5773498 0.5773529 0.5773483 0 2.472281 2.843981 2.190219 1 </viewtransform>
+      </camera>
+      <renderPort name="Render" />
+    </FXComposer.Scene.Services.FXRenderPortService>
+    <FXComposer.Scene.Services.FXSceneService>
+      <grid_settings sceneUri="Document2.dae#DefaultScene">
+        <show_grid value="True" />
+        <axes_color value="0, 0, 0, 1" />
+        <size value="17.32051" />
+        <major_ticks_color value="0.25, 0.25, 0.25, 1" />
+        <major_tick_every_nth value="10" />
+        <ticks_color value="0.425, 0.425, 0.425, 1" />
+        <ticks_interval_in_units value="1" />
+      </grid_settings>
+      <background_color color="0.5 0.5 0.5 1" />
+    </FXComposer.Scene.Services.FXSceneService>
+  </customConfigurations>
+</project>

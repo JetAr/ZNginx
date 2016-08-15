@@ -1,0 +1,11 @@
+//
+// Pixel Shader
+// 彩色轉黑白
+sampler2D RGBSampler;
+
+void main(void)
+{
+	vec3 rgb = texture2D(RGBSampler, gl_TexCoord[0].xy).rgb;
+	vec3 table = vec3(0.3, 0.59, 0.11);
+	gl_FragColor = dot(rgb, table);
+}

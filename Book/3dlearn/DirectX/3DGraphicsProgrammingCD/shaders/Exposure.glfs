@@ -1,0 +1,34 @@
+//
+// Pixel Shader
+//
+uniform sampler2D HDRSampler;
+uniform sampler2D LuminanceSampler;
+
+uniform vec4 vMiddle;
+uniform vec4 vLuminanceTable;
+
+void main(void)
+{
+	vec4 vHDRImage = texture2D(HDRSampler, gl_TexCoord[0].xy);
+	vec4 vAverageLuminance = texture2D(LuminanceSampler, gl_TexCoord[0].xy);
+
+	float fScale = pow(vMiddle.x / vAverageLuminance.x, 0.5f);
+	vec4 vColor = vHDRImage * fScale;
+		
+	gl_FragColor = vColor;
+}
+
+/*
+void main(void)
+{
+	vec4 vHDRImage = texture2D(HDRSampler, gl_TexCoord[0].xy);
+	vec4 vAverageLuminance = texture2D(LuminanceSampler, gl_TexCoord[0].xy);
+	
+	float fLuminance = dot(vHDRImage.rgb, vLuminanceTable.rgb);
+	float fScale = pow(fLuminance/vAverageLuminance.x, 0.75f);
+	
+	vec4 vColor = vHDRImage * fScale;
+		
+	gl_FragColor = vColor;
+}
+*/

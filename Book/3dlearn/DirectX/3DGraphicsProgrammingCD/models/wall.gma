@@ -1,0 +1,55 @@
+Gmodel V1.00
+Begin Material
+{
+	Materials 1
+	{	// material 0
+		name = "01 - Default"
+		emissive = 0.000000,0.000000,0.000000
+		ambient = 0.588235,0.588235,0.588235
+		diffuse = 0.588235,0.588235,0.588235
+		specular = 0.900000,0.900000,0.900000
+		shininess = 0.100000
+		blendmode = replace
+		CullFace = off
+		diffuseMap = "brickwall.tga" MapChannel = 0
+		lightMap = "None" MapChannel = 0
+		environmentMap = "None"
+	}
+}
+End Material
+Begin Mesh
+{
+	meshes 1
+	{	// mesh 0
+		matrix
+		{
+			1.000000,0.000000,0.000000
+			0.000000,1.000000,0.000000
+			0.000000,0.000000,1.000000
+			0.000000,0.000000,0.000000
+		}
+		buffers 1
+		{
+			vertices 4
+			format v_n_t1
+			{
+				vertex -2.000000,2.000000,0.000000 normal 0.000000,0.000000,1.000000 uv0 0.000000,0.000000
+				vertex -2.000000,-2.000000,0.000000 normal 0.000000,0.000000,1.000000 uv0 0.000000,1.000000
+				vertex 2.000000,2.000000,0.000000 normal 0.000000,0.000000,1.000000 uv0 1.000000,0.000000
+				vertex 2.000000,-2.000000,0.000000 normal 0.000000,0.000000,1.000000 uv0 1.000000,1.000000
+			}
+			triangle_list_indices 6
+			{
+				0 1 2
+				3 2 1
+			}
+			batches 1
+			{
+				material 0
+				faces 2
+				index_begin 0
+			}
+		}
+	}
+}
+End Mesh

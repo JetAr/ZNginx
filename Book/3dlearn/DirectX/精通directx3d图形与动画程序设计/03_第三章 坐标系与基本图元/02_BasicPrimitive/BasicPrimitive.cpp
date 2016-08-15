@@ -1,0 +1,245 @@
+//=============================================================================
+// Desc: 基本图元绘制
+//=============================================================================
+
+#include <d3d9.h>
+
+
+//-----------------------------------------------------------------------------
+// Desc: 全局变量
+//-----------------------------------------------------------------------------
+LPDIRECT3D9             g_pD3D       = NULL;   //Direct3D对象
+LPDIRECT3DDEVICE9       g_pd3dDevice = NULL;   //Direct3D设备对象
+LPDIRECT3DVERTEXBUFFER9 g_pVB        = NULL;   //顶点缓冲区对象
+int                     g_iType      = 1;      //图元类型
+
+
+//-----------------------------------------------------------------------------
+// Desc: 顶点结构
+//-----------------------------------------------------------------------------
+struct CUSTOMVERTEX
+{
+	FLOAT x, y, z, rhw;
+	DWORD color;
+};
+#define D3DFVF_CUSTOMVERTEX (D3DFVF_XYZRHW|D3DFVF_DIFFUSE)
+
+
+//-----------------------------------------------------------------------------
+// Desc: 初始化Direct3D
+//-----------------------------------------------------------------------------
+HRESULT InitD3D( HWND hWnd )
+{
+	//创建Direct3D对象, 该对象用于创建Direct3D设备对象
+	if( NULL == ( g_pD3D = Direct3DCreate9( D3D_SDK_VERSION ) ) )
+		return E_FAIL;
+
+	//设置D3DPRESENT_PARAMETERS结构, 准备创建Direct3D设备对象
+	D3DPRESENT_PARAMETERS d3dpp;
+	ZeroMemory( &d3dpp, sizeof(d3dpp) );
+	d3dpp.Windowed = TRUE;
+	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+	d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
+
+	//创建Direct3D设备对象
+	if( FAILED( g_pD3D->CreateDevice( 
+		D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd,
+		D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+		&d3dpp, &g_pd3dDevice ) ) )
+		return E_FAIL;
+
+	//设置剔出模式为不剔出任何面
+	g_pd3dDevice->SetRenderState(D3DRS_CULLMODE,  D3DCULL_NONE);
+
+	//设置图元填充模式为线框模式
+	g_pd3dDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+
+	return S_OK;
+}
+
+
+//-----------------------------------------------------------------------------
+// Desc: 创建并填充顶点缓冲区
+//-----------------------------------------------------------------------------
+HRESULT InitVB()
+{
+	//顶点数据
+	CUSTOMVERTEX vertices[] =
+	{
+		{  50.0f, 250.0f, 0.5f, 1.0f, 0xffffff00, },
+		{ 150.0f,  50.0f, 0.5f, 1.0f, 0xffff0000, }, 
+		{ 250.0f, 250.0f, 0.5f, 1.0f, 0xffff0000, },
+
+
+		{ 350.0f,  50.0f, 0.5f, 1.0f, 0xffff0000, }, 
+		{ 450.0f, 250.0f, 0.5f, 1.0f, 0xffff0000, },
+		{ 550.0f, 50.0f,  0.5f, 1.0f, 0xffff0000, }
+	};
+
+	//创建顶点缓冲区
+	if( FAILED( g_pd3dDevice->CreateVertexBuffer( 
+		6*sizeof(CUSTOMVERTEX),
+		0, D3DFVF_CUSTOMVERTEX,
+		D3DPOOL_DEFAULT, &g_pVB, NULL ) ) )
+	{
+		return E_FAIL;
+	}
+
+	//填充顶点缓冲区
+	VOID* pVertices;
+	if( FAILED( g_pVB->Lock( 0, sizeof(vertices), (void**)&pVertices, 0 ) ) )
+		return E_FAIL;
+	memcpy( pVertices, vertices, sizeof(vertices) );
+	g_pVB->Unlock();
+
+	return S_OK;
+}
+
+
+//-----------------------------------------------------------------------------
+// Desc: 释放创建的对象
+//------------------------------------------------------------------------------
+VOID Cleanup()
+{
+	//释放顶点缓冲区对象
+	if( g_pVB != NULL )        
+		g_pVB->Release();
+
+	//释放Direct3D设备对象
+	if( g_pd3dDevice != NULL ) 
+		g_pd3dDevice->Release();
+
+	//释放Direct3D对象
+	if( g_pD3D != NULL )       
+		g_pD3D->Release();
+}
+
+
+//-----------------------------------------------------------------------------
+// Desc: 渲染图形
+//-----------------------------------------------------------------------------
+VOID Render()
+{
+	//清空后台缓冲区
+	g_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(60, 60, 60), 1.0f, 0 );
+
+	//开始在后台缓冲区绘制图形
+	if( SUCCEEDED( g_pd3dDevice->BeginScene() ) )
+	{
+		//在后台缓冲区绘制图形
+		g_pd3dDevice->SetStreamSource( 0, g_pVB, 0, sizeof(CUSTOMVERTEX) );
+		g_pd3dDevice->SetFVF( D3DFVF_CUSTOMVERTEX );
+		switch(g_iType)  //选择绘制图元的类型
+		{
+		case 1:   //三角形条带
+			g_pd3dDevice->DrawPrimitive( D3DPT_TRIANGLESTRIP, 0, 4 );
+			break;
+
+		case 2:   //三角形列表
+			g_pd3dDevice->DrawPrimitive( D3DPT_TRIANGLELIST, 0, 2 );
+			break;
+
+		case 3:   //线段条带
+			g_pd3dDevice->DrawPrimitive( D3DPT_LINESTRIP, 0, 5 );
+			break;
+
+		case 4:  //线段列表
+			g_pd3dDevice->DrawPrimitive( D3DPT_LINELIST, 0, 3 );
+			break;
+
+		case 5:  //点列表
+			g_pd3dDevice->DrawPrimitive( D3DPT_POINTLIST, 0, 6 );
+			break;
+
+		case 6:
+			g_pd3dDevice->DrawPrimitive(  D3DPT_TRIANGLEFAN, 0, 4);
+			break;
+		}
+
+		//结束在后台缓冲区渲染图形
+		g_pd3dDevice->EndScene();
+	}
+
+	//将在后台缓冲区绘制的图形提交到前台缓冲区显示
+	g_pd3dDevice->Present( NULL, NULL, NULL, NULL );
+}
+
+
+//-----------------------------------------------------------------------------
+// Desc: 消息处理
+//-----------------------------------------------------------------------------
+LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
+{
+	switch( msg )
+	{
+	case WM_DESTROY:
+		Cleanup();
+		PostQuitMessage( 0 );
+		return 0;
+
+	case WM_KEYDOWN:
+		switch(wParam)  //设置渲染图元类型
+		{
+		case 49:  //"1"键
+		case 50:  //"2"键
+		case 51:  //"3"键
+		case 52:  //"4"键
+		case 53:  //"5"键		
+		case 54:  //"6"键
+			g_iType = (int)wParam-48;
+			break;
+		}
+
+	}
+
+	return DefWindowProc( hWnd, msg, wParam, lParam );
+}
+
+
+//-----------------------------------------------------------------------------
+// Desc: 入口函数
+//-----------------------------------------------------------------------------
+INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, INT )
+{
+	//注册窗口类
+	WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
+		GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
+		L"ClassName", NULL };
+	RegisterClassEx( &wc );
+
+	//创建窗口
+	HWND hWnd = CreateWindow(  L"ClassName", L"基本图元",
+		WS_OVERLAPPEDWINDOW, 100, 100, 600, 300,
+		GetDesktopWindow(), NULL, wc.hInstance, NULL );
+
+	//初始化Direct3D
+	if( SUCCEEDED( InitD3D( hWnd ) ) )
+	{
+		//创建并填充顶点缓冲区
+		if( SUCCEEDED( InitVB() ) )
+		{
+			//显示窗口
+			ShowWindow( hWnd, SW_SHOWDEFAULT );
+			UpdateWindow( hWnd );
+
+			//进入消息循环
+			MSG msg;
+			ZeroMemory( &msg, sizeof(msg) );
+			while( msg.message!=WM_QUIT )
+			{
+				if( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) )
+				{
+					TranslateMessage( &msg );
+					DispatchMessage( &msg );
+				}
+				else
+				{
+					Render();  //渲染图形
+				}
+			}
+		}
+	}
+
+	UnregisterClass(  L"ClassName", wc.hInstance );
+	return 0;
+}

@@ -1,0 +1,20 @@
+[ActiveNet]
+Cmdline=
+Name=Quake III Arena
+Run=quake3.exe
+SessionType=
+Platform=1
+Language=255
+Version=9.0
+ShellOpts=
+
+[Version Info]
+Version=1.32
+QA=2796
+Branch=0.0
+
+[Product Info]
+ProductID=q3aw98
+ProductName=Quake III Arena
+WebReg=http://cgi.activision.com/cgi/webreg/webreg
+

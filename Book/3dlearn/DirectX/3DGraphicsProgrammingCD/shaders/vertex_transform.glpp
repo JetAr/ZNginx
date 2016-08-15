@@ -1,0 +1,17 @@
+!!ARBfp1.0
+# cgc version 2.0.0001, build date Jan 22 2007 00:21:19
+# command line args: -profile arbfp1
+# source file: c:\3DGraphicsProgramming\Projects\shaders\vertex_transform.shader
+#vendor NVIDIA Corporation
+#version 2.0.0.1
+#profile arbfp1
+#program PS
+#semantic viewproj_matrix : C0
+#var float4x4 viewproj_matrix : C0 : c[0], 4 : -1 : 0
+#var float4 PS : $vout.COLOR : COL : -1 : 1
+#const c[4] = 1
+PARAM c[5] = { program.local[0..3],
+		{ 1 } };
+MOV result.color, c[4].x;
+END
+# 1 instructions, 0 R-regs

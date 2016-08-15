@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Mesh", "01_Mesh\Mesh.vcproj", "{0A45181A-0EBE-4DCA-9570-BBCA25A7B676}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StateControlUseMatrix", "02_StateControlUseMatrix\StateControlUseMatrix.vcproj", "{4D01B2AB-80E7-4DAD-9DAC-502B2F2633F4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StateControlUseQua", "03_StateControlUseQua\StateControlUseQua.vcproj", "{5A29F50C-EE3C-447A-AD7B-B5345C15BEE2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A45181A-0EBE-4DCA-9570-BBCA25A7B676}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0A45181A-0EBE-4DCA-9570-BBCA25A7B676}.Debug|Win32.Build.0 = Debug|Win32
+		{0A45181A-0EBE-4DCA-9570-BBCA25A7B676}.Release|Win32.ActiveCfg = Release|Win32
+		{0A45181A-0EBE-4DCA-9570-BBCA25A7B676}.Release|Win32.Build.0 = Release|Win32
+		{4D01B2AB-80E7-4DAD-9DAC-502B2F2633F4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4D01B2AB-80E7-4DAD-9DAC-502B2F2633F4}.Debug|Win32.Build.0 = Debug|Win32
+		{4D01B2AB-80E7-4DAD-9DAC-502B2F2633F4}.Release|Win32.ActiveCfg = Release|Win32
+		{4D01B2AB-80E7-4DAD-9DAC-502B2F2633F4}.Release|Win32.Build.0 = Release|Win32
+		{5A29F50C-EE3C-447A-AD7B-B5345C15BEE2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5A29F50C-EE3C-447A-AD7B-B5345C15BEE2}.Debug|Win32.Build.0 = Debug|Win32
+		{5A29F50C-EE3C-447A-AD7B-B5345C15BEE2}.Release|Win32.ActiveCfg = Release|Win32
+		{5A29F50C-EE3C-447A-AD7B-B5345C15BEE2}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

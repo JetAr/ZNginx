@@ -1,0 +1,7 @@
+Application Started 
+Vertex Element, Type: 2, Usage: 0, Offset: 0
+Vertex Element, Type: 0, Usage: 1, Offset: 12
+Vertex Element, Type: 5, Usage: 2, Offset: 16
+Vertex Element, Type: 2, Usage: 3, Offset: 20
+Vertex Element, Type: 1, Usage: 5, Offset: 32
+Application Terminated 

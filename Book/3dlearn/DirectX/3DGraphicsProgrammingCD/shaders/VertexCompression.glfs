@@ -1,0 +1,9 @@
+// Pixel Shader
+varying vec3 vNormal;
+
+void main(void)
+{
+	vec3 vLightDir = vec3(0,1,0);
+	vec4 vDot = dot(vLightDir, vNormal);
+	gl_FragColor = vDot;
+}

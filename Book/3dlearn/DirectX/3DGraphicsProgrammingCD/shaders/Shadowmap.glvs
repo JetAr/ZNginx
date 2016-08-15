@@ -1,0 +1,13 @@
+//
+// Vertex Shader
+//
+
+varying vec4 vLightPos;
+varying vec4 vNormal;
+
+void main(void)
+{
+	gl_Position = ftransform();
+	vLightPos = gl_TextureMatrix[0] * gl_Vertex;
+	vNormal = gl_TextureMatrix[1] * vec4(gl_Normal.xyz, 1);
+}

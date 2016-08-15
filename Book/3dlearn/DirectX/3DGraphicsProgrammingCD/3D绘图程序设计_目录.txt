@@ -1,0 +1,166 @@
+第 1 章 电脑绘图简介
+图像的数位化
+3D 画面的产生
+动画
+绘图晶片 GPU 简介
+
+第 2 章 座标转换
+准备工作
+萤幕座标
+平行视角投影 Orthogonal View
+非平行视角投影 Perspective View
+自动座标转换
+Shader
+Direct3D 10
+
+第 3 章 动画及互动
+移动 3D 物件
+物件旋转
+物件变形
+着色
+互动
+移动镜头
+拖行、附着
+Shader
+典型的 OpenGL 风格
+显示记忆体
+
+第 4 章 打光
+软体模拟
+Direct3D、OpenGL 的打光
+Specular 反射
+光源的管理
+背光
+使用模型
+使用 Shader
+
+第 5 章 贴图
+载入贴图
+贴图座标
+Mipmap
+多重图层 Multi-texture
+Alpha
+贴图座标矩阵
+自动产生贴图座标
+环境贴图 Environment map
+贴图压缩 DDS
+3D 贴图
+
+第 6 章 混色与材质
+混色 Blend
+材质 Material
+Multi-pass
+投影机效果
+贴图设定补充说明
+
+第 7 章 动态贴图
+准备工作
+镜射
+动态环境贴图
+阴影
+模糊化
+柔化的阴影 Soft-shadow
+
+第 8 章 Stencil Buffer
+Stencil Buffer 的概念
+镜面反射
+Stencil Buffer 的操作
+Shadow Volume 阴影效果
+
+第 9 章 其它功能补充
+雾 Fog
+反锯齿 Anti-aliasing
+Scissor ??Test
+调整画布大小 Viewport
+Occlusion Query
+OpenGL 特有功能
+Display List
+Selection Buffer
+OpenGL 扩充函式
+
+第 10 章 基本应用
+显示 ASCII
+显示 UNICODE
+粒子系统 Particle System
+Heigntmap 地形显示
+全萤幕模式与 MFC 视窗程式
+
+第 11 章 Shader 的观念
+CPU 与 GPU 的差别
+GPU 的平行运算
+GPU 的向量计算 SIMD
+CPU 与 GPU 的同步
+Shader 的版本与历史
+Shader 的使用
+
+第 12 章 HLSL 的使用
+FX Composer、Render Monkey 的使用
+HLSL 资料型态
+HLSL Shader 的输入及输出
+简单的 HLSL 打光应用
+HLSL 中使用贴图
+HLSL 的流程控制及自订函式
+HLSL 的内建函式
+Direct3D Shader 组合语言
+HLSL 的管理
+
+第 13 章 GLSL 的使用
+GLSL 的资料型态
+GLSL 的输入及输出
+简单的 GLSL 打光应用
+GLSL 中使用贴图
+GLSL 的内建函式
+GLSL 的管理
+
+第 14 章 Shader 初级
+Normalmap
+顶点资料压缩
+阴影 Shadow
+影像处理 : 改变色调
+影像处理 : 模糊化
+影像处理 : Bloom
+
+第 15 章 Shader 中级
+Virtual Displacement : Parallax map
+影像处理 : Bloom II
+影像处理 : 景深 Depth of Field
+折射效果
+阴影柔化 Soft-shadow
+
+第 16 章 Shader 进阶
+Virtual Displacement : Relief map
+Deferred Lighting
+水波
+GPU Particle
+高动态范围 High Dynamic Range (HDR)
+
+第 17 章 Direct3D10 及 Shader Model 4.0
+资料型态与 GPU 状态设定
+Geometry Shader
+动态模型 : Stream-Output
+VertexID、PrimitiveID、InstanceID
+Direct3D10 的应用
+
+第 18 章 除错
+手动除错
+Direct3D 除错工具 PIX
+OpenGL 除错工具
+
+第 19 章 补充教材
+绘图引擎
+Xbox360
+PS3
+GPGPU
+
+第 20 章 线性代数
+向量的基本定义及公式
+矩阵的基本定义及公式
+向量与矩阵
+座标转换
+投影
+
+索引
+未分类索引
+Direct3D9 索引
+OpenGL 索引
+Direct3D10 索引

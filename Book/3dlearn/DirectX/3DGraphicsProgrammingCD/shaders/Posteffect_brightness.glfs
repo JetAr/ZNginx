@@ -1,0 +1,20 @@
+// 改變亮度
+// Pixel Shader
+//
+uniform sampler2D ImageSampler;
+
+// PS 調整亮度參數
+uniform vec4 IntensityOffset;
+uniform vec4 IntensityScale;
+
+void main(void)
+{
+	vec4 rgba = texture2D(ImageSampler, gl_TexCoord[0].xy);
+	vec3 table = vec3(0.3f, 0.59f, 0.11f);
+	// 先轉成灰階來察看它的亮度
+	vec4 old_intensity = dot(rgba.rgb, table);
+	// 把亮度做個改變
+	vec4 new_intensity = (old_intensity + IntensityOffset) * IntensityScale;
+	// 把原始的顏色乘上新的亮度
+	gl_FragColor = rgba * new_intensity;
+}

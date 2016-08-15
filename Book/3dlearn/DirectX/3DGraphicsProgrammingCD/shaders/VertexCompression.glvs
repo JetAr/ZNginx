@@ -1,0 +1,10 @@
+// Vertex Shader
+varying vec3 vNormal;
+
+void main(void)
+{
+	vec4 position = gl_Vertex * 2.0 - 1.0;
+	vec3 normal = gl_Normal * 2.0 - 1.0;
+	gl_Position = gl_ModelViewProjectionMatrix * position;
+	vNormal = ((mat3x3)gl_TextureMatrix[0]) * normal;
+}

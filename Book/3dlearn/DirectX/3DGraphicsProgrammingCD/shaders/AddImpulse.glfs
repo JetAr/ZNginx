@@ -1,0 +1,29 @@
+//
+// Pixel Shader
+//
+uniform vec4 vForce;
+
+// 把高度值分解成(r,g,b,a) 4個數值
+vec4 EncodeHeightmap(float fHeight)
+{
+	float h = fHeight;
+	float positive = fHeight > 0.0 ? fHeight : 0.0;
+	float negative = fHeight < 0.0 ? -fHeight : 0.0;
+
+	float4 color = 0;
+
+	// 簡單的做法
+	color.r = positive;
+	color.g = negative;
+	
+	// 要增加精確度時, 就把大於1的數值放在(b,a)中.
+	color.ba = frac(color.rg*256);
+	color.rg -= color.ba/256.0f;
+	
+	return color;
+}
+
+void main(void)
+{
+	gl_FragColor = EncodeHeightmap(1.0);
+}

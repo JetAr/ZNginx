@@ -1,0 +1,12 @@
+//
+// Pixel Shader
+// 
+sampler2D RGBSampler;
+
+uniform mat4x4 ColorMatrix;
+
+void main(void)
+{
+	vec4 rgba = texture2D(RGBSampler, gl_TexCoord[0].xy).rgba;
+	gl_FragColor = ColorMatrix * rgba;
+}

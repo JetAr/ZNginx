@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimpleLighting", "01_SimpleLighting\SimpleLighting.vcproj", "{3A68081D-E8F9-4523-9436-530DE9E5530D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Multilights", "02_Multilights\Multilights.vcproj", "{9918C207-72E2-4E04-A36C-6473165388AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3A68081D-E8F9-4523-9436-530DE9E5530D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3A68081D-E8F9-4523-9436-530DE9E5530D}.Debug|Win32.Build.0 = Debug|Win32
+		{3A68081D-E8F9-4523-9436-530DE9E5530D}.Release|Win32.ActiveCfg = Release|Win32
+		{3A68081D-E8F9-4523-9436-530DE9E5530D}.Release|Win32.Build.0 = Release|Win32
+		{9918C207-72E2-4E04-A36C-6473165388AD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9918C207-72E2-4E04-A36C-6473165388AD}.Debug|Win32.Build.0 = Debug|Win32
+		{9918C207-72E2-4E04-A36C-6473165388AD}.Release|Win32.ActiveCfg = Release|Win32
+		{9918C207-72E2-4E04-A36C-6473165388AD}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

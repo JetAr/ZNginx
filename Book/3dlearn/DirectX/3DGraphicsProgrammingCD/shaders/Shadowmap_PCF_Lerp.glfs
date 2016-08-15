@@ -1,0 +1,109 @@
+//
+// Pixel Shader
+//
+//#define num_samples 16
+const int num_samples = 16;
+
+uniform vec4 vTextureSize;
+//uniform vec4 vTexOffset[num_samples];
+
+sampler2D ShadowmapSampler;
+
+varying vec4 vLightPos;
+varying vec4 vNormal;
+
+float LightCoverage_4samples(sampler2D sampler, vec4 projected_pos)
+{
+	float fLit[4];
+	vec2 texoffset[4];
+	int index = 0;
+	
+	for ( int y=0; y<=1; y++ )
+	{
+		for ( int x=0; x<=1; x++ )
+		{
+			texoffset[index] = vec2(x, y) * vTextureSize.zw;
+			index++;
+		}
+	}
+	
+	for ( int i=0; i<4; i++ )
+	{
+		vec4 shadowmap = texture2D(ShadowmapSampler, projected_pos.xy + texoffset[i].xy);
+		fLit[i] = shadowmap.r < projected_pos.z ? 0.0 : 1.0;
+	}
+	
+	vec2 texel = projected_pos.xy * vTextureSize.xy;
+	vec2 texel_frac = texel - floor(texel);
+	
+	float fLitX0 = lerp(fLit[0], fLit[1], texel_frac.x);
+	float fLitX1 = lerp(fLit[2], fLit[3], texel_frac.x);
+	float fLitFinal = lerp(fLitX0, fLitX1, texel_frac.y);
+	
+	return fLitFinal;
+}
+
+float LightCoverage_16samples(sampler2D sampler, vec4 projected_pos)
+{
+	float fLit[16];
+	vec2 texoffset[16];
+	int index = 0;
+	
+	for ( int y=-1; y<=2; y++ )
+	{
+		for ( int x=-1; x<=2; x++ )
+		{
+			texoffset[index] = vec2(x, y) * vTextureSize.zw;
+			index++;
+		}
+	}
+	
+	for ( int i=0; i<16; i++ )
+	{
+		vec4 shadowmap = texture2D(ShadowmapSampler, projected_pos.xy + texoffset[i].xy);
+		fLit[i] = shadowmap.r < projected_pos.z ? 0.0 : 1.0;
+	}
+
+	float fDividor = 1.0/9.0;
+	
+	float p0 = 
+		(fLit[0] + fLit[1] + fLit[ 2] +
+		 fLit[4] + fLit[5] + fLit[ 6] +
+		 fLit[8] + fLit[9] + fLit[10]) * fDividor;
+	
+	float p1 = 
+		(fLit[1] + fLit[ 2] + fLit[ 3] +
+		 fLit[5] + fLit[ 6] + fLit[ 7] +
+		 fLit[9] + fLit[10] + fLit[11]) * fDividor;
+
+	float p2 = 
+		(fLit[ 4] + fLit[ 5] + fLit[ 6] +
+		 fLit[ 8] + fLit[ 9] + fLit[10] +
+		 fLit[12] + fLit[13] + fLit[14]) * fDividor;
+
+	float p3 = 
+		(fLit[ 5] + fLit[ 6] + fLit[ 7] +
+		 fLit[ 9] + fLit[10] + fLit[11] +
+		 fLit[13] + fLit[14] + fLit[15]) * fDividor;
+
+	vec2 texel = projected_pos.xy * vTextureSize.xy;
+	vec2 texel_frac = frac(texel);
+	
+	float fLitX0 = lerp(p0, p1, texel_frac.x);
+	float fLitX1 = lerp(p2, p3, texel_frac.x);
+	float fLitFinal = lerp(fLitX0, fLitX1, texel_frac.y);
+	
+	return fLitFinal;
+}
+
+void main(void)
+{
+	vec4  projected_pos = vLightPos / vLightPos.w;
+	float fToCenter = distance(projected_pos.xy, vec2(0.5,0.5));
+	float fSpotLightEffect = 1.0 - clamp(fToCenter/0.4, 0.0, 1.0);
+	float3 normal = normalize(vNormal);
+	float fLighting = fSpotLightEffect * normal.z;
+	float fLightCoverage = LightCoverage_16samples(ShadowmapSampler, projected_pos);
+	
+	gl_FragColor.rgba = fLightCoverage * fLighting;
+}

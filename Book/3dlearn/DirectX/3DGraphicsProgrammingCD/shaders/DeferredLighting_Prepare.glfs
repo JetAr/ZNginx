@@ -1,0 +1,28 @@
+//
+// Pixel Shader
+//
+varying vec4 vWorldPos;
+varying vec3 vWorldNormal;
+varying vec3 vTangent;
+varying vec3 vBinormal;
+
+uniform sampler2D DiffuseSampler;
+uniform sampler2D NormalmapSampler;
+
+void main(void)
+{
+	vec4 vDiffuse = texture2D(DiffuseSampler, gl_TexCoord[0].xy);
+	vec4 vNormalmap = texture2D(NormalmapSampler, gl_TexCoord[0].xy);
+	vNormalmap = vNormalmap * 2.0f - 1.0f;
+	
+	mat3 TangentSpace;
+	TangentSpace[0] = vTangent;
+	TangentSpace[1] = vBinormal;
+	TangentSpace[2] = vWorldNormal;
+
+	vec3 surfaceNormal = TangentSpace * vNormalmap.xyz;
+	
+	gl_FragData[0] = vWorldPos;
+	gl_FragData[1] = vec4(surfaceNormal, 1.0);
+	gl_FragData[2] = vDiffuse;
+}

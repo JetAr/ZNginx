@@ -1,0 +1,14 @@
+varying vec3 vViewNormal;
+
+void main(void)
+{
+	gl_Position = ftransform();
+	gl_TexCoord[0] = gl_Position;
+	
+	mat3x3 rot_mat = (mat3x3) gl_ModelViewMatrix;
+	//rot_mat[0] = gl_TextureMatrix[0][0].xyz;
+	//rot_mat[1] = gl_TextureMatrix[0][1].xyz;
+	//rot_mat[2] = gl_TextureMatrix[0][2].xyz;
+
+	vViewNormal = rot_mat * gl_Normal.xyz;
+}
