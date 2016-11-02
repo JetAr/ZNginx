@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Triangulators">
+      <UniqueIdentifier>{4e7baf40-0f20-4d22-a385-51b8fdac4849}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TTF.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TTFExceptions.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TTFFont.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TTFMath.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TTFTypes.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TTFTriangulator2D.h">
+      <Filter>Triangulators</Filter>
+    </ClInclude>
+    <ClInclude Include="TTFTriangulator2DLinear.h">
+      <Filter>Triangulators</Filter>
+    </ClInclude>
+    <ClInclude Include="TTFTriangulator3D.h">
+      <Filter>Triangulators</Filter>
+    </ClInclude>
+    <ClInclude Include="TTFTriangulator3DBezel.h">
+      <Filter>Triangulators</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="TTFExceptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TTFFont.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TTFMath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TTFTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TTFTriangulator2D.cpp">
+      <Filter>Triangulators</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
