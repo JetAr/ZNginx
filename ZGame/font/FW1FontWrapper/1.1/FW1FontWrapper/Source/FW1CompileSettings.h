@@ -1,4 +1,4 @@
-// FW1CompileSettings.h
+﻿// FW1CompileSettings.h
 
 #ifndef IncludeGuard__FW1_FW1CompileSettings_h
 #define IncludeGuard__FW1_FW1CompileSettings_h

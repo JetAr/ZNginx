@@ -1,4 +1,4 @@
-// FW1Precompiled.h
+﻿// FW1Precompiled.h
 
 #ifndef IncludeGuard__FW1_FW1Precompiled_h
 #define IncludeGuard__FW1_FW1Precompiled_h
