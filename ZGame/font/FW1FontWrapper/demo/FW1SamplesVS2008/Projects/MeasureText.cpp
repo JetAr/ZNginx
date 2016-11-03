@@ -164,7 +164,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     // Create a text layout for a string
     IDWriteTextLayout *pTextLayout;
-    const WCHAR str[] = L"\"My Text Layout String\"\n\n123 !!!\n~~\n__ test";
+    const WCHAR str[] = L"\"My Text Layout String\"\n\n123 !!!\n~~\n__ test 中";
     hResult = pDWriteFactory->CreateTextLayout(
                   str,
                   sizeof(str)/sizeof(str[0]),

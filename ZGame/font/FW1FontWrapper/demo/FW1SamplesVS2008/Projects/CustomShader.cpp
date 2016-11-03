@@ -183,7 +183,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
             pFontWrapper->DrawString(
                 pImmediateContext,
-                L"Centered Text",
+                L"中 Centered Text",
                 128.0f,
                 vp.Width/2.0f,
                 vp.Height/2.0f,

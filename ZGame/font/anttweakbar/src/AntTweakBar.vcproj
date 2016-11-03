@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="AntTweakBar"
 	ProjectGUID="{B99E1FA1-C30A-45F2-9D57-9E9C21B2DF42}"
 	RootNamespace="AntTweakBar"

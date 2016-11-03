@@ -139,7 +139,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             // Draw some strings
             pFontWrapper->DrawString(
                 pImmediateContext,
-                L"Text with D3D11!",// String
+                L"中\tText with D3D11!",// String
                 128.0f,// Font size
                 vp.Width/2.0f,// X offset
                 vp.Height/2.0f,// Y offset
@@ -164,7 +164,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             ScreenToClient(hWnd, &pt);
             pFontWrapper->DrawString(
                 pImmediateContext,
-                L"!",
+                L"c",
                 L"Webdings",// Override default font
                 256.0f,
                 static_cast<FLOAT>(pt.x),
