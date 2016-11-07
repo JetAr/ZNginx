@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 #include "Application.h"
 
@@ -31,78 +31,78 @@ class App : public Application
 {
 
 public:
-	App();
-	
+    App();
+
 public:
-	virtual void Initialize();
-	virtual void Update();
-	virtual void Shutdown();
+    virtual void Initialize();
+    virtual void Update();
+    virtual void Shutdown();
 
-	virtual bool ConfigureEngineComponents();
-	virtual void ShutdownEngineComponents();
+    virtual bool ConfigureEngineComponents();
+    virtual void ShutdownEngineComponents();
 
-	virtual void TakeScreenShot();
+    virtual void TakeScreenShot();
 
-	virtual bool HandleEvent( EventPtr pEvent );
-	virtual std::wstring GetName( );
+    virtual bool HandleEvent( EventPtr pEvent );
+    virtual std::wstring GetName( );
 
 protected:
 
-	RendererDX11*				m_pRenderer11;
-	Win32RenderWindow*			m_pWindow;
+    RendererDX11*				m_pRenderer11;
+    Win32RenderWindow*			m_pWindow;
 
-	bool						m_bViewPointInAutoMode;
-	bool						m_bSolidRender;
-	bool						m_bSimpleComplexity;
-	
-	int							m_iSwapChain;
-	ResourcePtr					m_RenderTarget;
-	ResourcePtr					m_DepthTarget;
+    bool						m_bViewPointInAutoMode;
+    bool						m_bSolidRender;
+    bool						m_bSimpleComplexity;
 
-	SpriteFontPtr				m_pFont;
-	SpriteRendererDX11*			m_pSpriteRenderer;
+    int							m_iSwapChain;
+    ResourcePtr					m_RenderTarget;
+    ResourcePtr					m_DepthTarget;
 
-	GeometryPtr					m_pTerrainGeometry;
-	RenderEffectDX11*			m_pTerrainEffect;
-	ResourcePtr					m_pHeightMapTexture;
-	RenderEffectDX11*			m_pComputeShaderEffect;
-	ResourcePtr					m_pLodLookupTexture;
+    SpriteFontPtr				m_pFont;
+    SpriteRendererDX11*			m_pSpriteRenderer;
 
-	int							m_rsWireframe;
-	int							m_rsSolid;
+    GeometryPtr					m_pTerrainGeometry;
+    RenderEffectDX11*			m_pTerrainEffect;
+    ResourcePtr					m_pHeightMapTexture;
+    RenderEffectDX11*			m_pComputeShaderEffect;
+    ResourcePtr					m_pLodLookupTexture;
 
-	static const int			TERRAIN_X_LEN = 32;
-	static const int			TERRAIN_Z_LEN = 32;
+    int							m_rsWireframe;
+    int							m_rsSolid;
 
-	enum ShadingMode
-	{
-		SolidColour,
-		SimpleShading,
-		LodDebugView
-	};
+    static const int			TERRAIN_X_LEN = 32;
+    static const int			TERRAIN_Z_LEN = 32;
 
-	ShadingMode					m_smCurrentShading;
-	std::map<ShadingMode, int>	m_TerrainDomainShaders;
+    enum ShadingMode
+    {
+        SolidColour,
+        SimpleShading,
+        LodDebugView
+    };
 
-	int							m_iComplexHullShader;
-	int							m_iSimpleHullShader;
+    ShadingMode					m_smCurrentShading;
+    std::map<ShadingMode, int>	m_TerrainDomainShaders;
 
-	virtual void CreateTerrainGeometry();
-	virtual void CreateTerrainShaders();
-	virtual void CreateTerrainTextures();
-	virtual void UpdateViewState();
-	virtual void CreateComputeShaderResources();
-	virtual void RunComputeShader();
+    int							m_iComplexHullShader;
+    int							m_iSimpleHullShader;
 
-	UnorderedAccessParameterDX11*	m_pbufferResults;
-	ShaderResourceParameterDX11*	m_ptexLODLookup;
-	ShaderResourceParameterDX11*	m_ptexHeightMap;
-	MatrixParameterDX11*			m_pmWorld;
-	MatrixParameterDX11*			m_pmViewProj;
-	MatrixParameterDX11*			m_pmInvTposeWorld;
-	VectorParameterDX11*			m_pcameraPosition;
-	VectorParameterDX11*			m_pheightMapDimensions;
-	VectorParameterDX11*			m_pminMaxDistance;
-	VectorParameterDX11*			m_pminMaxLOD;
-	SamplerParameterDX11*			m_psmpHeightMap;
+    virtual void CreateTerrainGeometry();
+    virtual void CreateTerrainShaders();
+    virtual void CreateTerrainTextures();
+    virtual void UpdateViewState();
+    virtual void CreateComputeShaderResources();
+    virtual void RunComputeShader();
+
+    UnorderedAccessParameterDX11*	m_pbufferResults;
+    ShaderResourceParameterDX11*	m_ptexLODLookup;
+    ShaderResourceParameterDX11*	m_ptexHeightMap;
+    MatrixParameterDX11*			m_pmWorld;
+    MatrixParameterDX11*			m_pmViewProj;
+    MatrixParameterDX11*			m_pmInvTposeWorld;
+    VectorParameterDX11*			m_pcameraPosition;
+    VectorParameterDX11*			m_pheightMapDimensions;
+    VectorParameterDX11*			m_pminMaxDistance;
+    VectorParameterDX11*			m_pminMaxLOD;
+    SamplerParameterDX11*			m_psmpHeightMap;
 };

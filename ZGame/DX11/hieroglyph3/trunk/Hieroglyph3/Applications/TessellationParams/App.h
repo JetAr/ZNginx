@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 #include "Application.h"
 
@@ -25,70 +25,70 @@ class App : public Application
 {
 
 public:
-	App();
-	
+    App();
+
 public:
-	virtual void Initialize();
-	virtual void Update();
-	virtual void Shutdown();
+    virtual void Initialize();
+    virtual void Update();
+    virtual void Shutdown();
 
-	virtual bool ConfigureEngineComponents();
-	virtual void ShutdownEngineComponents();
+    virtual bool ConfigureEngineComponents();
+    virtual void ShutdownEngineComponents();
 
-	virtual void TakeScreenShot();
+    virtual void TakeScreenShot();
 
-	virtual bool HandleEvent( EventPtr pEvent );
-	virtual std::wstring GetName( );
+    virtual bool HandleEvent( EventPtr pEvent );
+    virtual std::wstring GetName( );
 
 protected:
 
-	RendererDX11*			m_pRenderer11;
-	Win32RenderWindow*		m_pWindow;
-	
-	int						m_iSwapChain;
-	ResourcePtr				m_RenderTarget;
-	ResourcePtr				m_DepthTarget;
+    RendererDX11*			m_pRenderer11;
+    Win32RenderWindow*		m_pWindow;
 
-	bool					m_bGeometryMode;
-	static const bool		TRI_MODE = true;
-	static const bool		QUAD_MODE = false;
+    int						m_iSwapChain;
+    ResourcePtr				m_RenderTarget;
+    ResourcePtr				m_DepthTarget;
 
-	GeometryPtr				m_pQuadGeometry;
-	RenderEffectDX11*		m_pQuadEffect;
+    bool					m_bGeometryMode;
+    static const bool		TRI_MODE = true;
+    static const bool		QUAD_MODE = false;
 
-	GeometryPtr				m_pTriangleGeometry;
-	RenderEffectDX11*		m_pTriangleEffect;
+    GeometryPtr				m_pQuadGeometry;
+    RenderEffectDX11*		m_pQuadEffect;
 
-	SpriteFontPtr			m_pFont;
-	SpriteRendererDX11*		m_pSpriteRenderer;
+    GeometryPtr				m_pTriangleGeometry;
+    RenderEffectDX11*		m_pTriangleEffect;
 
-	bool					m_bEdgeOrInsideMode;
-	static const bool		EDGE_MODE = true;
-	static const bool		INSIDE_MODE = false;
+    SpriteFontPtr			m_pFont;
+    SpriteRendererDX11*		m_pSpriteRenderer;
 
-	float					m_fEdgeWeights[4];
-	unsigned int			m_iEdgeIndex;
+    bool					m_bEdgeOrInsideMode;
+    static const bool		EDGE_MODE = true;
+    static const bool		INSIDE_MODE = false;
 
-	float					m_fInsideWeights[2];
-	unsigned int			m_iInsideIndex;
+    float					m_fEdgeWeights[4];
+    unsigned int			m_iEdgeIndex;
 
-	enum PartitioningMode
-	{
-		Power2,
-		Integer,
-		FractionalOdd,
-		FractionalEven
-	};
+    float					m_fInsideWeights[2];
+    unsigned int			m_iInsideIndex;
 
-	PartitioningMode		m_pmPartitioningMode;
-	std::map<PartitioningMode, int> m_QuadHullShaders;
-	std::map<PartitioningMode, int> m_TriangleHullShaders;
+    enum PartitioningMode
+    {
+        Power2,
+        Integer,
+        FractionalOdd,
+        FractionalEven
+    };
 
-	virtual void CreateQuadResources();
-	virtual void CreateTriangleResources();
+    PartitioningMode		m_pmPartitioningMode;
+    std::map<PartitioningMode, int> m_QuadHullShaders;
+    std::map<PartitioningMode, int> m_TriangleHullShaders;
 
-	virtual void SetEdgeWeight(unsigned int index, float weight);
-	virtual void SetInsideWeight(unsigned int index, float weight);
+    virtual void CreateQuadResources();
+    virtual void CreateTriangleResources();
 
-	virtual void SetPartitioningMode( const PartitioningMode& mode );
+    virtual void SetEdgeWeight(unsigned int index, float weight);
+    virtual void SetInsideWeight(unsigned int index, float weight);
+
+    virtual void SetPartitioningMode( const PartitioningMode& mode );
 };

@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -22,51 +22,51 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-	class Entity3D;
+class Entity3D;
 
-	struct TextEntry
-	{
-		std::wstring text;
-		Matrix4f xform;
-		Vector4f color;
-		TextEntry() {};
-		TextEntry( std::wstring& text, Matrix4f& xform, Vector4f& color )
-		{
-			this->text = text;
-			this->xform = xform;
-			this->color = color;
-		};
-	};
+struct TextEntry
+{
+    std::wstring text;
+    Matrix4f xform;
+    Vector4f color;
+    TextEntry() {};
+    TextEntry( std::wstring& text, Matrix4f& xform, Vector4f& color )
+    {
+        this->text = text;
+        this->xform = xform;
+        this->color = color;
+    };
+};
 
-	class ViewTextOverlay : public Task
-	{
-	public:
-		ViewTextOverlay( RendererDX11& Renderer, ResourcePtr RenderTarget );
-		virtual ~ViewTextOverlay();
+class ViewTextOverlay : public Task
+{
+public:
+    ViewTextOverlay( RendererDX11& Renderer, ResourcePtr RenderTarget );
+    virtual ~ViewTextOverlay();
 
-		virtual void Update( float fTime );
-		virtual void QueuePreTasks( RendererDX11* pRenderer );
-		virtual void ExecuteTask( PipelineManagerDX11* pPipelineManager, IParameterManager* pParamManager );
-		virtual void Resize( UINT width, UINT height );
+    virtual void Update( float fTime );
+    virtual void QueuePreTasks( RendererDX11* pRenderer );
+    virtual void ExecuteTask( PipelineManagerDX11* pPipelineManager, IParameterManager* pParamManager );
+    virtual void Resize( UINT width, UINT height );
 
-		virtual void SetRenderParams( IParameterManager* pParamManager );
-		virtual void SetUsageParams( IParameterManager* pParamManager );
+    virtual void SetRenderParams( IParameterManager* pParamManager );
+    virtual void SetUsageParams( IParameterManager* pParamManager );
 
-		void WriteText( std::wstring& text, Matrix4f& xform, Vector4f& color );
+    void WriteText( std::wstring& text, Matrix4f& xform, Vector4f& color );
 
-		virtual std::wstring GetName();
+    virtual std::wstring GetName();
 
-	protected:
-		Vector4f				m_vColor;
-		int						m_iViewport;
+protected:
+    Vector4f				m_vColor;
+    int						m_iViewport;
 
-		ResourcePtr				m_RenderTarget;
+    ResourcePtr				m_RenderTarget;
 
-		SpriteFontPtr			m_pSpriteFont;
-		SpriteRendererDX11*		m_pSpriteRenderer;
-		
-		std::vector<TextEntry>	m_TextEntries;
-	};
+    SpriteFontPtr			m_pSpriteFont;
+    SpriteRendererDX11*		m_pSpriteRenderer;
+
+    std::vector<TextEntry>	m_TextEntries;
+};
 };
 //--------------------------------------------------------------------------------
 #endif // ViewTextOverlay_h

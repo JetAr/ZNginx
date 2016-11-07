@@ -1,4 +1,4 @@
-/*
+﻿/*
 ** $Id: lfunc.h,v 2.4.1.1 2007/12/27 13:02:25 roberto Exp $
 ** Auxiliary functions to manipulate prototypes and closures
 ** See Copyright Notice in lua.h
@@ -28,7 +28,7 @@ LUAI_FUNC void luaF_freeproto (lua_State *L, Proto *f);
 LUAI_FUNC void luaF_freeclosure (lua_State *L, Closure *c);
 LUAI_FUNC void luaF_freeupval (lua_State *L, UpVal *uv);
 LUAI_FUNC const char *luaF_getlocalname (const Proto *func, int local_number,
-                                         int pc);
+        int pc);
 
 
 #endif

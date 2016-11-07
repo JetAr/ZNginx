@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -23,20 +23,20 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-	class Vector2f;
+class Vector2f;
 
-	class Win32RenderWindow : public RenderWindow
-	{
-	public:
-		Win32RenderWindow( );
-		virtual ~Win32RenderWindow( );
+class Win32RenderWindow : public RenderWindow
+{
+public:
+    Win32RenderWindow( );
+    virtual ~Win32RenderWindow( );
 
-		virtual void Initialize( IWindowProc* WindowProcObj );
-		virtual void Shutdown();
-		virtual void Paint();
+    virtual void Initialize( IWindowProc* WindowProcObj );
+    virtual void Shutdown();
+    virtual void Paint();
 
-		Vector2f GetCursorPosition();
-	};
+    Vector2f GetCursorPosition();
+};
 };
 //--------------------------------------------------------------------------------
 #endif // Win32RenderWindow_h

@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -16,14 +16,14 @@ using namespace Glyph3;
 //--------------------------------------------------------------------------------
 ConstantBufferParameterDX11::ConstantBufferParameterDX11()
 {
-	for ( int i = 0; i <= NUM_THREADS; i++ )
-		m_iCBuffer[i] = -1;
+    for ( int i = 0; i <= NUM_THREADS; i++ )
+        m_iCBuffer[i] = -1;
 }
 //--------------------------------------------------------------------------------
 ConstantBufferParameterDX11::ConstantBufferParameterDX11( ConstantBufferParameterDX11& copy )
 {
-	for ( int i = 0; i <= NUM_THREADS; i++ )
-		m_iCBuffer[i] = copy.m_iCBuffer[i];
+    for ( int i = 0; i <= NUM_THREADS; i++ )
+        m_iCBuffer[i] = copy.m_iCBuffer[i];
 }
 //--------------------------------------------------------------------------------
 ConstantBufferParameterDX11::~ConstantBufferParameterDX11()
@@ -32,10 +32,10 @@ ConstantBufferParameterDX11::~ConstantBufferParameterDX11()
 //--------------------------------------------------------------------------------
 void ConstantBufferParameterDX11::SetParameterData( void* pData, unsigned int threadID )
 {
-	assert( threadID >= 0 );
-	assert( threadID < NUM_THREADS+1 );
+    assert( threadID >= 0 );
+    assert( threadID < NUM_THREADS+1 );
 
-	m_iCBuffer[threadID] = *reinterpret_cast<int*>( pData );
+    m_iCBuffer[threadID] = *reinterpret_cast<int*>( pData );
 }
 //--------------------------------------------------------------------------------
 //void ConstantBufferParameterDX11::ResetParameterData( void* pData, unsigned int threadID )
@@ -50,15 +50,15 @@ void ConstantBufferParameterDX11::SetParameterData( void* pData, unsigned int th
 //--------------------------------------------------------------------------------
 const ParameterType ConstantBufferParameterDX11::GetParameterType()
 {
-	return( CBUFFER );
+    return( CBUFFER );
 }
 //--------------------------------------------------------------------------------
 int ConstantBufferParameterDX11::GetIndex( unsigned int threadID )
 {
-	assert( threadID >= 0 );
-	assert( threadID < NUM_THREADS+1 );
+    assert( threadID >= 0 );
+    assert( threadID < NUM_THREADS+1 );
 
-	return( m_iCBuffer[threadID] );
+    return( m_iCBuffer[threadID] );
 }
 //--------------------------------------------------------------------------------
 //void ConstantBufferParameterDX11::UpdateValue( RenderParameterDX11* pParameter, unsigned int threadID )

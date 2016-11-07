@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -21,16 +21,16 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-	class ShaderReflectionFactoryDX11
-	{
-	public:
-		~ShaderReflectionFactoryDX11();
+class ShaderReflectionFactoryDX11
+{
+public:
+    ~ShaderReflectionFactoryDX11();
 
-		static ShaderReflectionDX11* GenerateReflection( ShaderDX11& shader );
+    static ShaderReflectionDX11* GenerateReflection( ShaderDX11& shader );
 
-	private:
-		ShaderReflectionFactoryDX11();
-	};
+private:
+    ShaderReflectionFactoryDX11();
+};
 
 };
 //--------------------------------------------------------------------------------

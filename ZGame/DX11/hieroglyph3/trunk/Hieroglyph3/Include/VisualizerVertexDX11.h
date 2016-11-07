@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -25,28 +25,28 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-	class VisualizerVertexDX11
-	{
+class VisualizerVertexDX11
+{
 
-	public:
-		VisualizerVertexDX11();
-		~VisualizerVertexDX11();
+public:
+    VisualizerVertexDX11();
+    ~VisualizerVertexDX11();
 
-		
-		struct VertexData
-		{
-			Vector3f position;
-		};
 
-		struct InstanceData
-		{
-			Matrix4f transform;
-			Vector4f color;
-		};
+    struct VertexData
+    {
+        Vector3f position;
+    };
 
-		static unsigned int GetElementCount();
-		static D3D11_INPUT_ELEMENT_DESC Elements[6];
-	};
+    struct InstanceData
+    {
+        Matrix4f transform;
+        Vector4f color;
+    };
+
+    static unsigned int GetElementCount();
+    static D3D11_INPUT_ELEMENT_DESC Elements[6];
+};
 };
 //--------------------------------------------------------------------------------
 #endif // VisualizerVertexDX11_h

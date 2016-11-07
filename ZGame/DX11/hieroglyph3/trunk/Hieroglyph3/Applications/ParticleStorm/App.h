@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 #include "RenderApplication.h"
 
@@ -30,24 +30,24 @@ class App : public RenderApplication
 {
 
 public:
-	App();
-	
+    App();
+
 public:
-	virtual bool ConfigureEngineComponents();
-	virtual void ShutdownEngineComponents();
+    virtual bool ConfigureEngineComponents();
+    virtual void ShutdownEngineComponents();
 
-	virtual void Initialize();
-	virtual void Update();
-	virtual void Shutdown();
+    virtual void Initialize();
+    virtual void Update();
+    virtual void Shutdown();
 
-	virtual bool HandleEvent( EventPtr pEvent );
-	virtual std::wstring GetName( );
+    virtual bool HandleEvent( EventPtr pEvent );
+    virtual std::wstring GetName( );
 
 protected:
 
-	ParticleSystemActor*	m_pActor;
+    ParticleSystemActor*	m_pActor;
 
-	VectorParameterDX11*	m_pTimeFactors;
-	VectorParameterDX11*	m_pEmitterLocation;
-	VectorParameterDX11*	m_pConsumerLocation;
+    VectorParameterDX11*	m_pTimeFactors;
+    VectorParameterDX11*	m_pEmitterLocation;
+    VectorParameterDX11*	m_pConsumerLocation;
 };

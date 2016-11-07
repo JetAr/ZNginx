@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -16,104 +16,106 @@ using namespace Glyph3;
 //--------------------------------------------------------------------------------
 Actor::Actor()
 {
-	m_pRoot = new Node3D();
-	m_pBody = new Entity3D();
-	m_pRoot->AttachChild( m_pBody );
+    m_pRoot = new Node3D();
+    m_pBody = new Entity3D();
+    m_pRoot->AttachChild( m_pBody );
 
-	// Add the root and body to the element list for cleanup later on.
-	AddElement( m_pRoot );
-	AddElement( m_pBody );
+    // Add the root and body to the element list for cleanup later on.
+    AddElement( m_pRoot );
+    AddElement( m_pBody );
 }
 //--------------------------------------------------------------------------------
 Actor::~Actor()
 {
-	for ( auto pEntity : m_EntityElements )
-		SAFE_DELETE( pEntity );
+    for ( auto pEntity : m_EntityElements )
+        SAFE_DELETE( pEntity );
 
-	for ( auto pNode : m_NodeElements )
-		SAFE_DELETE( pNode );
+    for ( auto pNode : m_NodeElements )
+        SAFE_DELETE( pNode );
 }
 //--------------------------------------------------------------------------------
 Node3D* Actor::GetNode() const
 {
-	return( m_pRoot );
+    return( m_pRoot );
 }
 //--------------------------------------------------------------------------------
 Entity3D* Actor::GetBody() const
 {
-	return( m_pBody );
+    return( m_pBody );
 }
 //--------------------------------------------------------------------------------
 Node3D* Actor::GetNode()
 {
-	return( m_pRoot );
+    return( m_pRoot );
 }
 //--------------------------------------------------------------------------------
 Entity3D* Actor::GetBody()
 {
-	return( m_pBody );
+    return( m_pBody );
 }
 //--------------------------------------------------------------------------------
 void Actor::AddElement( Entity3D* pElement )
 {
-	// Add the entity to the element list, so that it's lifetime will be 
-	// controlled by the actor.  This does not do anything with the connection
-	// to the scene graph, so beware!
+    // Add the entity to the element list, so that it's lifetime will be
+    // controlled by the actor.  This does not do anything with the connection
+    // to the scene graph, so beware!
 
-	m_EntityElements.push_back( pElement );
+    m_EntityElements.push_back( pElement );
 }
 //--------------------------------------------------------------------------------
 void Actor::RemoveElement( Entity3D* pElement )
 {
-	// Here we iterate through the list of actors and remove any instances of 
-	// this actor. 
+    // Here we iterate through the list of actors and remove any instances of
+    // this actor.
 
-	auto it = m_EntityElements.begin();
+    auto it = m_EntityElements.begin();
 
-	while ( it != m_EntityElements.end() ) {
-		if ( *it == pElement ) 
-			it = m_EntityElements.erase( it );
-		else
-			it++;
-	}
+    while ( it != m_EntityElements.end() )
+    {
+        if ( *it == pElement )
+            it = m_EntityElements.erase( it );
+        else
+            it++;
+    }
 
-	// Removing an element from this list does not automatically remove any sub-
-	// tree objects.  For example, if a node is directly removed using this 
-	// method, its children are not automatically removed.  If this is what you 
-	// want, then you should acquire a list of the children, and iterate over it
-	// to remove each entity.  This functionality is provided in the 'sub-tree'
-	// methods for convenience.
+    // Removing an element from this list does not automatically remove any sub-
+    // tree objects.  For example, if a node is directly removed using this
+    // method, its children are not automatically removed.  If this is what you
+    // want, then you should acquire a list of the children, and iterate over it
+    // to remove each entity.  This functionality is provided in the 'sub-tree'
+    // methods for convenience.
 }
 //--------------------------------------------------------------------------------
 void Actor::AddElement( Node3D* pElement )
 {
-	// Add the entity to the element list, so that it's lifetime will be 
-	// controlled by the actor.  This does not do anything with the connection
-	// to the scene graph, so beware!
+    // Add the entity to the element list, so that it's lifetime will be
+    // controlled by the actor.  This does not do anything with the connection
+    // to the scene graph, so beware!
 
-	m_NodeElements.push_back( pElement );
+    m_NodeElements.push_back( pElement );
 }
 //--------------------------------------------------------------------------------
 void Actor::RemoveElement( Node3D* pElement )
 {
-	// Here we iterate through the list of actors and remove any instances of 
-	// this actor. 
+    // Here we iterate through the list of actors and remove any instances of
+    // this actor.
 
-	auto it = m_NodeElements.begin();
+    auto it = m_NodeElements.begin();
 
-	while ( it != m_NodeElements.end() ) {
-		if ( *it == pElement ) 
-			it = m_NodeElements.erase( it );
-		else
-			it++;
-	}
+    while ( it != m_NodeElements.end() )
+    {
+        if ( *it == pElement )
+            it = m_NodeElements.erase( it );
+        else
+            it++;
+    }
 
-	// Removing an element from this list does not automatically remove any sub-
-	// tree objects.  For example, if a node is directly removed using this 
-	// method, its children are not automatically removed.  If this is what you 
-	// want, then you should acquire a list of the children, and iterate over it
-	// to remove each entity.  This functionality is provided in the 'sub-tree'
-	// methods for convenience.
+    // Removing an element from this list does not automatically remove any sub-
+    // tree objects.  For example, if a node is directly removed using this
+    // method, its children are not automatically removed.  If this is what you
+    // want, then you should acquire a list of the children, and iterate over it
+    // to remove each entity.  This functionality is provided in the 'sub-tree'
+    // methods for convenience.
 }
 //--------------------------------------------------------------------------------
 //void Actor::AddSubtree( Node3D* pNode )
@@ -141,7 +143,7 @@ void Actor::RemoveElement( Node3D* pElement )
 //	std::vector<Entity3D*> entities;
 //	pNode->GetEntities( entities );
 //
-//	// Remove each of these entities from the 'elements' list to no longer manage 
+//	// Remove each of these entities from the 'elements' list to no longer manage
 //	// their lifetimes.
 //
 //	for ( auto pEntity : entities ) {

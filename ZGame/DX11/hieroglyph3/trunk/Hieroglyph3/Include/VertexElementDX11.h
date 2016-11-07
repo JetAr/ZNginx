@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -30,55 +30,55 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-	class VertexElementDX11
-	{
+class VertexElementDX11
+{
 
-    public:
+public:
 
-        // Standard semantic names
-        static std::string PositionSemantic;
-        static std::string NormalSemantic;
-        static std::string TexCoordSemantic;
-        static std::string BoneIDSemantic;
-		static std::string BoneWeightSemantic;
-        static std::string TangentSemantic;
+    // Standard semantic names
+    static std::string PositionSemantic;
+    static std::string NormalSemantic;
+    static std::string TexCoordSemantic;
+    static std::string BoneIDSemantic;
+    static std::string BoneWeightSemantic;
+    static std::string TangentSemantic;
 
-	public:
-		VertexElementDX11( int tuple, int elementCount );
-		~VertexElementDX11( );
-		
-		int				SizeInBytes();
-		int				Count();
-		int				Tuple();
+public:
+    VertexElementDX11( int tuple, int elementCount );
+    ~VertexElementDX11( );
 
-		void*			GetPtr( int i );
+    int				SizeInBytes();
+    int				Count();
+    int				Tuple();
 
-		float*			Get1f( int i );
-		Vector2f*		Get2f( int i );
-		Vector3f*		Get3f( int i );
-		Vector4f*		Get4f( int i );
+    void*			GetPtr( int i );
 
-		int*			Get1i( int i );
+    float*			Get1f( int i );
+    Vector2f*		Get2f( int i );
+    Vector3f*		Get3f( int i );
+    Vector4f*		Get4f( int i );
 
-		unsigned int*	Get1ui( int i );
+    int*			Get1i( int i );
 
-		float*					operator[]( int i );
-		const float*			operator[]( int i ) const;
+    unsigned int*	Get1ui( int i );
 
-		std::string						m_SemanticName;
-		UINT							m_uiSemanticIndex;
-		DXGI_FORMAT						m_Format;
-		UINT							m_uiInputSlot;
-		UINT							m_uiAlignedByteOffset;
-		D3D11_INPUT_CLASSIFICATION		m_InputSlotClass;
-		UINT							m_uiInstanceDataStepRate;
+    float*					operator[]( int i );
+    const float*			operator[]( int i ) const;
 
-	protected:
-		VertexElementDX11();
+    std::string						m_SemanticName;
+    UINT							m_uiSemanticIndex;
+    DXGI_FORMAT						m_Format;
+    UINT							m_uiInputSlot;
+    UINT							m_uiAlignedByteOffset;
+    D3D11_INPUT_CLASSIFICATION		m_InputSlotClass;
+    UINT							m_uiInstanceDataStepRate;
 
-		float*							m_pfData;
-		int								m_iTuple;
-		int								m_iCount;
-	};
+protected:
+    VertexElementDX11();
+
+    float*							m_pfData;
+    int								m_iTuple;
+    int								m_iCount;
+};
 };
 #endif // VertexElementDX11_h

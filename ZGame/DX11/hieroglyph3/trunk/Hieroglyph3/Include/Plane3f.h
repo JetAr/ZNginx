@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -22,21 +22,21 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-	struct Plane3f
-	{
-		Plane3f( );
-		Plane3f( float A, float B, float C, float D );
-		~Plane3f( );
+struct Plane3f
+{
+    Plane3f( );
+    Plane3f( float A, float B, float C, float D );
+    ~Plane3f( );
 
-		// Operations
-		void Normalize();
-		float DistanceToPoint( const Vector3f& pt ) const;
+    // Operations
+    void Normalize();
+    float DistanceToPoint( const Vector3f& pt ) const;
 
-		float a;
-		float b;
-		float c;
-		float d;
-	};
+    float a;
+    float b;
+    float c;
+    float d;
+};
 };
 //--------------------------------------------------------------------------------
 #endif // Plane3f_h

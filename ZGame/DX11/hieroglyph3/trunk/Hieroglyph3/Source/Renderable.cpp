@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -16,61 +16,63 @@
 using namespace Glyph3;
 //--------------------------------------------------------------------------------
 Renderable::Renderable() :
-	iPass( GEOMETRY ),
-	Executor( nullptr ),
-	Material( nullptr ) 
+    iPass( GEOMETRY ),
+    Executor( nullptr ),
+    Material( nullptr )
 {
 }
 //--------------------------------------------------------------------------------
 Renderable::~Renderable()
 {
-	Executor = nullptr;
-	Material = nullptr;
+    Executor = nullptr;
+    Material = nullptr;
 }
 //--------------------------------------------------------------------------------
 void Renderable::SetMaterial( MaterialPtr pMaterial )
 {
-	Material = pMaterial;
+    Material = pMaterial;
 
-	// Query all of the vertex shader IDs that will be used so that the pipeline
-	// executor class can pre-create them.
+    // Query all of the vertex shader IDs that will be used so that the pipeline
+    // executor class can pre-create them.
 
-	if ( Material != nullptr && Executor != nullptr )
-	{
-		std::vector<int> idlist;
-		Material->GetAllVertexShaderIDs( idlist );
+    if ( Material != nullptr && Executor != nullptr )
+    {
+        std::vector<int> idlist;
+        Material->GetAllVertexShaderIDs( idlist );
 
-		for ( auto ID : idlist ) {
-			Executor->GenerateInputLayout( ID );
-		}
-	}
+        for ( auto ID : idlist )
+        {
+            Executor->GenerateInputLayout( ID );
+        }
+    }
 }
 //--------------------------------------------------------------------------------
 MaterialPtr Renderable::GetMaterial( )
 {
-	return( Material );
+    return( Material );
 }
 //--------------------------------------------------------------------------------
 void Renderable::SetGeometry( ExecutorPtr pExecutor )
 {
-	Executor = pExecutor;
+    Executor = pExecutor;
 
-	// Query all of the vertex shader IDs that will be used so that the pipeline
-	// executor class can pre-create them.
+    // Query all of the vertex shader IDs that will be used so that the pipeline
+    // executor class can pre-create them.
 
-	if ( Material != nullptr && Executor != nullptr )
-	{
-		std::vector<int> idlist;
-		Material->GetAllVertexShaderIDs( idlist );
+    if ( Material != nullptr && Executor != nullptr )
+    {
+        std::vector<int> idlist;
+        Material->GetAllVertexShaderIDs( idlist );
 
-		for ( auto ID : idlist ) {
-			Executor->GenerateInputLayout( ID );
-		}
-	}
+        for ( auto ID : idlist )
+        {
+            Executor->GenerateInputLayout( ID );
+        }
+    }
 }
 //--------------------------------------------------------------------------------
 ExecutorPtr Renderable::GetGeometry( )
 {
-	return( Executor );
+    return( Executor );
 }
 //--------------------------------------------------------------------------------

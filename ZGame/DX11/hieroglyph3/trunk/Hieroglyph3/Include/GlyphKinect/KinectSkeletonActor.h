@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -22,7 +22,7 @@
 //
 // Since these joint positions are not hierarchical, we represent the skeleton
 // actor with a node as the root and then a single entity for each of the joints.
-// This is a flat structure, but allows each joint to have its own mesh.  The 
+// This is a flat structure, but allows each joint to have its own mesh.  The
 // following list defines each of the joints, as well as the enumeration value
 // to index it with.
 //
@@ -58,20 +58,20 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-	class MatrixArrayParameterDX11;
+class MatrixArrayParameterDX11;
 
-	class KinectSkeletonActor : public GeometryActor
-	{
-	public:
-		KinectSkeletonActor();
-		virtual ~KinectSkeletonActor();
+class KinectSkeletonActor : public GeometryActor
+{
+public:
+    KinectSkeletonActor();
+    virtual ~KinectSkeletonActor();
 
-		void UpdateSkeleton( NUI_SKELETON_DATA* pData );
+    void UpdateSkeleton( NUI_SKELETON_DATA* pData );
 
-	private:
-		void DrawLinkage( NUI_SKELETON_DATA* pData, NUI_SKELETON_POSITION_INDEX i1, NUI_SKELETON_POSITION_INDEX i2 );
+private:
+    void DrawLinkage( NUI_SKELETON_DATA* pData, NUI_SKELETON_POSITION_INDEX i1, NUI_SKELETON_POSITION_INDEX i2 );
 
-	};
+};
 };
 //--------------------------------------------------------------------------------
 #endif // KinectSkeletonActor_h

@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------
@@ -21,73 +21,73 @@
 //----------------------------------------------------------------------------------------------------
 namespace Glyph3
 {
-	class Matrix3f
-	{
-	public:
-		Matrix3f( );
-		Matrix3f( bool bZero );
-		Matrix3f( const Matrix3f& Matrix );
-		Matrix3f( float fM11, float fM12, float fM13,
-				   float fM21, float fM22, float fM23,
-				   float fM31, float fM32, float fM33 );
-		
-		void RotationX( float fRadians );
-		void RotationY( float fRadians );
-		void RotationZ( float fRadians );
-		void Rotation( Vector3f& Rot );
-		void RotationZYX( Vector3f& Rot );
-		void RotationEuler( Vector3f& Axis, float Angle );
-		void Orthonormalize();
+class Matrix3f
+{
+public:
+    Matrix3f( );
+    Matrix3f( bool bZero );
+    Matrix3f( const Matrix3f& Matrix );
+    Matrix3f( float fM11, float fM12, float fM13,
+              float fM21, float fM22, float fM23,
+              float fM31, float fM32, float fM33 );
 
-		void MakeZero();
-		void MakeIdentity();
-		void MakeTranspose();
+    void RotationX( float fRadians );
+    void RotationY( float fRadians );
+    void RotationZ( float fRadians );
+    void Rotation( Vector3f& Rot );
+    void RotationZYX( Vector3f& Rot );
+    void RotationEuler( Vector3f& Axis, float Angle );
+    void Orthonormalize();
 
-		Matrix3f Zero();
-		Matrix3f Identity();
-		Matrix3f Transpose();
+    void MakeZero();
+    void MakeIdentity();
+    void MakeTranspose();
 
-		// Operators
-		Matrix3f& operator= ( const Matrix3f& Matrix );
+    Matrix3f Zero();
+    Matrix3f Identity();
+    Matrix3f Transpose();
 
-		// member access
-		float operator() ( int iRow, int iCol ) const;
-		float& operator() ( int iRow, int iCol );
-		float operator[] ( int iPos ) const;
-		float& operator[] ( int iPos );
+    // Operators
+    Matrix3f& operator= ( const Matrix3f& Matrix );
 
-		void SetRow( int iRow, const Vector3f& Vector );
-		Vector3f GetRow( int iRow ) const;
-		void SetColumn( int iCol, const Vector3f& Vector );
-		Vector3f GetColumn( int iCol ) const;
+    // member access
+    float operator() ( int iRow, int iCol ) const;
+    float& operator() ( int iRow, int iCol );
+    float operator[] ( int iPos ) const;
+    float& operator[] ( int iPos );
 
-		// comparison
-		bool operator== ( const Matrix3f& Matrix ) const;
-		bool operator!= ( const Matrix3f& Matrix ) const;
+    void SetRow( int iRow, const Vector3f& Vector );
+    Vector3f GetRow( int iRow ) const;
+    void SetColumn( int iCol, const Vector3f& Vector );
+    Vector3f GetColumn( int iCol ) const;
 
-		// arithmetic operations
-		Matrix3f operator+ ( const Matrix3f& Matrix ) const;
-		Matrix3f operator- ( const Matrix3f& Matrix ) const;
-		Matrix3f operator* ( const Matrix3f& Matrix ) const;
-		Matrix3f operator* ( float fScalar) const;
-		Matrix3f operator/ ( float fScalar) const;
-		Matrix3f operator- ( ) const;
+    // comparison
+    bool operator== ( const Matrix3f& Matrix ) const;
+    bool operator!= ( const Matrix3f& Matrix ) const;
 
-		// arithmetic updates
-		Matrix3f& operator+= ( const Matrix3f& Matrix );
-		Matrix3f& operator-= ( const Matrix3f& Matrix );
-		Matrix3f& operator*= ( const Matrix3f& Matrix );
-		Matrix3f& operator*= ( float fScalar );
-		Matrix3f& operator/= ( float fScalar );
+    // arithmetic operations
+    Matrix3f operator+ ( const Matrix3f& Matrix ) const;
+    Matrix3f operator- ( const Matrix3f& Matrix ) const;
+    Matrix3f operator* ( const Matrix3f& Matrix ) const;
+    Matrix3f operator* ( float fScalar) const;
+    Matrix3f operator/ ( float fScalar) const;
+    Matrix3f operator- ( ) const;
 
-		// matrix - vector operations
-		Vector3f operator* ( const Vector3f& rkV ) const;  // M * v
+    // arithmetic updates
+    Matrix3f& operator+= ( const Matrix3f& Matrix );
+    Matrix3f& operator-= ( const Matrix3f& Matrix );
+    Matrix3f& operator*= ( const Matrix3f& Matrix );
+    Matrix3f& operator*= ( float fScalar );
+    Matrix3f& operator/= ( float fScalar );
 
-	protected:
-		float m_afEntry[3*3];
+    // matrix - vector operations
+    Vector3f operator* ( const Vector3f& rkV ) const;  // M * v
 
-		static int I(int iRow, int iCol); // iRow*N + iCol
-	};
+protected:
+    float m_afEntry[3*3];
+
+    static int I(int iRow, int iCol); // iRow*N + iCol
+};
 };
 //----------------------------------------------------------------------------------------------------
 #endif // Matrix3f_h

@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -20,22 +20,22 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-	template <typename T>
-	class PositionExtractorController : public IController<T>
-	{
-	public:
-		PositionExtractorController( );
-		virtual ~PositionExtractorController( );
+template <typename T>
+class PositionExtractorController : public IController<T>
+{
+public:
+    PositionExtractorController( );
+    virtual ~PositionExtractorController( );
 
-		virtual void Update( float fTime );
+    virtual void Update( float fTime );
 
-		void SetParameterWriter( VectorParameterWriterDX11* pWriter );
+    void SetParameterWriter( VectorParameterWriterDX11* pWriter );
 
-	protected:
-		VectorParameterWriterDX11*		m_pWriter;
-	};
+protected:
+    VectorParameterWriterDX11*		m_pWriter;
+};
 
-	#include "PositionExtractorController.inl"
+#include "PositionExtractorController.inl"
 };
 //--------------------------------------------------------------------------------
 #endif // PositionExtractorController_h

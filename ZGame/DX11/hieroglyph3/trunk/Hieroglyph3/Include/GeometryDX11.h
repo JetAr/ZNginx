@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -27,66 +27,66 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-	class VertexBufferDX11;
-	class IndexBufferDX11;
+class VertexBufferDX11;
+class IndexBufferDX11;
 
-	class GeometryDX11 : public PipelineExecutorDX11
-	{
-	public:
-		GeometryDX11( );
-		virtual ~GeometryDX11( );
-	
-		virtual void Execute( PipelineManagerDX11* pPipeline, IParameterManager* pParamManager );
+class GeometryDX11 : public PipelineExecutorDX11
+{
+public:
+    GeometryDX11( );
+    virtual ~GeometryDX11( );
 
-		void AddElement( VertexElementDX11* element );
-		void AddFace( TriangleIndices& face );
-		void AddLine( LineIndices& line );
-		void AddPoint( PointIndices& point );
-		void AddIndex( UINT index );
+    virtual void Execute( PipelineManagerDX11* pPipeline, IParameterManager* pParamManager );
 
-        VertexElementDX11* GetElement( std::string name );
-		VertexElementDX11* GetElement( std::wstring name );
-		VertexElementDX11* GetElement( int index );
+    void AddElement( VertexElementDX11* element );
+    void AddFace( TriangleIndices& face );
+    void AddLine( LineIndices& line );
+    void AddPoint( PointIndices& point );
+    void AddIndex( UINT index );
 
-		UINT GetIndex( unsigned int index );
+    VertexElementDX11* GetElement( std::string name );
+    VertexElementDX11* GetElement( std::wstring name );
+    VertexElementDX11* GetElement( int index );
 
-		D3D11_PRIMITIVE_TOPOLOGY GetPrimitiveType();
-		void SetPrimitiveType( D3D11_PRIMITIVE_TOPOLOGY type );
+    UINT GetIndex( unsigned int index );
 
-		int GetPrimitiveCount();
-		UINT GetIndexCount();
-		
-		int GetVertexCount();
-		int GetElementCount();
-		int GetVertexSize();
+    D3D11_PRIMITIVE_TOPOLOGY GetPrimitiveType();
+    void SetPrimitiveType( D3D11_PRIMITIVE_TOPOLOGY type );
 
-		int CalculateVertexSize();
-		int CalculateVertexCount();
+    int GetPrimitiveCount();
+    UINT GetIndexCount();
 
-		void GenerateInputLayout( int ShaderID );
+    int GetVertexCount();
+    int GetElementCount();
+    int GetVertexSize();
 
-		void LoadToBuffers( );
+    int CalculateVertexSize();
+    int CalculateVertexCount();
 
-        bool ComputeTangentFrame( std::string positionSemantic = VertexElementDX11::PositionSemantic,
-                                  std::string normalSemantic = VertexElementDX11::NormalSemantic,
-                                  std::string texCoordSemantic = VertexElementDX11::TexCoordSemantic, 
-                                  std::string tangentSemantic = VertexElementDX11::TangentSemantic );
+    void GenerateInputLayout( int ShaderID );
 
-		std::vector<VertexElementDX11*>		m_vElements;
-		std::vector<UINT>					m_vIndices;
-		
-		ResourcePtr m_VB;
-		ResourcePtr m_IB;
+    void LoadToBuffers( );
 
-		// The size 
-		int m_iVertexSize;
-		int m_iVertexCount;
+    bool ComputeTangentFrame( std::string positionSemantic = VertexElementDX11::PositionSemantic,
+                              std::string normalSemantic = VertexElementDX11::NormalSemantic,
+                              std::string texCoordSemantic = VertexElementDX11::TexCoordSemantic,
+                              std::string tangentSemantic = VertexElementDX11::TangentSemantic );
 
-		// The type of primitives listed in the index buffer
-		D3D11_PRIMITIVE_TOPOLOGY m_ePrimType;
-	};
+    std::vector<VertexElementDX11*>		m_vElements;
+    std::vector<UINT>					m_vIndices;
 
-	typedef std::shared_ptr<GeometryDX11> GeometryPtr;
+    ResourcePtr m_VB;
+    ResourcePtr m_IB;
+
+    // The size
+    int m_iVertexSize;
+    int m_iVertexCount;
+
+    // The type of primitives listed in the index buffer
+    D3D11_PRIMITIVE_TOPOLOGY m_ePrimType;
+};
+
+typedef std::shared_ptr<GeometryDX11> GeometryPtr;
 };
 //--------------------------------------------------------------------------------
 #endif // GeometryDX11_h

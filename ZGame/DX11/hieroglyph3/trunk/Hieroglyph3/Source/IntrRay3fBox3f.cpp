@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -15,9 +15,9 @@
 using namespace Glyph3;
 //--------------------------------------------------------------------------------
 IntrRay3fBox3f::IntrRay3fBox3f( const Ray3f& ray, Box3f& box ) :
-	m_Ray( ray ),
-	m_Box( box ),
-	m_iQuantity( 0 )
+    m_Ray( ray ),
+    m_Box( box ),
+    m_iQuantity( 0 )
 {
 }
 //--------------------------------------------------------------------------------
@@ -86,13 +86,13 @@ bool IntrRay3fBox3f::Test()
 //--------------------------------------------------------------------------------
 bool IntrRay3fBox3f::Find()
 {
-	float fT0 = 0.0f;
-	float fT1 = 10000000000.0f;
+    float fT0 = 0.0f;
+    float fT1 = 10000000000.0f;
 
     // convert linear component to box coordinates
     Vector3f kDiff = m_Ray.origin - m_Box.center;
-    
-	Vector3f kBOrigin(
+
+    Vector3f kBOrigin(
         kDiff.Dot(m_Box.axes[0]),
         kDiff.Dot(m_Box.axes[1]),
         kDiff.Dot(m_Box.axes[2])
@@ -106,7 +106,7 @@ bool IntrRay3fBox3f::Find()
 
     float fSaveT0 = fT0, fSaveT1 = fT1;
 
-	bool bNotAllClipped =
+    bool bNotAllClipped =
         Clip(+kBDirection.x,-kBOrigin.x-m_Box.extents[0],fT0,fT1) &&
         Clip(-kBDirection.x,+kBOrigin.x-m_Box.extents[0],fT0,fT1) &&
         Clip(+kBDirection.y,-kBOrigin.y-m_Box.extents[1],fT0,fT1) &&
@@ -120,8 +120,8 @@ bool IntrRay3fBox3f::Find()
         {
             //riIntrType = IT_SEGMENT;
             m_iQuantity = 2;
-			m_afRayT[0] = fT0;
-			m_afRayT[1] = fT1;
+            m_afRayT[0] = fT0;
+            m_afRayT[1] = fT1;
             m_aPoints[0] = m_Ray.origin + m_Ray.direction * fT0;
             m_aPoints[1] = m_Ray.origin + m_Ray.direction * fT1;
         }
@@ -129,7 +129,7 @@ bool IntrRay3fBox3f::Find()
         {
             //riIntrType = IT_POINT;
             m_iQuantity = 1;
-			m_afRayT[0] = fT0;
+            m_afRayT[0] = fT0;
             m_aPoints[0] = m_Ray.origin + m_Ray.direction * fT0;
         }
     }

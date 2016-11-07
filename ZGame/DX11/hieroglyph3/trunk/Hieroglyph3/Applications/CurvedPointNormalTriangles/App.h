@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 #include "Application.h"
 
@@ -33,50 +33,50 @@ class App : public Application
 {
 
 public:
-	App();
-	
+    App();
+
 public:
-	virtual void Initialize();
-	virtual void Update();
-	virtual void Shutdown();
+    virtual void Initialize();
+    virtual void Update();
+    virtual void Shutdown();
 
-	virtual bool ConfigureEngineComponents();
-	virtual void ShutdownEngineComponents();
+    virtual bool ConfigureEngineComponents();
+    virtual void ShutdownEngineComponents();
 
-	virtual void TakeScreenShot();
+    virtual void TakeScreenShot();
 
-	virtual bool HandleEvent( EventPtr pEvent );
-	virtual std::wstring GetName( );
+    virtual bool HandleEvent( EventPtr pEvent );
+    virtual std::wstring GetName( );
 
 protected:
 
-	RendererDX11*			m_pRenderer11;
-	Win32RenderWindow*		m_pWindow;
-	
-	int						m_iSwapChain;
-	ResourcePtr				m_RenderTarget;
-	ResourcePtr				m_DepthTarget;
+    RendererDX11*			m_pRenderer11;
+    Win32RenderWindow*		m_pWindow;
 
-	SpriteFontPtr			m_pFont;
-	SpriteRendererDX11*		m_pSpriteRenderer;
+    int						m_iSwapChain;
+    ResourcePtr				m_RenderTarget;
+    ResourcePtr				m_DepthTarget;
 
-	bool					m_bSolidRender;
-	bool					m_bDefaultComplexity;
-	
-	GeometryPtr				m_pGeometry;
-	RenderEffectDX11*		m_pEffect;
+    SpriteFontPtr			m_pFont;
+    SpriteRendererDX11*		m_pSpriteRenderer;
 
-	int						m_iDefaultHullShader;
-	int						m_iSilhouetteHullShader;
-	int						m_rsWireframe;
-	int						m_rsSolid;
+    bool					m_bSolidRender;
+    bool					m_bDefaultComplexity;
 
-	float					m_fTessFactor;
+    GeometryPtr				m_pGeometry;
+    RenderEffectDX11*		m_pEffect;
 
-	Camera*		m_pCamera;
+    int						m_iDefaultHullShader;
+    int						m_iSilhouetteHullShader;
+    int						m_rsWireframe;
+    int						m_rsSolid;
 
-	VectorParameterDX11* m_pEdgeFactors;
+    float					m_fTessFactor;
 
-	virtual void CreateShaders();
-	virtual void UpdateViewState();
+    Camera*		m_pCamera;
+
+    VectorParameterDX11* m_pEdgeFactors;
+
+    virtual void CreateShaders();
+    virtual void UpdateViewState();
 };

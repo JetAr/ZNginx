@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -23,14 +23,15 @@ using namespace Glyph3;
 //--------------------------------------------------------------------------------
 RenderParameterDX11::RenderParameterDX11()
 {
-	for ( int i = 0; i < NUM_THREADS+1; i++ ) {
-		m_auiValueID[i] = 0;
-	}
+    for ( int i = 0; i < NUM_THREADS+1; i++ )
+    {
+        m_auiValueID[i] = 0;
+    }
 }
 //--------------------------------------------------------------------------------
 RenderParameterDX11::RenderParameterDX11( RenderParameterDX11& copy )
 {
-	m_sParameterName = copy.m_sParameterName;
+    m_sParameterName = copy.m_sParameterName;
 }
 //--------------------------------------------------------------------------------
 RenderParameterDX11::~RenderParameterDX11()
@@ -39,18 +40,18 @@ RenderParameterDX11::~RenderParameterDX11()
 //--------------------------------------------------------------------------------
 std::wstring& RenderParameterDX11::GetName()
 {
-	return( m_sParameterName );
+    return( m_sParameterName );
 }
 //--------------------------------------------------------------------------------
 void RenderParameterDX11::SetName( const std::wstring& name )
 {
-	m_sParameterName = name;
+    m_sParameterName = name;
 }
 //--------------------------------------------------------------------------------
 void RenderParameterDX11::InitializeParameterData( void* pData )
 {
-	for ( int i = 0; i <= NUM_THREADS; i++ )
-		SetParameterData( pData, i );
+    for ( int i = 0; i <= NUM_THREADS; i++ )
+        SetParameterData( pData, i );
 }
 //--------------------------------------------------------------------------------
 //void RenderParameterDX11::UnInitializeParameterData( void* pData )
@@ -61,10 +62,10 @@ void RenderParameterDX11::InitializeParameterData( void* pData )
 //--------------------------------------------------------------------------------
 unsigned int RenderParameterDX11::GetValueID( unsigned int threadID )
 {
-	assert( threadID >= 0 );
-	assert( threadID < NUM_THREADS+1 );
+    assert( threadID >= 0 );
+    assert( threadID < NUM_THREADS+1 );
 
-	return( m_auiValueID[threadID] );
+    return( m_auiValueID[threadID] );
 }
 //--------------------------------------------------------------------------------
 //RenderParameterDX11* RenderParameterDX11::CreateCopy()

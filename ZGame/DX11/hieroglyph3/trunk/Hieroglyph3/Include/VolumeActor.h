@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -24,17 +24,17 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-	typedef std::shared_ptr<DrawIndexedExecutorDX11<VolumeTextureVertexDX11::Vertex>> VolumeGeometryPtr;
+typedef std::shared_ptr<DrawIndexedExecutorDX11<VolumeTextureVertexDX11::Vertex>> VolumeGeometryPtr;
 
-	class VolumeActor : public Actor
-	{
-	public:
-		VolumeActor();
-		virtual ~VolumeActor();
+class VolumeActor : public Actor
+{
+public:
+    VolumeActor();
+    virtual ~VolumeActor();
 
-		ResourcePtr							m_VolumeTexture;
-		VolumeGeometryPtr					m_pGeometry;
-	};
+    ResourcePtr							m_VolumeTexture;
+    VolumeGeometryPtr					m_pGeometry;
+};
 };
 //--------------------------------------------------------------------------------
 #endif // VolumeActor_h

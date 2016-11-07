@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -19,25 +19,25 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-	enum eSHAPE
-	{
-		SPHERE,
-		BOX,
-		TRIANGLE,
-		RAY,
-		PLANE,
-		FRUSTUM,
-		CONE
-	};
+enum eSHAPE
+{
+    SPHERE,
+    BOX,
+    TRIANGLE,
+    RAY,
+    PLANE,
+    FRUSTUM,
+    CONE
+};
 
-	class Shape3D
-	{
-	public:
-		Shape3D( );
-		virtual ~Shape3D( );
+class Shape3D
+{
+public:
+    Shape3D( );
+    virtual ~Shape3D( );
 
-		virtual eSHAPE GetShapeType( ) const = 0;
-	};
+    virtual eSHAPE GetShapeType( ) const = 0;
+};
 };
 //--------------------------------------------------------------------------------
 #endif // Shape3D_h

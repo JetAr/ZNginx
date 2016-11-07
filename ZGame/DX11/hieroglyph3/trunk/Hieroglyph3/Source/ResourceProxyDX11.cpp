@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -23,78 +23,78 @@
 //--------------------------------------------------------------------------------
 using namespace Glyph3;
 //--------------------------------------------------------------------------------
-ResourceProxyDX11::ResourceProxyDX11( int ResourceID, BufferConfigDX11* pConfig, 
-                                        RendererDX11* pRenderer, 
-                                        ShaderResourceViewConfigDX11* pSRVConfig,
-                                        RenderTargetViewConfigDX11* pRTVConfig,
-                                        UnorderedAccessViewConfigDX11* pUAVConfig )
-{	    
+ResourceProxyDX11::ResourceProxyDX11( int ResourceID, BufferConfigDX11* pConfig,
+                                      RendererDX11* pRenderer,
+                                      ShaderResourceViewConfigDX11* pSRVConfig,
+                                      RenderTargetViewConfigDX11* pRTVConfig,
+                                      UnorderedAccessViewConfigDX11* pUAVConfig )
+{
     D3D11_BUFFER_DESC desc = pConfig->GetBufferDesc();
-    CommonConstructor( desc.BindFlags, ResourceID, pRenderer, pSRVConfig, pRTVConfig, pUAVConfig );	
+    CommonConstructor( desc.BindFlags, ResourceID, pRenderer, pSRVConfig, pRTVConfig, pUAVConfig );
 
-    // Retain the renderer's configuration.  
+    // Retain the renderer's configuration.
 
     m_pBufferConfig = new BufferConfigDX11();
-    *m_pBufferConfig = *pConfig;	
+    *m_pBufferConfig = *pConfig;
 }
 //--------------------------------------------------------------------------------
-ResourceProxyDX11::ResourceProxyDX11( int ResourceID, Texture1dConfigDX11* pConfig, 
-                                     RendererDX11* pRenderer, 
-                                     ShaderResourceViewConfigDX11* pSRVConfig,
-                                     RenderTargetViewConfigDX11* pRTVConfig,
-                                     UnorderedAccessViewConfigDX11* pUAVConfig )
-{    
+ResourceProxyDX11::ResourceProxyDX11( int ResourceID, Texture1dConfigDX11* pConfig,
+                                      RendererDX11* pRenderer,
+                                      ShaderResourceViewConfigDX11* pSRVConfig,
+                                      RenderTargetViewConfigDX11* pRTVConfig,
+                                      UnorderedAccessViewConfigDX11* pUAVConfig )
+{
     D3D11_TEXTURE1D_DESC desc = pConfig->GetTextureDesc();
-    CommonConstructor( desc.BindFlags, ResourceID, pRenderer, pSRVConfig, pRTVConfig, pUAVConfig );	
+    CommonConstructor( desc.BindFlags, ResourceID, pRenderer, pSRVConfig, pRTVConfig, pUAVConfig );
 
-    // Retain the renderer's configuration.  
+    // Retain the renderer's configuration.
 
     m_pTexture1dConfig = new Texture1dConfigDX11();
-    *m_pTexture1dConfig = *pConfig;	
+    *m_pTexture1dConfig = *pConfig;
 }
 //--------------------------------------------------------------------------------
-ResourceProxyDX11::ResourceProxyDX11( int ResourceID, Texture2dConfigDX11* pConfig, 
-                                     RendererDX11* pRenderer, 
-                                     ShaderResourceViewConfigDX11* pSRVConfig,
-                                     RenderTargetViewConfigDX11* pRTVConfig,
-                                     UnorderedAccessViewConfigDX11* pUAVConfig,
-                                     DepthStencilViewConfigDX11* pDSVConfig )
-{    
+ResourceProxyDX11::ResourceProxyDX11( int ResourceID, Texture2dConfigDX11* pConfig,
+                                      RendererDX11* pRenderer,
+                                      ShaderResourceViewConfigDX11* pSRVConfig,
+                                      RenderTargetViewConfigDX11* pRTVConfig,
+                                      UnorderedAccessViewConfigDX11* pUAVConfig,
+                                      DepthStencilViewConfigDX11* pDSVConfig )
+{
     D3D11_TEXTURE2D_DESC desc = pConfig->GetTextureDesc();
-    CommonConstructor( desc.BindFlags, ResourceID, pRenderer, pSRVConfig, pRTVConfig, pUAVConfig, pDSVConfig );	
+    CommonConstructor( desc.BindFlags, ResourceID, pRenderer, pSRVConfig, pRTVConfig, pUAVConfig, pDSVConfig );
 
-    // Retain the renderer's configuration.  
+    // Retain the renderer's configuration.
 
     m_pTexture2dConfig = new Texture2dConfigDX11();
     *m_pTexture2dConfig = *pConfig;
 }
 //--------------------------------------------------------------------------------
 ResourceProxyDX11::ResourceProxyDX11( int ResourceID, Texture3dConfigDX11* pConfig,
-                                     RendererDX11* pRenderer, 
-                                     ShaderResourceViewConfigDX11* pSRVConfig,
-                                     RenderTargetViewConfigDX11* pRTVConfig,
-                                     UnorderedAccessViewConfigDX11* pUAVConfig )
+                                      RendererDX11* pRenderer,
+                                      ShaderResourceViewConfigDX11* pSRVConfig,
+                                      RenderTargetViewConfigDX11* pRTVConfig,
+                                      UnorderedAccessViewConfigDX11* pUAVConfig )
 {
     D3D11_TEXTURE3D_DESC desc = pConfig->GetTextureDesc();
-    CommonConstructor( desc.BindFlags, ResourceID, pRenderer, pSRVConfig, pRTVConfig, pUAVConfig );	
+    CommonConstructor( desc.BindFlags, ResourceID, pRenderer, pSRVConfig, pRTVConfig, pUAVConfig );
 
     // Retain the renderer's configuration.
 
     m_pTexture3dConfig = new Texture3dConfigDX11();
-    *m_pTexture3dConfig = *pConfig;	
+    *m_pTexture3dConfig = *pConfig;
 }
 //--------------------------------------------------------------------------------
 ResourceProxyDX11::ResourceProxyDX11()
 {
-	// Initialize all indices and pointers to a neutral state.
+    // Initialize all indices and pointers to a neutral state.
 
-	m_iResource = -1;
-	m_iResourceSRV = m_iResourceRTV = m_iResourceDSV = m_iResourceUAV = 0;
+    m_iResource = -1;
+    m_iResourceSRV = m_iResourceRTV = m_iResourceDSV = m_iResourceUAV = 0;
 
-	m_pBufferConfig = nullptr;
-	m_pTexture1dConfig = nullptr;
-	m_pTexture2dConfig = nullptr;
-	m_pTexture3dConfig = nullptr;
+    m_pBufferConfig = nullptr;
+    m_pTexture1dConfig = nullptr;
+    m_pTexture2dConfig = nullptr;
+    m_pTexture3dConfig = nullptr;
     m_pSRVConfig = nullptr;
     m_pRTVConfig = nullptr;
     m_pDSVConfig = nullptr;
@@ -103,28 +103,28 @@ ResourceProxyDX11::ResourceProxyDX11()
 //--------------------------------------------------------------------------------
 ResourceProxyDX11::~ResourceProxyDX11()
 {
-	SAFE_DELETE( m_pBufferConfig );
-	SAFE_DELETE( m_pTexture1dConfig );
-	SAFE_DELETE( m_pTexture2dConfig );
-	SAFE_DELETE( m_pTexture3dConfig );
+    SAFE_DELETE( m_pBufferConfig );
+    SAFE_DELETE( m_pTexture1dConfig );
+    SAFE_DELETE( m_pTexture2dConfig );
+    SAFE_DELETE( m_pTexture3dConfig );
     SAFE_DELETE( m_pSRVConfig );
     SAFE_DELETE( m_pRTVConfig );
     SAFE_DELETE( m_pUAVConfig );
     SAFE_DELETE( m_pDSVConfig );
 }
 //--------------------------------------------------------------------------------
-void ResourceProxyDX11::CommonConstructor( UINT BindFlags, int ResourceID, RendererDX11* pRenderer, 
-                                        ShaderResourceViewConfigDX11* pSRVConfig, 
-                                        RenderTargetViewConfigDX11* pRTVConfig, 
-                                        UnorderedAccessViewConfigDX11* pUAVConfig, 
-                                        DepthStencilViewConfigDX11* pDSVConfig )
+void ResourceProxyDX11::CommonConstructor( UINT BindFlags, int ResourceID, RendererDX11* pRenderer,
+        ShaderResourceViewConfigDX11* pSRVConfig,
+        RenderTargetViewConfigDX11* pRTVConfig,
+        UnorderedAccessViewConfigDX11* pUAVConfig,
+        DepthStencilViewConfigDX11* pDSVConfig )
 {
-    // Initialize all indices and pointers to a neutral state.    
+    // Initialize all indices and pointers to a neutral state.
     m_iResource = ResourceID;
-	m_iResourceSRV = 0;
-	m_iResourceRTV = 0;
-	m_iResourceDSV = 0;
-	m_iResourceUAV = 0;
+    m_iResourceSRV = 0;
+    m_iResourceRTV = 0;
+    m_iResourceDSV = 0;
+    m_iResourceUAV = 0;
 
 
     m_pBufferConfig = nullptr;

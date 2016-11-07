@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -23,23 +23,23 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-	class IntrRay3fSphere3f : public Intersector
-	{
-	public:
-		IntrRay3fSphere3f( const Ray3f& ray, const Sphere3f& sphere );
-		virtual ~IntrRay3fSphere3f( );
-	
-		virtual bool Test();
-		virtual bool Find();
+class IntrRay3fSphere3f : public Intersector
+{
+public:
+    IntrRay3fSphere3f( const Ray3f& ray, const Sphere3f& sphere );
+    virtual ~IntrRay3fSphere3f( );
 
-	public:
-		Ray3f			m_Ray;
-		Sphere3f		m_Sphere;
+    virtual bool Test();
+    virtual bool Find();
 
-		Vector3f		m_aPoints[2];
-		float			m_afRayT[2];
-		int				m_iQuantity;
-	};
+public:
+    Ray3f			m_Ray;
+    Sphere3f		m_Sphere;
+
+    Vector3f		m_aPoints[2];
+    float			m_afRayT[2];
+    int				m_iQuantity;
+};
 };
 //--------------------------------------------------------------------------------
 #endif // IntrRay3fSphere3f_h

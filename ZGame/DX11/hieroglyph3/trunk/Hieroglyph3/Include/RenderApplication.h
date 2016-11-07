@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 #include "PCH.h"
@@ -23,68 +23,68 @@
 
 namespace Glyph3
 {
-	class RenderApplication : public Application
-	{
+class RenderApplication : public Application
+{
 
-	public:
-		RenderApplication();
-		virtual ~RenderApplication();
-	
-	public:
-		virtual bool ConfigureRenderingEngineComponents( UINT width, UINT height, D3D_FEATURE_LEVEL desiredLevel, D3D_DRIVER_TYPE driverType = D3D_DRIVER_TYPE_HARDWARE );
-		virtual bool ConfigureRenderingSetup();
+public:
+    RenderApplication();
+    virtual ~RenderApplication();
 
-		virtual void ShutdownRenderingEngineComponents();
-		virtual void ShutdownRenderingSetup();
+public:
+    virtual bool ConfigureRenderingEngineComponents( UINT width, UINT height, D3D_FEATURE_LEVEL desiredLevel, D3D_DRIVER_TYPE driverType = D3D_DRIVER_TYPE_HARDWARE );
+    virtual bool ConfigureRenderingSetup();
 
-		virtual void HandleWindowResize( HWND handle, UINT width, UINT height );
-		virtual bool HandleEvent( EventPtr pEvent );
+    virtual void ShutdownRenderingEngineComponents();
+    virtual void ShutdownRenderingSetup();
 
-		virtual Win32RenderWindow* CreateRenderWindow();
+    virtual void HandleWindowResize( HWND handle, UINT width, UINT height );
+    virtual bool HandleEvent( EventPtr pEvent );
 
-		void ToggleMultiThreadedMode();
-		void SetMultiThreadedMode( bool mode );
-		bool GetMultiThreadedMode();
+    virtual Win32RenderWindow* CreateRenderWindow();
 
-		virtual void TakeScreenShot();
-		virtual void SetScreenShotName( const std::wstring name );
+    void ToggleMultiThreadedMode();
+    void SetMultiThreadedMode( bool mode );
+    bool GetMultiThreadedMode();
 
-	protected:
+    virtual void TakeScreenShot();
+    virtual void SetScreenShotName( const std::wstring name );
 
-		RendererDX11*			m_pRenderer11;
-		Win32RenderWindow*		m_pWindow;
+protected:
 
-		UINT					m_iWidth;
-		UINT					m_iHeight;
+    RendererDX11*			m_pRenderer11;
+    Win32RenderWindow*		m_pWindow;
 
-		ResourcePtr				m_BackBuffer;
+    UINT					m_iWidth;
+    UINT					m_iHeight;
 
-		SceneRenderTask*		m_pRenderView;
-		ViewTextOverlay*		m_pTextOverlayView;
+    ResourcePtr				m_BackBuffer;
 
-		bool					m_bMultithreadedMode;
+    SceneRenderTask*		m_pRenderView;
+    ViewTextOverlay*		m_pTextOverlayView;
 
-		std::wstring			m_ScreenShotName;
+    bool					m_bMultithreadedMode;
 
-	public:
-		
-		enum class InputMode
-		{
-			Console,
-			Camera
-		};
+    std::wstring			m_ScreenShotName;
 
-		// For the camera, we have a reference to the object itself, and
-		// also provide another event manager for it to use.  This allows
-		// us to control when the camera receives events and when they 
-		// should be passed to a different object.
+public:
 
-		EventManager			CameraEventHub;
-		Camera*					m_pCamera;
+    enum class InputMode
+    {
+        Console,
+        Camera
+    };
 
-		EventManager			ConsoleEventHub;
-		ConsoleActor*			m_pConsole;
+    // For the camera, we have a reference to the object itself, and
+    // also provide another event manager for it to use.  This allows
+    // us to control when the camera receives events and when they
+    // should be passed to a different object.
 
-		InputMode				m_InputMode;
-	};
+    EventManager			CameraEventHub;
+    Camera*					m_pCamera;
+
+    EventManager			ConsoleEventHub;
+    ConsoleActor*			m_pConsole;
+
+    InputMode				m_InputMode;
+};
 };

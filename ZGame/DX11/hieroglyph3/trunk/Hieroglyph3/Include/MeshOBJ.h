@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -34,39 +34,44 @@
 #include "Vector2f.h"
 #include "Vector3f.h"
 //--------------------------------------------------------------------------------
-namespace Glyph3 { namespace OBJ {
+namespace Glyph3
+{
+namespace OBJ
+{
 //--------------------------------------------------------------------------------
 class MeshOBJ
 {
 public:
-	MeshOBJ(const std::wstring& filename);
+    MeshOBJ(const std::wstring& filename);
 
-	typedef struct
-	{
-		std::vector<int> positionIndices;
-		std::vector<int> normalIndices;
-		std::vector<int> coordIndices;
-	} face_t;
+    typedef struct
+    {
+        std::vector<int> positionIndices;
+        std::vector<int> normalIndices;
+        std::vector<int> coordIndices;
+    } face_t;
 
-	typedef struct
-	{
-		std::string material_name;
-		std::vector<face_t> faces;
-	} subobject_t;
+    typedef struct
+    {
+        std::string material_name;
+        std::vector<face_t> faces;
+    } subobject_t;
 
-	typedef struct {
-		std::string name;
-		std::vector<subobject_t> subobjects;
-	} object_t;
+    typedef struct
+    {
+        std::string name;
+        std::vector<subobject_t> subobjects;
+    } object_t;
 
-	std::vector<Vector3f> positions;
-	std::vector<Vector3f> normals;
-	std::vector<Vector2f> coords;
-	std::vector<object_t> objects;
-	std::vector<std::string> material_libs;
+    std::vector<Vector3f> positions;
+    std::vector<Vector3f> normals;
+    std::vector<Vector2f> coords;
+    std::vector<object_t> objects;
+    std::vector<std::string> material_libs;
 };
 
-} }
+}
+}
 //--------------------------------------------------------------------------------
 #endif // MeshOBJ_h
 //--------------------------------------------------------------------------------

@@ -1,11 +1,11 @@
-//--------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and 
+// under the MIT License, available in the root of this distribution and
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink 
+// Copyright (c) Jason Zink
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -26,22 +26,22 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-	struct Frustum3f
-	{
-		Frustum3f();
-		Frustum3f( const Matrix4f& ViewProjection );
-		~Frustum3f();
+struct Frustum3f
+{
+    Frustum3f();
+    Frustum3f( const Matrix4f& ViewProjection );
+    ~Frustum3f();
 
-		void Update( const Matrix4f& ViewProjection, bool bNormalize );
-		bool Test( const Vector3f& TestPoint ) const;
-		bool Test( const Sphere3f& TestSphere ) const;
+    void Update( const Matrix4f& ViewProjection, bool bNormalize );
+    bool Test( const Vector3f& TestPoint ) const;
+    bool Test( const Sphere3f& TestSphere ) const;
 
-		// for use with the CEntity interface
-		bool Intersects( const Sphere3f& test ) const;
-		bool Envelops( const Sphere3f& test ) const;
+    // for use with the CEntity interface
+    bool Intersects( const Sphere3f& test ) const;
+    bool Envelops( const Sphere3f& test ) const;
 
-		std::array<Plane3f,6> planes;
-	};
+    std::array<Plane3f,6> planes;
+};
 };
 //--------------------------------------------------------------------------------
 #endif // Frustum3f_h
