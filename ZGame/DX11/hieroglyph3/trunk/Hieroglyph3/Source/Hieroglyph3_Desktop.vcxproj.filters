@@ -317,9 +317,6 @@
     <ClCompile Include="Ray3f.cpp">
       <Filter>Geometry</Filter>
     </ClCompile>
-    <ClCompile Include="Shape3D.cpp">
-      <Filter>Geometry</Filter>
-    </ClCompile>
     <ClCompile Include="Sphere3f.cpp">
       <Filter>Geometry</Filter>
     </ClCompile>
@@ -800,6 +797,18 @@
     <ClCompile Include="FullscreenTexturedActor.cpp">
       <Filter>Objects\Scene Objects\Actors</Filter>
     </ClCompile>
+    <ClCompile Include="MeshOBJ.cpp">
+      <Filter>Rendering\Pipeline System\Executors\File Formats</Filter>
+    </ClCompile>
+    <ClCompile Include="Segment3f.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="AxisAlignedBox.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="BezierCubic.cpp">
+      <Filter>Mathematics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Animation.h">
@@ -926,9 +935,6 @@
       <Filter>Geometry</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\Ray3f.h">
-      <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Include\Shape3D.h">
       <Filter>Geometry</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\Sphere3f.h">
@@ -1501,6 +1507,15 @@
     <ClInclude Include="..\Include\FullscreenTexturedActor.h">
       <Filter>Objects\Scene Objects\Actors</Filter>
     </ClInclude>
+    <ClInclude Include="..\Include\Segment3f.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\AxisAlignedBox.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\BezierCubic.h">
+      <Filter>Mathematics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -1564,5 +1579,6 @@
     <None Include="..\Include\TStateMonitor.inl">
       <Filter>Rendering\Pipeline System\Stages\Common</Filter>
     </None>
+    <None Include="Source.licenseheader" />
   </ItemGroup>
 </Project>

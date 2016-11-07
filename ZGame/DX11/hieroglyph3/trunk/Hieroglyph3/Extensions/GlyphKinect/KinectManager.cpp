@@ -1,11 +1,11 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and
+// under the MIT License, available in the root of this distribution and 
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink
+// Copyright (c) Jason Zink 
 //--------------------------------------------------------------------------------
 #include "GlyphKinect/KinectManager.h"
 #include "NuiApi.h"
@@ -24,97 +24,93 @@ KinectManager::KinectManager()
     m_hThNuiProcess = NULL;
     m_hEvNuiProcessStop = NULL;
 
-    m_pSysMemColorBuffer = NULL;
-    m_pSysMemDepthBuffer = NULL;
-    m_pSysMemSkeletonBuffer = NULL;
+	m_pSysMemColorBuffer = NULL;
+	m_pSysMemDepthBuffer = NULL;
+	m_pSysMemSkeletonBuffer = NULL;
 }
 //--------------------------------------------------------------------------------
 KinectManager::~KinectManager(void)
 {
-    std::wstringstream out;
-    out << L"Color Framerate: current - " << m_ColorFrameTimer.Framerate() << L", max - " << m_ColorFrameTimer.MaxFramerate() << std::endl;
-    out << L"Depth Framerate: current - " << m_DepthFrameTimer.Framerate() << L", max - " << m_DepthFrameTimer.MaxFramerate() << std::endl;
-    out << L"Color Framerate: current - " << m_SkeletonFrameTimer.Framerate() << L", max - " << m_SkeletonFrameTimer.MaxFramerate() << std::endl;
-    Log::Get().Write( out.str() );
+	std::wstringstream out;
+	out << L"Color Framerate: current - " << m_ColorFrameTimer.Framerate() << L", max - " << m_ColorFrameTimer.MaxFramerate() << std::endl;
+	out << L"Depth Framerate: current - " << m_DepthFrameTimer.Framerate() << L", max - " << m_DepthFrameTimer.MaxFramerate() << std::endl;
+	out << L"Color Framerate: current - " << m_SkeletonFrameTimer.Framerate() << L", max - " << m_SkeletonFrameTimer.MaxFramerate() << std::endl;
+	Log::Get().Write( out.str() );
 }
 //--------------------------------------------------------------------------------
 bool KinectManager::Initialize( bool enable_skeleton, bool enable_color, bool enable_depth )
 {
-    HRESULT hr;
+	HRESULT hr;
 
     m_hNextDepthFrameEvent = CreateEvent( NULL, TRUE, FALSE, NULL );
     m_hNextVideoFrameEvent = CreateEvent( NULL, TRUE, FALSE, NULL );
     m_hNextSkeletonEvent = CreateEvent( NULL, TRUE, FALSE, NULL );
 
-    DWORD flags = 0;
+	DWORD flags = 0;
 
-    if ( enable_skeleton ) flags |= NUI_INITIALIZE_FLAG_USES_SKELETON;
-    if ( enable_color ) flags |= NUI_INITIALIZE_FLAG_USES_COLOR;
-    if ( enable_depth ) flags |= NUI_INITIALIZE_FLAG_USES_DEPTH_AND_PLAYER_INDEX;
+	if ( enable_skeleton ) flags |= NUI_INITIALIZE_FLAG_USES_SKELETON;
+	if ( enable_color ) flags |= NUI_INITIALIZE_FLAG_USES_COLOR;
+	if ( enable_depth ) flags |= NUI_INITIALIZE_FLAG_USES_DEPTH_AND_PLAYER_INDEX;
 
-    hr = NuiInitialize( flags );
+	hr = NuiInitialize( flags );
 
-    if ( FAILED( hr ) )
-    {
+	if ( FAILED( hr ) ) {
         MessageBox( 0, L"Failed to initialize NUI library...", L"Hieroglyph 3 :: Info Message", MB_ICONINFORMATION | MB_SYSTEMMODAL );
         return false;
     }
 
-    if ( enable_skeleton )
-    {
-        hr = NuiSkeletonTrackingEnable( m_hNextSkeletonEvent, 0 );
+	if ( enable_skeleton )
+	{
+		hr = NuiSkeletonTrackingEnable( m_hNextSkeletonEvent, 0 );
 
-        if ( FAILED( hr ) )
-        {
-            MessageBox( 0, L"Failed to open skeletal stream...", L"Hieroglyph 3 :: Info Message", MB_ICONINFORMATION | MB_SYSTEMMODAL );
-            return false;
-        }
-    }
+		if ( FAILED( hr ) ) {
+			MessageBox( 0, L"Failed to open skeletal stream...", L"Hieroglyph 3 :: Info Message", MB_ICONINFORMATION | MB_SYSTEMMODAL );
+			return false;
+		}
+	}
 
-    if ( enable_color )
-    {
-        hr = NuiImageStreamOpen(
-                 NUI_IMAGE_TYPE_COLOR,
-                 NUI_IMAGE_RESOLUTION_640x480,
-                 0,
-                 2,
-                 m_hNextVideoFrameEvent,
-                 &m_pVideoStreamHandle );
+	if ( enable_color )
+	{
+		hr = NuiImageStreamOpen(
+			NUI_IMAGE_TYPE_COLOR,
+			NUI_IMAGE_RESOLUTION_640x480,
+			0,
+			2,
+			m_hNextVideoFrameEvent,
+			&m_pVideoStreamHandle );
+    
+		if ( FAILED( hr ) ) {
+			MessageBox( 0, L"Failed to open color image stream...", L"Hieroglyph 3 :: Info Message", MB_ICONINFORMATION | MB_SYSTEMMODAL );
+			return false;
+		}
+	}
 
-        if ( FAILED( hr ) )
-        {
-            MessageBox( 0, L"Failed to open color image stream...", L"Hieroglyph 3 :: Info Message", MB_ICONINFORMATION | MB_SYSTEMMODAL );
-            return false;
-        }
-    }
+	if ( enable_depth )
+	{
+		hr = NuiImageStreamOpen(
+			NUI_IMAGE_TYPE_DEPTH_AND_PLAYER_INDEX,
+			NUI_IMAGE_RESOLUTION_320x240,
+			0,
+			2,
+			m_hNextDepthFrameEvent,
+			&m_pDepthStreamHandle );
 
-    if ( enable_depth )
-    {
-        hr = NuiImageStreamOpen(
-                 NUI_IMAGE_TYPE_DEPTH_AND_PLAYER_INDEX,
-                 NUI_IMAGE_RESOLUTION_320x240,
-                 0,
-                 2,
-                 m_hNextDepthFrameEvent,
-                 &m_pDepthStreamHandle );
-
-        if ( FAILED( false ) )
-        {
-            MessageBox( 0, L"Failed to open depth image stream...", L"Hieroglyph 3 :: Info Message", MB_ICONINFORMATION | MB_SYSTEMMODAL );
-            return false;
-        }
-    }
+		if ( FAILED( false ) ) {
+			MessageBox( 0, L"Failed to open depth image stream...", L"Hieroglyph 3 :: Info Message", MB_ICONINFORMATION | MB_SYSTEMMODAL );
+			return false;
+		}
+	}
 
     // Start the Nui processing thread
     m_hEvNuiProcessStop=CreateEvent(NULL,FALSE,FALSE,NULL);
     m_hThNuiProcess=CreateThread(NULL,0,Nui_ProcessThread,this,0,NULL);
 
 
-    m_DepthFrameTimer.Update();
-    m_ColorFrameTimer.Update();
-    m_SkeletonFrameTimer.Update();
+	m_DepthFrameTimer.Update();
+	m_ColorFrameTimer.Update();
+	m_SkeletonFrameTimer.Update();
 
-    return true;
+	return true;
 }
 //--------------------------------------------------------------------------------
 void KinectManager::Shutdown()
@@ -173,23 +169,23 @@ DWORD WINAPI KinectManager::Nui_ProcessThread(LPVOID pParam)
 
         // If the stop event, stop looping and exit
         if(nEventIdx==0)
-            break;
+            break;            
 
         // Process signal events
         switch(nEventIdx)
         {
-        case 1:
-            pthis->Nui_GotDepthAlert();
-            //pthis->m_FramesTotal++;
-            break;
+            case 1:
+                pthis->Nui_GotDepthAlert();
+                //pthis->m_FramesTotal++;
+                break;
 
-        case 2:
-            pthis->Nui_GotVideoAlert();
-            break;
+            case 2:
+                pthis->Nui_GotVideoAlert();
+                break;
 
-        case 3:
-            pthis->Nui_GotSkeletonAlert( );
-            break;
+            case 3:
+                pthis->Nui_GotSkeletonAlert( );
+                break;
         }
     }
 
@@ -201,47 +197,40 @@ void KinectManager::Nui_GotVideoAlert( )
     const NUI_IMAGE_FRAME * pImageFrame = NULL;
 
     HRESULT hr = NuiImageStreamGetNextFrame(
-                     m_pVideoStreamHandle,
-                     0,
-                     &pImageFrame );
+        m_pVideoStreamHandle,
+        0,
+        &pImageFrame );
 
-    if( FAILED( hr ) )
-    {
+    if( FAILED( hr ) ) {
         return;
     }
 
     INuiFrameTexture * pTexture = pImageFrame->pFrameTexture;
     NUI_LOCKED_RECT LockedRect;
     pTexture->LockRect( 0, &LockedRect, NULL, 0 );
+    
+	if( LockedRect.Pitch != 0 ) {
 
-    if( LockedRect.Pitch != 0 )
-    {
+		// If there is a buffer to fill, then fill it and forget it...
+		if ( m_pSysMemColorBuffer != NULL ) {
+		
+			BYTE * pBuffer = (BYTE*) LockedRect.pBits;
 
-        // If there is a buffer to fill, then fill it and forget it...
-        if ( m_pSysMemColorBuffer != NULL )
-        {
+			for( int y = 0 ; y < 480 ; y++ ) {
+				for( int x = 0 ; x < 640; x++ ) {
+					m_pSysMemColorBuffer[(x+640*y)*4+0] = pBuffer[(x+640*y)*4+2]; // R
+					m_pSysMemColorBuffer[(x+640*y)*4+1] = pBuffer[(x+640*y)*4+1]; // G
+					m_pSysMemColorBuffer[(x+640*y)*4+2] = pBuffer[(x+640*y)*4+0]; // B
+					m_pSysMemColorBuffer[(x+640*y)*4+3] = pBuffer[(x+640*y)*4+3]; // A
+				}
+			}
 
-            BYTE * pBuffer = (BYTE*) LockedRect.pBits;
+			//OutputDebugString( L"Color image processed...\r\n" );
 
-            for( int y = 0 ; y < 480 ; y++ )
-            {
-                for( int x = 0 ; x < 640; x++ )
-                {
-                    m_pSysMemColorBuffer[(x+640*y)*4+0] = pBuffer[(x+640*y)*4+2]; // R
-                    m_pSysMemColorBuffer[(x+640*y)*4+1] = pBuffer[(x+640*y)*4+1]; // G
-                    m_pSysMemColorBuffer[(x+640*y)*4+2] = pBuffer[(x+640*y)*4+0]; // B
-                    m_pSysMemColorBuffer[(x+640*y)*4+3] = pBuffer[(x+640*y)*4+3]; // A
-                }
-            }
-
-            //OutputDebugString( L"Color image processed...\r\n" );
-
-            m_ColorFrameTimer.Update();
-            m_pSysMemColorBuffer = NULL;
-        }
-    }
-    else
-    {
+			m_ColorFrameTimer.Update();
+			m_pSysMemColorBuffer = NULL;
+		}
+    } else {
         OutputDebugString( L"Buffer length of received texture is bogus\r\n" );
     }
 
@@ -253,52 +242,45 @@ void KinectManager::Nui_GotDepthAlert( )
     const NUI_IMAGE_FRAME * pImageFrame = NULL;
 
     HRESULT hr = NuiImageStreamGetNextFrame(
-                     m_pDepthStreamHandle,
-                     0,
-                     &pImageFrame );
+        m_pDepthStreamHandle,
+        0,
+        &pImageFrame );
 
-    if( FAILED( hr ) )
-    {
+    if( FAILED( hr ) ) {
         return;
     }
 
     INuiFrameTexture * pTexture = pImageFrame->pFrameTexture;
     NUI_LOCKED_RECT LockedRect;
     pTexture->LockRect( 0, &LockedRect, NULL, 0 );
-
-    if( LockedRect.Pitch != 0 )
-    {
+    
+	if( LockedRect.Pitch != 0 ) {
 
         BYTE * pBuffer = (BYTE*) LockedRect.pBits;
 
 
-        if ( m_pSysMemDepthBuffer != NULL )
-        {
+		if ( m_pSysMemDepthBuffer != NULL ) {
 
-            USHORT * pBufferRun = (USHORT*) pBuffer;
+			USHORT * pBufferRun = (USHORT*) pBuffer;
 
-            for( int y = 0 ; y < 240 ; y++ )
-            {
-                for( int x = 0 ; x < 320 ; x++ )
-                {
+			for( int y = 0 ; y < 240 ; y++ ) {
+				for( int x = 0 ; x < 320 ; x++ ) {
 
-                    USHORT s = *pBufferRun;
-                    USHORT RealDepth = (s & 0xfff8) >> 3;
-                    USHORT Player = s & 7;
+					USHORT s = *pBufferRun;
+					USHORT RealDepth = (s & 0xfff8) >> 3;
+					USHORT Player = s & 7;
 
-                    pBufferRun++;
-                    USHORT* pDestBuff = (USHORT*)(&(m_pSysMemDepthBuffer[(x+320*y)*2]));
-                    *pDestBuff = RealDepth;// << 3;
-                }
-            }
-
-            m_DepthFrameTimer.Update();
-            m_pSysMemDepthBuffer = NULL;
-            //OutputDebugString( L"Depth image processed...\r\n" );
-        }
-    }
-    else
-    {
+					pBufferRun++;
+					USHORT* pDestBuff = (USHORT*)(&(m_pSysMemDepthBuffer[(x+320*y)*2]));
+					*pDestBuff = RealDepth;// << 3;
+				}
+			}
+			
+			m_DepthFrameTimer.Update();
+			m_pSysMemDepthBuffer = NULL;
+			//OutputDebugString( L"Depth image processed...\r\n" );
+		}
+    } else {
         OutputDebugString( L"Buffer length of received texture is bogus\r\n" );
     }
 
@@ -321,8 +303,7 @@ void KinectManager::Nui_GotSkeletonAlert( )
     }
 
     // no skeletons!
-    if( bFoundSkeleton )
-    {
+    if( bFoundSkeleton ) {
         return;
     }
 
@@ -330,51 +311,48 @@ void KinectManager::Nui_GotSkeletonAlert( )
     //NuiTransformSmooth(&SkeletonFrame,NULL);
 
     bool bBlank = true;
-    for( int i = 0 ; i < NUI_SKELETON_COUNT ; i++ )
-    {
+    for( int i = 0 ; i < NUI_SKELETON_COUNT ; i++ ) {
 
-        if( SkeletonFrame.SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED )
-        {
+        if( SkeletonFrame.SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ) {
 
-            if ( m_pSysMemSkeletonBuffer != NULL )
-            {
+			if ( m_pSysMemSkeletonBuffer != NULL ) {
 
-                memcpy( m_pSysMemSkeletonBuffer, &SkeletonFrame, sizeof(NUI_SKELETON_FRAME) );
+				memcpy( m_pSysMemSkeletonBuffer, &SkeletonFrame, sizeof(NUI_SKELETON_FRAME) );
 
-                m_pSysMemSkeletonBuffer = NULL;
-                m_SkeletonFrameTimer.Update();
-            }
+				m_pSysMemSkeletonBuffer = NULL;
+				m_SkeletonFrameTimer.Update();
+			}
         }
     }
 }
 //--------------------------------------------------------------------------------
 void KinectManager::SetSysMemColorBuffer( BYTE* pBuffer )
 {
-    m_pSysMemColorBuffer = pBuffer;
+	m_pSysMemColorBuffer = pBuffer;	
 }
 //--------------------------------------------------------------------------------
 void KinectManager::SetSysMemDepthBuffer( BYTE* pBuffer )
 {
-    m_pSysMemDepthBuffer = pBuffer;
+	m_pSysMemDepthBuffer = pBuffer;	
 }
 //--------------------------------------------------------------------------------
 void KinectManager::SetSysMemSkeletonBuffer( BYTE* pBuffer )
 {
-    m_pSysMemSkeletonBuffer = pBuffer;
+	m_pSysMemSkeletonBuffer = pBuffer;
 }
 //--------------------------------------------------------------------------------
 BYTE* KinectManager::GetSysMemColorBuffer( )
 {
-    return( m_pSysMemColorBuffer );
+	return( m_pSysMemColorBuffer );	
 }
 //--------------------------------------------------------------------------------
 BYTE* KinectManager::GetSysMemDepthBuffer( )
 {
-    return( m_pSysMemDepthBuffer );
+	return( m_pSysMemDepthBuffer );	
 }
 //--------------------------------------------------------------------------------
 BYTE* KinectManager::GetSysMemSkeletonBuffer( )
 {
-    return( m_pSysMemSkeletonBuffer );
+	return( m_pSysMemSkeletonBuffer );
 }
 //--------------------------------------------------------------------------------

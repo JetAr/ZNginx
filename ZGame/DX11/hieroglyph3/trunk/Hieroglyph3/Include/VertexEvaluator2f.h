@@ -1,11 +1,11 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and
+// under the MIT License, available in the root of this distribution and 
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink
+// Copyright (c) Jason Zink 
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -23,28 +23,25 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-template <class TModel, class TVertex>
-class VertexEvaluator2f
-{
-public:
-    void SetModel( TModel& model )
-    {
-        m_Model = model;
-    };
+	template <class TModel, class TVertex>
+	class VertexEvaluator2f
+	{
+	public:
+		void SetModel( TModel& model ) {
+			m_Model = model;
+		};
 
-    void evaluate( TVertex& v, float x, float y )
-    {
-        for ( auto& pEvaluator : Evaluators )
-        {
-            pEvaluator.evaluate( m_Model, v, x, y );
-        }
-    };
+		void evaluate( TVertex& v, float x, float y ) {
+			for ( auto& pEvaluator : Evaluators ) {
+				pEvaluator.evaluate( m_Model, v, x, y );
+			}
+		};
 
-    std::vector< Evaluator< TModel, TVertex > > Evaluators;
+		std::vector< Evaluator< TModel, TVertex > > Evaluators;
 
-protected:
-    TModel m_Model;
-};
+	protected:
+		TModel m_Model;
+	};
 };
 //--------------------------------------------------------------------------------
 #endif // VertexEvaluator2f_h

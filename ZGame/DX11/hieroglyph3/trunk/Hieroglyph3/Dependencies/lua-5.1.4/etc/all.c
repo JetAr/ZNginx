@@ -1,4 +1,4 @@
-﻿/*
+/*
 * all.c -- Lua core, libraries and interpreter in a single file
 */
 

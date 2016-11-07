@@ -24,7 +24,9 @@
     <ClCompile Include="ActorGenerator.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="AxisAlignedBox.cpp" />
     <ClCompile Include="BasicVertexDX11.cpp" />
+    <ClCompile Include="BezierCubic.cpp" />
     <ClCompile Include="BlendStateConfigDX11.cpp" />
     <ClCompile Include="BoundsVisualizerActor.cpp" />
     <ClCompile Include="Box3f.cpp" />
@@ -114,6 +116,7 @@
     <ClCompile Include="MatrixArrayParameterWriterDX11.cpp" />
     <ClCompile Include="MatrixParameterDX11.cpp" />
     <ClCompile Include="MatrixParameterWriterDX11.cpp" />
+    <ClCompile Include="MeshOBJ.cpp" />
     <ClCompile Include="MultiExecutorDX11.cpp" />
     <ClCompile Include="Node3D.cpp" />
     <ClCompile Include="ObjectSpaceCameraPositionWriter.cpp" />
@@ -160,6 +163,7 @@
     <ClCompile Include="ScriptIntfActor.cpp" />
     <ClCompile Include="ScriptIntfApp.cpp" />
     <ClCompile Include="ScriptManager.cpp" />
+    <ClCompile Include="Segment3f.cpp" />
     <ClCompile Include="ShaderDX11.cpp" />
     <ClCompile Include="ShaderFactoryDX11.cpp" />
     <ClCompile Include="ShaderReflectionDX11.cpp" />
@@ -170,7 +174,6 @@
     <ClCompile Include="ShaderResourceViewDX11.cpp" />
     <ClCompile Include="ShaderStageDX11.cpp" />
     <ClCompile Include="ShaderStageStateDX11.cpp" />
-    <ClCompile Include="Shape3D.cpp" />
     <ClCompile Include="SingleWindowGlyphlet.cpp" />
     <ClCompile Include="SkinnedActor.cpp" />
     <ClCompile Include="SkyboxActor.cpp" />
@@ -233,7 +236,9 @@
     <ClInclude Include="..\Include\AnimationStream.h" />
     <ClInclude Include="..\Include\Application.h" />
     <ClInclude Include="..\Include\AttributeEvaluator2f.h" />
+    <ClInclude Include="..\Include\AxisAlignedBox.h" />
     <ClInclude Include="..\Include\BasicVertexDX11.h" />
+    <ClInclude Include="..\Include\BezierCubic.h" />
     <ClInclude Include="..\Include\BlendStateConfigDX11.h" />
     <ClInclude Include="..\Include\BoundsVisualizerActor.h" />
     <ClInclude Include="..\Include\Box3f.h" />
@@ -382,6 +387,7 @@
     <ClInclude Include="..\Include\ScriptIntfActor.h" />
     <ClInclude Include="..\Include\ScriptIntfApp.h" />
     <ClInclude Include="..\Include\ScriptManager.h" />
+    <ClInclude Include="..\Include\Segment3f.h" />
     <ClInclude Include="..\Include\SetpointController.h" />
     <ClInclude Include="..\Include\ShaderDX11.h" />
     <ClInclude Include="..\Include\ShaderFactoryDX11.h" />
@@ -393,7 +399,6 @@
     <ClInclude Include="..\Include\ShaderResourceViewDX11.h" />
     <ClInclude Include="..\Include\ShaderStageDX11.h" />
     <ClInclude Include="..\Include\ShaderStageStateDX11.h" />
-    <ClInclude Include="..\Include\Shape3D.h" />
     <ClInclude Include="..\Include\SingleWindowGlyphlet.h" />
     <ClInclude Include="..\Include\SkinnedActor.h" />
     <ClInclude Include="..\Include\SkinnedBoneController.h" />
@@ -483,6 +488,7 @@
     <None Include="..\Include\TStateMonitor.inl" />
     <None Include="..\Include\Tween.inl" />
     <None Include="packages.config" />
+    <None Include="Source.licenseheader" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0F6D257E-70D5-46C5-8A12-7BDF93C35E81}</ProjectGuid>
@@ -561,6 +567,7 @@
       <PreprocessToFile>false</PreprocessToFile>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -577,11 +584,15 @@
     </PostBuildEvent>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Lua-5.1.4\LuaLib\Bin\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>lualib.lib</AdditionalDependencies>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Lib>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -609,7 +620,8 @@
     </PostBuildEvent>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Lua-5.1.4\LuaLib\Bin\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>lualib.lib</AdditionalDependencies>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Lib>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
@@ -644,7 +656,8 @@
     </PostBuildEvent>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Lua-5.1.4\LuaLib\Bin\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>lualib.lib</AdditionalDependencies>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Lib>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
@@ -679,7 +692,8 @@
     </PostBuildEvent>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Lua-5.1.4\LuaLib\Bin\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>lualib.lib</AdditionalDependencies>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Lib>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>

@@ -1,11 +1,11 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and
+// under the MIT License, available in the root of this distribution and 
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink
+// Copyright (c) Jason Zink 
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -29,12 +29,12 @@ Vector3f Lerp( const Vector3f& x, const Vector3f& y, const Vector3f& s )
 //--------------------------------------------------------------------------------
 ViewDeferredRenderer::ViewDeferredRenderer( RendererDX11& Renderer, ResourcePtr RenderTarget )
 {
-    m_BackBuffer = RenderTarget;
+	m_BackBuffer = RenderTarget;
 
-    D3D11_TEXTURE2D_DESC desc = m_BackBuffer->m_pTexture2dConfig->GetTextureDesc();
+	D3D11_TEXTURE2D_DESC desc = m_BackBuffer->m_pTexture2dConfig->GetTextureDesc();
 
-    ResolutionX = desc.Width;
-    ResolutionY = desc.Height;
+	ResolutionX = desc.Width;
+	ResolutionY = desc.Height;
 
     // Create render targets for all AA modes
     for ( int aaMode = 0; aaMode < AAMode::NumSettings; ++aaMode )
@@ -51,39 +51,39 @@ ViewDeferredRenderer::ViewDeferredRenderer( RendererDX11& Renderer, ResourcePtr 
         sampleDesc.Count = aaMode == AAMode::MSAA ? 4 : 1;
         sampleDesc.Quality = 0;
 
-        // Create the render targets for our unoptimized G-Buffer, which just uses
+	    // Create the render targets for our unoptimized G-Buffer, which just uses
         // 32-bit floats for everything
-        Texture2dConfigDX11 RTConfig;
-        RTConfig.SetColorBuffer( rtWidth, rtHeight );
-        RTConfig.SetFormat( DXGI_FORMAT_R32G32B32A32_FLOAT );
+	    Texture2dConfigDX11 RTConfig;
+	    RTConfig.SetColorBuffer( rtWidth, rtHeight );
+	    RTConfig.SetFormat( DXGI_FORMAT_R32G32B32A32_FLOAT );
         RTConfig.SetBindFlags( D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET );
         RTConfig.SetSampleDesc( sampleDesc );
-        for(int i = 0; i < 4; ++i)
+	    for(int i = 0; i < 4; ++i)
             m_GBuffer[GBufferOptMode::OptDisabled][aaMode].push_back( Renderer.CreateTexture2D( &RTConfig, NULL ) );
 
         // Create the render targets for our optimized G-Buffer
 
         // 2-component signed normalized format for spheremap-encoded normals
         RTConfig.SetFormat( DXGI_FORMAT_R16G16_SNORM );
-        m_GBuffer[GBufferOptMode::OptEnabled][aaMode].push_back( Renderer.CreateTexture2D( &RTConfig, NULL ) );
+		m_GBuffer[GBufferOptMode::OptEnabled][aaMode].push_back( Renderer.CreateTexture2D( &RTConfig, NULL ) );
 
         // 3-component 10-bit unsigned normalized format for diffuse albedo
         RTConfig.SetFormat( DXGI_FORMAT_R10G10B10A2_UNORM );
-        m_GBuffer[GBufferOptMode::OptEnabled][aaMode].push_back( Renderer.CreateTexture2D( &RTConfig, NULL ) );
+		m_GBuffer[GBufferOptMode::OptEnabled][aaMode].push_back( Renderer.CreateTexture2D( &RTConfig, NULL ) );
 
         // 4-component 8-bit unsigned normalized format for specular albedo and power
         RTConfig.SetFormat( DXGI_FORMAT_R8G8B8A8_UNORM );
-        m_GBuffer[GBufferOptMode::OptEnabled][aaMode].push_back( Renderer.CreateTexture2D( &RTConfig, NULL ) );
+		m_GBuffer[GBufferOptMode::OptEnabled][aaMode].push_back( Renderer.CreateTexture2D( &RTConfig, NULL ) );
 
         // We need one last render target for the final image
         RTConfig.SetFormat( DXGI_FORMAT_R10G10B10A2_UNORM );
         m_FinalTarget[aaMode] = Renderer.CreateTexture2D( &RTConfig, NULL );
 
-        // Next we create a depth buffer for depth/stencil testing. Typeless formats let us
+	    // Next we create a depth buffer for depth/stencil testing. Typeless formats let us
         // write depth with one format, and later interpret that depth as a color value using
         // a shader resource view.
-        Texture2dConfigDX11 DepthTexConfig;
-        DepthTexConfig.SetDepthBuffer( rtWidth, rtHeight );
+	    Texture2dConfigDX11 DepthTexConfig;
+	    DepthTexConfig.SetDepthBuffer( rtWidth, rtHeight );
         DepthTexConfig.SetFormat( DXGI_FORMAT_R24G8_TYPELESS );
         DepthTexConfig.SetBindFlags( D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE );
         DepthTexConfig.SetSampleDesc( sampleDesc );
@@ -119,9 +119,9 @@ ViewDeferredRenderer::ViewDeferredRenderer( RendererDX11& Renderer, ResourcePtr 
         // a depth stencil view
         DepthDSVConfig.SetFlags( D3D11_DSV_READ_ONLY_DEPTH | D3D11_DSV_READ_ONLY_STENCIL );
         m_ReadOnlyDepthTarget[aaMode] = ResourcePtr( new ResourceProxyDX11( m_DepthTarget[aaMode]->m_iResource,
-                                        &DepthTexConfig, RendererDX11::Get(),
-                                        &DepthSRVConfig, NULL, NULL,
-                                        &DepthDSVConfig ) );
+                                                                            &DepthTexConfig, RendererDX11::Get(),
+                                                                            &DepthSRVConfig, NULL, NULL,
+                                                                            &DepthDSVConfig ) );
 
         // Create a view port to use on the scene.  This basically selects the
         // entire floating point area of the render target.
@@ -143,20 +143,20 @@ ViewDeferredRenderer::ViewDeferredRenderer( RendererDX11& Renderer, ResourcePtr 
     RTConfig.SetBindFlags( D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET );
     m_ResolveTarget = Renderer.CreateTexture2D( &RTConfig, NULL );
 
-    // Create the two sub-views to perform the extra rendering operations for
-    // ambient occlusion.
+	// Create the two sub-views to perform the extra rendering operations for
+	// ambient occlusion.
 
-    m_pGBufferView = new ViewGBuffer( Renderer );
-    m_pLightsView = new ViewLights( Renderer );
+	m_pGBufferView = new ViewGBuffer( Renderer );
+	m_pLightsView = new ViewLights( Renderer );
 
     m_SpriteRenderer.Initialize();
-    m_pFont = SpriteFontLoaderDX11::LoadFont( std::wstring( L"Arial" ), 14, 0, true );
+	m_pFont = SpriteFontLoaderDX11::LoadFont( std::wstring( L"Arial" ), 14, 0, true );
 }
 //--------------------------------------------------------------------------------
 ViewDeferredRenderer::~ViewDeferredRenderer()
 {
-    SAFE_DELETE( m_pGBufferView );
-    SAFE_DELETE( m_pLightsView );
+	SAFE_DELETE( m_pGBufferView );
+	SAFE_DELETE( m_pLightsView );
 }
 //--------------------------------------------------------------------------------
 void ViewDeferredRenderer::Update( float fTime )
@@ -165,48 +165,48 @@ void ViewDeferredRenderer::Update( float fTime )
 //--------------------------------------------------------------------------------
 void ViewDeferredRenderer::QueuePreTasks( RendererDX11* pRenderer )
 {
-    // Call the super class's predraw in order to queue it in the renderer.  The
-    // views are processed in a LIFO order, so this will be executed last in both
-    // single- or multi-threaded mode.
+	// Call the super class's predraw in order to queue it in the renderer.  The
+	// views are processed in a LIFO order, so this will be executed last in both
+	// single- or multi-threaded mode.
 
-    if ( m_pEntity != NULL )
-    {
-        Matrix4f view = m_pEntity->Transform.GetView();
-        SetViewMatrix( view );
-    }
+	if ( m_pEntity != NULL )
+	{
+		Matrix4f view = m_pEntity->Transform.GetView();
+		SetViewMatrix( view );
+	}
 
-    // Queue this view into the renderer for processing.
-    pRenderer->QueueTask( this );
+	// Queue this view into the renderer for processing.
+	pRenderer->QueueTask( this );
 
-    if ( m_pScene )
-    {
-        // Run through the graph and pre-render the entities
-        m_pScene->GetRoot()->PreRender( pRenderer, VT_PERSPECTIVE );
-    }
+	if ( m_pScene )
+	{
+		// Run through the graph and pre-render the entities
+		m_pScene->GetRoot()->PreRender( pRenderer, VT_PERSPECTIVE );
+	}
 
-    // Next we call the predraw method of each of the supporting views.
+	// Next we call the predraw method of each of the supporting views.
 
-    SetupViews();
-    m_pLightsView->QueuePreTasks( pRenderer );
-    m_pGBufferView->QueuePreTasks( pRenderer );
+	SetupViews();
+	m_pLightsView->QueuePreTasks( pRenderer );
+	m_pGBufferView->QueuePreTasks( pRenderer );
 }
 //--------------------------------------------------------------------------------
 void ViewDeferredRenderer::ExecuteTask( PipelineManagerDX11* pPipelineManager, IParameterManager* pParamManager )
 {
-    // Here we select what will be visible on the final rendered image based on
-    // the current options that have been selected.  This includes performing a
-    // resolve if necesary for MSAA render targets, or producing a composite
-    // image from several of our existing render targets.
+	// Here we select what will be visible on the final rendered image based on 
+	// the current options that have been selected.  This includes performing a
+	// resolve if necesary for MSAA render targets, or producing a composite 
+	// image from several of our existing render targets.
 
 
-    // Bind the back buffer and clear it
+	// Bind the back buffer and clear it
     pPipelineManager->ClearRenderTargets();
-    pPipelineManager->OutputMergerStage.DesiredState.RenderTargetViews.SetState( 0, m_BackBuffer->m_iResourceRTV );
+	pPipelineManager->OutputMergerStage.DesiredState.RenderTargetViews.SetState( 0, m_BackBuffer->m_iResourceRTV );
     pPipelineManager->ApplyRenderTargets();
     pPipelineManager->ClearBuffers( Vector4f( 0.0f, 0.0f, 0.0f, 0.0f ) );
 
-    // Configure the desired viewports in this pipeline
-    ConfigureViewports( pPipelineManager );
+	// Configure the desired viewports in this pipeline
+	ConfigureViewports( pPipelineManager );
 
     std::vector<ResourcePtr>& gBuffer = m_GBuffer[GBufferOptMode::Value][AAMode::Value];
     float scaleFactor = AAMode::Value == AAMode::SSAA ? 0.5f : 1.0f;
@@ -269,11 +269,11 @@ void ViewDeferredRenderer::ExecuteTask( PipelineManagerDX11* pPipelineManager, I
 //--------------------------------------------------------------------------------
 void ViewDeferredRenderer::Resize( UINT width, UINT height )
 {
-    RendererDX11* pRenderer = RendererDX11::Get();
+	RendererDX11* pRenderer = RendererDX11::Get();
 
-    // Remember the new dimensions of the render view.
-    ResolutionX = width;
-    ResolutionY = height;
+	// Remember the new dimensions of the render view.
+	ResolutionX = width;
+	ResolutionY = height;
 
     // Resize the resources for all AA modes.
     for ( int aaMode = 0; aaMode < AAMode::NumSettings; ++aaMode )
@@ -281,104 +281,101 @@ void ViewDeferredRenderer::Resize( UINT width, UINT height )
         int rtWidth = ResolutionX;
         int rtHeight = ResolutionY;
 
-        // Super-sampling requires a larger set of render targets.
-        if ( aaMode == AAMode::SSAA )
-        {
+		// Super-sampling requires a larger set of render targets.
+        if ( aaMode == AAMode::SSAA ) {
             rtWidth *= 2;
             rtHeight *= 2;
         }
 
-        // First resize the depth target...
-        pRenderer->ResizeTexture( m_DepthTarget[aaMode], rtWidth, rtHeight );
+		// First resize the depth target...
+		pRenderer->ResizeTexture( m_DepthTarget[aaMode], rtWidth, rtHeight );
 
-        // ...then the read only depth target.  In this case, we need to resize the
-        // resource views manually instead of letting the RendererDX11::ResizeTexture
-        // method do it for us.
-        pRenderer->ResizeTextureSRV( m_DepthTarget[aaMode]->m_iResource, m_ReadOnlyDepthTarget[aaMode]->m_iResourceSRV, rtWidth, rtHeight );
-        pRenderer->ResizeTextureDSV( m_DepthTarget[aaMode]->m_iResource, m_ReadOnlyDepthTarget[aaMode]->m_iResourceDSV, rtWidth, rtHeight );
+		// ...then the read only depth target.  In this case, we need to resize the
+		// resource views manually instead of letting the RendererDX11::ResizeTexture
+		// method do it for us.
+		pRenderer->ResizeTextureSRV( m_DepthTarget[aaMode]->m_iResource, m_ReadOnlyDepthTarget[aaMode]->m_iResourceSRV, rtWidth, rtHeight );
+		pRenderer->ResizeTextureDSV( m_DepthTarget[aaMode]->m_iResource, m_ReadOnlyDepthTarget[aaMode]->m_iResourceDSV, rtWidth, rtHeight );
 
-        // Resize each of the G-Buffers for optimization disabled mode.
-        for( unsigned int i = 0; i < m_GBuffer[GBufferOptMode::OptDisabled][aaMode].size(); ++i )
-        {
+		// Resize each of the G-Buffers for optimization disabled mode.
+		for( unsigned int i = 0; i < m_GBuffer[GBufferOptMode::OptDisabled][aaMode].size(); ++i ) {
             pRenderer->ResizeTexture( m_GBuffer[GBufferOptMode::OptDisabled][aaMode][i], rtWidth, rtHeight );
-        }
+		}
+        
+		// Resize each of the G-Buffers for optimization enabled mode.
+		for ( unsigned int i = 0; i < m_GBuffer[GBufferOptMode::OptEnabled][aaMode].size(); ++i ) {
+	        pRenderer->ResizeTexture( m_GBuffer[GBufferOptMode::OptEnabled][aaMode][i], rtWidth, rtHeight );
+		}
 
-        // Resize each of the G-Buffers for optimization enabled mode.
-        for ( unsigned int i = 0; i < m_GBuffer[GBufferOptMode::OptEnabled][aaMode].size(); ++i )
-        {
-            pRenderer->ResizeTexture( m_GBuffer[GBufferOptMode::OptEnabled][aaMode][i], rtWidth, rtHeight );
-        }
+		// Resize the final render target.
+		pRenderer->ResizeTexture( m_FinalTarget[aaMode], rtWidth, rtHeight );
 
-        // Resize the final render target.
-        pRenderer->ResizeTexture( m_FinalTarget[aaMode], rtWidth, rtHeight );
-
-        // Resize the viewport.
-        pRenderer->ResizeViewport( m_iViewport[aaMode], rtWidth, rtHeight );
+		// Resize the viewport.
+		pRenderer->ResizeViewport( m_iViewport[aaMode], rtWidth, rtHeight );
     }
 
-    // Resize the resolve render target.
+	// Resize the resolve render target.
     pRenderer->ResizeTexture( m_ResolveTarget, ResolutionX, ResolutionY );
 
-    // Notify each of the sub-render views that they must resize.  In this case,
-    // they don't do anything, but should be called anyway to ensure correct
-    // behavior in the future.
-    m_pGBufferView->Resize( width, height );
-    m_pLightsView->Resize( width, height );
+	// Notify each of the sub-render views that they must resize.  In this case,
+	// they don't do anything, but should be called anyway to ensure correct
+	// behavior in the future.
+	m_pGBufferView->Resize( width, height );
+	m_pLightsView->Resize( width, height );
 }
 //--------------------------------------------------------------------------------
 void ViewDeferredRenderer::SetRenderParams( IParameterManager* pParamManager )
 {
-    // Set the parameters for this view to be able to perform its processing
-    // sequence.  In this case, all of the render targets are already known to
-    // this view, since they are stored in this render view and passed on to the
-    // sub-views.
+	// Set the parameters for this view to be able to perform its processing
+	// sequence.  In this case, all of the render targets are already known to 
+	// this view, since they are stored in this render view and passed on to the
+	// sub-views.
 }
 //--------------------------------------------------------------------------------
 void ViewDeferredRenderer::SetUsageParams( IParameterManager* pParamManager )
 {
-    // Set the parameters for allowing an application to use the current resources
-    // for rendering.  This render view doesn't get used by any other views, so
-    // there is no usage parameters to set.
+	// Set the parameters for allowing an application to use the current resources
+	// for rendering.  This render view doesn't get used by any other views, so
+	// there is no usage parameters to set.
 }
 //--------------------------------------------------------------------------------
 void ViewDeferredRenderer::SetViewMatrix( const Matrix4f& matrix )
 {
-    // Perform the view matrix setting for this view.
-    SceneRenderTask::SetViewMatrix( matrix );
+	// Perform the view matrix setting for this view.
+	SceneRenderTask::SetViewMatrix( matrix );
 
-    // Propagate the view matrix.
-    m_pGBufferView->SetViewMatrix( matrix );
-    m_pLightsView->SetViewMatrix( matrix );
+	// Propagate the view matrix.
+	m_pGBufferView->SetViewMatrix( matrix );
+	m_pLightsView->SetViewMatrix( matrix );
 }
 //--------------------------------------------------------------------------------
 void ViewDeferredRenderer::SetProjMatrix( const Matrix4f& matrix )
 {
-    // Perform the projection matrix setting for this view.
-    SceneRenderTask::SetProjMatrix( matrix );
+	// Perform the projection matrix setting for this view.
+	SceneRenderTask::SetProjMatrix( matrix );
 
-    // Propagate the projection matrix.
-    m_pGBufferView->SetProjMatrix( matrix );
-    m_pLightsView->SetProjMatrix( matrix );
+	// Propagate the projection matrix.
+	m_pGBufferView->SetProjMatrix( matrix );
+	m_pLightsView->SetProjMatrix( matrix );
 }
 //--------------------------------------------------------------------------------
 void ViewDeferredRenderer::SetScene( Scene* pScene )
 {
-    // Perform the root setting call for this view.
-    m_pScene = pScene;
+	// Perform the root setting call for this view.
+	m_pScene = pScene;
 
-    // Propagate the root setting call.
-    m_pGBufferView->SetScene( pScene );
-    m_pLightsView->SetScene( pScene );
+	// Propagate the root setting call.
+	m_pGBufferView->SetScene( pScene );
+	m_pLightsView->SetScene( pScene );
 }
 //--------------------------------------------------------------------------------
 void ViewDeferredRenderer::SetEntity( Entity3D* pEntity )
 {
-    // Perform the entity setting call for this view.
-    m_pEntity = pEntity;
+	// Perform the entity setting call for this view.
+	m_pEntity = pEntity;
 
-    // Propagate the entity call.
-    m_pGBufferView->SetEntity( pEntity );
-    m_pLightsView->SetEntity( pEntity );
+	// Propagate the entity call.
+	m_pGBufferView->SetEntity( pEntity );
+	m_pLightsView->SetEntity( pEntity );
 }
 //--------------------------------------------------------------------------------
 void ViewDeferredRenderer::SetClipPlanes( float NearClip, float FarClip )
@@ -386,7 +383,7 @@ void ViewDeferredRenderer::SetClipPlanes( float NearClip, float FarClip )
     m_fNearClip = NearClip;
     m_fFarClip = FarClip;
 
-    m_pLightsView->SetClipPlanes( NearClip, FarClip );
+	m_pLightsView->SetClipPlanes( NearClip, FarClip );
 }
 //--------------------------------------------------------------------------------
 void ViewDeferredRenderer::SetupViews( )
@@ -433,8 +430,8 @@ void ViewDeferredRenderer::SetupViews( )
 
 
     // Configure all of the view resources according to the options
-    // that have been selected.
-    SetViewPort( m_iViewport[AAMode::Value] );
+	// that have been selected.
+	SetViewPort( m_iViewport[AAMode::Value] );
 
     m_pGBufferView->SetTargets( m_GBuffer[GBufferOptMode::Value][AAMode::Value],
                                 m_DepthTarget[AAMode::Value],
@@ -447,6 +444,6 @@ void ViewDeferredRenderer::SetupViews( )
 //--------------------------------------------------------------------------------
 std::wstring ViewDeferredRenderer::GetName()
 {
-    return( L"ViewDeferredRenderer" );
+	return( L"ViewDeferredRenderer" );
 }
 //--------------------------------------------------------------------------------

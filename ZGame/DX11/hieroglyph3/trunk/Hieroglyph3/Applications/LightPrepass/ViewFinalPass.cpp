@@ -1,4 +1,4 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
 // under the MIT License, available in the root of this distribution and
 // at the following URL:
@@ -25,7 +25,7 @@ ViewFinalPass::ViewFinalPass( RendererDX11& Renderer )
     ViewMatrix.MakeIdentity();
     ProjMatrix.MakeIdentity();
 
-    m_pLightTexture = Renderer.m_pParamMgr->GetShaderResourceParameterRef( std::wstring( L"LightTexture" ) );
+	m_pLightTexture = Renderer.m_pParamMgr->GetShaderResourceParameterRef( std::wstring( L"LightTexture" ) );
 }
 //--------------------------------------------------------------------------------
 ViewFinalPass::~ViewFinalPass()
@@ -58,18 +58,18 @@ void ViewFinalPass::ExecuteTask( PipelineManagerDX11* pPipelineManager, IParamet
 {
     if ( m_pScene )
     {
-        // Set the render target for the final pass, and clear it
-        pPipelineManager->ClearRenderTargets();
-        pPipelineManager->OutputMergerStage.DesiredState.RenderTargetViews.SetState( 0, m_RenderTarget->m_iResourceRTV );
-        pPipelineManager->ApplyRenderTargets();
-        pPipelineManager->ClearBuffers( Vector4f( 0.0f, 0.0f, 0.0f, 0.0f ) );
+	    // Set the render target for the final pass, and clear it
+		pPipelineManager->ClearRenderTargets();
+		pPipelineManager->OutputMergerStage.DesiredState.RenderTargetViews.SetState( 0, m_RenderTarget->m_iResourceRTV );
+		pPipelineManager->ApplyRenderTargets();
+		pPipelineManager->ClearBuffers( Vector4f( 0.0f, 0.0f, 0.0f, 0.0f ) );
 
-        // Also bind the depth buffer
-        pPipelineManager->OutputMergerStage.DesiredState.DepthTargetViews.SetState( m_DepthTarget->m_iResourceDSV );
-        pPipelineManager->ApplyRenderTargets();
+		// Also bind the depth buffer
+		pPipelineManager->OutputMergerStage.DesiredState.DepthTargetViews.SetState( m_DepthTarget->m_iResourceDSV );
+		pPipelineManager->ApplyRenderTargets();
 
-        // Configure the desired viewports in this pipeline
-        ConfigureViewports( pPipelineManager );
+		// Configure the desired viewports in this pipeline
+		ConfigureViewports( pPipelineManager );
 
         // Set this view's render parameters
         SetRenderParams( pParamManager );
@@ -81,8 +81,8 @@ void ViewFinalPass::ExecuteTask( PipelineManagerDX11* pPipelineManager, IParamet
 //--------------------------------------------------------------------------------
 void ViewFinalPass::Resize( UINT width, UINT height )
 {
-    // Nothing needed here, since the main render view handles the resizing of
-    // the resources and the viewports.
+	// Nothing needed here, since the main render view handles the resizing of
+	// the resources and the viewports.
 }
 //--------------------------------------------------------------------------------
 void ViewFinalPass::SetRenderParams( IParameterManager* pParamManager )
@@ -110,6 +110,6 @@ void ViewFinalPass::SetTargets( ResourcePtr LightTarget, ResourcePtr RenderTarge
 //--------------------------------------------------------------------------------
 std::wstring ViewFinalPass::GetName()
 {
-    return( L"ViewFinalPass" );
+	return( L"ViewFinalPass" );
 }
 //--------------------------------------------------------------------------------

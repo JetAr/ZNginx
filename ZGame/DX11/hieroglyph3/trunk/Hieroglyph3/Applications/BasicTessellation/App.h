@@ -1,11 +1,11 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and
+// under the MIT License, available in the root of this distribution and 
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink
+// Copyright (c) Jason Zink 
 //--------------------------------------------------------------------------------
 #include "Application.h"
 
@@ -18,37 +18,37 @@ class App : public Application
 {
 
 public:
-    App();
-
+	App();
+	
 public:
-    virtual void Initialize();
-    virtual void Update();
-    virtual void Shutdown();
+	virtual void Initialize();
+	virtual void Update();
+	virtual void Shutdown();
 
-    virtual bool ConfigureEngineComponents();
-    virtual void ShutdownEngineComponents();
+	virtual bool ConfigureEngineComponents();
+	virtual void ShutdownEngineComponents();
 
-    virtual void TakeScreenShot();
+	virtual void TakeScreenShot();
 
-    virtual bool HandleEvent( EventPtr pEvent );
-    virtual std::wstring GetName( );
+	virtual bool HandleEvent( EventPtr pEvent );
+	virtual std::wstring GetName( );
 
 protected:
 
-    RendererDX11*			m_pRenderer11;
-    Win32RenderWindow*		m_pWindow;
+	RendererDX11*			m_pRenderer11;
+	Win32RenderWindow*		m_pWindow;
+	
+	int						m_iSwapChain;
+	ResourcePtr				m_RenderTarget;
+	ResourcePtr				m_DepthTarget;
 
-    int						m_iSwapChain;
-    ResourcePtr				m_RenderTarget;
-    ResourcePtr				m_DepthTarget;
+	RenderEffectDX11*		m_pTessellationEffect;
+	GeometryPtr				m_pGeometry;
 
-    RenderEffectDX11*		m_pTessellationEffect;
-    GeometryPtr				m_pGeometry;
+	Matrix4f				m_WorldMatrix;
+	Matrix4f				m_ViewMatrix;
+	Matrix4f				m_ProjMatrix;
+	Matrix4f				m_ViewProjMatrix;
 
-    Matrix4f				m_WorldMatrix;
-    Matrix4f				m_ViewMatrix;
-    Matrix4f				m_ProjMatrix;
-    Matrix4f				m_ViewProjMatrix;
-
-    Vector4f				m_TessParams;
+	Vector4f				m_TessParams;
 };

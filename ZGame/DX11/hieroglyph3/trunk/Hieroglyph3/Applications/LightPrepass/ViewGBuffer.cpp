@@ -1,4 +1,4 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
 // under the MIT License, available in the root of this distribution and
 // at the following URL:
@@ -25,8 +25,8 @@ using namespace Glyph3;
 //--------------------------------------------------------------------------------
 ViewGBuffer::ViewGBuffer( RendererDX11& Renderer )
 {
-    ViewMatrix.MakeIdentity();
-    ProjMatrix.MakeIdentity();
+	ViewMatrix.MakeIdentity();
+	ProjMatrix.MakeIdentity();
 
     // Make a depth-stencil state used for generating the MSAA mask.
     DepthStencilStateConfigDX11 dsConfig;
@@ -58,26 +58,26 @@ ViewGBuffer::ViewGBuffer( RendererDX11& Renderer )
     m_MaskEffect.m_iRasterizerState = m_iMaskRSState;
 
     // Generate geometry for a full screen quad
-    m_QuadGeometry = GeometryPtr( new GeometryDX11() );
+	m_QuadGeometry = GeometryPtr( new GeometryDX11() );
     GeometryGeneratorDX11::GenerateFullScreenQuad( m_QuadGeometry );
     m_QuadGeometry->LoadToBuffers();
 
     // Load shaders for generating the mask
     m_MaskEffect.SetVertexShader( Renderer.LoadShader( VERTEX_SHADER,
-                                  std::wstring( L"MaskLP.hlsl" ),
-                                  std::wstring( L"VSMain" ),
-                                  std::wstring( L"vs_5_0" ) ) );
+        std::wstring( L"MaskLP.hlsl" ),
+        std::wstring( L"VSMain" ),
+        std::wstring( L"vs_5_0" ) ) );
     _ASSERT( m_MaskEffect.GetVertexShader() != -1 );
 
     m_MaskEffect.SetPixelShader( Renderer.LoadShader( PIXEL_SHADER,
-                                 std::wstring( L"MaskLP.hlsl" ),
-                                 std::wstring( L"PSMain" ),
-                                 std::wstring( L"ps_5_0" ) ) );
+        std::wstring( L"MaskLP.hlsl" ),
+        std::wstring( L"PSMain" ),
+        std::wstring( L"ps_5_0" ) ) );
     _ASSERT( m_MaskEffect.GetPixelShader() != -1 );
 
-    m_pGBufferTexture = Renderer.m_pParamMgr->GetShaderResourceParameterRef( std::wstring( L"GBufferTexture" ) );
+	m_pGBufferTexture = Renderer.m_pParamMgr->GetShaderResourceParameterRef( std::wstring( L"GBufferTexture" ) );
 
-    m_QuadGeometry->GenerateInputLayout( m_MaskEffect.GetVertexShader() );
+	m_QuadGeometry->GenerateInputLayout( m_MaskEffect.GetVertexShader() );
 }
 //--------------------------------------------------------------------------------
 ViewGBuffer::~ViewGBuffer()
@@ -90,44 +90,44 @@ void ViewGBuffer::Update( float fTime )
 //--------------------------------------------------------------------------------
 void ViewGBuffer::QueuePreTasks( RendererDX11* pRenderer )
 {
-    if ( m_pEntity != NULL )
-    {
-        Matrix4f view = m_pEntity->Transform.GetView();
-        SetViewMatrix( view );
-    }
+	if ( m_pEntity != NULL )
+	{
+		Matrix4f view = m_pEntity->Transform.GetView();
+		SetViewMatrix( view );
+	}
 
-    // Queue this view into the renderer for processing.
-    pRenderer->QueueTask( this );
+	// Queue this view into the renderer for processing.
+	pRenderer->QueueTask( this );
 
-    if ( m_pScene )
-    {
-        // Run through the graph and pre-render the entities
-        m_pScene->GetRoot()->PreRender( pRenderer, VT_GBUFFER );
-    }
+	if ( m_pScene )
+	{
+		// Run through the graph and pre-render the entities
+		m_pScene->GetRoot()->PreRender( pRenderer, VT_GBUFFER );
+	}
 }
 //--------------------------------------------------------------------------------
 void ViewGBuffer::ExecuteTask( PipelineManagerDX11* pPipelineManager, IParameterManager* pParamManager )
 {
-    if ( m_pScene )
-    {
-        // Set the parameters for rendering this view
-        pPipelineManager->ClearRenderTargets();
-        pPipelineManager->OutputMergerStage.DesiredState.RenderTargetViews.SetState( 0, m_GBufferTarget->m_iResourceRTV );
-        pPipelineManager->OutputMergerStage.DesiredState.DepthTargetViews.SetState( m_DepthTarget->m_iResourceDSV );
-        pPipelineManager->ApplyRenderTargets();
+	if ( m_pScene )
+	{
+		// Set the parameters for rendering this view
+		pPipelineManager->ClearRenderTargets();
+		pPipelineManager->OutputMergerStage.DesiredState.RenderTargetViews.SetState( 0, m_GBufferTarget->m_iResourceRTV );
+		pPipelineManager->OutputMergerStage.DesiredState.DepthTargetViews.SetState( m_DepthTarget->m_iResourceDSV );
+		pPipelineManager->ApplyRenderTargets();
 
-        // Configure the desired viewports in this pipeline
-        ConfigureViewports( pPipelineManager );
+		// Configure the desired viewports in this pipeline
+		ConfigureViewports( pPipelineManager );
 
-        // Clear the G-Buffer targets
-        Vector4f color(0.0f, 0.0f, 0.0f, 0.0f);
-        pPipelineManager->ClearBuffers( color, 1.0f, 0 );
+		// Clear the G-Buffer targets
+		Vector4f color(0.0f, 0.0f, 0.0f, 0.0f);
+		pPipelineManager->ClearBuffers( color, 1.0f, 0 );
 
-        // Set this view's render parameters
-        SetRenderParams( pParamManager );
+		// Set this view's render parameters
+		SetRenderParams( pParamManager );
 
-        // Run through the graph and render each of the entities
-        m_pScene->GetRoot()->Render( pPipelineManager, pParamManager, VT_GBUFFER );
+		// Run through the graph and render each of the entities
+		m_pScene->GetRoot()->Render( pPipelineManager, pParamManager, VT_GBUFFER );
 
         // Now that we've filled the G-Buffer, we'll generate a stencil mask
         // that masks out all pixels where the individual sub-samples aren't
@@ -137,31 +137,31 @@ void ViewGBuffer::ExecuteTask( PipelineManagerDX11* pPipelineManager, IParameter
         // leaving a value of 2.
 
         pPipelineManager->ClearRenderTargets();
-        pPipelineManager->OutputMergerStage.DesiredState.DepthTargetViews.SetState( m_DepthTarget->m_iResourceDSV );
+		pPipelineManager->OutputMergerStage.DesiredState.DepthTargetViews.SetState( m_DepthTarget->m_iResourceDSV );
         pPipelineManager->ApplyRenderTargets();
 
         pParamManager->SetShaderResourceParameter( m_pGBufferTexture, m_GBufferTarget );
 
 
-        // Use the effect to load all of the pipeline stages here.
-        pPipelineManager->ClearPipelineResources();
-        m_MaskEffect.ConfigurePipeline( pPipelineManager, pParamManager );
-        pPipelineManager->ApplyPipelineResources();
+		// Use the effect to load all of the pipeline stages here.
+		pPipelineManager->ClearPipelineResources();
+		m_MaskEffect.ConfigurePipeline( pPipelineManager, pParamManager );
+		pPipelineManager->ApplyPipelineResources();
 
         m_QuadGeometry->Execute( pPipelineManager, pParamManager );
-    }
+	}
 }
 //--------------------------------------------------------------------------------
 void ViewGBuffer::Resize( UINT width, UINT height )
 {
-    // Nothing needed here, since the main render view handles the resizing of
-    // the resources and the viewports.
+	// Nothing needed here, since the main render view handles the resizing of
+	// the resources and the viewports.
 }
 //--------------------------------------------------------------------------------
 void ViewGBuffer::SetRenderParams( IParameterManager* pParamManager )
 {
-    pParamManager->SetViewMatrixParameter( &ViewMatrix );
-    pParamManager->SetProjMatrixParameter( &ProjMatrix );
+	pParamManager->SetViewMatrixParameter( &ViewMatrix );
+	pParamManager->SetProjMatrixParameter( &ProjMatrix );
 }
 //--------------------------------------------------------------------------------
 void ViewGBuffer::SetUsageParams( IParameterManager* pParamManager )
@@ -178,6 +178,6 @@ void ViewGBuffer::SetTargets( ResourcePtr GBufferTarget, ResourcePtr DepthTarget
 //--------------------------------------------------------------------------------
 std::wstring ViewGBuffer::GetName()
 {
-    return( L"ViewGBuffer" );
+	return( L"ViewGBuffer" );
 }
 //--------------------------------------------------------------------------------

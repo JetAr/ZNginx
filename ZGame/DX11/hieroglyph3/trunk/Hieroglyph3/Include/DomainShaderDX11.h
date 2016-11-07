@@ -1,11 +1,11 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and
+// under the MIT License, available in the root of this distribution and 
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink
+// Copyright (c) Jason Zink 
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -20,19 +20,19 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-class DomainShaderDX11 : public ShaderDX11
-{
-public:
-    DomainShaderDX11( ID3D11DomainShader* pShader );
-    virtual ~DomainShaderDX11();
+	class DomainShaderDX11 : public ShaderDX11
+	{
+	public:
+		DomainShaderDX11( ID3D11DomainShader* pShader );
+		virtual ~DomainShaderDX11();
 
-    virtual ShaderType GetType();
+		virtual ShaderType GetType();
 
-protected:
-    ID3D11DomainShader*			m_pDomainShader;
+	protected:
+		ID3D11DomainShader*			m_pDomainShader;
 
-    friend DomainStageDX11;
-};
+		friend DomainStageDX11;
+	};
 };
 //--------------------------------------------------------------------------------
 #endif // DomainShaderDX11_h

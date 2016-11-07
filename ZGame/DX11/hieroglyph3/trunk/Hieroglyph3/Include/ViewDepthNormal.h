@@ -1,11 +1,11 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and
+// under the MIT License, available in the root of this distribution and 
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink
+// Copyright (c) Jason Zink 
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -23,24 +23,24 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-class Entity3D;
+	class Entity3D;
 
-class ViewDepthNormal : public ViewPerspective
-{
-public:
-    ViewDepthNormal( RendererDX11& Renderer, ResourcePtr RenderTarget, ResourcePtr DepthTarget );
-    virtual ~ViewDepthNormal();
+	class ViewDepthNormal : public ViewPerspective
+	{
+	public:
+		ViewDepthNormal( RendererDX11& Renderer, ResourcePtr RenderTarget, ResourcePtr DepthTarget );
+		virtual ~ViewDepthNormal();
 
-    virtual void QueuePreTasks( RendererDX11* pRenderer );
-    virtual void ExecuteTask( PipelineManagerDX11* pPipelineManager, IParameterManager* pParamManager );
+		virtual void QueuePreTasks( RendererDX11* pRenderer );
+		virtual void ExecuteTask( PipelineManagerDX11* pPipelineManager, IParameterManager* pParamManager );
 
-    virtual void SetUsageParams( IParameterManager* pParamManager );
+		virtual void SetUsageParams( IParameterManager* pParamManager );
 
-    virtual std::wstring GetName( );
+		virtual std::wstring GetName( );
 
-protected:
-    ShaderResourceParameterDX11* m_pDepthNormalBuffer;
-};
+	protected:
+		ShaderResourceParameterDX11* m_pDepthNormalBuffer;
+	};
 };
 //--------------------------------------------------------------------------------
 #endif // ViewDepthNormal_h

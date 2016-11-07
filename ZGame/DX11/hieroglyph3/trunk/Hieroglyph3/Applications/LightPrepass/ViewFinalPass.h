@@ -1,4 +1,4 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
 // under the MIT License, available in the root of this distribution and
 // at the following URL:
@@ -20,32 +20,32 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-class ViewFinalPass : public SceneRenderTask
-{
-public:
-    ViewFinalPass( RendererDX11& Renderer );
-    virtual ~ViewFinalPass();
+    class ViewFinalPass : public SceneRenderTask
+    {
+    public:
+        ViewFinalPass( RendererDX11& Renderer );
+		virtual ~ViewFinalPass();
 
-    virtual void Update( float fTime );
-    virtual void QueuePreTasks( RendererDX11* pRenderer );
-    virtual void ExecuteTask( PipelineManagerDX11* pPipelineManager, IParameterManager* pParamManager );
-    virtual void Resize( UINT width, UINT height );
+        virtual void Update( float fTime );
+		virtual void QueuePreTasks( RendererDX11* pRenderer );
+		virtual void ExecuteTask( PipelineManagerDX11* pPipelineManager, IParameterManager* pParamManager );
+		virtual void Resize( UINT width, UINT height );
 
-    virtual void SetRenderParams( IParameterManager* pParamManager );
-    virtual void SetUsageParams( IParameterManager* pParamManager );
+        virtual void SetRenderParams( IParameterManager* pParamManager );
+        virtual void SetUsageParams( IParameterManager* pParamManager );
 
-    void SetTargets( ResourcePtr LightTarget, ResourcePtr RenderTarget, ResourcePtr DepthTarget, int Viewport );
+        void SetTargets( ResourcePtr LightTarget, ResourcePtr RenderTarget, ResourcePtr DepthTarget, int Viewport );
 
-    virtual std::wstring GetName();
+        virtual std::wstring GetName();
 
-protected:
+    protected:
 
-    ResourcePtr 	        m_LightTarget;
-    ResourcePtr 	        m_RenderTarget;
-    ResourcePtr				m_DepthTarget;
+        ResourcePtr 	        m_LightTarget;
+        ResourcePtr 	        m_RenderTarget;
+        ResourcePtr				m_DepthTarget;
 
-    ShaderResourceParameterDX11*	m_pLightTexture;
-};
+		ShaderResourceParameterDX11*	m_pLightTexture;
+    };
 }
 //--------------------------------------------------------------------------------
 #endif // ViewFinalPass_h

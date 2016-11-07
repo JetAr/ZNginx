@@ -1,11 +1,11 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and
+// under the MIT License, available in the root of this distribution and 
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink
+// Copyright (c) Jason Zink 
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -18,35 +18,31 @@
 #ifndef Frustum3f_h
 #define Frustum3f_h
 //--------------------------------------------------------------------------------
-#include "Shape3D.h"
 #include "Plane3f.h"
 #include "Vector3f.h"
 #include "Sphere3f.h"
 #include "Matrix4f.h"
+#include <array>
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-class Frustum3f : public Shape3D
-{
-public:
-    Frustum3f();
-    Frustum3f( const Matrix4f& ViewProjection );
-    virtual ~Frustum3f();
+	struct Frustum3f
+	{
+		Frustum3f();
+		Frustum3f( const Matrix4f& ViewProjection );
+		~Frustum3f();
 
-    void Update( const Matrix4f& ViewProjection, bool bNormalize );
-    bool Test( const Vector3f& TestPoint ) const;
-    bool Test( const Sphere3f& TestSphere ) const;
+		void Update( const Matrix4f& ViewProjection, bool bNormalize );
+		bool Test( const Vector3f& TestPoint ) const;
+		bool Test( const Sphere3f& TestSphere ) const;
 
-    // for use with the CEntity interface
-    bool Intersects( const Sphere3f& test ) const;
-    bool Envelops( const Sphere3f& test ) const;
+		// for use with the CEntity interface
+		bool Intersects( const Sphere3f& test ) const;
+		bool Envelops( const Sphere3f& test ) const;
 
-    virtual eSHAPE GetShapeType( ) const;
-
-protected:
-    Plane3f m_Planes[6];
-
-};
+		std::array<Plane3f,6> planes;
+	};
 };
 //--------------------------------------------------------------------------------
 #endif // Frustum3f_h
+//--------------------------------------------------------------------------------

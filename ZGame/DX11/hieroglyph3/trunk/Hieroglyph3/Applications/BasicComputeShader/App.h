@@ -1,11 +1,11 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and
+// under the MIT License, available in the root of this distribution and 
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink
+// Copyright (c) Jason Zink 
 //--------------------------------------------------------------------------------
 #include "Application.h"
 
@@ -20,41 +20,41 @@ class App : public Application
 {
 
 public:
-    App();
-
+	App();
+	
 public:
-    virtual void Initialize();
-    virtual void Update();
-    virtual void Shutdown();
+	virtual void Initialize();
+	virtual void Update();
+	virtual void Shutdown();
 
-    virtual bool ConfigureEngineComponents();
-    virtual void ShutdownEngineComponents();
+	virtual bool ConfigureEngineComponents();
+	virtual void ShutdownEngineComponents();
 
-    virtual void TakeScreenShot();
+	virtual void TakeScreenShot();
 
-    virtual bool HandleEvent( EventPtr pEvent );
-    virtual std::wstring GetName( );
+	virtual bool HandleEvent( EventPtr pEvent );
+	virtual std::wstring GetName( );
 
 protected:
 
-    RendererDX11*			m_pRenderer11;
-    Win32RenderWindow*		m_pWindow;
+	RendererDX11*			m_pRenderer11;
+	Win32RenderWindow*		m_pWindow;
+	
+	int						m_iSwapChain;
+	ResourcePtr				m_RenderTarget;
+	ResourcePtr				m_DepthTarget;
 
-    int						m_iSwapChain;
-    ResourcePtr				m_RenderTarget;
-    ResourcePtr				m_DepthTarget;
+	// Input Texture IDs
+	ResourcePtr				m_Texture;
 
-    // Input Texture IDs
-    ResourcePtr				m_Texture;
+	// Output Texture IDs
+	ResourcePtr				m_Output;
 
-    // Output Texture IDs
-    ResourcePtr				m_Output;
+	// Geometry for full screen pass
+	GeometryPtr				m_pFullScreen;
 
-    // Geometry for full screen pass
-    GeometryPtr				m_pFullScreen;
-
-    // RenderEffects for running the compute shader and rendering
-    // the resulting texture to the backbuffer.
-    RenderEffectDX11*		m_pFilterEffect;
-    RenderEffectDX11*		m_pTextureEffect;
+	// RenderEffects for running the compute shader and rendering
+	// the resulting texture to the backbuffer.
+	RenderEffectDX11*		m_pFilterEffect;
+	RenderEffectDX11*		m_pTextureEffect;
 };

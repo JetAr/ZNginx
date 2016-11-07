@@ -1,11 +1,11 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and
+// under the MIT License, available in the root of this distribution and 
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink
+// Copyright (c) Jason Zink 
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -36,8 +36,8 @@ MaterialPtr DiffuseSphereEntity::DiffuseMaterial = nullptr;
 //--------------------------------------------------------------------------------
 DiffuseSphereEntity::DiffuseSphereEntity()
 {
-    Visual.SetGeometry( SphereGeometry );
-    Visual.SetMaterial( DiffuseMaterial );
+	Visual.SetGeometry( SphereGeometry );
+	Visual.SetMaterial( DiffuseMaterial );
 }
 //--------------------------------------------------------------------------------
 DiffuseSphereEntity::~DiffuseSphereEntity()
@@ -54,70 +54,70 @@ void DiffuseSphereEntity::LoadResources()
     SphereGeometry->LoadToBuffers();
     SphereGeometry->SetPrimitiveType( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
-    DiffuseMaterial = MaterialPtr( new MaterialDX11() );
+	DiffuseMaterial = MaterialPtr( new MaterialDX11() );
 
     RenderEffect = new RenderEffectDX11();
-    RenderEffect->SetVertexShader( pRenderer11->LoadShader( VERTEX_SHADER,
-                                   std::wstring( L"ObjectTexturedVS.hlsl" ),
-                                   std::wstring( L"VSMAIN" ),
-                                   std::wstring( L"vs_5_0" ) ) );
+    RenderEffect->SetVertexShader( pRenderer11->LoadShader( VERTEX_SHADER,     
+		std::wstring( L"ObjectTexturedVS.hlsl" ),
+		std::wstring( L"VSMAIN" ),
+		std::wstring( L"vs_5_0" ) ) );
 
-    RenderEffect->SetPixelShader( pRenderer11->LoadShader( PIXEL_SHADER,
-                                  std::wstring( L"ObjectTexturedPS.hlsl" ),
-                                  std::wstring( L"PSMAIN" ),
-                                  std::wstring( L"ps_5_0" ) ) );
+	RenderEffect->SetPixelShader( pRenderer11->LoadShader( PIXEL_SHADER,
+		std::wstring( L"ObjectTexturedPS.hlsl" ),
+		std::wstring( L"PSMAIN" ),
+		std::wstring( L"ps_5_0" ) ) );
 
-    // Enable the material to render the given view type, and set its effect.
-    DiffuseMaterial->Params[VT_PERSPECTIVE].bRender = true;
-    DiffuseMaterial->Params[VT_PERSPECTIVE].pEffect = RenderEffect;
+	// Enable the material to render the given view type, and set its effect.
+	DiffuseMaterial->Params[VT_PERSPECTIVE].bRender = true;
+	DiffuseMaterial->Params[VT_PERSPECTIVE].pEffect = RenderEffect;	
 
-    // Create and fill the effect that will be used for a diffuse object
+    // Create and fill the effect that will be used for a diffuse object 
     // to be rendered into a paraboloid map, which will use the paraboloid
     // projection with its normal sampling technique.
 
     ParabolaEffect = new RenderEffectDX11();
 
     ParabolaEffect->SetVertexShader( pRenderer11->LoadShader( VERTEX_SHADER,
-                                     std::wstring( L"DualParaboloidEnvMapGen.hlsl" ),
-                                     std::wstring( L"VSMAIN" ),
-                                     std::wstring( L"vs_5_0" ) ) );
+		std::wstring( L"DualParaboloidEnvMapGen.hlsl" ),
+		std::wstring( L"VSMAIN" ),
+		std::wstring( L"vs_5_0" ) ) );
 
     ParabolaEffect->SetGeometryShader( pRenderer11->LoadShader( GEOMETRY_SHADER,
-                                       std::wstring( L"DualParaboloidEnvMapGen.hlsl" ),
-                                       std::wstring( L"GSMAIN" ),
-                                       std::wstring( L"gs_5_0" ) ) );
+	    std::wstring( L"DualParaboloidEnvMapGen.hlsl" ),
+		std::wstring( L"GSMAIN" ),
+		std::wstring( L"gs_5_0" ) ) );
 
     ParabolaEffect->SetPixelShader( pRenderer11->LoadShader( PIXEL_SHADER,
-                                    std::wstring( L"DualParaboloidEnvMapGen.hlsl" ),
-                                    std::wstring( L"PSMAIN" ),
-                                    std::wstring( L"ps_5_0" ) ) );
+	    std::wstring( L"DualParaboloidEnvMapGen.hlsl" ),
+		std::wstring( L"PSMAIN" ),
+		std::wstring( L"ps_5_0" ) ) );
 
     //RasterizerStateConfigDX11 RS;
     //RS.FillMode = D3D11_FILL_WIREFRAME;
     //RS.CullMode = D3D11_CULL_NONE;
 
-    //ParabolaEffect->m_iRasterizerState =
+    //ParabolaEffect->m_iRasterizerState = 
     //	pRenderer11->CreateRasterizerState( &RS );
 
-    // Enable the material to render the given view type, and set its effect.
-    DiffuseMaterial->Params[VT_DUAL_PARABOLOID_ENVMAP].bRender = true;
-    DiffuseMaterial->Params[VT_DUAL_PARABOLOID_ENVMAP].pEffect = ParabolaEffect;
+	// Enable the material to render the given view type, and set its effect.
+	DiffuseMaterial->Params[VT_DUAL_PARABOLOID_ENVMAP].bRender = true;
+	DiffuseMaterial->Params[VT_DUAL_PARABOLOID_ENVMAP].pEffect = ParabolaEffect;
 
-    SphereGeometry->GenerateInputLayout( RenderEffect->GetVertexShader() );
-    SphereGeometry->GenerateInputLayout( ParabolaEffect->GetVertexShader() );
+	SphereGeometry->GenerateInputLayout( RenderEffect->GetVertexShader() );
+	SphereGeometry->GenerateInputLayout( ParabolaEffect->GetVertexShader() );
 
-    RenderEffect->ConfigurePipeline( pRenderer11->pImmPipeline, pRenderer11->m_pParamMgr );
-    ParabolaEffect->ConfigurePipeline( pRenderer11->pImmPipeline, pRenderer11->m_pParamMgr );
+	RenderEffect->ConfigurePipeline( pRenderer11->pImmPipeline, pRenderer11->m_pParamMgr );
+	ParabolaEffect->ConfigurePipeline( pRenderer11->pImmPipeline, pRenderer11->m_pParamMgr );
 
 
     ColorTexture = pRenderer11->LoadTexture( L"Tiles.png" );
-    DiffuseMaterial->Parameters.SetShaderResourceParameter( L"ColorTexture", ColorTexture );
+	DiffuseMaterial->Parameters.SetShaderResourceParameter( L"ColorTexture", ColorTexture );
 
     SamplerStateConfigDX11 SamplerConfig;
     SamplerConfig.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
     SamplerConfig.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 
     LinearSampler = pRenderer11->CreateSamplerState( &SamplerConfig );
-    DiffuseMaterial->Parameters.SetSamplerParameter( L"LinearSampler", LinearSampler );
+	DiffuseMaterial->Parameters.SetSamplerParameter( L"LinearSampler", LinearSampler );
 }
 //--------------------------------------------------------------------------------

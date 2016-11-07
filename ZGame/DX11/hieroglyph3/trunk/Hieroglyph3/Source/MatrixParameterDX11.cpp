@@ -1,11 +1,11 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and
+// under the MIT License, available in the root of this distribution and 
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink
+// Copyright (c) Jason Zink 
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -16,14 +16,14 @@ using namespace Glyph3;
 //--------------------------------------------------------------------------------
 MatrixParameterDX11::MatrixParameterDX11()
 {
-    for ( int i = 0; i <= NUM_THREADS; i++ )
-        m_Matrix[i].MakeIdentity();
+	for ( int i = 0; i <= NUM_THREADS; i++ )
+		m_Matrix[i].MakeIdentity();
 }
 //--------------------------------------------------------------------------------
 MatrixParameterDX11::MatrixParameterDX11( MatrixParameterDX11& copy )
 {
-    for ( int i = 0; i <= NUM_THREADS; i++ )
-        m_Matrix[i] = copy.m_Matrix[i];
+	for ( int i = 0; i <= NUM_THREADS; i++ )
+		m_Matrix[i] = copy.m_Matrix[i];
 }
 //--------------------------------------------------------------------------------
 MatrixParameterDX11::~MatrixParameterDX11()
@@ -32,14 +32,13 @@ MatrixParameterDX11::~MatrixParameterDX11()
 //--------------------------------------------------------------------------------
 void MatrixParameterDX11::SetParameterData( void* pData, unsigned int threadID )
 {
-    assert( threadID >= 0 );
-    assert( threadID < NUM_THREADS+1 );
+	assert( threadID >= 0 );
+	assert( threadID < NUM_THREADS+1 );
 
-    if ( 0 != memcmp( pData, &(m_Matrix[threadID]), sizeof(Matrix4f) ) )
-    {
-        m_auiValueID[threadID]++;
-        m_Matrix[threadID] = *reinterpret_cast<Matrix4f*>( pData );
-    }
+	if ( 0 != memcmp( pData, &(m_Matrix[threadID]), sizeof(Matrix4f) ) ) {
+		m_auiValueID[threadID]++;
+		m_Matrix[threadID] = *reinterpret_cast<Matrix4f*>( pData );
+	}
 }
 //--------------------------------------------------------------------------------
 //void MatrixParameterDX11::ResetParameterData( void* pData, unsigned int threadID )
@@ -55,15 +54,15 @@ void MatrixParameterDX11::SetParameterData( void* pData, unsigned int threadID )
 //--------------------------------------------------------------------------------
 const ParameterType MatrixParameterDX11::GetParameterType()
 {
-    return( MATRIX );
+	return( MATRIX );
 }
 //--------------------------------------------------------------------------------
 Matrix4f MatrixParameterDX11::GetMatrix( unsigned int threadID )
 {
-    assert( threadID >= 0 );
-    assert( threadID < NUM_THREADS+1 );
+	assert( threadID >= 0 );
+	assert( threadID < NUM_THREADS+1 );
 
-    return( m_Matrix[threadID] );
+	return( m_Matrix[threadID] );
 }
 //--------------------------------------------------------------------------------
 //void MatrixParameterDX11::UpdateValue( RenderParameterDX11* pParameter, unsigned int threadID )

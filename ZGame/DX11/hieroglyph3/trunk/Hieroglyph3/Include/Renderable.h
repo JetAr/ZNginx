@@ -1,17 +1,17 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and
+// under the MIT License, available in the root of this distribution and 
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink
+// Copyright (c) Jason Zink 
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
 // Renderable
 //
-// The object rendering parameter structure defines all of the variable
+// The object rendering parameter structure defines all of the variable 
 // parameters that could potentially change from object to object.  This
 // structure represents all of the ways that an object can communicate
 // with the renderer.
@@ -30,39 +30,39 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-// The render pass is used to allow an object to define what type of
-// object it actually is.  This can then be used by a render view to
-// provide a special consideration when selecting its object rendering
-// order.
+	// The render pass is used to allow an object to define what type of
+	// object it actually is.  This can then be used by a render view to
+	// provide a special consideration when selecting its object rendering 
+	// order.
 
-class Renderable
-{
-public:
-    enum ENTITYTYPE
-    {
-        GUI_TEXT,
-        GUI,
-        ALPHA,
-        SKY,
-        BACKGROUND,
-        GEOMETRY,
-        NUMPASSES
-    };
+	class Renderable
+	{
+	public:
+		enum ENTITYTYPE
+		{
+			GUI_TEXT,
+			GUI,
+			ALPHA,
+			SKY,
+			BACKGROUND,
+			GEOMETRY,
+			NUMPASSES
+		};
 
-    Renderable();
-    ~Renderable();
+		Renderable();
+		~Renderable();
 
-    void SetMaterial( MaterialPtr pMaterial );
-    MaterialPtr GetMaterial( );
+		void SetMaterial( MaterialPtr pMaterial );
+		MaterialPtr GetMaterial( );
 
-    void SetGeometry( ExecutorPtr pExecutor );
-    ExecutorPtr GetGeometry( );
+		void SetGeometry( ExecutorPtr pExecutor );
+		ExecutorPtr GetGeometry( );
 
 
-    ENTITYTYPE				iPass;
-    ExecutorPtr				Executor;
-    MaterialPtr				Material;
-};
+		ENTITYTYPE				iPass;
+		ExecutorPtr				Executor;
+		MaterialPtr				Material;
+	};
 };
 //--------------------------------------------------------------------------------
 #endif // Renderable_h

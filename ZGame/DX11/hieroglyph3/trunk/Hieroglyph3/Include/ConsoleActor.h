@@ -1,11 +1,11 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and
+// under the MIT License, available in the root of this distribution and 
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink
+// Copyright (c) Jason Zink 
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -23,24 +23,24 @@
 #include "TextActor.h"
 //--------------------------------------------------------------------------------
 namespace Glyph3
-{
-class ConsoleActor : public Actor, public IEventListener
-{
-public:
-    ConsoleActor();
-    virtual ~ConsoleActor();
+{    
+	class ConsoleActor : public Actor, public IEventListener
+    {
+    public:
+        ConsoleActor();
+		virtual ~ConsoleActor();
+        
+        virtual bool HandleEvent( EventPtr pEvent );
+        virtual std::wstring GetName();
 
-    virtual bool HandleEvent( EventPtr pEvent );
-    virtual std::wstring GetName();
+		Console console;
+		TextActor textActor;
 
-    Console console;
-    TextActor textActor;
+		static const size_t MAX_ENTRY_DISPLAY = 10;
 
-    static const size_t MAX_ENTRY_DISPLAY = 10;
-
-private:
-    void printText();
-};
+	private:
+		void printText();
+    };
 };
 //--------------------------------------------------------------------------------
 #endif // ConsoleActor_h

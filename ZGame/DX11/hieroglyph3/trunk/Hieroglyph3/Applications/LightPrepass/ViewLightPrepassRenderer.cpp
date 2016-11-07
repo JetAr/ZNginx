@@ -1,11 +1,11 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and
+// under the MIT License, available in the root of this distribution and 
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink
+// Copyright (c) Jason Zink 
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -29,12 +29,12 @@ Vector3f Lerp( const Vector3f& x, const Vector3f& y, const Vector3f& s )
 //--------------------------------------------------------------------------------
 ViewLightPrepassRenderer::ViewLightPrepassRenderer( RendererDX11& Renderer, ResourcePtr RenderTarget )
 {
-    m_BackBuffer = RenderTarget;
+	m_BackBuffer = RenderTarget;
 
-    D3D11_TEXTURE2D_DESC desc = m_BackBuffer->m_pTexture2dConfig->GetTextureDesc();
+	D3D11_TEXTURE2D_DESC desc = m_BackBuffer->m_pTexture2dConfig->GetTextureDesc();
 
-    ResolutionX = desc.Width;
-    ResolutionY = desc.Height;
+	ResolutionX = desc.Width;
+	ResolutionY = desc.Height;
 
     // Create render targets
 
@@ -93,9 +93,9 @@ ViewLightPrepassRenderer::ViewLightPrepassRenderer( RendererDX11& Renderer, Reso
     // a depth stencil view
     DepthDSVConfig.SetFlags( D3D11_DSV_READ_ONLY_DEPTH | D3D11_DSV_READ_ONLY_STENCIL );
     m_ReadOnlyDepthTarget = ResourcePtr( new ResourceProxyDX11( m_DepthTarget->m_iResource,
-                                         &DepthTexConfig, RendererDX11::Get(),
-                                         &DepthSRVConfig, NULL, NULL,
-                                         &DepthDSVConfig ) );
+                                                                &DepthTexConfig, RendererDX11::Get(),
+                                                                &DepthSRVConfig, NULL, NULL,
+                                                                &DepthDSVConfig ) );
 
     // Create a view port to use on the scene.  This basically selects the
     // entire floating point area of the render target.
@@ -117,25 +117,25 @@ ViewLightPrepassRenderer::ViewLightPrepassRenderer( RendererDX11& Renderer, Reso
     m_ResolveTarget = Renderer.CreateTexture2D( &resolveConfig, NULL );
 
 
-    // Create the three sub-views to perform the extra rendering operations for
-    // ambient occlusion.
-    m_pGBufferView = new ViewGBuffer( Renderer );
-    m_pLightsView = new ViewLights( Renderer );
-    m_pFinalPassView = new ViewFinalPass( Renderer );
+	// Create the three sub-views to perform the extra rendering operations for
+	// ambient occlusion.
+	m_pGBufferView = new ViewGBuffer( Renderer );
+	m_pLightsView = new ViewLights( Renderer );
+	m_pFinalPassView = new ViewFinalPass( Renderer );
 
 
-    // Set the the targets for the views
+	// Set the the targets for the views
     m_pGBufferView->SetTargets( m_GBufferTarget,
                                 m_DepthTarget,
                                 m_iViewports[0] );
     m_pLightsView->SetTargets( m_GBufferTarget,
-                               m_LightTarget,
-                               m_ReadOnlyDepthTarget,
-                               m_iViewports[0] );
+                                m_LightTarget,
+                                m_ReadOnlyDepthTarget,
+                                m_iViewports[0] );
     m_pFinalPassView->SetTargets( m_LightTarget,
-                                  m_FinalTarget,
-                                  m_ReadOnlyDepthTarget,
-                                  m_iViewports[0] );
+                                    m_FinalTarget,
+                                    m_ReadOnlyDepthTarget,
+                                    m_iViewports[0] );
 
 
     m_SpriteRenderer.Initialize();
@@ -143,9 +143,9 @@ ViewLightPrepassRenderer::ViewLightPrepassRenderer( RendererDX11& Renderer, Reso
 //--------------------------------------------------------------------------------
 ViewLightPrepassRenderer::~ViewLightPrepassRenderer()
 {
-    SAFE_DELETE( m_pGBufferView );
-    SAFE_DELETE( m_pLightsView );
-    SAFE_DELETE( m_pFinalPassView );
+	SAFE_DELETE( m_pGBufferView );
+	SAFE_DELETE( m_pLightsView );
+	SAFE_DELETE( m_pFinalPassView );
 }
 //--------------------------------------------------------------------------------
 void ViewLightPrepassRenderer::Update( float fTime )
@@ -154,44 +154,44 @@ void ViewLightPrepassRenderer::Update( float fTime )
 //--------------------------------------------------------------------------------
 void ViewLightPrepassRenderer::QueuePreTasks( RendererDX11* pRenderer )
 {
-    // Call the super class's predraw in order to queue it in the renderer.  The
-    // views are processed in a LIFO order, so this will be executed last in both
-    // single- or multi-threaded mode.
+	// Call the super class's predraw in order to queue it in the renderer.  The
+	// views are processed in a LIFO order, so this will be executed last in both
+	// single- or multi-threaded mode.
 
-    if ( m_pEntity != NULL )
-    {
-        Matrix4f view = m_pEntity->Transform.GetView();
-        SetViewMatrix( view );
-    }
+	if ( m_pEntity != NULL )
+	{
+		Matrix4f view = m_pEntity->Transform.GetView();
+		SetViewMatrix( view );
+	}
 
-    // Queue this view into the renderer for processing.
-    pRenderer->QueueTask( this );
+	// Queue this view into the renderer for processing.
+	pRenderer->QueueTask( this );
 
-    if ( m_pScene )
-    {
-        // Run through the graph and pre-render the entities
-        m_pScene->GetRoot()->PreRender( pRenderer, VT_PERSPECTIVE );
-    }
+	if ( m_pScene )
+	{
+		// Run through the graph and pre-render the entities
+		m_pScene->GetRoot()->PreRender( pRenderer, VT_PERSPECTIVE );
+	}
 
-    // Next we call the predraw method of each of the supporting views.
+	// Next we call the predraw method of each of the supporting views.
 
-    SetupLights();
-    m_pFinalPassView->QueuePreTasks( pRenderer );
-    m_pLightsView->QueuePreTasks( pRenderer );
-    m_pGBufferView->QueuePreTasks( pRenderer );
+	SetupLights();
+	m_pFinalPassView->QueuePreTasks( pRenderer );
+	m_pLightsView->QueuePreTasks( pRenderer );
+	m_pGBufferView->QueuePreTasks( pRenderer );
 }
 //--------------------------------------------------------------------------------
 void ViewLightPrepassRenderer::ExecuteTask( PipelineManagerDX11* pPipelineManager, IParameterManager* pParamManager )
 {
     // Render to the backbuffer
     pPipelineManager->ClearRenderTargets();
-    pPipelineManager->OutputMergerStage.DesiredState.RenderTargetViews.SetState( 0, m_BackBuffer->m_iResourceRTV );
+	pPipelineManager->OutputMergerStage.DesiredState.RenderTargetViews.SetState( 0, m_BackBuffer->m_iResourceRTV );
     pPipelineManager->ApplyRenderTargets();
 
     pPipelineManager->ClearBuffers( Vector4f( 0.0f, 0.0f, 0.0f, 0.0f ) );
 
-    // Configure the desired viewports in this pipeline
-    ConfigureViewports( pPipelineManager );
+	// Configure the desired viewports in this pipeline
+	ConfigureViewports( pPipelineManager );
 
     // Need to resolve the MSAA target before we can render it
     pPipelineManager->ResolveSubresource( m_ResolveTarget, 0, m_FinalTarget, 0, DXGI_FORMAT_R10G10B10A2_UNORM );
@@ -201,32 +201,32 @@ void ViewLightPrepassRenderer::ExecuteTask( PipelineManagerDX11* pPipelineManage
 //--------------------------------------------------------------------------------
 void ViewLightPrepassRenderer::Resize( UINT width, UINT height )
 {
-    ResolutionX = width;
-    ResolutionY = height;
+	ResolutionX = width;
+	ResolutionY = height;
 
-    // First resize the depth target...
-    RendererDX11::Get()->ResizeTexture( m_DepthTarget, width, height );
+	// First resize the depth target...
+	RendererDX11::Get()->ResizeTexture( m_DepthTarget, width, height );
 
-    // ...then the read only depth target.  In this case, we need to resize the
-    // resource views manually instead of letting the RendererDX11::ResizeTexture
-    // method do it for us.
-    RendererDX11::Get()->ResizeTextureSRV( m_DepthTarget->m_iResource, m_ReadOnlyDepthTarget->m_iResourceSRV, width, height );
-    RendererDX11::Get()->ResizeTextureDSV( m_DepthTarget->m_iResource, m_ReadOnlyDepthTarget->m_iResourceDSV, width, height );
+	// ...then the read only depth target.  In this case, we need to resize the
+	// resource views manually instead of letting the RendererDX11::ResizeTexture
+	// method do it for us.
+	RendererDX11::Get()->ResizeTextureSRV( m_DepthTarget->m_iResource, m_ReadOnlyDepthTarget->m_iResourceSRV, width, height );
+	RendererDX11::Get()->ResizeTextureDSV( m_DepthTarget->m_iResource, m_ReadOnlyDepthTarget->m_iResourceDSV, width, height );
 
-    // Resize each of the remaining textures accordingly.
-    RendererDX11::Get()->ResizeTexture( m_GBufferTarget, width, height );
-    RendererDX11::Get()->ResizeTexture( m_LightTarget, width, height );
-    RendererDX11::Get()->ResizeTexture( m_FinalTarget, width, height );
-    RendererDX11::Get()->ResizeTexture( m_ResolveTarget, width, height );
+	// Resize each of the remaining textures accordingly.
+	RendererDX11::Get()->ResizeTexture( m_GBufferTarget, width, height );
+	RendererDX11::Get()->ResizeTexture( m_LightTarget, width, height );
+	RendererDX11::Get()->ResizeTexture( m_FinalTarget, width, height );
+	RendererDX11::Get()->ResizeTexture( m_ResolveTarget, width, height );
 
-    // Resize the viewport.
-    RendererDX11::Get()->ResizeViewport( m_iViewports[0], width, height );
+	// Resize the viewport.
+	RendererDX11::Get()->ResizeViewport( m_iViewports[0], width, height );
 
-    m_pGBufferView->Resize( width, height );
-    m_pLightsView->Resize( width, height );
-    m_pFinalPassView->Resize( width, height );
+	m_pGBufferView->Resize( width, height );
+	m_pLightsView->Resize( width, height );
+	m_pFinalPassView->Resize( width, height );
 
-    // Set the the targets for the views
+	// Set the the targets for the views
     m_pGBufferView->SetViewPort( m_iViewports[0] );
     m_pLightsView->SetViewPort( m_iViewports[0] );
     m_pFinalPassView->SetViewPort( m_iViewports[0] );
@@ -234,61 +234,61 @@ void ViewLightPrepassRenderer::Resize( UINT width, UINT height )
 //--------------------------------------------------------------------------------
 void ViewLightPrepassRenderer::SetRenderParams( IParameterManager* pParamManager )
 {
-    // Set the parameters for this view to be able to perform its processing
-    // sequence.  In this case, all of the render targets are already known to
-    // this view, since they are stored in this render view and passed on to the
-    // sub-views.
+	// Set the parameters for this view to be able to perform its processing
+	// sequence.  In this case, all of the render targets are already known to 
+	// this view, since they are stored in this render view and passed on to the
+	// sub-views.
 }
 //--------------------------------------------------------------------------------
 void ViewLightPrepassRenderer::SetUsageParams( IParameterManager* pParamManager )
 {
-    // Set the parameters for allowing an application to use the current resources
-    // for rendering.  This render view doesn't get used by any other views, so
-    // there is no usage parameters to set.
+	// Set the parameters for allowing an application to use the current resources
+	// for rendering.  This render view doesn't get used by any other views, so
+	// there is no usage parameters to set.
 }
 //--------------------------------------------------------------------------------
 void ViewLightPrepassRenderer::SetViewMatrix( const Matrix4f& matrix )
 {
-    // Perform the view matrix setting for this view.
-    SceneRenderTask::SetViewMatrix( matrix );
+	// Perform the view matrix setting for this view.
+	SceneRenderTask::SetViewMatrix( matrix );
 
-    // Propagate the view matrix.
-    m_pGBufferView->SetViewMatrix( matrix );
-    m_pLightsView->SetViewMatrix( matrix );
-    m_pFinalPassView->SetViewMatrix( matrix );
+	// Propagate the view matrix.
+	m_pGBufferView->SetViewMatrix( matrix );
+	m_pLightsView->SetViewMatrix( matrix );
+	m_pFinalPassView->SetViewMatrix( matrix );
 }
 //--------------------------------------------------------------------------------
 void ViewLightPrepassRenderer::SetProjMatrix( const Matrix4f& matrix )
 {
-    // Perform the projection matrix setting for this view.
-    SceneRenderTask::SetProjMatrix( matrix );
+	// Perform the projection matrix setting for this view.
+	SceneRenderTask::SetProjMatrix( matrix );
 
-    // Propagate the projection matrix.
-    m_pGBufferView->SetProjMatrix( matrix );
-    m_pLightsView->SetProjMatrix( matrix );
-    m_pFinalPassView->SetProjMatrix( matrix );
+	// Propagate the projection matrix.
+	m_pGBufferView->SetProjMatrix( matrix );
+	m_pLightsView->SetProjMatrix( matrix );
+	m_pFinalPassView->SetProjMatrix( matrix );
 }
 //--------------------------------------------------------------------------------
 void ViewLightPrepassRenderer::SetScene( Scene* pScene )
 {
-    // Perform the root setting call for this view.
-    m_pScene = pScene;
+	// Perform the root setting call for this view.
+	m_pScene = pScene;
 
-    // Propagate the root setting call.
-    m_pGBufferView->SetScene( pScene );
-    m_pLightsView->SetScene( pScene );
-    m_pFinalPassView->SetScene( pScene );
+	// Propagate the root setting call.
+	m_pGBufferView->SetScene( pScene );
+	m_pLightsView->SetScene( pScene );
+	m_pFinalPassView->SetScene( pScene );
 }
 //--------------------------------------------------------------------------------
 void ViewLightPrepassRenderer::SetEntity( Entity3D* pEntity )
 {
-    // Perform the entity setting call for this view.
-    m_pEntity = pEntity;
+	// Perform the entity setting call for this view.
+	m_pEntity = pEntity;
 
-    // Propagate the entity call.
-    m_pGBufferView->SetEntity( pEntity );
-    m_pLightsView->SetEntity( pEntity );
-    m_pFinalPassView->SetEntity( pEntity );
+	// Propagate the entity call.
+	m_pGBufferView->SetEntity( pEntity );
+	m_pLightsView->SetEntity( pEntity );
+	m_pFinalPassView->SetEntity( pEntity );
 }
 //--------------------------------------------------------------------------------
 void ViewLightPrepassRenderer::SetClipPlanes( float NearClip, float FarClip )
@@ -296,7 +296,7 @@ void ViewLightPrepassRenderer::SetClipPlanes( float NearClip, float FarClip )
     m_fNearClip = NearClip;
     m_fFarClip = FarClip;
 
-    m_pLightsView->SetClipPlanes( NearClip, FarClip );
+	m_pLightsView->SetClipPlanes( NearClip, FarClip );
 }
 //--------------------------------------------------------------------------------
 void ViewLightPrepassRenderer::SetupLights( )
@@ -336,6 +336,6 @@ void ViewLightPrepassRenderer::SetupLights( )
 //--------------------------------------------------------------------------------
 std::wstring ViewLightPrepassRenderer::GetName()
 {
-    return( L"ViewLightPrepassRenderer" );
+	return( L"ViewLightPrepassRenderer" );
 }
 //--------------------------------------------------------------------------------

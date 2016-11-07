@@ -1,11 +1,11 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and
+// under the MIT License, available in the root of this distribution and 
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink
+// Copyright (c) Jason Zink 
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -19,47 +19,47 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-template <class T, unsigned int N>
-class TStateArrayMonitor
-{
-public:
-    TStateArrayMonitor( T initialState );
-    ~TStateArrayMonitor();
+	template <class T, unsigned int N>
+	class TStateArrayMonitor
+	{
+	public:
+		TStateArrayMonitor( T initialState );
+		~TStateArrayMonitor();
 
-    void SetSister( TStateArrayMonitor<T,N>* pSister );
-    bool SameAsSister( unsigned int slot );
+		void SetSister( TStateArrayMonitor<T,N>* pSister );
+		bool SameAsSister( unsigned int slot );
+		
+		void SetState( unsigned int slot, T state );
+	
+		bool IsUpdateNeeded();
+		unsigned int GetStartSlot();
+		unsigned int GetEndSlot();
+		unsigned int GetRange();
 
-    void SetState( unsigned int slot, T state );
+		T GetState( unsigned int slot ) const;
+		T* GetFirstSlotLocation();
+		T* GetSlotLocation( unsigned int slot );
 
-    bool IsUpdateNeeded();
-    unsigned int GetStartSlot();
-    unsigned int GetEndSlot();
-    unsigned int GetRange();
+		void InitializeStates();
+		void ResetTracking();
 
-    T GetState( unsigned int slot ) const;
-    T* GetFirstSlotLocation();
-    T* GetSlotLocation( unsigned int slot );
+	private:
 
-    void InitializeStates();
-    void ResetTracking();
+		void SearchFromBelow();
+		void SearchFromAbove();
 
-private:
+		// The monitoring varaibles
+		unsigned int m_uiStartSlot;
+		unsigned int m_uiEndSlot;
+		bool m_bUploadNeeded;
 
-    void SearchFromBelow();
-    void SearchFromAbove();
+		// The state data
+		T m_InitialState;
+		T m_States[N];
 
-    // The monitoring varaibles
-    unsigned int m_uiStartSlot;
-    unsigned int m_uiEndSlot;
-    bool m_bUploadNeeded;
-
-    // The state data
-    T m_InitialState;
-    T m_States[N];
-
-    // The sister state
-    TStateArrayMonitor<T,N>* m_pSister;
-};
+		// The sister state
+		TStateArrayMonitor<T,N>* m_pSister;
+	};
 
 #include "TStateArrayMonitor.inl"
 };

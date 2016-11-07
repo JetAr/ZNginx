@@ -1,11 +1,11 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and
+// under the MIT License, available in the root of this distribution and 
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink
+// Copyright (c) Jason Zink 
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -17,23 +17,23 @@ using namespace Glyph3;
 //--------------------------------------------------------------------------------
 FileLoader::FileLoader()
 {
-    m_pData = nullptr;
-    m_uiSize = 0;
+	m_pData = nullptr;
+	m_uiSize = 0;
 }
 //--------------------------------------------------------------------------------
 FileLoader::~FileLoader()
 {
-    Close();
+	Close();
 }
 //--------------------------------------------------------------------------------
 bool FileLoader::Open( const std::wstring& filename )
 {
-    // Close the current file if one is open.
-    Close();
+	// Close the current file if one is open.
+	Close();
 
 
-    // TODO: This needs to be updated to correctly choose CreateFile2 whenever
-    //       the library is being compiled for a WinRT target...
+	// TODO: This needs to be updated to correctly choose CreateFile2 whenever 
+	//       the library is being compiled for a WinRT target...
 
 //#if (_WIN32_WINNT >= 0x0602 /*_WIN32_WINNT_WIN8*/)
 //    HANDLE hFile = CreateFile2( filename.c_str(),
@@ -52,8 +52,7 @@ bool FileLoader::Open( const std::wstring& filename )
                               );
 //#endif
 
-    if (INVALID_HANDLE_VALUE == hFile)
-    {
+    if (INVALID_HANDLE_VALUE == hFile) {
         return( false );
     }
 
@@ -62,8 +61,7 @@ bool FileLoader::Open( const std::wstring& filename )
 
 #if (_WIN32_WINNT >= _WIN32_WINNT_VISTA)
     FILE_STANDARD_INFO fileInfo;
-    if ( !GetFileInformationByHandleEx( hFile, FileStandardInfo, &fileInfo, sizeof(fileInfo) ) )
-    {
+    if ( !GetFileInformationByHandleEx( hFile, FileStandardInfo, &fileInfo, sizeof(fileInfo) ) ) {
         CloseHandle( hFile );
         return( nullptr );
     }
@@ -73,21 +71,19 @@ bool FileLoader::Open( const std::wstring& filename )
 #endif
 
     // File is too big for 32-bit allocation, so reject read
-    if (FileSize.HighPart > 0)
-    {
+    if (FileSize.HighPart > 0) {
         CloseHandle( hFile );
         return( false );
     }
 
-    m_uiSize = FileSize.LowPart;
+	m_uiSize = FileSize.LowPart;
 
     // create enough space for the file data
     m_pData = new char[ FileSize.LowPart ];
-
-    if (!(m_pData))
-    {
+    
+	if (!(m_pData)) {
         CloseHandle( hFile );
-        Close();
+		Close();
         return( false );
     }
 
@@ -98,45 +94,42 @@ bool FileLoader::Open( const std::wstring& filename )
                    FileSize.LowPart,
                    &BytesRead,
                    nullptr
-                 ))
-    {
+                 )) {
         CloseHandle( hFile );
-        Close();
-        return( false );
+		Close();
+		return( false );
     }
 
-    CloseHandle( hFile );
+	CloseHandle( hFile );
 
-    if (BytesRead < FileSize.LowPart)
-    {
-        Close();
-        return( false );
+    if (BytesRead < FileSize.LowPart) {
+		Close();
+		return( false );
     }
 
-
-    return( true );
+	
+	return( true );
 }
 //--------------------------------------------------------------------------------
 bool FileLoader::Close( )
 {
-    if ( nullptr != m_pData )
-    {
-        delete [] m_pData;
-        m_pData = nullptr;
-    }
+	if ( nullptr != m_pData ) {
+		delete [] m_pData;
+		m_pData = nullptr;
+	}
 
-    m_uiSize = 0;
+	m_uiSize = 0;
 
-    return( true );
+	return( true );
 }
 //--------------------------------------------------------------------------------
 char* FileLoader::GetDataPtr()
 {
-    return( m_pData );
+	return( m_pData );
 }
 //--------------------------------------------------------------------------------
 unsigned int FileLoader::GetDataSize()
 {
-    return( m_uiSize );
+	return( m_uiSize );
 }
 //--------------------------------------------------------------------------------

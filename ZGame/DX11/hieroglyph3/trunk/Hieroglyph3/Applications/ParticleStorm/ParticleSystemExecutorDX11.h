@@ -1,11 +1,11 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and
+// under the MIT License, available in the root of this distribution and 
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink
+// Copyright (c) Jason Zink 
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -21,22 +21,22 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-class ParticleSystemExecutorDX11 : public PipelineExecutorDX11
-{
-public:
-    ParticleSystemExecutorDX11( );
-    virtual ~ParticleSystemExecutorDX11( );
+	class ParticleSystemExecutorDX11 : public PipelineExecutorDX11
+	{
+	public:
+		ParticleSystemExecutorDX11( );
+		virtual ~ParticleSystemExecutorDX11( );
+	
+		virtual void Execute( PipelineManagerDX11* pPipeline, IParameterManager* pParamManager );
 
-    virtual void Execute( PipelineManagerDX11* pPipeline, IParameterManager* pParamManager );
+		void SetArgumentsBuffer( ResourcePtr buffer );
 
-    void SetArgumentsBuffer( ResourcePtr buffer );
+	protected:
+		
+		ResourcePtr ArgumentsBuffer;
+	};
 
-protected:
-
-    ResourcePtr ArgumentsBuffer;
-};
-
-typedef std::shared_ptr<ParticleSystemExecutorDX11> ParticleSystemExecutorPtr;
+	typedef std::shared_ptr<ParticleSystemExecutorDX11> ParticleSystemExecutorPtr;
 };
 //--------------------------------------------------------------------------------
 #endif // ParticleSystemExecutorDX11_h

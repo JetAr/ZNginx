@@ -1,11 +1,11 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and
+// under the MIT License, available in the root of this distribution and 
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink
+// Copyright (c) Jason Zink 
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -26,64 +26,58 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-template <typename T>
-class IController
-{
-public:
-    IController( );
-    virtual ~IController( );
-    virtual void Update( float fTime ) = 0;
+	template <typename T>
+	class IController
+	{
+	public:
+		IController( );
+		virtual ~IController( );
+		virtual void Update( float fTime ) = 0;
 
-    void SetEntity( T* pObject );
-    T* GetEntity( );
+		void SetEntity( T* pObject );
+		T* GetEntity( );
 
-protected:
-    T* m_pEntity;
-};
+	protected:
+		T* m_pEntity;
+	};
 
-template <typename T>
-class ControllerPack
-{
-public:
-    ControllerPack( T* host ) : m_host( host ) {};
+	template <typename T>
+	class ControllerPack
+	{
+	public:
+		ControllerPack( T* host ) : m_host( host ) {};
 
-    ~ControllerPack()
-    {
-        for ( auto pController : m_Controllers )
-            delete pController;
-    };
+		~ControllerPack() {
+			for ( auto pController : m_Controllers )
+				delete pController;
+		};
 
-    void Attach( IController<T>* pController )
-    {
-        if ( pController )
-        {
-            m_Controllers.push_back( pController );
-            pController->SetEntity( m_host );
-        }
-    };
+		void Attach( IController<T>* pController ) {
+			if ( pController ) {
+				m_Controllers.push_back( pController );
+				pController->SetEntity( m_host );
+			}
+		};
 
-    IController<T>* Get( unsigned int index )
-    {
-        if ( m_Controllers.size() <= index )
-            return( nullptr );
+		IController<T>* Get( unsigned int index ) {
+			if ( m_Controllers.size() <= index )
+				return( nullptr );
 
-        return m_Controllers[index];
-    };
+			return m_Controllers[index];
+		};
 
-    void Update( float time )
-    {
-        for ( auto pController : m_Controllers )
-        {
-            pController->Update( time );
-        }
-    }
+		void Update( float time ) {
+			for ( auto pController : m_Controllers ) {
+				pController->Update( time );
+			}
+		}
 
-private:
-    T* m_host;
-    std::vector< IController<T>* > m_Controllers;
-};
+	private:
+		T* m_host;
+		std::vector< IController<T>* > m_Controllers;
+	};
 
-#include "IController.inl"
+	#include "IController.inl"
 };
 //--------------------------------------------------------------------------------
 #endif // IController_h

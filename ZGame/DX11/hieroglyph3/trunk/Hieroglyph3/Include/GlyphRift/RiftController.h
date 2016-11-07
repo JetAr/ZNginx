@@ -1,11 +1,11 @@
-﻿//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 // This file is a portion of the Hieroglyph 3 Rendering Engine.  It is distributed
-// under the MIT License, available in the root of this distribution and
+// under the MIT License, available in the root of this distribution and 
 // at the following URL:
 //
 // http://www.opensource.org/licenses/mit-license.php
 //
-// Copyright (c) Jason Zink
+// Copyright (c) Jason Zink 
 //--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
@@ -23,19 +23,19 @@
 //--------------------------------------------------------------------------------
 namespace Glyph3
 {
-template <typename T>
-class RiftController : public IController<T>
-{
-public:
-    RiftController( RiftHMDPtr hmd );
-    virtual ~RiftController( );
-    virtual void Update( float fTime );
+	template <typename T>
+	class RiftController : public IController<T>
+	{
+	public:
+		RiftController( RiftHMDPtr hmd );
+		virtual ~RiftController( );
+		virtual void Update( float fTime );
 
-private:
-    RiftHMDPtr m_Hmd;
-};
+	private:
+		RiftHMDPtr m_Hmd;
+	};
 
-#include "RiftController.inl"
+	#include "RiftController.inl"
 };
 //--------------------------------------------------------------------------------
 #endif // RiftController_h
