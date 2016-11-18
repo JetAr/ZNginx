@@ -1,4 +1,4 @@
-// ImGui - standalone example application for Glfw + Vulkan, using programmable pipeline
+﻿// ImGui - standalone example application for Glfw + Vulkan, using programmable pipeline
 // If you are new to ImGui, see examples/README.txt and documentation at the top of imgui.cpp.
 
 #include <imgui.h>
@@ -49,7 +49,7 @@ static void check_vk_result(VkResult err)
 {
     if (err == 0) return;
     printf("VkResult %d\n", err);
-    if (err < 0) 
+    if (err < 0)
         abort();
 }
 
@@ -64,7 +64,7 @@ static void resize_vulkan(GLFWwindow* /*window*/, int w, int h)
     for (uint32_t i=0; i<g_BackBufferCount; i++)
         if (g_BackBufferView[i])
             vkDestroyImageView(g_Device, g_BackBufferView[i], g_Allocator);
-     for(uint32_t i=0; i<g_BackBufferCount; i++)
+    for(uint32_t i=0; i<g_BackBufferCount; i++)
         if (g_Framebuffer[i])
             vkDestroyFramebuffer(g_Device, g_Framebuffer[i], g_Allocator);
     if (g_RenderPass)
@@ -204,7 +204,7 @@ static void setup_vulkan(GLFWwindow* window)
         err = glfwCreateWindowSurface(g_Instance, window, g_Allocator, &g_Surface);
         check_vk_result(err);
     }
-    
+
     // Get GPU
     {
         uint32_t count = 1;
@@ -280,7 +280,7 @@ static void setup_vulkan(GLFWwindow* window)
 
     // Create Descriptor Pool
     {
-        VkDescriptorPoolSize pool_size[11] = 
+        VkDescriptorPoolSize pool_size[11] =
         {
             { VK_DESCRIPTOR_TYPE_SAMPLER, 1000 },
             { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000 },

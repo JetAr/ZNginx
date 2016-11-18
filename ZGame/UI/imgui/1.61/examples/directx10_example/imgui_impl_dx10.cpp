@@ -1,4 +1,4 @@
-// ImGui Win32 + DirectX10 binding
+﻿// ImGui Win32 + DirectX10 binding
 // In this binding, ImTextureID is used to store a 'ID3D10ShaderResourceView*' texture identifier. Read the FAQ about ImTextureID in imgui.cpp.
 
 // You can copy and use unmodified imgui_impl_* files in your project. See main.cpp for an example of using this.
@@ -52,7 +52,11 @@ void ImGui_ImplDX10_RenderDrawLists(ImDrawData* draw_data)
     // Create and grow vertex/index buffers if needed
     if (!g_pVB || g_VertexBufferSize < draw_data->TotalVtxCount)
     {
-        if (g_pVB) { g_pVB->Release(); g_pVB = NULL; }
+        if (g_pVB)
+        {
+            g_pVB->Release();
+            g_pVB = NULL;
+        }
         g_VertexBufferSize = draw_data->TotalVtxCount + 5000;
         D3D10_BUFFER_DESC desc;
         memset(&desc, 0, sizeof(D3D10_BUFFER_DESC));
@@ -67,7 +71,11 @@ void ImGui_ImplDX10_RenderDrawLists(ImDrawData* draw_data)
 
     if (!g_pIB || g_IndexBufferSize < draw_data->TotalIdxCount)
     {
-        if (g_pIB) { g_pIB->Release(); g_pIB = NULL; }
+        if (g_pIB)
+        {
+            g_pIB->Release();
+            g_pIB = NULL;
+        }
         g_IndexBufferSize = draw_data->TotalIdxCount + 10000;
         D3D10_BUFFER_DESC desc;
         memset(&desc, 0, sizeof(D3D10_BUFFER_DESC));
@@ -211,18 +219,29 @@ void ImGui_ImplDX10_RenderDrawLists(ImDrawData* draw_data)
     // Restore modified DX state
     ctx->RSSetScissorRects(old.ScissorRectsCount, old.ScissorRects);
     ctx->RSSetViewports(old.ViewportsCount, old.Viewports);
-    ctx->RSSetState(old.RS); if (old.RS) old.RS->Release();
-    ctx->OMSetBlendState(old.BlendState, old.BlendFactor, old.SampleMask); if (old.BlendState) old.BlendState->Release();
-    ctx->OMSetDepthStencilState(old.DepthStencilState, old.StencilRef); if (old.DepthStencilState) old.DepthStencilState->Release();
-    ctx->PSSetShaderResources(0, 1, &old.PSShaderResource); if (old.PSShaderResource) old.PSShaderResource->Release();
-    ctx->PSSetSamplers(0, 1, &old.PSSampler); if (old.PSSampler) old.PSSampler->Release();
-    ctx->PSSetShader(old.PS); if (old.PS) old.PS->Release();
-    ctx->VSSetShader(old.VS); if (old.VS) old.VS->Release();
-    ctx->VSSetConstantBuffers(0, 1, &old.VSConstantBuffer); if (old.VSConstantBuffer) old.VSConstantBuffer->Release();
+    ctx->RSSetState(old.RS);
+    if (old.RS) old.RS->Release();
+    ctx->OMSetBlendState(old.BlendState, old.BlendFactor, old.SampleMask);
+    if (old.BlendState) old.BlendState->Release();
+    ctx->OMSetDepthStencilState(old.DepthStencilState, old.StencilRef);
+    if (old.DepthStencilState) old.DepthStencilState->Release();
+    ctx->PSSetShaderResources(0, 1, &old.PSShaderResource);
+    if (old.PSShaderResource) old.PSShaderResource->Release();
+    ctx->PSSetSamplers(0, 1, &old.PSSampler);
+    if (old.PSSampler) old.PSSampler->Release();
+    ctx->PSSetShader(old.PS);
+    if (old.PS) old.PS->Release();
+    ctx->VSSetShader(old.VS);
+    if (old.VS) old.VS->Release();
+    ctx->VSSetConstantBuffers(0, 1, &old.VSConstantBuffer);
+    if (old.VSConstantBuffer) old.VSConstantBuffer->Release();
     ctx->IASetPrimitiveTopology(old.PrimitiveTopology);
-    ctx->IASetIndexBuffer(old.IndexBuffer, old.IndexBufferFormat, old.IndexBufferOffset); if (old.IndexBuffer) old.IndexBuffer->Release();
-    ctx->IASetVertexBuffers(0, 1, &old.VertexBuffer, &old.VertexBufferStride, &old.VertexBufferOffset); if (old.VertexBuffer) old.VertexBuffer->Release();
-    ctx->IASetInputLayout(old.InputLayout); if (old.InputLayout) old.InputLayout->Release();
+    ctx->IASetIndexBuffer(old.IndexBuffer, old.IndexBufferFormat, old.IndexBufferOffset);
+    if (old.IndexBuffer) old.IndexBuffer->Release();
+    ctx->IASetVertexBuffers(0, 1, &old.VertexBuffer, &old.VertexBufferStride, &old.VertexBufferOffset);
+    if (old.VertexBuffer) old.VertexBuffer->Release();
+    ctx->IASetInputLayout(old.InputLayout);
+    if (old.InputLayout) old.InputLayout->Release();
 }
 
 IMGUI_API LRESULT ImGui_ImplDX10_WndProcHandler(HWND, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -344,9 +363,9 @@ bool    ImGui_ImplDX10_CreateDeviceObjects()
         ImGui_ImplDX10_InvalidateDeviceObjects();
 
     // By using D3DCompile() from <d3dcompiler.h> / d3dcompiler.lib, we introduce a dependency to a given version of d3dcompiler_XX.dll (see D3DCOMPILER_DLL_A)
-    // If you would like to use this DX11 sample code but remove this dependency you can: 
+    // If you would like to use this DX11 sample code but remove this dependency you can:
     //  1) compile once, save the compiled shader blobs into a file or source code and pass them to CreateVertexShader()/CreatePixelShader() [preferred solution]
-    //  2) use code to detect any version of the DLL and grab a pointer to D3DCompile from the DLL. 
+    //  2) use code to detect any version of the DLL and grab a pointer to D3DCompile from the DLL.
     // See https://github.com/ocornut/imgui/pull/638 for sources and details.
 
     // Create the vertex shader
@@ -386,7 +405,7 @@ bool    ImGui_ImplDX10_CreateDeviceObjects()
             return false;
 
         // Create the input layout
-        D3D10_INPUT_ELEMENT_DESC local_layout[] = 
+        D3D10_INPUT_ELEMENT_DESC local_layout[] =
         {
             { "POSITION", 0, DXGI_FORMAT_R32G32_FLOAT,   0, (size_t)(&((ImDrawVert*)0)->pos), D3D10_INPUT_PER_VERTEX_DATA, 0 },
             { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,   0, (size_t)(&((ImDrawVert*)0)->uv),  D3D10_INPUT_PER_VERTEX_DATA, 0 },
@@ -483,20 +502,73 @@ void    ImGui_ImplDX10_InvalidateDeviceObjects()
     if (!g_pd3dDevice)
         return;
 
-    if (g_pFontSampler) { g_pFontSampler->Release(); g_pFontSampler = NULL; }
-    if (g_pFontTextureView) { g_pFontTextureView->Release(); g_pFontTextureView = NULL; ImGui::GetIO().Fonts->TexID = 0; }
-    if (g_pIB) { g_pIB->Release(); g_pIB = NULL; }
-    if (g_pVB) { g_pVB->Release(); g_pVB = NULL; }
+    if (g_pFontSampler)
+    {
+        g_pFontSampler->Release();
+        g_pFontSampler = NULL;
+    }
+    if (g_pFontTextureView)
+    {
+        g_pFontTextureView->Release();
+        g_pFontTextureView = NULL;
+        ImGui::GetIO().Fonts->TexID = 0;
+    }
+    if (g_pIB)
+    {
+        g_pIB->Release();
+        g_pIB = NULL;
+    }
+    if (g_pVB)
+    {
+        g_pVB->Release();
+        g_pVB = NULL;
+    }
 
-    if (g_pBlendState) { g_pBlendState->Release(); g_pBlendState = NULL; }
-    if (g_pDepthStencilState) { g_pDepthStencilState->Release(); g_pDepthStencilState = NULL; }
-    if (g_pRasterizerState) { g_pRasterizerState->Release(); g_pRasterizerState = NULL; }
-    if (g_pPixelShader) { g_pPixelShader->Release(); g_pPixelShader = NULL; }
-    if (g_pPixelShaderBlob) { g_pPixelShaderBlob->Release(); g_pPixelShaderBlob = NULL; }
-    if (g_pVertexConstantBuffer) { g_pVertexConstantBuffer->Release(); g_pVertexConstantBuffer = NULL; }
-    if (g_pInputLayout) { g_pInputLayout->Release(); g_pInputLayout = NULL; }
-    if (g_pVertexShader) { g_pVertexShader->Release(); g_pVertexShader = NULL; }
-    if (g_pVertexShaderBlob) { g_pVertexShaderBlob->Release(); g_pVertexShaderBlob = NULL; }
+    if (g_pBlendState)
+    {
+        g_pBlendState->Release();
+        g_pBlendState = NULL;
+    }
+    if (g_pDepthStencilState)
+    {
+        g_pDepthStencilState->Release();
+        g_pDepthStencilState = NULL;
+    }
+    if (g_pRasterizerState)
+    {
+        g_pRasterizerState->Release();
+        g_pRasterizerState = NULL;
+    }
+    if (g_pPixelShader)
+    {
+        g_pPixelShader->Release();
+        g_pPixelShader = NULL;
+    }
+    if (g_pPixelShaderBlob)
+    {
+        g_pPixelShaderBlob->Release();
+        g_pPixelShaderBlob = NULL;
+    }
+    if (g_pVertexConstantBuffer)
+    {
+        g_pVertexConstantBuffer->Release();
+        g_pVertexConstantBuffer = NULL;
+    }
+    if (g_pInputLayout)
+    {
+        g_pInputLayout->Release();
+        g_pInputLayout = NULL;
+    }
+    if (g_pVertexShader)
+    {
+        g_pVertexShader->Release();
+        g_pVertexShader = NULL;
+    }
+    if (g_pVertexShaderBlob)
+    {
+        g_pVertexShaderBlob->Release();
+        g_pVertexShaderBlob = NULL;
+    }
 }
 
 bool    ImGui_ImplDX10_Init(void* hwnd, ID3D10Device* device)

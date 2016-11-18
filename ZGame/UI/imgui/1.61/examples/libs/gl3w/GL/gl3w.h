@@ -1,4 +1,4 @@
-#ifndef __gl3w_h_
+﻿#ifndef __gl3w_h_
 #define __gl3w_h_
 
 #include <GL/glcorearb.h>

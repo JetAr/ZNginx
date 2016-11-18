@@ -1,4 +1,4 @@
-// ImGui Win32 + DirectX9 binding
+﻿// ImGui Win32 + DirectX9 binding
 // In this binding, ImTextureID is used to store a 'LPDIRECT3DTEXTURE9' texture identifier. Read the FAQ about ImTextureID in imgui.cpp.
 
 // You can copy and use unmodified imgui_impl_* files in your project. See main.cpp for an example of using this.
@@ -45,14 +45,22 @@ void ImGui_ImplDX9_RenderDrawLists(ImDrawData* draw_data)
     // Create and grow buffers if needed
     if (!g_pVB || g_VertexBufferSize < draw_data->TotalVtxCount)
     {
-        if (g_pVB) { g_pVB->Release(); g_pVB = NULL; }
+        if (g_pVB)
+        {
+            g_pVB->Release();
+            g_pVB = NULL;
+        }
         g_VertexBufferSize = draw_data->TotalVtxCount + 5000;
         if (g_pd3dDevice->CreateVertexBuffer(g_VertexBufferSize * sizeof(CUSTOMVERTEX), D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY, D3DFVF_CUSTOMVERTEX, D3DPOOL_DEFAULT, &g_pVB, NULL) < 0)
             return;
     }
     if (!g_pIB || g_IndexBufferSize < draw_data->TotalIdxCount)
     {
-        if (g_pIB) { g_pIB->Release(); g_pIB = NULL; }
+        if (g_pIB)
+        {
+            g_pIB->Release();
+            g_pIB = NULL;
+        }
         g_IndexBufferSize = draw_data->TotalIdxCount + 10000;
         if (g_pd3dDevice->CreateIndexBuffer(g_IndexBufferSize * sizeof(ImDrawIdx), D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY, sizeof(ImDrawIdx) == 2 ? D3DFMT_INDEX16 : D3DFMT_INDEX32, D3DPOOL_DEFAULT, &g_pIB, NULL) < 0)
             return;

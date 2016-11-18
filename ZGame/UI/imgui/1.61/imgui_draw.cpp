@@ -1,4 +1,4 @@
-// dear imgui, v1.50 WIP
+﻿// dear imgui, v1.50 WIP
 // (drawing and font code)
 
 // Contains implementation for
@@ -333,8 +333,16 @@ void ImDrawList::ChannelsMerge()
     for (int i = 1; i < _ChannelsCount; i++)
     {
         ImDrawChannel& ch = _Channels[i];
-        if (int sz = ch.CmdBuffer.Size) { memcpy(cmd_write, ch.CmdBuffer.Data, sz * sizeof(ImDrawCmd)); cmd_write += sz; }
-        if (int sz = ch.IdxBuffer.Size) { memcpy(_IdxWritePtr, ch.IdxBuffer.Data, sz * sizeof(ImDrawIdx)); _IdxWritePtr += sz; }
+        if (int sz = ch.CmdBuffer.Size)
+        {
+            memcpy(cmd_write, ch.CmdBuffer.Data, sz * sizeof(ImDrawCmd));
+            cmd_write += sz;
+        }
+        if (int sz = ch.IdxBuffer.Size)
+        {
+            memcpy(_IdxWritePtr, ch.IdxBuffer.Data, sz * sizeof(ImDrawIdx));
+            _IdxWritePtr += sz;
+        }
     }
     AddDrawCmd();
     _ChannelsCount = 1;
@@ -372,12 +380,24 @@ void ImDrawList::PrimRect(const ImVec2& a, const ImVec2& c, ImU32 col)
 {
     ImVec2 b(c.x, a.y), d(a.x, c.y), uv(GImGui->FontTexUvWhitePixel);
     ImDrawIdx idx = (ImDrawIdx)_VtxCurrentIdx;
-    _IdxWritePtr[0] = idx; _IdxWritePtr[1] = (ImDrawIdx)(idx+1); _IdxWritePtr[2] = (ImDrawIdx)(idx+2);
-    _IdxWritePtr[3] = idx; _IdxWritePtr[4] = (ImDrawIdx)(idx+2); _IdxWritePtr[5] = (ImDrawIdx)(idx+3);
-    _VtxWritePtr[0].pos = a; _VtxWritePtr[0].uv = uv; _VtxWritePtr[0].col = col;
-    _VtxWritePtr[1].pos = b; _VtxWritePtr[1].uv = uv; _VtxWritePtr[1].col = col;
-    _VtxWritePtr[2].pos = c; _VtxWritePtr[2].uv = uv; _VtxWritePtr[2].col = col;
-    _VtxWritePtr[3].pos = d; _VtxWritePtr[3].uv = uv; _VtxWritePtr[3].col = col;
+    _IdxWritePtr[0] = idx;
+    _IdxWritePtr[1] = (ImDrawIdx)(idx+1);
+    _IdxWritePtr[2] = (ImDrawIdx)(idx+2);
+    _IdxWritePtr[3] = idx;
+    _IdxWritePtr[4] = (ImDrawIdx)(idx+2);
+    _IdxWritePtr[5] = (ImDrawIdx)(idx+3);
+    _VtxWritePtr[0].pos = a;
+    _VtxWritePtr[0].uv = uv;
+    _VtxWritePtr[0].col = col;
+    _VtxWritePtr[1].pos = b;
+    _VtxWritePtr[1].uv = uv;
+    _VtxWritePtr[1].col = col;
+    _VtxWritePtr[2].pos = c;
+    _VtxWritePtr[2].uv = uv;
+    _VtxWritePtr[2].col = col;
+    _VtxWritePtr[3].pos = d;
+    _VtxWritePtr[3].uv = uv;
+    _VtxWritePtr[3].col = col;
     _VtxWritePtr += 4;
     _VtxCurrentIdx += 4;
     _IdxWritePtr += 6;
@@ -387,12 +407,24 @@ void ImDrawList::PrimRectUV(const ImVec2& a, const ImVec2& c, const ImVec2& uv_a
 {
     ImVec2 b(c.x, a.y), d(a.x, c.y), uv_b(uv_c.x, uv_a.y), uv_d(uv_a.x, uv_c.y);
     ImDrawIdx idx = (ImDrawIdx)_VtxCurrentIdx;
-    _IdxWritePtr[0] = idx; _IdxWritePtr[1] = (ImDrawIdx)(idx+1); _IdxWritePtr[2] = (ImDrawIdx)(idx+2);
-    _IdxWritePtr[3] = idx; _IdxWritePtr[4] = (ImDrawIdx)(idx+2); _IdxWritePtr[5] = (ImDrawIdx)(idx+3);
-    _VtxWritePtr[0].pos = a; _VtxWritePtr[0].uv = uv_a; _VtxWritePtr[0].col = col;
-    _VtxWritePtr[1].pos = b; _VtxWritePtr[1].uv = uv_b; _VtxWritePtr[1].col = col;
-    _VtxWritePtr[2].pos = c; _VtxWritePtr[2].uv = uv_c; _VtxWritePtr[2].col = col;
-    _VtxWritePtr[3].pos = d; _VtxWritePtr[3].uv = uv_d; _VtxWritePtr[3].col = col;
+    _IdxWritePtr[0] = idx;
+    _IdxWritePtr[1] = (ImDrawIdx)(idx+1);
+    _IdxWritePtr[2] = (ImDrawIdx)(idx+2);
+    _IdxWritePtr[3] = idx;
+    _IdxWritePtr[4] = (ImDrawIdx)(idx+2);
+    _IdxWritePtr[5] = (ImDrawIdx)(idx+3);
+    _VtxWritePtr[0].pos = a;
+    _VtxWritePtr[0].uv = uv_a;
+    _VtxWritePtr[0].col = col;
+    _VtxWritePtr[1].pos = b;
+    _VtxWritePtr[1].uv = uv_b;
+    _VtxWritePtr[1].col = col;
+    _VtxWritePtr[2].pos = c;
+    _VtxWritePtr[2].uv = uv_c;
+    _VtxWritePtr[2].col = col;
+    _VtxWritePtr[3].pos = d;
+    _VtxWritePtr[3].uv = uv_d;
+    _VtxWritePtr[3].col = col;
     _VtxWritePtr += 4;
     _VtxCurrentIdx += 4;
     _IdxWritePtr += 6;
@@ -401,12 +433,24 @@ void ImDrawList::PrimRectUV(const ImVec2& a, const ImVec2& c, const ImVec2& uv_a
 void ImDrawList::PrimQuadUV(const ImVec2& a, const ImVec2& b, const ImVec2& c, const ImVec2& d, const ImVec2& uv_a, const ImVec2& uv_b, const ImVec2& uv_c, const ImVec2& uv_d, ImU32 col)
 {
     ImDrawIdx idx = (ImDrawIdx)_VtxCurrentIdx;
-    _IdxWritePtr[0] = idx; _IdxWritePtr[1] = (ImDrawIdx)(idx+1); _IdxWritePtr[2] = (ImDrawIdx)(idx+2);
-    _IdxWritePtr[3] = idx; _IdxWritePtr[4] = (ImDrawIdx)(idx+2); _IdxWritePtr[5] = (ImDrawIdx)(idx+3);
-    _VtxWritePtr[0].pos = a; _VtxWritePtr[0].uv = uv_a; _VtxWritePtr[0].col = col;
-    _VtxWritePtr[1].pos = b; _VtxWritePtr[1].uv = uv_b; _VtxWritePtr[1].col = col;
-    _VtxWritePtr[2].pos = c; _VtxWritePtr[2].uv = uv_c; _VtxWritePtr[2].col = col;
-    _VtxWritePtr[3].pos = d; _VtxWritePtr[3].uv = uv_d; _VtxWritePtr[3].col = col;
+    _IdxWritePtr[0] = idx;
+    _IdxWritePtr[1] = (ImDrawIdx)(idx+1);
+    _IdxWritePtr[2] = (ImDrawIdx)(idx+2);
+    _IdxWritePtr[3] = idx;
+    _IdxWritePtr[4] = (ImDrawIdx)(idx+2);
+    _IdxWritePtr[5] = (ImDrawIdx)(idx+3);
+    _VtxWritePtr[0].pos = a;
+    _VtxWritePtr[0].uv = uv_a;
+    _VtxWritePtr[0].col = col;
+    _VtxWritePtr[1].pos = b;
+    _VtxWritePtr[1].uv = uv_b;
+    _VtxWritePtr[1].col = col;
+    _VtxWritePtr[2].pos = c;
+    _VtxWritePtr[2].uv = uv_c;
+    _VtxWritePtr[2].col = col;
+    _VtxWritePtr[3].pos = d;
+    _VtxWritePtr[3].uv = uv_d;
+    _VtxWritePtr[3].col = col;
     _VtxWritePtr += 4;
     _VtxCurrentIdx += 4;
     _IdxWritePtr += 6;
@@ -483,10 +527,18 @@ void ImDrawList::AddPolyline(const ImVec2* points, const int points_count, ImU32
                 temp_points[i2*2+1] = points[i2] - dm;
 
                 // Add indexes
-                _IdxWritePtr[0] = (ImDrawIdx)(idx2+0); _IdxWritePtr[1] = (ImDrawIdx)(idx1+0); _IdxWritePtr[2] = (ImDrawIdx)(idx1+2);
-                _IdxWritePtr[3] = (ImDrawIdx)(idx1+2); _IdxWritePtr[4] = (ImDrawIdx)(idx2+2); _IdxWritePtr[5] = (ImDrawIdx)(idx2+0);
-                _IdxWritePtr[6] = (ImDrawIdx)(idx2+1); _IdxWritePtr[7] = (ImDrawIdx)(idx1+1); _IdxWritePtr[8] = (ImDrawIdx)(idx1+0);
-                _IdxWritePtr[9] = (ImDrawIdx)(idx1+0); _IdxWritePtr[10]= (ImDrawIdx)(idx2+0); _IdxWritePtr[11]= (ImDrawIdx)(idx2+1);
+                _IdxWritePtr[0] = (ImDrawIdx)(idx2+0);
+                _IdxWritePtr[1] = (ImDrawIdx)(idx1+0);
+                _IdxWritePtr[2] = (ImDrawIdx)(idx1+2);
+                _IdxWritePtr[3] = (ImDrawIdx)(idx1+2);
+                _IdxWritePtr[4] = (ImDrawIdx)(idx2+2);
+                _IdxWritePtr[5] = (ImDrawIdx)(idx2+0);
+                _IdxWritePtr[6] = (ImDrawIdx)(idx2+1);
+                _IdxWritePtr[7] = (ImDrawIdx)(idx1+1);
+                _IdxWritePtr[8] = (ImDrawIdx)(idx1+0);
+                _IdxWritePtr[9] = (ImDrawIdx)(idx1+0);
+                _IdxWritePtr[10]= (ImDrawIdx)(idx2+0);
+                _IdxWritePtr[11]= (ImDrawIdx)(idx2+1);
                 _IdxWritePtr += 12;
 
                 idx1 = idx2;
@@ -495,9 +547,15 @@ void ImDrawList::AddPolyline(const ImVec2* points, const int points_count, ImU32
             // Add vertexes
             for (int i = 0; i < points_count; i++)
             {
-                _VtxWritePtr[0].pos = points[i];          _VtxWritePtr[0].uv = uv; _VtxWritePtr[0].col = col;
-                _VtxWritePtr[1].pos = temp_points[i*2+0]; _VtxWritePtr[1].uv = uv; _VtxWritePtr[1].col = col_trans;
-                _VtxWritePtr[2].pos = temp_points[i*2+1]; _VtxWritePtr[2].uv = uv; _VtxWritePtr[2].col = col_trans;
+                _VtxWritePtr[0].pos = points[i];
+                _VtxWritePtr[0].uv = uv;
+                _VtxWritePtr[0].col = col;
+                _VtxWritePtr[1].pos = temp_points[i*2+0];
+                _VtxWritePtr[1].uv = uv;
+                _VtxWritePtr[1].col = col_trans;
+                _VtxWritePtr[2].pos = temp_points[i*2+1];
+                _VtxWritePtr[2].uv = uv;
+                _VtxWritePtr[2].col = col_trans;
                 _VtxWritePtr += 3;
             }
         }
@@ -540,12 +598,24 @@ void ImDrawList::AddPolyline(const ImVec2* points, const int points_count, ImU32
                 temp_points[i2*4+3] = points[i2] - dm_out;
 
                 // Add indexes
-                _IdxWritePtr[0]  = (ImDrawIdx)(idx2+1); _IdxWritePtr[1]  = (ImDrawIdx)(idx1+1); _IdxWritePtr[2]  = (ImDrawIdx)(idx1+2);
-                _IdxWritePtr[3]  = (ImDrawIdx)(idx1+2); _IdxWritePtr[4]  = (ImDrawIdx)(idx2+2); _IdxWritePtr[5]  = (ImDrawIdx)(idx2+1);
-                _IdxWritePtr[6]  = (ImDrawIdx)(idx2+1); _IdxWritePtr[7]  = (ImDrawIdx)(idx1+1); _IdxWritePtr[8]  = (ImDrawIdx)(idx1+0);
-                _IdxWritePtr[9]  = (ImDrawIdx)(idx1+0); _IdxWritePtr[10] = (ImDrawIdx)(idx2+0); _IdxWritePtr[11] = (ImDrawIdx)(idx2+1);
-                _IdxWritePtr[12] = (ImDrawIdx)(idx2+2); _IdxWritePtr[13] = (ImDrawIdx)(idx1+2); _IdxWritePtr[14] = (ImDrawIdx)(idx1+3);
-                _IdxWritePtr[15] = (ImDrawIdx)(idx1+3); _IdxWritePtr[16] = (ImDrawIdx)(idx2+3); _IdxWritePtr[17] = (ImDrawIdx)(idx2+2);
+                _IdxWritePtr[0]  = (ImDrawIdx)(idx2+1);
+                _IdxWritePtr[1]  = (ImDrawIdx)(idx1+1);
+                _IdxWritePtr[2]  = (ImDrawIdx)(idx1+2);
+                _IdxWritePtr[3]  = (ImDrawIdx)(idx1+2);
+                _IdxWritePtr[4]  = (ImDrawIdx)(idx2+2);
+                _IdxWritePtr[5]  = (ImDrawIdx)(idx2+1);
+                _IdxWritePtr[6]  = (ImDrawIdx)(idx2+1);
+                _IdxWritePtr[7]  = (ImDrawIdx)(idx1+1);
+                _IdxWritePtr[8]  = (ImDrawIdx)(idx1+0);
+                _IdxWritePtr[9]  = (ImDrawIdx)(idx1+0);
+                _IdxWritePtr[10] = (ImDrawIdx)(idx2+0);
+                _IdxWritePtr[11] = (ImDrawIdx)(idx2+1);
+                _IdxWritePtr[12] = (ImDrawIdx)(idx2+2);
+                _IdxWritePtr[13] = (ImDrawIdx)(idx1+2);
+                _IdxWritePtr[14] = (ImDrawIdx)(idx1+3);
+                _IdxWritePtr[15] = (ImDrawIdx)(idx1+3);
+                _IdxWritePtr[16] = (ImDrawIdx)(idx2+3);
+                _IdxWritePtr[17] = (ImDrawIdx)(idx2+2);
                 _IdxWritePtr += 18;
 
                 idx1 = idx2;
@@ -554,10 +624,18 @@ void ImDrawList::AddPolyline(const ImVec2* points, const int points_count, ImU32
             // Add vertexes
             for (int i = 0; i < points_count; i++)
             {
-                _VtxWritePtr[0].pos = temp_points[i*4+0]; _VtxWritePtr[0].uv = uv; _VtxWritePtr[0].col = col_trans;
-                _VtxWritePtr[1].pos = temp_points[i*4+1]; _VtxWritePtr[1].uv = uv; _VtxWritePtr[1].col = col;
-                _VtxWritePtr[2].pos = temp_points[i*4+2]; _VtxWritePtr[2].uv = uv; _VtxWritePtr[2].col = col;
-                _VtxWritePtr[3].pos = temp_points[i*4+3]; _VtxWritePtr[3].uv = uv; _VtxWritePtr[3].col = col_trans;
+                _VtxWritePtr[0].pos = temp_points[i*4+0];
+                _VtxWritePtr[0].uv = uv;
+                _VtxWritePtr[0].col = col_trans;
+                _VtxWritePtr[1].pos = temp_points[i*4+1];
+                _VtxWritePtr[1].uv = uv;
+                _VtxWritePtr[1].col = col;
+                _VtxWritePtr[2].pos = temp_points[i*4+2];
+                _VtxWritePtr[2].uv = uv;
+                _VtxWritePtr[2].col = col;
+                _VtxWritePtr[3].pos = temp_points[i*4+3];
+                _VtxWritePtr[3].uv = uv;
+                _VtxWritePtr[3].col = col_trans;
                 _VtxWritePtr += 4;
             }
         }
@@ -580,14 +658,30 @@ void ImDrawList::AddPolyline(const ImVec2* points, const int points_count, ImU32
 
             const float dx = diff.x * (thickness * 0.5f);
             const float dy = diff.y * (thickness * 0.5f);
-            _VtxWritePtr[0].pos.x = p1.x + dy; _VtxWritePtr[0].pos.y = p1.y - dx; _VtxWritePtr[0].uv = uv; _VtxWritePtr[0].col = col;
-            _VtxWritePtr[1].pos.x = p2.x + dy; _VtxWritePtr[1].pos.y = p2.y - dx; _VtxWritePtr[1].uv = uv; _VtxWritePtr[1].col = col;
-            _VtxWritePtr[2].pos.x = p2.x - dy; _VtxWritePtr[2].pos.y = p2.y + dx; _VtxWritePtr[2].uv = uv; _VtxWritePtr[2].col = col;
-            _VtxWritePtr[3].pos.x = p1.x - dy; _VtxWritePtr[3].pos.y = p1.y + dx; _VtxWritePtr[3].uv = uv; _VtxWritePtr[3].col = col;
+            _VtxWritePtr[0].pos.x = p1.x + dy;
+            _VtxWritePtr[0].pos.y = p1.y - dx;
+            _VtxWritePtr[0].uv = uv;
+            _VtxWritePtr[0].col = col;
+            _VtxWritePtr[1].pos.x = p2.x + dy;
+            _VtxWritePtr[1].pos.y = p2.y - dx;
+            _VtxWritePtr[1].uv = uv;
+            _VtxWritePtr[1].col = col;
+            _VtxWritePtr[2].pos.x = p2.x - dy;
+            _VtxWritePtr[2].pos.y = p2.y + dx;
+            _VtxWritePtr[2].uv = uv;
+            _VtxWritePtr[2].col = col;
+            _VtxWritePtr[3].pos.x = p1.x - dy;
+            _VtxWritePtr[3].pos.y = p1.y + dx;
+            _VtxWritePtr[3].uv = uv;
+            _VtxWritePtr[3].col = col;
             _VtxWritePtr += 4;
 
-            _IdxWritePtr[0] = (ImDrawIdx)(_VtxCurrentIdx); _IdxWritePtr[1] = (ImDrawIdx)(_VtxCurrentIdx+1); _IdxWritePtr[2] = (ImDrawIdx)(_VtxCurrentIdx+2);
-            _IdxWritePtr[3] = (ImDrawIdx)(_VtxCurrentIdx); _IdxWritePtr[4] = (ImDrawIdx)(_VtxCurrentIdx+2); _IdxWritePtr[5] = (ImDrawIdx)(_VtxCurrentIdx+3);
+            _IdxWritePtr[0] = (ImDrawIdx)(_VtxCurrentIdx);
+            _IdxWritePtr[1] = (ImDrawIdx)(_VtxCurrentIdx+1);
+            _IdxWritePtr[2] = (ImDrawIdx)(_VtxCurrentIdx+2);
+            _IdxWritePtr[3] = (ImDrawIdx)(_VtxCurrentIdx);
+            _IdxWritePtr[4] = (ImDrawIdx)(_VtxCurrentIdx+2);
+            _IdxWritePtr[5] = (ImDrawIdx)(_VtxCurrentIdx+3);
             _IdxWritePtr += 6;
             _VtxCurrentIdx += 4;
         }
@@ -614,7 +708,9 @@ void ImDrawList::AddConvexPolyFilled(const ImVec2* points, const int points_coun
         unsigned int vtx_outer_idx = _VtxCurrentIdx+1;
         for (int i = 2; i < points_count; i++)
         {
-            _IdxWritePtr[0] = (ImDrawIdx)(vtx_inner_idx); _IdxWritePtr[1] = (ImDrawIdx)(vtx_inner_idx+((i-1)<<1)); _IdxWritePtr[2] = (ImDrawIdx)(vtx_inner_idx+(i<<1));
+            _IdxWritePtr[0] = (ImDrawIdx)(vtx_inner_idx);
+            _IdxWritePtr[1] = (ImDrawIdx)(vtx_inner_idx+((i-1)<<1));
+            _IdxWritePtr[2] = (ImDrawIdx)(vtx_inner_idx+(i<<1));
             _IdxWritePtr += 3;
         }
 
@@ -646,13 +742,21 @@ void ImDrawList::AddConvexPolyFilled(const ImVec2* points, const int points_coun
             dm *= AA_SIZE * 0.5f;
 
             // Add vertices
-            _VtxWritePtr[0].pos = (points[i1] - dm); _VtxWritePtr[0].uv = uv; _VtxWritePtr[0].col = col;        // Inner
-            _VtxWritePtr[1].pos = (points[i1] + dm); _VtxWritePtr[1].uv = uv; _VtxWritePtr[1].col = col_trans;  // Outer
+            _VtxWritePtr[0].pos = (points[i1] - dm);
+            _VtxWritePtr[0].uv = uv;
+            _VtxWritePtr[0].col = col;        // Inner
+            _VtxWritePtr[1].pos = (points[i1] + dm);
+            _VtxWritePtr[1].uv = uv;
+            _VtxWritePtr[1].col = col_trans;  // Outer
             _VtxWritePtr += 2;
 
             // Add indexes for fringes
-            _IdxWritePtr[0] = (ImDrawIdx)(vtx_inner_idx+(i1<<1)); _IdxWritePtr[1] = (ImDrawIdx)(vtx_inner_idx+(i0<<1)); _IdxWritePtr[2] = (ImDrawIdx)(vtx_outer_idx+(i0<<1));
-            _IdxWritePtr[3] = (ImDrawIdx)(vtx_outer_idx+(i0<<1)); _IdxWritePtr[4] = (ImDrawIdx)(vtx_outer_idx+(i1<<1)); _IdxWritePtr[5] = (ImDrawIdx)(vtx_inner_idx+(i1<<1));
+            _IdxWritePtr[0] = (ImDrawIdx)(vtx_inner_idx+(i1<<1));
+            _IdxWritePtr[1] = (ImDrawIdx)(vtx_inner_idx+(i0<<1));
+            _IdxWritePtr[2] = (ImDrawIdx)(vtx_outer_idx+(i0<<1));
+            _IdxWritePtr[3] = (ImDrawIdx)(vtx_outer_idx+(i0<<1));
+            _IdxWritePtr[4] = (ImDrawIdx)(vtx_outer_idx+(i1<<1));
+            _IdxWritePtr[5] = (ImDrawIdx)(vtx_inner_idx+(i1<<1));
             _IdxWritePtr += 6;
         }
         _VtxCurrentIdx += (ImDrawIdx)vtx_count;
@@ -665,12 +769,16 @@ void ImDrawList::AddConvexPolyFilled(const ImVec2* points, const int points_coun
         PrimReserve(idx_count, vtx_count);
         for (int i = 0; i < vtx_count; i++)
         {
-            _VtxWritePtr[0].pos = points[i]; _VtxWritePtr[0].uv = uv; _VtxWritePtr[0].col = col;
+            _VtxWritePtr[0].pos = points[i];
+            _VtxWritePtr[0].uv = uv;
+            _VtxWritePtr[0].col = col;
             _VtxWritePtr++;
         }
         for (int i = 2; i < points_count; i++)
         {
-            _IdxWritePtr[0] = (ImDrawIdx)(_VtxCurrentIdx); _IdxWritePtr[1] = (ImDrawIdx)(_VtxCurrentIdx+i-1); _IdxWritePtr[2] = (ImDrawIdx)(_VtxCurrentIdx+i);
+            _IdxWritePtr[0] = (ImDrawIdx)(_VtxCurrentIdx);
+            _IdxWritePtr[1] = (ImDrawIdx)(_VtxCurrentIdx+i-1);
+            _IdxWritePtr[2] = (ImDrawIdx)(_VtxCurrentIdx+i);
             _IdxWritePtr += 3;
         }
         _VtxCurrentIdx += (ImDrawIdx)vtx_count;
@@ -838,8 +946,12 @@ void ImDrawList::AddRectFilledMultiColor(const ImVec2& a, const ImVec2& c, ImU32
 
     const ImVec2 uv = GImGui->FontTexUvWhitePixel;
     PrimReserve(6, 4);
-    PrimWriteIdx((ImDrawIdx)(_VtxCurrentIdx)); PrimWriteIdx((ImDrawIdx)(_VtxCurrentIdx+1)); PrimWriteIdx((ImDrawIdx)(_VtxCurrentIdx+2));
-    PrimWriteIdx((ImDrawIdx)(_VtxCurrentIdx)); PrimWriteIdx((ImDrawIdx)(_VtxCurrentIdx+2)); PrimWriteIdx((ImDrawIdx)(_VtxCurrentIdx+3));
+    PrimWriteIdx((ImDrawIdx)(_VtxCurrentIdx));
+    PrimWriteIdx((ImDrawIdx)(_VtxCurrentIdx+1));
+    PrimWriteIdx((ImDrawIdx)(_VtxCurrentIdx+2));
+    PrimWriteIdx((ImDrawIdx)(_VtxCurrentIdx));
+    PrimWriteIdx((ImDrawIdx)(_VtxCurrentIdx+2));
+    PrimWriteIdx((ImDrawIdx)(_VtxCurrentIdx+3));
     PrimWriteVtx(a, uv, col_upr_left);
     PrimWriteVtx(ImVec2(c.x, a.y), uv, col_upr_right);
     PrimWriteVtx(c, uv, col_bot_right);
@@ -1145,8 +1257,8 @@ ImFont* ImFontAtlas::AddFont(const ImFontConfig* font_cfg)
 
     ConfigData.push_back(*font_cfg);
     ImFontConfig& new_font_cfg = ConfigData.back();
-	if (!new_font_cfg.DstFont)
-	    new_font_cfg.DstFont = Fonts.back();
+    if (!new_font_cfg.DstFont)
+        new_font_cfg.DstFont = Fonts.back();
     if (!new_font_cfg.FontDataOwnedByAtlas)
     {
         new_font_cfg.FontData = ImGui::MemAlloc(new_font_cfg.FontDataSize);
@@ -1163,13 +1275,19 @@ ImFont* ImFontAtlas::AddFont(const ImFontConfig* font_cfg)
 static unsigned int stb_decompress_length(unsigned char *input);
 static unsigned int stb_decompress(unsigned char *output, unsigned char *i, unsigned int length);
 static const char*  GetDefaultCompressedFontDataTTFBase85();
-static unsigned int Decode85Byte(char c)                                    { return c >= '\\' ? c-36 : c-35; }
+static unsigned int Decode85Byte(char c)
+{
+    return c >= '\\' ? c-36 : c-35;
+}
 static void         Decode85(const unsigned char* src, unsigned char* dst)
 {
     while (*src)
     {
         unsigned int tmp = Decode85Byte(src[0]) + 85*(Decode85Byte(src[1]) + 85*(Decode85Byte(src[2]) + 85*(Decode85Byte(src[3]) + 85*Decode85Byte(src[4]))));
-        dst[0] = ((tmp >> 0) & 0xFF); dst[1] = ((tmp >> 8) & 0xFF); dst[2] = ((tmp >> 16) & 0xFF); dst[3] = ((tmp >> 24) & 0xFF);   // We can't assume little-endianness.
+        dst[0] = ((tmp >> 0) & 0xFF);
+        dst[1] = ((tmp >> 8) & 0xFF);
+        dst[2] = ((tmp >> 16) & 0xFF);
+        dst[3] = ((tmp >> 24) & 0xFF);   // We can't assume little-endianness.
         src += 5;
         dst += 4;
     }
@@ -1427,8 +1545,14 @@ bool    ImFontAtlas::Build()
                 dst_font->Glyphs.resize(dst_font->Glyphs.Size + 1);
                 ImFont::Glyph& glyph = dst_font->Glyphs.back();
                 glyph.Codepoint = (ImWchar)codepoint;
-                glyph.X0 = q.x0; glyph.Y0 = q.y0; glyph.X1 = q.x1; glyph.Y1 = q.y1;
-                glyph.U0 = q.s0; glyph.V0 = q.t0; glyph.U1 = q.s1; glyph.V1 = q.t1;
+                glyph.X0 = q.x0;
+                glyph.Y0 = q.y0;
+                glyph.X1 = q.x1;
+                glyph.Y1 = q.y1;
+                glyph.U0 = q.s0;
+                glyph.V0 = q.t0;
+                glyph.U1 = q.s1;
+                glyph.V1 = q.t1;
                 glyph.Y0 += (float)(int)(dst_font->Ascent + off_y + 0.5f);
                 glyph.Y1 += (float)(int)(dst_font->Ascent + off_y + 0.5f);
                 glyph.XAdvance = (pc.xadvance + cfg.GlyphExtraSpacing.x);  // Bake spacing into XAdvance
@@ -1926,7 +2050,19 @@ ImVec2 ImFont::CalcTextSizeA(float size, float max_width, float wrap_width, cons
                 while (s < text_end)
                 {
                     const char c = *s;
-                    if (ImCharIsSpace(c)) { s++; } else if (c == '\n') { s++; break; } else { break; }
+                    if (ImCharIsSpace(c))
+                    {
+                        s++;
+                    }
+                    else if (c == '\n')
+                    {
+                        s++;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
                 continue;
             }
@@ -2053,7 +2189,19 @@ void ImFont::RenderText(ImDrawList* draw_list, float size, ImVec2 pos, ImU32 col
                 while (s < text_end)
                 {
                     const char c = *s;
-                    if (ImCharIsSpace(c)) { s++; } else if (c == '\n') { s++; break; } else { break; }
+                    if (ImCharIsSpace(c))
+                    {
+                        s++;
+                    }
+                    else if (c == '\n')
+                    {
+                        s++;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
                 continue;
             }
@@ -2144,12 +2292,32 @@ void ImFont::RenderText(ImDrawList* draw_list, float size, ImVec2 pos, ImU32 col
                     // We are NOT calling PrimRectUV() here because non-inlined causes too much overhead in a debug build.
                     // Inlined here:
                     {
-                        idx_write[0] = (ImDrawIdx)(vtx_current_idx); idx_write[1] = (ImDrawIdx)(vtx_current_idx+1); idx_write[2] = (ImDrawIdx)(vtx_current_idx+2);
-                        idx_write[3] = (ImDrawIdx)(vtx_current_idx); idx_write[4] = (ImDrawIdx)(vtx_current_idx+2); idx_write[5] = (ImDrawIdx)(vtx_current_idx+3);
-                        vtx_write[0].pos.x = x1; vtx_write[0].pos.y = y1; vtx_write[0].col = col; vtx_write[0].uv.x = u1; vtx_write[0].uv.y = v1;
-                        vtx_write[1].pos.x = x2; vtx_write[1].pos.y = y1; vtx_write[1].col = col; vtx_write[1].uv.x = u2; vtx_write[1].uv.y = v1;
-                        vtx_write[2].pos.x = x2; vtx_write[2].pos.y = y2; vtx_write[2].col = col; vtx_write[2].uv.x = u2; vtx_write[2].uv.y = v2;
-                        vtx_write[3].pos.x = x1; vtx_write[3].pos.y = y2; vtx_write[3].col = col; vtx_write[3].uv.x = u1; vtx_write[3].uv.y = v2;
+                        idx_write[0] = (ImDrawIdx)(vtx_current_idx);
+                        idx_write[1] = (ImDrawIdx)(vtx_current_idx+1);
+                        idx_write[2] = (ImDrawIdx)(vtx_current_idx+2);
+                        idx_write[3] = (ImDrawIdx)(vtx_current_idx);
+                        idx_write[4] = (ImDrawIdx)(vtx_current_idx+2);
+                        idx_write[5] = (ImDrawIdx)(vtx_current_idx+3);
+                        vtx_write[0].pos.x = x1;
+                        vtx_write[0].pos.y = y1;
+                        vtx_write[0].col = col;
+                        vtx_write[0].uv.x = u1;
+                        vtx_write[0].uv.y = v1;
+                        vtx_write[1].pos.x = x2;
+                        vtx_write[1].pos.y = y1;
+                        vtx_write[1].col = col;
+                        vtx_write[1].uv.x = u2;
+                        vtx_write[1].uv.y = v1;
+                        vtx_write[2].pos.x = x2;
+                        vtx_write[2].pos.y = y2;
+                        vtx_write[2].col = col;
+                        vtx_write[2].uv.x = u2;
+                        vtx_write[2].uv.y = v2;
+                        vtx_write[3].pos.x = x1;
+                        vtx_write[3].pos.y = y2;
+                        vtx_write[3].col = col;
+                        vtx_write[3].uv.x = u1;
+                        vtx_write[3].uv.y = v2;
                         vtx_write += 4;
                         vtx_current_idx += 4;
                         idx_write += 6;
@@ -2189,16 +2357,32 @@ static void stb__match(unsigned char *data, unsigned int length)
 {
     // INVERSE of memmove... write each byte before copying the next...
     IM_ASSERT (stb__dout + length <= stb__barrier);
-    if (stb__dout + length > stb__barrier) { stb__dout += length; return; }
-    if (data < stb__barrier4) { stb__dout = stb__barrier+1; return; }
+    if (stb__dout + length > stb__barrier)
+    {
+        stb__dout += length;
+        return;
+    }
+    if (data < stb__barrier4)
+    {
+        stb__dout = stb__barrier+1;
+        return;
+    }
     while (length--) *stb__dout++ = *data++;
 }
 
 static void stb__lit(unsigned char *data, unsigned int length)
 {
     IM_ASSERT (stb__dout + length <= stb__barrier);
-    if (stb__dout + length > stb__barrier) { stb__dout += length; return; }
-    if (data < stb__barrier2) { stb__dout = stb__barrier+1; return; }
+    if (stb__dout + length > stb__barrier)
+    {
+        stb__dout += length;
+        return;
+    }
+    if (data < stb__barrier2)
+    {
+        stb__dout = stb__barrier+1;
+        return;
+    }
     memcpy(stb__dout, data, length);
     stb__dout += length;
 }
@@ -2209,11 +2393,14 @@ static void stb__lit(unsigned char *data, unsigned int length)
 
 static unsigned char *stb_decompress_token(unsigned char *i)
 {
-    if (*i >= 0x20) { // use fewer if's for cases that expand small
+    if (*i >= 0x20)   // use fewer if's for cases that expand small
+    {
         if (*i >= 0x80)       stb__match(stb__dout-i[1]-1, i[0] - 0x80 + 1), i += 2;
         else if (*i >= 0x40)  stb__match(stb__dout-(stb__in2(0) - 0x4000 + 1), i[2]+1), i += 3;
         else /* *i >= 0x20 */ stb__lit(i+1, i[0] - 0x20 + 1), i += 1 + (i[0] - 0x20 + 1);
-    } else { // more ifs for cases that expand large, since overhead is amortized
+    }
+    else     // more ifs for cases that expand large, since overhead is amortized
+    {
         if (*i >= 0x18)       stb__match(stb__dout-(stb__in3(0) - 0x180000 + 1), i[3]+1), i += 4;
         else if (*i >= 0x10)  stb__match(stb__dout-(stb__in3(0) - 0x100000 + 1), stb__in2(3)+1), i += 5;
         else if (*i >= 0x08)  stb__lit(i+2, stb__in2(0) - 0x0800 + 1), i += 2 + (stb__in2(0) - 0x0800 + 1);
@@ -2231,8 +2418,10 @@ static unsigned int stb_adler32(unsigned int adler32, unsigned char *buffer, uns
     unsigned long blocklen, i;
 
     blocklen = buflen % 5552;
-    while (buflen) {
-        for (i=0; i + 7 < blocklen; i += 8) {
+    while (buflen)
+    {
+        for (i=0; i + 7 < blocklen; i += 8)
+        {
             s1 += buffer[0], s2 += s1;
             s1 += buffer[1], s2 += s1;
             s1 += buffer[2], s2 += s1;
@@ -2268,17 +2457,22 @@ static unsigned int stb_decompress(unsigned char *output, unsigned char *i, unsi
     i += 16;
 
     stb__dout = output;
-    for (;;) {
+    for (;;)
+    {
         unsigned char *old_i = i;
         i = stb_decompress_token(i);
-        if (i == old_i) {
-            if (*i == 0x05 && i[1] == 0xfa) {
+        if (i == old_i)
+        {
+            if (*i == 0x05 && i[1] == 0xfa)
+            {
                 IM_ASSERT(stb__dout == output + olen);
                 if (stb__dout != output + olen) return 0;
                 if (stb_adler32(1, output, olen) != (unsigned int) stb__in4(2))
                     return 0;
                 return olen;
-            } else {
+            }
+            else
+            {
                 IM_ASSERT(0); /* NOTREACHED */
                 return 0;
             }

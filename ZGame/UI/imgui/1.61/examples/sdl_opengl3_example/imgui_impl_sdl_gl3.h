@@ -1,4 +1,4 @@
-// ImGui SDL2 binding with OpenGL3
+﻿// ImGui SDL2 binding with OpenGL3
 // In this binding, ImTextureID is used to store an OpenGL 'GLuint' texture identifier. Read the FAQ about ImTextureID in imgui.cpp.
 
 // You can copy and use unmodified imgui_impl_* files in your project. See main.cpp for an example of using this.

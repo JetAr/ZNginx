@@ -1,4 +1,4 @@
-/*
+﻿/*
 uSynergy client -- Interface for the embedded Synergy client library
   version 1.0.0, July 7th, 2012
 
@@ -42,19 +42,19 @@ extern "C" {
 @brief Determine endianness
 **/
 #if defined(USYNERGY_LITTLE_ENDIAN) && defined(USYNERGY_BIG_ENDIAN)
-	/* Ambiguous: both endians specified */
-	#error "Can't define both USYNERGY_LITTLE_ENDIAN and USYNERGY_BIG_ENDIAN"
+/* Ambiguous: both endians specified */
+#error "Can't define both USYNERGY_LITTLE_ENDIAN and USYNERGY_BIG_ENDIAN"
 #elif !defined(USYNERGY_LITTLE_ENDIAN) && !defined(USYNERGY_BIG_ENDIAN)
-	/* Attempt to auto detect */
-	#if defined(__LITTLE_ENDIAN__) || defined(LITTLE_ENDIAN) || (_BYTE_ORDER == _LITTLE_ENDIAN)
-		#define USYNERGY_LITTLE_ENDIAN
-	#elif defined(__BIG_ENDIAN__) || defined(BIG_ENDIAN) || (_BYTE_ORDER == _BIG_ENDIAN)
-		#define USYNERGY_BIG_ENDIAN
-	#else
-		#error "Can't detect endian-nes, please defined either USYNERGY_LITTLE_ENDIAN or USYNERGY_BIG_ENDIAN";
-	#endif
+/* Attempt to auto detect */
+#if defined(__LITTLE_ENDIAN__) || defined(LITTLE_ENDIAN) || (_BYTE_ORDER == _LITTLE_ENDIAN)
+#define USYNERGY_LITTLE_ENDIAN
+#elif defined(__BIG_ENDIAN__) || defined(BIG_ENDIAN) || (_BYTE_ORDER == _BIG_ENDIAN)
+#define USYNERGY_BIG_ENDIAN
 #else
-	/* User-specified endian-nes, nothing to do for us */
+#error "Can't detect endian-nes, please defined either USYNERGY_LITTLE_ENDIAN or USYNERGY_BIG_ENDIAN";
+#endif
+#else
+/* User-specified endian-nes, nothing to do for us */
 #endif
 
 
@@ -79,7 +79,10 @@ typedef int			uSynergyBool;
 The uSynergyCookie type is an opaque type that is used by uSynergy to communicate to the client. It is passed along to
 callback functions as context.
 **/
-typedef struct { int ignored; } *					uSynergyCookie;
+typedef struct
+{
+    int ignored;
+} *					uSynergyCookie;
 
 
 
@@ -88,9 +91,9 @@ typedef struct { int ignored; } *					uSynergyCookie;
 **/
 enum uSynergyClipboardFormat
 {
-	USYNERGY_CLIPBOARD_FORMAT_TEXT					= 0,			/* Text format, UTF-8, newline is LF */
-	USYNERGY_CLIPBOARD_FORMAT_BITMAP				= 1,			/* Bitmap format, BMP 24/32bpp, BI_RGB */
-	USYNERGY_CLIPBOARD_FORMAT_HTML					= 2,			/* HTML format, HTML fragment, UTF-8, newline is LF */
+    USYNERGY_CLIPBOARD_FORMAT_TEXT					= 0,			/* Text format, UTF-8, newline is LF */
+    USYNERGY_CLIPBOARD_FORMAT_BITMAP				= 1,			/* Bitmap format, BMP 24/32bpp, BI_RGB */
+    USYNERGY_CLIPBOARD_FORMAT_HTML					= 2,			/* HTML format, HTML fragment, UTF-8, newline is LF */
 };
 
 
@@ -317,44 +320,44 @@ typedef void		(*uSynergyClipboardCallback)(uSynergyCookie cookie, enum uSynergyC
 **/
 typedef struct
 {
-	/* Mandatory configuration data, filled in by client */
-	uSynergyConnectFunc				m_connectFunc;									/* Connect function */
-	uSynergySendFunc				m_sendFunc;										/* Send data function */
-	uSynergyReceiveFunc				m_receiveFunc;									/* Receive data function */
-	uSynergySleepFunc				m_sleepFunc;									/* Thread sleep function */
-	uSynergyGetTimeFunc				m_getTimeFunc;									/* Get current time function */
-	const char*						m_clientName;									/* Name of Synergy Screen / Client */
-	uint16_t						m_clientWidth;									/* Width of screen */
-	uint16_t						m_clientHeight;									/* Height of screen */
+    /* Mandatory configuration data, filled in by client */
+    uSynergyConnectFunc				m_connectFunc;									/* Connect function */
+    uSynergySendFunc				m_sendFunc;										/* Send data function */
+    uSynergyReceiveFunc				m_receiveFunc;									/* Receive data function */
+    uSynergySleepFunc				m_sleepFunc;									/* Thread sleep function */
+    uSynergyGetTimeFunc				m_getTimeFunc;									/* Get current time function */
+    const char*						m_clientName;									/* Name of Synergy Screen / Client */
+    uint16_t						m_clientWidth;									/* Width of screen */
+    uint16_t						m_clientHeight;									/* Height of screen */
 
-	/* Optional configuration data, filled in by client */
-	uSynergyCookie					m_cookie;										/* Cookie pointer passed to callback functions (can be NULL) */
-	uSynergyTraceFunc				m_traceFunc;									/* Function for tracing status (can be NULL) */
-	uSynergyScreenActiveCallback	m_screenActiveCallback;							/* Callback for entering and leaving screen */
-	uSynergyMouseCallback			m_mouseCallback;								/* Callback for mouse events */
-	uSynergyKeyboardCallback		m_keyboardCallback;								/* Callback for keyboard events */
-	uSynergyJoystickCallback		m_joystickCallback;								/* Callback for joystick events */
-	uSynergyClipboardCallback		m_clipboardCallback;							/* Callback for clipboard events */
+    /* Optional configuration data, filled in by client */
+    uSynergyCookie					m_cookie;										/* Cookie pointer passed to callback functions (can be NULL) */
+    uSynergyTraceFunc				m_traceFunc;									/* Function for tracing status (can be NULL) */
+    uSynergyScreenActiveCallback	m_screenActiveCallback;							/* Callback for entering and leaving screen */
+    uSynergyMouseCallback			m_mouseCallback;								/* Callback for mouse events */
+    uSynergyKeyboardCallback		m_keyboardCallback;								/* Callback for keyboard events */
+    uSynergyJoystickCallback		m_joystickCallback;								/* Callback for joystick events */
+    uSynergyClipboardCallback		m_clipboardCallback;							/* Callback for clipboard events */
 
-	/* State data, used internall by client, initialized by uSynergyInit() */
-	uSynergyBool					m_connected;									/* Is our socket connected? */
-	uSynergyBool					m_hasReceivedHello;								/* Have we received a 'Hello' from the server? */
-	uSynergyBool					m_isCaptured;									/* Is Synergy active (i.e. this client is receiving input messages?) */
-	uint32_t						m_lastMessageTime;								/* Time at which last message was received */
-	uint32_t						m_sequenceNumber;								/* Packet sequence number */
-	uint8_t							m_receiveBuffer[USYNERGY_RECEIVE_BUFFER_SIZE];	/* Receive buffer */
-	int								m_receiveOfs;									/* Receive buffer offset */
-	uint8_t							m_replyBuffer[USYNERGY_REPLY_BUFFER_SIZE];		/* Reply buffer */
-	uint8_t*						m_replyCur;										/* Write offset into reply buffer */
-	uint16_t						m_mouseX;										/* Mouse X position */
-	uint16_t						m_mouseY;										/* Mouse Y position */
-	int16_t							m_mouseWheelX;									/* Mouse wheel X position */
-	int16_t							m_mouseWheelY;									/* Mouse wheel Y position */
-	uSynergyBool					m_mouseButtonLeft;								/* Mouse left button */
-	uSynergyBool					m_mouseButtonRight;								/* Mouse right button */
-	uSynergyBool					m_mouseButtonMiddle;							/* Mouse middle button */
-	int8_t							m_joystickSticks[USYNERGY_NUM_JOYSTICKS][4];	/* Joystick stick position in 2 axes for 2 sticks */
-	uint16_t						m_joystickButtons[USYNERGY_NUM_JOYSTICKS];		/* Joystick button state */
+    /* State data, used internall by client, initialized by uSynergyInit() */
+    uSynergyBool					m_connected;									/* Is our socket connected? */
+    uSynergyBool					m_hasReceivedHello;								/* Have we received a 'Hello' from the server? */
+    uSynergyBool					m_isCaptured;									/* Is Synergy active (i.e. this client is receiving input messages?) */
+    uint32_t						m_lastMessageTime;								/* Time at which last message was received */
+    uint32_t						m_sequenceNumber;								/* Packet sequence number */
+    uint8_t							m_receiveBuffer[USYNERGY_RECEIVE_BUFFER_SIZE];	/* Receive buffer */
+    int								m_receiveOfs;									/* Receive buffer offset */
+    uint8_t							m_replyBuffer[USYNERGY_REPLY_BUFFER_SIZE];		/* Reply buffer */
+    uint8_t*						m_replyCur;										/* Write offset into reply buffer */
+    uint16_t						m_mouseX;										/* Mouse X position */
+    uint16_t						m_mouseY;										/* Mouse Y position */
+    int16_t							m_mouseWheelX;									/* Mouse wheel X position */
+    int16_t							m_mouseWheelY;									/* Mouse wheel Y position */
+    uSynergyBool					m_mouseButtonLeft;								/* Mouse left button */
+    uSynergyBool					m_mouseButtonRight;								/* Mouse right button */
+    uSynergyBool					m_mouseButtonMiddle;							/* Mouse middle button */
+    int8_t							m_joystickSticks[USYNERGY_NUM_JOYSTICKS][4];	/* Joystick stick position in 2 axes for 2 sticks */
+    uint16_t						m_joystickButtons[USYNERGY_NUM_JOYSTICKS];		/* Joystick button state */
 } uSynergyContext;
 
 

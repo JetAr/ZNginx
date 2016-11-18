@@ -1,4 +1,4 @@
-//
+﻿//
 //  debug_hud.h
 //  imguiex
 
@@ -17,8 +17,8 @@ typedef struct DebugHUD
 extern "C" {
 #endif
 
-void DebugHUD_InitDefaults( DebugHUD *hud );
-void DebugHUD_DoInterface( DebugHUD *hud );
+    void DebugHUD_InitDefaults( DebugHUD *hud );
+    void DebugHUD_DoInterface( DebugHUD *hud );
 
 #if __cplusplus
 }

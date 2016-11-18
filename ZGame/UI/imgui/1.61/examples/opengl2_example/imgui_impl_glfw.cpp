@@ -1,9 +1,9 @@
-// ImGui GLFW binding with OpenGL
+﻿// ImGui GLFW binding with OpenGL
 // In this binding, ImTextureID is used to store an OpenGL 'GLuint' texture identifier. Read the FAQ about ImTextureID in imgui.cpp.
 
 // If your context is GL3/GL3 then prefer using the code in opengl3_example.
 // You *might* use this code with a GL3/GL4 context but make sure you disable the programmable pipeline by calling "glUseProgram(0)" before ImGui::Render().
-// We cannot do that from GL2 code because the function doesn't exist. 
+// We cannot do that from GL2 code because the function doesn't exist.
 
 // You can copy and use unmodified imgui_impl_* files in your project. See main.cpp for an example of using this.
 // If you use this binding you'll need to call 4 functions: ImGui_ImplXXXX_Init(), ImGui_ImplXXXX_NewFrame(), ImGui::Render() and ImGui_ImplXXXX_Shutdown().
@@ -44,9 +44,12 @@ void ImGui_ImplGlfw_RenderDrawLists(ImDrawData* draw_data)
 
     // We are using the OpenGL fixed pipeline to make the example code simpler to read!
     // Setup render state: alpha-blending enabled, no face culling, no depth testing, scissor enabled, vertex/texcoord/color pointers.
-    GLint last_texture; glGetIntegerv(GL_TEXTURE_BINDING_2D, &last_texture);
-    GLint last_viewport[4]; glGetIntegerv(GL_VIEWPORT, last_viewport);
-    GLint last_scissor_box[4]; glGetIntegerv(GL_SCISSOR_BOX, last_scissor_box); 
+    GLint last_texture;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &last_texture);
+    GLint last_viewport[4];
+    glGetIntegerv(GL_VIEWPORT, last_viewport);
+    GLint last_scissor_box[4];
+    glGetIntegerv(GL_SCISSOR_BOX, last_scissor_box);
     glPushAttrib(GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT | GL_TRANSFORM_BIT);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -70,7 +73,7 @@ void ImGui_ImplGlfw_RenderDrawLists(ImDrawData* draw_data)
     glLoadIdentity();
 
     // Render command lists
-    #define OFFSETOF(TYPE, ELEMENT) ((size_t)&(((TYPE *)0)->ELEMENT))
+#define OFFSETOF(TYPE, ELEMENT) ((size_t)&(((TYPE *)0)->ELEMENT))
     for (int n = 0; n < draw_data->CmdListsCount; n++)
     {
         const ImDrawList* cmd_list = draw_data->CmdLists[n];
@@ -96,7 +99,7 @@ void ImGui_ImplGlfw_RenderDrawLists(ImDrawData* draw_data)
             idx_buffer += pcmd->ElemCount;
         }
     }
-    #undef OFFSETOF
+#undef OFFSETOF
 
     // Restore modified state
     glDisableClientState(GL_COLOR_ARRAY);

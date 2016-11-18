@@ -1,4 +1,4 @@
-// ImGui Allegro 5 bindings
+﻿// ImGui Allegro 5 bindings
 // In this binding, ImTextureID is used to store a 'ALLEGRO_BITMAP*' texture identifier. Read the FAQ about ImTextureID in imgui.cpp.
 
 // TODO:
@@ -280,12 +280,24 @@ void ImGui_ImplA5_NewFrame()
         ALLEGRO_SYSTEM_MOUSE_CURSOR cursor_id = ALLEGRO_SYSTEM_MOUSE_CURSOR_DEFAULT;
         switch (ImGui::GetMouseCursor())
         {
-        case ImGuiMouseCursor_TextInput:    cursor_id = ALLEGRO_SYSTEM_MOUSE_CURSOR_EDIT; break;
-        case ImGuiMouseCursor_Move:         cursor_id = ALLEGRO_SYSTEM_MOUSE_CURSOR_MOVE; break;
-        case ImGuiMouseCursor_ResizeNS:     cursor_id = ALLEGRO_SYSTEM_MOUSE_CURSOR_RESIZE_N; break;
-        case ImGuiMouseCursor_ResizeEW:     cursor_id = ALLEGRO_SYSTEM_MOUSE_CURSOR_RESIZE_E; break;
-        case ImGuiMouseCursor_ResizeNESW:   cursor_id = ALLEGRO_SYSTEM_MOUSE_CURSOR_RESIZE_NE; break;
-        case ImGuiMouseCursor_ResizeNWSE:   cursor_id = ALLEGRO_SYSTEM_MOUSE_CURSOR_RESIZE_NW; break;
+        case ImGuiMouseCursor_TextInput:
+            cursor_id = ALLEGRO_SYSTEM_MOUSE_CURSOR_EDIT;
+            break;
+        case ImGuiMouseCursor_Move:
+            cursor_id = ALLEGRO_SYSTEM_MOUSE_CURSOR_MOVE;
+            break;
+        case ImGuiMouseCursor_ResizeNS:
+            cursor_id = ALLEGRO_SYSTEM_MOUSE_CURSOR_RESIZE_N;
+            break;
+        case ImGuiMouseCursor_ResizeEW:
+            cursor_id = ALLEGRO_SYSTEM_MOUSE_CURSOR_RESIZE_E;
+            break;
+        case ImGuiMouseCursor_ResizeNESW:
+            cursor_id = ALLEGRO_SYSTEM_MOUSE_CURSOR_RESIZE_NE;
+            break;
+        case ImGuiMouseCursor_ResizeNWSE:
+            cursor_id = ALLEGRO_SYSTEM_MOUSE_CURSOR_RESIZE_NW;
+            break;
         }
         al_set_system_mouse_cursor(g_Display, cursor_id);
     }

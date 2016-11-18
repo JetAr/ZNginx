@@ -1,4 +1,4 @@
-// ImGui - standalone example application for Marmalade
+﻿// ImGui - standalone example application for Marmalade
 // If you are new to ImGui, see examples/README.txt and documentation at the top of imgui.cpp.
 
 // Copyright (C) 2015 by Giovanni Zito
@@ -34,12 +34,12 @@ int main(int, char**)
     // Main loop
     while (true)
     {
-         if (s3eDeviceCheckQuitRequest())
-             break;
+        if (s3eDeviceCheckQuitRequest())
+            break;
 
-         s3eKeyboardUpdate();
-         s3ePointerUpdate();
-         ImGui_Marmalade_NewFrame();
+        s3eKeyboardUpdate();
+        s3ePointerUpdate();
+        ImGui_Marmalade_NewFrame();
 
         // 1. Show a simple window
         // Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets appears in a window automatically called "Debug"

@@ -1,4 +1,4 @@
-// ImGui SDL2 binding with OpenGL
+﻿// ImGui SDL2 binding with OpenGL
 // In this binding, ImTextureID is used to store an OpenGL 'GLuint' texture identifier. Read the FAQ about ImTextureID in imgui.cpp.
 
 // You can copy and use unmodified imgui_impl_* files in your project. See main.cpp for an example of using this.
@@ -33,9 +33,12 @@ void ImGui_ImplSdl_RenderDrawLists(ImDrawData* draw_data)
 
     // We are using the OpenGL fixed pipeline to make the example code simpler to read!
     // Setup render state: alpha-blending enabled, no face culling, no depth testing, scissor enabled, vertex/texcoord/color pointers.
-    GLint last_texture; glGetIntegerv(GL_TEXTURE_BINDING_2D, &last_texture);
-    GLint last_viewport[4]; glGetIntegerv(GL_VIEWPORT, last_viewport);
-    GLint last_scissor_box[4]; glGetIntegerv(GL_SCISSOR_BOX, last_scissor_box); 
+    GLint last_texture;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &last_texture);
+    GLint last_viewport[4];
+    glGetIntegerv(GL_VIEWPORT, last_viewport);
+    GLint last_scissor_box[4];
+    glGetIntegerv(GL_SCISSOR_BOX, last_scissor_box);
     glPushAttrib(GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT | GL_TRANSFORM_BIT);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -59,7 +62,7 @@ void ImGui_ImplSdl_RenderDrawLists(ImDrawData* draw_data)
     glLoadIdentity();
 
     // Render command lists
-    #define OFFSETOF(TYPE, ELEMENT) ((size_t)&(((TYPE *)0)->ELEMENT))
+#define OFFSETOF(TYPE, ELEMENT) ((size_t)&(((TYPE *)0)->ELEMENT))
     for (int n = 0; n < draw_data->CmdListsCount; n++)
     {
         const ImDrawList* cmd_list = draw_data->CmdLists[n];
@@ -85,7 +88,7 @@ void ImGui_ImplSdl_RenderDrawLists(ImDrawData* draw_data)
             idx_buffer += pcmd->ElemCount;
         }
     }
-    #undef OFFSETOF
+#undef OFFSETOF
 
     // Restore modified state
     glDisableClientState(GL_COLOR_ARRAY);
@@ -117,36 +120,36 @@ bool ImGui_ImplSdl_ProcessEvent(SDL_Event* event)
     switch (event->type)
     {
     case SDL_MOUSEWHEEL:
-        {
-            if (event->wheel.y > 0)
-                g_MouseWheel = 1;
-            if (event->wheel.y < 0)
-                g_MouseWheel = -1;
-            return true;
-        }
+    {
+        if (event->wheel.y > 0)
+            g_MouseWheel = 1;
+        if (event->wheel.y < 0)
+            g_MouseWheel = -1;
+        return true;
+    }
     case SDL_MOUSEBUTTONDOWN:
-        {
-            if (event->button.button == SDL_BUTTON_LEFT) g_MousePressed[0] = true;
-            if (event->button.button == SDL_BUTTON_RIGHT) g_MousePressed[1] = true;
-            if (event->button.button == SDL_BUTTON_MIDDLE) g_MousePressed[2] = true;
-            return true;
-        }
+    {
+        if (event->button.button == SDL_BUTTON_LEFT) g_MousePressed[0] = true;
+        if (event->button.button == SDL_BUTTON_RIGHT) g_MousePressed[1] = true;
+        if (event->button.button == SDL_BUTTON_MIDDLE) g_MousePressed[2] = true;
+        return true;
+    }
     case SDL_TEXTINPUT:
-        {
-            io.AddInputCharactersUTF8(event->text.text);
-            return true;
-        }
+    {
+        io.AddInputCharactersUTF8(event->text.text);
+        return true;
+    }
     case SDL_KEYDOWN:
     case SDL_KEYUP:
-        {
-            int key = event->key.keysym.sym & ~SDLK_SCANCODE_MASK;
-            io.KeysDown[key] = (event->type == SDL_KEYDOWN);
-            io.KeyShift = ((SDL_GetModState() & KMOD_SHIFT) != 0);
-            io.KeyCtrl = ((SDL_GetModState() & KMOD_CTRL) != 0);
-            io.KeyAlt = ((SDL_GetModState() & KMOD_ALT) != 0);
-            io.KeySuper = ((SDL_GetModState() & KMOD_GUI) != 0);
-            return true;
-        }
+    {
+        int key = event->key.keysym.sym & ~SDLK_SCANCODE_MASK;
+        io.KeysDown[key] = (event->type == SDL_KEYDOWN);
+        io.KeyShift = ((SDL_GetModState() & KMOD_SHIFT) != 0);
+        io.KeyCtrl = ((SDL_GetModState() & KMOD_CTRL) != 0);
+        io.KeyAlt = ((SDL_GetModState() & KMOD_ALT) != 0);
+        io.KeySuper = ((SDL_GetModState() & KMOD_GUI) != 0);
+        return true;
+    }
     }
     return false;
 }

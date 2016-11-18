@@ -1,4 +1,4 @@
-// ImGui Allegro 5 bindings
+﻿// ImGui Allegro 5 bindings
 // In this binding, ImTextureID is used to store a 'ALLEGRO_BITMAP*' texture identifier. Read the FAQ about ImTextureID in imgui.cpp.
 
 // You can copy and use unmodified imgui_impl_* files in your project. See main.cpp for an example of using this.

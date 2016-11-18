@@ -1,4 +1,4 @@
-// ImGui Marmalade binding with IwGx
+﻿// ImGui Marmalade binding with IwGx
 // In this binding, ImTextureID is used to store a 'CIwTexture*' texture identifier. Read the FAQ about ImTextureID in imgui.cpp.
 
 // You can copy and use unmodified imgui_impl_* files in your project. See main.cpp for an example of using this.

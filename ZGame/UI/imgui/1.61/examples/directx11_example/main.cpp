@@ -1,4 +1,4 @@
-// ImGui - standalone example application for DirectX 11
+﻿// ImGui - standalone example application for DirectX 11
 // If you are new to ImGui, see examples/README.txt and documentation at the top of imgui.cpp.
 
 #include <imgui.h>
@@ -33,7 +33,11 @@ void CreateRenderTarget()
 
 void CleanupRenderTarget()
 {
-    if (g_mainRenderTargetView) { g_mainRenderTargetView->Release(); g_mainRenderTargetView = NULL; }
+    if (g_mainRenderTargetView)
+    {
+        g_mainRenderTargetView->Release();
+        g_mainRenderTargetView = NULL;
+    }
 }
 
 HRESULT CreateDeviceD3D(HWND hWnd)
@@ -72,9 +76,21 @@ HRESULT CreateDeviceD3D(HWND hWnd)
 void CleanupDeviceD3D()
 {
     CleanupRenderTarget();
-    if (g_pSwapChain) { g_pSwapChain->Release(); g_pSwapChain = NULL; }
-    if (g_pd3dDeviceContext) { g_pd3dDeviceContext->Release(); g_pd3dDeviceContext = NULL; }
-    if (g_pd3dDevice) { g_pd3dDevice->Release(); g_pd3dDevice = NULL; }
+    if (g_pSwapChain)
+    {
+        g_pSwapChain->Release();
+        g_pSwapChain = NULL;
+    }
+    if (g_pd3dDeviceContext)
+    {
+        g_pd3dDeviceContext->Release();
+        g_pd3dDeviceContext = NULL;
+    }
+    if (g_pd3dDevice)
+    {
+        g_pd3dDevice->Release();
+        g_pd3dDevice = NULL;
+    }
 }
 
 extern LRESULT ImGui_ImplDX11_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -183,7 +199,7 @@ int main(int, char**)
             ImGui::ShowTestWindow(&show_test_window);
         }
 
-		ImGui::SetMouseCursor(ImGuiMouseCursor_TextInput);
+        ImGui::SetMouseCursor(ImGuiMouseCursor_TextInput);
 
         // Rendering
         g_pd3dDeviceContext->ClearRenderTargetView(g_mainRenderTargetView, (float*)&clear_col);

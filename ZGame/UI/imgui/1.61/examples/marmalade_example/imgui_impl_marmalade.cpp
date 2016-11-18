@@ -1,4 +1,4 @@
-// ImGui Marmalade binding with IwGx
+﻿// ImGui Marmalade binding with IwGx
 // In this binding, ImTextureID is used to store a 'CIwTexture*' texture identifier. Read the FAQ about ImTextureID in imgui.cpp.
 
 // You can copy and use unmodified imgui_impl_* files in your project. See main.cpp for an example of using this.
@@ -262,7 +262,7 @@ void ImGui_Marmalade_NewFrame()
     // Setup display size (every frame to accommodate for window resizing)
     int w = IwGxGetScreenWidth(), h = IwGxGetScreenHeight();
     io.DisplaySize = ImVec2((float)w, (float)h);
-     // For retina display or other situations where window coordinates are different from framebuffer coordinates. User storage only, presently not used by ImGui.
+    // For retina display or other situations where window coordinates are different from framebuffer coordinates. User storage only, presently not used by ImGui.
     io.DisplayFramebufferScale = g_scale;
 
     // Setup time step
@@ -290,7 +290,7 @@ void ImGui_Marmalade_NewFrame()
     // Start the frame
     ImGui::NewFrame();
 
-     // Show/hide OSD keyboard
+    // Show/hide OSD keyboard
     if (io.WantTextInput)
     {
         // Some text input widget is active?
