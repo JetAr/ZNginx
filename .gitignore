@@ -53,6 +53,8 @@
 *.sbr
 *.sdf
 *.opensdf
+*.VC.db
+*.VC.opendb
 
 *.psess
 *.vsp
