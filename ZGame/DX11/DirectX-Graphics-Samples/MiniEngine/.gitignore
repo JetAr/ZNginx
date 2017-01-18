@@ -1,0 +1,10 @@
+.vs/
+assimp-3.0/
+Build_VS14/
+*.dll
+*.ipch
+*.opensdf
+*.opendb
+*.sdf
+*.user
+*.VC.db
