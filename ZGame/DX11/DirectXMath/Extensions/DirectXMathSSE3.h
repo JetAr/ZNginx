@@ -1,11 +1,11 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXMathSSE3.h -- SSE3 extensions for SIMD C++ Math library
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
 // ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
 // THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
 // PARTICULAR PURPOSE.
-//  
+//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // http://go.microsoft.com/fwlink/?LinkID=615560
@@ -58,7 +58,7 @@ inline bool XMVerifySSE3Support()
 
 inline XMVECTOR XM_CALLCONV XMVector2Dot
 (
-    FXMVECTOR V1, 
+    FXMVECTOR V1,
     FXMVECTOR V2
 )
 {
@@ -74,7 +74,7 @@ inline XMVECTOR XM_CALLCONV XMVector2LengthSq( FXMVECTOR V )
 
 inline XMVECTOR XM_CALLCONV XMVector3Dot
 (
-    FXMVECTOR V1, 
+    FXMVECTOR V1,
     FXMVECTOR V2
 )
 {
@@ -91,7 +91,7 @@ inline XMVECTOR XM_CALLCONV XMVector3LengthSq( FXMVECTOR V )
 
 inline XMVECTOR XM_CALLCONV XMVector4Dot
 (
-    FXMVECTOR V1, 
+    FXMVECTOR V1,
     FXMVECTOR V2
 )
 {

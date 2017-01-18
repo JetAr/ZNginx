@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: GDFParse.h
 //
 // GDFTrace - Game Definition File trace utility
@@ -14,10 +14,10 @@
 
 typedef struct
 {
-   BITMAPINFOHEADER   icHeader;      // DIB header
-   RGBQUAD         icColors[1];   // Color table
-   BYTE            icXOR[1];      // DIB bits for XOR mask
-   BYTE            icAND[1];      // DIB bits for AND mask
+    BITMAPINFOHEADER   icHeader;      // DIB header
+    RGBQUAD         icColors[1];   // Color table
+    BYTE            icXOR[1];      // DIB bits for XOR mask
+    BYTE            icAND[1];      // DIB bits for AND mask
 } ICONIMAGE, *LPICONIMAGE;
 
 typedef struct
@@ -32,7 +32,7 @@ typedef struct
     WORD    nID;                  // the ID
 } MEMICONDIRENTRY, *LPMEMICONDIRENTRY;
 
-typedef struct 
+typedef struct
 {
     WORD            idReserved;   // Reserved
     WORD            idType;       // resource type (1 for icons)
@@ -44,7 +44,7 @@ typedef struct
 
 static unsigned int   iconResolution[] = {16, 32, 48, 256};
 
-#define MAX_LANG 256 
+#define MAX_LANG 256
 
 class CGDFParse
 {
@@ -61,8 +61,14 @@ public:
     HRESULT ValidateXML( const WCHAR* strGDFBinPath, WORD wLanguage, WCHAR* strReason, int cchReason );
 
     HRESULT EnumLangs( const WCHAR* strGDFBinPath );
-    int GetNumLangs() const { return m_LanguageCount; }
-    WORD GetLang( int iIndex ) const { return m_Languages[iIndex]; } 
+    int GetNumLangs() const
+    {
+        return m_LanguageCount;
+    }
+    WORD GetLang( int iIndex ) const
+    {
+        return m_Languages[iIndex];
+    }
 
     // To use these, call ExtractXML() first
     HRESULT GetName( WCHAR* strDest, int cchDest );

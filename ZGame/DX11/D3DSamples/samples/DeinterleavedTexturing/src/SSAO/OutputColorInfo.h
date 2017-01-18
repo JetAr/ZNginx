@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeinterleavedTexturing\src\SSAO/OutputColorInfo.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -46,8 +46,8 @@ class OutputColorInfo
 {
 public:
     OutputColorInfo()
-    : pColorRTV(NULL)
-    , SampleCount(0)
+        : pColorRTV(NULL)
+        , SampleCount(0)
     {
     }
 

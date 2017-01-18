@@ -1,4 +1,4 @@
-//*********************************************************
+﻿//*********************************************************
 //
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
@@ -16,9 +16,9 @@
 [Platform::MTAThread]
 int WINAPIV main(Platform::Array<Platform::String^>^ /*params*/)
 {
-	D3D12HeterogeneousMultiadapter sample(1200, 900, L"");
-	auto viewProvider = ref new ViewProvider(reinterpret_cast<UINT_PTR>(&sample));
+    D3D12HeterogeneousMultiadapter sample(1200, 900, L"");
+    auto viewProvider = ref new ViewProvider(reinterpret_cast<UINT_PTR>(&sample));
 
-	Windows::ApplicationModel::Core::CoreApplication::Run(viewProvider);
-	return 0;
+    Windows::ApplicationModel::Core::CoreApplication::Run(viewProvider);
+    return 0;
 }

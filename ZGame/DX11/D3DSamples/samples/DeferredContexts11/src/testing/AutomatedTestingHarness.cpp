@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeferredContexts11\src\testing/AutomatedTestingHarness.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -200,7 +200,8 @@ bool AutomatedTestHarness::FrameUpdate(float fElapsedTime)
 
 static const char *StrategyName(const int strategy)
 {
-    switch (strategy) {
+    switch (strategy)
+    {
     case 0:
         return "Imm";
     case 1:
@@ -228,7 +229,11 @@ void AutomatedTestHarness::WriteOutData()
     // first run through all samples and get all the discrete instance counts(rows) and render type and thread count (cols)
     output.append("Method(#RenderThread),");
     std::vector<DWORD> instanceCounts;
-    struct TYPE_THREAD {int type; int thread;};
+    struct TYPE_THREAD
+    {
+        int type;
+        int thread;
+    };
     std::vector<TYPE_THREAD> typeThreads;
     int lastType = -1;
     int lastThreads = -1;

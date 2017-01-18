@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeinterleavedTexturing\src\SSAO/ConstantBuffers.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -45,22 +45,22 @@ using namespace GFSDK;
 void SSAO::BaseConstantBuffer::Create(ID3D11Device* pD3DDevice)
 {
 #if USE_MAP_DISCARD
-    D3D11_BUFFER_DESC desc = 
+    D3D11_BUFFER_DESC desc =
     {
-         m_ByteWidth, //ByteWidth
-         D3D11_USAGE_DYNAMIC, //Usage
-         D3D11_BIND_CONSTANT_BUFFER, //BindFlags
-         D3D11_CPU_ACCESS_WRITE, //CPUAccessFlags
-         0  //MiscFlags
+        m_ByteWidth, //ByteWidth
+        D3D11_USAGE_DYNAMIC, //Usage
+        D3D11_BIND_CONSTANT_BUFFER, //BindFlags
+        D3D11_CPU_ACCESS_WRITE, //CPUAccessFlags
+        0  //MiscFlags
     };
 #else
-    D3D11_BUFFER_DESC desc = 
+    D3D11_BUFFER_DESC desc =
     {
-         m_ByteWidth, //ByteWidth
-         D3D11_USAGE_DEFAULT, //Usage
-         D3D11_BIND_CONSTANT_BUFFER, //BindFlags
-         0, //CPUAccessFlags
-         0  //MiscFlags
+        m_ByteWidth, //ByteWidth
+        D3D11_USAGE_DEFAULT, //Usage
+        D3D11_BIND_CONSTANT_BUFFER, //BindFlags
+        0, //CPUAccessFlags
+        0  //MiscFlags
     };
 #endif
 

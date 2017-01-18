@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------
 // File: VidMemViaWMI.cpp
 //
-// This method queries the Windows Management Instrumentation (WMI) interfaces 
-// to determine the amount of video memory. On a discrete video card, this is 
-// often close to the amount of dedicated video memory and usually does not take 
-// into account the amount of shared system memory. 
+// This method queries the Windows Management Instrumentation (WMI) interfaces
+// to determine the amount of video memory. On a discrete video card, this is
+// often close to the amount of dedicated video memory and usually does not take
+// into account the amount of shared system memory.
 //
 // Copyright (c) Microsoft Corp. All rights reserved.
 //-----------------------------------------------------------------------------
@@ -28,8 +28,8 @@
 
 HRESULT GetDeviceIDFromHMonitor( HMONITOR hm, WCHAR* strDeviceID, int cchDeviceID ); // from vidmemviaddraw.cpp
 typedef BOOL ( WINAPI* PfnCoSetProxyBlanket )( IUnknown* pProxy, DWORD dwAuthnSvc, DWORD dwAuthzSvc,
-                                               OLECHAR* pServerPrincName, DWORD dwAuthnLevel, DWORD dwImpLevel,
-                                               RPC_AUTH_IDENTITY_HANDLE pAuthInfo, DWORD dwCapabilities );
+        OLECHAR* pServerPrincName, DWORD dwAuthnLevel, DWORD dwImpLevel,
+        RPC_AUTH_IDENTITY_HANDLE pAuthInfo, DWORD dwCapabilities );
 
 HRESULT GetVideoMemoryViaWMI( HMONITOR hMonitor, DWORD* pdwAdapterRam )
 {
@@ -77,7 +77,7 @@ HRESULT GetVideoMemoryViaWMI( HMONITOR hMonitor, DWORD* pdwAdapterRam )
                 pfnCoSetProxyBlanket = ( PfnCoSetProxyBlanket )GetProcAddress( hinstOle32, "CoSetProxyBlanket" );
                 if( pfnCoSetProxyBlanket != 0 )
                 {
-                    // Switch security level to IMPERSONATE. 
+                    // Switch security level to IMPERSONATE.
                     pfnCoSetProxyBlanket( pIWbemServices, RPC_C_AUTHN_WINNT, RPC_C_AUTHZ_NONE, nullptr,
                                           RPC_C_AUTHN_LEVEL_CALL, RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, 0 );
                 }
@@ -91,7 +91,7 @@ HRESULT GetVideoMemoryViaWMI( HMONITOR hMonitor, DWORD* pdwAdapterRam )
             pClassName = SysAllocString( L"Win32_VideoController" );
 
             hr = pIWbemServices->CreateInstanceEnum( pClassName, 0,
-                                                     nullptr, &pEnumVideoControllers );
+                    nullptr, &pEnumVideoControllers );
 #ifdef PRINTF_DEBUGGING
             if( FAILED( hr ) ) wprintf( L"WMI: pIWbemServices->CreateInstanceEnum failed: 0x%0.8x\n", hr );
 #endif

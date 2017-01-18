@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: ScanCS.h
 //
 // A simple inclusive prefix sum(scan) implemented in CS4.0
@@ -15,7 +15,7 @@ public:
     void OnD3D11DestroyDevice();
 
     // Both scan input and scanned output are in the buffer resource referred by p0SRV and p0UAV.
-    // The buffer resource referred by p1SRV and p1UAV is used as intermediate result, 
+    // The buffer resource referred by p1SRV and p1UAV is used as intermediate result,
     // and should be as large as the input/output buffer
     HRESULT ScanCS( ID3D11DeviceContext* pd3dImmediateContext,
 

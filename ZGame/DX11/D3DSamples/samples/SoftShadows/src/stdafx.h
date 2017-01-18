@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        SoftShadows\src/stdafx.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -104,8 +104,14 @@ class D3DPerfScope
 {
 public:
 
-    D3DPerfScope(const D3DCOLOR &color, LPCWSTR name) { D3DPERF_BeginEvent(color, name); }
-    ~D3DPerfScope() { D3DPERF_EndEvent(); }
+    D3DPerfScope(const D3DCOLOR &color, LPCWSTR name)
+    {
+        D3DPERF_BeginEvent(color, name);
+    }
+    ~D3DPerfScope()
+    {
+        D3DPERF_EndEvent();
+    }
 
 private:
 
@@ -134,16 +140,16 @@ inline HRESULT compileFromFile(
     DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #if defined(DEBUG) || defined(_DEBUG)
     // Set the D3DCOMPILE_DEBUG flag to embed debug information in the shaders.
-    // Setting this flag improves the shader debugging experience, but still allows 
-    // the shaders to be optimized and to run exactly the way they will run in 
+    // Setting this flag improves the shader debugging experience, but still allows
+    // the shaders to be optimized and to run exactly the way they will run in
     // the release configuration of this program.
     dwShaderFlags |= D3DCOMPILE_DEBUG;
 #endif
 
     ID3DBlob *pBlobOut = nullptr;
     ID3DBlob *pErrorBlob = nullptr;
-    hr = D3DX11CompileFromFile(str, defines, include, szEntryPoint, szShaderModel, 
-        dwShaderFlags, 0, NULL, &pBlobOut, &pErrorBlob, NULL);
+    hr = D3DX11CompileFromFile(str, defines, include, szEntryPoint, szShaderModel,
+                               dwShaderFlags, 0, NULL, &pBlobOut, &pErrorBlob, NULL);
     blobOut.reset(pBlobOut);
     auto errorBlob = unique_ref(pErrorBlob);
     if (FAILED(hr))
@@ -160,7 +166,7 @@ inline HRESULT compileFromFile(
 struct SimpleVertex
 {
     D3DXVECTOR3 pos;
-    D3DXVECTOR3 normal; 
+    D3DXVECTOR3 normal;
 };
 
 //--------------------------------------------------------------------------------------
@@ -206,7 +212,7 @@ inline HRESULT createPlane(
     ID3D11Buffer *ib = nullptr;
     V_RETURN(device->CreateBuffer(&bd, &initData, &ib));
     indexBuffer.reset(ib);
-    
+
     return S_OK;
 }
 

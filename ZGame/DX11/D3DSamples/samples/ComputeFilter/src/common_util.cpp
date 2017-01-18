@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        ComputeFilter\src/common_util.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -40,24 +40,25 @@
 
 HRESULT get_shader_resource(const wchar_t * id, void ** bytecode, UINT & bytecode_length)
 {
-      *bytecode = nullptr;
-      HMODULE module = GetModuleHandle(NULL);
-      HRSRC resource = FindResource(module, id, RT_RCDATA);
-      if (resource)
-      {
-            bytecode_length = SizeofResource(module, resource);
-            HGLOBAL global_id = LoadResource(module, resource);
-            if (global_id)
-            {
-                  *bytecode = LockResource(global_id);
-                  if (*bytecode)
-                        return S_OK;
-            }
-      }
-      return E_INVALIDARG;
+    *bytecode = nullptr;
+    HMODULE module = GetModuleHandle(NULL);
+    HRSRC resource = FindResource(module, id, RT_RCDATA);
+    if (resource)
+    {
+        bytecode_length = SizeofResource(module, resource);
+        HGLOBAL global_id = LoadResource(module, resource);
+        if (global_id)
+        {
+            *bytecode = LockResource(global_id);
+            if (*bytecode)
+                return S_OK;
+        }
+    }
+    return E_INVALIDARG;
 }
 
-HRESULT messagebox_printf(const char * caption, UINT mb_type, const char * format, ...) {
+HRESULT messagebox_printf(const char * caption, UINT mb_type, const char * format, ...)
+{
     va_list args;
     va_start(args, format);
     char formatted_text[512];

@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        include\nvsimplemesh/NvSimpleRawMesh.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -58,8 +58,14 @@ public:
     BYTE* GetRawVertices();
     BYTE* GetRawIndices();
 
-    float* GetExtents() {return m_extents;}
-    float* GetCenter() {return m_center;}
+    float* GetExtents()
+    {
+        return m_extents;
+    }
+    float* GetCenter()
+    {
+        return m_center;
+    }
 
     static HRESULT TryGuessFilename(WCHAR *szDestBuffer,WCHAR *szMeshFilename, WCHAR *szGuessSuffix);
     ID3D11Texture2D *CreateD3D11DiffuseTextureFor(ID3D11Device *pd3dDevice);
@@ -82,5 +88,5 @@ public:
 
     // Utils to wrap making d3d11 render buffers from a loader mesh
     static const D3D11_INPUT_ELEMENT_DESC D3D11InputElements[];
-    static const int D3D11ElementsSize; 
+    static const int D3D11ElementsSize;
 };

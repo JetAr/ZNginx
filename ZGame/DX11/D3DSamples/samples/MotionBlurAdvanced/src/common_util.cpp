@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        MotionBlurAdvanced\src/common_util.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -36,7 +36,8 @@
 #include <string>
 #include <cstdarg>
 
-HRESULT messagebox_printf(const char * caption, UINT mb_type, const char * format, ...) {
+HRESULT messagebox_printf(const char * caption, UINT mb_type, const char * format, ...)
+{
     va_list args;
     va_start(args, format);
     char formatted_text[512];

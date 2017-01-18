@@ -1,4 +1,4 @@
-//*********************************************************
+﻿//*********************************************************
 //
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
@@ -21,7 +21,7 @@ public:
 
     UINT64 STDMETHODCALLTYPE GetCompletedValue(UINT AffinityMask);
 
-    // It is not recommended to use this function in multi-GPU scenarios 
+    // It is not recommended to use this function in multi-GPU scenarios
     // as it operates only on the active GPU fence.
     // Please refactor your engine to use WaitOnFenceCompletion instead.
     HRESULT STDMETHODCALLTYPE SetEventOnCompletion(

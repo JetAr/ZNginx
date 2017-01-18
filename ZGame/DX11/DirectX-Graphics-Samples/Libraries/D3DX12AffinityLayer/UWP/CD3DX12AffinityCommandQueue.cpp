@@ -1,4 +1,4 @@
-//*********************************************************
+﻿//*********************************************************
 //
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
@@ -28,7 +28,7 @@ void STDMETHODCALLTYPE CD3DX12AffinityCommandQueue::UpdateTileMappings(
     UINT ActiveNodeIndex = GetActiveNodeIndex();
     UINT EffectiveAffinityMask = (AffinityMask == 0) ? GetNodeMask() : AffinityMask & GetNodeMask();
 
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & EffectiveAffinityMask) != 0)
         {
@@ -61,7 +61,7 @@ void STDMETHODCALLTYPE CD3DX12AffinityCommandQueue::CopyTileMappings(
     UINT AffinityMask)
 {
     UINT EffectiveAffinityMask = (AffinityMask == 0) ? GetNodeMask() : AffinityMask & GetNodeMask();
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & EffectiveAffinityMask) != 0)
         {
@@ -88,7 +88,7 @@ void STDMETHODCALLTYPE CD3DX12AffinityCommandQueue::ExecuteCommandLists(
     UINT ActiveNodeIndex = GetActiveNodeIndex();
     UINT EffectiveAffinityMask = (AffinityMask == 0) ? GetNodeMask() : AffinityMask & GetNodeMask();
 
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & EffectiveAffinityMask) != 0)
         {
@@ -172,7 +172,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityCommandQueue::Signal(
 {
     UINT ActiveNodeIndex = GetActiveNodeIndex();
     UINT EffectiveAffinityMask = (AffinityMask == 0) ? GetNodeMask() : AffinityMask & GetNodeMask();
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & EffectiveAffinityMask) != 0)
         {
@@ -199,7 +199,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityCommandQueue::Wait(
 {
     UINT ActiveNodeIndex = GetActiveNodeIndex();
     UINT EffectiveAffinityMask = (AffinityMask == 0) ? GetNodeMask() : AffinityMask & GetNodeMask();
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & EffectiveAffinityMask) != 0)
         {
@@ -269,13 +269,13 @@ void CD3DX12AffinityCommandQueue::WaitForCompletion(UINT AffinityMask)
 {
     // Very inefficient. Should be used very sparingly.
     UINT EffectiveAffinityMask = (AffinityMask == 0) ? GetNodeMask() : AffinityMask & GetNodeMask();
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & EffectiveAffinityMask) != 0)
         {
             ID3D12Fence* pFence;
             ID3D12Device* pDevice = GetParentDevice()->GetAffinityMode() == EAffinityMode::LDA ?
-                GetParentDevice()->GetChildObject(0) : GetParentDevice()->GetChildObject(i);
+                                    GetParentDevice()->GetChildObject(0) : GetParentDevice()->GetChildObject(i);
             pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&pFence));
             mCommandQueues[i]->Signal(pFence, 1);
             HANDLE hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);

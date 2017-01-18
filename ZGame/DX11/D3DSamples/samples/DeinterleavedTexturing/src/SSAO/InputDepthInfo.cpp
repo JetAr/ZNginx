@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeinterleavedTexturing\src\SSAO/InputDepthInfo.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -40,8 +40,8 @@
 GFSDK_SSAO_Status GFSDK::SSAO::InputDepthInfo::SetData(const GFSDK_SSAO_InputDepthData* pDepthData)
 {
     if (!pDepthData ||
-        !pDepthData->pFullResDepthTextureSRV ||
-        !pDepthData->pProjectionMatrix)
+            !pDepthData->pFullResDepthTextureSRV ||
+            !pDepthData->pProjectionMatrix)
     {
         return GFSDK_SSAO_NULL_ARGUMENT;
     }

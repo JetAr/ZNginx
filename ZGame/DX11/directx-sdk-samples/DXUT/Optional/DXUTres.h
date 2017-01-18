@@ -1,7 +1,7 @@
-//----------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------
 // File: dxutres.h
 //
-// Functions to create DXUT media from arrays in memory 
+// Functions to create DXUT media from arrays in memory
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
 // ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO

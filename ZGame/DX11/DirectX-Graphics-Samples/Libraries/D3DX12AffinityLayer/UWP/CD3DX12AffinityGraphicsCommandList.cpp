@@ -1,4 +1,4 @@
-//*********************************************************
+﻿//*********************************************************
 //
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
@@ -30,22 +30,22 @@ HRESULT CD3DX12AffinityGraphicsCommandList::Close()
     {
         ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
 #else
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
 #endif
-            HRESULT const hr = List->Close();
+        HRESULT const hr = List->Close();
 
-            if (S_OK != hr)
-            {
-                return hr;
-            }
+        if (S_OK != hr)
+        {
+            return hr;
         }
+    }
 #ifdef ALWAYS_RESET_ALL_COMMAND_LISTS
 #else
-    }
+}
 #endif
 
     return S_OK;
@@ -66,24 +66,24 @@ HRESULT CD3DX12AffinityGraphicsCommandList::Reset(
     {
         ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
 #else
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
 #endif
 
-            HRESULT const hr = List->Reset(pAllocator->GetChildObject(i),
-                pInitialState ? pInitialState->mPipelineStates[i] : nullptr);
+        HRESULT const hr = List->Reset(pAllocator->GetChildObject(i),
+                                       pInitialState ? pInitialState->mPipelineStates[i] : nullptr);
 
-            if (S_OK != hr)
-            {
-                return hr;
-            }
+        if (S_OK != hr)
+        {
+            return hr;
         }
     }
+}
 
-    return S_OK;
+return S_OK;
 }
 
 void CD3DX12AffinityGraphicsCommandList::ClearState(
@@ -91,7 +91,7 @@ void CD3DX12AffinityGraphicsCommandList::ClearState(
 {
     CD3DX12AffinityPipelineState* PipelineState = static_cast<CD3DX12AffinityPipelineState*>(pPipelineState);
 
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -107,12 +107,12 @@ void CD3DX12AffinityGraphicsCommandList::DrawInstanced(
     UINT StartVertexLocation,
     UINT StartInstanceLocation)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->DrawInstanced(VertexCountPerInstance, InstanceCount, StartVertexLocation, StartInstanceLocation);
         }
     }
@@ -123,7 +123,7 @@ void CD3DX12AffinityGraphicsCommandList::Dispatch(
     UINT ThreadGroupCountY,
     UINT ThreadGroupCountZ)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -143,12 +143,12 @@ void CD3DX12AffinityGraphicsCommandList::CopyBufferRegion(
     CD3DX12AffinityResource* DstBuffer = static_cast<CD3DX12AffinityResource*>(pDstBuffer);
     CD3DX12AffinityResource* SrcBuffer = static_cast<CD3DX12AffinityResource*>(pSrcBuffer);
 
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->CopyBufferRegion(DstBuffer->mResources[i], DstOffset, SrcBuffer->mResources[i], SrcOffset, NumBytes);
         }
     }
@@ -168,7 +168,7 @@ void CD3DX12AffinityGraphicsCommandList::CopyTextureRegion(
     D3D12_TEXTURE_COPY_LOCATION Dst = pDst->ToD3D12();
     D3D12_TEXTURE_COPY_LOCATION Src = pSrc->ToD3D12();
 
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -185,12 +185,12 @@ void CD3DX12AffinityGraphicsCommandList::CopyResource(
     CD3DX12AffinityResource* pDstResource,
     CD3DX12AffinityResource* pSrcResource)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->CopyResource(pDstResource->mResources[i], pSrcResource->mResources[i]);
         }
     }
@@ -204,12 +204,12 @@ void CD3DX12AffinityGraphicsCommandList::CopyTiles(
     UINT64 BufferStartOffsetInBytes,
     D3D12_TILE_COPY_FLAGS Flags)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->CopyTiles(
                 pTiledResource->mResources[i],
                 pTileRegionStartCoordinate,
@@ -229,12 +229,12 @@ void CD3DX12AffinityGraphicsCommandList::ResolveSubresource(
     DXGI_FORMAT Format)
 {
 
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->ResolveSubresource(pDstResource->mResources[i], DstSubresource, pSrcResource->mResources[i], SrcSubresource, Format);
         }
     }
@@ -243,7 +243,7 @@ void CD3DX12AffinityGraphicsCommandList::ResolveSubresource(
 void CD3DX12AffinityGraphicsCommandList::IASetPrimitiveTopology(
     D3D12_PRIMITIVE_TOPOLOGY PrimitiveTopology)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -257,7 +257,7 @@ void CD3DX12AffinityGraphicsCommandList::RSSetViewports(
     UINT NumViewports,
     const D3D12_VIEWPORT* pViewports)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -271,7 +271,7 @@ void CD3DX12AffinityGraphicsCommandList::RSSetScissorRects(
     UINT NumRects,
     const D3D12_RECT* pRects)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -284,7 +284,7 @@ void CD3DX12AffinityGraphicsCommandList::RSSetScissorRects(
 void CD3DX12AffinityGraphicsCommandList::OMSetBlendFactor(
     const FLOAT BlendFactor[4])
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -297,7 +297,7 @@ void CD3DX12AffinityGraphicsCommandList::OMSetBlendFactor(
 void CD3DX12AffinityGraphicsCommandList::OMSetStencilRef(
     UINT StencilRef)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -311,7 +311,7 @@ void CD3DX12AffinityGraphicsCommandList::ResourceBarrier(
     UINT NumBarriers,
     const D3DX12_AFFINITY_RESOURCE_BARRIER* pBarriers)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -365,7 +365,7 @@ void CD3DX12AffinityGraphicsCommandList::ResourceBarrier(
 void CD3DX12AffinityGraphicsCommandList::ExecuteBundle(
     CD3DX12AffinityGraphicsCommandList* pCommandList)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -381,12 +381,12 @@ void CD3DX12AffinityGraphicsCommandList::SetDescriptorHeaps(
     CD3DX12AffinityDescriptorHeap** ppDescriptorHeaps)
 {
     mCachedDescriptorHeaps.resize(NumDescriptorHeaps);
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             for (UINT h = 0; h < NumDescriptorHeaps; ++h)
             {
                 mCachedDescriptorHeaps[h] = static_cast<CD3DX12AffinityDescriptorHeap*>(ppDescriptorHeaps[h])->GetChildObject(i);
@@ -400,12 +400,12 @@ void CD3DX12AffinityGraphicsCommandList::SetDescriptorHeaps(
 void CD3DX12AffinityGraphicsCommandList::SetComputeRootSignature(
     CD3DX12AffinityRootSignature* pRootSignature)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->SetComputeRootSignature(pRootSignature->mRootSignatures[i]);
         }
     }
@@ -416,12 +416,12 @@ void CD3DX12AffinityGraphicsCommandList::SetGraphicsRootSignature(
 {
     CD3DX12AffinityRootSignature* AffinityRootSignature = static_cast<CD3DX12AffinityRootSignature*>(pRootSignature);
 
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->SetGraphicsRootSignature(AffinityRootSignature->mRootSignatures[i]);
         }
     }
@@ -432,12 +432,12 @@ void CD3DX12AffinityGraphicsCommandList::SetComputeRoot32BitConstant(
     UINT SrcData,
     UINT DestOffsetIn32BitValues)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->SetComputeRoot32BitConstant(RootParameterIndex, SrcData, DestOffsetIn32BitValues);
         }
     }
@@ -448,12 +448,12 @@ void CD3DX12AffinityGraphicsCommandList::SetGraphicsRoot32BitConstant(
     UINT SrcData,
     UINT DestOffsetIn32BitValues)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->SetGraphicsRoot32BitConstant(RootParameterIndex, SrcData, DestOffsetIn32BitValues);
         }
     }
@@ -465,12 +465,12 @@ void CD3DX12AffinityGraphicsCommandList::SetComputeRoot32BitConstants(
     const void* pSrcData,
     UINT DestOffsetIn32BitValues)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-           
+
             List->SetComputeRoot32BitConstants(RootParameterIndex, Num32BitValuesToSet, pSrcData, DestOffsetIn32BitValues);
         }
     }
@@ -482,12 +482,12 @@ void CD3DX12AffinityGraphicsCommandList::SetGraphicsRoot32BitConstants(
     const void* pSrcData,
     UINT DestOffsetIn32BitValues)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->SetGraphicsRoot32BitConstants(RootParameterIndex, Num32BitValuesToSet, pSrcData, DestOffsetIn32BitValues);
         }
     }
@@ -497,12 +497,12 @@ void CD3DX12AffinityGraphicsCommandList::SetComputeRootConstantBufferView(
     UINT RootParameterIndex,
     D3D12_GPU_VIRTUAL_ADDRESS BufferLocation)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->SetComputeRootConstantBufferView(RootParameterIndex, GetParentDevice()->GetGPUVirtualAddress(BufferLocation, i));
         }
     }
@@ -512,12 +512,12 @@ void CD3DX12AffinityGraphicsCommandList::SetGraphicsRootConstantBufferView(
     UINT RootParameterIndex,
     D3D12_GPU_VIRTUAL_ADDRESS BufferLocation)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->SetGraphicsRootConstantBufferView(RootParameterIndex, GetParentDevice()->GetGPUVirtualAddress(BufferLocation, i));
         }
     }
@@ -527,12 +527,12 @@ void CD3DX12AffinityGraphicsCommandList::SetComputeRootShaderResourceView(
     UINT RootParameterIndex,
     D3D12_GPU_VIRTUAL_ADDRESS BufferLocation)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->SetComputeRootShaderResourceView(RootParameterIndex, GetParentDevice()->GetGPUVirtualAddress(BufferLocation, i));
         }
     }
@@ -542,12 +542,12 @@ void CD3DX12AffinityGraphicsCommandList::SetGraphicsRootShaderResourceView(
     UINT RootParameterIndex,
     D3D12_GPU_VIRTUAL_ADDRESS BufferLocation)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->SetGraphicsRootShaderResourceView(RootParameterIndex, GetParentDevice()->GetGPUVirtualAddress(BufferLocation, i));
         }
     }
@@ -557,12 +557,12 @@ void CD3DX12AffinityGraphicsCommandList::SetComputeRootUnorderedAccessView(
     UINT RootParameterIndex,
     D3D12_GPU_VIRTUAL_ADDRESS BufferLocation)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->SetComputeRootUnorderedAccessView(RootParameterIndex, GetParentDevice()->GetGPUVirtualAddress(BufferLocation, i));
         }
     }
@@ -572,12 +572,12 @@ void CD3DX12AffinityGraphicsCommandList::SetGraphicsRootUnorderedAccessView(
     UINT RootParameterIndex,
     D3D12_GPU_VIRTUAL_ADDRESS BufferLocation)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->SetGraphicsRootUnorderedAccessView(RootParameterIndex, GetParentDevice()->GetGPUVirtualAddress(BufferLocation, i));
         }
     }
@@ -590,12 +590,12 @@ void CD3DX12AffinityGraphicsCommandList::IASetVertexBuffers(
 {
     mCachedBufferViews.resize(NumViews);
 
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             for (UINT v = 0; v < NumViews; ++v)
             {
                 mCachedBufferViews[v] = pViews[v];
@@ -614,12 +614,12 @@ void CD3DX12AffinityGraphicsCommandList::SOSetTargets(
 {
     mCachedStreamOutBufferViews.resize(NumViews);
 
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             for (UINT v = 0; v < NumViews; ++v)
             {
                 mCachedStreamOutBufferViews[v] = pViews[v];
@@ -638,12 +638,12 @@ void CD3DX12AffinityGraphicsCommandList::OMSetRenderTargets(
     BOOL RTsSingleHandleToDescriptorRange,
     const D3D12_CPU_DESCRIPTOR_HANDLE* pDepthStencilDescriptor)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             mCachedRenderTargetViews.resize(NumRenderTargetDescriptors);
             for (UINT r = 0; r < NumRenderTargetDescriptors; ++r)
             {
@@ -671,13 +671,13 @@ void CD3DX12AffinityGraphicsCommandList::ClearDepthStencilView(
     UINT NumRects,
     const D3D12_RECT* pRects)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
 
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->ClearDepthStencilView(GetParentDevice()->GetCPUHeapPointer(DepthStencilView, i), ClearFlags, Depth, Stencil, NumRects, pRects);
         }
     }
@@ -689,7 +689,7 @@ void CD3DX12AffinityGraphicsCommandList::ClearRenderTargetView(
     UINT NumRects,
     const D3D12_RECT* pRects)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -713,12 +713,12 @@ void CD3DX12AffinityGraphicsCommandList::ClearUnorderedAccessViewUint(
     UINT NumRects,
     const D3D12_RECT* pRects)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->ClearUnorderedAccessViewUint(
                 GetParentDevice()->GetGPUHeapPointer(ViewGPUHandleInCurrentHeap, i),
                 GetParentDevice()->GetCPUHeapPointer(ViewCPUHandle, i),
@@ -735,12 +735,12 @@ void CD3DX12AffinityGraphicsCommandList::ClearUnorderedAccessViewFloat(
     UINT NumRects,
     const D3D12_RECT* pRects)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->ClearUnorderedAccessViewFloat(
                 GetParentDevice()->GetGPUHeapPointer(ViewGPUHandleInCurrentHeap, i),
                 GetParentDevice()->GetCPUHeapPointer(ViewCPUHandle, i),
@@ -753,12 +753,12 @@ void CD3DX12AffinityGraphicsCommandList::DiscardResource(
     CD3DX12AffinityResource* pResource,
     const D3D12_DISCARD_REGION* pRegion)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->DiscardResource(
                 pResource->mResources[i],
                 pRegion);
@@ -771,7 +771,7 @@ void CD3DX12AffinityGraphicsCommandList::BeginQuery(
     D3D12_QUERY_TYPE Type,
     UINT Index)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -791,7 +791,7 @@ void CD3DX12AffinityGraphicsCommandList::EndQuery(
     D3D12_QUERY_TYPE Type,
     UINT Index)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -814,7 +814,7 @@ void CD3DX12AffinityGraphicsCommandList::ResolveQueryData(
     CD3DX12AffinityResource* pDestinationBuffer,
     UINT64 AlignedDestinationBufferOffset)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -838,12 +838,12 @@ void CD3DX12AffinityGraphicsCommandList::SetPredication(
     UINT64 AlignedBufferOffset,
     D3D12_PREDICATION_OP Operation)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->SetPredication(
                 pBuffer->mResources[i],
                 AlignedBufferOffset,
@@ -857,7 +857,7 @@ void CD3DX12AffinityGraphicsCommandList::SetMarker(
     const void* pData,
     UINT Size)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -876,7 +876,7 @@ void CD3DX12AffinityGraphicsCommandList::BeginEvent(
     const void* pData,
     UINT Size)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -892,7 +892,7 @@ void CD3DX12AffinityGraphicsCommandList::BeginEvent(
 
 void CD3DX12AffinityGraphicsCommandList::EndEvent(void)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -911,12 +911,12 @@ void CD3DX12AffinityGraphicsCommandList::ExecuteIndirect(
     CD3DX12AffinityResource* pCountBuffer,
     UINT64 CountBufferOffset)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->ExecuteIndirect(
                 pCommandSignature->GetChildObject(i),
                 MaxCommandCount,
@@ -961,12 +961,12 @@ void CD3DX12AffinityGraphicsCommandList::SetPipelineState(
 {
     CD3DX12AffinityPipelineState* PipelineState = static_cast<CD3DX12AffinityPipelineState*>(pPipelineState);
 
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->SetPipelineState(PipelineState->mPipelineStates[i]);
         }
     }
@@ -976,12 +976,12 @@ void CD3DX12AffinityGraphicsCommandList::SetComputeRootDescriptorTable(
     UINT RootParameterIndex,
     D3D12_GPU_DESCRIPTOR_HANDLE BaseDescriptor)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-            
+
             List->SetComputeRootDescriptorTable(RootParameterIndex, GetParentDevice()->GetGPUHeapPointer(BaseDescriptor, i));
         }
     }
@@ -991,7 +991,7 @@ void CD3DX12AffinityGraphicsCommandList::SetGraphicsRootDescriptorTable(
     UINT RootParameterIndex,
     D3D12_GPU_DESCRIPTOR_HANDLE BaseDescriptor)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -1009,12 +1009,12 @@ void CD3DX12AffinityGraphicsCommandList::IASetIndexBuffer(
     {
         D3D12_INDEX_BUFFER_VIEW View = *pView;
 
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & mAffinityMask) != 0)
             {
                 ID3D12GraphicsCommandList* List = mGraphicsCommandLists[i];
-                
+
                 View.BufferLocation = GetParentDevice()->GetGPUVirtualAddress(pView->BufferLocation, i);
                 List->IASetIndexBuffer(&View);
             }
@@ -1022,7 +1022,7 @@ void CD3DX12AffinityGraphicsCommandList::IASetIndexBuffer(
     }
     else
     {
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & mAffinityMask) != 0)
             {
@@ -1040,7 +1040,7 @@ void CD3DX12AffinityGraphicsCommandList::DrawIndexedInstanced(
     INT BaseVertexLocation,
     UINT StartInstanceLocation)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -1055,7 +1055,7 @@ void CD3DX12AffinityGraphicsCommandList::BroadcastResource(CD3DX12AffinityResour
     DEBUG_ASSERT(mAffinityMask == (1 << NodeIndex));
 
     // Copy is a push operation on the Source node commandlist to a target resource
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & TargetNodeMask) != 0)
         {
@@ -1064,7 +1064,7 @@ void CD3DX12AffinityGraphicsCommandList::BroadcastResource(CD3DX12AffinityResour
                 mGraphicsCommandLists[NodeIndex]->CopyResource(
                     pResource->GetChildObject(i),
                     pResource->GetChildObject(NodeIndex)
-                    );
+                );
             }
         }
     }

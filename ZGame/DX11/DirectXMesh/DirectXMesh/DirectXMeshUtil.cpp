@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXMeshUtil.cpp
-//  
+//
 // DirectX Mesh Geometry Library - Utilities
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -151,7 +151,7 @@ bool IsValid( const D3D11_INPUT_ELEMENT_DESC* vbDecl, size_t nDecl )
             alignment = 4;
 
         if ( ( vbDecl[ j ].AlignedByteOffset != D3D11_APPEND_ALIGNED_ELEMENT )
-             && ( vbDecl[ j ].AlignedByteOffset % alignment ) != 0 )
+                && ( vbDecl[ j ].AlignedByteOffset % alignment ) != 0 )
         {
             // Invalid alignment for element
             return false;
@@ -225,7 +225,7 @@ bool IsValid( const D3D12_INPUT_LAYOUT_DESC& vbDecl )
             alignment = 4;
 
         if ( ( vbDecl.pInputElementDescs[ j ].AlignedByteOffset != D3D12_APPEND_ALIGNED_ELEMENT )
-             && ( vbDecl.pInputElementDescs[ j ].AlignedByteOffset % alignment ) != 0 )
+                && ( vbDecl.pInputElementDescs[ j ].AlignedByteOffset % alignment ) != 0 )
         {
             // Invalid alignment for element
             return false;
@@ -321,7 +321,7 @@ void ComputeInputLayout( const D3D11_INPUT_ELEMENT_DESC* vbDecl, size_t nDecl, u
         {
             offsets[ j ] = alignedByteOffset;
         }
-        
+
         if( strides )
         {
             uint32_t istride = uint32_t( alignedByteOffset + bpe );
@@ -384,7 +384,7 @@ void ComputeInputLayout( const D3D12_INPUT_LAYOUT_DESC& vbDecl, uint32_t* offset
         {
             offsets[ j ] = alignedByteOffset;
         }
-        
+
         if( strides )
         {
             uint32_t istride = uint32_t( alignedByteOffset + bpe );
@@ -470,7 +470,7 @@ void _ComputeVertexCacheMissRate( _In_reads_(nFaces*3) const index_t* indices, s
 
     std::unique_ptr<uint32_t[]> fifo( new uint32_t[ cacheSize ] );
     size_t tail = 0;
-    
+
     memset( fifo.get(), 0xff, sizeof(uint32_t) * cacheSize );
 
     for( size_t j = 0; j < (nFaces * 3); ++j )

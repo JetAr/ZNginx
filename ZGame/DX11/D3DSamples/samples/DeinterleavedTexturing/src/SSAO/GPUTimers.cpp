@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeinterleavedTexturing\src\SSAO/GPUTimers.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -116,7 +116,7 @@ void GPUTimers::EndFrame(ID3D11DeviceContext* pDeviceContext)
                     UINT64 TimestampValueBegin;
                     UINT64 TimestampValueEnd;
                     if ((pDeviceContext->GetData(m_Timers[i].pGPUTimersBegin, &TimestampValueBegin, sizeof(UINT64), D3D11_ASYNC_GETDATA_DONOTFLUSH) == S_OK) &&
-                        (pDeviceContext->GetData(m_Timers[i].pGPUTimersEnd,   &TimestampValueEnd,   sizeof(UINT64), D3D11_ASYNC_GETDATA_DONOTFLUSH) == S_OK))
+                            (pDeviceContext->GetData(m_Timers[i].pGPUTimersEnd,   &TimestampValueEnd,   sizeof(UINT64), D3D11_ASYNC_GETDATA_DONOTFLUSH) == S_OK))
                     {
                         m_Timers[i].TimestampQueryInFlight = false;
                         m_Timers[i].GPUTimeInMS = float(double(TimestampValueEnd - TimestampValueBegin) * InvFrequencyMS);

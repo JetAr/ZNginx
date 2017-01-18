@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // CpuTopology.h
-// 
+//
 // CpuToplogy class declaration.
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -20,8 +20,8 @@ class ICpuTopology;
 class CpuTopology
 {
 public:
-                CpuTopology( bool bForceCpuid = false );
-                ~CpuTopology();
+    CpuTopology( bool bForceCpuid = false );
+    ~CpuTopology();
 
     bool        IsDefaultImpl() const;
     DWORD       NumberOfProcessCores() const;

@@ -1,4 +1,4 @@
-//----------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------
 // File: VideoMemory.cpp
 //
 // Copyright (c) Microsoft Corp. All rights reserved.
@@ -100,7 +100,7 @@ void EnumerateUsingD3D9( IDirect3D9* pD3D9 )
         DWORD dwAvailableVidMem;
         if( SUCCEEDED( GetVideoMemoryViaDirectDraw( hMonitor, &dwAvailableVidMem ) ) )
             wprintf( L"\tGetVideoMemoryViaDirectDraw\n\t\tdwAvailableVidMem: %u MB (%u)\n",
-                        dwAvailableVidMem / 1024 / 1024, dwAvailableVidMem );
+                     dwAvailableVidMem / 1024 / 1024, dwAvailableVidMem );
         else
             wprintf( L"\tGetVideoMemoryViaDirectDraw\n\t\tn/a\n" );
 
@@ -108,7 +108,7 @@ void EnumerateUsingD3D9( IDirect3D9* pD3D9 )
         DWORD dwDisplayMemory;
         if( SUCCEEDED( GetVideoMemoryViaDxDiag( hMonitor, &dwDisplayMemory ) ) )
             wprintf( L"\tGetVideoMemoryViaDxDiag\n\t\tdwDisplayMemory: %u MB (%u)\n", dwDisplayMemory / 1024 /
-                        1024, dwDisplayMemory );
+                     1024, dwDisplayMemory );
         else
             wprintf( L"\tGetVideoMemoryViaDxDiag\n\t\tn/a\n" );
 
@@ -119,14 +119,14 @@ void EnumerateUsingD3D9( IDirect3D9* pD3D9 )
         DWORD dwAdapterRAM;
         if( SUCCEEDED( GetVideoMemoryViaWMI( hMonitor, &dwAdapterRAM ) ) )
             wprintf( L"\tGetVideoMemoryViaWMI\n\t\tdwAdapterRAM: %u MB (%u)\n", dwAdapterRAM / 1024 / 1024,
-                        dwAdapterRAM );
+                     dwAdapterRAM );
         else
             wprintf( L"\tGetVideoMemoryViaWMI\n\t\tn/a\n" );
 
         UINT dwAvailableTextureMem;
         if( SUCCEEDED( GetVideoMemoryViaD3D9( hMonitor, &dwAvailableTextureMem ) ) )
             wprintf( L"\tGetVideoMemoryViaD3D9\n\t\tdwAvailableTextureMem: %u MB (%u)\n", dwAvailableTextureMem /
-                        1024 / 1024, dwAvailableTextureMem );
+                     1024 / 1024, dwAvailableTextureMem );
         else
             wprintf( L"\tGetVideoMemoryViaD3D9\n\t\tn/a\n" );
     }
@@ -137,10 +137,10 @@ void EnumerateUsingD3D9( IDirect3D9* pD3D9 )
 int main()
 {
 
-// DXGI is only available on Windows Vista or later. This method returns the 
-// amount of dedicated video memory, the amount of dedicated system memory, 
-// and the amount of shared system memory. DXGI is more reflective of the true 
-// system configuration than the other 4 methods. 
+// DXGI is only available on Windows Vista or later. This method returns the
+// amount of dedicated video memory, the amount of dedicated system memory,
+// and the amount of shared system memory. DXGI is more reflective of the true
+// system configuration than the other 4 methods.
 
 #ifndef FORCE_USE_D3D9
     HINSTANCE hDXGI = LoadLibrary( L"dxgi.dll" );
@@ -165,7 +165,7 @@ int main()
                 return -1;
             }
         }
-        
+
         HRESULT hr = pCreateDXGIFactory( __uuidof( IDXGIFactory ), ( LPVOID* )&pDXGIFactory );
 
         if ( SUCCEEDED(hr) )

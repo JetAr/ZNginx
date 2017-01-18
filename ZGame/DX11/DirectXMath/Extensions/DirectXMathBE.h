@@ -1,11 +1,11 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXMathBE.h -- Big-endian swap extensions for SIMD C++ Math library
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
 // ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
 // THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
 // PARTICULAR PURPOSE.
-//  
+//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // http://go.microsoft.com/fwlink/?LinkID=615560
@@ -36,7 +36,7 @@ typedef const DirectX::XMMATRIX& FXMMATRIX;
 
 inline XMVECTOR XM_CALLCONV XMVectorEndian
 (
-    FXMVECTOR V 
+    FXMVECTOR V
 )
 {
 #if defined(_XM_ARM_NEON_INTRINSICS_) && !defined(_XM_NO_INTRINSICS_)
@@ -88,11 +88,11 @@ inline bool XMVerifySSSE3Support()
 
 inline XMVECTOR XM_CALLCONV XMVectorEndian
 (
-    FXMVECTOR V 
+    FXMVECTOR V
 )
 {
     static const XMVECTORU32 idx = { 0x00010203, 0x04050607, 0x08090A0B, 0x0C0D0E0F };
-   
+
     __m128i Result = _mm_shuffle_epi8( _mm_castps_si128(V), idx );
     return _mm_castsi128_ps( Result );
 }

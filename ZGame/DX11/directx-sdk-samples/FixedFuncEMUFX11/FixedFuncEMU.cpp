@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: FixedFuncEMU.cpp
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -114,7 +114,7 @@ ID3DX11EffectVectorVariable*         g_pFogColor = nullptr;
 #define IDC_TOGGLEWARP          5
 
 //--------------------------------------------------------------------------------------
-// Forward declarations 
+// Forward declarations
 //--------------------------------------------------------------------------------------
 bool CALLBACK ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* pUserContext );
 void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext );
@@ -128,7 +128,7 @@ bool CALLBACK IsD3D11DeviceAcceptable( const CD3D11EnumAdapterInfo *AdapterInfo,
 HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc,
                                       void* pUserContext );
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                          const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext );
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext );
 void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime,
@@ -142,7 +142,7 @@ void RenderMesh( CDXUTSDKMesh& mesh, ID3D11DeviceContext* pd3dImmediateContext, 
 
 
 //--------------------------------------------------------------------------------------
-// Entry point to the program. Initializes everything and goes into a message processing 
+// Entry point to the program. Initializes everything and goes into a message processing
 // loop. Idle time is used to render the scene.
 //--------------------------------------------------------------------------------------
 int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow )
@@ -152,7 +152,7 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
 
-    // DXUT will create and use the best device (D3D11) 
+    // DXUT will create and use the best device (D3D11)
     // that is available on the system depending on which D3D callbacks are set below
 
     // Set DXUT callbacks
@@ -180,7 +180,7 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 
 //--------------------------------------------------------------------------------------
-// Initialize the app 
+// Initialize the app
 //--------------------------------------------------------------------------------------
 void InitApp()
 {
@@ -188,13 +188,15 @@ void InitApp()
     g_HUD.Init( &g_DialogResourceManager );
     g_SampleUI.Init( &g_DialogResourceManager );
 
-    g_HUD.SetCallback( OnGUIEvent ); int iY = 10;
+    g_HUD.SetCallback( OnGUIEvent );
+    int iY = 10;
     g_HUD.AddButton( IDC_TOGGLEFULLSCREEN, L"Toggle full screen", 0, iY, 170, 23 );
     g_HUD.AddButton( IDC_CHANGEDEVICE, L"Change device (F2)", 0, iY += 26, 170, 23, VK_F2 );
     g_HUD.AddButton( IDC_TOGGLEREF, L"Toggle REF (F3)", 0, iY += 26, 170, 23, VK_F3 );
     g_HUD.AddButton( IDC_TOGGLEWARP, L"Toggle WARP (F4)", 0, iY += 26, 170, 23, VK_F4 );
 
-    g_HUD.SetCallback( OnGUIEvent ); iY = 10;
+    g_HUD.SetCallback( OnGUIEvent );
+    iY = 10;
 }
 
 
@@ -268,7 +270,7 @@ void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext 
                 // Found a free ball
                 g_balls[i].dStartTime = fTime;
                 wLaunchMatrix = XMMatrixRotationY( ( i % 2 ) * DEG2RAD(180.0f) + fBlackHoleRads +
-                                     DEG2RAD( fBall_Life*g_fRotateSpeed ) );
+                                                   DEG2RAD( fBall_Life*g_fRotateSpeed ) );
                 XMStoreFloat3( &g_balls[i].velStart, XMVector3TransformNormal( XMLoadFloat3( &ballLaunch ), wLaunchMatrix ) );
                 XMStoreFloat4x4( &g_balls[i].mWorld, XMMatrixTranslation( ballStart.x, ballStart.y, ballStart.z ) );
                 bFound = true;
@@ -334,14 +336,18 @@ void CALLBACK OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, v
 {
     switch( nControlID )
     {
-        case IDC_TOGGLEFULLSCREEN:
-            DXUTToggleFullScreen(); break;
-        case IDC_TOGGLEREF:
-            DXUTToggleREF(); break;
-        case IDC_TOGGLEWARP:
-            DXUTToggleWARP(); break;
-        case IDC_CHANGEDEVICE:
-            g_D3DSettingsDlg.SetActive( !g_D3DSettingsDlg.IsActive() ); break;
+    case IDC_TOGGLEFULLSCREEN:
+        DXUTToggleFullScreen();
+        break;
+    case IDC_TOGGLEREF:
+        DXUTToggleREF();
+        break;
+    case IDC_TOGGLEWARP:
+        DXUTToggleWARP();
+        break;
+    case IDC_CHANGEDEVICE:
+        g_D3DSettingsDlg.SetActive( !g_D3DSettingsDlg.IsActive() );
+        break;
     }
 }
 
@@ -371,8 +377,8 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG
     // Set the D3DCOMPILE_DEBUG flag to embed debug information in the shaders.
-    // Setting this flag improves the shader debugging experience, but still allows 
-    // the shaders to be optimized and to run exactly the way they will run in 
+    // Setting this flag improves the shader debugging experience, but still allows
+    // the shaders to be optimized and to run exactly the way they will run in
     // the release configuration of this program.
     dwShaderFlags |= D3DCOMPILE_DEBUG;
 
@@ -446,7 +452,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     D3DX11_PASS_DESC PassDesc;
     V_RETURN( g_pRenderSceneGouraudTech->GetPassByIndex( 0 )->GetDesc( &PassDesc ) );
     V_RETURN( pd3dDevice->CreateInputLayout( layout, 3, PassDesc.pIAInputSignature,
-                                             PassDesc.IAInputSignatureSize, &g_pVertexLayout ) );
+              PassDesc.IAInputSignatureSize, &g_pVertexLayout ) );
 
     // Load the meshes
     V_RETURN( g_ballMesh.Create( pd3dDevice, L"misc\\ball.sdkmesh" ) );
@@ -521,7 +527,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 // Create any resources that depend on the back buffer
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                          const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
     HRESULT hr = S_OK;
 
@@ -586,7 +592,7 @@ void RenderMesh( CDXUTSDKMesh& mesh, ID3D11DeviceContext* pd3dImmediateContext, 
     D3DX11_TECHNIQUE_DESC techDesc;
     HRESULT hr;
     V( pTechnique->GetDesc( &techDesc ) );
-    
+
     for( UINT p = 0; p < techDesc.Passes; ++p )
     {
         for( UINT subset = 0; subset < mesh.GetNumSubsets( 0 ); ++subset )
@@ -725,7 +731,7 @@ void RenderText()
 
 
 //--------------------------------------------------------------------------------------
-// Release resources created in OnD3D11ResizedSwapChain 
+// Release resources created in OnD3D11ResizedSwapChain
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 {
@@ -734,7 +740,7 @@ void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 
 
 //--------------------------------------------------------------------------------------
-// Release resources created in OnD3D11CreateDevice 
+// Release resources created in OnD3D11CreateDevice
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
 {

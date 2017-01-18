@@ -1,11 +1,11 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXSHD3D11.cpp -- C++ Spherical Harmonics Math Library
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
 // ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
 // THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
 // PARTICULAR PURPOSE.
-//  
+//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // http://go.microsoft.com/fwlink/p/?LinkId=262885
@@ -23,7 +23,13 @@
 
 namespace
 {
-struct aligned_deleter { void operator()(void* p) { _aligned_free(p); } };
+struct aligned_deleter
+{
+    void operator()(void* p)
+    {
+        _aligned_free(p);
+    }
+};
 
 typedef std::unique_ptr<DirectX::XMVECTOR, aligned_deleter> ScopedAlignedArrayXMVECTOR;
 
@@ -40,20 +46,42 @@ public:
         }
     }
 
-    bool IsNull() const { return (!_pointer); }
+    bool IsNull() const
+    {
+        return (!_pointer);
+    }
 
-    T& operator*() { return *_pointer; }
-    T* operator->() { return _pointer; }
-    T** operator&() { return &_pointer; }
+    T& operator*()
+    {
+        return *_pointer;
+    }
+    T* operator->()
+    {
+        return _pointer;
+    }
+    T** operator&()
+    {
+        return &_pointer;
+    }
 
-    void Reset(T *p = 0) { if ( _pointer ) { _pointer->Release(); } _pointer = p; }
+    void Reset(T *p = 0)
+    {
+        if ( _pointer )
+        {
+            _pointer->Release();
+        }
+        _pointer = p;
+    }
 
-    T* Get() const { return _pointer; }
+    T* Get() const
+    {
+        return _pointer;
+    }
 
 private:
     ScopedObject(const ScopedObject&);
     ScopedObject& operator=(const ScopedObject&);
-        
+
     T* _pointer;
 };
 
@@ -123,15 +151,15 @@ static bool _LoadScanline( _Out_writes_(count) DirectX::XMVECTOR* pDestination, 
     switch( format )
     {
     case DXGI_FORMAT_R32G32B32A32_FLOAT:
-        {
-            size_t msize = (size > (sizeof(XMVECTOR)*count)) ? (sizeof(XMVECTOR)*count) : size;
-            memcpy_s( dPtr, sizeof(XMVECTOR)*count, pSource, msize );
-        }
-        return true;
+    {
+        size_t msize = (size > (sizeof(XMVECTOR)*count)) ? (sizeof(XMVECTOR)*count) : size;
+        memcpy_s( dPtr, sizeof(XMVECTOR)*count, pSource, msize );
+    }
+    return true;
 
     case DXGI_FORMAT_R32G32B32_FLOAT:
         LOAD_SCANLINE3( XMFLOAT3, XMLoadFloat3, g_XMIdentityR3 )
-            
+
     case DXGI_FORMAT_R16G16B16A16_FLOAT:
         LOAD_SCANLINE( XMHALF4, XMLoadHalf4 )
 
@@ -204,9 +232,9 @@ HRESULT SHProjectCubeMap( _In_ ID3D11DeviceContext *context,
     cubeMap->GetDesc( &desc );
 
     if ( (desc.ArraySize != 6)
-         || (desc.Width != desc.Height)
-         || (desc.SampleDesc.Count > 1) )
-         return E_FAIL;
+            || (desc.Width != desc.Height)
+            || (desc.SampleDesc.Count > 1) )
+        return E_FAIL;
 
     switch( desc.Format )
     {
@@ -245,7 +273,7 @@ HRESULT SHProjectCubeMap( _In_ ID3D11DeviceContext *context,
             return hr;
 
         context->CopyResource( staging.Get(), cubeMap );
-            
+
         texture = staging.Get();
     }
     else
@@ -264,7 +292,7 @@ HRESULT SHProjectCubeMap( _In_ ID3D11DeviceContext *context,
 
     // index from [0,W-1], f(0) maps to -1 + 1/W, f(W-1) maps to 1 - 1/w
     // linear function x*S +B, 1st constraint means B is (-1+1/W), plug into
-    // second and solve for S: S = 2*(1-1/W)/(W-1). The old code that did 
+    // second and solve for S: S = 2*(1-1/W)/(W-1). The old code that did
     // this was incorrect - but only for computing the differential solid
     // angle, where the final value was 1.0 instead of 1-1/w...
 
@@ -335,13 +363,13 @@ HRESULT SHProjectCubeMap( _In_ ID3D11DeviceContext *context,
                 case 3: // Negative Y
                     iz =  1.0f - (2.0f * (float)y + 1.0f) * fPicSize;
                     iy = -1.0f;
-                    ix = -1.0f + (2.0f * (float)x + 1.0f) * fPicSize;  
+                    ix = -1.0f + (2.0f * (float)x + 1.0f) * fPicSize;
                     break;
 
                 case 4: // Positive Z
                     iz =  1.0f;
                     iy =  1.0f - (2.0f * (float)y + 1.0f) * fPicSize;
-                    ix = -1.0f + (2.0f * (float)x + 1.0f) * fPicSize;  
+                    ix = -1.0f + (2.0f * (float)x + 1.0f) * fPicSize;
                     break;
 
                 case 5: // Negative Z
@@ -370,7 +398,7 @@ HRESULT SHProjectCubeMap( _In_ ID3D11DeviceContext *context,
                 if ( resultR ) XMSHAdd(resultR,order,resultR, XMSHScale(shBuffB,order,shBuff,clr.x*fDiffSolid) );
                 if ( resultG ) XMSHAdd(resultG,order,resultG, XMSHScale(shBuffB,order,shBuff,clr.y*fDiffSolid) );
                 if ( resultB ) XMSHAdd(resultB,order,resultB, XMSHScale(shBuffB,order,shBuff,clr.z*fDiffSolid) );
-           }
+            }
 
             pSrc += mapped.RowPitch;
         }

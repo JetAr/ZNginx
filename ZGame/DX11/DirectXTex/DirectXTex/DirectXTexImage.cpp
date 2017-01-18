@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXTexImage.cpp
-//  
+//
 // DirectX Texture Library - Image container
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -17,9 +17,9 @@
 
 namespace DirectX
 {
-    extern bool _CalculateMipLevels(_In_ size_t width, _In_ size_t height, _Inout_ size_t& mipLevels);
-    extern bool _CalculateMipLevels3D(_In_ size_t width, _In_ size_t height, _In_ size_t depth, _Inout_ size_t& mipLevels);
-    extern bool _IsAlphaAllOpaqueBC(_In_ const Image& cImage);
+extern bool _CalculateMipLevels(_In_ size_t width, _In_ size_t height, _Inout_ size_t& mipLevels);
+extern bool _CalculateMipLevels3D(_In_ size_t width, _In_ size_t height, _In_ size_t depth, _Inout_ size_t& mipLevels);
+extern bool _IsAlphaAllOpaqueBC(_In_ const Image& cImage);
 }
 
 using namespace DirectX;
@@ -486,8 +486,8 @@ _Use_decl_annotations_
 HRESULT ScratchImage::InitializeFromImage(const Image& srcImage, bool allow1D, DWORD flags)
 {
     HRESULT hr = (srcImage.height > 1 || !allow1D)
-        ? Initialize2D(srcImage.format, srcImage.width, srcImage.height, 1, 1, flags)
-        : Initialize1D(srcImage.format, srcImage.width, 1, 1, flags);
+                 ? Initialize2D(srcImage.format, srcImage.width, srcImage.height, 1, 1, flags)
+                 : Initialize1D(srcImage.format, srcImage.width, 1, 1, flags);
 
     if (FAILED(hr))
         return hr;
@@ -542,8 +542,8 @@ HRESULT ScratchImage::InitializeArrayFromImages(const Image* images, size_t nIma
     }
 
     HRESULT hr = (height > 1 || !allow1D)
-        ? Initialize2D(format, width, height, nImages, 1, flags)
-        : Initialize1D(format, width, nImages, 1, flags);
+                 ? Initialize2D(format, width, height, nImages, 1, flags)
+                 : Initialize1D(format, width, nImages, 1, flags);
 
     if (FAILED(hr))
         return hr;

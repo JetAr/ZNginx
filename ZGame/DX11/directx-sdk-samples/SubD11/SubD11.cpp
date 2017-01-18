@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: SubD11.cpp
 //
 // This sample shows an implementation of Charles Loop's and Scott Schaefer's Approximate
@@ -34,7 +34,7 @@ CDXUTDialogResourceManager          g_DialogResourceManager; // manager for shar
 CModelViewerCamera                  g_Camera;                   // A model viewing camera
 CDXUTDirectionWidget                g_LightControl;
 CD3DSettingsDlg                     g_D3DSettingsDlg;           // Device settings dialog
-CDXUTDialog                         g_HUD;                      // manages the 3D   
+CDXUTDialog                         g_HUD;                      // manages the 3D
 CDXUTDialog                         g_SampleUI;                 // dialog for sample specific controls
 
 // Resources
@@ -131,7 +131,7 @@ CSubDMesh g_SubDMesh;
 #define IDC_TOGGLE_MATERIALS      10
 
 //--------------------------------------------------------------------------------------
-// Forward declarations 
+// Forward declarations
 //--------------------------------------------------------------------------------------
 bool CALLBACK ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* pUserContext );
 void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext );
@@ -144,7 +144,7 @@ bool CALLBACK IsD3D11DeviceAcceptable( const CD3D11EnumAdapterInfo *AdapterInfo,
 HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc,
                                       void* pUserContext );
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                          const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext );
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext );
 void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime,
@@ -161,7 +161,7 @@ void FillTables( ID3D11DeviceContext* pd3dDeviceContext );
 void ParseCommandLine( const WCHAR* strCmdLine );
 
 //--------------------------------------------------------------------------------------
-// Entry point to the program. Initializes everything and goes into a message processing 
+// Entry point to the program. Initializes everything and goes into a message processing
 // loop. Idle time is used to render the scene.
 //--------------------------------------------------------------------------------------
 int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow )
@@ -189,7 +189,7 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     DXUTSetCallbackD3D11DeviceDestroyed( OnD3D11DestroyDevice );
 
     InitApp();
-    
+
     DXUTInit( true, true, nullptr); // Parse the command line, show msgboxes on error, and an extra cmd line param to force REF for now
     DXUTSetCursorSettings( true, true ); // Show the cursor and clip it when in full screen
     DXUTCreateWindow( L"SubD11" );
@@ -334,7 +334,7 @@ void ParseCommandLine( const WCHAR* strCmdLine )
 }
 
 //--------------------------------------------------------------------------------------
-// Initialize the app 
+// Initialize the app
 //--------------------------------------------------------------------------------------
 void InitApp()
 {
@@ -345,12 +345,14 @@ void InitApp()
     g_HUD.Init( &g_DialogResourceManager );
     g_SampleUI.Init( &g_DialogResourceManager );
 
-    g_HUD.SetCallback( OnGUIEvent ); int iY = 20;
+    g_HUD.SetCallback( OnGUIEvent );
+    int iY = 20;
     g_HUD.AddButton( IDC_TOGGLEFULLSCREEN, L"Toggle full screen", 0, iY, 170, 22 );
     g_HUD.AddButton( IDC_TOGGLEREF, L"Toggle REF (F3)", 0, iY += 26, 170, 22, VK_F3 );
     g_HUD.AddButton( IDC_CHANGEDEVICE, L"Change device (F2)", 0, iY += 26, 170, 22, VK_F2 );
 
-    g_SampleUI.SetCallback( OnGUIEvent ); iY = 10;
+    g_SampleUI.SetCallback( OnGUIEvent );
+    iY = 10;
 
     WCHAR sz[100];
     iY += 24;
@@ -384,7 +386,7 @@ bool CALLBACK ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* p
 //--------------------------------------------------------------------------------------
 void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext )
 {
-    // Update the camera's position based on user input 
+    // Update the camera's position based on user input
     g_Camera.FrameMove( fElapsedTime );
 
     XMMATRIX mWorld = XMMatrixIdentity();
@@ -474,43 +476,46 @@ void CALLBACK OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, v
 {
     switch( nControlID )
     {
-        // Standard DXUT controls
+    // Standard DXUT controls
     case IDC_TOGGLEFULLSCREEN:
-        DXUTToggleFullScreen(); break;
+        DXUTToggleFullScreen();
+        break;
     case IDC_TOGGLEREF:
-        DXUTToggleREF(); break;
+        DXUTToggleREF();
+        break;
     case IDC_CHANGEDEVICE:
-        g_D3DSettingsDlg.SetActive( !g_D3DSettingsDlg.IsActive() ); break;
+        g_D3DSettingsDlg.SetActive( !g_D3DSettingsDlg.IsActive() );
+        break;
 
-        // Custom app controls
+    // Custom app controls
     case IDC_PATCH_SUBDIVS:
-        {
-            g_iSubdivs = g_SampleUI.GetSlider( IDC_PATCH_SUBDIVS )->GetValue();
+    {
+        g_iSubdivs = g_SampleUI.GetSlider( IDC_PATCH_SUBDIVS )->GetValue();
 
-            WCHAR sz[100];
-            swprintf_s( sz, L"Patch Divisions: %d", g_iSubdivs );
-            g_SampleUI.GetStatic( IDC_PATCH_SUBDIVS_STATIC )->SetText( sz );
-        }
-        break;
+        WCHAR sz[100];
+        swprintf_s( sz, L"Patch Divisions: %d", g_iSubdivs );
+        g_SampleUI.GetStatic( IDC_PATCH_SUBDIVS_STATIC )->SetText( sz );
+    }
+    break;
     case IDC_BUMP_HEIGHT:
-        {
-            g_fDisplacementHeight = ( float )g_SampleUI.GetSlider( IDC_BUMP_HEIGHT )->GetValue() / 1000.0f;
+    {
+        g_fDisplacementHeight = ( float )g_SampleUI.GetSlider( IDC_BUMP_HEIGHT )->GetValue() / 1000.0f;
 
-            WCHAR sz[100];
-            swprintf_s( sz, L"BumpHeight: %.4f", g_fDisplacementHeight );
-            g_SampleUI.GetStatic( IDC_BUMP_HEIGHT_STATIC )->SetText( sz );
-        }
-        break;
+        WCHAR sz[100];
+        swprintf_s( sz, L"BumpHeight: %.4f", g_fDisplacementHeight );
+        g_SampleUI.GetStatic( IDC_BUMP_HEIGHT_STATIC )->SetText( sz );
+    }
+    break;
     case IDC_TOGGLE_LINES:
-        {
-            g_bDrawWires = g_SampleUI.GetCheckBox( IDC_TOGGLE_LINES )->GetChecked();
-        }
-        break;
+    {
+        g_bDrawWires = g_SampleUI.GetCheckBox( IDC_TOGGLE_LINES )->GetChecked();
+    }
+    break;
     case IDC_TOGGLE_MATERIALS:
-        {
-            g_bUseMaterials = g_SampleUI.GetCheckBox( IDC_TOGGLE_MATERIALS )->GetChecked();
-        }
-        break;
+    {
+        g_bUseMaterials = g_SampleUI.GetCheckBox( IDC_TOGGLE_MATERIALS )->GetChecked();
+    }
+    break;
 
     }
 
@@ -610,7 +615,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 
     V_RETURN( pd3dDevice->CreatePixelShader( pBlobPSSolid->GetBufferPointer(), pBlobPSSolid->GetBufferSize(), nullptr, &g_pSolidColorPS ) );
     DXUT_SetDebugName( g_pSolidColorPS, "SolidColorPS" );
-    
+
     // Create our vertex input layout - this matches the SUBD_CONTROL_POINT structure
     const D3D11_INPUT_ELEMENT_DESC patchlayout[] =
     {
@@ -623,11 +628,11 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     };
 
     V_RETURN( pd3dDevice->CreateInputLayout( patchlayout, ARRAYSIZE( patchlayout ), pBlobPatchVS->GetBufferPointer(),
-                                             pBlobPatchVS->GetBufferSize(), &g_pPatchLayout ) );
+              pBlobPatchVS->GetBufferSize(), &g_pPatchLayout ) );
     DXUT_SetDebugName( g_pPatchLayout, "Patch" );
 
     V_RETURN( pd3dDevice->CreateInputLayout( patchlayout, ARRAYSIZE( patchlayout ), pBlobMeshVS->GetBufferPointer(),
-                                             pBlobMeshVS->GetBufferSize(), &g_pMeshLayout ) );
+              pBlobMeshVS->GetBufferSize(), &g_pMeshLayout ) );
     DXUT_SetDebugName( g_pMeshLayout, "Mesh" );
 
     SAFE_RELEASE( pBlobPatchVS );
@@ -643,7 +648,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 
     // Fill our helper/temporary tables
     FillTables( pd3dImmediateContext );
-    
+
     // Load mesh
     WCHAR strMeshFileName[MAX_PATH];
     WCHAR strAnimFileName[MAX_PATH];
@@ -740,7 +745,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 // Create any D3D11 resources that depend on the back buffer
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                          const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
     HRESULT hr;
 
@@ -941,7 +946,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
         pData->vSolidColor = XMFLOAT3( 0.3f, 0.3f, 0.3f );
         pd3dImmediateContext->Unmap( g_pcbPerFrame, 0 );
     }
-    
+
     // Clear the render target and depth stencil
     auto pRTV = DXUTGetD3D11RenderTargetView();
     pd3dImmediateContext->ClearRenderTargetView( pRTV, Colors::Black );
@@ -1008,7 +1013,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11ResizedSwapChain 
+// Release D3D11 resources created in OnD3D11ResizedSwapChain
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 {
@@ -1017,7 +1022,7 @@ void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11CreateDevice 
+// Release D3D11 resources created in OnD3D11CreateDevice
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
 {
@@ -1058,7 +1063,7 @@ void FillTables( ID3D11DeviceContext* pd3dDeviceContext )
     D3D11_MAPPED_SUBRESOURCE MappedResource;
     pd3dDeviceContext->Map( g_pcbTangentStencilConstants, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedResource );
     auto pData = reinterpret_cast<CB_TANGENT_STENCIL_CONSTANTS*>( MappedResource.pData );
-    
+
     for( UINT v = 0; v < MAX_VALENCE; v++ )
     {
         int a = 0;

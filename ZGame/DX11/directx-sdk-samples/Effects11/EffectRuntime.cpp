@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: EffectRuntime.cpp
 //
 // Direct3D 11 Effect runtime routines (performance critical)
@@ -19,10 +19,11 @@
 
 namespace D3DX11Effects
 {
-    // D3D11_KEEP_UNORDERED_ACCESS_VIEWS == (uint32_t)-1
-    uint32_t g_pNegativeOnes[8] = { D3D11_KEEP_UNORDERED_ACCESS_VIEWS, D3D11_KEEP_UNORDERED_ACCESS_VIEWS, D3D11_KEEP_UNORDERED_ACCESS_VIEWS,
+// D3D11_KEEP_UNORDERED_ACCESS_VIEWS == (uint32_t)-1
+uint32_t g_pNegativeOnes[8] = { D3D11_KEEP_UNORDERED_ACCESS_VIEWS, D3D11_KEEP_UNORDERED_ACCESS_VIEWS, D3D11_KEEP_UNORDERED_ACCESS_VIEWS,
                                 D3D11_KEEP_UNORDERED_ACCESS_VIEWS, D3D11_KEEP_UNORDERED_ACCESS_VIEWS, D3D11_KEEP_UNORDERED_ACCESS_VIEWS,
-                                D3D11_KEEP_UNORDERED_ACCESS_VIEWS, D3D11_KEEP_UNORDERED_ACCESS_VIEWS };
+                                D3D11_KEEP_UNORDERED_ACCESS_VIEWS, D3D11_KEEP_UNORDERED_ACCESS_VIEWS
+                              };
 
 bool SBaseBlock::ApplyAssignments(CEffect *pEffect)
 {
@@ -190,7 +191,7 @@ void CEffect::ApplyShaderBlock(_In_ SShaderBlock *pBlock)
         }
         (m_pContext->*(pVT->pSetSamplers))(pSampDep->StartIndex, pSampDep->Count, pSampDep->ppD3DObjects);
     }
- 
+
     // Set the UAVs
     // UAV ranges were combined in EffectLoad.  This code remains unchanged, however, so that ranges can be easily split
     assert( pBlock->UAVDepCount < 2 );
@@ -293,70 +294,70 @@ bool CEffect::ApplyRenderStateBlock(_In_ SBaseBlock *pBlock)
         switch (pBlock->BlockType)
         {
         case EBT_Sampler:
+        {
+            SSamplerBlock *pSBlock = pBlock->AsSampler();
+
+            assert(pSBlock->pD3DObject != 0);
+            _Analysis_assume_(pSBlock->pD3DObject != 0);
+            pSBlock->pD3DObject->Release();
+
+            HRESULT hr = m_pDevice->CreateSamplerState( &pSBlock->BackingStore.SamplerDesc, &pSBlock->pD3DObject );
+            if ( SUCCEEDED(hr) )
             {
-                SSamplerBlock *pSBlock = pBlock->AsSampler();
-
-                assert(pSBlock->pD3DObject != 0);
-                _Analysis_assume_(pSBlock->pD3DObject != 0);
-                pSBlock->pD3DObject->Release();
-
-                HRESULT hr = m_pDevice->CreateSamplerState( &pSBlock->BackingStore.SamplerDesc, &pSBlock->pD3DObject );
-                if ( SUCCEEDED(hr) )
-                {
-                    SetDebugObjectName(pSBlock->pD3DObject, "D3DX11Effect");
-                }
+                SetDebugObjectName(pSBlock->pD3DObject, "D3DX11Effect");
             }
-            break;
+        }
+        break;
 
         case EBT_DepthStencil:
-            {
-                SDepthStencilBlock *pDSBlock = pBlock->AsDepthStencil();
+        {
+            SDepthStencilBlock *pDSBlock = pBlock->AsDepthStencil();
 
-                assert(nullptr != pDSBlock->pDSObject);
-                SAFE_RELEASE( pDSBlock->pDSObject );
-                if( SUCCEEDED( m_pDevice->CreateDepthStencilState( &pDSBlock->BackingStore, &pDSBlock->pDSObject ) ) )
-                {
-                    pDSBlock->IsValid = true;
-                    SetDebugObjectName( pDSBlock->pDSObject, "D3DX11Effect" );
-                }
-                else
-                    pDSBlock->IsValid = false;
+            assert(nullptr != pDSBlock->pDSObject);
+            SAFE_RELEASE( pDSBlock->pDSObject );
+            if( SUCCEEDED( m_pDevice->CreateDepthStencilState( &pDSBlock->BackingStore, &pDSBlock->pDSObject ) ) )
+            {
+                pDSBlock->IsValid = true;
+                SetDebugObjectName( pDSBlock->pDSObject, "D3DX11Effect" );
             }
-            break;
-        
+            else
+                pDSBlock->IsValid = false;
+        }
+        break;
+
         case EBT_Blend:
-            {
-                SBlendBlock *pBBlock = pBlock->AsBlend();
+        {
+            SBlendBlock *pBBlock = pBlock->AsBlend();
 
-                assert(nullptr != pBBlock->pBlendObject);
-                SAFE_RELEASE( pBBlock->pBlendObject );
-                if( SUCCEEDED( m_pDevice->CreateBlendState( &pBBlock->BackingStore, &pBBlock->pBlendObject ) ) )
-                {
-                    pBBlock->IsValid = true;
-                    SetDebugObjectName( pBBlock->pBlendObject, "D3DX11Effect" );
-                }
-                else
-                    pBBlock->IsValid = false;
+            assert(nullptr != pBBlock->pBlendObject);
+            SAFE_RELEASE( pBBlock->pBlendObject );
+            if( SUCCEEDED( m_pDevice->CreateBlendState( &pBBlock->BackingStore, &pBBlock->pBlendObject ) ) )
+            {
+                pBBlock->IsValid = true;
+                SetDebugObjectName( pBBlock->pBlendObject, "D3DX11Effect" );
             }
-            break;
+            else
+                pBBlock->IsValid = false;
+        }
+        break;
 
         case EBT_Rasterizer:
+        {
+            SRasterizerBlock *pRBlock = pBlock->AsRasterizer();
+
+            assert(nullptr != pRBlock->pRasterizerObject);
+
+            SAFE_RELEASE( pRBlock->pRasterizerObject );
+            if( SUCCEEDED( m_pDevice->CreateRasterizerState( &pRBlock->BackingStore, &pRBlock->pRasterizerObject ) ) )
             {
-                SRasterizerBlock *pRBlock = pBlock->AsRasterizer();
-
-                assert(nullptr != pRBlock->pRasterizerObject);
-
-                SAFE_RELEASE( pRBlock->pRasterizerObject );
-                if( SUCCEEDED( m_pDevice->CreateRasterizerState( &pRBlock->BackingStore, &pRBlock->pRasterizerObject ) ) )
-                {
-                    pRBlock->IsValid = true;
-                    SetDebugObjectName( pRBlock->pRasterizerObject, "D3DX11Effect" );
-                }
-                else
-                    pRBlock->IsValid = false;
+                pRBlock->IsValid = true;
+                SetDebugObjectName( pRBlock->pRasterizerObject, "D3DX11Effect" );
             }
-            break;
-        
+            else
+                pRBlock->IsValid = false;
+        }
+        break;
+
         default:
             assert(0);
         }
@@ -379,7 +380,7 @@ bool CEffect::EvaluateAssignment(_Inout_ SAssignment *pAssignment)
 {
     bool bNeedUpdate = false;
     SGlobalVariable *pVarDep0, *pVarDep1;
-    
+
     switch (pAssignment->AssignmentType)
     {
     case ERAT_NumericVariable:
@@ -404,7 +405,7 @@ bool CEffect::EvaluateAssignment(_Inout_ SAssignment *pAssignment)
 
             // Array index variable is dirty, update the pointer
             pAssignment->Source.pNumeric = pVarDep1->Data.pNumeric + pVarDep1->pType->Stride * m_FXLIndex;
-            
+
             // Copy the new data
             memcpy(pAssignment->Destination.pNumeric, pAssignment->Source.pNumeric, pAssignment->DataSize);
             bNeedUpdate = true;
@@ -427,21 +428,21 @@ bool CEffect::EvaluateAssignment(_Inout_ SAssignment *pAssignment)
 
             // Array index variable is dirty, update the destination pointer
             *((void **)pAssignment->Destination.pGeneric) = pAssignment->Source.pNumeric +
-                pAssignment->DataSize * m_FXLIndex;
+                    pAssignment->DataSize * m_FXLIndex;
             bNeedUpdate = true;
         }
         break;
 
     default:
-    //case ERAT_Constant:           -- These are consumed and discarded
-    //case ERAT_ObjectVariable:     -- These are consumed and discarded
-    //case ERAT_ObjectConstIndex:   -- These are consumed and discarded
-    //case ERAT_ObjectInlineShader: -- These are consumed and discarded
-    //case ERAT_NumericConstIndex:  -- ERAT_NumericVariable should be generated instead
+        //case ERAT_Constant:           -- These are consumed and discarded
+        //case ERAT_ObjectVariable:     -- These are consumed and discarded
+        //case ERAT_ObjectConstIndex:   -- These are consumed and discarded
+        //case ERAT_ObjectInlineShader: -- These are consumed and discarded
+        //case ERAT_NumericConstIndex:  -- ERAT_NumericVariable should be generated instead
         assert(0);
         break;
     }
-    
+
     // Mark the assignment as not dirty
     pAssignment->LastRecomputedTime = m_LocalTimer;
 
@@ -508,7 +509,7 @@ bool CEffect::ValidatePassBlock( _Inout_ SPassBlock* pBlock )
     {
         if( !ValidateShaderBlock(pBlock->BackingStore.pPixelShaderBlock) )
             return false;
-        else if( pBlock->BackingStore.pPixelShaderBlock->UAVDepCount > 0 && 
+        else if( pBlock->BackingStore.pPixelShaderBlock->UAVDepCount > 0 &&
                  pBlock->BackingStore.RenderTargetViewCount > pBlock->BackingStore.pPixelShaderBlock->pUAVDeps[0].StartIndex )
         {
             return false;
@@ -541,8 +542,8 @@ void CEffect::ApplyPassBlock(_Inout_ SPassBlock *pBlock)
 #endif
         pBlock->BackingStore.pBlendState = pBlock->BackingStore.pBlendBlock->pBlendObject;
         m_pContext->OMSetBlendState(pBlock->BackingStore.pBlendState,
-            pBlock->BackingStore.BlendFactor,
-            pBlock->BackingStore.SampleMask);
+                                    pBlock->BackingStore.BlendFactor,
+                                    pBlock->BackingStore.SampleMask);
     }
 
     if (nullptr != pBlock->BackingStore.pDepthStencilBlock)
@@ -554,7 +555,7 @@ void CEffect::ApplyPassBlock(_Inout_ SPassBlock *pBlock)
 #endif
         pBlock->BackingStore.pDepthStencilState = pBlock->BackingStore.pDepthStencilBlock->pDSObject;
         m_pContext->OMSetDepthStencilState(pBlock->BackingStore.pDepthStencilState,
-            pBlock->BackingStore.StencilRef);
+                                           pBlock->BackingStore.StencilRef);
     }
 
     if (nullptr != pBlock->BackingStore.pRasterizerBlock)
@@ -664,7 +665,7 @@ void CEffect::IncrementTimer()
 void CEffect::HandleLocalTimerRollover()
 {
     uint32_t  i, j, k;
-    
+
     // step 1: update variables
     for (i = 0; i < m_VariableCount; ++ i)
     {

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: SoundEffect.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -263,10 +263,10 @@ HRESULT SoundEffect::Impl::Initialize( AudioEngine* engine, std::unique_ptr<uint
 #endif // _XBOX_ONE && _TITLE
 
     default:
-        {
-            DebugTrace( "ERROR: SoundEffect encountered an unsupported format tag (%u)\n", wfx->wFormatTag );
-            return HRESULT_FROM_WIN32( ERROR_NOT_SUPPORTED );
-        }
+    {
+        DebugTrace( "ERROR: SoundEffect encountered an unsupported format tag (%u)\n", wfx->wFormatTag );
+        return HRESULT_FROM_WIN32( ERROR_NOT_SUPPORTED );
+    }
     }
 
     mAudioBytes = static_cast<uint32_t>( audioBytes );
@@ -285,7 +285,7 @@ void SoundEffect::Impl::Play( float volume, float pitch, float pan )
 
     IXAudio2SourceVoice* voice = nullptr;
     mEngine->AllocateVoice( mWaveFormat, SoundEffectInstance_Default, true, &voice );
-    
+
     if ( !voice )
         return;
 
@@ -341,7 +341,7 @@ void SoundEffect::Impl::Play( float volume, float pitch, float pan )
     if ( FAILED(hr) )
     {
         DebugTrace( "ERROR: SoundEffect failed (%08X) when submitting buffer:\n", hr );
-        DebugTrace( "\tFormat Tag %u, %u channels, %u-bit, %u Hz, %u bytes\n", mWaveFormat->wFormatTag, 
+        DebugTrace( "\tFormat Tag %u, %u channels, %u-bit, %u Hz, %u bytes\n", mWaveFormat->wFormatTag,
                     mWaveFormat->nChannels, mWaveFormat->wBitsPerSample, mWaveFormat->nSamplesPerSec, mAudioBytes );
         throw std::exception( "SubmitSourceBuffer" );
     }
@@ -357,7 +357,7 @@ void SoundEffect::Impl::Play( float volume, float pitch, float pan )
 // Public constructors.
 _Use_decl_annotations_
 SoundEffect::SoundEffect( AudioEngine* engine, const wchar_t* waveFileName )
-  : pImpl(new Impl(engine) )
+    : pImpl(new Impl(engine) )
 {
     WAVData wavInfo;
     std::unique_ptr<uint8_t[]> wavData;
@@ -388,7 +388,7 @@ SoundEffect::SoundEffect( AudioEngine* engine, const wchar_t* waveFileName )
 _Use_decl_annotations_
 SoundEffect::SoundEffect( AudioEngine* engine, std::unique_ptr<uint8_t[]>& wavData,
                           const WAVEFORMATEX* wfx, const uint8_t* startAudio, size_t audioBytes )
-  : pImpl(new Impl(engine) )
+    : pImpl(new Impl(engine) )
 {
 #if defined(_XBOX_ONE) || (_WIN32_WINNT < _WIN32_WINNT_WIN8) || (_WIN32_WINNT >= _WIN32_WINNT_WIN10)
     HRESULT hr = pImpl->Initialize( engine, wavData, wfx, startAudio, audioBytes, nullptr, 0, 0, 0 );
@@ -407,7 +407,7 @@ _Use_decl_annotations_
 SoundEffect::SoundEffect( AudioEngine* engine, std::unique_ptr<uint8_t[]>& wavData,
                           const WAVEFORMATEX* wfx, const uint8_t* startAudio, size_t audioBytes,
                           uint32_t loopStart, uint32_t loopLength )
-  : pImpl(new Impl(engine) )
+    : pImpl(new Impl(engine) )
 {
 #if defined(_XBOX_ONE) || (_WIN32_WINNT < _WIN32_WINNT_WIN8) || (_WIN32_WINNT >= _WIN32_WINNT_WIN10)
     HRESULT hr = pImpl->Initialize( engine, wavData, wfx, startAudio, audioBytes, nullptr, 0, loopStart, loopLength );
@@ -442,7 +442,7 @@ SoundEffect::SoundEffect( AudioEngine* engine, std::unique_ptr<uint8_t[]>& wavDa
 
 // Move constructor.
 SoundEffect::SoundEffect(SoundEffect&& moveFrom)
-  : pImpl(std::move(moveFrom.pImpl))
+    : pImpl(std::move(moveFrom.pImpl))
 {
 }
 
@@ -514,18 +514,18 @@ size_t SoundEffect::GetSampleDuration() const
     switch( GetFormatTag( pImpl->mWaveFormat ) )
     {
     case WAVE_FORMAT_ADPCM:
-        {
-            auto adpcmFmt = reinterpret_cast<const ADPCMWAVEFORMAT*>( pImpl->mWaveFormat ); 
+    {
+        auto adpcmFmt = reinterpret_cast<const ADPCMWAVEFORMAT*>( pImpl->mWaveFormat );
 
-            uint64_t duration = uint64_t( pImpl->mAudioBytes / adpcmFmt->wfx.nBlockAlign ) * adpcmFmt->wSamplesPerBlock;
-            int partial = pImpl->mAudioBytes % adpcmFmt->wfx.nBlockAlign;
-            if ( partial )
-            {
-                if ( partial >= ( 7 * adpcmFmt->wfx.nChannels ) )
-                    duration += ( partial * 2 / adpcmFmt->wfx.nChannels - 12 );
-            }
-            return static_cast<size_t>( duration );
+        uint64_t duration = uint64_t( pImpl->mAudioBytes / adpcmFmt->wfx.nBlockAlign ) * adpcmFmt->wSamplesPerBlock;
+        int partial = pImpl->mAudioBytes % adpcmFmt->wfx.nBlockAlign;
+        if ( partial )
+        {
+            if ( partial >= ( 7 * adpcmFmt->wfx.nChannels ) )
+                duration += ( partial * 2 / adpcmFmt->wfx.nChannels - 12 );
         }
+        return static_cast<size_t>( duration );
+    }
 
 #if defined(_XBOX_ONE) || (_WIN32_WINNT < _WIN32_WINNT_WIN8) || (_WIN32_WINNT >= _WIN32_WINNT_WIN10)
 

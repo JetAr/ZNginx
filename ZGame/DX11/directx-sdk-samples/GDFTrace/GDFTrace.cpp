@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------------
 // File: GDFTrace.cpp
 //
 // Desc: Code that examines a GDF DLL and displays the contents
@@ -29,7 +29,7 @@ struct SETTINGS
     bool bGDFInsteadOfBinary;
     bool bMuteGDF;
     bool bMuteWarnings;
-    bool bQuiet;    
+    bool bQuiet;
     bool bStore;
 };
 
@@ -83,7 +83,7 @@ static PFValue g_PixelFormatList[] =
     { L"P2", GUID_WICPixelFormat2bppIndexed },
     { L"P4", GUID_WICPixelFormat4bppIndexed },
     { L"P8", GUID_WICPixelFormat8bppIndexed },
-    { L"R1", GUID_WICPixelFormatBlackWhite }, 
+    { L"R1", GUID_WICPixelFormatBlackWhite },
     { L"R2", GUID_WICPixelFormat2bppGray },
     { L"R4", GUID_WICPixelFormat4bppGray },
     { L"R8", GUID_WICPixelFormat8bppGray },
@@ -120,7 +120,7 @@ WCHAR* ConvertTypeToString( WCHAR* strType )
 {
     if( wcscmp(strType, L"1") == 0)
         return L"Provider";
-    else 
+    else
         return L"Game";
 }
 
@@ -162,8 +162,8 @@ void OutputGDFData( GDFData* pGDFData, ImageInfo* pImage )
         wprintf( L"\tRSS: %s\n", pGDFData->strRSS );
 
     for( int iGame=0; iGame < MAX_GAMES; iGame++ )
-    {   
-        if( pGDFData->strExe[iGame][0] == 0 ) 
+    {
+        if( pGDFData->strExe[iGame][0] == 0 )
             break;
         wprintf( L"\tEXE: %s\n", pGDFData->strExe[iGame] );
     }
@@ -174,7 +174,7 @@ void OutputGDFData( GDFData* pGDFData, ImageInfo* pImage )
         PixelFormatName( pImage->pixelFormat, pfbuff, 128 );
 
         wprintf( L"\tThumbnail image: %ux%u (%s) %s\n", pImage->width, pImage->height, pfbuff,
-                                                           FindName(pImage->container, g_ImageContainerList) );
+                 FindName(pImage->container, g_ImageContainerList) );
     }
 
     if ( pGDFData->fV2GDF )
@@ -228,7 +228,7 @@ void OutputGDFData( GDFData* pGDFData, ImageInfo* pImage )
 //-----------------------------------------------------------------------------
 void OutputWarning( LPCWSTR strMsg, ... )
 {
-    WCHAR strBuffer[1024];   
+    WCHAR strBuffer[1024];
     va_list args;
     va_start(args, strMsg);
     vswprintf_s( strBuffer, 1024, strMsg, args );
@@ -262,7 +262,7 @@ bool FindRatingSystem( const WCHAR* strRatingSystemGUID, const GDFData* pGDFData
 bool g_bOuputLangHeader = false;
 void EnsureOutputRatingHeader( const GDFData* pGDFData1, const GDFData* pGDFData2 )
 {
-    if( !g_bOuputLangHeader ) 
+    if( !g_bOuputLangHeader )
     {
         wprintf( L"\tComparing %s [0x%0.4x] with %s [0x%0.4x]\n", pGDFData1->strLanguage, pGDFData1->wLanguage, pGDFData2->strLanguage, pGDFData2->wLanguage );
         g_bOuputLangHeader = true;
@@ -274,7 +274,7 @@ void OutputRatingWarning( const GDFData* pGDFData1, const GDFData* pGDFData2, LP
 {
     WCHAR strBuffer[1024];
     EnsureOutputRatingHeader( pGDFData1, pGDFData2 );
-    
+
     va_list args;
     va_start(args, strMsg);
     vswprintf_s( strBuffer, 1024, strMsg, args );
@@ -306,7 +306,7 @@ bool CompareRatingSystems( const GDFData* pGDFData1, const GDFData* pGDFData2 )
             {
                 OutputRatingWarning( pGDFData1, pGDFData2, L"\tWarning: %s rating mismatch: %s vs %s \n", pRating1->strRatingSystem, pRating1->strRatingID, pRating2->strRatingID );
                 bWarningsFound = true;
-            }                    
+            }
             else
             {
                 //wprintf( L"\t\tInfo: %s rating match: %s vs %s \n", pRating1->strRatingSystem, pRating1->strRatingID, pRating2->strRatingID );
@@ -386,7 +386,7 @@ void CompareGDFData( const GDFData* pGDFData1, const GDFData* pGDFData2, bool bQ
 
     bool bExeWarningsFound = false;
     for( int iGame=0; iGame < MAX_GAMES; iGame++ )
-    {   
+    {
         if( pGDFData1->strExe[iGame][0] == 0 && pGDFData2->strExe[iGame][0] == 0 )
             break;
         if( _wcsnicmp( pGDFData1->strExe[iGame], pGDFData2->strExe[iGame], MAX_EXE ) != 0 )
@@ -412,7 +412,7 @@ void CompareGDFData( const GDFData* pGDFData1, const GDFData* pGDFData2, bool bQ
         if( !bQuiet )
         {
             EnsureOutputRatingHeader( pGDFData1, pGDFData2 );
-            wprintf( L"\t\tNo data mismatch found\n" );    
+            wprintf( L"\t\tNo data mismatch found\n" );
         }
     }
 }
@@ -437,33 +437,33 @@ HRESULT ScanForWarnings( const GDFData* pGDFDataList, const ImageInfo* pImageLis
 
     if ( bWarnMissingNEU )
     {
-       // Loop through all languages and warn if there's no language neutral 
-       bool bFoundNeutral = false;
-       bool bFoundSublangNeutral = false;
-       bool bFoundNonNeutral = false;
-       for( int iLang1=0; iLang1 < nNumLangs; iLang1++ )
-       {
-           const GDFData* pGDFData1 = &pGDFDataList[iLang1];
-           if( LOBYTE(pGDFData1->wLanguage) == LANG_NEUTRAL ) 
-           {
-               bFoundNeutral = true;
+        // Loop through all languages and warn if there's no language neutral
+        bool bFoundNeutral = false;
+        bool bFoundSublangNeutral = false;
+        bool bFoundNonNeutral = false;
+        for( int iLang1=0; iLang1 < nNumLangs; iLang1++ )
+        {
+            const GDFData* pGDFData1 = &pGDFDataList[iLang1];
+            if( LOBYTE(pGDFData1->wLanguage) == LANG_NEUTRAL )
+            {
+                bFoundNeutral = true;
 
-               if ( HIBYTE(pGDFData1->wLanguage) == SUBLANG_NEUTRAL )
-                   bFoundSublangNeutral = true;
-           }
-           else
-               bFoundNonNeutral = true;
-       }
-       if( !bFoundNeutral ) 
-           OutputWarning( L"\tWarning: Language neutral not found.  Adding one is highly recommended to cover all other languages\n" );
-       else
-       {
-           if ( bFoundSublangNeutral )
-               OutputWarning( L"\tWarning: Language neutral resource is marked SUBLANG_NEUTRAL, recommend using SUBLANG_DEFAULT instead\n" );
+                if ( HIBYTE(pGDFData1->wLanguage) == SUBLANG_NEUTRAL )
+                    bFoundSublangNeutral = true;
+            }
+            else
+                bFoundNonNeutral = true;
+        }
+        if( !bFoundNeutral )
+            OutputWarning( L"\tWarning: Language neutral not found.  Adding one is highly recommended to cover all other languages\n" );
+        else
+        {
+            if ( bFoundSublangNeutral )
+                OutputWarning( L"\tWarning: Language neutral resource is marked SUBLANG_NEUTRAL, recommend using SUBLANG_DEFAULT instead\n" );
 
-           if ( !bFoundNonNeutral && !bStore )
-               OutputWarning( L"\tWarning: Found only language neutral resource, recommend using at least one non-neutral language in addition\n" );
-       }
+            if ( !bFoundNonNeutral && !bStore )
+                OutputWarning( L"\tWarning: Found only language neutral resource, recommend using at least one non-neutral language in addition\n" );
+        }
     }
 
     // Warn if there's any missing data or if there were XML validation warnings
@@ -483,22 +483,22 @@ HRESULT ScanForWarnings( const GDFData* pGDFDataList, const ImageInfo* pImageLis
         if ( !bStore )
         {
             if( pGDFDataList[iLang].strPublisher[0] == 0
-                || wcsnlen_s(pGDFDataList[iLang].strPublisher, MAX_LEN) == 0 )
+                    || wcsnlen_s(pGDFDataList[iLang].strPublisher, MAX_LEN) == 0 )
                 OutputWarning( L"%sPublisher field is blank\n", strHeader );
             if( pGDFDataList[iLang].strPublisherLink[0] == 0
-                || wcsnlen_s(pGDFDataList[iLang].strPublisherLink, MAX_LEN) == 0 )
+                    || wcsnlen_s(pGDFDataList[iLang].strPublisherLink, MAX_LEN) == 0 )
                 OutputWarning( L"%sPublisher link field is blank\n", strHeader );
             if( pGDFDataList[iLang].strDeveloper[0] == 0
-                || wcsnlen_s(pGDFDataList[iLang].strDeveloper, MAX_LEN) == 0 )
+                    || wcsnlen_s(pGDFDataList[iLang].strDeveloper, MAX_LEN) == 0 )
                 OutputWarning( L"%sDeveloper field is blank\n", strHeader );
-            if( pGDFDataList[iLang].strDeveloperLink[0] == 0 
-                || wcsnlen_s(pGDFDataList[iLang].strDeveloperLink, MAX_LEN) == 0 )
+            if( pGDFDataList[iLang].strDeveloperLink[0] == 0
+                    || wcsnlen_s(pGDFDataList[iLang].strDeveloperLink, MAX_LEN) == 0 )
                 OutputWarning( L"%sDeveloper link field is blank\n", strHeader );
             if( pGDFDataList[iLang].strGenre[0] == 0
-                || wcsnlen_s(pGDFDataList[iLang].strGenre, MAX_LEN) == 0 )
+                    || wcsnlen_s(pGDFDataList[iLang].strGenre, MAX_LEN) == 0 )
                 OutputWarning( L"%sGenre field is blank\n", strHeader );
             if( pGDFDataList[iLang].strDescription[0] == 0
-                || wcsnlen_s(pGDFDataList[iLang].strDescription, MAX_DESC) == 0 )
+                    || wcsnlen_s(pGDFDataList[iLang].strDescription, MAX_DESC) == 0 )
                 OutputWarning( L"%sDescription field is blank\n", strHeader );
             if( pGDFDataList[iLang].fSPRMin == 0 || pGDFDataList[iLang].fSPRRecommended == 0  )
             {
@@ -520,8 +520,8 @@ HRESULT ScanForWarnings( const GDFData* pGDFDataList, const ImageInfo* pImageLis
         if( pGDFDataList[iLang].ratingData[0].strRatingSystemGUID[0] == 0 )
             OutputWarning( L"%sNo ratings data found\n", strHeader );
         if( pGDFDataList[iLang].strType[0] == L'1'
-            && ( pGDFDataList[iLang].strRSS[0] == 0
-                 || wcsnlen_s(pGDFDataList[iLang].strRSS, MAX_LINK) == 0 ) )
+                && ( pGDFDataList[iLang].strRSS[0] == 0
+                     || wcsnlen_s(pGDFDataList[iLang].strRSS, MAX_LINK) == 0 ) )
             OutputWarning( L"%sRSS link field is blank\n", strHeader );
 
         if ( pGDFDataList[iLang].fV2GDF )
@@ -534,7 +534,7 @@ HRESULT ScanForWarnings( const GDFData* pGDFDataList, const ImageInfo* pImageLis
                 const GDFTask* task = &pGDFDataList[iLang].secondaryPlayTasks[ iTask ];
                 if ( task->strPathOrLink[0] == 0 )
                     break;
-                
+
                 if ( ContainsPathReservedChars( task->strName, MAX_LEN ) )
                     OutputWarning( L"%sSecondary Play Task \"%s\" (#%d) name contains invalid reserved path characters <>:\"/\\|?*\n", strHeader, task->strName, task->index );
 
@@ -649,14 +649,14 @@ HRESULT ScanForWarnings( const GDFData* pGDFDataList, const ImageInfo* pImageLis
                 }
 
                 if( _wcsnicmp( rating, L"{17A01A46-0FF6-4693-9F18-D162C2A5C703}", MAX_LEN ) == 0
-                    || _wcsnicmp( rating, L"{CA12E389-7F8F-4C3E-AC0D-E2762653A9DB}", MAX_LEN ) == 0
-                    || _wcsnicmp( rating, L"{AEB8A50F-BC53-4005-8701-D9EF48A80A63}", MAX_LEN ) == 0
-                    || _wcsnicmp( rating, L"{6B9EB3C0-B49A-4708-A6E6-F5476CE7567B}", MAX_LEN ) == 0 )
+                        || _wcsnicmp( rating, L"{CA12E389-7F8F-4C3E-AC0D-E2762653A9DB}", MAX_LEN ) == 0
+                        || _wcsnicmp( rating, L"{AEB8A50F-BC53-4005-8701-D9EF48A80A63}", MAX_LEN ) == 0
+                        || _wcsnicmp( rating, L"{6B9EB3C0-B49A-4708-A6E6-F5476CE7567B}", MAX_LEN ) == 0 )
                 {
                     OutputWarning( L"%sDeprecated CERO rating E, 12, 15, or 18 found. Use A, B, C, D, or Z instead.\n", strHeader );
                 }
             }
-            
+
             // ESRB deprecations
             if( _wcsnicmp( ratingSystem, L"{768BD93D-63BE-46A9-8994-0B53C4B5248F}", MAX_LEN ) == 0 )
             {
@@ -666,19 +666,19 @@ HRESULT ScanForWarnings( const GDFData* pGDFDataList, const ImageInfo* pImageLis
                     if( *descriptor == 0 )
                         break;
                     if( _wcsnicmp( descriptor, L"{5990705B-1E85-4435-AE11-129B9319FF09}", MAX_LEN ) == 0 )
-                    {                               
+                    {
                         OutputWarning( L"%sDeprecated ESRB 'Gambling' descriptor found.  Use 'Simulated Gambling' instead.\n", strHeader );
                     }
                     if( _wcsnicmp( descriptor, L"{E9476FB8-0B11-4209-9A7D-CBA553C1555D}", MAX_LEN ) == 0 )
-                    {                               
+                    {
                         OutputWarning( L"%sDeprecated ESRB 'Mature Sexual Themes' descriptor found.  Use 'Sexual Themes' instead.\n", strHeader );
                     }
                     if( _wcsnicmp( descriptor, L"{1A796A5D-1E25-4862-9443-1550578FF4C4}", MAX_LEN ) == 0 )
-                    {                               
+                    {
                         OutputWarning( L"%sDeprecated ESRB 'Mild Language' descriptor found.  Use 'Language' instead.\n", strHeader );
                     }
                     if( _wcsnicmp( descriptor, L"{40B262D1-11AA-43C2-B7BA-63A9F5756A06}", MAX_LEN ) == 0 )
-                    {                               
+                    {
                         OutputWarning( L"%sDeprecated ESRB 'Mild Lyrics' descriptor found.  Use 'Lyrics' instead.\n", strHeader );
                     }
                 }
@@ -701,7 +701,7 @@ HRESULT ScanForWarnings( const GDFData* pGDFDataList, const ImageInfo* pImageLis
         {
             OutputWarning( L"%sThe OFLC rating system has been deprecated, COB-AU replaces it for Australia and OFLC-NZ replaces it for New Zealand.\n", strHeader);
         }
-        
+
         // Icon/Thumbnail warnings
         if ( !bStore )
         {
@@ -748,7 +748,7 @@ HRESULT ScanForWarnings( const GDFData* pGDFDataList, const ImageInfo* pImageLis
                 }
             }
 
-        }    
+        }
 
         wprintf( L"\n" );
     }
@@ -825,7 +825,7 @@ HRESULT ProcessBIN( WCHAR* strGDFBinPath, bool bMuteWarnings, bool bMuteGDF, boo
     if ( FAILED(hr) )
     {
         LPVOID buff = 0;
-        FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, 
+        FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
                        nullptr, (hr & 0xffff), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR) &buff, 0, nullptr );
         wprintf( L"Failed processing binary: %s\n(0x%08x) %s\n", strGDFBinPath, hr, (LPWSTR) buff );
         LocalFree( buff );
@@ -863,7 +863,7 @@ HRESULT ProcessBIN( WCHAR* strGDFBinPath, bool bMuteWarnings, bool bMuteGDF, boo
     // Load GDF Thumbnail data
     ImageInfo* pImageList = new ImageInfo[ nLangs ];
     ZeroMemory( pImageList, sizeof(ImageInfo)*nLangs );
-    
+
     for( int iLang=0; iLang < nLangs; iLang++ )
     {
         WORD wLang = gdfParse.GetLang( iLang );
@@ -871,7 +871,7 @@ HRESULT ProcessBIN( WCHAR* strGDFBinPath, bool bMuteWarnings, bool bMuteGDF, boo
         if ( FAILED(gdfParse.ExtractGDFThumbnail( strGDFBinPath, &pImageList[iLang], wLang )) )
         {
             pImageList[iLang].container = IMAGE_NONE;
-        }       
+        }
     }
 
     BOOL** ppIconEightBits = new BOOL*[nLangs];
@@ -880,7 +880,7 @@ HRESULT ProcessBIN( WCHAR* strGDFBinPath, bool bMuteWarnings, bool bMuteGDF, boo
         ppIconEightBits[iLang] = new BOOL[4];
         ZeroMemory( ppIconEightBits[iLang], sizeof(BOOL)*4 );
     }
-    
+
     BOOL** ppIconThirtyTwoBits = new BOOL*[nLangs];
     for( int iLang=0; iLang < nLangs; iLang++ )
     {
@@ -893,7 +893,7 @@ HRESULT ProcessBIN( WCHAR* strGDFBinPath, bool bMuteWarnings, bool bMuteGDF, boo
         for( int iLang=0; iLang < nLangs; iLang++ )
         {
             OutputGDFData( &pGDFDataList[iLang], &pImageList[iLang] );
-            
+
             WORD wLang = gdfParse.GetLang( iLang );
             gdfParse.OutputGDFIconInfo( strGDFBinPath, ppIconEightBits[iLang], ppIconThirtyTwoBits[iLang], wLang );
         }
@@ -906,7 +906,7 @@ HRESULT ProcessBIN( WCHAR* strGDFBinPath, bool bMuteWarnings, bool bMuteGDF, boo
         if ( !bStore && !gdfParse.IsIconPresent( strGDFBinPath ) )
             OutputWarning( L"\tWarning: Icon not found. Adding one is highly recommended!\n" );
     }
-    
+
     delete [] pGDFDataList;
     delete [] pImageList;
 
@@ -915,7 +915,7 @@ HRESULT ProcessBIN( WCHAR* strGDFBinPath, bool bMuteWarnings, bool bMuteGDF, boo
         delete [] ppIconEightBits[iLang];
         delete [] ppIconThirtyTwoBits[iLang];
     }
-    
+
     delete [] ppIconEightBits;
     delete [] ppIconThirtyTwoBits;
 
@@ -961,7 +961,7 @@ int main(int argc, char* argv[])
 
 
 //--------------------------------------------------------------------------------------
-// Parses the command line for parameters.  See DXUTInit() for list 
+// Parses the command line for parameters.  See DXUTInit() for list
 //--------------------------------------------------------------------------------------
 bool ParseCommandLine( SETTINGS* pSettings )
 {
@@ -1015,7 +1015,7 @@ bool ParseCommandLine( SETTINGS* pSettings )
                 return false;
             }
         }
-        else 
+        else
         {
             // Handle non-flag args as separate input files
             swprintf_s( pSettings->strGDFBinPath, MAX_PATH, L"%s", strCmdLine );
@@ -1053,8 +1053,8 @@ void DisplayUsage()
     wprintf( L"\n" );
     wprintf( L"Usage: GDFTrace.exe [options] <gdf binary>\n" );
     wprintf( L"\n" );
-    wprintf( L"where:\n" ); 
-    wprintf( L"\n" ); 
+    wprintf( L"where:\n" );
+    wprintf( L"\n" );
     wprintf( L"  [/mutegdf]     \tmutes output of GDF data\n" );
     wprintf( L"  [/mutewarnings]\tmutes output of warnings\n" );
     wprintf( L"  [/store]       \tmutes warnings not relevant to Windows Store apps\n" );

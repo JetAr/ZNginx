@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: vbo.h
 //
 // The VBO file format was introduced in the Windows 8.0 ResourceLoading sample. It's
@@ -24,11 +24,11 @@ namespace VBO
 {
 #pragma pack(push,1)
 
-    struct header_t
-    {
-        uint32_t numVertices;
-        uint32_t numIndices;
-    };
+struct header_t
+{
+    uint32_t numVertices;
+    uint32_t numIndices;
+};
 
 #pragma pack(pop)
 

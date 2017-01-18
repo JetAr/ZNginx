@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXMeshNormals.cpp
-//  
+//
 // DirectX Mesh Geometry Library - Normal computation
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -42,14 +42,14 @@ HRESULT ComputeNormalsEqualWeight( _In_reads_(nFaces*3) const index_t* indices, 
         index_t i2 = indices[ face*3 + 2 ];
 
         if ( i0 == index_t(-1)
-             || i1 == index_t(-1)
-             || i2 == index_t(-1) )
+                || i1 == index_t(-1)
+                || i2 == index_t(-1) )
             continue;
 
         if ( i0 >= nVerts
-             || i1 >= nVerts
-             || i2 >= nVerts )
-             return E_UNEXPECTED;
+                || i1 >= nVerts
+                || i2 >= nVerts )
+            return E_UNEXPECTED;
 
         XMVECTOR p1 = XMLoadFloat3( &positions[ i0 ] );
         XMVECTOR p2 = XMLoadFloat3( &positions[ i1 ] );
@@ -93,7 +93,7 @@ HRESULT ComputeNormalsEqualWeight( _In_reads_(nFaces*3) const index_t* indices, 
 //-------------------------------------------------------------------------------------
 template<class index_t>
 HRESULT ComputeNormalsWeightedByAngle( _In_reads_(nFaces*3) const index_t* indices, size_t nFaces,
-                                       _In_reads_(nVerts) const XMFLOAT3* positions, size_t nVerts, 
+                                       _In_reads_(nVerts) const XMFLOAT3* positions, size_t nVerts,
                                        bool cw, _Out_writes_(nVerts) XMFLOAT3* normals )
 {
     ScopedAlignedArrayXMVECTOR temp( reinterpret_cast<XMVECTOR*>( _aligned_malloc( sizeof(XMVECTOR) * nVerts, 16 ) ) );
@@ -110,14 +110,14 @@ HRESULT ComputeNormalsWeightedByAngle( _In_reads_(nFaces*3) const index_t* indic
         index_t i2 = indices[ face*3 + 2 ];
 
         if ( i0 == index_t(-1)
-             || i1 == index_t(-1)
-             || i2 == index_t(-1) )
+                || i1 == index_t(-1)
+                || i2 == index_t(-1) )
             continue;
 
         if ( i0 >= nVerts
-             || i1 >= nVerts
-             || i2 >= nVerts )
-             return E_UNEXPECTED;
+                || i1 >= nVerts
+                || i2 >= nVerts )
+            return E_UNEXPECTED;
 
         XMVECTOR p0 = XMLoadFloat3( &positions[ i0 ] );
         XMVECTOR p1 = XMLoadFloat3( &positions[ i1 ] );
@@ -182,7 +182,7 @@ HRESULT ComputeNormalsWeightedByAngle( _In_reads_(nFaces*3) const index_t* indic
 //-------------------------------------------------------------------------------------
 template<class index_t>
 HRESULT ComputeNormalsWeightedByArea( _In_reads_(nFaces*3) const index_t* indices, size_t nFaces,
-                                      _In_reads_(nVerts) const XMFLOAT3* positions, size_t nVerts, 
+                                      _In_reads_(nVerts) const XMFLOAT3* positions, size_t nVerts,
                                       bool cw, _Out_writes_(nVerts) XMFLOAT3* normals )
 {
     ScopedAlignedArrayXMVECTOR temp( reinterpret_cast<XMVECTOR*>( _aligned_malloc( sizeof(XMVECTOR) * nVerts, 16 ) ) );
@@ -199,14 +199,14 @@ HRESULT ComputeNormalsWeightedByArea( _In_reads_(nFaces*3) const index_t* indice
         index_t i2 = indices[ face*3 + 2 ];
 
         if ( i0 == index_t(-1)
-             || i1 == index_t(-1)
-             || i2 == index_t(-1) )
+                || i1 == index_t(-1)
+                || i2 == index_t(-1) )
             continue;
 
         if ( i0 >= nVerts
-             || i1 >= nVerts
-             || i2 >= nVerts )
-             return E_UNEXPECTED;
+                || i1 >= nVerts
+                || i2 >= nVerts )
+            return E_UNEXPECTED;
 
         XMVECTOR p0 = XMLoadFloat3( &positions[ i0 ] );
         XMVECTOR p1 = XMLoadFloat3( &positions[ i1 ] );
@@ -272,7 +272,7 @@ namespace DirectX
 //-------------------------------------------------------------------------------------
 _Use_decl_annotations_
 HRESULT ComputeNormals( const uint16_t* indices, size_t nFaces,
-                        const XMFLOAT3* positions, size_t nVerts, 
+                        const XMFLOAT3* positions, size_t nVerts,
                         DWORD flags,
                         XMFLOAT3* normals )
 {
@@ -303,7 +303,7 @@ HRESULT ComputeNormals( const uint16_t* indices, size_t nFaces,
 
 _Use_decl_annotations_
 HRESULT ComputeNormals( const uint32_t* indices, size_t nFaces,
-                        const XMFLOAT3* positions, size_t nVerts, 
+                        const XMFLOAT3* positions, size_t nVerts,
                         DWORD flags,
                         XMFLOAT3* normals )
 {

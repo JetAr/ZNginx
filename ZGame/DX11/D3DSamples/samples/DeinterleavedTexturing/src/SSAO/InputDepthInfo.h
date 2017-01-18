@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeinterleavedTexturing\src\SSAO/InputDepthInfo.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -46,11 +46,11 @@ class InputDepthInfo
 {
 public:
     InputDepthInfo()
-      : pDepthTextureSRV(NULL)
-      , Width(0)
-      , Height(0)
-      , SampleCount(0)
-      , MetersToViewSpaceUnits(0.f)
+        : pDepthTextureSRV(NULL)
+        , Width(0)
+        , Height(0)
+        , SampleCount(0)
+        , MetersToViewSpaceUnits(0.f)
     {
     }
 

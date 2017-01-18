@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeferredContexts11\src\renderers/DC_BatchInstances_Renderer.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -63,7 +63,10 @@ class DC_BatchInstances_Renderer : public RendererBase
 public:
     DC_BatchInstances_Renderer();
 
-    virtual MT_RENDER_STRATEGY GetContextType() {return RS_MT_BATCHED_INSTANCES;}
+    virtual MT_RENDER_STRATEGY GetContextType()
+    {
+        return RS_MT_BATCHED_INSTANCES;
+    }
 
     virtual HRESULT OnD3D11CreateDevice(ID3D11Device* pd3dDevice);
     virtual void OnD3D11FrameRender(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime, float fElapsedTime);

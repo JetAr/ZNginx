@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: WaveBankReader.cpp
 //
 // Functions for loading audio data from Wave Banks
@@ -25,7 +25,7 @@
 
 namespace
 {
-    
+
 //--------------------------------------------------------------------------------------
 #pragma pack(push, 1)
 
@@ -109,7 +109,7 @@ union MINIWAVEFORMAT
     static const uint32_t BITDEPTH_16 = 0x1; // PCM only
 
     static const size_t ADPCM_BLOCKALIGN_CONVERSION_OFFSET = 22;
-    
+
     struct
     {
         uint32_t       wFormatTag      : 2;        // Format tag
@@ -145,7 +145,7 @@ union MINIWAVEFORMAT
         {
         case TAG_PCM:
             return wBlockAlign;
-            
+
         case TAG_XMA:
             return (nChannels * 16 / 8); // XMA_OUTPUT_SAMPLE_BITS = 16
 
@@ -153,33 +153,33 @@ union MINIWAVEFORMAT
             return (wBlockAlign + ADPCM_BLOCKALIGN_CONVERSION_OFFSET) * nChannels;
 
         case TAG_WMA:
+        {
+            static const uint32_t aWMABlockAlign[] =
             {
-                static const uint32_t aWMABlockAlign[] =
-                {
-                    929,
-                    1487,
-                    1280,
-                    2230,
-                    8917,
-                    8192,
-                    4459,
-                    5945,
-                    2304,
-                    1536,
-                    1485,
-                    1008,
-                    2731,
-                    4096,
-                    6827,
-                    5462,
-                    1280
-                };
+                929,
+                1487,
+                1280,
+                2230,
+                8917,
+                8192,
+                4459,
+                5945,
+                2304,
+                1536,
+                1485,
+                1008,
+                2731,
+                4096,
+                6827,
+                5462,
+                1280
+            };
 
-                uint32_t dwBlockAlignIndex = wBlockAlign & 0x1F;
-                if ( dwBlockAlignIndex < _countof(aWMABlockAlign) )
-                    return aWMABlockAlign[dwBlockAlignIndex];
-            }
-            break;
+            uint32_t dwBlockAlignIndex = wBlockAlign & 0x1F;
+            if ( dwBlockAlignIndex < _countof(aWMABlockAlign) )
+                return aWMABlockAlign[dwBlockAlignIndex];
+        }
+        break;
         }
 
         return 0;
@@ -196,32 +196,32 @@ union MINIWAVEFORMAT
             return nSamplesPerSec * BlockAlign();
 
         case TAG_ADPCM:
-            {
-                uint32_t blockAlign = BlockAlign();
-                uint32_t samplesPerAdpcmBlock = AdpcmSamplesPerBlock();
-                return blockAlign * nSamplesPerSec / samplesPerAdpcmBlock;
-            }
-            break;
+        {
+            uint32_t blockAlign = BlockAlign();
+            uint32_t samplesPerAdpcmBlock = AdpcmSamplesPerBlock();
+            return blockAlign * nSamplesPerSec / samplesPerAdpcmBlock;
+        }
+        break;
 
         case TAG_WMA:
+        {
+            static const uint32_t aWMAAvgBytesPerSec[] =
             {
-                static const uint32_t aWMAAvgBytesPerSec[] =
-                {
-                    12000,
-                    24000,
-                    4000,
-                    6000,
-                    8000,
-                    20000,
-                    2500
-                };
-                // bitrate = entry * 8
+                12000,
+                24000,
+                4000,
+                6000,
+                8000,
+                20000,
+                2500
+            };
+            // bitrate = entry * 8
 
-                uint32_t dwBytesPerSecIndex = wBlockAlign >> 5;
-                if ( dwBytesPerSecIndex < _countof(aWMAAvgBytesPerSec) )
-                    return aWMAAvgBytesPerSec[dwBytesPerSecIndex];
-            }
-            break;
+            uint32_t dwBytesPerSecIndex = wBlockAlign >> 5;
+            if ( dwBytesPerSecIndex < _countof(aWMAAvgBytesPerSec) )
+                return aWMAAvgBytesPerSec[dwBytesPerSecIndex];
+        }
+        break;
         }
 
         return 0;
@@ -347,16 +347,16 @@ struct ENTRYCOMPACT
         switch( data.CompactFormat.wFormatTag )
         {
         case MINIWAVEFORMAT::TAG_ADPCM:
+        {
+            uint32_t duration = ( length / data.CompactFormat.BlockAlign() ) * data.CompactFormat.AdpcmSamplesPerBlock();
+            uint32_t partial = length % data.CompactFormat.BlockAlign();
+            if ( partial )
             {
-                uint32_t duration = ( length / data.CompactFormat.BlockAlign() ) * data.CompactFormat.AdpcmSamplesPerBlock();
-                uint32_t partial = length % data.CompactFormat.BlockAlign();
-                if ( partial )
-                {
-                    if ( partial >= ( 7 * data.CompactFormat.nChannels ) )
-                        duration += ( partial * 2 / data.CompactFormat.nChannels - 12 );
-                }
-                return duration;
+                if ( partial >= ( 7 * data.CompactFormat.nChannels ) )
+                    duration += ( partial * 2 / data.CompactFormat.nChannels - 12 );
             }
+            return duration;
+        }
 
         case MINIWAVEFORMAT::TAG_WMA:
             if ( seekTable )
@@ -364,26 +364,26 @@ struct ENTRYCOMPACT
                 uint32_t seekCount = *seekTable;
                 if ( seekCount > 0 )
                 {
-                   return seekTable[ seekCount ] / uint32_t( 2 * data.CompactFormat.nChannels );
+                    return seekTable[ seekCount ] / uint32_t( 2 * data.CompactFormat.nChannels );
                 }
             }
             return 0;
 
-        case MINIWAVEFORMAT::TAG_XMA: 
+        case MINIWAVEFORMAT::TAG_XMA:
             if ( seekTable )
             {
                 uint32_t seekCount = *seekTable;
                 if ( seekCount > 0 )
                 {
-                   return seekTable[ seekCount ];
+                    return seekTable[ seekCount ];
                 }
             }
             return 0;
 
-        default: 
+        default:
             return uint32_t( ( uint64_t( length ) * 8 )
                              / uint64_t( data.CompactFormat.BitsPerSample() * data.CompactFormat.nChannels ) );
-        }        
+        }
     }
 };
 
@@ -441,7 +441,10 @@ public:
         memset( &m_request, 0, sizeof(OVERLAPPED) );
     }
 
-    ~Impl() { Close(); }
+    ~Impl()
+    {
+        Close();
+    }
 
     HRESULT Open( _In_z_ const wchar_t* szFileName );
     void Close();
@@ -515,18 +518,18 @@ HRESULT WaveBankReader::Impl::Open( const wchar_t* szFileName )
     params.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
     params.dwFileFlags = FILE_FLAG_OVERLAPPED | FILE_FLAG_SEQUENTIAL_SCAN;
     ScopedHandle hFile( safe_handle( CreateFile2( szFileName,
-                                                  GENERIC_READ,
-                                                  FILE_SHARE_READ,
-                                                  OPEN_EXISTING,
-                                                  &params ) ) );
+                                     GENERIC_READ,
+                                     FILE_SHARE_READ,
+                                     OPEN_EXISTING,
+                                     &params ) ) );
 #else
     ScopedHandle hFile( safe_handle( CreateFileW( szFileName,
-                                                  GENERIC_READ,
-                                                  FILE_SHARE_READ,
-                                                  nullptr,
-                                                  OPEN_EXISTING,
-                                                  FILE_FLAG_OVERLAPPED | FILE_FLAG_SEQUENTIAL_SCAN,
-                                                  nullptr ) ) );
+                                     GENERIC_READ,
+                                     FILE_SHARE_READ,
+                                     nullptr,
+                                     OPEN_EXISTING,
+                                     FILE_FLAG_OVERLAPPED | FILE_FLAG_SEQUENTIAL_SCAN,
+                                     nullptr ) ) );
 #endif
 
     if ( !hFile )
@@ -955,115 +958,133 @@ HRESULT WaveBankReader::Impl::GetFormat( uint32_t index, WAVEFORMATEX* pFormat, 
 
     switch( miniFmt.wFormatTag )
     {
-        case MINIWAVEFORMAT::TAG_PCM:
-            if ( maxsize < sizeof(PCMWAVEFORMAT) )
-                return HRESULT_FROM_WIN32( ERROR_MORE_DATA );
+    case MINIWAVEFORMAT::TAG_PCM:
+        if ( maxsize < sizeof(PCMWAVEFORMAT) )
+            return HRESULT_FROM_WIN32( ERROR_MORE_DATA );
 
-            pFormat->wFormatTag = WAVE_FORMAT_PCM;
+        pFormat->wFormatTag = WAVE_FORMAT_PCM;
 
-            if ( maxsize >= sizeof(WAVEFORMATEX) )
-            {
-                pFormat->cbSize = 0;
-            }
-            break;
-
-        case MINIWAVEFORMAT::TAG_ADPCM:
-            if ( maxsize < ( sizeof(WAVEFORMATEX) + 32 /*MSADPCM_FORMAT_EXTRA_BYTES*/ ) )
-                return HRESULT_FROM_WIN32( ERROR_MORE_DATA );
-
-            pFormat->wFormatTag = WAVE_FORMAT_ADPCM;
-            pFormat->cbSize = 32 /*MSADPCM_FORMAT_EXTRA_BYTES*/;
-            {
-                auto adpcmFmt = reinterpret_cast<ADPCMWAVEFORMAT*>(pFormat);
-                adpcmFmt->wSamplesPerBlock = (WORD) miniFmt.AdpcmSamplesPerBlock();
-                miniFmt.AdpcmFillCoefficientTable( adpcmFmt );
-            }
-            break;
-
-        case MINIWAVEFORMAT::TAG_WMA:
-            if ( maxsize < sizeof(WAVEFORMATEX) )
-                return HRESULT_FROM_WIN32( ERROR_MORE_DATA );
-
-            pFormat->wFormatTag = (miniFmt.wBitsPerSample & 0x1) ? WAVE_FORMAT_WMAUDIO3 : WAVE_FORMAT_WMAUDIO2;
+        if ( maxsize >= sizeof(WAVEFORMATEX) )
+        {
             pFormat->cbSize = 0;
-            break;
+        }
+        break;
 
-        case MINIWAVEFORMAT::TAG_XMA: // XMA2 is supported by Xbox One
+    case MINIWAVEFORMAT::TAG_ADPCM:
+        if ( maxsize < ( sizeof(WAVEFORMATEX) + 32 /*MSADPCM_FORMAT_EXTRA_BYTES*/ ) )
+            return HRESULT_FROM_WIN32( ERROR_MORE_DATA );
+
+        pFormat->wFormatTag = WAVE_FORMAT_ADPCM;
+        pFormat->cbSize = 32 /*MSADPCM_FORMAT_EXTRA_BYTES*/;
+        {
+            auto adpcmFmt = reinterpret_cast<ADPCMWAVEFORMAT*>(pFormat);
+            adpcmFmt->wSamplesPerBlock = (WORD) miniFmt.AdpcmSamplesPerBlock();
+            miniFmt.AdpcmFillCoefficientTable( adpcmFmt );
+        }
+        break;
+
+    case MINIWAVEFORMAT::TAG_WMA:
+        if ( maxsize < sizeof(WAVEFORMATEX) )
+            return HRESULT_FROM_WIN32( ERROR_MORE_DATA );
+
+        pFormat->wFormatTag = (miniFmt.wBitsPerSample & 0x1) ? WAVE_FORMAT_WMAUDIO3 : WAVE_FORMAT_WMAUDIO2;
+        pFormat->cbSize = 0;
+        break;
+
+    case MINIWAVEFORMAT::TAG_XMA: // XMA2 is supported by Xbox One
 #if defined(_XBOX_ONE) && defined(_TITLE)
-            if ( maxsize < sizeof(XMA2WAVEFORMATEX) )
-                return HRESULT_FROM_WIN32( ERROR_MORE_DATA );
+        if ( maxsize < sizeof(XMA2WAVEFORMATEX) )
+            return HRESULT_FROM_WIN32( ERROR_MORE_DATA );
 
-            pFormat->wFormatTag = WAVE_FORMAT_XMA2;
-            pFormat->cbSize = sizeof(XMA2WAVEFORMATEX) - sizeof(WAVEFORMATEX);
+        pFormat->wFormatTag = WAVE_FORMAT_XMA2;
+        pFormat->cbSize = sizeof(XMA2WAVEFORMATEX) - sizeof(WAVEFORMATEX);
+        {
+            auto xmaFmt = reinterpret_cast<XMA2WAVEFORMATEX*>(pFormat);
+
+            xmaFmt->NumStreams = static_cast<WORD>( (miniFmt.nChannels + 1) / 2 );
+            xmaFmt->BytesPerBlock = 65536 /* XACT_FIXED_XMA_BLOCK_SIZE */;
+            xmaFmt->EncoderVersion = 4 /* XMAENCODER_VERSION_XMA2 */;
+
+            auto seekTable = FindSeekTable( index, m_seekData.get(), m_header, m_data );
+            if ( seekTable )
             {
-                auto xmaFmt = reinterpret_cast<XMA2WAVEFORMATEX*>(pFormat);
+                xmaFmt->BlockCount = static_cast<WORD>( *seekTable );
+            }
+            else
+            {
+                xmaFmt->BlockCount = 0;
+            }
 
-                xmaFmt->NumStreams = static_cast<WORD>( (miniFmt.nChannels + 1) / 2 );
-                xmaFmt->BytesPerBlock = 65536 /* XACT_FIXED_XMA_BLOCK_SIZE */;
-                xmaFmt->EncoderVersion = 4 /* XMAENCODER_VERSION_XMA2 */;
+            switch( miniFmt.nChannels )
+            {
+            case 1:
+                xmaFmt->ChannelMask = SPEAKER_MONO;
+                break;
+            case 2:
+                xmaFmt->ChannelMask = SPEAKER_STEREO;
+                break;
+            case 3:
+                xmaFmt->ChannelMask = SPEAKER_2POINT1;
+                break;
+            case 4:
+                xmaFmt->ChannelMask = SPEAKER_QUAD;
+                break;
+            case 5:
+                xmaFmt->ChannelMask = SPEAKER_4POINT1;
+                break;
+            case 6:
+                xmaFmt->ChannelMask = SPEAKER_5POINT1;
+                break;
+            case 7:
+                xmaFmt->ChannelMask = SPEAKER_5POINT1 | SPEAKER_BACK_CENTER;
+                break;
+            case 8:
+                xmaFmt->ChannelMask = SPEAKER_7POINT1;
+                break;
+            default:
+                xmaFmt->ChannelMask = DWORD(-1);
+                break;
+            }
 
-                auto seekTable = FindSeekTable( index, m_seekData.get(), m_header, m_data );
-                if ( seekTable )
+            if ( m_data.dwFlags & BANKDATA::FLAGS_COMPACT )
+            {
+                auto& entry = reinterpret_cast<const ENTRYCOMPACT*>( m_entries.get() )[ index ];
+
+                DWORD dwOffset, dwLength;
+                entry.ComputeLocations( dwOffset, dwLength, index, m_header, m_data, reinterpret_cast<const ENTRYCOMPACT*>( m_entries.get() ) );
+
+                xmaFmt->SamplesEncoded = entry.GetDuration( dwLength, m_data, seekTable );
+
+                xmaFmt->PlayBegin = xmaFmt->PlayLength =
+                                        xmaFmt->LoopBegin = xmaFmt->LoopLength = xmaFmt->LoopCount = 0;
+            }
+            else
+            {
+                auto& entry = reinterpret_cast<const ENTRY*>( m_entries.get() )[ index ];
+
+                xmaFmt->SamplesEncoded = entry.Duration;
+                xmaFmt->PlayBegin = 0;
+                xmaFmt->PlayLength = entry.PlayRegion.dwLength;
+
+                if ( entry.LoopRegion.dwTotalSamples > 0 )
                 {
-                    xmaFmt->BlockCount = static_cast<WORD>( *seekTable );
+                    xmaFmt->LoopBegin = entry.LoopRegion.dwStartSample;
+                    xmaFmt->LoopLength = entry.LoopRegion.dwTotalSamples;
+                    xmaFmt->LoopCount = 0xff /* XACTLOOPCOUNT_INFINITE */;
                 }
                 else
                 {
-                    xmaFmt->BlockCount = 0;
-                }
-
-                switch( miniFmt.nChannels )
-                {
-                case 1: xmaFmt->ChannelMask = SPEAKER_MONO; break; 
-                case 2: xmaFmt->ChannelMask = SPEAKER_STEREO; break;
-                case 3: xmaFmt->ChannelMask = SPEAKER_2POINT1; break;
-                case 4: xmaFmt->ChannelMask = SPEAKER_QUAD; break;
-                case 5: xmaFmt->ChannelMask = SPEAKER_4POINT1; break;
-                case 6: xmaFmt->ChannelMask = SPEAKER_5POINT1; break;
-                case 7: xmaFmt->ChannelMask = SPEAKER_5POINT1 | SPEAKER_BACK_CENTER; break;
-                case 8: xmaFmt->ChannelMask = SPEAKER_7POINT1; break;
-                default: xmaFmt->ChannelMask = DWORD(-1); break;
-                }
-
-                if ( m_data.dwFlags & BANKDATA::FLAGS_COMPACT )
-                {
-                    auto& entry = reinterpret_cast<const ENTRYCOMPACT*>( m_entries.get() )[ index ];
-
-                    DWORD dwOffset, dwLength;
-                    entry.ComputeLocations( dwOffset, dwLength, index, m_header, m_data, reinterpret_cast<const ENTRYCOMPACT*>( m_entries.get() ) );
-
-                    xmaFmt->SamplesEncoded = entry.GetDuration( dwLength, m_data, seekTable );
-
-                    xmaFmt->PlayBegin = xmaFmt->PlayLength = 
                     xmaFmt->LoopBegin = xmaFmt->LoopLength = xmaFmt->LoopCount = 0;
                 }
-                else
-                {
-                    auto& entry = reinterpret_cast<const ENTRY*>( m_entries.get() )[ index ];
-
-                    xmaFmt->SamplesEncoded = entry.Duration;
-                    xmaFmt->PlayBegin = 0;
-                    xmaFmt->PlayLength = entry.PlayRegion.dwLength;
-
-                    if ( entry.LoopRegion.dwTotalSamples > 0 )
-                    {
-                        xmaFmt->LoopBegin = entry.LoopRegion.dwStartSample;
-                        xmaFmt->LoopLength = entry.LoopRegion.dwTotalSamples;
-                        xmaFmt->LoopCount = 0xff /* XACTLOOPCOUNT_INFINITE */;
-                    }
-                    else
-                    {
-                        xmaFmt->LoopBegin = xmaFmt->LoopLength = xmaFmt->LoopCount = 0;
-                    }
-                }
             }
-            break;
+        }
+        break;
 #else
-            return HRESULT_FROM_WIN32( ERROR_NOT_SUPPORTED );
+        return HRESULT_FROM_WIN32( ERROR_NOT_SUPPORTED );
 #endif
 
-        default:
-            return E_FAIL;
+    default:
+        return E_FAIL;
     }
 
     pFormat->nChannels = miniFmt.nChannels;
@@ -1129,7 +1150,7 @@ HRESULT WaveBankReader::Impl::GetWaveData( uint32_t index, const uint8_t** pData
         {
             return HRESULT_FROM_WIN32( ERROR_HANDLE_EOF );
         }
-   
+
         *pData = &waveData[ entry.PlayRegion.dwOffset ];
         dataSize = entry.PlayRegion.dwLength;
     }
@@ -1157,7 +1178,7 @@ HRESULT WaveBankReader::Impl::GetSeekTable( uint32_t index, const uint32_t** pDa
         return S_OK;
 
     auto& miniFmt = ( m_data.dwFlags & BANKDATA::FLAGS_COMPACT ) ? m_data.CompactFormat : ( reinterpret_cast<const ENTRY*>( m_entries.get() )[ index ].Format );
-    
+
     switch( miniFmt.wFormatTag )
     {
     case MINIWAVEFORMAT::TAG_WMA:
@@ -1243,7 +1264,7 @@ bool WaveBankReader::Impl::UpdatePrepared()
             memset( &m_request, 0, sizeof(OVERLAPPED) );
         }
     }
-  
+
     return m_prepared;
 }
 

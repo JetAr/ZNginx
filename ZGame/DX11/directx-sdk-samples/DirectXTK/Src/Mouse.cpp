@@ -34,7 +34,7 @@ using Microsoft::WRL::ComPtr;
 // {
 //     m_mouse->SetWindow(window);
 // }
-// 
+//
 // void App::OnDpiChanged(DisplayInformation^ sender, Object^ args)
 // {
 //     m_mouse->SetDpi(sender->LogicalDpi);
@@ -56,7 +56,7 @@ public:
         mPointerMovedToken.value = 0;
         mPointerWheelToken.value = 0;
         mPointerMouseMovedToken.value = 0;
-        
+
         if ( s_mouse )
         {
             throw std::exception( "Mouse is a singleton" );
@@ -68,8 +68,8 @@ public:
 
         mScrollWheelValue.reset( CreateEventEx(nullptr, nullptr, CREATE_EVENT_MANUAL_RESET, EVENT_MODIFY_STATE | SYNCHRONIZE) );
         mRelativeRead.reset( CreateEventEx(nullptr, nullptr, CREATE_EVENT_MANUAL_RESET, EVENT_MODIFY_STATE | SYNCHRONIZE) );
-        if ( !mScrollWheelValue 
-             || !mRelativeRead ) 
+        if ( !mScrollWheelValue
+                || !mRelativeRead )
         {
             throw std::exception( "CreateEventEx" );
         }
@@ -537,10 +537,10 @@ public:
         mRelativeRead.reset( CreateEventEx(nullptr, nullptr, CREATE_EVENT_MANUAL_RESET, EVENT_MODIFY_STATE | SYNCHRONIZE) );
         mAbsoluteMode.reset( CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE) );
         mRelativeMode.reset( CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE) );
-        if ( !mScrollWheelValue 
-             || !mRelativeRead
-             || !mAbsoluteMode 
-             || !mRelativeMode ) 
+        if ( !mScrollWheelValue
+                || !mRelativeRead
+                || !mAbsoluteMode
+                || !mRelativeMode )
         {
             throw std::exception( "CreateEventEx" );
         }
@@ -708,35 +708,35 @@ void Mouse::ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
     case (WAIT_OBJECT_0 + 1) :
-        {
-            pImpl->mMode = MODE_ABSOLUTE;
-            ClipCursor(nullptr);
+    {
+        pImpl->mMode = MODE_ABSOLUTE;
+        ClipCursor(nullptr);
 
-            POINT point;
-            point.x = pImpl->mLastX;
-            point.y = pImpl->mLastY;
-            if (MapWindowPoints(pImpl->mWindow, nullptr, &point, 1))
-            {
-                SetCursorPos(point.x, point.y);
-            }
-            ShowCursor(TRUE);
-            pImpl->mState.x = pImpl->mLastX;
-            pImpl->mState.y = pImpl->mLastY;
+        POINT point;
+        point.x = pImpl->mLastX;
+        point.y = pImpl->mLastY;
+        if (MapWindowPoints(pImpl->mWindow, nullptr, &point, 1))
+        {
+            SetCursorPos(point.x, point.y);
         }
-        break;
+        ShowCursor(TRUE);
+        pImpl->mState.x = pImpl->mLastX;
+        pImpl->mState.y = pImpl->mLastY;
+    }
+    break;
 
     case (WAIT_OBJECT_0 + 2) :
-        {
-            ResetEvent( pImpl->mRelativeRead.get() );
+    {
+        ResetEvent( pImpl->mRelativeRead.get() );
 
-            pImpl->mMode = MODE_RELATIVE;
-            pImpl->mState.x = pImpl->mState.y = 0;
+        pImpl->mMode = MODE_RELATIVE;
+        pImpl->mState.x = pImpl->mState.y = 0;
 
-            ShowCursor(FALSE);
+        ShowCursor(FALSE);
 
-            pImpl->ClipToWindow();
-        }
-        break;
+        pImpl->ClipToWindow();
+    }
+    break;
 
     case WAIT_FAILED:
         throw std::exception("WaitForMultipleObjectsEx");
@@ -885,7 +885,7 @@ Mouse::Mouse()
 
 // Move constructor.
 Mouse::Mouse(Mouse&& moveFrom)
-  : pImpl(std::move(moveFrom.pImpl))
+    : pImpl(std::move(moveFrom.pImpl))
 {
     pImpl->mOwner = this;
 }

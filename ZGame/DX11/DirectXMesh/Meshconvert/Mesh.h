@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: Mesh.h
 //
 // Mesh processing helper class
@@ -70,19 +70,46 @@ public:
     HRESULT ReverseHandedness();
 
     // Accessors
-    const uint32_t* GetAttributeBuffer() const { return mAttributes.get(); }
-    const uint32_t* GetAdjacencyBuffer() const { return mAdjacency.get(); }
-    const DirectX::XMFLOAT3* GetPositionBuffer() const { return mPositions.get(); }
-    const DirectX::XMFLOAT3* GetNormalBuffer() const { return mNormals.get(); }
-    const DirectX::XMFLOAT2* GetTexCoordBuffer() const { return mTexCoords.get(); }
-    const DirectX::XMFLOAT4* GetTangentBuffer() const { return mTangents.get(); }
+    const uint32_t* GetAttributeBuffer() const
+    {
+        return mAttributes.get();
+    }
+    const uint32_t* GetAdjacencyBuffer() const
+    {
+        return mAdjacency.get();
+    }
+    const DirectX::XMFLOAT3* GetPositionBuffer() const
+    {
+        return mPositions.get();
+    }
+    const DirectX::XMFLOAT3* GetNormalBuffer() const
+    {
+        return mNormals.get();
+    }
+    const DirectX::XMFLOAT2* GetTexCoordBuffer() const
+    {
+        return mTexCoords.get();
+    }
+    const DirectX::XMFLOAT4* GetTangentBuffer() const
+    {
+        return mTangents.get();
+    }
 
-    size_t GetFaceCount() const { return mnFaces; }
-    size_t GetVertexCount() const { return mnVerts; }
+    size_t GetFaceCount() const
+    {
+        return mnFaces;
+    }
+    size_t GetVertexCount() const
+    {
+        return mnVerts;
+    }
 
     bool Is16BitIndexBuffer() const;
 
-    const uint32_t* GetIndexBuffer() const { return mIndices.get(); }
+    const uint32_t* GetIndexBuffer() const
+    {
+        return mIndices.get();
+    }
     std::unique_ptr<uint16_t []> GetIndexBuffer16() const;
 
     HRESULT GetVertexBuffer(_Inout_ DirectX::VBWriter& writer ) const;

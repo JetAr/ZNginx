@@ -1,11 +1,11 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXMathAVX2.h -- AVX2 extensions for SIMD C++ Math library
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
 // ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
 // THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
 // PARTICULAR PURPOSE.
-//  
+//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // http://go.microsoft.com/fwlink/?LinkID=615560
@@ -99,8 +99,8 @@ inline XMVECTOR XM_CALLCONV XMVectorSplatW( FXMVECTOR V )
 
 inline XMVECTOR XM_CALLCONV XMVectorMultiplyAdd
 (
-    FXMVECTOR V1, 
-    FXMVECTOR V2, 
+    FXMVECTOR V1,
+    FXMVECTOR V2,
     FXMVECTOR V3
 )
 {
@@ -109,8 +109,8 @@ inline XMVECTOR XM_CALLCONV XMVectorMultiplyAdd
 
 inline XMVECTOR XM_CALLCONV XMVectorNegativeMultiplySubtract
 (
-    FXMVECTOR V1, 
-    FXMVECTOR V2, 
+    FXMVECTOR V1,
+    FXMVECTOR V2,
     FXMVECTOR V3
 )
 {
@@ -136,7 +136,7 @@ inline XMVECTOR XM_CALLCONV XMVectorPermute( FXMVECTOR V1, FXMVECTOR V2, uint32_
 
     _declspec(align(16)) unsigned int elem[4] = { PermuteX, PermuteY, PermuteZ, PermuteW };
     __m128i vControl = _mm_load_si128( reinterpret_cast<const __m128i *>(&elem[0]) );
-    
+
     __m128i vSelect = _mm_cmpgt_epi32( vControl, three );
     vControl = _mm_castps_si128( _mm_and_ps( _mm_castsi128_ps( vControl ), three ) );
 
@@ -177,7 +177,7 @@ inline XMVECTOR XM_CALLCONV XMVectorRotateRight(FXMVECTOR V, uint32_t Elements)
 
 inline XMVECTOR XM_CALLCONV XMVector2Transform
 (
-    FXMVECTOR V, 
+    FXMVECTOR V,
     CXMMATRIX M
 )
 {
@@ -190,7 +190,7 @@ inline XMVECTOR XM_CALLCONV XMVector2Transform
 
 inline XMVECTOR XM_CALLCONV XMVector2TransformCoord
 (
-    FXMVECTOR V, 
+    FXMVECTOR V,
     CXMMATRIX M
 )
 {
@@ -205,7 +205,7 @@ inline XMVECTOR XM_CALLCONV XMVector2TransformCoord
 
 inline XMVECTOR XM_CALLCONV XMVector2TransformNormal
 (
-    FXMVECTOR V, 
+    FXMVECTOR V,
     CXMMATRIX M
 )
 {
@@ -223,7 +223,7 @@ inline XMVECTOR XM_CALLCONV XMVector2TransformNormal
 
 inline XMVECTOR XM_CALLCONV XMVector3Transform
 (
-    FXMVECTOR V, 
+    FXMVECTOR V,
     CXMMATRIX M
 )
 {
@@ -238,7 +238,7 @@ inline XMVECTOR XM_CALLCONV XMVector3Transform
 
 inline XMVECTOR XM_CALLCONV XMVector3TransformCoord
 (
-    FXMVECTOR V, 
+    FXMVECTOR V,
     CXMMATRIX M
 )
 {
@@ -255,7 +255,7 @@ inline XMVECTOR XM_CALLCONV XMVector3TransformCoord
 
 inline XMVECTOR XM_CALLCONV XMVector3TransformNormal
 (
-    FXMVECTOR V, 
+    FXMVECTOR V,
     CXMMATRIX M
 )
 {
@@ -272,15 +272,15 @@ XMMATRIX XM_CALLCONV XMMatrixMultiply(CXMMATRIX M1, CXMMATRIX M2);
 
 inline XMVECTOR XM_CALLCONV XMVector3Project
 (
-    FXMVECTOR V, 
-    float    ViewportX, 
-    float    ViewportY, 
-    float    ViewportWidth, 
-    float    ViewportHeight, 
-    float    ViewportMinZ, 
-    float    ViewportMaxZ, 
-    CXMMATRIX Projection, 
-    CXMMATRIX View, 
+    FXMVECTOR V,
+    float    ViewportX,
+    float    ViewportY,
+    float    ViewportWidth,
+    float    ViewportHeight,
+    float    ViewportMinZ,
+    float    ViewportMaxZ,
+    CXMMATRIX Projection,
+    CXMMATRIX View,
     CXMMATRIX World
 )
 {
@@ -302,15 +302,15 @@ inline XMVECTOR XM_CALLCONV XMVector3Project
 
 inline XMVECTOR XM_CALLCONV XMVector3Unproject
 (
-    FXMVECTOR V, 
-    float     ViewportX, 
-    float     ViewportY, 
-    float     ViewportWidth, 
-    float     ViewportHeight, 
-    float     ViewportMinZ, 
-    float     ViewportMaxZ, 
-    CXMMATRIX Projection, 
-    CXMMATRIX View, 
+    FXMVECTOR V,
+    float     ViewportX,
+    float     ViewportY,
+    float     ViewportWidth,
+    float     ViewportHeight,
+    float     ViewportMinZ,
+    float     ViewportMaxZ,
+    CXMMATRIX Projection,
+    CXMMATRIX View,
     CXMMATRIX World
 )
 {
@@ -338,7 +338,7 @@ inline XMVECTOR XM_CALLCONV XMVector3Unproject
 
 inline XMVECTOR XM_CALLCONV XMVector4Transform
 (
-    FXMVECTOR V, 
+    FXMVECTOR V,
     CXMMATRIX M
 )
 {
@@ -360,7 +360,7 @@ inline XMVECTOR XM_CALLCONV XMVector4Transform
 
 inline XMMATRIX XM_CALLCONV XMMatrixMultiply
 (
-    CXMMATRIX M1, 
+    CXMMATRIX M1,
     CXMMATRIX M2
 )
 {
@@ -414,7 +414,7 @@ inline XMMATRIX XM_CALLCONV XMMatrixMultiply
 
 inline XMMATRIX XM_CALLCONV XMMatrixMultiplyTranspose
 (
-    FXMMATRIX M1, 
+    FXMMATRIX M1,
     CXMMATRIX M2
 )
 {
@@ -491,57 +491,71 @@ inline XMMATRIX XM_CALLCONV XMMatrixMultiplyTranspose
 
 namespace Internal
 {
-    // Slow path fallback for permutes that do not map to a single SSE opcode.
-    template<uint32_t Shuffle, bool WhichX, bool WhichY, bool WhichZ, bool WhichW> struct PermuteHelper
+// Slow path fallback for permutes that do not map to a single SSE opcode.
+template<uint32_t Shuffle, bool WhichX, bool WhichY, bool WhichZ, bool WhichW> struct PermuteHelper
+{
+    static XMVECTOR XM_CALLCONV Permute(FXMVECTOR v1, FXMVECTOR v2)
     {
-        static XMVECTOR XM_CALLCONV Permute(FXMVECTOR v1, FXMVECTOR v2)
+        static const XMVECTORU32 selectMask =
         {
-            static const XMVECTORU32 selectMask =
-            {
-                WhichX ? 0xFFFFFFFF : 0,
-                WhichY ? 0xFFFFFFFF : 0,
-                WhichZ ? 0xFFFFFFFF : 0,
-                WhichW ? 0xFFFFFFFF : 0,
-            };
+            WhichX ? 0xFFFFFFFF : 0,
+            WhichY ? 0xFFFFFFFF : 0,
+            WhichZ ? 0xFFFFFFFF : 0,
+            WhichW ? 0xFFFFFFFF : 0,
+        };
 
-            XMVECTOR shuffled1 = _mm_permute_ps(v1, Shuffle);
-            XMVECTOR shuffled2 = _mm_permute_ps(v2, Shuffle);
+        XMVECTOR shuffled1 = _mm_permute_ps(v1, Shuffle);
+        XMVECTOR shuffled2 = _mm_permute_ps(v2, Shuffle);
 
-            XMVECTOR masked1 = _mm_andnot_ps(selectMask, shuffled1);
-            XMVECTOR masked2 = _mm_and_ps(selectMask, shuffled2);
+        XMVECTOR masked1 = _mm_andnot_ps(selectMask, shuffled1);
+        XMVECTOR masked2 = _mm_and_ps(selectMask, shuffled2);
 
-            return _mm_or_ps(masked1, masked2);
-        }
-    };
+        return _mm_or_ps(masked1, masked2);
+    }
+};
 
-    // Fast path for permutes that only read from the first vector.
-    template<uint32_t Shuffle> struct PermuteHelper<Shuffle, false, false, false, false>
+// Fast path for permutes that only read from the first vector.
+template<uint32_t Shuffle> struct PermuteHelper<Shuffle, false, false, false, false>
+{
+    static XMVECTOR XM_CALLCONV Permute(FXMVECTOR v1, FXMVECTOR v2)
     {
-        static XMVECTOR XM_CALLCONV Permute(FXMVECTOR v1, FXMVECTOR v2) { (v2); return _mm_permute_ps(v1, Shuffle); }
-    };
+        (v2);
+        return _mm_permute_ps(v1, Shuffle);
+    }
+};
 
-    // Fast path for permutes that only read from the second vector.
-    template<uint32_t Shuffle> struct PermuteHelper<Shuffle, true, true, true, true>
+// Fast path for permutes that only read from the second vector.
+template<uint32_t Shuffle> struct PermuteHelper<Shuffle, true, true, true, true>
+{
+    static XMVECTOR XM_CALLCONV Permute(FXMVECTOR v1, FXMVECTOR v2)
     {
-        static XMVECTOR XM_CALLCONV Permute(FXMVECTOR v1, FXMVECTOR v2){ (v1); return _mm_permute_ps(v2, Shuffle); }
-    };
+        (v1);
+        return _mm_permute_ps(v2, Shuffle);
+    }
+};
 
-    // Fast path for permutes that read XY from the first vector, ZW from the second.
-    template<uint32_t Shuffle> struct PermuteHelper<Shuffle, false, false, true, true>
+// Fast path for permutes that read XY from the first vector, ZW from the second.
+template<uint32_t Shuffle> struct PermuteHelper<Shuffle, false, false, true, true>
+{
+    static XMVECTOR XM_CALLCONV Permute(FXMVECTOR v1, FXMVECTOR v2)
     {
-        static XMVECTOR XM_CALLCONV Permute(FXMVECTOR v1, FXMVECTOR v2) { return _mm_shuffle_ps(v1, v2, Shuffle); }
-    };
+        return _mm_shuffle_ps(v1, v2, Shuffle);
+    }
+};
 
-    // Fast path for permutes that read XY from the second vector, ZW from the first.
-    template<uint32_t Shuffle> struct PermuteHelper<Shuffle, true, true, false, false>
+// Fast path for permutes that read XY from the second vector, ZW from the first.
+template<uint32_t Shuffle> struct PermuteHelper<Shuffle, true, true, false, false>
+{
+    static XMVECTOR XM_CALLCONV Permute(FXMVECTOR v1, FXMVECTOR v2)
     {
-        static XMVECTOR XM_CALLCONV Permute(FXMVECTOR v1, FXMVECTOR v2) { return _mm_shuffle_ps(v2, v1, Shuffle); }
-    };
+        return _mm_shuffle_ps(v2, v1, Shuffle);
+    }
+};
 };
 
 // General permute template
 template<uint32_t PermuteX, uint32_t PermuteY, uint32_t PermuteZ, uint32_t PermuteW>
-    inline XMVECTOR XM_CALLCONV XMVectorPermute(FXMVECTOR V1, FXMVECTOR V2)
+inline XMVECTOR XM_CALLCONV XMVectorPermute(FXMVECTOR V1, FXMVECTOR V2)
 {
     static_assert(PermuteX <= 7, "PermuteX template parameter out of range");
     static_assert(PermuteY <= 7, "PermuteY template parameter out of range");
@@ -559,22 +573,72 @@ template<uint32_t PermuteX, uint32_t PermuteY, uint32_t PermuteZ, uint32_t Permu
 }
 
 // Special-case permute templates
-template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<0,1,2,3>(FXMVECTOR V1, FXMVECTOR V2) { (V2); return V1; }
-template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<4,5,6,7>(FXMVECTOR V1, FXMVECTOR V2) { (V1); return V2; }
-template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<4,1,2,3>(FXMVECTOR V1, FXMVECTOR V2) { return _mm_blend_ps(V1,V2,0x1); }
-template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<0,5,2,3>(FXMVECTOR V1, FXMVECTOR V2) { return _mm_blend_ps(V1,V2,0x2); }
-template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<4,5,2,3>(FXMVECTOR V1, FXMVECTOR V2) { return _mm_blend_ps(V1,V2,0x3); }
-template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<0,1,6,3>(FXMVECTOR V1, FXMVECTOR V2) { return _mm_blend_ps(V1,V2,0x4); }
-template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<4,1,6,3>(FXMVECTOR V1, FXMVECTOR V2) { return _mm_blend_ps(V1,V2,0x5); }
-template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<0,5,6,3>(FXMVECTOR V1, FXMVECTOR V2) { return _mm_blend_ps(V1,V2,0x6); }
-template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<4,5,6,3>(FXMVECTOR V1, FXMVECTOR V2) { return _mm_blend_ps(V1,V2,0x7); }
-template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<0,1,2,7>(FXMVECTOR V1, FXMVECTOR V2) { return _mm_blend_ps(V1,V2,0x8); }
-template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<4,1,2,7>(FXMVECTOR V1, FXMVECTOR V2) { return _mm_blend_ps(V1,V2,0x9); }
-template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<0,5,2,7>(FXMVECTOR V1, FXMVECTOR V2) { return _mm_blend_ps(V1,V2,0xA); }
-template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<4,5,2,7>(FXMVECTOR V1, FXMVECTOR V2) { return _mm_blend_ps(V1,V2,0xB); }
-template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<0,1,6,7>(FXMVECTOR V1, FXMVECTOR V2) { return _mm_blend_ps(V1,V2,0xC); }
-template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<4,1,6,7>(FXMVECTOR V1, FXMVECTOR V2) { return _mm_blend_ps(V1,V2,0xD); }
-template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<0,5,6,7>(FXMVECTOR V1, FXMVECTOR V2) { return _mm_blend_ps(V1,V2,0xE); }
+template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<0,1,2,3>(FXMVECTOR V1, FXMVECTOR V2)
+{
+    (V2);
+    return V1;
+}
+template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<4,5,6,7>(FXMVECTOR V1, FXMVECTOR V2)
+{
+    (V1);
+    return V2;
+}
+template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<4,1,2,3>(FXMVECTOR V1, FXMVECTOR V2)
+{
+    return _mm_blend_ps(V1,V2,0x1);
+}
+template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<0,5,2,3>(FXMVECTOR V1, FXMVECTOR V2)
+{
+    return _mm_blend_ps(V1,V2,0x2);
+}
+template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<4,5,2,3>(FXMVECTOR V1, FXMVECTOR V2)
+{
+    return _mm_blend_ps(V1,V2,0x3);
+}
+template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<0,1,6,3>(FXMVECTOR V1, FXMVECTOR V2)
+{
+    return _mm_blend_ps(V1,V2,0x4);
+}
+template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<4,1,6,3>(FXMVECTOR V1, FXMVECTOR V2)
+{
+    return _mm_blend_ps(V1,V2,0x5);
+}
+template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<0,5,6,3>(FXMVECTOR V1, FXMVECTOR V2)
+{
+    return _mm_blend_ps(V1,V2,0x6);
+}
+template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<4,5,6,3>(FXMVECTOR V1, FXMVECTOR V2)
+{
+    return _mm_blend_ps(V1,V2,0x7);
+}
+template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<0,1,2,7>(FXMVECTOR V1, FXMVECTOR V2)
+{
+    return _mm_blend_ps(V1,V2,0x8);
+}
+template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<4,1,2,7>(FXMVECTOR V1, FXMVECTOR V2)
+{
+    return _mm_blend_ps(V1,V2,0x9);
+}
+template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<0,5,2,7>(FXMVECTOR V1, FXMVECTOR V2)
+{
+    return _mm_blend_ps(V1,V2,0xA);
+}
+template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<4,5,2,7>(FXMVECTOR V1, FXMVECTOR V2)
+{
+    return _mm_blend_ps(V1,V2,0xB);
+}
+template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<0,1,6,7>(FXMVECTOR V1, FXMVECTOR V2)
+{
+    return _mm_blend_ps(V1,V2,0xC);
+}
+template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<4,1,6,7>(FXMVECTOR V1, FXMVECTOR V2)
+{
+    return _mm_blend_ps(V1,V2,0xD);
+}
+template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<0,5,6,7>(FXMVECTOR V1, FXMVECTOR V2)
+{
+    return _mm_blend_ps(V1,V2,0xE);
+}
 
 
 //-------------------------------------------------------------------------------------
@@ -583,7 +647,7 @@ template<> inline XMVECTOR XM_CALLCONV XMVectorPermute<0,5,6,7>(FXMVECTOR V1, FX
 
 // General swizzle template
 template<uint32_t SwizzleX, uint32_t SwizzleY, uint32_t SwizzleZ, uint32_t SwizzleW>
-    inline XMVECTOR XM_CALLCONV XMVectorSwizzle(FXMVECTOR V)
+inline XMVECTOR XM_CALLCONV XMVectorSwizzle(FXMVECTOR V)
 {
     static_assert(SwizzleX <= 3, "SwizzleX template parameter out of range");
     static_assert(SwizzleY <= 3, "SwizzleY template parameter out of range");
@@ -594,10 +658,22 @@ template<uint32_t SwizzleX, uint32_t SwizzleY, uint32_t SwizzleZ, uint32_t Swizz
 }
 
 // Specialized swizzles
-template<> inline XMVECTOR XM_CALLCONV XMVectorSwizzle<0,1,2,3>(FXMVECTOR V) { return V; }
-template<> inline XMVECTOR XM_CALLCONV XMVectorSwizzle<0,0,0,0>(FXMVECTOR V) { return _mm_broadcastss_ps(V); }
-template<> inline XMVECTOR XM_CALLCONV XMVectorSwizzle<0,0,2,2>(FXMVECTOR V) { return _mm_moveldup_ps(V); }
-template<> inline XMVECTOR XM_CALLCONV XMVectorSwizzle<1,1,3,3>(FXMVECTOR V) { return _mm_movehdup_ps(V); }
+template<> inline XMVECTOR XM_CALLCONV XMVectorSwizzle<0,1,2,3>(FXMVECTOR V)
+{
+    return V;
+}
+template<> inline XMVECTOR XM_CALLCONV XMVectorSwizzle<0,0,0,0>(FXMVECTOR V)
+{
+    return _mm_broadcastss_ps(V);
+}
+template<> inline XMVECTOR XM_CALLCONV XMVectorSwizzle<0,0,2,2>(FXMVECTOR V)
+{
+    return _mm_moveldup_ps(V);
+}
+template<> inline XMVECTOR XM_CALLCONV XMVectorSwizzle<1,1,3,3>(FXMVECTOR V)
+{
+    return _mm_movehdup_ps(V);
+}
 
 
 //-------------------------------------------------------------------------------------
@@ -605,21 +681,21 @@ template<> inline XMVECTOR XM_CALLCONV XMVectorSwizzle<1,1,3,3>(FXMVECTOR V) { r
 //-------------------------------------------------------------------------------------
 
 template<uint32_t Elements>
-    inline XMVECTOR XM_CALLCONV XMVectorShiftLeft(FXMVECTOR V1, FXMVECTOR V2)
+inline XMVECTOR XM_CALLCONV XMVectorShiftLeft(FXMVECTOR V1, FXMVECTOR V2)
 {
     static_assert( Elements < 4, "Elements template parameter out of range" );
     return AVX2::XMVectorPermute<Elements, (Elements + 1), (Elements + 2), (Elements + 3)>(V1, V2);
 }
 
 template<uint32_t Elements>
-    inline XMVECTOR XM_CALLCONV XMVectorRotateLeft(FXMVECTOR V)
+inline XMVECTOR XM_CALLCONV XMVectorRotateLeft(FXMVECTOR V)
 {
     static_assert( Elements < 4, "Elements template parameter out of range" );
     return AVX2::XMVectorSwizzle<Elements & 3, (Elements + 1) & 3, (Elements + 2) & 3, (Elements + 3) & 3>(V);
 }
 
 template<uint32_t Elements>
-    inline XMVECTOR XM_CALLCONV XMVectorRotateRight(FXMVECTOR V)
+inline XMVECTOR XM_CALLCONV XMVectorRotateRight(FXMVECTOR V)
 {
     static_assert( Elements < 4, "Elements template parameter out of range" );
     return AVX2::XMVectorSwizzle<(4 - Elements) & 3, (5 - Elements) & 3, (6 - Elements) & 3, (7 - Elements) & 3>(V);
@@ -645,10 +721,10 @@ inline PackedVector::HALF XMConvertFloatToHalf( float Value )
 
 inline float* XMConvertHalfToFloatStream
 (
-    _Out_writes_bytes_(sizeof(float)+OutputStride*(HalfCount-1)) float* pOutputStream, 
-     _In_ size_t      OutputStride, 
-    _In_reads_bytes_(2+InputStride*(HalfCount-1)) const PackedVector::HALF* pInputStream, 
-    _In_ size_t      InputStride, 
+    _Out_writes_bytes_(sizeof(float)+OutputStride*(HalfCount-1)) float* pOutputStream,
+    _In_ size_t      OutputStride,
+    _In_reads_bytes_(2+InputStride*(HalfCount-1)) const PackedVector::HALF* pInputStream,
+    _In_ size_t      InputStride,
     _In_ size_t      HalfCount
 )
 {
@@ -678,7 +754,7 @@ inline float* XMConvertHalfToFloatStream
                         __m128 FV = _mm_cvtph_ps( HV );
 
                         _mm_stream_ps( reinterpret_cast<float*>(pFloat), FV );
-                        pFloat += OutputStride*4; 
+                        pFloat += OutputStride*4;
                         i += 4;
                     }
                 }
@@ -693,7 +769,7 @@ inline float* XMConvertHalfToFloatStream
                         __m128 FV = _mm_cvtph_ps( HV );
 
                         _mm_storeu_ps( reinterpret_cast<float*>(pFloat), FV );
-                        pFloat += OutputStride*4; 
+                        pFloat += OutputStride*4;
                         i += 4;
                     }
                 }
@@ -709,13 +785,13 @@ inline float* XMConvertHalfToFloatStream
                     __m128 FV = _mm_cvtph_ps( HV );
 
                     _mm_store_ss( reinterpret_cast<float*>(pFloat), FV );
-                    pFloat += OutputStride; 
+                    pFloat += OutputStride;
                     *reinterpret_cast<int*>(pFloat) = _mm_extract_ps( FV, 1 );
-                    pFloat += OutputStride; 
+                    pFloat += OutputStride;
                     *reinterpret_cast<int*>(pFloat) = _mm_extract_ps( FV, 2 );
-                    pFloat += OutputStride; 
+                    pFloat += OutputStride;
                     *reinterpret_cast<int*>(pFloat) = _mm_extract_ps( FV, 3 );
-                    pFloat += OutputStride; 
+                    pFloat += OutputStride;
                     i += 4;
                 }
             }
@@ -744,7 +820,7 @@ inline float* XMConvertHalfToFloatStream
                     __m128 FV = _mm_cvtph_ps( HV );
 
                     _mm_stream_ps( reinterpret_cast<float*>(pFloat ), FV );
-                    pFloat += OutputStride*4; 
+                    pFloat += OutputStride*4;
                     i += 4;
                 }
             }
@@ -770,7 +846,7 @@ inline float* XMConvertHalfToFloatStream
                     __m128 FV = _mm_cvtph_ps( HV );
 
                     _mm_storeu_ps( reinterpret_cast<float*>(pFloat ), FV );
-                    pFloat += OutputStride*4; 
+                    pFloat += OutputStride*4;
                     i += 4;
                 }
             }
@@ -781,7 +857,7 @@ inline float* XMConvertHalfToFloatStream
     {
         *reinterpret_cast<float*>(pFloat) = XMConvertHalfToFloat(reinterpret_cast<const HALF*>(pHalf)[0]);
         pHalf += InputStride;
-        pFloat += OutputStride; 
+        pFloat += OutputStride;
     }
 
     return pOutputStream;
@@ -790,10 +866,10 @@ inline float* XMConvertHalfToFloatStream
 
 inline PackedVector::HALF* XMConvertFloatToHalfStream
 (
-    _Out_writes_bytes_(2+OutputStride*(FloatCount-1)) PackedVector::HALF* pOutputStream, 
-    _In_ size_t       OutputStride, 
-    _In_reads_bytes_(sizeof(float)+InputStride*(FloatCount-1)) const float* pInputStream, 
-    _In_ size_t       InputStride, 
+    _Out_writes_bytes_(2+OutputStride*(FloatCount-1)) PackedVector::HALF* pOutputStream,
+    _In_ size_t       OutputStride,
+    _In_reads_bytes_(sizeof(float)+InputStride*(FloatCount-1)) const float* pInputStream,
+    _In_ size_t       InputStride,
     _In_ size_t       FloatCount
 )
 {
@@ -922,7 +998,7 @@ inline PackedVector::HALF* XMConvertFloatToHalfStream
     for (; i < FloatCount; ++i)
     {
         *reinterpret_cast<HALF*>(pHalf) = XMConvertFloatToHalf(reinterpret_cast<const float*>(pFloat)[0]);
-        pFloat += InputStride; 
+        pFloat += InputStride;
         pHalf += OutputStride;
     }
 

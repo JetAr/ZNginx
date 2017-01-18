@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DGSLEffect.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -26,11 +26,11 @@ namespace DirectX
 
 namespace EffectDirtyFlags
 {
-    const int ConstantBufferMaterial    = 0x10000;
-    const int ConstantBufferLight       = 0x20000;
-    const int ConstantBufferObject      = 0x40000;
-    const int ConstantBufferMisc        = 0x80000;
-    const int ConstantBufferBones       = 0x100000;
+const int ConstantBufferMaterial    = 0x10000;
+const int ConstantBufferLight       = 0x20000;
+const int ConstantBufferObject      = 0x40000;
+const int ConstantBufferMisc        = 0x80000;
+const int ConstantBufferBones       = 0x100000;
 }
 
 }
@@ -128,59 +128,59 @@ struct DGSLEffectTraits
 namespace
 {
 #if defined(_XBOX_ONE) && defined(_TITLE)
-    // VS
-    #include "Shaders/Compiled/XboxOneDGSLEffect_main.inc"
-    #include "Shaders/Compiled/XboxOneDGSLEffect_mainVc.inc"
-    #include "Shaders/Compiled/XboxOneDGSLEffect_main1Bones.inc"
-    #include "Shaders/Compiled/XboxOneDGSLEffect_main1BonesVc.inc"
-    #include "Shaders/Compiled/XboxOneDGSLEffect_main2Bones.inc"
-    #include "Shaders/Compiled/XboxOneDGSLEffect_main2BonesVc.inc"
-    #include "Shaders/Compiled/XboxOneDGSLEffect_main4Bones.inc"
-    #include "Shaders/Compiled/XboxOneDGSLEffect_main4BonesVc.inc"
+// VS
+#include "Shaders/Compiled/XboxOneDGSLEffect_main.inc"
+#include "Shaders/Compiled/XboxOneDGSLEffect_mainVc.inc"
+#include "Shaders/Compiled/XboxOneDGSLEffect_main1Bones.inc"
+#include "Shaders/Compiled/XboxOneDGSLEffect_main1BonesVc.inc"
+#include "Shaders/Compiled/XboxOneDGSLEffect_main2Bones.inc"
+#include "Shaders/Compiled/XboxOneDGSLEffect_main2BonesVc.inc"
+#include "Shaders/Compiled/XboxOneDGSLEffect_main4Bones.inc"
+#include "Shaders/Compiled/XboxOneDGSLEffect_main4BonesVc.inc"
 
-    // PS
-    #include "Shaders/Compiled/XboxOneDGSLUnlit_main.inc"
-    #include "Shaders/Compiled/XboxOneDGSLLambert_main.inc"
-    #include "Shaders/Compiled/XboxOneDGSLPhong_main.inc"
+// PS
+#include "Shaders/Compiled/XboxOneDGSLUnlit_main.inc"
+#include "Shaders/Compiled/XboxOneDGSLLambert_main.inc"
+#include "Shaders/Compiled/XboxOneDGSLPhong_main.inc"
 
-    #include "Shaders/Compiled/XboxOneDGSLUnlit_mainTk.inc"
-    #include "Shaders/Compiled/XboxOneDGSLLambert_mainTk.inc"
-    #include "Shaders/Compiled/XboxOneDGSLPhong_mainTk.inc"
+#include "Shaders/Compiled/XboxOneDGSLUnlit_mainTk.inc"
+#include "Shaders/Compiled/XboxOneDGSLLambert_mainTk.inc"
+#include "Shaders/Compiled/XboxOneDGSLPhong_mainTk.inc"
 
-    #include "Shaders/Compiled/XboxOneDGSLUnlit_mainTx.inc"
-    #include "Shaders/Compiled/XboxOneDGSLLambert_mainTx.inc"
-    #include "Shaders/Compiled/XboxOneDGSLPhong_mainTx.inc"
+#include "Shaders/Compiled/XboxOneDGSLUnlit_mainTx.inc"
+#include "Shaders/Compiled/XboxOneDGSLLambert_mainTx.inc"
+#include "Shaders/Compiled/XboxOneDGSLPhong_mainTx.inc"
 
-    #include "Shaders/Compiled/XboxOneDGSLUnlit_mainTxTk.inc"
-    #include "Shaders/Compiled/XboxOneDGSLLambert_mainTxTk.inc"
-    #include "Shaders/Compiled/XboxOneDGSLPhong_mainTxTk.inc"
+#include "Shaders/Compiled/XboxOneDGSLUnlit_mainTxTk.inc"
+#include "Shaders/Compiled/XboxOneDGSLLambert_mainTxTk.inc"
+#include "Shaders/Compiled/XboxOneDGSLPhong_mainTxTk.inc"
 #else
-    // VS
-    #include "Shaders/Compiled/DGSLEffect_main.inc"
-    #include "Shaders/Compiled/DGSLEffect_mainVc.inc"
-    #include "Shaders/Compiled/DGSLEffect_main1Bones.inc"
-    #include "Shaders/Compiled/DGSLEffect_main1BonesVc.inc"
-    #include "Shaders/Compiled/DGSLEffect_main2Bones.inc"
-    #include "Shaders/Compiled/DGSLEffect_main2BonesVc.inc"
-    #include "Shaders/Compiled/DGSLEffect_main4Bones.inc"
-    #include "Shaders/Compiled/DGSLEffect_main4BonesVc.inc"
+// VS
+#include "Shaders/Compiled/DGSLEffect_main.inc"
+#include "Shaders/Compiled/DGSLEffect_mainVc.inc"
+#include "Shaders/Compiled/DGSLEffect_main1Bones.inc"
+#include "Shaders/Compiled/DGSLEffect_main1BonesVc.inc"
+#include "Shaders/Compiled/DGSLEffect_main2Bones.inc"
+#include "Shaders/Compiled/DGSLEffect_main2BonesVc.inc"
+#include "Shaders/Compiled/DGSLEffect_main4Bones.inc"
+#include "Shaders/Compiled/DGSLEffect_main4BonesVc.inc"
 
-    // PS
-    #include "Shaders/Compiled/DGSLUnlit_main.inc"
-    #include "Shaders/Compiled/DGSLLambert_main.inc"
-    #include "Shaders/Compiled/DGSLPhong_main.inc"
+// PS
+#include "Shaders/Compiled/DGSLUnlit_main.inc"
+#include "Shaders/Compiled/DGSLLambert_main.inc"
+#include "Shaders/Compiled/DGSLPhong_main.inc"
 
-    #include "Shaders/Compiled/DGSLUnlit_mainTk.inc"
-    #include "Shaders/Compiled/DGSLLambert_mainTk.inc"
-    #include "Shaders/Compiled/DGSLPhong_mainTk.inc"
+#include "Shaders/Compiled/DGSLUnlit_mainTk.inc"
+#include "Shaders/Compiled/DGSLLambert_mainTk.inc"
+#include "Shaders/Compiled/DGSLPhong_mainTk.inc"
 
-    #include "Shaders/Compiled/DGSLUnlit_mainTx.inc"
-    #include "Shaders/Compiled/DGSLLambert_mainTx.inc"
-    #include "Shaders/Compiled/DGSLPhong_mainTx.inc"
+#include "Shaders/Compiled/DGSLUnlit_mainTx.inc"
+#include "Shaders/Compiled/DGSLLambert_mainTx.inc"
+#include "Shaders/Compiled/DGSLPhong_mainTx.inc"
 
-    #include "Shaders/Compiled/DGSLUnlit_mainTxTk.inc"
-    #include "Shaders/Compiled/DGSLLambert_mainTxTk.inc"
-    #include "Shaders/Compiled/DGSLPhong_mainTxTk.inc"
+#include "Shaders/Compiled/DGSLUnlit_mainTxTk.inc"
+#include "Shaders/Compiled/DGSLLambert_mainTxTk.inc"
+#include "Shaders/Compiled/DGSLPhong_mainTxTk.inc"
 #endif
 }
 
@@ -333,7 +333,10 @@ private:
         }
 
         // Gets or lazily creates the default texture
-        ID3D11ShaderResourceView* GetDefaultTexture() { return EffectDeviceResources::GetDefaultTexture(); }
+        ID3D11ShaderResourceView* GetDefaultTexture()
+        {
+            return EffectDeviceResources::GetDefaultTexture();
+        }
 
 
     private:
@@ -373,7 +376,7 @@ void DGSLEffect::Impl::Apply( _In_ ID3D11DeviceContext* deviceContext )
         XMMATRIX worldView = XMMatrixMultiply( world, view );
 
         constants.object.LocalToProjected4x4 = XMMatrixTranspose( XMMatrixMultiply( worldView, projection ) );
-                
+
         dirtyFlags &= ~EffectDirtyFlags::WorldViewProj;
         dirtyFlags |= EffectDirtyFlags::ConstantBufferObject;
     }
@@ -391,7 +394,7 @@ void DGSLEffect::Impl::Apply( _In_ ID3D11DeviceContext* deviceContext )
     if (dirtyFlags & EffectDirtyFlags::EyePosition)
     {
         XMMATRIX viewInverse = XMMatrixInverse( nullptr, view );
-        
+
         constants.object.EyePosition = viewInverse.r[3];
 
         dirtyFlags &= ~EffectDirtyFlags::EyePosition;
@@ -442,28 +445,28 @@ void DGSLEffect::Impl::Apply( _In_ ID3D11DeviceContext* deviceContext )
     if (dirtyFlags & EffectDirtyFlags::ConstantBufferMaterial)
     {
         mCBMaterial.SetData(deviceContext, constants.material);
-     
+
         dirtyFlags &= ~EffectDirtyFlags::ConstantBufferMaterial;
     }
 
     if (dirtyFlags & EffectDirtyFlags::ConstantBufferLight)
     {
         mCBLight.SetData(deviceContext, constants.light);
-     
+
         dirtyFlags &= ~EffectDirtyFlags::ConstantBufferLight;
     }
 
     if (dirtyFlags & EffectDirtyFlags::ConstantBufferObject)
     {
         mCBObject.SetData(deviceContext, constants.object);
-     
+
         dirtyFlags &= ~EffectDirtyFlags::ConstantBufferObject;
     }
 
     if (dirtyFlags & EffectDirtyFlags::ConstantBufferMisc)
     {
         mCBMisc.SetData(deviceContext, constants.misc);
-     
+
         dirtyFlags &= ~EffectDirtyFlags::ConstantBufferMisc;
     }
 
@@ -477,7 +480,8 @@ void DGSLEffect::Impl::Apply( _In_ ID3D11DeviceContext* deviceContext )
         }
 
         ID3D11Buffer* buffers[5] = { mCBMaterial.GetBuffer(), mCBLight.GetBuffer(), mCBObject.GetBuffer(),
-                                     mCBMisc.GetBuffer(), mCBBone.GetBuffer() };
+                                     mCBMisc.GetBuffer(), mCBBone.GetBuffer()
+                                   };
 
         deviceContext->VSSetConstantBuffers( 0, 5, buffers );
         deviceContext->PSSetConstantBuffers( 0, 4, buffers );
@@ -495,7 +499,8 @@ void DGSLEffect::Impl::Apply( _In_ ID3D11DeviceContext* deviceContext )
     if ( textureEnabled )
     {
         ID3D11ShaderResourceView* txt[MaxTextures] = { textures[0].Get(), textures[1].Get(), textures[2].Get(), textures[3].Get(),
-                                                       textures[4].Get(), textures[5].Get(), textures[6].Get(), textures[7].Get() };
+                                                       textures[4].Get(), textures[5].Get(), textures[6].Get(), textures[7].Get()
+                                                     };
         deviceContext->PSSetShaderResources( 0, MaxTextures, txt );
     }
     else
@@ -792,7 +797,7 @@ void DGSLEffect::SetLightEnabled(int whichLight, bool value)
     else
     {
         pImpl->constants.light.LightColor[whichLight] =
-        pImpl->constants.light.LightSpecularIntensity[whichLight] = g_XMZero;
+            pImpl->constants.light.LightSpecularIntensity[whichLight] = g_XMZero;
     }
 
     pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBufferLight;
@@ -887,8 +892,8 @@ void DGSLEffect::SetWeightsPerVertex(int value)
     }
 
     if ((value != 1) &&
-        (value != 2) &&
-        (value != 4))
+            (value != 2) &&
+            (value != 4))
     {
         throw std::out_of_range("WeightsPerVertex must be 1, 2, or 4");
     }
@@ -899,7 +904,7 @@ void DGSLEffect::SetWeightsPerVertex(int value)
 
 void DGSLEffect::SetBoneTransforms(_In_reads_(count) XMMATRIX const* value, size_t count)
 {
-    if ( !pImpl->weightsPerVertex ) 
+    if ( !pImpl->weightsPerVertex )
         throw std::exception("Skinning not enabled for this effect");
 
     if (count > MaxBones)
@@ -922,7 +927,7 @@ void DGSLEffect::SetBoneTransforms(_In_reads_(count) XMMATRIX const* value, size
 
 void DGSLEffect::ResetBoneTransforms()
 {
-    if ( !pImpl->weightsPerVertex ) 
+    if ( !pImpl->weightsPerVertex )
     {
         // Safe to ignore since it just returns things back to default settings
         return;

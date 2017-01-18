@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        MotionBlurAdvanced\src/scene.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -42,72 +42,74 @@ struct aiMaterial;
 
 namespace Scene
 {
-    // Vertex formats
-    const UINT VTXLAYOUTDESC_POSITION_FLOAT2 = 1;
-    const UINT VTXLAYOUTDESC_POSITION_FLOAT3 = 2;
-    const UINT VTXLAYOUTDESC_NBT_NONE = 0;
-    const UINT VTXLAYOUTDESC_NBT_FLOAT3 = 1;
-    const UINT VTXLAYOUTDESC_TEXCOORD_BYTE1 = 0;
-    const UINT VTXLAYOUTDESC_TEXCOORD_BYTE2 = 1;
-    const UINT VTXLAYOUTDESC_TEXCOORD_BYTE3 = 2;
-    const UINT VTXLAYOUTDESC_TEXCOORD_BYTE4 = 3;
-    const UINT VTXLAYOUTDESC_TEXCOORD_FLOAT1 = 4;
-    const UINT VTXLAYOUTDESC_TEXCOORD_FLOAT2 = 5;
-    const UINT VTXLAYOUTDESC_TEXCOORD_FLOAT3 = 6;
-    const UINT VTXLAYOUTDESC_TEXCOORD_FLOAT4 = 7;
-    union LayoutDesc
+// Vertex formats
+const UINT VTXLAYOUTDESC_POSITION_FLOAT2 = 1;
+const UINT VTXLAYOUTDESC_POSITION_FLOAT3 = 2;
+const UINT VTXLAYOUTDESC_NBT_NONE = 0;
+const UINT VTXLAYOUTDESC_NBT_FLOAT3 = 1;
+const UINT VTXLAYOUTDESC_TEXCOORD_BYTE1 = 0;
+const UINT VTXLAYOUTDESC_TEXCOORD_BYTE2 = 1;
+const UINT VTXLAYOUTDESC_TEXCOORD_BYTE3 = 2;
+const UINT VTXLAYOUTDESC_TEXCOORD_BYTE4 = 3;
+const UINT VTXLAYOUTDESC_TEXCOORD_FLOAT1 = 4;
+const UINT VTXLAYOUTDESC_TEXCOORD_FLOAT2 = 5;
+const UINT VTXLAYOUTDESC_TEXCOORD_FLOAT3 = 6;
+const UINT VTXLAYOUTDESC_TEXCOORD_FLOAT4 = 7;
+union LayoutDesc
+{
+    struct
     {
-        struct {
-            UINT position    : 2;
-            UINT normal        : 2;
-            UINT tangent    : 2;
-            UINT bitangent    : 2;
-            UINT tc_count    : 3;
-            UINT tc0        : 3;
-            UINT tc1        : 3;
-            UINT tc2        : 3;
-            UINT tc3        : 3;
-        } desc;
-        UINT key;
-    };
+        UINT position    : 2;
+        UINT normal        : 2;
+        UINT tangent    : 2;
+        UINT bitangent    : 2;
+        UINT tc_count    : 3;
+        UINT tc0        : 3;
+        UINT tc1        : 3;
+        UINT tc2        : 3;
+        UINT tc3        : 3;
+    } desc;
+    UINT key;
+};
 
-    enum MaterialProperty {
-        NONE = -1,
-        DIFFUSE_TEX,
-        SPECULAR_TEX,
-        NORMAL_TEX,
-        DISPLACEMENT_TEX,
-        PROPERTY_COUNT
-    };
-    typedef std::map<MaterialProperty, void *> MaterialTable;
+enum MaterialProperty
+{
+    NONE = -1,
+    DIFFUSE_TEX,
+    SPECULAR_TEX,
+    NORMAL_TEX,
+    DISPLACEMENT_TEX,
+    PROPERTY_COUNT
+};
+typedef std::map<MaterialProperty, void *> MaterialTable;
 
-    class RenderObject
-    {
-    public:
-        RenderObject(ID3D11Device * device, const std::string &file_path, aiMesh * src_mesh, aiMaterial * src_material);
-        virtual ~RenderObject();
-        void render(ID3D11DeviceContext * context);
+class RenderObject
+{
+public:
+    RenderObject(ID3D11Device * device, const std::string &file_path, aiMesh * src_mesh, aiMaterial * src_material);
+    virtual ~RenderObject();
+    void render(ID3D11DeviceContext * context);
 
-    private:
-        static const int MAX_VTX_BUFFERS = 16;
-        MaterialTable material_properties;
+private:
+    static const int MAX_VTX_BUFFERS = 16;
+    MaterialTable material_properties;
 
-        UINT vtx_count;
-        UINT vtx_offset;
-        UINT idx_count;
-        UINT idx_offset;
+    UINT vtx_count;
+    UINT vtx_offset;
+    UINT idx_count;
+    UINT idx_offset;
 
-        LayoutDesc vtx_layout;
-        UINT vtx_buffer_count;
-        UINT vtx_strides[MAX_VTX_BUFFERS];
-        UINT vtx_offsets[MAX_VTX_BUFFERS];
-        ID3D11Buffer *vtx_buffers[MAX_VTX_BUFFERS];
+    LayoutDesc vtx_layout;
+    UINT vtx_buffer_count;
+    UINT vtx_strides[MAX_VTX_BUFFERS];
+    UINT vtx_offsets[MAX_VTX_BUFFERS];
+    ID3D11Buffer *vtx_buffers[MAX_VTX_BUFFERS];
 
-        ID3D11Buffer *idx_buffer;
-    };
+    ID3D11Buffer *idx_buffer;
+};
 
-    typedef std::vector <RenderObject *> RenderList;
+typedef std::vector <RenderObject *> RenderList;
 
-	HRESULT load_texture(ID3D11Device * device, const wchar_t * filename, ID3D11ShaderResourceView ** out_srv);
-	HRESULT load_model(ID3D11Device * device, const char * filename, RenderList &out_objects);
+HRESULT load_texture(ID3D11Device * device, const wchar_t * filename, ID3D11ShaderResourceView ** out_srv);
+HRESULT load_model(ID3D11Device * device, const char * filename, RenderList &out_objects);
 };

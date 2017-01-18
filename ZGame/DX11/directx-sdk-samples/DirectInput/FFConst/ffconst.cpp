@@ -1,7 +1,7 @@
-//-----------------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------------
 // File: FFConst.cpp
 //
-// Desc: Demonstrates an application which sets a force feedback constant force 
+// Desc: Demonstrates an application which sets a force feedback constant force
 //       determined by the user.
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -32,7 +32,7 @@
 
 
 //-----------------------------------------------------------------------------
-// Function prototypes 
+// Function prototypes
 //-----------------------------------------------------------------------------
 INT_PTR CALLBACK MainDlgProc( HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam );
 BOOL CALLBACK EnumFFDevicesCallback( const DIDEVICEINSTANCE* pInst, VOID* pContext );
@@ -73,7 +73,7 @@ DWORD                   g_dwLastEffectSet; // Time of the previous force feedbac
 
 //-----------------------------------------------------------------------------
 // Name: WinMain()
-// Desc: Entry point for the application.  Since we use a simple dialog for 
+// Desc: Entry point for the application.  Since we use a simple dialog for
 //       user interaction we don't need to pump messages.
 //-----------------------------------------------------------------------------
 INT WINAPI WinMain( _In_ HINSTANCE hInst, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ INT )
@@ -102,75 +102,75 @@ INT_PTR CALLBACK MainDlgProc( HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam 
 {
     switch( msg )
     {
-        case WM_INITDIALOG:
-            if( FAILED( InitDirectInput( hDlg ) ) )
-            {
-                MessageBox( nullptr, _T( "Error Initializing DirectInput " )
-                                  _T( "The sample will now exit." ),
-                                  _T( "FFConst" ), MB_ICONERROR | MB_OK );
-                EndDialog( hDlg, 0 );
-            }
+    case WM_INITDIALOG:
+        if( FAILED( InitDirectInput( hDlg ) ) )
+        {
+            MessageBox( nullptr, _T( "Error Initializing DirectInput " )
+                        _T( "The sample will now exit." ),
+                        _T( "FFConst" ), MB_ICONERROR | MB_OK );
+            EndDialog( hDlg, 0 );
+        }
 
-            // Init the time of the last force feedback effect
-            g_dwLastEffectSet = timeGetTime();
-            break;
+        // Init the time of the last force feedback effect
+        g_dwLastEffectSet = timeGetTime();
+        break;
 
-        case WM_MOUSEMOVE:
-            if( FAILED( OnMouseMove( hDlg, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ), ( UINT )wParam ) ) )
-            {
-                MessageBox( nullptr, _T( "Error setting effect parameters. " )
-                                  _T( "The sample will now exit." ),
-                                  _T( "FFConst" ), MB_ICONERROR | MB_OK );
-                EndDialog( hDlg, 0 );
-            }
-            break;
+    case WM_MOUSEMOVE:
+        if( FAILED( OnMouseMove( hDlg, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ), ( UINT )wParam ) ) )
+        {
+            MessageBox( nullptr, _T( "Error setting effect parameters. " )
+                        _T( "The sample will now exit." ),
+                        _T( "FFConst" ), MB_ICONERROR | MB_OK );
+            EndDialog( hDlg, 0 );
+        }
+        break;
 
-        case WM_LBUTTONDOWN:
-            OnLeftButtonDown( hDlg, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ), ( UINT )wParam );
-            break;
+    case WM_LBUTTONDOWN:
+        OnLeftButtonDown( hDlg, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ), ( UINT )wParam );
+        break;
 
-        case WM_LBUTTONUP:
-            OnLeftButtonUp( hDlg, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ), ( UINT )wParam );
-            break;
+    case WM_LBUTTONUP:
+        OnLeftButtonUp( hDlg, GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ), ( UINT )wParam );
+        break;
 
-        case WM_PAINT:
-            OnPaint( hDlg );
-            break;
+    case WM_PAINT:
+        OnPaint( hDlg );
+        break;
 
-        case WM_ACTIVATE:
-            if( WA_INACTIVE != wParam && g_pDevice )
-            {
-                // Make sure the device is acquired, if we are gaining focus.
-                g_pDevice->Acquire();
+    case WM_ACTIVATE:
+        if( WA_INACTIVE != wParam && g_pDevice )
+        {
+            // Make sure the device is acquired, if we are gaining focus.
+            g_pDevice->Acquire();
 
-                if( g_pEffect )
-                    g_pEffect->Start( 1, 0 ); // Start the effect
-            }
-            break;
+            if( g_pEffect )
+                g_pEffect->Start( 1, 0 ); // Start the effect
+        }
+        break;
 
-        case WM_COMMAND:
-            switch( LOWORD( wParam ) )
-            {
-                case IDCANCEL:
-                    EndDialog( hDlg, 0 );
-                    break;
-
-                default:
-                    return FALSE; // Message not handled 
-            }
-            break;
-
-        case WM_DESTROY:
-            // Cleanup everything
-            KillTimer( hDlg, 0 );
-            FreeDirectInput();
+    case WM_COMMAND:
+        switch( LOWORD( wParam ) )
+        {
+        case IDCANCEL:
+            EndDialog( hDlg, 0 );
             break;
 
         default:
-            return FALSE; // Message not handled 
+            return FALSE; // Message not handled
+        }
+        break;
+
+    case WM_DESTROY:
+        // Cleanup everything
+        KillTimer( hDlg, 0 );
+        FreeDirectInput();
+        break;
+
+    default:
+        return FALSE; // Message not handled
     }
 
-    return TRUE; // Message handled 
+    return TRUE; // Message handled
 }
 
 
@@ -204,8 +204,8 @@ HRESULT InitDirectInput( HWND hDlg )
     if( !g_pDevice )
     {
         MessageBox( nullptr, _T( "Force feedback device not found. " )
-                          _T( "The sample will now exit." ),
-                          _T( "FFConst" ), MB_ICONERROR | MB_OK );
+                    _T( "The sample will now exit." ),
+                    _T( "FFConst" ), MB_ICONERROR | MB_OK );
         EndDialog( hDlg, 0 );
         return S_OK;
     }
@@ -225,8 +225,8 @@ HRESULT InitDirectInput( HWND hDlg )
     // interact with the system and with other DInput applications.
     // Exclusive access is required in order to perform force feedback.
     if( FAILED( hr = g_pDevice->SetCooperativeLevel( hDlg,
-                                                     DISCL_EXCLUSIVE |
-                                                     DISCL_FOREGROUND ) ) )
+                     DISCL_EXCLUSIVE |
+                     DISCL_FOREGROUND ) ) )
     {
         return hr;
     }
@@ -242,9 +242,9 @@ HRESULT InitDirectInput( HWND hDlg )
     if( FAILED( hr = g_pDevice->SetProperty( DIPROP_AUTOCENTER, &dipdw.diph ) ) )
         return hr;
 
-    // Enumerate and count the axes of the joystick 
+    // Enumerate and count the axes of the joystick
     if( FAILED( hr = g_pDevice->EnumObjects( EnumAxesCallback,
-                                             ( VOID* )&g_dwNumForceFeedbackAxis, DIDFT_AXIS ) ) )
+                     ( VOID* )&g_dwNumForceFeedbackAxis, DIDFT_AXIS ) ) )
         return hr;
 
     // This simple sample only supports one or two axis joysticks
@@ -275,7 +275,7 @@ HRESULT InitDirectInput( HWND hDlg )
 
     // Create the prepared effect
     if( FAILED( hr = g_pDevice->CreateEffect( GUID_ConstantForce,
-                                              &eff, &g_pEffect, nullptr ) ) )
+                     &eff, &g_pEffect, nullptr ) ) )
     {
         return hr;
     }
@@ -328,7 +328,7 @@ BOOL CALLBACK EnumFFDevicesCallback( const DIDEVICEINSTANCE* pInst,
     if( FAILED( hr ) )
         return DIENUM_CONTINUE;
 
-    // We successfully created an IDirectInputDevice8.  So stop looking 
+    // We successfully created an IDirectInputDevice8.  So stop looking
     // for another one.
     g_pDevice = pDevice;
 
@@ -344,7 +344,7 @@ BOOL CALLBACK EnumFFDevicesCallback( const DIDEVICEINSTANCE* pInst,
 //-----------------------------------------------------------------------------
 VOID FreeDirectInput()
 {
-    // Unacquire the device one last time just in case 
+    // Unacquire the device one last time just in case
     // the app tried to exit while the device is still acquired.
     if( g_pDevice )
         g_pDevice->Unacquire();
@@ -504,13 +504,13 @@ VOID OnLeftButtonUp( HWND hDlg, INT x, INT y, UINT keyFlags )
 
 //-----------------------------------------------------------------------------
 // Name: CoordToForce()
-// Desc: Convert a coordinate 0 <= nCoord <= FEEDBACK_WINDOW_WIDTH 
+// Desc: Convert a coordinate 0 <= nCoord <= FEEDBACK_WINDOW_WIDTH
 //       to a force value in the range -DI_FFNOMINALMAX to +DI_FFNOMINALMAX.
 //-----------------------------------------------------------------------------
 INT CoordToForce( INT nCoord )
 {
     INT nForce = MulDiv( nCoord, 2 * DI_FFNOMINALMAX, FEEDBACK_WINDOW_WIDTH )
-        - DI_FFNOMINALMAX;
+                 - DI_FFNOMINALMAX;
 
     // Keep force within bounds
     if( nForce < -DI_FFNOMINALMAX )
@@ -539,14 +539,14 @@ HRESULT SetDeviceForcesXY()
 
     if( g_dwNumForceFeedbackAxis == 1 )
     {
-        // If only one force feedback axis, then apply only one direction and 
+        // If only one force feedback axis, then apply only one direction and
         // keep the direction at zero
         cf.lMagnitude = g_nXForce;
         rglDirection[0] = 0;
     }
     else
     {
-        // If two force feedback axis, then apply magnitude from both directions 
+        // If two force feedback axis, then apply magnitude from both directions
         rglDirection[0] = g_nXForce;
         rglDirection[1] = g_nYForce;
         cf.lMagnitude = ( DWORD )sqrt( ( double )g_nXForce * ( double )g_nXForce +

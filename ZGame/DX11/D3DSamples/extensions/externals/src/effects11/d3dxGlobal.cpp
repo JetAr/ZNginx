@@ -1,4 +1,4 @@
-//////////////////////////////////////////////////////////////////////////////
+﻿//////////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) Microsoft Corporation.  All Rights Reserved.
 //
@@ -87,7 +87,7 @@ HRESULT CMemoryStream::Read(LPCSTR *ppString)
     for(iChar=m_readPtr; m_pData[iChar]; iChar++)
     {
         if (iChar > m_cbData)
-            return E_FAIL;      
+            return E_FAIL;
     }
 
     *ppString = (LPCSTR) (m_pData + m_readPtr);
@@ -155,7 +155,7 @@ HRESULT CDataBlock::AddData(const void *pvNewData, UINT bufferSize, CDataBlock *
     bytesToCopy = min(m_maxSize - m_size, bufferSize);
     memcpy(m_pData + m_size, pNewData, bytesToCopy);
     pNewData += bytesToCopy;
-    
+
     if (m_IsAligned)
     {
         D3DXASSERT(m_size == AlignToPowerOf2(m_size, c_DataAlignment));
@@ -165,7 +165,7 @@ HRESULT CDataBlock::AddData(const void *pvNewData, UINT bufferSize, CDataBlock *
     {
         m_size += bytesToCopy;
     }
-    
+
     bufferSize -= bytesToCopy;
     *ppBlock = this;
 
@@ -286,7 +286,7 @@ HRESULT CDataBlockStore::AddData(const void *pNewData, UINT bufferSize, UINT *pC
     HRESULT hr = S_OK;
 
     if (bufferSize == 0)
-    {        
+    {
         if (pCurOffset)
         {
             *pCurOffset = 0;

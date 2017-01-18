@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: CascadedShadowManager.h
 //
 // This is where the shadows are calcaulted and rendered.
@@ -15,42 +15,48 @@ class CDXUTSDKMesh;
 #pragma warning(push)
 #pragma warning(disable: 4324)
 
-__declspec(align(16)) class CascadedShadowsManager 
+__declspec(align(16)) class CascadedShadowsManager
 {
 public:
     CascadedShadowsManager();
     ~CascadedShadowsManager();
-    
+
     // This runs when the application is initialized.
-    HRESULT Init( ID3D11Device* pd3dDevice, 
-                  CDXUTSDKMesh* pMesh, 
+    HRESULT Init( ID3D11Device* pd3dDevice,
+                  CDXUTSDKMesh* pMesh,
                   CFirstPersonCamera* pViewerCamera,
                   CFirstPersonCamera* pLightCamera,
                   CascadeConfig* pCascadeConfig
                 );
-    
+
     HRESULT DestroyAndDeallocateShadowResources();
 
     // This runs per frame.  This data could be cached when the cameras do not move.
     HRESULT InitFrame( ID3D11Device* pd3dDevice );
 
-    HRESULT RenderShadowsForAllCascades( ID3D11DeviceContext* pd3dDeviceContext, 
-                                         CDXUTSDKMesh* pMesh 
+    HRESULT RenderShadowsForAllCascades( ID3D11DeviceContext* pd3dDeviceContext,
+                                         CDXUTSDKMesh* pMesh
                                        );
 
-    HRESULT RenderScene ( ID3D11DeviceContext* pd3dDeviceContext, 
-                          ID3D11RenderTargetView* prtvBackBuffer, 
-                          ID3D11DepthStencilView* pdsvBackBuffer, 
-                          CDXUTSDKMesh* pMesh,  
+    HRESULT RenderScene ( ID3D11DeviceContext* pd3dDeviceContext,
+                          ID3D11RenderTargetView* prtvBackBuffer,
+                          ID3D11DepthStencilView* pdsvBackBuffer,
+                          CDXUTSDKMesh* pMesh,
                           CFirstPersonCamera* pActiveCamera,
                           D3D11_VIEWPORT* dxutViewPort,
                           bool bVisualize
                         );
 
-    DirectX::XMVECTOR GetSceneAABBMin() const { return m_vSceneAABBMin; };
-    DirectX::XMVECTOR GetSceneAABBMax() const { return m_vSceneAABBMax; };
+    DirectX::XMVECTOR GetSceneAABBMin() const
+    {
+        return m_vSceneAABBMin;
+    };
+    DirectX::XMVECTOR GetSceneAABBMax() const
+    {
+        return m_vSceneAABBMax;
+    };
 
-    
+
     INT                                 m_iCascadePartitionsMax;
     FLOAT                               m_fCascadePartitionsFrustum[MAX_CASCADES]; // Values are  between near and far
     INT                                 m_iCascadePartitionsZeroToOne[MAX_CASCADES]; // Values are 0 to 100 and represent a percent of the frstum
@@ -65,36 +71,36 @@ public:
     FIT_PROJECTION_TO_CASCADES          m_eSelectedCascadesFit;
     FIT_TO_NEAR_FAR                     m_eSelectedNearFarFit;
     CASCADE_SELECTION                   m_eSelectedCascadeSelection;
-    
+
 
 private:
 
     // Compute the near and far plane by intersecting an Ortho Projection with the Scenes AABB.
-    void ComputeNearAndFar( FLOAT& fNearPlane, 
-                            FLOAT& fFarPlane, 
-                            DirectX::FXMVECTOR vLightCameraOrthographicMin, 
-                            DirectX::FXMVECTOR vLightCameraOrthographicMax, 
-                            DirectX::XMVECTOR* pvPointsInCameraView 
+    void ComputeNearAndFar( FLOAT& fNearPlane,
+                            FLOAT& fFarPlane,
+                            DirectX::FXMVECTOR vLightCameraOrthographicMin,
+                            DirectX::FXMVECTOR vLightCameraOrthographicMax,
+                            DirectX::XMVECTOR* pvPointsInCameraView
                           );
-   
-    void CreateFrustumPointsFromCascadeInterval ( FLOAT fCascadeIntervalBegin, 
-                                                  FLOAT fCascadeIntervalEnd, 
-                                                  DirectX::CXMMATRIX vProjection,
-                                                  DirectX::XMVECTOR* pvCornerPointsWorld
+
+    void CreateFrustumPointsFromCascadeInterval ( FLOAT fCascadeIntervalBegin,
+            FLOAT fCascadeIntervalEnd,
+            DirectX::CXMMATRIX vProjection,
+            DirectX::XMVECTOR* pvCornerPointsWorld
                                                 );
 
-    HRESULT ReleaseAndAllocateNewShadowResources( ID3D11Device* pd3dDevice );  // This is called when cascade config changes. 
+    HRESULT ReleaseAndAllocateNewShadowResources( ID3D11Device* pd3dDevice );  // This is called when cascade config changes.
 
     DirectX::XMVECTOR                   m_vSceneAABBMin;
     DirectX::XMVECTOR                   m_vSceneAABBMax;
-                                                                               // For example: when the shadow buffer size changes.
+    // For example: when the shadow buffer size changes.
     char                                m_cvsModel[31];
     char                                m_cpsModel[31];
     char                                m_cgsModel[31];
-    DirectX::XMMATRIX                   m_matShadowProj[MAX_CASCADES]; 
+    DirectX::XMMATRIX                   m_matShadowProj[MAX_CASCADES];
     DirectX::XMMATRIX                   m_matShadowView;
-    CascadeConfig                       m_CopyOfCascadeConfig;      // This copy is used to determine when settings change. 
-                                                                    //Some of these settings require new buffer allocations.
+    CascadeConfig                       m_CopyOfCascadeConfig;      // This copy is used to determine when settings change.
+    //Some of these settings require new buffer allocations.
     CascadeConfig*                      m_pCascadeConfig;           // Pointer to the most recent setting.
 
 // D3D11 variables
@@ -109,19 +115,19 @@ private:
     ID3D11DepthStencilView*             m_pCascadedShadowMapDSV ;
     ID3D11ShaderResourceView*           m_pCascadedShadowMapSRV ;
 
-    ID3D11Buffer*                       m_pcbGlobalConstantBuffer; // All VS and PS constants are in the same buffer.  
-                                                          // An actual title would break this up into multiple 
-                                                          // buffers updated based on frequency of variable changes
+    ID3D11Buffer*                       m_pcbGlobalConstantBuffer; // All VS and PS constants are in the same buffer.
+    // An actual title would break this up into multiple
+    // buffers updated based on frequency of variable changes
 
     ID3D11RasterizerState*              m_prsScene;
     ID3D11RasterizerState*              m_prsShadow;
     ID3D11RasterizerState*              m_prsShadowPancake;
-    
+
     D3D11_VIEWPORT                      m_RenderVP[MAX_CASCADES];
     D3D11_VIEWPORT                      m_RenderOneTileVP;
 
-    CFirstPersonCamera*                 m_pViewerCamera;         
-    CFirstPersonCamera*                 m_pLightCamera;         
+    CFirstPersonCamera*                 m_pViewerCamera;
+    CFirstPersonCamera*                 m_pLightCamera;
 
     ID3D11SamplerState*                 m_pSamLinear;
     ID3D11SamplerState*                 m_pSamShadowPCF;

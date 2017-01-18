@@ -1,4 +1,4 @@
-//*********************************************************
+﻿//*********************************************************
 //
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
@@ -15,7 +15,7 @@
 UINT64 STDMETHODCALLTYPE CD3DX12AffinityFence::GetCompletedValue(void)
 {
     UINT64 Minimum = mFences[0]->GetCompletedValue();
-    for (UINT i = 1; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 1; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -33,7 +33,7 @@ UINT64 CD3DX12AffinityFence::GetCompletedValue(UINT AffinityMask)
     UINT64 Minimum = 0 - 1ull;
     UINT EffectiveAffinityMask = (AffinityMask == 0) ? GetNodeMask() : AffinityMask & GetNodeMask();
 
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & EffectiveAffinityMask) != 0)
         {
@@ -56,7 +56,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityFence::SetEventOnCompletion(
 HRESULT CD3DX12AffinityFence::SetEventOnCompletion(UINT64 Value, HANDLE hEvent, UINT AffinityMask)
 {
     UINT EffectiveAffinityMask = (AffinityMask == 0) ? GetNodeMask() : AffinityMask & GetNodeMask();
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & EffectiveAffinityMask) != 0)
         {
@@ -73,7 +73,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityFence::WaitOnFenceCompletion(
     std::vector<HANDLE> Events;
 
     UINT EventCount = 0;
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
@@ -97,7 +97,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityFence::WaitOnFenceCompletion(
 HRESULT STDMETHODCALLTYPE CD3DX12AffinityFence::Signal(
     UINT64 Value)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {

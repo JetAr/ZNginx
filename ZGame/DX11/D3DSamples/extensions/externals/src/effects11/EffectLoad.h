@@ -1,9 +1,9 @@
-//////////////////////////////////////////////////////////////////////////////
+﻿//////////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) Microsoft Corporation.  All Rights Reserved.
 //
 //  File:       EffectLoad.h
-//  Content:    D3DX11 Effects header for the FX file loader 
+//  Content:    D3DX11 Effects header for the FX file loader
 //              A CEffectLoader is created at load time to facilitate loading
 //
 //////////////////////////////////////////////////////////////////////////////
@@ -54,7 +54,7 @@ protected:
 
     D3DX11Core::CMemoryStream   m_msStructured;
     D3DX11Core::CMemoryStream   m_msUnstructured;
-    
+
     // used to avoid repeated hash buffer allocations in LoadTypeAndAddToPool
     CEffectVector<BYTE>         m_HashBuffer;
 

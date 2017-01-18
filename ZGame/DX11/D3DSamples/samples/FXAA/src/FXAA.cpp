@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        FXAA\src/FXAA.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -135,7 +135,7 @@ ID3D11Buffer*               g_pcbFXAA = NULL;
 #define IDC_TOGGLEFXAA          3
 
 //--------------------------------------------------------------------------------------
-// Forward declarations 
+// Forward declarations
 //--------------------------------------------------------------------------------------
 LRESULT CALLBACK MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bool* pbNoFurtherProcessing,
                           void* pUserContext );
@@ -147,13 +147,13 @@ bool CALLBACK ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* p
 bool CALLBACK IsD3D11DeviceAcceptable( const CD3D11EnumAdapterInfo *AdapterInfo, UINT Output, const CD3D11EnumDeviceInfo *DeviceInfo,
                                        DXGI_FORMAT BackBufferFormat, bool bWindowed, void* pUserContext );
 HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc,
-                                     void* pUserContext );
+                                      void* pUserContext );
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                         const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext );
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext );
 void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime,
-                                 float fElapsedTime, void* pUserContext );
+                                  float fElapsedTime, void* pUserContext );
 
 void InitApp();
 void RenderText();
@@ -173,8 +173,8 @@ HRESULT CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR sz
     DWORD dwShaderFlags = D3D10_SHADER_ENABLE_STRICTNESS;
 
     ID3DBlob* pErrorBlob;
-    hr = D3DX11CompileFromFile( str, NULL, NULL, szEntryPoint, szShaderModel, 
-        dwShaderFlags, 0, NULL, ppBlobOut, &pErrorBlob, NULL );
+    hr = D3DX11CompileFromFile( str, NULL, NULL, szEntryPoint, szShaderModel,
+                                dwShaderFlags, 0, NULL, ppBlobOut, &pErrorBlob, NULL );
     if( FAILED(hr) )
     {
         if( pErrorBlob != NULL )
@@ -188,7 +188,7 @@ HRESULT CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR sz
 }
 
 //--------------------------------------------------------------------------------------
-// Entry point to the program. Initializes everything and goes into a message processing 
+// Entry point to the program. Initializes everything and goes into a message processing
 // loop. Idle time is used to render the scene.
 //--------------------------------------------------------------------------------------
 int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow )
@@ -229,7 +229,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 
 
 //--------------------------------------------------------------------------------------
-// Initialize the app 
+// Initialize the app
 //--------------------------------------------------------------------------------------
 void InitApp()
 {
@@ -249,7 +249,8 @@ void InitApp()
     g_Camera.SetButtonMasks( MOUSE_LEFT_BUTTON, MOUSE_WHEEL, MOUSE_MIDDLE_BUTTON );
     g_LightCamera.SetButtonMasks( MOUSE_RIGHT_BUTTON, 0, 0 );
 
-    g_SampleUI.SetCallback( OnGUIEvent ); iY = 10;
+    g_SampleUI.SetCallback( OnGUIEvent );
+    iY = 10;
 
     // Setup the camera's view parameters
     D3DXVECTOR3 vecEye( 7.0f, 7.0f, -7.0f );
@@ -264,7 +265,7 @@ void InitApp()
 
 
 //--------------------------------------------------------------------------------------
-// Render the help and statistics text. This function uses the ID3DXFont interface for 
+// Render the help and statistics text. This function uses the ID3DXFont interface for
 // efficient text rendering.
 //--------------------------------------------------------------------------------------
 void RenderText()
@@ -315,7 +316,7 @@ void FxaaIntegrateResource(ID3D11Device* pd3dDevice, const DXGI_SURFACE_DESC* pB
 // Create any D3D11 resources that aren't dependant on the back buffer
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc,
-                                     void* pUserContext )
+                                      void* pUserContext )
 {
     HRESULT hr;
 
@@ -410,8 +411,8 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     DWORD dwShaderFlags = D3D10_SHADER_ENABLE_STRICTNESS;
 #if defined( DEBUG ) || defined( _DEBUG )
     // Set the D3D10_SHADER_DEBUG flag to embed debug information in the shaders.
-    // Setting this flag improves the shader debugging experience, but still allows 
-    // the shaders to be optimized and to run exactly the way they will run in 
+    // Setting this flag improves the shader debugging experience, but still allows
+    // the shaders to be optimized and to run exactly the way they will run in
     // the release configuration of this program.
     dwShaderFlags |= D3D10_SHADER_DEBUG;
 #endif
@@ -429,26 +430,26 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 
     if (pd3dDevice->GetFeatureLevel() < D3D_FEATURE_LEVEL_11_0)
         V_RETURN( D3DX11CompileFromFile( str, NULL, NULL, "ShadowMapVS", "vs_4_0", dwShaderFlags, 0, NULL, &pBlob, NULL, NULL ) )
-    else
-        V_RETURN( D3DX11CompileFromFile( str, NULL, NULL, "ShadowMapVS", "vs_5_0", dwShaderFlags, 0, NULL, &pBlob, NULL, NULL ) );
+        else
+            V_RETURN( D3DX11CompileFromFile( str, NULL, NULL, "ShadowMapVS", "vs_5_0", dwShaderFlags, 0, NULL, &pBlob, NULL, NULL ) );
     V_RETURN( pd3dDevice->CreateVertexShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), NULL, &g_pVertexShaderShadow ) );
     SAFE_RELEASE( pBlob );
 
     if (pd3dDevice->GetFeatureLevel() < D3D_FEATURE_LEVEL_11_0)
         V_RETURN( D3DX11CompileFromFile( str, NULL, NULL, "RenderSceneVS", "vs_4_0", dwShaderFlags, 0, NULL, &pBlob, NULL, NULL ) )
-    else
-        V_RETURN( D3DX11CompileFromFile( str, NULL, NULL, "RenderSceneVS", "vs_5_0", dwShaderFlags, 0, NULL, &pBlob, NULL, NULL ) );
+        else
+            V_RETURN( D3DX11CompileFromFile( str, NULL, NULL, "RenderSceneVS", "vs_5_0", dwShaderFlags, 0, NULL, &pBlob, NULL, NULL ) );
     V_RETURN( pd3dDevice->CreateVertexShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), NULL, &g_pVertexShader ) );
     V_RETURN( pd3dDevice->CreateInputLayout( layout, ARRAYSIZE( layout ), pBlob->GetBufferPointer(), pBlob->GetBufferSize(), &g_pVertexLayout ) );
     SAFE_RELEASE( pBlob );
 
     if (pd3dDevice->GetFeatureLevel() < D3D_FEATURE_LEVEL_11_0)
         V_RETURN( D3DX11CompileFromFile( str, NULL, NULL, "RenderScenePS", "ps_4_0", dwShaderFlags, 0, NULL, &pBlob, NULL, NULL ) )
-    else
-        V_RETURN( D3DX11CompileFromFile( str, NULL, NULL, "RenderScenePS", "ps_5_0", dwShaderFlags, 0, NULL, &pBlob, NULL, NULL ) );
+        else
+            V_RETURN( D3DX11CompileFromFile( str, NULL, NULL, "RenderScenePS", "ps_5_0", dwShaderFlags, 0, NULL, &pBlob, NULL, NULL ) );
     V_RETURN( pd3dDevice->CreatePixelShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), NULL, &(g_pPixelShader) ) );
     SAFE_RELEASE( pBlob );
-    
+
     if (pd3dDevice->GetFeatureLevel() < D3D_FEATURE_LEVEL_11_0)
     {
         V_RETURN( CompileShaderFromFile( L"FXAA.hlsl", "FxaaVS", "vs_4_0", &pBlob ) )
@@ -557,7 +558,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 // Create any D3D11 resources that depend on the back buffer
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                         const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
     HRESULT hr;
 
@@ -610,7 +611,7 @@ void RenderShadowMap( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmedia
     // Set our scene render target & keep original depth buffer
     ID3D11RenderTargetView * pRTVs[2] = { 0, 0 };
     pd3dImmediateContext->OMSetRenderTargets( 1, pRTVs, g_pDepthTextureDSV );
-    
+
     // Clear the render target
     pd3dImmediateContext->ClearDepthStencilView( g_pDepthTextureDSV, D3D11_CLEAR_DEPTH, 1.0, 0 );
 
@@ -637,14 +638,14 @@ void RenderShadowMap( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmedia
 // Render the scene using the D3D11 device
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime,
-                                 float fElapsedTime, void* pUserContext )
+                                  float fElapsedTime, void* pUserContext )
 {
     // If the settings dialog is being shown, then render it instead of rendering the app's scene
     if( g_SettingsDlg.IsActive() )
     {
         g_SettingsDlg.OnRender( fElapsedTime );
         return;
-    }       
+    }
 
     ID3D11RenderTargetView* pRTV = DXUTGetD3D11RenderTargetView();
     ID3D11DepthStencilView* pDSV = DXUTGetD3D11DepthStencilView();
@@ -722,7 +723,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
     pd3dImmediateContext->OMSetRenderTargets( 1, pRTVs, pDSV );
     pd3dImmediateContext->VSSetShader( g_pVertexShader, NULL, 0 );
     pd3dImmediateContext->PSSetShader( g_pPixelShader, NULL, 0 );
-    
+
     ID3D11SamplerState * ppSamplerStates[4] = { g_pSamPointMirror, g_pSamLinearWrap, g_pSamPointCmpClamp, g_pSamBilinear };
     pd3dImmediateContext->PSSetSamplers( 0, 4, ppSamplerStates );
 
@@ -744,7 +745,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
         pd3dImmediateContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP );
         pd3dImmediateContext->VSSetShader( g_pVertexShaderFXAA, NULL, 0 );
         pd3dImmediateContext->PSSetShader( g_pPixelShaderFXAA, NULL, 0 );
-        if(DXUTGetDXGIBackBufferSurfaceDesc()->SampleDesc.Count > 1) 
+        if(DXUTGetDXGIBackBufferSurfaceDesc()->SampleDesc.Count > 1)
         {
             // resolve first
             pd3dImmediateContext->ResolveSubresource(g_pCopyResolveTexture, 0, g_pProxyTexture, 0, DXGI_FORMAT_R8G8B8A8_UNORM);
@@ -766,7 +767,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
 
     static DWORD dwTimefirst = GetTickCount();
     if ( GetTickCount() - dwTimefirst > 5000 )
-    {    
+    {
         OutputDebugString( DXUTGetFrameStats( DXUTIsVsyncEnabled() ) );
         OutputDebugString( L"\n" );
         dwTimefirst = GetTickCount();
@@ -775,7 +776,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11ResizedSwapChain 
+// Release D3D11 resources created in OnD3D11ResizedSwapChain
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 {
@@ -784,7 +785,7 @@ void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11CreateDevice 
+// Release D3D11 resources created in OnD3D11CreateDevice
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
 {
@@ -840,8 +841,8 @@ bool CALLBACK ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* p
     {
         s_bFirstTime = false;
         if( ( DXUT_D3D9_DEVICE == pDeviceSettings->ver && pDeviceSettings->d3d9.DeviceType == D3DDEVTYPE_REF ) ||
-            ( DXUT_D3D11_DEVICE == pDeviceSettings->ver &&
-            pDeviceSettings->d3d11.DriverType == D3D_DRIVER_TYPE_REFERENCE ) )
+                ( DXUT_D3D11_DEVICE == pDeviceSettings->ver &&
+                  pDeviceSettings->d3d11.DriverType == D3D_DRIVER_TYPE_REFERENCE ) )
         {
             DXUTDisplaySwitchingToREFWarning( pDeviceSettings->ver );
         }
@@ -856,7 +857,7 @@ bool CALLBACK ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* p
 //--------------------------------------------------------------------------------------
 void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext )
 {
-    // Update the camera's position based on user input 
+    // Update the camera's position based on user input
     g_Camera.FrameMove( fElapsedTime );
     g_LightCamera.FrameMove( fElapsedTime );
 }
@@ -891,7 +892,7 @@ LRESULT CALLBACK MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bo
     // Pass all remaining windows messages to camera so it can respond to user input
     g_Camera.HandleMessages( hWnd, uMsg, wParam, lParam );
     g_LightCamera.HandleMessages( hWnd, uMsg, wParam, lParam );
-    
+
     return 0;
 }
 
@@ -911,17 +912,17 @@ void CALLBACK OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, v
 {
     switch( nControlID )
     {
-        case IDC_TOGGLEFULLSCREEN:
-            DXUTToggleFullScreen();
-            break;
-        case IDC_CHANGEDEVICE:
-            g_SettingsDlg.SetActive( !g_SettingsDlg.IsActive() );
-            break;
-        case IDC_TOGGLEFXAA:
-        {
-            CDXUTCheckBox* pCheckBox = (CDXUTCheckBox*)pControl;
-            g_fxaaEnabled = pCheckBox->GetChecked();
-            break;
-        }
+    case IDC_TOGGLEFULLSCREEN:
+        DXUTToggleFullScreen();
+        break;
+    case IDC_CHANGEDEVICE:
+        g_SettingsDlg.SetActive( !g_SettingsDlg.IsActive() );
+        break;
+    case IDC_TOGGLEFXAA:
+    {
+        CDXUTCheckBox* pCheckBox = (CDXUTCheckBox*)pControl;
+        g_fxaaEnabled = pCheckBox->GetChecked();
+        break;
+    }
     }
 }

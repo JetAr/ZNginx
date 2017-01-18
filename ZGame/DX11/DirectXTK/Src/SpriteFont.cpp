@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: SpriteFont.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -57,20 +57,20 @@ static const char spriteFontMagic[] = "DXTKfont";
 // Comparison operators make our sorted glyph vector work with std::binary_search and lower_bound.
 namespace DirectX
 {
-    static inline bool operator< (SpriteFont::Glyph const& left, SpriteFont::Glyph const& right)
-    {
-        return left.Character < right.Character;
-    }
+static inline bool operator< (SpriteFont::Glyph const& left, SpriteFont::Glyph const& right)
+{
+    return left.Character < right.Character;
+}
 
-    static inline bool operator< (wchar_t left, SpriteFont::Glyph const& right)
-    {
-        return left < right.Character;
-    }
+static inline bool operator< (wchar_t left, SpriteFont::Glyph const& right)
+{
+    return left < right.Character;
+}
 
-    static inline bool operator< (SpriteFont::Glyph const& left, wchar_t right)
-    {
-        return left.Character < right;
-    }
+static inline bool operator< (SpriteFont::Glyph const& left, wchar_t right)
+{
+    return left.Character < right;
+}
 }
 
 
@@ -134,10 +134,10 @@ SpriteFont::Impl::Impl(_In_ ID3D11Device* device, _In_ BinaryReader* reader, boo
 // Constructs a SpriteFont from arbitrary user specified glyph data.
 _Use_decl_annotations_
 SpriteFont::Impl::Impl(ID3D11ShaderResourceView* texture, Glyph const* glyphs, size_t glyphCount, float lineSpacing)
-  : texture(texture),
-    glyphs(glyphs, glyphs + glyphCount),
-    defaultGlyph(nullptr),
-    lineSpacing(lineSpacing)
+    : texture(texture),
+      glyphs(glyphs, glyphs + glyphCount),
+      defaultGlyph(nullptr),
+      lineSpacing(lineSpacing)
 {
     if (!std::is_sorted(glyphs, glyphs + glyphCount))
     {
@@ -191,36 +191,36 @@ void SpriteFont::Impl::ForEachGlyph(_In_z_ wchar_t const* text, TAction action) 
 
         switch (character)
         {
-            case '\r':
-                // Skip carriage returns.
-                continue;
+        case '\r':
+            // Skip carriage returns.
+            continue;
 
-            case '\n':
-                // New line.
+        case '\n':
+            // New line.
+            x = 0;
+            y += lineSpacing;
+            break;
+
+        default:
+            // Output this character.
+            auto glyph = FindGlyph(character);
+
+            x += glyph->XOffset;
+
+            if (x < 0)
                 x = 0;
-                y += lineSpacing;
-                break;
 
-            default:
-                // Output this character.
-                auto glyph = FindGlyph(character);
+            float advance = glyph->Subrect.right - glyph->Subrect.left + glyph->XAdvance;
 
-                x += glyph->XOffset;
+            if ( !iswspace(character)
+                    || ( ( glyph->Subrect.right - glyph->Subrect.left ) > 1 )
+                    || ( ( glyph->Subrect.bottom - glyph->Subrect.top ) > 1 ) )
+            {
+                action(glyph, x, y, advance);
+            }
 
-                if (x < 0)
-                    x = 0;
-
-                float advance = glyph->Subrect.right - glyph->Subrect.left + glyph->XAdvance;
-
-                if ( !iswspace(character)
-                     || ( ( glyph->Subrect.right - glyph->Subrect.left ) > 1 )
-                     || ( ( glyph->Subrect.bottom - glyph->Subrect.top ) > 1 ) )
-                {
-                    action(glyph, x, y, advance);
-                }
-
-                x += advance;
-                break;
+            x += advance;
+            break;
         }
     }
 }
@@ -248,14 +248,14 @@ SpriteFont::SpriteFont(ID3D11Device* device, uint8_t const* dataBlob, size_t dat
 // Construct from arbitrary user specified glyph data (for those not using the MakeSpriteFont utility).
 _Use_decl_annotations_
 SpriteFont::SpriteFont(ID3D11ShaderResourceView* texture, Glyph const* glyphs, size_t glyphCount, float lineSpacing)
-  : pImpl(new Impl(texture, glyphs, glyphCount, lineSpacing))
+    : pImpl(new Impl(texture, glyphs, glyphCount, lineSpacing))
 {
 }
 
 
 // Move constructor.
 SpriteFont::SpriteFont(SpriteFont&& moveFrom)
-  : pImpl(std::move(moveFrom.pImpl))
+    : pImpl(std::move(moveFrom.pImpl))
 {
 }
 
@@ -329,7 +329,7 @@ void XM_CALLCONV SpriteFont::DrawString(_In_ SpriteBatch* spriteBatch, _In_z_ wc
         UNREFERENCED_PARAMETER(advance);
 
         XMVECTOR offset = XMVectorMultiplyAdd(XMVectorSet(x, y + glyph->YOffset, 0, 0), axisDirectionTable[effects & 3], baseOffset);
-        
+
         if (effects)
         {
             // For mirrored characters, specify bottom and/or right instead of top left.

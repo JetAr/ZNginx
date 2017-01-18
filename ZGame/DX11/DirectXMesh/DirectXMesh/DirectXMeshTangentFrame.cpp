@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXMeshTangentFrame.cpp
-//  
+//
 // DirectX Mesh Geometry Library - Normals, Tangents, and Bi-Tangents Computation
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -38,7 +38,7 @@ HRESULT _ComputeTangentFrame( _In_reads_(nFaces*3) const index_t* indices, size_
 
     if ( nVerts >= index_t(-1) )
         return E_INVALIDARG;
-   
+
     if ( ( uint64_t(nFaces) * 3 ) >= UINT32_MAX )
         return HRESULT_FROM_WIN32( ERROR_ARITHMETIC_OVERFLOW );
 
@@ -61,19 +61,19 @@ HRESULT _ComputeTangentFrame( _In_reads_(nFaces*3) const index_t* indices, size_
         index_t i2 = indices[ face*3 + 2 ];
 
         if ( i0 == index_t(-1)
-             || i1 == index_t(-1)
-             || i2 == index_t(-1) )
-             continue;
+                || i1 == index_t(-1)
+                || i2 == index_t(-1) )
+            continue;
 
         if ( i0 >= nVerts
-             || i1 >= nVerts
-             || i2 >= nVerts )
-             return E_UNEXPECTED;
+                || i1 >= nVerts
+                || i2 >= nVerts )
+            return E_UNEXPECTED;
 
         XMVECTOR t0 = XMLoadFloat2( &texcoords[ i0 ] );
         XMVECTOR t1 = XMLoadFloat2( &texcoords[ i1 ] );
         XMVECTOR t2 = XMLoadFloat2( &texcoords[ i2 ] );
-        
+
         XMVECTOR s = XMVectorMergeXY( t1 - t0, t2 - t0 );
 
         XMFLOAT4A tmp;
@@ -218,7 +218,7 @@ HRESULT ComputeTangentFrame( const uint32_t* indices, size_t nFaces,
 {
     if ( !tangents && !bitangents )
         return E_INVALIDARG;
-  
+
     return _ComputeTangentFrame<uint32_t>( indices, nFaces, positions, normals, texcoords, nVerts, tangents, nullptr, bitangents );
 }
 
@@ -244,7 +244,7 @@ HRESULT ComputeTangentFrame( const uint32_t* indices, size_t nFaces,
 {
     if ( !tangents && !bitangents )
         return E_INVALIDARG;
-  
+
     return _ComputeTangentFrame<uint32_t>( indices, nFaces, positions, normals, texcoords, nVerts, nullptr, tangents, bitangents );
 }
 

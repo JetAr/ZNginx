@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: xwbtool.cpp
 //
 // Simple command-line tool for building wave banks from 1 or more .WAV files. This
@@ -49,15 +49,31 @@
 
 namespace
 {
-    struct handle_closer { void operator()(HANDLE h) { if (h) CloseHandle(h); } };
+struct handle_closer
+{
+    void operator()(HANDLE h)
+    {
+        if (h) CloseHandle(h);
+    }
+};
 
-    typedef public std::unique_ptr<void, handle_closer> ScopedHandle;
+typedef public std::unique_ptr<void, handle_closer> ScopedHandle;
 
-    inline HANDLE safe_handle(HANDLE h) { return (h == INVALID_HANDLE_VALUE) ? 0 : h; }
+inline HANDLE safe_handle(HANDLE h)
+{
+    return (h == INVALID_HANDLE_VALUE) ? 0 : h;
+}
 
-    struct find_closer { void operator()(HANDLE h) { assert(h != INVALID_HANDLE_VALUE); if (h) FindClose(h); } };
+struct find_closer
+{
+    void operator()(HANDLE h)
+    {
+        assert(h != INVALID_HANDLE_VALUE);
+        if (h) FindClose(h);
+    }
+};
 
-    typedef public std::unique_ptr<void, find_closer> ScopedFindHandle;
+typedef public std::unique_ptr<void, find_closer> ScopedFindHandle;
 
 #define BLOCKALIGNPAD(a, b) \
     ((((a) + ((b) - 1)) / (b)) * (b))
@@ -66,588 +82,592 @@ namespace
 
 #pragma pack(push, 1)
 
-    static const size_t DVD_SECTOR_SIZE = 2048;
-    static const size_t DVD_BLOCK_SIZE = DVD_SECTOR_SIZE * 16;
+static const size_t DVD_SECTOR_SIZE = 2048;
+static const size_t DVD_BLOCK_SIZE = DVD_SECTOR_SIZE * 16;
 
-    static const size_t ALIGNMENT_MIN = 4;
-    static const size_t ALIGNMENT_DVD = DVD_SECTOR_SIZE;
+static const size_t ALIGNMENT_MIN = 4;
+static const size_t ALIGNMENT_DVD = DVD_SECTOR_SIZE;
 
-    static const size_t MAX_DATA_SEGMENT_SIZE = 0xFFFFFFFF;
-    static const size_t MAX_COMPACT_DATA_SEGMENT_SIZE = 0x001FFFFF;
+static const size_t MAX_DATA_SEGMENT_SIZE = 0xFFFFFFFF;
+static const size_t MAX_COMPACT_DATA_SEGMENT_SIZE = 0x001FFFFF;
 
-    static const size_t ENTRYNAME_LENGTH = 64;
+static const size_t ENTRYNAME_LENGTH = 64;
 
-    struct REGION
+struct REGION
+{
+    uint32_t    dwOffset;   // Region offset, in bytes.
+    uint32_t    dwLength;   // Region length, in bytes.
+};
+
+struct SAMPLEREGION
+{
+    uint32_t    dwStartSample;  // Start sample for the region.
+    uint32_t    dwTotalSamples; // Region length in samples.
+};
+
+struct HEADER
+{
+    static const uint32_t SIGNATURE = 'DNBW';
+    static const uint32_t VERSION = 44;
+
+    enum SEGIDX
     {
-        uint32_t    dwOffset;   // Region offset, in bytes.
-        uint32_t    dwLength;   // Region length, in bytes.
+        SEGIDX_BANKDATA = 0,       // Bank data
+        SEGIDX_ENTRYMETADATA,      // Entry meta-data
+        SEGIDX_SEEKTABLES,         // Storage for seek tables for the encoded waves.
+        SEGIDX_ENTRYNAMES,         // Entry friendly names
+        SEGIDX_ENTRYWAVEDATA,      // Entry wave data
+        SEGIDX_COUNT
     };
 
-    struct SAMPLEREGION
-    {
-        uint32_t    dwStartSample;  // Start sample for the region.
-        uint32_t    dwTotalSamples; // Region length in samples.
-    };
-
-    struct HEADER
-    {
-        static const uint32_t SIGNATURE = 'DNBW';
-        static const uint32_t VERSION = 44;
-
-        enum SEGIDX
-        {
-            SEGIDX_BANKDATA = 0,       // Bank data
-            SEGIDX_ENTRYMETADATA,      // Entry meta-data
-            SEGIDX_SEEKTABLES,         // Storage for seek tables for the encoded waves.
-            SEGIDX_ENTRYNAMES,         // Entry friendly names
-            SEGIDX_ENTRYWAVEDATA,      // Entry wave data
-            SEGIDX_COUNT
-        };
-
-        uint32_t    dwSignature;            // File signature
-        uint32_t    dwVersion;              // Version of the tool that created the file
-        uint32_t    dwHeaderVersion;        // Version of the file format
-        REGION      Segments[SEGIDX_COUNT]; // Segment lookup table
-    };
+    uint32_t    dwSignature;            // File signature
+    uint32_t    dwVersion;              // Version of the tool that created the file
+    uint32_t    dwHeaderVersion;        // Version of the file format
+    REGION      Segments[SEGIDX_COUNT]; // Segment lookup table
+};
 
 #pragma warning( disable : 4201 4203 )
 
-    union MINIWAVEFORMAT
+union MINIWAVEFORMAT
+{
+    static const uint32_t TAG_PCM = 0x0;
+    static const uint32_t TAG_XMA = 0x1;
+    static const uint32_t TAG_ADPCM = 0x2;
+    static const uint32_t TAG_WMA = 0x3;
+
+    static const uint32_t BITDEPTH_8 = 0x0; // PCM only
+    static const uint32_t BITDEPTH_16 = 0x1; // PCM only
+
+    static const size_t ADPCM_BLOCKALIGN_CONVERSION_OFFSET = 22;
+
+    struct
     {
-        static const uint32_t TAG_PCM = 0x0;
-        static const uint32_t TAG_XMA = 0x1;
-        static const uint32_t TAG_ADPCM = 0x2;
-        static const uint32_t TAG_WMA = 0x3;
+        uint32_t       wFormatTag : 2;        // Format tag
+        uint32_t       nChannels : 3;        // Channel count (1 - 6)
+        uint32_t       nSamplesPerSec : 18;       // Sampling rate
+        uint32_t       wBlockAlign : 8;        // Block alignment.  For WMA, lower 6 bits block alignment index, upper 2 bits bytes-per-second index.
+        uint32_t       wBitsPerSample : 1;        // Bits per sample (8 vs. 16, PCM only); WMAudio2/WMAudio3 (for WMA)
+    };
 
-        static const uint32_t BITDEPTH_8 = 0x0; // PCM only
-        static const uint32_t BITDEPTH_16 = 0x1; // PCM only
+    uint32_t           dwValue;
 
-        static const size_t ADPCM_BLOCKALIGN_CONVERSION_OFFSET = 22;
+    WORD BitsPerSample() const
+    {
+        if (wFormatTag == TAG_XMA)
+            return 16; // XMA_OUTPUT_SAMPLE_BITS == 16
+        if (wFormatTag == TAG_WMA)
+            return 16;
+        if (wFormatTag == TAG_ADPCM)
+            return 4; // MSADPCM_BITS_PER_SAMPLE == 4
 
+        // wFormatTag must be TAG_PCM (2 bits can only represent 4 different values)
+        return (wBitsPerSample == BITDEPTH_16) ? 16 : 8;
+    }
+};
+
+struct ENTRY
+{
+    static const uint32_t FLAGS_READAHEAD = 0x00000001;     // Enable stream read-ahead
+    static const uint32_t FLAGS_LOOPCACHE = 0x00000002;     // One or more looping sounds use this wave
+    static const uint32_t FLAGS_REMOVELOOPTAIL = 0x00000004;// Remove data after the end of the loop region
+    static const uint32_t FLAGS_IGNORELOOP = 0x00000008;    // Used internally when the loop region can't be used
+    static const uint32_t FLAGS_MASK = 0x00000008;
+
+    union
+    {
         struct
         {
-            uint32_t       wFormatTag : 2;        // Format tag
-            uint32_t       nChannels : 3;        // Channel count (1 - 6)
-            uint32_t       nSamplesPerSec : 18;       // Sampling rate
-            uint32_t       wBlockAlign : 8;        // Block alignment.  For WMA, lower 6 bits block alignment index, upper 2 bits bytes-per-second index.
-            uint32_t       wBitsPerSample : 1;        // Bits per sample (8 vs. 16, PCM only); WMAudio2/WMAudio3 (for WMA)
+            // Entry flags
+            uint32_t                   dwFlags : 4;
+
+            // Duration of the wave, in units of one sample.
+            // For instance, a ten second long wave sampled
+            // at 48KHz would have a duration of 480,000.
+            // This value is not affected by the number of
+            // channels, the number of bits per sample, or the
+            // compression format of the wave.
+            uint32_t                   Duration : 28;
         };
-
-        uint32_t           dwValue;
-
-        WORD BitsPerSample() const
-        {
-            if (wFormatTag == TAG_XMA)
-                return 16; // XMA_OUTPUT_SAMPLE_BITS == 16
-            if (wFormatTag == TAG_WMA)
-                return 16;
-            if (wFormatTag == TAG_ADPCM)
-                return 4; // MSADPCM_BITS_PER_SAMPLE == 4
-
-            // wFormatTag must be TAG_PCM (2 bits can only represent 4 different values)
-            return (wBitsPerSample == BITDEPTH_16) ? 16 : 8;
-        }
+        uint32_t dwFlagsAndDuration;
     };
 
-    struct ENTRY
-    {
-        static const uint32_t FLAGS_READAHEAD = 0x00000001;     // Enable stream read-ahead
-        static const uint32_t FLAGS_LOOPCACHE = 0x00000002;     // One or more looping sounds use this wave
-        static const uint32_t FLAGS_REMOVELOOPTAIL = 0x00000004;// Remove data after the end of the loop region
-        static const uint32_t FLAGS_IGNORELOOP = 0x00000008;    // Used internally when the loop region can't be used
-        static const uint32_t FLAGS_MASK = 0x00000008;
+    MINIWAVEFORMAT  Format;         // Entry format.
+    REGION          PlayRegion;     // Region within the wave data segment that contains this entry.
+    SAMPLEREGION    LoopRegion;     // Region within the wave data (in samples) that should loop.
+};
 
-        union
-        {
-            struct
-            {
-                // Entry flags
-                uint32_t                   dwFlags : 4;
+struct ENTRYCOMPACT
+{
+    uint32_t       dwOffset : 21;       // Data offset, in multiplies of the bank alignment
+    uint32_t       dwLengthDeviation : 11;       // Data length deviation, in bytes
+};
 
-                // Duration of the wave, in units of one sample.
-                // For instance, a ten second long wave sampled
-                // at 48KHz would have a duration of 480,000.
-                // This value is not affected by the number of
-                // channels, the number of bits per sample, or the
-                // compression format of the wave.
-                uint32_t                   Duration : 28;
-            };
-            uint32_t dwFlagsAndDuration;
-        };
+struct BANKDATA
+{
+    static const size_t BANKNAME_LENGTH = 64;
 
-        MINIWAVEFORMAT  Format;         // Entry format.
-        REGION          PlayRegion;     // Region within the wave data segment that contains this entry.
-        SAMPLEREGION    LoopRegion;     // Region within the wave data (in samples) that should loop.
-    };
+    static const uint32_t TYPE_BUFFER = 0x00000000;
+    static const uint32_t TYPE_STREAMING = 0x00000001;
+    static const uint32_t TYPE_MASK = 0x00000001;
 
-    struct ENTRYCOMPACT
-    {
-        uint32_t       dwOffset : 21;       // Data offset, in multiplies of the bank alignment
-        uint32_t       dwLengthDeviation : 11;       // Data length deviation, in bytes
-    };
+    static const uint32_t FLAGS_ENTRYNAMES = 0x00010000;
+    static const uint32_t FLAGS_COMPACT = 0x00020000;
+    static const uint32_t FLAGS_SYNC_DISABLED = 0x00040000;
+    static const uint32_t FLAGS_SEEKTABLES = 0x00080000;
+    static const uint32_t FLAGS_MASK = 0x000F0000;
 
-    struct BANKDATA
-    {
-        static const size_t BANKNAME_LENGTH = 64;
-
-        static const uint32_t TYPE_BUFFER = 0x00000000;
-        static const uint32_t TYPE_STREAMING = 0x00000001;
-        static const uint32_t TYPE_MASK = 0x00000001;
-
-        static const uint32_t FLAGS_ENTRYNAMES = 0x00010000;
-        static const uint32_t FLAGS_COMPACT = 0x00020000;
-        static const uint32_t FLAGS_SYNC_DISABLED = 0x00040000;
-        static const uint32_t FLAGS_SEEKTABLES = 0x00080000;
-        static const uint32_t FLAGS_MASK = 0x000F0000;
-
-        uint32_t        dwFlags;                        // Bank flags
-        uint32_t        dwEntryCount;                   // Number of entries in the bank
-        char            szBankName[BANKNAME_LENGTH];    // Bank friendly name
-        uint32_t        dwEntryMetaDataElementSize;     // Size of each entry meta-data element, in bytes
-        uint32_t        dwEntryNameElementSize;         // Size of each entry name element, in bytes
-        uint32_t        dwAlignment;                    // Entry alignment, in bytes
-        MINIWAVEFORMAT  CompactFormat;                  // Format data for compact bank
-        FILETIME        BuildTime;                      // Build timestamp
-    };
+    uint32_t        dwFlags;                        // Bank flags
+    uint32_t        dwEntryCount;                   // Number of entries in the bank
+    char            szBankName[BANKNAME_LENGTH];    // Bank friendly name
+    uint32_t        dwEntryMetaDataElementSize;     // Size of each entry meta-data element, in bytes
+    uint32_t        dwEntryNameElementSize;         // Size of each entry name element, in bytes
+    uint32_t        dwAlignment;                    // Entry alignment, in bytes
+    MINIWAVEFORMAT  CompactFormat;                  // Format data for compact bank
+    FILETIME        BuildTime;                      // Build timestamp
+};
 
 #pragma pack(pop)
 
-    static_assert(sizeof(REGION) == 8, "Mismatch with xact3wb.h");
-    static_assert(sizeof(SAMPLEREGION) == 8, "Mismatch with xact3wb.h");
-    static_assert(sizeof(HEADER) == 52, "Mismatch with xact3wb.h");
-    static_assert(sizeof(ENTRY) == 24, "Mismatch with xact3wb.h");
-    static_assert(sizeof(MINIWAVEFORMAT) == 4, "Mismatch with xact3wb.h");
-    static_assert(sizeof(ENTRY) == 24, "Mismatch with xact3wb.h");
-    static_assert(sizeof(ENTRYCOMPACT) == 4, "Mismatch with xact3wb.h");
-    static_assert(sizeof(BANKDATA) == 96, "Mismatch with xact3wb.h");
+static_assert(sizeof(REGION) == 8, "Mismatch with xact3wb.h");
+static_assert(sizeof(SAMPLEREGION) == 8, "Mismatch with xact3wb.h");
+static_assert(sizeof(HEADER) == 52, "Mismatch with xact3wb.h");
+static_assert(sizeof(ENTRY) == 24, "Mismatch with xact3wb.h");
+static_assert(sizeof(MINIWAVEFORMAT) == 4, "Mismatch with xact3wb.h");
+static_assert(sizeof(ENTRY) == 24, "Mismatch with xact3wb.h");
+static_assert(sizeof(ENTRYCOMPACT) == 4, "Mismatch with xact3wb.h");
+static_assert(sizeof(BANKDATA) == 96, "Mismatch with xact3wb.h");
 
-    template <typename T> WORD ChannelsSpecifiedInMask(T x)
+template <typename T> WORD ChannelsSpecifiedInMask(T x)
+{
+    WORD bitCount = 0;
+    while (x)
     {
-        WORD bitCount = 0;
-        while (x) { ++bitCount; x &= (x - 1); }
-        return bitCount;
+        ++bitCount;
+        x &= (x - 1);
     }
+    return bitCount;
+}
 
-    WORD AdpcmBlockSizeFromPcmFrames(WORD nPcmFrames, WORD nChannels)
+WORD AdpcmBlockSizeFromPcmFrames(WORD nPcmFrames, WORD nChannels)
+{
+    // The full calculation is as follows:
+    //    UINT uHeaderBytes = MSADPCM_HEADER_LENGTH * nChannels;
+    //    UINT uBitsPerSample = MSADPCM_BITS_PER_SAMPLE * nChannels;
+    //    UINT uBlockAlign = uHeaderBytes + (nPcmFrames - 2) * uBitsPerSample / 8;
+    //    return WORD(uBlockAlign);
+
+    assert(nChannels == 1 || nChannels == 2);
+
+    if (nPcmFrames)
     {
-        // The full calculation is as follows:
-        //    UINT uHeaderBytes = MSADPCM_HEADER_LENGTH * nChannels;
-        //    UINT uBitsPerSample = MSADPCM_BITS_PER_SAMPLE * nChannels;
-        //    UINT uBlockAlign = uHeaderBytes + (nPcmFrames - 2) * uBitsPerSample / 8;
-        //    return WORD(uBlockAlign);
-
-        assert(nChannels == 1 || nChannels == 2);
-
-        if (nPcmFrames)
+        if (nChannels == 1)
         {
-            if (nChannels == 1)
-            {
-                assert(nPcmFrames % 2 == 0); // Mono data needs even nPcmFrames
-                return WORD(nPcmFrames / 2 + 6);
-            }
-            else
-            {
-                return WORD(nPcmFrames + 12);
-            }
+            assert(nPcmFrames % 2 == 0); // Mono data needs even nPcmFrames
+            return WORD(nPcmFrames / 2 + 6);
         }
         else
         {
-            return 0;
+            return WORD(nPcmFrames + 12);
         }
     }
-
-    DWORD EncodeWMABlockAlign(DWORD dwBlockAlign, DWORD dwAvgBytesPerSec)
+    else
     {
-        static const uint32_t aWMABlockAlign[] =
-        {
-            929,
-            1487,
-            1280,
-            2230,
-            8917,
-            8192,
-            4459,
-            5945,
-            2304,
-            1536,
-            1485,
-            1008,
-            2731,
-            4096,
-            6827,
-            5462,
-            1280
-        };
+        return 0;
+    }
+}
 
-        static const uint32_t aWMAAvgBytesPerSec[] =
-        {
-            12000,
-            24000,
-            4000,
-            6000,
-            8000,
-            20000,
-            2500
-        };
+DWORD EncodeWMABlockAlign(DWORD dwBlockAlign, DWORD dwAvgBytesPerSec)
+{
+    static const uint32_t aWMABlockAlign[] =
+    {
+        929,
+        1487,
+        1280,
+        2230,
+        8917,
+        8192,
+        4459,
+        5945,
+        2304,
+        1536,
+        1485,
+        1008,
+        2731,
+        4096,
+        6827,
+        5462,
+        1280
+    };
 
-        auto bit = std::find(std::begin(aWMABlockAlign), std::end(aWMABlockAlign), dwBlockAlign);
-        if (bit == std::end(aWMABlockAlign))
-            return DWORD(-1);
+    static const uint32_t aWMAAvgBytesPerSec[] =
+    {
+        12000,
+        24000,
+        4000,
+        6000,
+        8000,
+        20000,
+        2500
+    };
 
-        DWORD blockAlignIndex = DWORD(bit - std::begin(aWMABlockAlign));
+    auto bit = std::find(std::begin(aWMABlockAlign), std::end(aWMABlockAlign), dwBlockAlign);
+    if (bit == std::end(aWMABlockAlign))
+        return DWORD(-1);
 
-        auto ait = std::find(std::begin(aWMAAvgBytesPerSec), std::end(aWMAAvgBytesPerSec), dwAvgBytesPerSec);
-        if (ait == std::end(aWMAAvgBytesPerSec))
-            return DWORD(-1);
+    DWORD blockAlignIndex = DWORD(bit - std::begin(aWMABlockAlign));
 
-        DWORD bytesPerSecIndex = DWORD(ait - std::begin(aWMAAvgBytesPerSec));
+    auto ait = std::find(std::begin(aWMAAvgBytesPerSec), std::end(aWMAAvgBytesPerSec), dwAvgBytesPerSec);
+    if (ait == std::end(aWMAAvgBytesPerSec))
+        return DWORD(-1);
 
-        return DWORD(blockAlignIndex | (bytesPerSecIndex << 5));
+    DWORD bytesPerSecIndex = DWORD(ait - std::begin(aWMAAvgBytesPerSec));
+
+    return DWORD(blockAlignIndex | (bytesPerSecIndex << 5));
+}
+
+bool ConvertToMiniFormat(const WAVEFORMATEX* wfx, bool hasSeek, MINIWAVEFORMAT& miniFmt)
+{
+    if (!wfx)
+        return false;
+
+    if (!wfx->nChannels)
+    {
+        wprintf(L"ERROR: Wave bank entry must have at least 1 channel\n");
+        return false;
     }
 
-    bool ConvertToMiniFormat(const WAVEFORMATEX* wfx, bool hasSeek, MINIWAVEFORMAT& miniFmt)
+    if (wfx->nChannels > 7)
     {
-        if (!wfx)
-            return false;
+        wprintf(L"ERROR: Wave banks only support up to 7 channels\n");
+        return false;
+    }
 
-        if (!wfx->nChannels)
+    if (!wfx->nSamplesPerSec)
+    {
+        wprintf(L"ERROR: Wave banks entry sample rate must be non-zero\n");
+        return false;
+    }
+
+    if (wfx->nSamplesPerSec > 262143)
+    {
+        wprintf(L"ERROR: Wave banks only support sample rates up to 2^18 (262143)\n");
+        return false;
+    }
+
+    miniFmt.dwValue = 0;
+    miniFmt.nSamplesPerSec = wfx->nSamplesPerSec;
+    miniFmt.nChannels = wfx->nChannels;
+
+    switch (wfx->wFormatTag)
+    {
+    case WAVE_FORMAT_PCM:
+        if ((wfx->wBitsPerSample != 8) && (wfx->wBitsPerSample != 16))
         {
-            wprintf(L"ERROR: Wave bank entry must have at least 1 channel\n");
+            wprintf(L"ERROR: Wave banks only support 8-bit or 16-bit integer PCM data\n");
             return false;
         }
 
-        if (wfx->nChannels > 7)
+        if (wfx->nBlockAlign > 255)
         {
-            wprintf(L"ERROR: Wave banks only support up to 7 channels\n");
+            wprintf(L"ERROR: Wave banks only support block alignments up to 255 (%u)\n", wfx->nBlockAlign);
             return false;
         }
 
-        if (!wfx->nSamplesPerSec)
+        if (wfx->nBlockAlign != (wfx->nChannels * wfx->wBitsPerSample / 8))
         {
-            wprintf(L"ERROR: Wave banks entry sample rate must be non-zero\n");
-            return false;
-        }
-
-        if (wfx->nSamplesPerSec > 262143)
-        {
-            wprintf(L"ERROR: Wave banks only support sample rates up to 2^18 (262143)\n");
-            return false;
-        }
-
-        miniFmt.dwValue = 0;
-        miniFmt.nSamplesPerSec = wfx->nSamplesPerSec;
-        miniFmt.nChannels = wfx->nChannels;
-
-        switch (wfx->wFormatTag)
-        {
-        case WAVE_FORMAT_PCM:
-            if ((wfx->wBitsPerSample != 8) && (wfx->wBitsPerSample != 16))
-            {
-                wprintf(L"ERROR: Wave banks only support 8-bit or 16-bit integer PCM data\n");
-                return false;
-            }
-
-            if (wfx->nBlockAlign > 255)
-            {
-                wprintf(L"ERROR: Wave banks only support block alignments up to 255 (%u)\n", wfx->nBlockAlign);
-                return false;
-            }
-
-            if (wfx->nBlockAlign != (wfx->nChannels * wfx->wBitsPerSample / 8))
-            {
-                wprintf(L"ERROR: nBlockAlign (%u) != nChannels (%u) * wBitsPerSample (%u) / 8\n",
+            wprintf(L"ERROR: nBlockAlign (%u) != nChannels (%u) * wBitsPerSample (%u) / 8\n",
                     wfx->nBlockAlign, wfx->nChannels, wfx->wBitsPerSample);
-                return false;
-            }
+            return false;
+        }
 
-            if (wfx->nAvgBytesPerSec != (wfx->nSamplesPerSec * wfx->nBlockAlign))
-            {
-                wprintf(L"ERROR: nAvgBytesPerSec (%lu) != nSamplesPerSec (%lu) * nBlockAlign (%u)\n",
+        if (wfx->nAvgBytesPerSec != (wfx->nSamplesPerSec * wfx->nBlockAlign))
+        {
+            wprintf(L"ERROR: nAvgBytesPerSec (%lu) != nSamplesPerSec (%lu) * nBlockAlign (%u)\n",
                     wfx->nAvgBytesPerSec, wfx->nSamplesPerSec, wfx->nBlockAlign);
-                return false;
-            }
-
-            miniFmt.wFormatTag = MINIWAVEFORMAT::TAG_PCM;
-            miniFmt.wBitsPerSample = (wfx->wBitsPerSample == 16) ? MINIWAVEFORMAT::BITDEPTH_16 : MINIWAVEFORMAT::BITDEPTH_8;
-            miniFmt.wBlockAlign = wfx->nBlockAlign;
-            return true;
-
-        case WAVE_FORMAT_IEEE_FLOAT:
-            wprintf(L"ERROR: Wave banks do not support IEEE float PCM data\n");
             return false;
+        }
 
-        case WAVE_FORMAT_ADPCM:
-            if ((wfx->nChannels != 1) && (wfx->nChannels != 2))
+        miniFmt.wFormatTag = MINIWAVEFORMAT::TAG_PCM;
+        miniFmt.wBitsPerSample = (wfx->wBitsPerSample == 16) ? MINIWAVEFORMAT::BITDEPTH_16 : MINIWAVEFORMAT::BITDEPTH_8;
+        miniFmt.wBlockAlign = wfx->nBlockAlign;
+        return true;
+
+    case WAVE_FORMAT_IEEE_FLOAT:
+        wprintf(L"ERROR: Wave banks do not support IEEE float PCM data\n");
+        return false;
+
+    case WAVE_FORMAT_ADPCM:
+        if ((wfx->nChannels != 1) && (wfx->nChannels != 2))
+        {
+            wprintf(L"ERROR: ADPCM wave format must have 1 or 2 channels (not %u)\n", wfx->nChannels);
+            return false;
+        }
+
+        if (wfx->wBitsPerSample != 4 /*MSADPCM_BITS_PER_SAMPLE*/)
+        {
+            wprintf(L"ERROR: ADPCM wave format must have 4 bits per sample (not %u)\n", wfx->wBitsPerSample);
+            return false;
+        }
+
+        if (wfx->cbSize != 32 /*MSADPCM_FORMAT_EXTRA_BYTES*/)
+        {
+            wprintf(L"ERROR: ADPCM wave format must have cbSize = 32 (not %u)\n", wfx->cbSize);
+            return false;
+        }
+        else
+        {
+            auto wfadpcm = reinterpret_cast<const ADPCMWAVEFORMAT*>(wfx);
+
+            if (wfadpcm->wNumCoef != 7 /*MSADPCM_NUM_COEFFICIENTS*/)
             {
-                wprintf(L"ERROR: ADPCM wave format must have 1 or 2 channels (not %u)\n", wfx->nChannels);
+                wprintf(L"ERROR: ADPCM wave format must have 7 coefficients (not %u)\n", wfadpcm->wNumCoef);
                 return false;
             }
 
-            if (wfx->wBitsPerSample != 4 /*MSADPCM_BITS_PER_SAMPLE*/)
+            bool valid = true;
+            for (int j = 0; j < 7 /*MSADPCM_NUM_COEFFICIENTS*/; ++j)
             {
-                wprintf(L"ERROR: ADPCM wave format must have 4 bits per sample (not %u)\n", wfx->wBitsPerSample);
-                return false;
-            }
+                // Microsoft ADPCM standard encoding coefficients
+                static const short g_pAdpcmCoefficients1[] = { 256,  512, 0, 192, 240,  460,  392 };
+                static const short g_pAdpcmCoefficients2[] = { 0, -256, 0,  64,   0, -208, -232 };
 
-            if (wfx->cbSize != 32 /*MSADPCM_FORMAT_EXTRA_BYTES*/)
-            {
-                wprintf(L"ERROR: ADPCM wave format must have cbSize = 32 (not %u)\n", wfx->cbSize);
-                return false;
-            }
-            else
-            {
-                auto wfadpcm = reinterpret_cast<const ADPCMWAVEFORMAT*>(wfx);
-
-                if (wfadpcm->wNumCoef != 7 /*MSADPCM_NUM_COEFFICIENTS*/)
-                {
-                    wprintf(L"ERROR: ADPCM wave format must have 7 coefficients (not %u)\n", wfadpcm->wNumCoef);
-                    return false;
-                }
-
-                bool valid = true;
-                for (int j = 0; j < 7 /*MSADPCM_NUM_COEFFICIENTS*/; ++j)
-                {
-                    // Microsoft ADPCM standard encoding coefficients
-                    static const short g_pAdpcmCoefficients1[] = { 256,  512, 0, 192, 240,  460,  392 };
-                    static const short g_pAdpcmCoefficients2[] = { 0, -256, 0,  64,   0, -208, -232 };
-
-                    if (wfadpcm->aCoef[j].iCoef1 != g_pAdpcmCoefficients1[j]
+                if (wfadpcm->aCoef[j].iCoef1 != g_pAdpcmCoefficients1[j]
                         || wfadpcm->aCoef[j].iCoef2 != g_pAdpcmCoefficients2[j])
-                    {
-                        valid = false;
-                    }
-                }
-
-                if (!valid)
                 {
-                    wprintf(L"ERROR: Non-standard coefficients for ADPCM found\n");
-                    return false;
+                    valid = false;
                 }
+            }
 
-                if ((wfadpcm->wSamplesPerBlock < 4 /*MSADPCM_MIN_SAMPLES_PER_BLOCK*/)
+            if (!valid)
+            {
+                wprintf(L"ERROR: Non-standard coefficients for ADPCM found\n");
+                return false;
+            }
+
+            if ((wfadpcm->wSamplesPerBlock < 4 /*MSADPCM_MIN_SAMPLES_PER_BLOCK*/)
                     || (wfadpcm->wSamplesPerBlock > 64000 /*MSADPCM_MAX_SAMPLES_PER_BLOCK*/))
-                {
-                    wprintf(L"ERROR: ADPCM wave format wSamplesPerBlock must be 4..64000\n");
-                    return false;
-                }
+            {
+                wprintf(L"ERROR: ADPCM wave format wSamplesPerBlock must be 4..64000\n");
+                return false;
+            }
 
-                if (wfadpcm->wfx.nChannels == 1 && (wfadpcm->wSamplesPerBlock % 2))
-                {
-                    wprintf(L"ERROR: ADPCM wave format mono files must have even wSamplesPerBlock\n");
-                    return false;
-                }
+            if (wfadpcm->wfx.nChannels == 1 && (wfadpcm->wSamplesPerBlock % 2))
+            {
+                wprintf(L"ERROR: ADPCM wave format mono files must have even wSamplesPerBlock\n");
+                return false;
+            }
 
-                unsigned int nHeaderBytes = 7 /*MSADPCM_HEADER_LENGTH*/ * wfx->nChannels;
-                unsigned int nBitsPerFrame = 4 /*MSADPCM_BITS_PER_SAMPLE*/ * wfx->nChannels;
-                unsigned int nPcmFramesPerBlock = (wfx->nBlockAlign - nHeaderBytes) * 8 / nBitsPerFrame + 2;
+            unsigned int nHeaderBytes = 7 /*MSADPCM_HEADER_LENGTH*/ * wfx->nChannels;
+            unsigned int nBitsPerFrame = 4 /*MSADPCM_BITS_PER_SAMPLE*/ * wfx->nChannels;
+            unsigned int nPcmFramesPerBlock = (wfx->nBlockAlign - nHeaderBytes) * 8 / nBitsPerFrame + 2;
 
-                if (wfadpcm->wSamplesPerBlock != nPcmFramesPerBlock)
-                {
-                    wprintf(L"ERROR: ADPCM %u-channel format with nBlockAlign = %u must have wSamplesPerBlock = %u (not %u)\n",
+            if (wfadpcm->wSamplesPerBlock != nPcmFramesPerBlock)
+            {
+                wprintf(L"ERROR: ADPCM %u-channel format with nBlockAlign = %u must have wSamplesPerBlock = %u (not %u)\n",
                         wfx->nChannels, wfx->nBlockAlign, nPcmFramesPerBlock, wfadpcm->wSamplesPerBlock);
-                    return false;
-                }
-
-                miniFmt.wFormatTag = MINIWAVEFORMAT::TAG_ADPCM;
-                miniFmt.wBitsPerSample = 0;
-                miniFmt.wBlockAlign = AdpcmBlockSizeFromPcmFrames(wfadpcm->wSamplesPerBlock, 1) - MINIWAVEFORMAT::ADPCM_BLOCKALIGN_CONVERSION_OFFSET;
-            }
-            return true;
-
-        case WAVE_FORMAT_WMAUDIO2:
-        case WAVE_FORMAT_WMAUDIO3:
-            if (!hasSeek)
-            {
-                wprintf(L"ERROR: xWMA requires seek tables ('dpds' chunk)\n");
                 return false;
             }
 
-            if (wfx->wBitsPerSample != 16)
-            {
-                wprintf(L"ERROR: Wave banks only support 16-bit xWMA data\n");
-                return false;
-            }
+            miniFmt.wFormatTag = MINIWAVEFORMAT::TAG_ADPCM;
+            miniFmt.wBitsPerSample = 0;
+            miniFmt.wBlockAlign = AdpcmBlockSizeFromPcmFrames(wfadpcm->wSamplesPerBlock, 1) - MINIWAVEFORMAT::ADPCM_BLOCKALIGN_CONVERSION_OFFSET;
+        }
+        return true;
 
-            if (!wfx->nBlockAlign)
-            {
-                wprintf(L"ERROR: Wave bank xWMA must have a non-zero nBlockAlign\n");
-                return false;
-            }
-
-            if (!wfx->nAvgBytesPerSec)
-            {
-                wprintf(L"ERROR: Wave bank xWMA must have a non-zero nAvgBytesPerSec\n");
-                return false;
-            }
-
-            if (wfx->cbSize != 0)
-            {
-                wprintf(L"ERROR: Unexpected data found in xWMA header\n");
-                return false;
-            }
-
-            miniFmt.wFormatTag = MINIWAVEFORMAT::TAG_WMA;
-            miniFmt.wBitsPerSample = (wfx->wFormatTag == WAVE_FORMAT_WMAUDIO3) ? MINIWAVEFORMAT::BITDEPTH_16 : MINIWAVEFORMAT::BITDEPTH_8;
-            {
-                DWORD blockAlign = EncodeWMABlockAlign(wfx->nBlockAlign, wfx->nAvgBytesPerSec);
-                if (blockAlign == DWORD(-1))
-                {
-                    wprintf(L"ERROR: Failed encoding nBlockAlign and nAvgBytesPerSec for xWMA\n");
-                    return false;
-                }
-                miniFmt.wBlockAlign = blockAlign;
-            }
-            return true;
-
-        case 0x166 /*WAVE_FORMAT_XMA2(*/:
-            wprintf(L"ERROR: XMA2 not supported by this version of XWBTool\n");
+    case WAVE_FORMAT_WMAUDIO2:
+    case WAVE_FORMAT_WMAUDIO3:
+        if (!hasSeek)
+        {
+            wprintf(L"ERROR: xWMA requires seek tables ('dpds' chunk)\n");
             return false;
+        }
 
-        case WAVE_FORMAT_EXTENSIBLE:
-            if (wfx->cbSize < (sizeof(WAVEFORMATEXTENSIBLE) - sizeof(WAVEFORMATEX)))
+        if (wfx->wBitsPerSample != 16)
+        {
+            wprintf(L"ERROR: Wave banks only support 16-bit xWMA data\n");
+            return false;
+        }
+
+        if (!wfx->nBlockAlign)
+        {
+            wprintf(L"ERROR: Wave bank xWMA must have a non-zero nBlockAlign\n");
+            return false;
+        }
+
+        if (!wfx->nAvgBytesPerSec)
+        {
+            wprintf(L"ERROR: Wave bank xWMA must have a non-zero nAvgBytesPerSec\n");
+            return false;
+        }
+
+        if (wfx->cbSize != 0)
+        {
+            wprintf(L"ERROR: Unexpected data found in xWMA header\n");
+            return false;
+        }
+
+        miniFmt.wFormatTag = MINIWAVEFORMAT::TAG_WMA;
+        miniFmt.wBitsPerSample = (wfx->wFormatTag == WAVE_FORMAT_WMAUDIO3) ? MINIWAVEFORMAT::BITDEPTH_16 : MINIWAVEFORMAT::BITDEPTH_8;
+        {
+            DWORD blockAlign = EncodeWMABlockAlign(wfx->nBlockAlign, wfx->nAvgBytesPerSec);
+            if (blockAlign == DWORD(-1))
             {
-                wprintf(L"ERROR: WAVEFORMATEXTENSIBLE cbSize must be at least %Iu (%u)", (sizeof(WAVEFORMATEXTENSIBLE) - sizeof(WAVEFORMATEX)), wfx->cbSize);
+                wprintf(L"ERROR: Failed encoding nBlockAlign and nAvgBytesPerSec for xWMA\n");
                 return false;
             }
-            else
+            miniFmt.wBlockAlign = blockAlign;
+        }
+        return true;
+
+    case 0x166 /*WAVE_FORMAT_XMA2(*/:
+        wprintf(L"ERROR: XMA2 not supported by this version of XWBTool\n");
+        return false;
+
+    case WAVE_FORMAT_EXTENSIBLE:
+        if (wfx->cbSize < (sizeof(WAVEFORMATEXTENSIBLE) - sizeof(WAVEFORMATEX)))
+        {
+            wprintf(L"ERROR: WAVEFORMATEXTENSIBLE cbSize must be at least %Iu (%u)", (sizeof(WAVEFORMATEXTENSIBLE) - sizeof(WAVEFORMATEX)), wfx->cbSize);
+            return false;
+        }
+        else
+        {
+            static const GUID s_wfexBase = { 0x00000000, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71 };
+
+            auto wfex = reinterpret_cast<const WAVEFORMATEXTENSIBLE*>(wfx);
+
+            if (memcmp(reinterpret_cast<const BYTE*>(&wfex->SubFormat) + sizeof(DWORD),
+                       reinterpret_cast<const BYTE*>(&s_wfexBase) + sizeof(DWORD), sizeof(GUID) - sizeof(DWORD)) != 0)
             {
-                static const GUID s_wfexBase = { 0x00000000, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71 };
-
-                auto wfex = reinterpret_cast<const WAVEFORMATEXTENSIBLE*>(wfx);
-
-                if (memcmp(reinterpret_cast<const BYTE*>(&wfex->SubFormat) + sizeof(DWORD),
-                    reinterpret_cast<const BYTE*>(&s_wfexBase) + sizeof(DWORD), sizeof(GUID) - sizeof(DWORD)) != 0)
-                {
-                    wprintf(L"ERROR: WAVEFORMATEXTENSIBLE encountered with unknown GUID ({%8.8lX-%4.4X-%4.4X-%2.2X%2.2X-%2.2X%2.2X%2.2X%2.2X%2.2X%2.2X})\n",
+                wprintf(L"ERROR: WAVEFORMATEXTENSIBLE encountered with unknown GUID ({%8.8lX-%4.4X-%4.4X-%2.2X%2.2X-%2.2X%2.2X%2.2X%2.2X%2.2X%2.2X})\n",
                         wfex->SubFormat.Data1, wfex->SubFormat.Data2, wfex->SubFormat.Data3,
                         wfex->SubFormat.Data4[0], wfex->SubFormat.Data4[1], wfex->SubFormat.Data4[2], wfex->SubFormat.Data4[3],
                         wfex->SubFormat.Data4[4], wfex->SubFormat.Data4[5], wfex->SubFormat.Data4[6], wfex->SubFormat.Data4[7]);
-                    return false;
-                }
-
-                switch (wfex->SubFormat.Data1)
-                {
-                case WAVE_FORMAT_PCM:
-                    if ((wfx->wBitsPerSample != 8) && (wfx->wBitsPerSample != 16))
-                    {
-                        wprintf(L"ERROR: Wave banks only support 8-bit or 16-bit integer PCM data (%u)\n", wfx->wBitsPerSample);
-                        return false;
-                    }
-
-                    if (!wfex->Samples.wValidBitsPerSample)
-                    {
-                        wprintf(L"WARNING: Integer PCM WAVEFORMATEXTENSIBLE format should not have wValidBitsPerSample = 0\n");
-                    }
-                    else if (((wfex->Samples.wValidBitsPerSample != 8) && (wfex->Samples.wValidBitsPerSample != 16))
-                        || (wfex->Samples.wValidBitsPerSample > wfx->wBitsPerSample))
-                    {
-                        wprintf(L"ERROR: Unexpected wValidBitsPerSample value (%u)\n", wfex->Samples.wValidBitsPerSample);
-                        return false;
-                    }
-
-                    if (wfx->nBlockAlign > 255)
-                    {
-                        wprintf(L"ERROR: Wave banks only support block alignments up to 255 (%u)\n", wfx->nBlockAlign);
-                        return false;
-                    }
-
-                    if (wfx->nBlockAlign != (wfx->nChannels * wfx->wBitsPerSample / 8))
-                    {
-                        wprintf(L"ERROR: nBlockAlign (%u) != nChannels (%u) * wBitsPerSample (%u) / 8\n",
-                            wfx->nBlockAlign, wfx->nChannels, wfx->wBitsPerSample);
-                        return false;
-                    }
-
-                    if (wfx->nAvgBytesPerSec != (wfx->nSamplesPerSec * wfx->nBlockAlign))
-                    {
-                        wprintf(L"ERROR: nAvgBytesPerSec (%lu) != nSamplesPerSec (%lu) * nBlockAlign (%u)\n",
-                            wfx->nAvgBytesPerSec, wfx->nSamplesPerSec, wfx->nBlockAlign);
-                        return false;
-                    }
-
-                    miniFmt.wFormatTag = MINIWAVEFORMAT::TAG_PCM;
-                    miniFmt.wBitsPerSample = (wfex->Samples.wValidBitsPerSample == 16) ? MINIWAVEFORMAT::BITDEPTH_16 : MINIWAVEFORMAT::BITDEPTH_8;
-                    miniFmt.wBlockAlign = wfx->nBlockAlign;
-                    break;
-
-                case WAVE_FORMAT_IEEE_FLOAT:
-                    wprintf(L"ERROR: Wave banks do not support float PCM data\n");
-                    return false;
-
-                case WAVE_FORMAT_ADPCM:
-                    wprintf(L"ERROR: ADPCM is not supported as a WAVEFORMATEXTENSIBLE\n");
-                    return false;
-
-                case WAVE_FORMAT_WMAUDIO2:
-                case WAVE_FORMAT_WMAUDIO3:
-                    if (!hasSeek)
-                    {
-                        wprintf(L"ERROR: xWMA requires seek tables (dpds chunk)\n");
-                        return false;
-                    }
-
-                    if (wfx->wBitsPerSample != 16)
-                    {
-                        wprintf(L"ERROR: Wave banks only support 16-bit xWMA data\n");
-                        return false;
-                    }
-
-                    if (!wfx->nBlockAlign)
-                    {
-                        wprintf(L"ERROR: Wvae bank xWMA must have a non-zero nBlockAlign\n");
-                        return false;
-                    }
-
-                    if (!wfx->nAvgBytesPerSec)
-                    {
-                        wprintf(L"ERROR: Wave bank xWMA must have a non-zero nAvgBytesPerSec\n");
-                        return false;
-                    }
-
-                    miniFmt.wFormatTag = MINIWAVEFORMAT::TAG_WMA;
-                    miniFmt.wBitsPerSample = (wfx->wFormatTag == WAVE_FORMAT_WMAUDIO3) ? MINIWAVEFORMAT::BITDEPTH_16 : MINIWAVEFORMAT::BITDEPTH_8;
-                    {
-                        DWORD blockAlign = EncodeWMABlockAlign(wfx->nBlockAlign, wfx->nAvgBytesPerSec);
-                        if (blockAlign == DWORD(-1))
-                        {
-                            wprintf(L"ERROR: Failed encoding nBlockAlign and nAvgBytesPerSec for xWMA\n");
-                            return false;
-                        }
-                        miniFmt.wBlockAlign = blockAlign;
-                    }
-                    break;
-
-                case 0x166 /*WAVE_FORMAT_XMA2(*/:
-                    wprintf(L"ERROR: XMA2 is not supported as a WAVEFORMATEXTENSIBLE\n");
-                    return false;
-
-                default:
-                    wprintf(L"ERROR: Unknown WAVEFORMATEXTENSIBLE format tag\n");
-                    return false;
-                }
-
-                if (wfex->dwChannelMask)
-                {
-                    auto channelBits = ChannelsSpecifiedInMask(wfex->dwChannelMask);
-                    if (channelBits != wfx->nChannels)
-                    {
-                        wprintf(L"ERROR: WAVEFORMATEXTENSIBLE: nChannels=%u but ChannelMask has %u bits set\n",
-                            wfx->nChannels, channelBits);
-                        return false;
-                    }
-                    else
-                    {
-                        wprintf(L"WARNING: WAVEFORMATEXTENSIBLE ChannelMask is ignored in wave banks\n");
-                    }
-                }
-
-                return true;
+                return false;
             }
 
-        default:
-            return false;
+            switch (wfex->SubFormat.Data1)
+            {
+            case WAVE_FORMAT_PCM:
+                if ((wfx->wBitsPerSample != 8) && (wfx->wBitsPerSample != 16))
+                {
+                    wprintf(L"ERROR: Wave banks only support 8-bit or 16-bit integer PCM data (%u)\n", wfx->wBitsPerSample);
+                    return false;
+                }
+
+                if (!wfex->Samples.wValidBitsPerSample)
+                {
+                    wprintf(L"WARNING: Integer PCM WAVEFORMATEXTENSIBLE format should not have wValidBitsPerSample = 0\n");
+                }
+                else if (((wfex->Samples.wValidBitsPerSample != 8) && (wfex->Samples.wValidBitsPerSample != 16))
+                         || (wfex->Samples.wValidBitsPerSample > wfx->wBitsPerSample))
+                {
+                    wprintf(L"ERROR: Unexpected wValidBitsPerSample value (%u)\n", wfex->Samples.wValidBitsPerSample);
+                    return false;
+                }
+
+                if (wfx->nBlockAlign > 255)
+                {
+                    wprintf(L"ERROR: Wave banks only support block alignments up to 255 (%u)\n", wfx->nBlockAlign);
+                    return false;
+                }
+
+                if (wfx->nBlockAlign != (wfx->nChannels * wfx->wBitsPerSample / 8))
+                {
+                    wprintf(L"ERROR: nBlockAlign (%u) != nChannels (%u) * wBitsPerSample (%u) / 8\n",
+                            wfx->nBlockAlign, wfx->nChannels, wfx->wBitsPerSample);
+                    return false;
+                }
+
+                if (wfx->nAvgBytesPerSec != (wfx->nSamplesPerSec * wfx->nBlockAlign))
+                {
+                    wprintf(L"ERROR: nAvgBytesPerSec (%lu) != nSamplesPerSec (%lu) * nBlockAlign (%u)\n",
+                            wfx->nAvgBytesPerSec, wfx->nSamplesPerSec, wfx->nBlockAlign);
+                    return false;
+                }
+
+                miniFmt.wFormatTag = MINIWAVEFORMAT::TAG_PCM;
+                miniFmt.wBitsPerSample = (wfex->Samples.wValidBitsPerSample == 16) ? MINIWAVEFORMAT::BITDEPTH_16 : MINIWAVEFORMAT::BITDEPTH_8;
+                miniFmt.wBlockAlign = wfx->nBlockAlign;
+                break;
+
+            case WAVE_FORMAT_IEEE_FLOAT:
+                wprintf(L"ERROR: Wave banks do not support float PCM data\n");
+                return false;
+
+            case WAVE_FORMAT_ADPCM:
+                wprintf(L"ERROR: ADPCM is not supported as a WAVEFORMATEXTENSIBLE\n");
+                return false;
+
+            case WAVE_FORMAT_WMAUDIO2:
+            case WAVE_FORMAT_WMAUDIO3:
+                if (!hasSeek)
+                {
+                    wprintf(L"ERROR: xWMA requires seek tables (dpds chunk)\n");
+                    return false;
+                }
+
+                if (wfx->wBitsPerSample != 16)
+                {
+                    wprintf(L"ERROR: Wave banks only support 16-bit xWMA data\n");
+                    return false;
+                }
+
+                if (!wfx->nBlockAlign)
+                {
+                    wprintf(L"ERROR: Wvae bank xWMA must have a non-zero nBlockAlign\n");
+                    return false;
+                }
+
+                if (!wfx->nAvgBytesPerSec)
+                {
+                    wprintf(L"ERROR: Wave bank xWMA must have a non-zero nAvgBytesPerSec\n");
+                    return false;
+                }
+
+                miniFmt.wFormatTag = MINIWAVEFORMAT::TAG_WMA;
+                miniFmt.wBitsPerSample = (wfx->wFormatTag == WAVE_FORMAT_WMAUDIO3) ? MINIWAVEFORMAT::BITDEPTH_16 : MINIWAVEFORMAT::BITDEPTH_8;
+                {
+                    DWORD blockAlign = EncodeWMABlockAlign(wfx->nBlockAlign, wfx->nAvgBytesPerSec);
+                    if (blockAlign == DWORD(-1))
+                    {
+                        wprintf(L"ERROR: Failed encoding nBlockAlign and nAvgBytesPerSec for xWMA\n");
+                        return false;
+                    }
+                    miniFmt.wBlockAlign = blockAlign;
+                }
+                break;
+
+            case 0x166 /*WAVE_FORMAT_XMA2(*/:
+                wprintf(L"ERROR: XMA2 is not supported as a WAVEFORMATEXTENSIBLE\n");
+                return false;
+
+            default:
+                wprintf(L"ERROR: Unknown WAVEFORMATEXTENSIBLE format tag\n");
+                return false;
+            }
+
+            if (wfex->dwChannelMask)
+            {
+                auto channelBits = ChannelsSpecifiedInMask(wfex->dwChannelMask);
+                if (channelBits != wfx->nChannels)
+                {
+                    wprintf(L"ERROR: WAVEFORMATEXTENSIBLE: nChannels=%u but ChannelMask has %u bits set\n",
+                            wfx->nChannels, channelBits);
+                    return false;
+                }
+                else
+                {
+                    wprintf(L"WARNING: WAVEFORMATEXTENSIBLE ChannelMask is ignored in wave banks\n");
+                }
+            }
+
+            return true;
         }
+
+    default:
+        return false;
     }
+}
 }
 
 
@@ -689,7 +709,10 @@ struct WaveFile
     MINIWAVEFORMAT miniFmt;
     std::unique_ptr<uint8_t[]> waveData;
 
-    WaveFile() : conv(0) { memset(&data, 0, sizeof(data)); }
+    WaveFile() : conv(0)
+    {
+        memset(&data, 0, sizeof(data));
+    }
 
     // VS 2013 does not perform impliclit creation of move construtors nor does it support =default,
     // so we explictly add one here
@@ -704,17 +727,17 @@ struct WaveFile
 
 namespace
 {
-    void FileNameToIdentifier(_Inout_updates_all_(count) wchar_t* str, size_t count)
+void FileNameToIdentifier(_Inout_updates_all_(count) wchar_t* str, size_t count)
+{
+    size_t j = 0;
+    for (wchar_t* c = str; j < count && *c != 0; ++c, ++j)
     {
-        size_t j = 0;
-        for (wchar_t* c = str; j < count && *c != 0; ++c, ++j)
-        {
-            wchar_t t = towupper(*c);
-            if (!iswdigit(t) && !iswalpha(t))
-                t = '_';
-            *c = t;
-        }
+        wchar_t t = towupper(*c);
+        if (!iswdigit(t) && !iswalpha(t))
+            t = '_';
+        *c = t;
     }
+}
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -743,187 +766,210 @@ namespace
 {
 #pragma prefast(disable : 26018, "Only used with static internal arrays")
 
-    DWORD LookupByName(const wchar_t *pName, const SValue *pArray)
+DWORD LookupByName(const wchar_t *pName, const SValue *pArray)
+{
+    while (pArray->pName)
     {
-        while (pArray->pName)
-        {
-            if (!_wcsicmp(pName, pArray->pName))
-                return pArray->dwValue;
+        if (!_wcsicmp(pName, pArray->pName))
+            return pArray->dwValue;
 
-            pArray++;
-        }
-
-        return 0;
+        pArray++;
     }
 
-    const wchar_t* LookupByValue(DWORD pValue, const SValue *pArray)
+    return 0;
+}
+
+const wchar_t* LookupByValue(DWORD pValue, const SValue *pArray)
+{
+    while (pArray->pName)
     {
-        while (pArray->pName)
-        {
-            if (pValue == pArray->dwValue)
-                return pArray->pName;
+        if (pValue == pArray->dwValue)
+            return pArray->pName;
 
-            pArray++;
-        }
-
-        return L"";
+        pArray++;
     }
 
+    return L"";
+}
 
-    void SearchForFiles(const wchar_t* path, std::list<SConversion>& files, bool recursive)
+
+void SearchForFiles(const wchar_t* path, std::list<SConversion>& files, bool recursive)
+{
+    // Process files
+    WIN32_FIND_DATA findData = {};
+    ScopedFindHandle hFile(safe_handle(FindFirstFileExW(path,
+                                       FindExInfoBasic, &findData,
+                                       FindExSearchNameMatch, nullptr,
+                                       FIND_FIRST_EX_LARGE_FETCH)));
+    if (hFile)
     {
-        // Process files
-        WIN32_FIND_DATA findData = {};
-        ScopedFindHandle hFile(safe_handle(FindFirstFileExW(path,
-            FindExInfoBasic, &findData,
-            FindExSearchNameMatch, nullptr,
-            FIND_FIRST_EX_LARGE_FETCH)));
-        if (hFile)
+        for (;;)
         {
-            for (;;)
-            {
-                if (!(findData.dwFileAttributes & (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_DIRECTORY)))
-                {
-                    wchar_t drive[_MAX_DRIVE] = {};
-                    wchar_t dir[_MAX_DIR] = {};
-                    _wsplitpath_s(path, drive, _MAX_DRIVE, dir, _MAX_DIR, nullptr, 0, nullptr, 0);
-
-                    SConversion conv;
-                    _wmakepath_s(conv.szSrc, drive, dir, findData.cFileName, nullptr);
-                    files.push_back(conv);
-                }
-
-                if (!FindNextFile(hFile.get(), &findData))
-                    break;
-            }
-        }
-
-        // Process directories
-        if (recursive)
-        {
-            wchar_t searchDir[MAX_PATH] = {};
+            if (!(findData.dwFileAttributes & (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_DIRECTORY)))
             {
                 wchar_t drive[_MAX_DRIVE] = {};
                 wchar_t dir[_MAX_DIR] = {};
                 _wsplitpath_s(path, drive, _MAX_DRIVE, dir, _MAX_DIR, nullptr, 0, nullptr, 0);
-                _wmakepath_s(searchDir, drive, dir, L"*", nullptr);
+
+                SConversion conv;
+                _wmakepath_s(conv.szSrc, drive, dir, findData.cFileName, nullptr);
+                files.push_back(conv);
             }
 
-            hFile.reset(safe_handle(FindFirstFileExW(searchDir,
-                FindExInfoBasic, &findData,
-                FindExSearchLimitToDirectories, nullptr,
-                FIND_FIRST_EX_LARGE_FETCH)));
-            if (!hFile)
-                return;
+            if (!FindNextFile(hFile.get(), &findData))
+                break;
+        }
+    }
 
-            for (;;)
+    // Process directories
+    if (recursive)
+    {
+        wchar_t searchDir[MAX_PATH] = {};
+        {
+            wchar_t drive[_MAX_DRIVE] = {};
+            wchar_t dir[_MAX_DIR] = {};
+            _wsplitpath_s(path, drive, _MAX_DRIVE, dir, _MAX_DIR, nullptr, 0, nullptr, 0);
+            _wmakepath_s(searchDir, drive, dir, L"*", nullptr);
+        }
+
+        hFile.reset(safe_handle(FindFirstFileExW(searchDir,
+                                FindExInfoBasic, &findData,
+                                FindExSearchLimitToDirectories, nullptr,
+                                FIND_FIRST_EX_LARGE_FETCH)));
+        if (!hFile)
+            return;
+
+        for (;;)
+        {
+            if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
             {
-                if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+                if (findData.cFileName[0] != L'.')
                 {
-                    if (findData.cFileName[0] != L'.')
+                    wchar_t subdir[MAX_PATH] = {};
+
                     {
-                        wchar_t subdir[MAX_PATH] = {};
-
-                        {
-                            wchar_t drive[_MAX_DRIVE] = {};
-                            wchar_t dir[_MAX_DIR] = {};
-                            wchar_t fname[_MAX_FNAME] = {};
-                            wchar_t ext[_MAX_FNAME] = {};
-                            _wsplitpath_s(path, drive, dir, fname, ext);
-                            wcscat_s(dir, findData.cFileName);
-                            _wmakepath_s(subdir, drive, dir, fname, ext);
-                        }
-
-                        SearchForFiles(subdir, files, recursive);
+                        wchar_t drive[_MAX_DRIVE] = {};
+                        wchar_t dir[_MAX_DIR] = {};
+                        wchar_t fname[_MAX_FNAME] = {};
+                        wchar_t ext[_MAX_FNAME] = {};
+                        _wsplitpath_s(path, drive, dir, fname, ext);
+                        wcscat_s(dir, findData.cFileName);
+                        _wmakepath_s(subdir, drive, dir, fname, ext);
                     }
+
+                    SearchForFiles(subdir, files, recursive);
                 }
-
-                if (!FindNextFile(hFile.get(), &findData))
-                    break;
             }
+
+            if (!FindNextFile(hFile.get(), &findData))
+                break;
         }
     }
+}
 
-    void PrintLogo()
+void PrintLogo()
+{
+    wprintf(L"Microsoft (R) XACT-style Wave Bank Tool \n");
+    wprintf(L"Copyright (C) Microsoft Corp. All rights reserved.\n");
+    wprintf(L"\n");
+}
+
+void PrintUsage()
+{
+    PrintLogo();
+
+    wprintf(L"Usage: xwbtool <options> <wav-files>\n");
+    wprintf(L"\n");
+    wprintf(L"   -r                  wildcard filename search is recursive\n");
+    wprintf(L"   -s                  creates a streaming wave bank,\n");
+    wprintf(L"                       otherwise an in-memory bank is created\n");
+    wprintf(L"   -o <filename>       output filename\n");
+    wprintf(L"   -h <h-filename>     output C/C++ header\n");
+    wprintf(L"   -n                  do not overwrite output\n");
+    wprintf(L"   -c                  force creation of compact wavebank\n");
+    wprintf(L"   -nc                 force creation of non-compact wavebank\n");
+    wprintf(L"   -f                  include entry friendly names\n");
+    wprintf(L"   -nologo             suppress copyright message\n");
+}
+
+const char* GetFormatTagName(WORD wFormatTag)
+{
+    switch (wFormatTag)
     {
-        wprintf(L"Microsoft (R) XACT-style Wave Bank Tool \n");
-        wprintf(L"Copyright (C) Microsoft Corp. All rights reserved.\n");
-        wprintf(L"\n");
+    case WAVE_FORMAT_PCM:
+        return "PCM";
+    case WAVE_FORMAT_ADPCM:
+        return "MS ADPCM";
+    case WAVE_FORMAT_EXTENSIBLE:
+        return "EXTENSIBLE";
+    case WAVE_FORMAT_IEEE_FLOAT:
+        return "IEEE float";
+    case WAVE_FORMAT_MPEGLAYER3:
+        return "ISO/MPEG Layer3";
+    case WAVE_FORMAT_DOLBY_AC3_SPDIF:
+        return "Dolby Audio Codec 3 over S/PDIF";
+    case WAVE_FORMAT_WMAUDIO2:
+        return "Windows Media Audio";
+    case WAVE_FORMAT_WMAUDIO3:
+        return "Windows Media Audio Pro";
+    case WAVE_FORMAT_WMASPDIF:
+        return "Windows Media Audio over S/PDIF";
+    case 0x165: /*WAVE_FORMAT_XMA*/
+        return "Xbox XMA";
+    case 0x166: /*WAVE_FORMAT_XMA2*/
+        return "Xbox XMA2";
+    default:
+        return "*UNKNOWN*";
+    }
+}
+
+const char *ChannelDesc(DWORD dwChannelMask)
+{
+    switch (dwChannelMask)
+    {
+    case 0x00000004 /*SPEAKER_MONO*/:
+        return "Mono"; //
+    case 0x00000003 /* SPEAKER_STEREO */:
+        return "Stereo";
+    case 0x0000000B /* SPEAKER_2POINT1 */:
+        return "2.1";
+    case 0x00000107 /* SPEAKER_SURROUND */:
+        return "Surround";
+    case 0x00000033 /* SPEAKER_QUAD */:
+        return "Quad";
+    case 0x0000003B /* SPEAKER_4POINT1 */:
+        return "4.1";
+    case 0x0000003F /* SPEAKER_5POINT1 */:
+        return "5.1";
+    case 0x000000FF /* SPEAKER_7POINT1 */:
+        return "7.1";
+    case 0x0000060F /* SPEAKER_5POINT1_SURROUND */:
+        return "Surround5.1";
+    case 0x0000063F /* SPEAKER_7POINT1_SURROUND */:
+        return "Surround7.1";
+    default:
+        return "Custom";
+    }
+}
+
+void PrintInfo(const WaveFile& wave)
+{
+    wprintf(L" (%hs %u channels, %u-bit, %u Hz)", GetFormatTagName(wave.data.wfx->wFormatTag), wave.data.wfx->nChannels, wave.data.wfx->wBitsPerSample, wave.data.wfx->nSamplesPerSec);
+}
+
+bool FileExists(const wchar_t* pszFilename)
+{
+    FILE *f = nullptr;
+    if (!_wfopen_s(&f, pszFilename, L"rb"))
+    {
+        if (f)
+            fclose(f);
+
+        return true;
     }
 
-    void PrintUsage()
-    {
-        PrintLogo();
-
-        wprintf(L"Usage: xwbtool <options> <wav-files>\n");
-        wprintf(L"\n");
-        wprintf(L"   -r                  wildcard filename search is recursive\n");
-        wprintf(L"   -s                  creates a streaming wave bank,\n");
-        wprintf(L"                       otherwise an in-memory bank is created\n");
-        wprintf(L"   -o <filename>       output filename\n");
-        wprintf(L"   -h <h-filename>     output C/C++ header\n");
-        wprintf(L"   -n                  do not overwrite output\n");
-        wprintf(L"   -c                  force creation of compact wavebank\n");
-        wprintf(L"   -nc                 force creation of non-compact wavebank\n");
-        wprintf(L"   -f                  include entry friendly names\n");
-        wprintf(L"   -nologo             suppress copyright message\n");
-    }
-
-    const char* GetFormatTagName(WORD wFormatTag)
-    {
-        switch (wFormatTag)
-        {
-        case WAVE_FORMAT_PCM: return "PCM";
-        case WAVE_FORMAT_ADPCM: return "MS ADPCM";
-        case WAVE_FORMAT_EXTENSIBLE: return "EXTENSIBLE";
-        case WAVE_FORMAT_IEEE_FLOAT: return "IEEE float";
-        case WAVE_FORMAT_MPEGLAYER3: return "ISO/MPEG Layer3";
-        case WAVE_FORMAT_DOLBY_AC3_SPDIF: return "Dolby Audio Codec 3 over S/PDIF";
-        case WAVE_FORMAT_WMAUDIO2: return "Windows Media Audio";
-        case WAVE_FORMAT_WMAUDIO3: return "Windows Media Audio Pro";
-        case WAVE_FORMAT_WMASPDIF: return "Windows Media Audio over S/PDIF";
-        case 0x165: /*WAVE_FORMAT_XMA*/ return "Xbox XMA";
-        case 0x166: /*WAVE_FORMAT_XMA2*/ return "Xbox XMA2";
-        default: return "*UNKNOWN*";
-        }
-    }
-
-    const char *ChannelDesc(DWORD dwChannelMask)
-    {
-        switch (dwChannelMask)
-        {
-        case 0x00000004 /*SPEAKER_MONO*/: return "Mono"; // 
-        case 0x00000003 /* SPEAKER_STEREO */: return "Stereo";
-        case 0x0000000B /* SPEAKER_2POINT1 */: return "2.1";
-        case 0x00000107 /* SPEAKER_SURROUND */: return "Surround";
-        case 0x00000033 /* SPEAKER_QUAD */: return "Quad";
-        case 0x0000003B /* SPEAKER_4POINT1 */: return "4.1";
-        case 0x0000003F /* SPEAKER_5POINT1 */: return "5.1";
-        case 0x000000FF /* SPEAKER_7POINT1 */: return "7.1";
-        case 0x0000060F /* SPEAKER_5POINT1_SURROUND */: return "Surround5.1";
-        case 0x0000063F /* SPEAKER_7POINT1_SURROUND */: return "Surround7.1";
-        default: return "Custom";
-        }
-    }
-
-    void PrintInfo(const WaveFile& wave)
-    {
-        wprintf(L" (%hs %u channels, %u-bit, %u Hz)", GetFormatTagName(wave.data.wfx->wFormatTag), wave.data.wfx->nChannels, wave.data.wfx->wBitsPerSample, wave.data.wfx->nSamplesPerSec);
-    }
-
-    bool FileExists(const wchar_t* pszFilename)
-    {
-        FILE *f = nullptr;
-        if (!_wfopen_s(&f, pszFilename, L"rb"))
-        {
-            if (f)
-                fclose(f);
-
-            return true;
-        }
-
-        return false;
-    }
+    return false;
+}
 }
 
 //////////////////////////////////////////////////////////////////////////////

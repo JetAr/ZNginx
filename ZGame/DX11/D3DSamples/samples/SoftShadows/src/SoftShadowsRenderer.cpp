@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        SoftShadows\src/SoftShadowsRenderer.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -285,7 +285,7 @@ SoftShadowsRenderer::SoftShadowsRenderer()
     , m_worldVariable(nullptr)
     , m_useDiffuseVariable(nullptr)
     , m_useTextureVariable(nullptr)
-    , m_depthMapVariable(nullptr)    
+    , m_depthMapVariable(nullptr)
     , m_diffuseVariable(nullptr)
     , m_normalVariable(nullptr)
     , m_specularVariable(nullptr)
@@ -447,8 +447,12 @@ void SoftShadowsRenderer::onRender(ID3D11Device *device, ID3D11DeviceContext *im
         switch (m_shadowTechnique)
         {
         case PCSS: // fallthrough
-        case PCF:  passName = "ShadowMapPass"; break;
-        case CHS:  passName = "ShadowMapPassCHS"; break;
+        case PCF:
+            passName = "ShadowMapPass";
+            break;
+        case CHS:
+            passName = "ShadowMapPassCHS";
+            break;
         }
         auto shadowMapPass = m_technique->GetPassByName(passName);
         shadowMapPass->Apply(0, immediateContext);
@@ -484,10 +488,18 @@ void SoftShadowsRenderer::onRender(ID3D11Device *device, ID3D11DeviceContext *im
         const char *passName = nullptr;
         switch (m_shadowTechnique)
         {
-        case None: passName = "ZEqualNoShadows"; break;
-        case PCSS: passName = "ZEqualPCSS"; break;
-        case PCF:  passName = "ZEqualPCF"; break;
-        case CHS:  passName = "CHS"; break;
+        case None:
+            passName = "ZEqualNoShadows";
+            break;
+        case PCSS:
+            passName = "ZEqualPCSS";
+            break;
+        case PCF:
+            passName = "ZEqualPCF";
+            break;
+        case CHS:
+            passName = "CHS";
+            break;
         }
         drawScene(immediateContext, m_technique->GetPassByName(passName));
     }
@@ -593,7 +605,7 @@ void SoftShadowsRenderer::updateLightCamera()
     }
     else
     {
-        m_lightCamera.SetWorldMatrix(s_view);        
+        m_lightCamera.SetWorldMatrix(s_view);
     }
     updateLightCamera(s_view);
 }
@@ -667,7 +679,7 @@ void SoftShadowsRenderer::updateLightSize(float frustumWidth, float frustumHeigh
     if (m_lightRadiusUvVariable != nullptr)
     {
         float lightRadiusUV[2] =
-        { 
+        {
             m_lightRadiusWorld / frustumWidth,
             m_lightRadiusWorld / frustumHeight
         };
@@ -683,10 +695,10 @@ HRESULT SoftShadowsRenderer::createShadowMap(ID3D11Device *device)
     HRESULT hr;
 
     m_shadowMap.reset(new SimpleTexture2D(
-        device,    "ShadowMapDepthRT",
-        DXGI_FORMAT_R32_TYPELESS,
-        LIGHT_RES, LIGHT_RES, 1,
-        SimpleTexture2D::ShaderResourceView | SimpleTexture2D::DepthStencilView));
+                          device,    "ShadowMapDepthRT",
+                          DXGI_FORMAT_R32_TYPELESS,
+                          LIGHT_RES, LIGHT_RES, 1,
+                          SimpleTexture2D::ShaderResourceView | SimpleTexture2D::DepthStencilView));
 
     if (!m_shadowMap) V_RETURN(E_OUTOFMEMORY);
     V_RETURN(m_shadowMap->errorCode());
@@ -779,17 +791,17 @@ HRESULT SoftShadowsRenderer::loadEffect(ID3D11Device* device)
 
     // Set textures
     VB_RETURN(m_rockDiffuse && m_rockDiffuse->isValid());
-    auto rockDiffuseVariable = getShaderResourceVariable("g_rockDiffuse");    
+    auto rockDiffuseVariable = getShaderResourceVariable("g_rockDiffuse");
     VB_RETURN(rockDiffuseVariable && rockDiffuseVariable->IsValid());
     V_RETURN(rockDiffuseVariable->SetResource(m_rockDiffuse->getShaderResourceView()));
 
     VB_RETURN(m_groundDiffuse && m_groundDiffuse->isValid());
-    auto groundDiffuseVariable = getShaderResourceVariable("g_groundDiffuse");    
+    auto groundDiffuseVariable = getShaderResourceVariable("g_groundDiffuse");
     VB_RETURN(groundDiffuseVariable && groundDiffuseVariable->IsValid())
-        V_RETURN(groundDiffuseVariable->SetResource(m_groundDiffuse->getShaderResourceView()));
+    V_RETURN(groundDiffuseVariable->SetResource(m_groundDiffuse->getShaderResourceView()));
 
     VB_RETURN(m_groundNormal && m_groundNormal->isValid());
-    auto groundNormalVariable = getShaderResourceVariable("g_groundNormal");    
+    auto groundNormalVariable = getShaderResourceVariable("g_groundNormal");
     VB_RETURN(groundNormalVariable && groundNormalVariable->IsValid());
     V_RETURN(groundNormalVariable->SetResource(m_groundNormal->getShaderResourceView()));
 
@@ -970,7 +982,7 @@ ID3DX11EffectVariable *SoftShadowsRenderer::getVariable(const char *name)
     if (variable == nullptr || !variable->IsValid())
         return nullptr;
 
-    return variable;    
+    return variable;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1009,7 +1021,7 @@ void SoftShadowsRenderer::drawScene(ID3D11DeviceContext *immediateContext, ID3DX
         std::for_each(m_meshInstances.begin(), m_meshInstances.end(), [&] (const MeshInstanceList::value_type &instance)
         {
             if (instance == m_podiumMesh)
-                m_useTextureVariable->SetInt(m_useTexture ? 2 : 0);                
+                m_useTextureVariable->SetInt(m_useTexture ? 2 : 0);
             else
                 m_useTextureVariable->SetInt(0);
 

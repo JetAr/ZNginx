@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: AudioEngine.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -26,213 +26,213 @@ using Microsoft::WRL::ComPtr;
 
 namespace
 {
-    struct EngineCallback : public IXAudio2EngineCallback
+struct EngineCallback : public IXAudio2EngineCallback
+{
+    EngineCallback()
     {
-        EngineCallback()
+        mCriticalError.reset( CreateEventEx( nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE ) );
+        if ( !mCriticalError )
         {
-            mCriticalError.reset( CreateEventEx( nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE ) );
-            if ( !mCriticalError )
-            {
-                throw std::exception( "CreateEvent" );
-            }
-        };
-
-        virtual ~EngineCallback()
-        {
+            throw std::exception( "CreateEvent" );
         }
-
-        STDMETHOD_(void, OnProcessingPassStart) () override {}
-        STDMETHOD_(void, OnProcessingPassEnd)() override {}
-
-        STDMETHOD_(void, OnCriticalError) (THIS_ HRESULT error)
-        {
-#ifndef _DEBUG
-            UNREFERENCED_PARAMETER(error);
-#endif
-            DebugTrace( "ERROR: AudioEngine encountered critical error (%08X)\n", error );
-            SetEvent( mCriticalError.get() );
-        }
-
-        ScopedHandle mCriticalError;
     };
 
-    struct VoiceCallback : public IXAudio2VoiceCallback
+    virtual ~EngineCallback()
     {
-        VoiceCallback()
-        {
-            mBufferEnd.reset( CreateEventEx( nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE ) );
-            if ( !mBufferEnd )
-            {
-                throw std::exception( "CreateEvent" );
-            }
-        }
-
-        virtual ~VoiceCallback()
-        {
-        }
-
-        STDMETHOD_(void, OnVoiceProcessingPassStart) (UINT32) override {}
-        STDMETHOD_(void, OnVoiceProcessingPassEnd)() override {}
-        STDMETHOD_(void, OnStreamEnd)() override {}
-        STDMETHOD_(void, OnBufferStart)( void* ) override {}
-
-        STDMETHOD_(void, OnBufferEnd)( void* context ) override
-        {
-            if ( context )
-            {
-                auto inotify = reinterpret_cast<IVoiceNotify*>( context );
-                inotify->OnBufferEnd();
-                SetEvent( mBufferEnd.get() );
-            }
-        }
-
-        STDMETHOD_(void, OnLoopEnd)( void* ) override {}
-        STDMETHOD_(void, OnVoiceError)( void*, HRESULT ) override {}
-
-        ScopedHandle mBufferEnd;
-    };
-
-    static const XAUDIO2FX_REVERB_I3DL2_PARAMETERS gReverbPresets[] =
-    {
-        XAUDIO2FX_I3DL2_PRESET_DEFAULT,             // Reverb_Off
-        XAUDIO2FX_I3DL2_PRESET_DEFAULT,             // Reverb_Default
-        XAUDIO2FX_I3DL2_PRESET_GENERIC,             // Reverb_Generic
-        XAUDIO2FX_I3DL2_PRESET_FOREST,              // Reverb_Forest
-        XAUDIO2FX_I3DL2_PRESET_PADDEDCELL,          // Reverb_PaddedCell
-        XAUDIO2FX_I3DL2_PRESET_ROOM,                // Reverb_Room
-        XAUDIO2FX_I3DL2_PRESET_BATHROOM,            // Reverb_Bathroom
-        XAUDIO2FX_I3DL2_PRESET_LIVINGROOM,          // Reverb_LivingRoom
-        XAUDIO2FX_I3DL2_PRESET_STONEROOM,           // Reverb_StoneRoom
-        XAUDIO2FX_I3DL2_PRESET_AUDITORIUM,          // Reverb_Auditorium
-        XAUDIO2FX_I3DL2_PRESET_CONCERTHALL,         // Reverb_ConcertHall
-        XAUDIO2FX_I3DL2_PRESET_CAVE,                // Reverb_Cave
-        XAUDIO2FX_I3DL2_PRESET_ARENA,               // Reverb_Arena
-        XAUDIO2FX_I3DL2_PRESET_HANGAR,              // Reverb_Hangar
-        XAUDIO2FX_I3DL2_PRESET_CARPETEDHALLWAY,     // Reverb_CarpetedHallway
-        XAUDIO2FX_I3DL2_PRESET_HALLWAY,             // Reverb_Hallway
-        XAUDIO2FX_I3DL2_PRESET_STONECORRIDOR,       // Reverb_StoneCorridor
-        XAUDIO2FX_I3DL2_PRESET_ALLEY,               // Reverb_Alley
-        XAUDIO2FX_I3DL2_PRESET_CITY,                // Reverb_City
-        XAUDIO2FX_I3DL2_PRESET_MOUNTAINS,           // Reverb_Mountains
-        XAUDIO2FX_I3DL2_PRESET_QUARRY,              // Reverb_Quarry
-        XAUDIO2FX_I3DL2_PRESET_PLAIN,               // Reverb_Plain
-        XAUDIO2FX_I3DL2_PRESET_PARKINGLOT,          // Reverb_ParkingLot
-        XAUDIO2FX_I3DL2_PRESET_SEWERPIPE,           // Reverb_SewerPipe
-        XAUDIO2FX_I3DL2_PRESET_UNDERWATER,          // Reverb_Underwater
-        XAUDIO2FX_I3DL2_PRESET_SMALLROOM,           // Reverb_SmallRoom
-        XAUDIO2FX_I3DL2_PRESET_MEDIUMROOM,          // Reverb_MediumRoom
-        XAUDIO2FX_I3DL2_PRESET_LARGEROOM,           // Reverb_LargeRoom
-        XAUDIO2FX_I3DL2_PRESET_MEDIUMHALL,          // Reverb_MediumHall
-        XAUDIO2FX_I3DL2_PRESET_LARGEHALL,           // Reverb_LargeHall
-        XAUDIO2FX_I3DL2_PRESET_PLATE,               // Reverb_Plate
-    };
-
-    inline unsigned int makeVoiceKey( _In_ const WAVEFORMATEX* wfx )
-    {
-        assert( IsValid(wfx) );
-
-        if ( wfx->nChannels > 0x7F )
-            return 0;
-
-        union KeyGen
-        {
-            struct
-            {
-                unsigned int tag : 9;
-                unsigned int channels : 7;
-                unsigned int bitsPerSample : 8;
-            } pcm;
-
-            struct
-            {
-                unsigned int tag : 9;
-                unsigned int channels : 7;
-                unsigned int samplesPerBlock : 16;
-            } adpcm;
-
-#if defined(_XBOX_ONE) && defined(_TITLE)
-            struct
-            {
-                unsigned int tag : 9;
-                unsigned int channels : 7;
-                unsigned int encoderVersion : 8;
-            } xma;
-#endif
-
-            unsigned int key;
-        } result;
-
-        static_assert( sizeof(KeyGen) == sizeof(unsigned int), "KeyGen is invalid" ); 
-
-        result.key = 0;
-
-        if ( wfx->wFormatTag == WAVE_FORMAT_EXTENSIBLE )
-        {
-            // We reuse EXTENSIBLE only if it is equivalent to the standard form
-            auto wfex = reinterpret_cast<const WAVEFORMATEXTENSIBLE*>( wfx );
-            if ( wfex->Samples.wValidBitsPerSample != 0 && wfex->Samples.wValidBitsPerSample != wfx->wBitsPerSample )
-                return 0;
-
-            if ( wfex->dwChannelMask != 0 && wfex->dwChannelMask != GetDefaultChannelMask( wfx->nChannels ) )
-                return 0;
-        }
-
-        uint32_t tag = GetFormatTag( wfx );
-        switch( tag )
-        {
-        case WAVE_FORMAT_PCM:
-            static_assert( WAVE_FORMAT_PCM < 0x1ff, "KeyGen tag is too small" );
-            result.pcm.tag = WAVE_FORMAT_PCM;
-            result.pcm.channels = wfx->nChannels;
-            result.pcm.bitsPerSample = wfx->wBitsPerSample;
-            break;
-
-        case WAVE_FORMAT_IEEE_FLOAT:
-            static_assert( WAVE_FORMAT_IEEE_FLOAT < 0x1ff, "KeyGen tag is too small" );
-
-            if ( wfx->wBitsPerSample != 32 )
-                return 0;
-
-            result.pcm.tag = WAVE_FORMAT_IEEE_FLOAT;
-            result.pcm.channels = wfx->nChannels;
-            result.pcm.bitsPerSample = 32;
-            break;
-
-        case WAVE_FORMAT_ADPCM:
-            static_assert( WAVE_FORMAT_ADPCM < 0x1ff, "KeyGen tag is too small" );
-            result.adpcm.tag = WAVE_FORMAT_ADPCM;
-            result.adpcm.channels = wfx->nChannels;
-
-            {
-                auto wfadpcm = reinterpret_cast<const ADPCMWAVEFORMAT*>( wfx );
-                result.adpcm.samplesPerBlock = wfadpcm->wSamplesPerBlock;
-            }
-            break;
-
-#if defined(_XBOX_ONE) && defined(_TITLE)
-        case WAVE_FORMAT_XMA2:
-            static_assert( WAVE_FORMAT_XMA2 < 0x1ff, "KeyGen tag is too small" );
-            result.xma.tag = WAVE_FORMAT_XMA2;
-            result.xma.channels = wfx->nChannels;
-
-            {
-                auto xmaFmt = reinterpret_cast<const XMA2WAVEFORMATEX*>( wfx );
-
-                if ( ( xmaFmt->LoopBegin > 0 )
-                     || ( xmaFmt->PlayBegin > 0 ) )
-                    return 0;
-
-                result.xma.encoderVersion = xmaFmt->EncoderVersion;
-            }
-            break;
-#endif
-
-        default:
-            return 0;
-        }
-
-        return result.key;
     }
+
+    STDMETHOD_(void, OnProcessingPassStart) () override {}
+    STDMETHOD_(void, OnProcessingPassEnd)() override {}
+
+    STDMETHOD_(void, OnCriticalError) (THIS_ HRESULT error)
+    {
+#ifndef _DEBUG
+        UNREFERENCED_PARAMETER(error);
+#endif
+        DebugTrace( "ERROR: AudioEngine encountered critical error (%08X)\n", error );
+        SetEvent( mCriticalError.get() );
+    }
+
+    ScopedHandle mCriticalError;
+};
+
+struct VoiceCallback : public IXAudio2VoiceCallback
+{
+    VoiceCallback()
+    {
+        mBufferEnd.reset( CreateEventEx( nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE ) );
+        if ( !mBufferEnd )
+        {
+            throw std::exception( "CreateEvent" );
+        }
+    }
+
+    virtual ~VoiceCallback()
+    {
+    }
+
+    STDMETHOD_(void, OnVoiceProcessingPassStart) (UINT32) override {}
+    STDMETHOD_(void, OnVoiceProcessingPassEnd)() override {}
+    STDMETHOD_(void, OnStreamEnd)() override {}
+    STDMETHOD_(void, OnBufferStart)( void* ) override {}
+
+    STDMETHOD_(void, OnBufferEnd)( void* context ) override
+    {
+        if ( context )
+        {
+            auto inotify = reinterpret_cast<IVoiceNotify*>( context );
+            inotify->OnBufferEnd();
+            SetEvent( mBufferEnd.get() );
+        }
+    }
+
+    STDMETHOD_(void, OnLoopEnd)( void* ) override {}
+    STDMETHOD_(void, OnVoiceError)( void*, HRESULT ) override {}
+
+    ScopedHandle mBufferEnd;
+};
+
+static const XAUDIO2FX_REVERB_I3DL2_PARAMETERS gReverbPresets[] =
+{
+    XAUDIO2FX_I3DL2_PRESET_DEFAULT,             // Reverb_Off
+    XAUDIO2FX_I3DL2_PRESET_DEFAULT,             // Reverb_Default
+    XAUDIO2FX_I3DL2_PRESET_GENERIC,             // Reverb_Generic
+    XAUDIO2FX_I3DL2_PRESET_FOREST,              // Reverb_Forest
+    XAUDIO2FX_I3DL2_PRESET_PADDEDCELL,          // Reverb_PaddedCell
+    XAUDIO2FX_I3DL2_PRESET_ROOM,                // Reverb_Room
+    XAUDIO2FX_I3DL2_PRESET_BATHROOM,            // Reverb_Bathroom
+    XAUDIO2FX_I3DL2_PRESET_LIVINGROOM,          // Reverb_LivingRoom
+    XAUDIO2FX_I3DL2_PRESET_STONEROOM,           // Reverb_StoneRoom
+    XAUDIO2FX_I3DL2_PRESET_AUDITORIUM,          // Reverb_Auditorium
+    XAUDIO2FX_I3DL2_PRESET_CONCERTHALL,         // Reverb_ConcertHall
+    XAUDIO2FX_I3DL2_PRESET_CAVE,                // Reverb_Cave
+    XAUDIO2FX_I3DL2_PRESET_ARENA,               // Reverb_Arena
+    XAUDIO2FX_I3DL2_PRESET_HANGAR,              // Reverb_Hangar
+    XAUDIO2FX_I3DL2_PRESET_CARPETEDHALLWAY,     // Reverb_CarpetedHallway
+    XAUDIO2FX_I3DL2_PRESET_HALLWAY,             // Reverb_Hallway
+    XAUDIO2FX_I3DL2_PRESET_STONECORRIDOR,       // Reverb_StoneCorridor
+    XAUDIO2FX_I3DL2_PRESET_ALLEY,               // Reverb_Alley
+    XAUDIO2FX_I3DL2_PRESET_CITY,                // Reverb_City
+    XAUDIO2FX_I3DL2_PRESET_MOUNTAINS,           // Reverb_Mountains
+    XAUDIO2FX_I3DL2_PRESET_QUARRY,              // Reverb_Quarry
+    XAUDIO2FX_I3DL2_PRESET_PLAIN,               // Reverb_Plain
+    XAUDIO2FX_I3DL2_PRESET_PARKINGLOT,          // Reverb_ParkingLot
+    XAUDIO2FX_I3DL2_PRESET_SEWERPIPE,           // Reverb_SewerPipe
+    XAUDIO2FX_I3DL2_PRESET_UNDERWATER,          // Reverb_Underwater
+    XAUDIO2FX_I3DL2_PRESET_SMALLROOM,           // Reverb_SmallRoom
+    XAUDIO2FX_I3DL2_PRESET_MEDIUMROOM,          // Reverb_MediumRoom
+    XAUDIO2FX_I3DL2_PRESET_LARGEROOM,           // Reverb_LargeRoom
+    XAUDIO2FX_I3DL2_PRESET_MEDIUMHALL,          // Reverb_MediumHall
+    XAUDIO2FX_I3DL2_PRESET_LARGEHALL,           // Reverb_LargeHall
+    XAUDIO2FX_I3DL2_PRESET_PLATE,               // Reverb_Plate
+};
+
+inline unsigned int makeVoiceKey( _In_ const WAVEFORMATEX* wfx )
+{
+    assert( IsValid(wfx) );
+
+    if ( wfx->nChannels > 0x7F )
+        return 0;
+
+    union KeyGen
+    {
+        struct
+        {
+            unsigned int tag : 9;
+            unsigned int channels : 7;
+            unsigned int bitsPerSample : 8;
+        } pcm;
+
+        struct
+        {
+            unsigned int tag : 9;
+            unsigned int channels : 7;
+            unsigned int samplesPerBlock : 16;
+        } adpcm;
+
+#if defined(_XBOX_ONE) && defined(_TITLE)
+        struct
+        {
+            unsigned int tag : 9;
+            unsigned int channels : 7;
+            unsigned int encoderVersion : 8;
+        } xma;
+#endif
+
+        unsigned int key;
+    } result;
+
+    static_assert( sizeof(KeyGen) == sizeof(unsigned int), "KeyGen is invalid" );
+
+    result.key = 0;
+
+    if ( wfx->wFormatTag == WAVE_FORMAT_EXTENSIBLE )
+    {
+        // We reuse EXTENSIBLE only if it is equivalent to the standard form
+        auto wfex = reinterpret_cast<const WAVEFORMATEXTENSIBLE*>( wfx );
+        if ( wfex->Samples.wValidBitsPerSample != 0 && wfex->Samples.wValidBitsPerSample != wfx->wBitsPerSample )
+            return 0;
+
+        if ( wfex->dwChannelMask != 0 && wfex->dwChannelMask != GetDefaultChannelMask( wfx->nChannels ) )
+            return 0;
+    }
+
+    uint32_t tag = GetFormatTag( wfx );
+    switch( tag )
+    {
+    case WAVE_FORMAT_PCM:
+        static_assert( WAVE_FORMAT_PCM < 0x1ff, "KeyGen tag is too small" );
+        result.pcm.tag = WAVE_FORMAT_PCM;
+        result.pcm.channels = wfx->nChannels;
+        result.pcm.bitsPerSample = wfx->wBitsPerSample;
+        break;
+
+    case WAVE_FORMAT_IEEE_FLOAT:
+        static_assert( WAVE_FORMAT_IEEE_FLOAT < 0x1ff, "KeyGen tag is too small" );
+
+        if ( wfx->wBitsPerSample != 32 )
+            return 0;
+
+        result.pcm.tag = WAVE_FORMAT_IEEE_FLOAT;
+        result.pcm.channels = wfx->nChannels;
+        result.pcm.bitsPerSample = 32;
+        break;
+
+    case WAVE_FORMAT_ADPCM:
+        static_assert( WAVE_FORMAT_ADPCM < 0x1ff, "KeyGen tag is too small" );
+        result.adpcm.tag = WAVE_FORMAT_ADPCM;
+        result.adpcm.channels = wfx->nChannels;
+
+        {
+            auto wfadpcm = reinterpret_cast<const ADPCMWAVEFORMAT*>( wfx );
+            result.adpcm.samplesPerBlock = wfadpcm->wSamplesPerBlock;
+        }
+        break;
+
+#if defined(_XBOX_ONE) && defined(_TITLE)
+    case WAVE_FORMAT_XMA2:
+        static_assert( WAVE_FORMAT_XMA2 < 0x1ff, "KeyGen tag is too small" );
+        result.xma.tag = WAVE_FORMAT_XMA2;
+        result.xma.channels = wfx->nChannels;
+
+        {
+            auto xmaFmt = reinterpret_cast<const XMA2WAVEFORMATEX*>( wfx );
+
+            if ( ( xmaFmt->LoopBegin > 0 )
+                    || ( xmaFmt->PlayBegin > 0 ) )
+                return 0;
+
+            result.xma.encoderVersion = xmaFmt->EncoderVersion;
+        }
+        break;
+#endif
+
+    default:
+        return 0;
+    }
+
+    return result.key;
+}
 }
 
 static_assert( _countof(gReverbPresets) == Reverb_MAX, "AUDIO_ENGINE_REVERB enum mismatch" );
@@ -294,11 +294,11 @@ public:
     void SetReverb( _In_opt_ const XAUDIO2FX_REVERB_PARAMETERS* native );
 
     void SetMasteringLimit( int release, int loudness );
-        
+
     AudioStatistics GetStatistics() const;
 
     void TrimVoicePool();
-    
+
     void AllocateVoice( _In_ const WAVEFORMATEX* wfx, SOUND_EFFECT_INSTANCE_FLAGS flags, bool oneshot, _Outptr_result_maybenull_ IXAudio2SourceVoice** voice );
     void DestroyVoice( _In_ IXAudio2SourceVoice* voice );
 
@@ -308,7 +308,7 @@ public:
     ComPtr<IXAudio2>                    xaudio2;
     IXAudio2MasteringVoice*             mMasterVoice;
     IXAudio2SubmixVoice*                mReverbVoice;
- 
+
     uint32_t                            masterChannelMask;
     uint32_t                            masterChannels;
     uint32_t                            masterRate;
@@ -436,8 +436,8 @@ HRESULT AudioEngine::Impl::Reset( const WAVEFORMATEX* wfx, const wchar_t* device
         // To see the trace output, you need to view ETW logs for this application:
         //    Go to Control Panel, Administrative Tools, Event Viewer.
         //    View->Show Analytic and Debug Logs.
-        //    Applications and Services Logs / Microsoft / Windows / XAudio2. 
-        //    Right click on Microsoft Windows XAudio2 debug logging, Properties, then Enable Logging, and hit OK 
+        //    Applications and Services Logs / Microsoft / Windows / XAudio2.
+        //    Right click on Microsoft Windows XAudio2 debug logging, Properties, then Enable Logging, and hit OK
         DebugTrace( "INFO: XAudio 2.8 debugging enabled\n" );
 #else
         // To see the trace output, see the debug output channel window
@@ -810,7 +810,7 @@ bool AudioEngine::Impl::Update()
 
         SetSilentMode();
         return false;
-    
+
     case WAIT_OBJECT_0 + 1: // OnBufferEnd
         // Scan for completed one-shot voices
         for( auto it = mOneShots.begin(); it != mOneShots.end(); )
@@ -896,7 +896,7 @@ void AudioEngine::Impl::SetMasteringLimit( int release, int loudness )
 {
     if ( !mVolumeLimiter || !mMasterVoice )
         return;
-    
+
     if ( ( release < FXMASTERINGLIMITER_MIN_RELEASE ) || ( release > FXMASTERINGLIMITER_MAX_RELEASE ) )
         throw std::out_of_range( "AudioEngine::SetMasteringLimit" );
 
@@ -983,12 +983,12 @@ void AudioEngine::Impl::AllocateVoice( const WAVEFORMATEX* wfx, SOUND_EFFECT_INS
 #ifdef VERBOSE_TRACE
         if ( wfx->wFormatTag == WAVE_FORMAT_EXTENSIBLE )
         {
-            DebugTrace( "INFO: Requesting one-shot: Format Tag EXTENSIBLE %u, %u channels, %u-bit, %u blkalign, %u Hz\n", GetFormatTag( wfx ), 
+            DebugTrace( "INFO: Requesting one-shot: Format Tag EXTENSIBLE %u, %u channels, %u-bit, %u blkalign, %u Hz\n", GetFormatTag( wfx ),
                         wfx->nChannels, wfx->wBitsPerSample, wfx->nBlockAlign, wfx->nSamplesPerSec );
         }
         else
         {
-            DebugTrace( "INFO: Requesting one-shot: Format Tag %u, %u channels, %u-bit, %u blkalign, %u Hz\n", wfx->wFormatTag, 
+            DebugTrace( "INFO: Requesting one-shot: Format Tag %u, %u channels, %u-bit, %u blkalign, %u Hz\n", wfx->wFormatTag,
                         wfx->nChannels, wfx->wBitsPerSample, wfx->nBlockAlign, wfx->nSamplesPerSec );
         }
 #endif
@@ -1048,11 +1048,11 @@ void AudioEngine::Impl::AllocateVoice( const WAVEFORMATEX* wfx, SOUND_EFFECT_INS
                         break;
 
                     case WAVE_FORMAT_ADPCM:
-                        {
-                            auto wfadpcm = reinterpret_cast<const ADPCMWAVEFORMAT*>( wfx );
-                            CreateADPCM( wfmt, 64, defaultRate, wfx->nChannels, wfadpcm->wSamplesPerBlock );
-                        }
-                        break;
+                    {
+                        auto wfadpcm = reinterpret_cast<const ADPCMWAVEFORMAT*>( wfx );
+                        CreateADPCM( wfmt, 64, defaultRate, wfx->nChannels, wfadpcm->wSamplesPerBlock );
+                    }
+                    break;
 
 #if defined(_XBOX_ONE) && defined(_TITLE)
                     case WAVE_FORMAT_XMA2:
@@ -1109,14 +1109,14 @@ void AudioEngine::Impl::AllocateVoice( const WAVEFORMATEX* wfx, SOUND_EFFECT_INS
         HRESULT hr;
         if ( flags & SoundEffectInstance_Use3D )
         {
-            XAUDIO2_SEND_DESCRIPTOR sendDescriptors[2];      
+            XAUDIO2_SEND_DESCRIPTOR sendDescriptors[2];
             sendDescriptors[0].Flags = sendDescriptors[1].Flags = (flags & SoundEffectInstance_ReverbUseFilters) ? XAUDIO2_SEND_USEFILTER : 0;
             sendDescriptors[0].pOutputVoice = mMasterVoice;
             sendDescriptors[1].pOutputVoice = mReverbVoice;
             const XAUDIO2_VOICE_SENDS sendList = { mReverbVoice ? 2U : 1U, sendDescriptors };
 
 #ifdef VERBOSE_TRACE
-            DebugTrace( "INFO: Allocate voice 3D: Format Tag %u, %u channels, %u-bit, %u blkalign, %u Hz\n", wfx->wFormatTag, 
+            DebugTrace( "INFO: Allocate voice 3D: Format Tag %u, %u channels, %u-bit, %u blkalign, %u Hz\n", wfx->wFormatTag,
                         wfx->nChannels, wfx->wBitsPerSample, wfx->nBlockAlign, wfx->nSamplesPerSec );
 #endif
 
@@ -1125,7 +1125,7 @@ void AudioEngine::Impl::AllocateVoice( const WAVEFORMATEX* wfx, SOUND_EFFECT_INS
         else
         {
 #ifdef VERBOSE_TRACE
-            DebugTrace( "INFO: Allocate voice: Format Tag %u, %u channels, %u-bit, %u blkalign, %u Hz\n", wfx->wFormatTag, 
+            DebugTrace( "INFO: Allocate voice: Format Tag %u, %u channels, %u-bit, %u blkalign, %u Hz\n", wfx->wFormatTag,
                         wfx->nChannels, wfx->wBitsPerSample, wfx->nBlockAlign, wfx->nSamplesPerSec );
 #endif
 
@@ -1244,7 +1244,7 @@ void AudioEngine::Impl::UnregisterNotify( _In_ IVoiceNotify* notify, bool usesOn
 // Public constructor.
 _Use_decl_annotations_
 AudioEngine::AudioEngine( AUDIO_ENGINE_FLAGS flags, const WAVEFORMATEX* wfx, const wchar_t* deviceId, AUDIO_STREAM_CATEGORY category )
-  : pImpl(new Impl() )
+    : pImpl(new Impl() )
 {
     HRESULT hr = pImpl->Initialize( flags, wfx, deviceId, category );
     if ( FAILED(hr) )
@@ -1272,7 +1272,7 @@ AudioEngine::AudioEngine( AUDIO_ENGINE_FLAGS flags, const WAVEFORMATEX* wfx, con
 
 // Move constructor.
 AudioEngine::AudioEngine(AudioEngine&& moveFrom)
-  : pImpl(std::move(moveFrom.pImpl))
+    : pImpl(std::move(moveFrom.pImpl))
 {
 }
 
@@ -1347,7 +1347,7 @@ void AudioEngine::Suspend()
 
     pImpl->xaudio2->StopEngine();
 }
- 
+
 
 void AudioEngine::Resume()
 {
@@ -1637,7 +1637,7 @@ std::vector<AudioEngine::RendererDetail> AudioEngine::GetRendererDetails()
         throw std::exception( "CreateEventEx" );
 
     auto callback = Callback<IAsyncOperationCompletedHandler<DeviceInformationCollection*>>(
-        [&findCompleted,list]( IAsyncOperation<DeviceInformationCollection*>* aDevices, AsyncStatus status ) -> HRESULT
+                        [&findCompleted,list]( IAsyncOperation<DeviceInformationCollection*>* aDevices, AsyncStatus status ) -> HRESULT
     {
         UNREFERENCED_PARAMETER(aDevices);
         UNREFERENCED_PARAMETER(status);
@@ -1682,7 +1682,7 @@ std::vector<AudioEngine::RendererDetail> AudioEngine::GetRendererDetails()
         }
     }
 
-#endif 
+#endif
 
 #else // _WIN32_WINNT < _WIN32_WINNT_WIN8
 

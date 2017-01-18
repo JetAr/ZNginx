@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: GeometricPrimitive.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -25,53 +25,53 @@ using Microsoft::WRL::ComPtr;
 
 namespace
 {
-    // Helper for creating a D3D vertex or index buffer.
-    template<typename T>
-    static void CreateBuffer(_In_ ID3D11Device* device, T const& data, D3D11_BIND_FLAG bindFlags, _Outptr_ ID3D11Buffer** pBuffer)
-    {
-        assert(pBuffer != 0);
+// Helper for creating a D3D vertex or index buffer.
+template<typename T>
+static void CreateBuffer(_In_ ID3D11Device* device, T const& data, D3D11_BIND_FLAG bindFlags, _Outptr_ ID3D11Buffer** pBuffer)
+{
+    assert(pBuffer != 0);
 
-        D3D11_BUFFER_DESC bufferDesc = {};
+    D3D11_BUFFER_DESC bufferDesc = {};
 
-        bufferDesc.ByteWidth = (UINT)data.size() * sizeof(T::value_type);
-        bufferDesc.BindFlags = bindFlags;
-        bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+    bufferDesc.ByteWidth = (UINT)data.size() * sizeof(T::value_type);
+    bufferDesc.BindFlags = bindFlags;
+    bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 
-        D3D11_SUBRESOURCE_DATA dataDesc = {};
+    D3D11_SUBRESOURCE_DATA dataDesc = {};
 
-        dataDesc.pSysMem = data.data();
+    dataDesc.pSysMem = data.data();
 
-        ThrowIfFailed(
-            device->CreateBuffer(&bufferDesc, &dataDesc, pBuffer)
-        );
+    ThrowIfFailed(
+        device->CreateBuffer(&bufferDesc, &dataDesc, pBuffer)
+    );
 
-        _Analysis_assume_(*pBuffer != 0);
+    _Analysis_assume_(*pBuffer != 0);
 
-        SetDebugObjectName(*pBuffer, "DirectXTK:GeometricPrimitive");
-    }
+    SetDebugObjectName(*pBuffer, "DirectXTK:GeometricPrimitive");
+}
 
 
-    // Helper for creating a D3D input layout.
-    void CreateInputLayout(_In_ ID3D11Device* device, IEffect* effect, _Outptr_ ID3D11InputLayout** pInputLayout)
-    {
-        assert(pInputLayout != 0);
+// Helper for creating a D3D input layout.
+void CreateInputLayout(_In_ ID3D11Device* device, IEffect* effect, _Outptr_ ID3D11InputLayout** pInputLayout)
+{
+    assert(pInputLayout != 0);
 
-        void const* shaderByteCode;
-        size_t byteCodeLength;
+    void const* shaderByteCode;
+    size_t byteCodeLength;
 
-        effect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
+    effect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
 
-        ThrowIfFailed(
-            device->CreateInputLayout(VertexPositionNormalTexture::InputElements,
-                VertexPositionNormalTexture::InputElementCount,
-                shaderByteCode, byteCodeLength,
-                pInputLayout)
-        );
+    ThrowIfFailed(
+        device->CreateInputLayout(VertexPositionNormalTexture::InputElements,
+                                  VertexPositionNormalTexture::InputElementCount,
+                                  shaderByteCode, byteCodeLength,
+                                  pInputLayout)
+    );
 
-        _Analysis_assume_(*pInputLayout != 0);
+    _Analysis_assume_(*pInputLayout != 0);
 
-        SetDebugObjectName(*pInputLayout, "DirectXTK:GeometricPrimitive");
-    }
+    SetDebugObjectName(*pInputLayout, "DirectXTK:GeometricPrimitive");
+}
 }
 
 

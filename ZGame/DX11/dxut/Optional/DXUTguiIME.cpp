@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DXUTguiIME.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -42,7 +42,7 @@ bool      CDXUTIMEEditBox::m_bIMEStaticMsgProcCalled = false;
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
 HRESULT CDXUTIMEEditBox::CreateIMEEditBox( CDXUTDialog* pDialog, int ID, LPCWSTR strText, int x, int y, int width,
-                                           int height, bool bIsDefault, CDXUTIMEEditBox** ppCreated )
+        int height, bool bIsDefault, CDXUTIMEEditBox** ppCreated )
 {
     auto pEditBox = new (std::nothrow) CDXUTIMEEditBox( pDialog );
 
@@ -175,7 +175,7 @@ void CDXUTIMEEditBox::UpdateRects()
 
 //--------------------------------------------------------------------------------------
 //  GetImeId( UINT uIndex )
-//      returns 
+//      returns
 //  returned value:
 //  0: In the following cases
 //      - Non Chinese IME input locale
@@ -191,7 +191,7 @@ void CDXUTIMEEditBox::UpdateRects()
 //          pVerFixedInfo->dwFileVersionLS
 //
 //  Use IMEID_VER and IMEID_LANG macro to extract version and language information.
-//  
+//
 
 // We define the locale-invariant ID ourselves since it doesn't exist prior to WinXP
 // For more information, see the CompareString() reference.
@@ -266,37 +266,37 @@ bool CDXUTIMEEditBox::StaticMsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 
     switch( uMsg )
     {
-        case WM_INPUTLANGCHANGE:
-            DXUTTRACE( L"WM_INPUTLANGCHANGE\n" );
-            {
-            }
-            return true;
+    case WM_INPUTLANGCHANGE:
+        DXUTTRACE( L"WM_INPUTLANGCHANGE\n" );
+        {
+        }
+        return true;
 
-        case WM_IME_SETCONTEXT:
-            DXUTTRACE( L"WM_IME_SETCONTEXT\n" );
-            //
-            // We don't want anything to display, so we have to clear this
-            //
-            lParam = 0;
-            return false;
+    case WM_IME_SETCONTEXT:
+        DXUTTRACE( L"WM_IME_SETCONTEXT\n" );
+        //
+        // We don't want anything to display, so we have to clear this
+        //
+        lParam = 0;
+        return false;
 
-            // Handle WM_IME_STARTCOMPOSITION here since
-            // we do not want the default IME handler to see
-            // this when our fullscreen app is running.
-        case WM_IME_STARTCOMPOSITION:
-            DXUTTRACE( L"WM_IME_STARTCOMPOSITION\n" );
-            ResetCompositionString();
-            // Since the composition string has its own caret, we don't render
-            // the edit control's own caret to avoid double carets on screen.
-            s_bHideCaret = true;
-            return true;
-        case WM_IME_ENDCOMPOSITION:
-            DXUTTRACE( L"WM_IME_ENDCOMPOSITION\n" );
-            s_bHideCaret = false;
-            return false;
-        case WM_IME_COMPOSITION:
-            DXUTTRACE( L"WM_IME_COMPOSITION\n" );
-            return false;
+    // Handle WM_IME_STARTCOMPOSITION here since
+    // we do not want the default IME handler to see
+    // this when our fullscreen app is running.
+    case WM_IME_STARTCOMPOSITION:
+        DXUTTRACE( L"WM_IME_STARTCOMPOSITION\n" );
+        ResetCompositionString();
+        // Since the composition string has its own caret, we don't render
+        // the edit control's own caret to avoid double carets on screen.
+        s_bHideCaret = true;
+        return true;
+    case WM_IME_ENDCOMPOSITION:
+        DXUTTRACE( L"WM_IME_ENDCOMPOSITION\n" );
+        s_bHideCaret = false;
+        return false;
+    case WM_IME_COMPOSITION:
+        DXUTTRACE( L"WM_IME_COMPOSITION\n" );
+        return false;
     }
 
     return false;
@@ -309,162 +309,162 @@ bool CDXUTIMEEditBox::HandleMouse( UINT uMsg, const POINT& pt, WPARAM wParam, LP
 {
     if( !m_bEnabled || !m_bVisible )
         return false;
-	
+
     switch( uMsg )
     {
-        case WM_LBUTTONDOWN:
-        case WM_LBUTTONDBLCLK:
+    case WM_LBUTTONDOWN:
+    case WM_LBUTTONDBLCLK:
+    {
+        auto pFont = m_pDialog->GetFont( m_Elements[ 9 ]->iFont );
+
+        // Check if this click is on top of the composition string
+        int nCompStrWidth;
+        s_CompString.CPtoX( s_CompString.GetTextSize(), FALSE, &nCompStrWidth );
+
+        if( s_ptCompString.x <= pt.x &&
+                s_ptCompString.y <= pt.y &&
+                s_ptCompString.x + nCompStrWidth > pt.x &&
+                s_ptCompString.y + pFont->nHeight > pt.y )
+        {
+            int nCharBodyHit, nCharHit;
+            int nTrail;
+
+            // Determine the character clicked on.
+            s_CompString.XtoCP( pt.x - s_ptCompString.x, &nCharBodyHit, &nTrail );
+            if( nTrail && nCharBodyHit < s_CompString.GetTextSize() )
+                nCharHit = nCharBodyHit + 1;
+            else
+                nCharHit = nCharBodyHit;
+
+
+            switch( GetPrimaryLanguage() )
             {
-                auto pFont = m_pDialog->GetFont( m_Elements[ 9 ]->iFont );
+            case LANG_JAPANESE:
+                // For Japanese, there are two cases.  If s_nFirstTargetConv is
+                // -1, the comp string hasn't been converted yet, and we use
+                // s_nCompCaret.  For any other value of s_nFirstTargetConv,
+                // the string has been converted, so we use clause information.
 
-                // Check if this click is on top of the composition string
-                int nCompStrWidth;
-                s_CompString.CPtoX( s_CompString.GetTextSize(), FALSE, &nCompStrWidth );
-
-                if( s_ptCompString.x <= pt.x &&
-                    s_ptCompString.y <= pt.y &&
-                    s_ptCompString.x + nCompStrWidth > pt.x &&
-                    s_ptCompString.y + pFont->nHeight > pt.y )
+                if( s_nFirstTargetConv != -1 )
                 {
-                    int nCharBodyHit, nCharHit;
-                    int nTrail;
+                    int nClauseClicked = 0;
+                    while( ( int )s_adwCompStringClause[nClauseClicked + 1] <= nCharBodyHit )
+                        ++nClauseClicked;
 
-                    // Determine the character clicked on.
-                    s_CompString.XtoCP( pt.x - s_ptCompString.x, &nCharBodyHit, &nTrail );
-                    if( nTrail && nCharBodyHit < s_CompString.GetTextSize() )
-                        nCharHit = nCharBodyHit + 1;
-                    else
-                        nCharHit = nCharBodyHit;
+                    int nClauseSelected = 0;
+                    while( ( int )s_adwCompStringClause[nClauseSelected + 1] <= s_nFirstTargetConv )
+                        ++nClauseSelected;
 
+                    BYTE nVirtKey = nClauseClicked > nClauseSelected ? VK_RIGHT : VK_LEFT;
+                    int nSendCount = abs( nClauseClicked - nClauseSelected );
+                    while( nSendCount-- > 0 )
+                        SendKey( nVirtKey );
 
+                    return true;
+                }
+
+            // Not converted case. Fall thru to Chinese case.
+
+            case LANG_CHINESE:
+            {
+                // For Chinese, use s_nCompCaret.
+                BYTE nVirtKey = nCharHit > ( int )ImeUi_GetImeCursorChars() ? VK_RIGHT : VK_LEFT;
+                int nSendCount = abs( nCharHit - ( int )ImeUi_GetImeCursorChars() );
+                while( nSendCount-- > 0 )
+                    SendKey( nVirtKey );
+                break;
+            }
+            }
+
+            return true;
+        }
+
+        // Check if the click is on top of the candidate window
+        if( ImeUi_IsShowCandListWindow() && PtInRect( &s_CandList.rcCandidate, pt ) )
+        {
+            if( ImeUi_IsVerticalCand() )
+            {
+                // Vertical candidate window
+
+                // Compute the row the click is on
+                int nRow = ( pt.y - s_CandList.rcCandidate.top ) / pFont->nHeight;
+
+                if( nRow < ( int )ImeUi_GetCandidateCount() )
+                {
+                    // nRow is a valid entry.
+                    // Now emulate keystrokes to select the candidate at this row.
                     switch( GetPrimaryLanguage() )
                     {
-                        case LANG_JAPANESE:
-                            // For Japanese, there are two cases.  If s_nFirstTargetConv is
-                            // -1, the comp string hasn't been converted yet, and we use
-                            // s_nCompCaret.  For any other value of s_nFirstTargetConv,
-                            // the string has been converted, so we use clause information.
+                    case LANG_CHINESE:
+                    case LANG_KOREAN:
+                        // For Chinese and Korean, simply send the number keystroke.
+                        SendKey( ( BYTE )( '0' + nRow + 1 ) );
+                        break;
 
-                            if( s_nFirstTargetConv != -1 )
-                            {
-                                int nClauseClicked = 0;
-                                while( ( int )s_adwCompStringClause[nClauseClicked + 1] <= nCharBodyHit )
-                                    ++nClauseClicked;
+                    case LANG_JAPANESE:
+                        // For Japanese, move the selection to the target row,
+                        // then send Right, then send Left.
 
-                                int nClauseSelected = 0;
-                                while( ( int )s_adwCompStringClause[nClauseSelected + 1] <= s_nFirstTargetConv )
-                                    ++nClauseSelected;
+                        BYTE nVirtKey;
+                        if( nRow > ( int )ImeUi_GetCandidateSelection() )
+                            nVirtKey = VK_DOWN;
+                        else
+                            nVirtKey = VK_UP;
+                        int nNumToHit = abs( int( nRow - ImeUi_GetCandidateSelection() ) );
+                        for( int nStrike = 0; nStrike < nNumToHit; ++nStrike )
+                            SendKey( nVirtKey );
 
-                                BYTE nVirtKey = nClauseClicked > nClauseSelected ? VK_RIGHT : VK_LEFT;
-                                int nSendCount = abs( nClauseClicked - nClauseSelected );
-                                while( nSendCount-- > 0 )
-                                    SendKey( nVirtKey );
+                        // Do this to close the candidate window without ending composition.
+                        SendKey( VK_RIGHT );
+                        SendKey( VK_LEFT );
 
-                                return true;
-                            }
-
-                            // Not converted case. Fall thru to Chinese case.
-
-                        case LANG_CHINESE:
-                        {
-                            // For Chinese, use s_nCompCaret.
-                            BYTE nVirtKey = nCharHit > ( int )ImeUi_GetImeCursorChars() ? VK_RIGHT : VK_LEFT;
-                            int nSendCount = abs( nCharHit - ( int )ImeUi_GetImeCursorChars() );
-                            while( nSendCount-- > 0 )
-                                SendKey( nVirtKey );
-                            break;
-                        }
+                        break;
                     }
-
-                    return true;
                 }
+            }
+            else
+            {
+                // Horizontal candidate window
 
-                // Check if the click is on top of the candidate window
-                if( ImeUi_IsShowCandListWindow() && PtInRect( &s_CandList.rcCandidate, pt ) )
+                // Determine which the character the click has hit.
+                int nCharHit;
+                int nTrail;
+                s_CandList.HoriCand.XtoCP( pt.x - s_CandList.rcCandidate.left, &nCharHit, &nTrail );
+
+                // Determine which candidate string the character belongs to.
+                int nCandidate = ImeUi_GetCandidateCount() - 1;
+
+                int nEntryStart = 0;
+                for( UINT i = 0; i < ImeUi_GetCandidateCount(); ++i )
                 {
-                    if( ImeUi_IsVerticalCand() )
+                    if( nCharHit >= nEntryStart )
                     {
-                        // Vertical candidate window
-
-                        // Compute the row the click is on
-                        int nRow = ( pt.y - s_CandList.rcCandidate.top ) / pFont->nHeight;
-
-                        if( nRow < ( int )ImeUi_GetCandidateCount() )
-                        {
-                            // nRow is a valid entry.
-                            // Now emulate keystrokes to select the candidate at this row.
-                            switch( GetPrimaryLanguage() )
-                            {
-                                case LANG_CHINESE:
-                                case LANG_KOREAN:
-                                    // For Chinese and Korean, simply send the number keystroke.
-                                    SendKey( ( BYTE )( '0' + nRow + 1 ) );
-                                    break;
-
-                                case LANG_JAPANESE:
-                                    // For Japanese, move the selection to the target row,
-                                    // then send Right, then send Left.
-
-                                    BYTE nVirtKey;
-                                    if( nRow > ( int )ImeUi_GetCandidateSelection() )
-                                        nVirtKey = VK_DOWN;
-                                    else
-                                        nVirtKey = VK_UP;
-                                    int nNumToHit = abs( int( nRow - ImeUi_GetCandidateSelection() ) );
-                                    for( int nStrike = 0; nStrike < nNumToHit; ++nStrike )
-                                        SendKey( nVirtKey );
-
-                                    // Do this to close the candidate window without ending composition.
-                                    SendKey( VK_RIGHT );
-                                    SendKey( VK_LEFT );
-
-                                    break;
-                            }
-                        }
+                        // Haven't found it.
+                        nEntryStart += (int)wcslen( ImeUi_GetCandidate( i ) ) + 1;  // plus space separator
                     }
                     else
                     {
-                        // Horizontal candidate window
-
-                        // Determine which the character the click has hit.
-                        int nCharHit;
-                        int nTrail;
-                        s_CandList.HoriCand.XtoCP( pt.x - s_CandList.rcCandidate.left, &nCharHit, &nTrail );
-
-                        // Determine which candidate string the character belongs to.
-                        int nCandidate = ImeUi_GetCandidateCount() - 1;
-
-                        int nEntryStart = 0;
-                        for( UINT i = 0; i < ImeUi_GetCandidateCount(); ++i )
-                        {
-                            if( nCharHit >= nEntryStart )
-                            {
-                                // Haven't found it.
-                                nEntryStart += (int)wcslen( ImeUi_GetCandidate( i ) ) + 1;  // plus space separator
-                            }
-                            else
-                            {
-                                // Found it.  This entry starts at the right side of the click point,
-                                // so the char belongs to the previous entry.
-                                nCandidate = i - 1;
-                                break;
-                            }
-                        }
-
-                        // Now emulate keystrokes to select the candidate entry.
-                        switch( GetPrimaryLanguage() )
-                        {
-                            case LANG_CHINESE:
-                            case LANG_KOREAN:
-                                // For Chinese and Korean, simply send the number keystroke.
-                                SendKey( ( BYTE )( '0' + nCandidate + 1 ) );
-                                break;
-                        }
+                        // Found it.  This entry starts at the right side of the click point,
+                        // so the char belongs to the previous entry.
+                        nCandidate = i - 1;
+                        break;
                     }
+                }
 
-                    return true;
+                // Now emulate keystrokes to select the candidate entry.
+                switch( GetPrimaryLanguage() )
+                {
+                case LANG_CHINESE:
+                case LANG_KOREAN:
+                    // For Chinese and Korean, simply send the number keystroke.
+                    SendKey( ( BYTE )( '0' + nCandidate + 1 ) );
+                    break;
                 }
             }
+
+            return true;
+        }
+    }
     }
 
     // If we didn't care for the msg, let the parent process it.
@@ -481,16 +481,16 @@ bool CDXUTIMEEditBox::MsgProc( UINT uMsg, WPARAM wParam, LPARAM lParam )
 
 #if defined(DEBUG) || defined(_DEBUG)
     // DXUT.cpp used to call CDXUTIMEEditBox::StaticMsgProc() so that, but now
-    // this is the application's responsiblity.  To do this, call 
+    // this is the application's responsiblity.  To do this, call
     // CDXUTDialogResourceManager::MsgProc() before calling this function.
     assert( m_bIMEStaticMsgProcCalled && L"To fix, call CDXUTDialogResourceManager::MsgProc() first" );
 #endif
     switch( uMsg )
     {
-        case WM_DESTROY:
-            ImeUi_Uninitialize();
-            break;
-    }	
+    case WM_DESTROY:
+        ImeUi_Uninitialize();
+        break;
+    }
 
     bool trappedData;
     bool* trapped = &trappedData;
@@ -549,7 +549,7 @@ void CDXUTIMEEditBox::RenderCandidateReadingWindow( bool bReading )
     int nSingleLineHeight = 0;
 
     if( ( ImeUi_IsVerticalCand() && !bReading ) ||
-        ( !ImeUi_IsHorizontalReading() && bReading ) )
+            ( !ImeUi_IsHorizontalReading() && bReading ) )
     {
         // Vertical window
         for( UINT i = 0; i < nNumEntries; ++i )
@@ -593,7 +593,7 @@ void CDXUTIMEEditBox::RenderCandidateReadingWindow( bool bReading )
             }
             wszCand[wcslen( wszCand ) - 1] = L'\0';  // Remove the last space
             s_CandList.HoriCand.SetText( wszCand );
-			
+
             m_pDialog->CalcTextRect( s_CandList.HoriCand.GetBuffer(), m_Elements[ 1 ], &rc );
         }
         nWidthRequired = rc.right - rc.left;
@@ -671,7 +671,7 @@ void CDXUTIMEEditBox::RenderCandidateReadingWindow( bool bReading )
     // Render the elements
     m_pDialog->DrawRect( &rc, TextBkColor );
     if( ( ImeUi_IsVerticalCand() && !bReading ) ||
-        ( !ImeUi_IsHorizontalReading() && bReading ) )
+            ( !ImeUi_IsHorizontalReading() && bReading ) )
     {
         // Vertical candidate window
         for( UINT i = 0; i < nNumEntries; ++i )
@@ -722,7 +722,7 @@ void CDXUTIMEEditBox::RenderCandidateReadingWindow( bool bReading )
 //--------------------------------------------------------------------------------------
 void CDXUTIMEEditBox::RenderComposition()
 {
-	
+
     s_CompString.SetText( ImeUi_GetCompositionString() );
 
     RECT rcCaret =
@@ -752,7 +752,8 @@ void CDXUTIMEEditBox::RenderComposition()
     RECT rcFirst = rc;
 
     // Update s_ptCompString for RenderCandidateReadingWindow().
-    s_ptCompString.x = rc.left; s_ptCompString.y = rc.top;
+    s_ptCompString.x = rc.left;
+    s_ptCompString.y = rc.top;
 
 
     DWORD TextColor = m_CompColor;
@@ -819,7 +820,7 @@ void CDXUTIMEEditBox::RenderComposition()
     BYTE* pAttr;
     const WCHAR* pcComp;
     for( pcComp = s_CompString.GetBuffer(), pAttr = ImeUi_GetCompStringAttr();
-         *pcComp != L'\0'; ++pcComp, ++pAttr )
+            *pcComp != L'\0'; ++pcComp, ++pAttr )
     {
         DWORD bkColor;
 
@@ -955,7 +956,7 @@ void CDXUTIMEEditBox::Render( _In_ float fElapsedTime )
 
     ImeUi_RenderUI();
 
-    if( m_bHasFocus )	
+    if( m_bHasFocus )
     {
         // Render the input locale indicator
         RenderIndicator( fElapsedTime );
@@ -994,7 +995,7 @@ void CDXUTIMEEditBox::Initialize( _In_ HWND hWnd )
     ImeUiCallback_DrawFans = nullptr;
 
     ImeUi_Initialize( hWnd );
-	
+
     s_CompString.SetBufferSize( MAX_COMPSTRING_SIZE );
     ImeUi_EnableIme( true );
 }

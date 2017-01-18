@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeferredContexts11\src\utility/Scene.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -566,7 +566,7 @@ void Scene::UpdateScene(double fTime, float fElapsedTime)
         }
     }
 
-        if(bMovingMeshes)
+    if(bMovingMeshes)
     {
         // copy current to previous (for use in per instance logic)
         memcpy((void*)m_MeshPreviousWorlds, (void*)m_MeshWorlds, m_iNumActiveInstances * sizeof(D3DXMATRIX));

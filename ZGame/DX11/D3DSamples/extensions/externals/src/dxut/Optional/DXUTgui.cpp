@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DXUTgui.cpp
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -64,108 +64,108 @@ D3DCOLORVALUE D3DCOLOR_TO_D3DCOLORVALUE( D3DCOLOR c )
 #define VER_DLLNAME L"version.dll"
 
 CHAR g_strUIEffectFile[] = \
-    "Texture2D g_Texture;"\
-    ""\
-    "SamplerState Sampler"\
-    "{"\
-    "    Filter = MIN_MAG_MIP_LINEAR;"\
-    "    AddressU = Wrap;"\
-    "    AddressV = Wrap;"\
-    "};"\
-    ""\
-    "BlendState UIBlend"\
-    "{"\
-    "    AlphaToCoverageEnable = FALSE;"\
-    "    BlendEnable[0] = TRUE;"\
-    "    SrcBlend = SRC_ALPHA;"\
-    "    DestBlend = INV_SRC_ALPHA;"\
-    "    BlendOp = ADD;"\
-    "    SrcBlendAlpha = ONE;"\
-    "    DestBlendAlpha = ZERO;"\
-    "    BlendOpAlpha = ADD;"\
-    "    RenderTargetWriteMask[0] = 0x0F;"\
-    "};"\
-    ""\
-    "BlendState NoBlending"\
-    "{"\
-    "    BlendEnable[0] = FALSE;"\
-    "    RenderTargetWriteMask[0] = 0x0F;"\
-    "};"\
-    ""\
-    "DepthStencilState DisableDepth"\
-    "{"\
-    "    DepthEnable = false;"\
-    "};"\
-    "DepthStencilState EnableDepth"\
-    "{"\
-    "    DepthEnable = true;"\
-    "};"\
-    "struct VS_OUTPUT"\
-    "{"\
-    "    float4 Pos : POSITION;"\
-    "    float4 Dif : COLOR;"\
-    "    float2 Tex : TEXCOORD;"\
-    "};"\
-    ""\
-    "VS_OUTPUT VS( float3 vPos : POSITION,"\
-    "              float4 Dif : COLOR,"\
-    "              float2 vTexCoord0 : TEXCOORD )"\
-    "{"\
-    "    VS_OUTPUT Output;"\
-    ""\
-    "    Output.Pos = float4( vPos, 1.0f );"\
-    "    Output.Dif = Dif;"\
-    "    Output.Tex = vTexCoord0;"\
-    ""\
-    "    return Output;"\
-    "}"\
-    ""\
-    "float4 PS( VS_OUTPUT In ) : SV_Target"\
-    "{"\
-    "    return g_Texture.Sample( Sampler, In.Tex ) * In.Dif;"\
-    "}"\
-    ""\
-    "float4 PSUntex( VS_OUTPUT In ) : SV_Target"\
-    "{"\
-    "    return In.Dif;"\
-    "}"\
-    ""\
-    "technique10 RenderUI"\
-    "{"\
-    "    pass P0"\
-    "    {"\
-    "        SetVertexShader( CompileShader( vs_4_0, VS() ) );"\
-    "        SetGeometryShader( NULL );"\
-    "        SetPixelShader( CompileShader( ps_4_0, PS() ) );"\
-    "        SetDepthStencilState( DisableDepth, 0 );"\
-    "        SetBlendState( UIBlend, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );"\
-    "    }"\
-    "}"\
-    "technique10 RenderUIUntex"\
-    "{"\
-    "    pass P0"\
-    "    {"\
-    "        SetVertexShader( CompileShader( vs_4_0, VS() ) );"\
-    "        SetGeometryShader( NULL );"\
-    "        SetPixelShader( CompileShader( ps_4_0, PSUntex() ) );"\
-    "        SetDepthStencilState( DisableDepth, 0 );"\
-    "        SetBlendState( UIBlend, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );"\
-    "    }"\
-    "}"\
-    "technique10 RestoreState"\
-    "{"\
-    "    pass P0"\
-    "    {"\
-    "        SetDepthStencilState( EnableDepth, 0 );"\
-    "        SetBlendState( NoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );"\
-    "    }"\
-    "}";
+                           "Texture2D g_Texture;"\
+                           ""\
+                           "SamplerState Sampler"\
+                           "{"\
+                           "    Filter = MIN_MAG_MIP_LINEAR;"\
+                           "    AddressU = Wrap;"\
+                           "    AddressV = Wrap;"\
+                           "};"\
+                           ""\
+                           "BlendState UIBlend"\
+                           "{"\
+                           "    AlphaToCoverageEnable = FALSE;"\
+                           "    BlendEnable[0] = TRUE;"\
+                           "    SrcBlend = SRC_ALPHA;"\
+                           "    DestBlend = INV_SRC_ALPHA;"\
+                           "    BlendOp = ADD;"\
+                           "    SrcBlendAlpha = ONE;"\
+                           "    DestBlendAlpha = ZERO;"\
+                           "    BlendOpAlpha = ADD;"\
+                           "    RenderTargetWriteMask[0] = 0x0F;"\
+                           "};"\
+                           ""\
+                           "BlendState NoBlending"\
+                           "{"\
+                           "    BlendEnable[0] = FALSE;"\
+                           "    RenderTargetWriteMask[0] = 0x0F;"\
+                           "};"\
+                           ""\
+                           "DepthStencilState DisableDepth"\
+                           "{"\
+                           "    DepthEnable = false;"\
+                           "};"\
+                           "DepthStencilState EnableDepth"\
+                           "{"\
+                           "    DepthEnable = true;"\
+                           "};"\
+                           "struct VS_OUTPUT"\
+                           "{"\
+                           "    float4 Pos : POSITION;"\
+                           "    float4 Dif : COLOR;"\
+                           "    float2 Tex : TEXCOORD;"\
+                           "};"\
+                           ""\
+                           "VS_OUTPUT VS( float3 vPos : POSITION,"\
+                           "              float4 Dif : COLOR,"\
+                           "              float2 vTexCoord0 : TEXCOORD )"\
+                           "{"\
+                           "    VS_OUTPUT Output;"\
+                           ""\
+                           "    Output.Pos = float4( vPos, 1.0f );"\
+                           "    Output.Dif = Dif;"\
+                           "    Output.Tex = vTexCoord0;"\
+                           ""\
+                           "    return Output;"\
+                           "}"\
+                           ""\
+                           "float4 PS( VS_OUTPUT In ) : SV_Target"\
+                           "{"\
+                           "    return g_Texture.Sample( Sampler, In.Tex ) * In.Dif;"\
+                           "}"\
+                           ""\
+                           "float4 PSUntex( VS_OUTPUT In ) : SV_Target"\
+                           "{"\
+                           "    return In.Dif;"\
+                           "}"\
+                           ""\
+                           "technique10 RenderUI"\
+                           "{"\
+                           "    pass P0"\
+                           "    {"\
+                           "        SetVertexShader( CompileShader( vs_4_0, VS() ) );"\
+                           "        SetGeometryShader( NULL );"\
+                           "        SetPixelShader( CompileShader( ps_4_0, PS() ) );"\
+                           "        SetDepthStencilState( DisableDepth, 0 );"\
+                           "        SetBlendState( UIBlend, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );"\
+                           "    }"\
+                           "}"\
+                           "technique10 RenderUIUntex"\
+                           "{"\
+                           "    pass P0"\
+                           "    {"\
+                           "        SetVertexShader( CompileShader( vs_4_0, VS() ) );"\
+                           "        SetGeometryShader( NULL );"\
+                           "        SetPixelShader( CompileShader( ps_4_0, PSUntex() ) );"\
+                           "        SetDepthStencilState( DisableDepth, 0 );"\
+                           "        SetBlendState( UIBlend, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );"\
+                           "    }"\
+                           "}"\
+                           "technique10 RestoreState"\
+                           "{"\
+                           "    pass P0"\
+                           "    {"\
+                           "        SetDepthStencilState( EnableDepth, 0 );"\
+                           "        SetBlendState( NoBlending, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );"\
+                           "    }"\
+                           "}";
 const UINT              g_uUIEffectFileSize = sizeof( g_strUIEffectFile );
 
 
 // DXUT_MAX_EDITBOXLENGTH is the maximum string length allowed in edit boxes,
 // including the NULL terminator.
-// 
+//
 // Uniscribe does not support strings having bigger-than-16-bits length.
 // This means that the string must be less than 65536 characters long,
 // including the NULL terminator.
@@ -321,8 +321,8 @@ void CDXUTDialog::Init( CDXUTDialogResourceManager* pManager, bool bRegisterDial
 void CDXUTDialog::SetCallback( PCALLBACKDXUTGUIEVENT pCallback, void* pUserContext )
 {
     // If this assert triggers, you need to call CDXUTDialog::Init() first.  This change
-    // was made so that the DXUT's GUI could become seperate and optional from DXUT's core.  The 
-    // creation and interfacing with CDXUTDialogResourceManager is now the responsibility 
+    // was made so that the DXUT's GUI could become seperate and optional from DXUT's core.  The
+    // creation and interfacing with CDXUTDialogResourceManager is now the responsibility
     // of the application if it wishes to use DXUT's GUI.
     assert( m_pManager != NULL && L"To fix call CDXUTDialog::Init() first.  See comments for details." );
 
@@ -380,40 +380,40 @@ void CDXUTDialog::RemoveAllControls()
 
 //--------------------------------------------------------------------------------------
 CDXUTDialogResourceManager::CDXUTDialogResourceManager()
-	// msongy@nvidia.com - moved all initilization into initializer list, and now initializing
-	// everything in order of declaration.
-	// The code was depending on a value that wasn't initialized. It worked fine as long as
-	// CDXUTDialogResourceManager is a global, since it will get 0-initialized.
-	// If you tried to put one of these on the stack or heap... BOOM!
-	: m_pStateBlock(nullptr)
+// msongy@nvidia.com - moved all initilization into initializer list, and now initializing
+// everything in order of declaration.
+// The code was depending on a value that wasn't initialized. It worked fine as long as
+// CDXUTDialogResourceManager is a global, since it will get 0-initialized.
+// If you tried to put one of these on the stack or heap... BOOM!
+    : m_pStateBlock(nullptr)
     , m_pSprite(nullptr)
     , m_pVSRenderUI11(nullptr)
     , m_pPSRenderUI11(nullptr)
-	, m_pPSRenderUIUntex11(nullptr)
-	, m_pDepthStencilStateUI11(nullptr)
-	, m_pRasterizerStateUI11(nullptr)
+    , m_pPSRenderUIUntex11(nullptr)
+    , m_pDepthStencilStateUI11(nullptr)
+    , m_pRasterizerStateUI11(nullptr)
     , m_pBlendStateUI11(nullptr)
-	, m_pSamplerStateUI11(nullptr)
-	, m_pDepthStencilStateStored11(nullptr)
+    , m_pSamplerStateUI11(nullptr)
+    , m_pDepthStencilStateStored11(nullptr)
     , m_StencilRefStored11(0)
     , m_pRasterizerStateStored11(nullptr)
     , m_pBlendStateStored11(nullptr)
     , m_SampleMaskStored11(0)
     , m_pSamplerStateStored11(nullptr)
-	, m_pInputLayout11(nullptr)
+    , m_pInputLayout11(nullptr)
     , m_pVBScreenQuad11(nullptr)
-	, m_pSpriteBuffer11(nullptr)
+    , m_pSpriteBuffer11(nullptr)
     , m_SpriteBufferBytes11(0)
     , m_SpriteVertices()
-	, m_nBackBufferWidth(0)
+    , m_nBackBufferWidth(0)
     , m_nBackBufferHeight(0)
-	, m_Dialogs()
-	, m_pd3d9Device(nullptr)
+    , m_Dialogs()
+    , m_pd3d9Device(nullptr)
     , m_pd3d11Device(nullptr)
     , m_pd3d11DeviceContext(nullptr)
     , m_TextureCache()
-	, m_FontCache()
-{	
+    , m_FontCache()
+{
 }
 
 
@@ -552,12 +552,12 @@ HRESULT CDXUTDialogResourceManager::OnD3D11CreateDevice( ID3D11Device* pd3dDevic
     ID3DBlob* pVSBlob = NULL;
     ID3DBlob* pPSBlob = NULL;
     ID3DBlob* pPSUntexBlob = NULL;
-    V_RETURN( D3DCompile( g_strUIEffectFile, g_uUIEffectFileSize, "none", NULL, NULL, "VS", "vs_4_0_level_9_1", 
-         D3D10_SHADER_ENABLE_BACKWARDS_COMPATIBILITY, 0, &pVSBlob, NULL ) );
-    V_RETURN( D3DCompile( g_strUIEffectFile, g_uUIEffectFileSize, "none", NULL, NULL, "PS", "ps_4_0_level_9_1", 
-         D3D10_SHADER_ENABLE_BACKWARDS_COMPATIBILITY, 0, &pPSBlob, NULL ) );
-    V_RETURN( D3DCompile( g_strUIEffectFile, g_uUIEffectFileSize, "none", NULL, NULL, "PSUntex", "ps_4_0_level_9_1", 
-         D3D10_SHADER_ENABLE_BACKWARDS_COMPATIBILITY, 0, &pPSUntexBlob, NULL ) );
+    V_RETURN( D3DCompile( g_strUIEffectFile, g_uUIEffectFileSize, "none", NULL, NULL, "VS", "vs_4_0_level_9_1",
+                          D3D10_SHADER_ENABLE_BACKWARDS_COMPATIBILITY, 0, &pVSBlob, NULL ) );
+    V_RETURN( D3DCompile( g_strUIEffectFile, g_uUIEffectFileSize, "none", NULL, NULL, "PS", "ps_4_0_level_9_1",
+                          D3D10_SHADER_ENABLE_BACKWARDS_COMPATIBILITY, 0, &pPSBlob, NULL ) );
+    V_RETURN( D3DCompile( g_strUIEffectFile, g_uUIEffectFileSize, "none", NULL, NULL, "PSUntex", "ps_4_0_level_9_1",
+                          D3D10_SHADER_ENABLE_BACKWARDS_COMPATIBILITY, 0, &pPSUntexBlob, NULL ) );
 
     // Create Shaders
     V_RETURN( pd3dDevice->CreateVertexShader( pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), NULL, &m_pVSRenderUI11 ) );
@@ -568,7 +568,7 @@ HRESULT CDXUTDialogResourceManager::OnD3D11CreateDevice( ID3D11Device* pd3dDevic
 
     V_RETURN( pd3dDevice->CreatePixelShader( pPSUntexBlob->GetBufferPointer(), pPSUntexBlob->GetBufferSize(), NULL, &m_pPSRenderUIUntex11 ) );
     DXUT_SetDebugName( m_pPSRenderUIUntex11, "CDXUTDialogResourceManager" );
-    
+
     // States
     D3D11_DEPTH_STENCIL_DESC DSDesc;
     ZeroMemory( &DSDesc, sizeof( D3D11_DEPTH_STENCIL_DESC ) );
@@ -595,7 +595,7 @@ HRESULT CDXUTDialogResourceManager::OnD3D11CreateDevice( ID3D11Device* pd3dDevic
 
     D3D11_BLEND_DESC BSDesc;
     ZeroMemory( &BSDesc, sizeof( D3D11_BLEND_DESC ) );
-    
+
     BSDesc.RenderTarget[0].BlendEnable = TRUE;
     BSDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
     BSDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
@@ -618,7 +618,8 @@ HRESULT CDXUTDialogResourceManager::OnD3D11CreateDevice( ID3D11Device* pd3dDevic
     SSDesc.MaxAnisotropy = 16;
     SSDesc.MinLOD = 0;
     SSDesc.MaxLOD = D3D11_FLOAT32_MAX;
-    if ( pd3dDevice->GetFeatureLevel() < D3D_FEATURE_LEVEL_9_3 ) {
+    if ( pd3dDevice->GetFeatureLevel() < D3D_FEATURE_LEVEL_9_3 )
+    {
         SSDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
         SSDesc.MaxAnisotropy = 0;
     }
@@ -643,11 +644,11 @@ HRESULT CDXUTDialogResourceManager::OnD3D11CreateDevice( ID3D11Device* pd3dDevic
 
     // Create input layout
     const D3D11_INPUT_ELEMENT_DESC layout[] =
-        {
-            { "POSITION",  0, DXGI_FORMAT_R32G32B32_FLOAT,    0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "COLOR",     0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "TEXCOORD",  0, DXGI_FORMAT_R32G32_FLOAT,       0, 28, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        };
+    {
+        { "POSITION",  0, DXGI_FORMAT_R32G32B32_FLOAT,    0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "COLOR",     0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXCOORD",  0, DXGI_FORMAT_R32G32_FLOAT,       0, 28, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    };
 
     V_RETURN( pd3dDevice->CreateInputLayout( layout, ARRAYSIZE( layout ), pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), &m_pInputLayout11 ) );
     DXUT_SetDebugName( m_pInputLayout11, "CDXUTDialogResourceManager" );
@@ -676,7 +677,7 @@ HRESULT CDXUTDialogResourceManager::OnD3D11CreateDevice( ID3D11Device* pd3dDevic
 
 //--------------------------------------------------------------------------------------
 HRESULT CDXUTDialogResourceManager::OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice,
-                                                             const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc )
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc )
 {
     HRESULT hr = S_OK;
 
@@ -829,7 +830,8 @@ void CDXUTDialogResourceManager::EndSprites11( ID3D11Device* pd3dDevice, ID3D11D
     destRegion.front = 0;
     destRegion.back = 1;
     D3D11_MAPPED_SUBRESOURCE MappedResource;
-    if ( S_OK == pd3dImmediateContext->Map( m_pSpriteBuffer11, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedResource ) ) { 
+    if ( S_OK == pd3dImmediateContext->Map( m_pSpriteBuffer11, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedResource ) )
+    {
         CopyMemory( MappedResource.pData, (void*)m_SpriteVertices.GetData(), SpriteDataBytes );
         pd3dImmediateContext->Unmap(m_pSpriteBuffer11, 0);
     }
@@ -955,7 +957,7 @@ HRESULT CDXUTDialog::OnRender9( float fElapsedTime )
 
     // For invisible dialog, out now.
     if( !m_bVisible ||
-        ( m_bMinimized && !m_bCaption ) )
+            ( m_bMinimized && !m_bCaption ) )
         return S_OK;
 
     IDirect3DDevice9* pd3dDevice = m_pManager->GetD3D9Device();
@@ -965,7 +967,7 @@ HRESULT CDXUTDialog::OnRender9( float fElapsedTime )
 
     //pd3dDevice->SetSamplerState(0, D3DSAMP_SRGBTEXTURE, TRUE);
     //pd3dDevice->SetRenderState( D3DRS_SRGBWRITEENABLE, TRUE );
-   
+
     pd3dDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
     pd3dDevice->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
     pd3dDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
@@ -989,7 +991,7 @@ HRESULT CDXUTDialog::OnRender9( float fElapsedTime )
     pd3dDevice->SetTextureStageState( 1, D3DTSS_ALPHAOP, D3DTOP_DISABLE );
 
     BOOL bBackgroundIsVisible = ( m_colorTopLeft | m_colorTopRight | m_colorBottomRight | m_colorBottomLeft ) &
-        0xff000000;
+                                0xff000000;
     if( !m_bMinimized && bBackgroundIsVisible )
     {
         DXUT_SCREEN_VERTEX_UNTEX vertices[4] =
@@ -1088,7 +1090,7 @@ HRESULT CDXUTDialog::OnRender11( float fElapsedTime )
 
     // For invisible dialog, out now.
     if( !m_bVisible ||
-        ( m_bMinimized && !m_bCaption ) )
+            ( m_bMinimized && !m_bCaption ) )
         return S_OK;
 
     ID3D11Device* pd3dDevice = m_pManager->GetD3D11Device();
@@ -1098,7 +1100,7 @@ HRESULT CDXUTDialog::OnRender11( float fElapsedTime )
     m_pManager->StoreD3D11State( pd3dDeviceContext );
 
     BOOL bBackgroundIsVisible = ( m_colorTopLeft | m_colorTopRight | m_colorBottomRight | m_colorBottomLeft ) &
-        0xff000000;
+                                0xff000000;
     if( !m_bMinimized && bBackgroundIsVisible )
     {
         // Convert the draw rectangle from screen coordinates to clip space coordinates.
@@ -1209,7 +1211,7 @@ VOID CDXUTDialog::SendEvent( UINT nEvent, bool bTriggeredByUser, CDXUTControl* p
 
 
 //--------------------------------------------------------------------------------------
-int CDXUTDialogResourceManager::AddFont( LPCWSTR strFaceName, LONG height, LONG weight ) 
+int CDXUTDialogResourceManager::AddFont( LPCWSTR strFaceName, LONG height, LONG weight )
 {
     // See if this font already exists
     for( int i = 0; i < m_FontCache.GetSize(); i++ )
@@ -1218,8 +1220,8 @@ int CDXUTDialogResourceManager::AddFont( LPCWSTR strFaceName, LONG height, LONG 
         size_t nLen = 0;
         nLen = wcsnlen( strFaceName, MAX_PATH);
         if( 0 == _wcsnicmp( pFontNode->strFace, strFaceName, nLen ) &&
-            pFontNode->nHeight == height &&
-            pFontNode->nWeight == weight )
+                pFontNode->nHeight == height &&
+                pFontNode->nWeight == weight )
         {
             return i;
         }
@@ -1250,8 +1252,8 @@ int CDXUTDialogResourceManager::AddFont( LPCWSTR strFaceName, LONG height, LONG 
 HRESULT CDXUTDialog::SetFont( UINT index, LPCWSTR strFaceName, LONG height, LONG weight )
 {
     // If this assert triggers, you need to call CDXUTDialog::Init() first.  This change
-    // was made so that the DXUT's GUI could become seperate and optional from DXUT's core.  The 
-    // creation and interfacing with CDXUTDialogResourceManager is now the responsibility 
+    // was made so that the DXUT's GUI could become seperate and optional from DXUT's core.  The
+    // creation and interfacing with CDXUTDialogResourceManager is now the responsibility
     // of the application if it wishes to use DXUT's GUI.
     assert( m_pManager != NULL && L"To fix call CDXUTDialog::Init() first.  See comments for details." );
 
@@ -1288,7 +1290,7 @@ int CDXUTDialogResourceManager::AddTexture( LPCWSTR strFilename )
         size_t nLen = 0;
         nLen = wcsnlen( strFilename, MAX_PATH);
         if( pTextureNode->bFileSource &&  // Sources must match
-            0 == _wcsnicmp( pTextureNode->strFilename, strFilename, nLen ) )
+                0 == _wcsnicmp( pTextureNode->strFilename, strFilename, nLen ) )
         {
             return i;
         }
@@ -1323,7 +1325,7 @@ int CDXUTDialogResourceManager::AddTexture( LPCWSTR strResourceName, HMODULE hRe
     {
         DXUTTextureNode* pTextureNode = m_TextureCache.GetAt( i );
         if( !pTextureNode->bFileSource &&      // Sources must match
-            pTextureNode->hResourceModule == hResourceModule ) // Module handles must match
+                pTextureNode->hResourceModule == hResourceModule ) // Module handles must match
         {
             if( IS_INTRESOURCE( strResourceName ) )
             {
@@ -1375,8 +1377,8 @@ int CDXUTDialogResourceManager::AddTexture( LPCWSTR strResourceName, HMODULE hRe
 HRESULT CDXUTDialog::SetTexture( UINT index, LPCWSTR strFilename )
 {
     // If this assert triggers, you need to call CDXUTDialog::Init() first.  This change
-    // was made so that the DXUT's GUI could become seperate and optional from DXUT's core.  The 
-    // creation and interfacing with CDXUTDialogResourceManager is now the responsibility 
+    // was made so that the DXUT's GUI could become seperate and optional from DXUT's core.  The
+    // creation and interfacing with CDXUTDialogResourceManager is now the responsibility
     // of the application if it wishes to use DXUT's GUI.
     assert( m_pManager != NULL && L"To fix this, call CDXUTDialog::Init() first.  See comments for details." );
 
@@ -1397,8 +1399,8 @@ HRESULT CDXUTDialog::SetTexture( UINT index, LPCWSTR strFilename )
 HRESULT CDXUTDialog::SetTexture( UINT index, LPCWSTR strResourceName, HMODULE hResourceModule )
 {
     // If this assert triggers, you need to call CDXUTDialog::Init() first.  This change
-    // was made so that the DXUT's GUI could become seperate and optional from DXUT's core.  The 
-    // creation and interfacing with CDXUTDialogResourceManager is now the responsibility 
+    // was made so that the DXUT's GUI could become seperate and optional from DXUT's core.  The
+    // creation and interfacing with CDXUTDialogResourceManager is now the responsibility
     // of the application if it wishes to use DXUT's GUI.
     assert( m_pManager != NULL && L"To fix this, call CDXUTDialog::Init() first.  See comments for details." );
 
@@ -1437,7 +1439,7 @@ bool CDXUTDialog::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
     // If automation command-line switch is on, enable this dialog's keyboard input
     // upon any key press or mouse click.
     if( DXUTGetAutomation() &&
-        ( WM_LBUTTONDOWN == uMsg || WM_LBUTTONDBLCLK == uMsg || WM_KEYDOWN == uMsg ) )
+            ( WM_LBUTTONDOWN == uMsg || WM_LBUTTONDBLCLK == uMsg || WM_KEYDOWN == uMsg ) )
     {
         m_pManager->EnableKeyboardInputForAllDialogs();
     }
@@ -1453,7 +1455,7 @@ bool CDXUTDialog::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
             };
 
             if( mousePoint.x >= m_x && mousePoint.x < m_x + m_width &&
-                mousePoint.y >= m_y && mousePoint.y < m_y + m_nCaptionHeight )
+                    mousePoint.y >= m_y && mousePoint.y < m_y + m_nCaptionHeight )
             {
                 m_bDrag = true;
                 SetCapture( DXUTGetHWND() );
@@ -1468,7 +1470,7 @@ bool CDXUTDialog::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
             };
 
             if( mousePoint.x >= m_x && mousePoint.x < m_x + m_width &&
-                mousePoint.y >= m_y && mousePoint.y < m_y + m_nCaptionHeight )
+                    mousePoint.y >= m_y && mousePoint.y < m_y + m_nCaptionHeight )
             {
                 ReleaseCapture();
                 m_bDrag = false;
@@ -1485,8 +1487,8 @@ bool CDXUTDialog::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
     // If a control is in focus, it belongs to this dialog, and it's enabled, then give
     // it the first chance at handling the message.
     if( s_pControlFocus &&
-        s_pControlFocus->m_pDialog == this &&
-        s_pControlFocus->GetEnabled() )
+            s_pControlFocus->m_pDialog == this &&
+            s_pControlFocus->GetEnabled() )
     {
         // If the control MsgProc handles it, then we don't.
         if( s_pControlFocus->MsgProc( uMsg, wParam, lParam ) )
@@ -1495,191 +1497,191 @@ bool CDXUTDialog::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 
     switch( uMsg )
     {
-        case WM_SIZE:
-        case WM_MOVE:
-            {
-                // Handle sizing and moving messages so that in case the mouse cursor is moved out
-                // of an UI control because of the window adjustment, we can properly
-                // unhighlight the highlighted control.
-                POINT pt =
-                {
-                    -1, -1
-                };
-                OnMouseMove( pt );
-                break;
-            }
+    case WM_SIZE:
+    case WM_MOVE:
+    {
+        // Handle sizing and moving messages so that in case the mouse cursor is moved out
+        // of an UI control because of the window adjustment, we can properly
+        // unhighlight the highlighted control.
+        POINT pt =
+        {
+            -1, -1
+        };
+        OnMouseMove( pt );
+        break;
+    }
 
-        case WM_ACTIVATEAPP:
-            // Call OnFocusIn()/OnFocusOut() of the control that currently has the focus
-            // as the application is activated/deactivated.  This matches the Windows
-            // behavior.
-            if( s_pControlFocus &&
+    case WM_ACTIVATEAPP:
+        // Call OnFocusIn()/OnFocusOut() of the control that currently has the focus
+        // as the application is activated/deactivated.  This matches the Windows
+        // behavior.
+        if( s_pControlFocus &&
                 s_pControlFocus->m_pDialog == this &&
                 s_pControlFocus->GetEnabled() )
-            {
-                if( wParam )
-                    s_pControlFocus->OnFocusIn();
-                else
-                    s_pControlFocus->OnFocusOut();
-            }
-            break;
-
-            // Keyboard messages
-        case WM_KEYDOWN:
-        case WM_SYSKEYDOWN:
-        case WM_KEYUP:
-        case WM_SYSKEYUP:
-            {
-                // If a control is in focus, it belongs to this dialog, and it's enabled, then give
-                // it the first chance at handling the message.
-                if( s_pControlFocus &&
-                    s_pControlFocus->m_pDialog == this &&
-                    s_pControlFocus->GetEnabled() )
-                {
-                    if( s_pControlFocus->HandleKeyboard( uMsg, wParam, lParam ) )
-                        return true;
-                }
-
-                // Not yet handled, see if this matches a control's hotkey
-                // Activate the hotkey if the focus doesn't belong to an
-                // edit box.
-                if( uMsg == WM_KEYDOWN && ( !s_pControlFocus ||
-                                            ( s_pControlFocus->GetType() != DXUT_CONTROL_EDITBOX
-                                              && s_pControlFocus->GetType() != DXUT_CONTROL_IMEEDITBOX ) ) )
-                {
-                    for( int i = 0; i < m_Controls.GetSize(); i++ )
-                    {
-                        CDXUTControl* pControl = m_Controls.GetAt( i );
-                        if( pControl->GetHotkey() == wParam )
-                        {
-                            pControl->OnHotkey();
-                            return true;
-                        }
-                    }
-                }
-
-                // Not yet handled, check for focus messages
-                if( uMsg == WM_KEYDOWN )
-                {
-                    // If keyboard input is not enabled, this message should be ignored
-                    if( !m_bKeyboardInput )
-                        return false;
-
-                    switch( wParam )
-                    {
-                        case VK_RIGHT:
-                        case VK_DOWN:
-                            if( s_pControlFocus != NULL )
-                            {
-                                return OnCycleFocus( true );
-                            }
-                            break;
-
-                        case VK_LEFT:
-                        case VK_UP:
-                            if( s_pControlFocus != NULL )
-                            {
-                                return OnCycleFocus( false );
-                            }
-                            break;
-
-                        case VK_TAB:
-                        {
-                            bool bShiftDown = ( ( GetKeyState( VK_SHIFT ) & 0x8000 ) != 0 );
-                            return OnCycleFocus( !bShiftDown );
-                        }
-                    }
-                }
-
-                break;
-            }
-
-
-            // Mouse messages
-        case WM_MOUSEMOVE:
-        case WM_LBUTTONDOWN:
-        case WM_LBUTTONUP:
-        case WM_MBUTTONDOWN:
-        case WM_MBUTTONUP:
-        case WM_RBUTTONDOWN:
-        case WM_RBUTTONUP:
-        case WM_XBUTTONDOWN:
-        case WM_XBUTTONUP:
-        case WM_LBUTTONDBLCLK:
-        case WM_MBUTTONDBLCLK:
-        case WM_RBUTTONDBLCLK:
-        case WM_XBUTTONDBLCLK:
-        case WM_MOUSEWHEEL:
-            {
-                // If not accepting mouse input, return false to indicate the message should still 
-                // be handled by the application (usually to move the camera).
-                if( !m_bMouseInput )
-                    return false;
-
-                POINT mousePoint =
-                {
-                    short( LOWORD( lParam ) ), short( HIWORD( lParam ) )
-                };
-                mousePoint.x -= m_x;
-                mousePoint.y -= m_y;
-
-                // If caption is enabled, offset the Y coordinate by the negative of its height.
-                if( m_bCaption )
-                    mousePoint.y -= m_nCaptionHeight;
-
-                // If a control is in focus, it belongs to this dialog, and it's enabled, then give
-                // it the first chance at handling the message.
-                if( s_pControlFocus &&
-                    s_pControlFocus->m_pDialog == this &&
-                    s_pControlFocus->GetEnabled() )
-                {
-                    if( s_pControlFocus->HandleMouse( uMsg, mousePoint, wParam, lParam ) )
-                        return true;
-                }
-
-                // Not yet handled, see if the mouse is over any controls
-                CDXUTControl* pControl = GetControlAtPoint( mousePoint );
-                if( pControl != NULL && pControl->GetEnabled() )
-                {
-                    bHandled = pControl->HandleMouse( uMsg, mousePoint, wParam, lParam );
-                    if( bHandled )
-                        return true;
-                }
-                else
-                {
-                    // Mouse not over any controls in this dialog, if there was a control
-                    // which had focus it just lost it
-                    if( uMsg == WM_LBUTTONDOWN &&
-                        s_pControlFocus &&
-                        s_pControlFocus->m_pDialog == this )
-                    {
-                        s_pControlFocus->OnFocusOut();
-                        s_pControlFocus = NULL;
-                    }
-                }
-
-                // Still not handled, hand this off to the dialog. Return false to indicate the
-                // message should still be handled by the application (usually to move the camera).
-                switch( uMsg )
-                {
-                    case WM_MOUSEMOVE:
-                        OnMouseMove( mousePoint );
-                        return false;
-                }
-
-                break;
-            }
-
-        case WM_CAPTURECHANGED:
         {
-            // The application has lost mouse capture.
-            // The dialog object may not have received
-            // a WM_MOUSEUP when capture changed. Reset
-            // m_bDrag so that the dialog does not mistakenly
-            // think the mouse button is still held down.
-            if( ( HWND )lParam != hWnd )
-                m_bDrag = false;
+            if( wParam )
+                s_pControlFocus->OnFocusIn();
+            else
+                s_pControlFocus->OnFocusOut();
         }
+        break;
+
+    // Keyboard messages
+    case WM_KEYDOWN:
+    case WM_SYSKEYDOWN:
+    case WM_KEYUP:
+    case WM_SYSKEYUP:
+    {
+        // If a control is in focus, it belongs to this dialog, and it's enabled, then give
+        // it the first chance at handling the message.
+        if( s_pControlFocus &&
+                s_pControlFocus->m_pDialog == this &&
+                s_pControlFocus->GetEnabled() )
+        {
+            if( s_pControlFocus->HandleKeyboard( uMsg, wParam, lParam ) )
+                return true;
+        }
+
+        // Not yet handled, see if this matches a control's hotkey
+        // Activate the hotkey if the focus doesn't belong to an
+        // edit box.
+        if( uMsg == WM_KEYDOWN && ( !s_pControlFocus ||
+                                    ( s_pControlFocus->GetType() != DXUT_CONTROL_EDITBOX
+                                      && s_pControlFocus->GetType() != DXUT_CONTROL_IMEEDITBOX ) ) )
+        {
+            for( int i = 0; i < m_Controls.GetSize(); i++ )
+            {
+                CDXUTControl* pControl = m_Controls.GetAt( i );
+                if( pControl->GetHotkey() == wParam )
+                {
+                    pControl->OnHotkey();
+                    return true;
+                }
+            }
+        }
+
+        // Not yet handled, check for focus messages
+        if( uMsg == WM_KEYDOWN )
+        {
+            // If keyboard input is not enabled, this message should be ignored
+            if( !m_bKeyboardInput )
+                return false;
+
+            switch( wParam )
+            {
+            case VK_RIGHT:
+            case VK_DOWN:
+                if( s_pControlFocus != NULL )
+                {
+                    return OnCycleFocus( true );
+                }
+                break;
+
+            case VK_LEFT:
+            case VK_UP:
+                if( s_pControlFocus != NULL )
+                {
+                    return OnCycleFocus( false );
+                }
+                break;
+
+            case VK_TAB:
+            {
+                bool bShiftDown = ( ( GetKeyState( VK_SHIFT ) & 0x8000 ) != 0 );
+                return OnCycleFocus( !bShiftDown );
+            }
+            }
+        }
+
+        break;
+    }
+
+
+    // Mouse messages
+    case WM_MOUSEMOVE:
+    case WM_LBUTTONDOWN:
+    case WM_LBUTTONUP:
+    case WM_MBUTTONDOWN:
+    case WM_MBUTTONUP:
+    case WM_RBUTTONDOWN:
+    case WM_RBUTTONUP:
+    case WM_XBUTTONDOWN:
+    case WM_XBUTTONUP:
+    case WM_LBUTTONDBLCLK:
+    case WM_MBUTTONDBLCLK:
+    case WM_RBUTTONDBLCLK:
+    case WM_XBUTTONDBLCLK:
+    case WM_MOUSEWHEEL:
+    {
+        // If not accepting mouse input, return false to indicate the message should still
+        // be handled by the application (usually to move the camera).
+        if( !m_bMouseInput )
+            return false;
+
+        POINT mousePoint =
+        {
+            short( LOWORD( lParam ) ), short( HIWORD( lParam ) )
+        };
+        mousePoint.x -= m_x;
+        mousePoint.y -= m_y;
+
+        // If caption is enabled, offset the Y coordinate by the negative of its height.
+        if( m_bCaption )
+            mousePoint.y -= m_nCaptionHeight;
+
+        // If a control is in focus, it belongs to this dialog, and it's enabled, then give
+        // it the first chance at handling the message.
+        if( s_pControlFocus &&
+                s_pControlFocus->m_pDialog == this &&
+                s_pControlFocus->GetEnabled() )
+        {
+            if( s_pControlFocus->HandleMouse( uMsg, mousePoint, wParam, lParam ) )
+                return true;
+        }
+
+        // Not yet handled, see if the mouse is over any controls
+        CDXUTControl* pControl = GetControlAtPoint( mousePoint );
+        if( pControl != NULL && pControl->GetEnabled() )
+        {
+            bHandled = pControl->HandleMouse( uMsg, mousePoint, wParam, lParam );
+            if( bHandled )
+                return true;
+        }
+        else
+        {
+            // Mouse not over any controls in this dialog, if there was a control
+            // which had focus it just lost it
+            if( uMsg == WM_LBUTTONDOWN &&
+                    s_pControlFocus &&
+                    s_pControlFocus->m_pDialog == this )
+            {
+                s_pControlFocus->OnFocusOut();
+                s_pControlFocus = NULL;
+            }
+        }
+
+        // Still not handled, hand this off to the dialog. Return false to indicate the
+        // message should still be handled by the application (usually to move the camera).
+        switch( uMsg )
+        {
+        case WM_MOUSEMOVE:
+            OnMouseMove( mousePoint );
+            return false;
+        }
+
+        break;
+    }
+
+    case WM_CAPTURECHANGED:
+    {
+        // The application has lost mouse capture.
+        // The dialog object may not have received
+        // a WM_MOUSEUP when capture changed. Reset
+        // m_bDrag so that the dialog does not mistakenly
+        // think the mouse button is still held down.
+        if( ( HWND )lParam != hWnd )
+            m_bDrag = false;
+    }
     }
 
     return false;
@@ -1773,7 +1775,7 @@ HRESULT CDXUTDialog::SetDefaultElement( UINT nControlType, UINT iElement, CDXUTE
         DXUTElementHolder* pElementHolder = m_DefaultElements.GetAt( i );
 
         if( pElementHolder->nControlType == nControlType &&
-            pElementHolder->iElement == iElement )
+                pElementHolder->iElement == iElement )
         {
             pElementHolder->Element = *pElement;
             return S_OK;
@@ -1807,7 +1809,7 @@ CDXUTElement* CDXUTDialog::GetDefaultElement( UINT nControlType, UINT iElement )
         DXUTElementHolder* pElementHolder = m_DefaultElements.GetAt( i );
 
         if( pElementHolder->nControlType == nControlType &&
-            pElementHolder->iElement == iElement )
+                pElementHolder->iElement == iElement )
         {
             return &pElementHolder->Element;
         }
@@ -2421,7 +2423,7 @@ HRESULT CDXUTDialog::DrawSprite11( CDXUTElement* pElement, RECT* prcDest, float 
     fRectTop = fRectTop * 2.0f - 1.0f;
     fRectRight = fRectRight * 2.0f - 1.0f;
     fRectBottom = fRectBottom * 2.0f - 1.0f;
-    
+
     float fTexLeft = rcTexture.left / fTexWidth;
     float fTexTop = rcTexture.top / fTexHeight;
     float fTexRight = rcTexture.right / fTexWidth;
@@ -2552,8 +2554,9 @@ HRESULT InitFont11( ID3D11Device* pd3d11Device, ID3D11InputLayout* pInputLayout 
     HRESULT hr = S_OK;
     WCHAR str[MAX_PATH];
     V_RETURN( DXUTFindDXSDKMediaFileCch( str, MAX_PATH, L"UI\\Font.dds" ) );
-    
-    if (pd3d11Device->GetFeatureLevel() < D3D_FEATURE_LEVEL_10_0 ) {
+
+    if (pd3d11Device->GetFeatureLevel() < D3D_FEATURE_LEVEL_10_0 )
+    {
 
         D3DX11_IMAGE_INFO dii;
         D3DX11GetImageInfoFromFile( str, NULL, &dii, NULL );
@@ -2587,7 +2590,7 @@ HRESULT InitFont11( ID3D11Device* pd3d11Device, ID3D11InputLayout* pInputLayout 
         g_pFont11->GetResource( &pRes );
         DXUT_SetDebugName( pRes, "DXUT Text11" );
         SAFE_RELEASE( pRes );
-    }    
+    }
 
     DXUT_SetDebugName( g_pFont11, "DXUT Text11" );
 #endif
@@ -2609,8 +2612,8 @@ void BeginText11()
 }
 
 void DrawText11DXUT( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3d11DeviceContext,
-                 LPCWSTR strText, RECT rcScreen, D3DXCOLOR vFontColor,
-                 float fBBWidth, float fBBHeight, bool bCenter )
+                     LPCWSTR strText, RECT rcScreen, D3DXCOLOR vFontColor,
+                     float fBBWidth, float fBBHeight, bool bCenter )
 {
     float fCharTexSizeX = 0.010526315f;
     //float fGlyphSizeX = 14.0f / fBBWidth;
@@ -2626,14 +2629,15 @@ void DrawText11DXUT( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3d11Device
     fRectTop = fRectTop * 2.0f - 1.0f;
 
     int NumChars = (int)wcslen( strText );
-    if (bCenter) {
+    if (bCenter)
+    {
         float fRectRight = rcScreen.right / fBBWidth;
         fRectRight = fRectRight * 2.0f - 1.0f;
         float fRectBottom = 1.0f - rcScreen.bottom / fBBHeight;
         fRectBottom = fRectBottom * 2.0f - 1.0f;
         float fcenterx = ((fRectRight - fRectLeft) - (float)NumChars*fGlyphSizeX) *0.5f;
         float fcentery = ((fRectTop - fRectBottom) - (float)1*fGlyphSizeY) *0.5f;
-        fRectLeft += fcenterx ;    
+        fRectLeft += fcenterx ;
         fRectTop -= fcentery;
     }
     float fOriginalLeft = fRectLeft;
@@ -2732,7 +2736,8 @@ void EndText11( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3d11DeviceConte
     destRegion.front = 0;
     destRegion.back = 1;
     D3D11_MAPPED_SUBRESOURCE MappedResource;
-    if ( S_OK == pd3d11DeviceContext->Map( g_pFontBuffer11, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedResource ) ) { 
+    if ( S_OK == pd3d11DeviceContext->Map( g_pFontBuffer11, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedResource ) )
+    {
         CopyMemory( MappedResource.pData, (void*)g_FontVertices.GetData(), FontDataBytes );
         pd3d11DeviceContext->Unmap(g_pFontBuffer11, 0);
     }
@@ -2782,15 +2787,15 @@ HRESULT CDXUTDialog::DrawText11( ID3D11Device* pd3dDevice, ID3D11DeviceContext* 
 
         D3DXCOLOR vShadowColor( 0,0,0, 1.0f );
         DrawText11DXUT( pd3dDevice, pd3d11DeviceContext,
-                 strText, rcShadow, vShadowColor,
-                 fBBWidth, fBBHeight, bCenter );
+                        strText, rcShadow, vShadowColor,
+                        fBBWidth, fBBHeight, bCenter );
 
     }
 
     D3DXCOLOR vFontColor( pElement->FontColor.Current.r, pElement->FontColor.Current.g, pElement->FontColor.Current.b, 1.0f );
     DrawText11DXUT( pd3dDevice, pd3d11DeviceContext,
-             strText, rcScreen, vFontColor,
-             fBBWidth, fBBHeight, bCenter );
+                    strText, rcScreen, vFontColor,
+                    fBBWidth, fBBHeight, bCenter );
 
     return S_OK;
 }
@@ -2933,7 +2938,7 @@ bool CDXUTDialog::OnCycleFocus( bool bForward )
         int nLastDialogIndex = m_pManager->m_Dialogs.IndexOf( pLastDialog );
         int nDialogIndex = m_pManager->m_Dialogs.IndexOf( pDialog );
         if( ( !bForward && nLastDialogIndex < nDialogIndex ) ||
-            ( bForward && nDialogIndex < nLastDialogIndex ) )
+                ( bForward && nDialogIndex < nLastDialogIndex ) )
         {
             if( s_pControlFocus )
                 s_pControlFocus->OnFocusOut();
@@ -3014,7 +3019,7 @@ HRESULT CDXUTDialogResourceManager::CreateTexture9( UINT iTexture )
         else
         {
             LPCWSTR pID = pTextureNode->nResourceID ? ( LPCWSTR )( size_t )pTextureNode->nResourceID :
-                pTextureNode->strFilename;
+                          pTextureNode->strFilename;
 
             // Create texture from resource
             hr = D3DXCreateTextureFromResourceEx( m_pd3d9Device, pTextureNode->hResourceModule, pID, D3DX_DEFAULT,
@@ -3600,7 +3605,7 @@ void CDXUTStatic::Render( float fElapsedTime )
 
 
 //--------------------------------------------------------------------------------------
-HRESULT CDXUTStatic::GetTextCopy( __out_ecount(bufferCount) LPWSTR strDest, 
+HRESULT CDXUTStatic::GetTextCopy( __out_ecount(bufferCount) LPWSTR strDest,
                                   UINT bufferCount )
 {
     // Validate incoming parameters
@@ -3652,29 +3657,29 @@ bool CDXUTButton::HandleKeyboard( UINT uMsg, WPARAM wParam, LPARAM lParam )
 
     switch( uMsg )
     {
-        case WM_KEYDOWN:
+    case WM_KEYDOWN:
+    {
+        switch( wParam )
         {
-            switch( wParam )
-            {
-                case VK_SPACE:
-                    m_bPressed = true;
-                    return true;
-            }
+        case VK_SPACE:
+            m_bPressed = true;
+            return true;
         }
+    }
 
-        case WM_KEYUP:
+    case WM_KEYUP:
+    {
+        switch( wParam )
         {
-            switch( wParam )
+        case VK_SPACE:
+            if( m_bPressed == true )
             {
-                case VK_SPACE:
-                    if( m_bPressed == true )
-                    {
-                        m_bPressed = false;
-                        m_pDialog->SendEvent( EVENT_BUTTON_CLICKED, true, this );
-                    }
-                    return true;
+                m_bPressed = false;
+                m_pDialog->SendEvent( EVENT_BUTTON_CLICKED, true, this );
             }
+            return true;
         }
+    }
     }
     return false;
 }
@@ -3688,43 +3693,43 @@ bool CDXUTButton::HandleMouse( UINT uMsg, POINT pt, WPARAM wParam, LPARAM lParam
 
     switch( uMsg )
     {
-        case WM_LBUTTONDOWN:
-        case WM_LBUTTONDBLCLK:
-            {
-                if( ContainsPoint( pt ) )
-                {
-                    // Pressed while inside the control
-                    m_bPressed = true;
-                    SetCapture( DXUTGetHWND() );
-
-                    if( !m_bHasFocus )
-                        m_pDialog->RequestFocus( this );
-
-                    return true;
-                }
-
-                break;
-            }
-
-        case WM_LBUTTONUP:
+    case WM_LBUTTONDOWN:
+    case WM_LBUTTONDBLCLK:
+    {
+        if( ContainsPoint( pt ) )
         {
-            if( m_bPressed )
-            {
-                m_bPressed = false;
-                ReleaseCapture();
+            // Pressed while inside the control
+            m_bPressed = true;
+            SetCapture( DXUTGetHWND() );
 
-                if( !m_pDialog->m_bKeyboardInput )
-                    m_pDialog->ClearFocus();
+            if( !m_bHasFocus )
+                m_pDialog->RequestFocus( this );
 
-                // Button click
-                if( ContainsPoint( pt ) )
-                    m_pDialog->SendEvent( EVENT_BUTTON_CLICKED, true, this );
-
-                return true;
-            }
-
-            break;
+            return true;
         }
+
+        break;
+    }
+
+    case WM_LBUTTONUP:
+    {
+        if( m_bPressed )
+        {
+            m_bPressed = false;
+            ReleaseCapture();
+
+            if( !m_pDialog->m_bKeyboardInput )
+                m_pDialog->ClearFocus();
+
+            // Button click
+            if( ContainsPoint( pt ) )
+                m_pDialog->SendEvent( EVENT_BUTTON_CLICKED, true, this );
+
+            return true;
+        }
+
+        break;
+    }
     };
 
     return false;
@@ -3819,29 +3824,29 @@ bool CDXUTCheckBox::HandleKeyboard( UINT uMsg, WPARAM wParam, LPARAM lParam )
 
     switch( uMsg )
     {
-        case WM_KEYDOWN:
+    case WM_KEYDOWN:
+    {
+        switch( wParam )
         {
-            switch( wParam )
-            {
-                case VK_SPACE:
-                    m_bPressed = true;
-                    return true;
-            }
+        case VK_SPACE:
+            m_bPressed = true;
+            return true;
         }
+    }
 
-        case WM_KEYUP:
+    case WM_KEYUP:
+    {
+        switch( wParam )
         {
-            switch( wParam )
+        case VK_SPACE:
+            if( m_bPressed == true )
             {
-                case VK_SPACE:
-                    if( m_bPressed == true )
-                    {
-                        m_bPressed = false;
-                        SetCheckedInternal( !m_bChecked, true );
-                    }
-                    return true;
+                m_bPressed = false;
+                SetCheckedInternal( !m_bChecked, true );
             }
+            return true;
         }
+    }
     }
     return false;
 }
@@ -3855,40 +3860,40 @@ bool CDXUTCheckBox::HandleMouse( UINT uMsg, POINT pt, WPARAM wParam, LPARAM lPar
 
     switch( uMsg )
     {
-        case WM_LBUTTONDOWN:
-        case WM_LBUTTONDBLCLK:
-            {
-                if( ContainsPoint( pt ) )
-                {
-                    // Pressed while inside the control
-                    m_bPressed = true;
-                    SetCapture( DXUTGetHWND() );
-
-                    if( !m_bHasFocus )
-                        m_pDialog->RequestFocus( this );
-
-                    return true;
-                }
-
-                break;
-            }
-
-        case WM_LBUTTONUP:
+    case WM_LBUTTONDOWN:
+    case WM_LBUTTONDBLCLK:
+    {
+        if( ContainsPoint( pt ) )
         {
-            if( m_bPressed )
-            {
-                m_bPressed = false;
-                ReleaseCapture();
+            // Pressed while inside the control
+            m_bPressed = true;
+            SetCapture( DXUTGetHWND() );
 
-                // Button click
-                if( ContainsPoint( pt ) )
-                    SetCheckedInternal( !m_bChecked, true );
+            if( !m_bHasFocus )
+                m_pDialog->RequestFocus( this );
 
-                return true;
-            }
-
-            break;
+            return true;
         }
+
+        break;
+    }
+
+    case WM_LBUTTONUP:
+    {
+        if( m_bPressed )
+        {
+            m_bPressed = false;
+            ReleaseCapture();
+
+            // Button click
+            if( ContainsPoint( pt ) )
+                SetCheckedInternal( !m_bChecked, true );
+
+            return true;
+        }
+
+        break;
+    }
     };
 
     return false;
@@ -3988,33 +3993,33 @@ bool CDXUTRadioButton::HandleKeyboard( UINT uMsg, WPARAM wParam, LPARAM lParam )
 
     switch( uMsg )
     {
-        case WM_KEYDOWN:
+    case WM_KEYDOWN:
+    {
+        switch( wParam )
         {
-            switch( wParam )
-            {
-                case VK_SPACE:
-                    m_bPressed = true;
-                    return true;
-            }
+        case VK_SPACE:
+            m_bPressed = true;
+            return true;
         }
+    }
 
-        case WM_KEYUP:
+    case WM_KEYUP:
+    {
+        switch( wParam )
         {
-            switch( wParam )
+        case VK_SPACE:
+            if( m_bPressed == true )
             {
-                case VK_SPACE:
-                    if( m_bPressed == true )
-                    {
-                        m_bPressed = false;
+                m_bPressed = false;
 
-                        m_pDialog->ClearRadioButtonGroup( m_nButtonGroup );
-                        m_bChecked = !m_bChecked;
+                m_pDialog->ClearRadioButtonGroup( m_nButtonGroup );
+                m_bChecked = !m_bChecked;
 
-                        m_pDialog->SendEvent( EVENT_RADIOBUTTON_CHANGED, true, this );
-                    }
-                    return true;
+                m_pDialog->SendEvent( EVENT_RADIOBUTTON_CHANGED, true, this );
             }
+            return true;
         }
+    }
     }
     return false;
 }
@@ -4028,45 +4033,45 @@ bool CDXUTRadioButton::HandleMouse( UINT uMsg, POINT pt, WPARAM wParam, LPARAM l
 
     switch( uMsg )
     {
-        case WM_LBUTTONDOWN:
-        case WM_LBUTTONDBLCLK:
-            {
-                if( ContainsPoint( pt ) )
-                {
-                    // Pressed while inside the control
-                    m_bPressed = true;
-                    SetCapture( DXUTGetHWND() );
-
-                    if( !m_bHasFocus )
-                        m_pDialog->RequestFocus( this );
-
-                    return true;
-                }
-
-                break;
-            }
-
-        case WM_LBUTTONUP:
+    case WM_LBUTTONDOWN:
+    case WM_LBUTTONDBLCLK:
+    {
+        if( ContainsPoint( pt ) )
         {
-            if( m_bPressed )
+            // Pressed while inside the control
+            m_bPressed = true;
+            SetCapture( DXUTGetHWND() );
+
+            if( !m_bHasFocus )
+                m_pDialog->RequestFocus( this );
+
+            return true;
+        }
+
+        break;
+    }
+
+    case WM_LBUTTONUP:
+    {
+        if( m_bPressed )
+        {
+            m_bPressed = false;
+            ReleaseCapture();
+
+            // Button click
+            if( ContainsPoint( pt ) )
             {
-                m_bPressed = false;
-                ReleaseCapture();
+                m_pDialog->ClearRadioButtonGroup( m_nButtonGroup );
+                m_bChecked = !m_bChecked;
 
-                // Button click
-                if( ContainsPoint( pt ) )
-                {
-                    m_pDialog->ClearRadioButtonGroup( m_nButtonGroup );
-                    m_bChecked = !m_bChecked;
-
-                    m_pDialog->SendEvent( EVENT_RADIOBUTTON_CHANGED, true, this );
-                }
-
-                return true;
+                m_pDialog->SendEvent( EVENT_RADIOBUTTON_CHANGED, true, this );
             }
 
-            break;
+            return true;
         }
+
+        break;
+    }
     };
 
     return false;
@@ -4187,72 +4192,72 @@ bool CDXUTComboBox::HandleKeyboard( UINT uMsg, WPARAM wParam, LPARAM lParam )
 
     switch( uMsg )
     {
-        case WM_KEYDOWN:
+    case WM_KEYDOWN:
+    {
+        switch( wParam )
         {
-            switch( wParam )
+        case VK_RETURN:
+            if( m_bOpened )
             {
-                case VK_RETURN:
-                    if( m_bOpened )
-                    {
-                        if( m_iSelected != m_iFocused )
-                        {
-                            m_iSelected = m_iFocused;
-                            m_pDialog->SendEvent( EVENT_COMBOBOX_SELECTION_CHANGED, true, this );
-                        }
-                        m_bOpened = false;
+                if( m_iSelected != m_iFocused )
+                {
+                    m_iSelected = m_iFocused;
+                    m_pDialog->SendEvent( EVENT_COMBOBOX_SELECTION_CHANGED, true, this );
+                }
+                m_bOpened = false;
 
-                        if( !m_pDialog->m_bKeyboardInput )
-                            m_pDialog->ClearFocus();
+                if( !m_pDialog->m_bKeyboardInput )
+                    m_pDialog->ClearFocus();
 
-                        return true;
-                    }
-                    break;
-
-                case VK_F4:
-                    // Filter out auto-repeats
-                    if( lParam & REPEAT_MASK )
-                        return true;
-
-                    m_bOpened = !m_bOpened;
-
-                    if( !m_bOpened )
-                    {
-                        m_pDialog->SendEvent( EVENT_COMBOBOX_SELECTION_CHANGED, true, this );
-
-                        if( !m_pDialog->m_bKeyboardInput )
-                            m_pDialog->ClearFocus();
-                    }
-
-                    return true;
-
-                case VK_LEFT:
-                case VK_UP:
-                    if( m_iFocused > 0 )
-                    {
-                        m_iFocused--;
-                        m_iSelected = m_iFocused;
-
-                        if( !m_bOpened )
-                            m_pDialog->SendEvent( EVENT_COMBOBOX_SELECTION_CHANGED, true, this );
-                    }
-
-                    return true;
-
-                case VK_RIGHT:
-                case VK_DOWN:
-                    if( m_iFocused + 1 < ( int )GetNumItems() )
-                    {
-                        m_iFocused++;
-                        m_iSelected = m_iFocused;
-
-                        if( !m_bOpened )
-                            m_pDialog->SendEvent( EVENT_COMBOBOX_SELECTION_CHANGED, true, this );
-                    }
-
-                    return true;
+                return true;
             }
             break;
+
+        case VK_F4:
+            // Filter out auto-repeats
+            if( lParam & REPEAT_MASK )
+                return true;
+
+            m_bOpened = !m_bOpened;
+
+            if( !m_bOpened )
+            {
+                m_pDialog->SendEvent( EVENT_COMBOBOX_SELECTION_CHANGED, true, this );
+
+                if( !m_pDialog->m_bKeyboardInput )
+                    m_pDialog->ClearFocus();
+            }
+
+            return true;
+
+        case VK_LEFT:
+        case VK_UP:
+            if( m_iFocused > 0 )
+            {
+                m_iFocused--;
+                m_iSelected = m_iFocused;
+
+                if( !m_bOpened )
+                    m_pDialog->SendEvent( EVENT_COMBOBOX_SELECTION_CHANGED, true, this );
+            }
+
+            return true;
+
+        case VK_RIGHT:
+        case VK_DOWN:
+            if( m_iFocused + 1 < ( int )GetNumItems() )
+            {
+                m_iFocused++;
+                m_iSelected = m_iFocused;
+
+                if( !m_bOpened )
+                    m_pDialog->SendEvent( EVENT_COMBOBOX_SELECTION_CHANGED, true, this );
+            }
+
+            return true;
         }
+        break;
+    }
     }
 
     return false;
@@ -4271,146 +4276,146 @@ bool CDXUTComboBox::HandleMouse( UINT uMsg, POINT pt, WPARAM wParam, LPARAM lPar
 
     switch( uMsg )
     {
-        case WM_MOUSEMOVE:
+    case WM_MOUSEMOVE:
+    {
+        if( m_bOpened && PtInRect( &m_rcDropdown, pt ) )
         {
-            if( m_bOpened && PtInRect( &m_rcDropdown, pt ) )
+            // Determine which item has been selected
+            for( int i = 0; i < m_Items.GetSize(); i++ )
             {
-                // Determine which item has been selected
-                for( int i = 0; i < m_Items.GetSize(); i++ )
-                {
-                    DXUTComboBoxItem* pItem = m_Items.GetAt( i );
-                    if( pItem->bVisible &&
+                DXUTComboBoxItem* pItem = m_Items.GetAt( i );
+                if( pItem->bVisible &&
                         PtInRect( &pItem->rcActive, pt ) )
-                    {
-                        m_iFocused = i;
-                    }
-                }
-                return true;
-            }
-            break;
-        }
-
-        case WM_LBUTTONDOWN:
-        case WM_LBUTTONDBLCLK:
-            {
-                if( ContainsPoint( pt ) )
                 {
-                    // Pressed while inside the control
-                    m_bPressed = true;
-                    SetCapture( DXUTGetHWND() );
-
-                    if( !m_bHasFocus )
-                        m_pDialog->RequestFocus( this );
-
-                    // Toggle dropdown
-                    if( m_bHasFocus )
-                    {
-                        m_bOpened = !m_bOpened;
-
-                        if( !m_bOpened )
-                        {
-                            if( !m_pDialog->m_bKeyboardInput )
-                                m_pDialog->ClearFocus();
-                        }
-                    }
-
-                    return true;
-                }
-
-                // Perhaps this click is within the dropdown
-                if( m_bOpened && PtInRect( &m_rcDropdown, pt ) )
-                {
-                    // Determine which item has been selected
-                    for( int i = m_ScrollBar.GetTrackPos(); i < m_Items.GetSize(); i++ )
-                    {
-                        DXUTComboBoxItem* pItem = m_Items.GetAt( i );
-                        if( pItem->bVisible &&
-                            PtInRect( &pItem->rcActive, pt ) )
-                        {
-                            m_iFocused = m_iSelected = i;
-                            m_pDialog->SendEvent( EVENT_COMBOBOX_SELECTION_CHANGED, true, this );
-                            m_bOpened = false;
-
-                            if( !m_pDialog->m_bKeyboardInput )
-                                m_pDialog->ClearFocus();
-
-                            break;
-                        }
-                    }
-
-                    return true;
-                }
-
-                // Mouse click not on main control or in dropdown, fire an event if needed
-                if( m_bOpened )
-                {
-                    m_iFocused = m_iSelected;
-
-                    m_pDialog->SendEvent( EVENT_COMBOBOX_SELECTION_CHANGED, true, this );
-                    m_bOpened = false;
-                }
-
-                // Make sure the control is no longer in a pressed state
-                m_bPressed = false;
-
-                // Release focus if appropriate
-                if( !m_pDialog->m_bKeyboardInput )
-                {
-                    m_pDialog->ClearFocus();
-                }
-
-                break;
-            }
-
-        case WM_LBUTTONUP:
-        {
-            if( m_bPressed && ContainsPoint( pt ) )
-            {
-                // Button click
-                m_bPressed = false;
-                ReleaseCapture();
-                return true;
-            }
-
-            break;
-        }
-
-        case WM_MOUSEWHEEL:
-        {
-            int zDelta = ( short )HIWORD( wParam ) / WHEEL_DELTA;
-            if( m_bOpened )
-            {
-                UINT uLines;
-                SystemParametersInfo( SPI_GETWHEELSCROLLLINES, 0, &uLines, 0 );
-                m_ScrollBar.Scroll( -zDelta * uLines );
-            }
-            else
-            {
-                if( zDelta > 0 )
-                {
-                    if( m_iFocused > 0 )
-                    {
-                        m_iFocused--;
-                        m_iSelected = m_iFocused;
-
-                        if( !m_bOpened )
-                            m_pDialog->SendEvent( EVENT_COMBOBOX_SELECTION_CHANGED, true, this );
-                    }
-                }
-                else
-                {
-                    if( m_iFocused + 1 < ( int )GetNumItems() )
-                    {
-                        m_iFocused++;
-                        m_iSelected = m_iFocused;
-
-                        if( !m_bOpened )
-                            m_pDialog->SendEvent( EVENT_COMBOBOX_SELECTION_CHANGED, true, this );
-                    }
+                    m_iFocused = i;
                 }
             }
             return true;
         }
+        break;
+    }
+
+    case WM_LBUTTONDOWN:
+    case WM_LBUTTONDBLCLK:
+    {
+        if( ContainsPoint( pt ) )
+        {
+            // Pressed while inside the control
+            m_bPressed = true;
+            SetCapture( DXUTGetHWND() );
+
+            if( !m_bHasFocus )
+                m_pDialog->RequestFocus( this );
+
+            // Toggle dropdown
+            if( m_bHasFocus )
+            {
+                m_bOpened = !m_bOpened;
+
+                if( !m_bOpened )
+                {
+                    if( !m_pDialog->m_bKeyboardInput )
+                        m_pDialog->ClearFocus();
+                }
+            }
+
+            return true;
+        }
+
+        // Perhaps this click is within the dropdown
+        if( m_bOpened && PtInRect( &m_rcDropdown, pt ) )
+        {
+            // Determine which item has been selected
+            for( int i = m_ScrollBar.GetTrackPos(); i < m_Items.GetSize(); i++ )
+            {
+                DXUTComboBoxItem* pItem = m_Items.GetAt( i );
+                if( pItem->bVisible &&
+                        PtInRect( &pItem->rcActive, pt ) )
+                {
+                    m_iFocused = m_iSelected = i;
+                    m_pDialog->SendEvent( EVENT_COMBOBOX_SELECTION_CHANGED, true, this );
+                    m_bOpened = false;
+
+                    if( !m_pDialog->m_bKeyboardInput )
+                        m_pDialog->ClearFocus();
+
+                    break;
+                }
+            }
+
+            return true;
+        }
+
+        // Mouse click not on main control or in dropdown, fire an event if needed
+        if( m_bOpened )
+        {
+            m_iFocused = m_iSelected;
+
+            m_pDialog->SendEvent( EVENT_COMBOBOX_SELECTION_CHANGED, true, this );
+            m_bOpened = false;
+        }
+
+        // Make sure the control is no longer in a pressed state
+        m_bPressed = false;
+
+        // Release focus if appropriate
+        if( !m_pDialog->m_bKeyboardInput )
+        {
+            m_pDialog->ClearFocus();
+        }
+
+        break;
+    }
+
+    case WM_LBUTTONUP:
+    {
+        if( m_bPressed && ContainsPoint( pt ) )
+        {
+            // Button click
+            m_bPressed = false;
+            ReleaseCapture();
+            return true;
+        }
+
+        break;
+    }
+
+    case WM_MOUSEWHEEL:
+    {
+        int zDelta = ( short )HIWORD( wParam ) / WHEEL_DELTA;
+        if( m_bOpened )
+        {
+            UINT uLines;
+            SystemParametersInfo( SPI_GETWHEELSCROLLLINES, 0, &uLines, 0 );
+            m_ScrollBar.Scroll( -zDelta * uLines );
+        }
+        else
+        {
+            if( zDelta > 0 )
+            {
+                if( m_iFocused > 0 )
+                {
+                    m_iFocused--;
+                    m_iSelected = m_iFocused;
+
+                    if( !m_bOpened )
+                        m_pDialog->SendEvent( EVENT_COMBOBOX_SELECTION_CHANGED, true, this );
+                }
+            }
+            else
+            {
+                if( m_iFocused + 1 < ( int )GetNumItems() )
+                {
+                    m_iFocused++;
+                    m_iSelected = m_iFocused;
+
+                    if( !m_bOpened )
+                        m_pDialog->SendEvent( EVENT_COMBOBOX_SELECTION_CHANGED, true, this );
+                }
+            }
+        }
+        return true;
+    }
     };
 
     return false;
@@ -4833,40 +4838,40 @@ bool CDXUTSlider::HandleKeyboard( UINT uMsg, WPARAM wParam, LPARAM lParam )
 
     switch( uMsg )
     {
-        case WM_KEYDOWN:
+    case WM_KEYDOWN:
+    {
+        switch( wParam )
         {
-            switch( wParam )
-            {
-                case VK_HOME:
-                    SetValueInternal( m_nMin, true );
-                    return true;
+        case VK_HOME:
+            SetValueInternal( m_nMin, true );
+            return true;
 
-                case VK_END:
-                    SetValueInternal( m_nMax, true );
-                    return true;
+        case VK_END:
+            SetValueInternal( m_nMax, true );
+            return true;
 
-                case VK_LEFT:
-                case VK_DOWN:
-                    SetValueInternal( m_nValue - 1, true );
-                    return true;
+        case VK_LEFT:
+        case VK_DOWN:
+            SetValueInternal( m_nValue - 1, true );
+            return true;
 
-                case VK_RIGHT:
-                case VK_UP:
-                    SetValueInternal( m_nValue + 1, true );
-                    return true;
+        case VK_RIGHT:
+        case VK_UP:
+            SetValueInternal( m_nValue + 1, true );
+            return true;
 
-                case VK_NEXT:
-                    SetValueInternal( m_nValue - ( 10 > ( m_nMax - m_nMin ) / 10 ? 10 : ( m_nMax - m_nMin ) / 10 ),
-                                      true );
-                    return true;
+        case VK_NEXT:
+            SetValueInternal( m_nValue - ( 10 > ( m_nMax - m_nMin ) / 10 ? 10 : ( m_nMax - m_nMin ) / 10 ),
+                              true );
+            return true;
 
-                case VK_PRIOR:
-                    SetValueInternal( m_nValue + ( 10 > ( m_nMax - m_nMin ) / 10 ? 10 : ( m_nMax - m_nMin ) / 10 ),
-                                      true );
-                    return true;
-            }
-            break;
+        case VK_PRIOR:
+            SetValueInternal( m_nValue + ( 10 > ( m_nMax - m_nMin ) / 10 ? 10 : ( m_nMax - m_nMin ) / 10 ),
+                              true );
+            return true;
         }
+        break;
+    }
     }
 
 
@@ -4882,83 +4887,83 @@ bool CDXUTSlider::HandleMouse( UINT uMsg, POINT pt, WPARAM wParam, LPARAM lParam
 
     switch( uMsg )
     {
-        case WM_LBUTTONDOWN:
-        case WM_LBUTTONDBLCLK:
-            {
-                if( PtInRect( &m_rcButton, pt ) )
-                {
-                    // Pressed while inside the control
-                    m_bPressed = true;
-                    SetCapture( DXUTGetHWND() );
-
-                    m_nDragX = pt.x;
-                    //m_nDragY = pt.y;
-                    m_nDragOffset = m_nButtonX - m_nDragX;
-
-                    //m_nDragValue = m_nValue;
-
-                    if( !m_bHasFocus )
-                        m_pDialog->RequestFocus( this );
-
-                    return true;
-                }
-
-                if( PtInRect( &m_rcBoundingBox, pt ) )
-                {
-                    m_nDragX = pt.x;
-                    m_nDragOffset = 0;
-                    m_bPressed = true;
-
-                    if( !m_bHasFocus )
-                        m_pDialog->RequestFocus( this );
-
-                    if( pt.x > m_nButtonX + m_x )
-                    {
-                        SetValueInternal( m_nValue + 1, true );
-                        return true;
-                    }
-
-                    if( pt.x < m_nButtonX + m_x )
-                    {
-                        SetValueInternal( m_nValue - 1, true );
-                        return true;
-                    }
-                }
-
-                break;
-            }
-
-        case WM_LBUTTONUP:
+    case WM_LBUTTONDOWN:
+    case WM_LBUTTONDBLCLK:
+    {
+        if( PtInRect( &m_rcButton, pt ) )
         {
-            if( m_bPressed )
-            {
-                m_bPressed = false;
-                ReleaseCapture();
-                m_pDialog->SendEvent( EVENT_SLIDER_VALUE_CHANGED_UP, true, this );
+            // Pressed while inside the control
+            m_bPressed = true;
+            SetCapture( DXUTGetHWND() );
 
-                return true;
-            }
+            m_nDragX = pt.x;
+            //m_nDragY = pt.y;
+            m_nDragOffset = m_nButtonX - m_nDragX;
 
-            break;
-        }
+            //m_nDragValue = m_nValue;
 
-        case WM_MOUSEMOVE:
-        {
-            if( m_bPressed )
-            {
-                SetValueInternal( ValueFromPos( m_x + pt.x + m_nDragOffset ), true );
-                return true;
-            }
+            if( !m_bHasFocus )
+                m_pDialog->RequestFocus( this );
 
-            break;
-        }
-
-        case WM_MOUSEWHEEL:
-        {
-            int nScrollAmount = int( ( short )HIWORD( wParam ) ) / WHEEL_DELTA;
-            SetValueInternal( m_nValue - nScrollAmount, true );
             return true;
         }
+
+        if( PtInRect( &m_rcBoundingBox, pt ) )
+        {
+            m_nDragX = pt.x;
+            m_nDragOffset = 0;
+            m_bPressed = true;
+
+            if( !m_bHasFocus )
+                m_pDialog->RequestFocus( this );
+
+            if( pt.x > m_nButtonX + m_x )
+            {
+                SetValueInternal( m_nValue + 1, true );
+                return true;
+            }
+
+            if( pt.x < m_nButtonX + m_x )
+            {
+                SetValueInternal( m_nValue - 1, true );
+                return true;
+            }
+        }
+
+        break;
+    }
+
+    case WM_LBUTTONUP:
+    {
+        if( m_bPressed )
+        {
+            m_bPressed = false;
+            ReleaseCapture();
+            m_pDialog->SendEvent( EVENT_SLIDER_VALUE_CHANGED_UP, true, this );
+
+            return true;
+        }
+
+        break;
+    }
+
+    case WM_MOUSEMOVE:
+    {
+        if( m_bPressed )
+        {
+            SetValueInternal( ValueFromPos( m_x + pt.x + m_nDragOffset ), true );
+            return true;
+        }
+
+        break;
+    }
+
+    case WM_MOUSEWHEEL:
+    {
+        int nScrollAmount = int( ( short )HIWORD( wParam ) ) / WHEEL_DELTA;
+        SetValueInternal( m_nValue - nScrollAmount, true );
+        return true;
+    }
     };
 
     return false;
@@ -5108,7 +5113,7 @@ void CDXUTScrollBar::UpdateThumbRect()
                                   SCROLLBAR_MINTHUMBSIZE );
         int nMaxPosition = m_nEnd - m_nStart - m_nPageSize;
         m_rcThumb.top = m_rcTrack.top + ( m_nPosition - m_nStart ) * ( RectHeight( m_rcTrack ) - nThumbHeight )
-            / nMaxPosition;
+                        / nMaxPosition;
         m_rcThumb.bottom = m_rcThumb.top + nThumbHeight;
         m_bShowThumb = true;
 
@@ -5175,103 +5180,103 @@ bool CDXUTScrollBar::HandleMouse( UINT uMsg, POINT pt, WPARAM wParam, LPARAM lPa
     m_LastMouse = pt;
     switch( uMsg )
     {
-        case WM_LBUTTONDOWN:
-        case WM_LBUTTONDBLCLK:
-            {
-                // Check for click on up button
+    case WM_LBUTTONDOWN:
+    case WM_LBUTTONDBLCLK:
+    {
+        // Check for click on up button
 
-                if( PtInRect( &m_rcUpButton, pt ) )
-                {
-                    SetCapture( DXUTGetHWND() );
-                    if( m_nPosition > m_nStart )
-                        --m_nPosition;
-                    UpdateThumbRect();
-                    m_Arrow = CLICKED_UP;
-                    m_dArrowTS = DXUTGetTime();
-                    return true;
-                }
-
-                // Check for click on down button
-
-                if( PtInRect( &m_rcDownButton, pt ) )
-                {
-                    SetCapture( DXUTGetHWND() );
-                    if( m_nPosition + m_nPageSize <= m_nEnd )
-                        ++m_nPosition;
-                    UpdateThumbRect();
-                    m_Arrow = CLICKED_DOWN;
-                    m_dArrowTS = DXUTGetTime();
-                    return true;
-                }
-
-                // Check for click on thumb
-
-                if( PtInRect( &m_rcThumb, pt ) )
-                {
-                    SetCapture( DXUTGetHWND() );
-                    m_bDrag = true;
-                    ThumbOffsetY = pt.y - m_rcThumb.top;
-                    return true;
-                }
-
-                // Check for click on track
-
-                if( m_rcThumb.left <= pt.x &&
-                    m_rcThumb.right > pt.x )
-                {
-                    SetCapture( DXUTGetHWND() );
-                    if( m_rcThumb.top > pt.y &&
-                        m_rcTrack.top <= pt.y )
-                    {
-                        Scroll( -( m_nPageSize - 1 ) );
-                        return true;
-                    }
-                    else if( m_rcThumb.bottom <= pt.y &&
-                             m_rcTrack.bottom > pt.y )
-                    {
-                        Scroll( m_nPageSize - 1 );
-                        return true;
-                    }
-                }
-
-                break;
-            }
-
-        case WM_LBUTTONUP:
+        if( PtInRect( &m_rcUpButton, pt ) )
         {
-            m_bDrag = false;
-            ReleaseCapture();
+            SetCapture( DXUTGetHWND() );
+            if( m_nPosition > m_nStart )
+                --m_nPosition;
             UpdateThumbRect();
-            m_Arrow = CLEAR;
-            break;
+            m_Arrow = CLICKED_UP;
+            m_dArrowTS = DXUTGetTime();
+            return true;
         }
 
-        case WM_MOUSEMOVE:
+        // Check for click on down button
+
+        if( PtInRect( &m_rcDownButton, pt ) )
         {
-            if( m_bDrag )
+            SetCapture( DXUTGetHWND() );
+            if( m_nPosition + m_nPageSize <= m_nEnd )
+                ++m_nPosition;
+            UpdateThumbRect();
+            m_Arrow = CLICKED_DOWN;
+            m_dArrowTS = DXUTGetTime();
+            return true;
+        }
+
+        // Check for click on thumb
+
+        if( PtInRect( &m_rcThumb, pt ) )
+        {
+            SetCapture( DXUTGetHWND() );
+            m_bDrag = true;
+            ThumbOffsetY = pt.y - m_rcThumb.top;
+            return true;
+        }
+
+        // Check for click on track
+
+        if( m_rcThumb.left <= pt.x &&
+                m_rcThumb.right > pt.x )
+        {
+            SetCapture( DXUTGetHWND() );
+            if( m_rcThumb.top > pt.y &&
+                    m_rcTrack.top <= pt.y )
             {
-                m_rcThumb.bottom += pt.y - ThumbOffsetY - m_rcThumb.top;
-                m_rcThumb.top = pt.y - ThumbOffsetY;
-                if( m_rcThumb.top < m_rcTrack.top )
-                    OffsetRect( &m_rcThumb, 0, m_rcTrack.top - m_rcThumb.top );
-                else if( m_rcThumb.bottom > m_rcTrack.bottom )
-                    OffsetRect( &m_rcThumb, 0, m_rcTrack.bottom - m_rcThumb.bottom );
-
-                // Compute first item index based on thumb position
-
-                int nMaxFirstItem = m_nEnd - m_nStart - m_nPageSize + 1;  // Largest possible index for first item
-                int nMaxThumb = RectHeight( m_rcTrack ) - RectHeight( m_rcThumb );  // Largest possible thumb position from the top
-
-                m_nPosition = m_nStart +
-                    ( m_rcThumb.top - m_rcTrack.top +
-                      nMaxThumb / ( nMaxFirstItem * 2 ) ) * // Shift by half a row to avoid last row covered by only one pixel
-                    nMaxFirstItem / nMaxThumb;
-
+                Scroll( -( m_nPageSize - 1 ) );
                 return true;
             }
-
-            break;
+            else if( m_rcThumb.bottom <= pt.y &&
+                     m_rcTrack.bottom > pt.y )
+            {
+                Scroll( m_nPageSize - 1 );
+                return true;
+            }
         }
+
+        break;
+    }
+
+    case WM_LBUTTONUP:
+    {
+        m_bDrag = false;
+        ReleaseCapture();
+        UpdateThumbRect();
+        m_Arrow = CLEAR;
+        break;
+    }
+
+    case WM_MOUSEMOVE:
+    {
+        if( m_bDrag )
+        {
+            m_rcThumb.bottom += pt.y - ThumbOffsetY - m_rcThumb.top;
+            m_rcThumb.top = pt.y - ThumbOffsetY;
+            if( m_rcThumb.top < m_rcTrack.top )
+                OffsetRect( &m_rcThumb, 0, m_rcTrack.top - m_rcThumb.top );
+            else if( m_rcThumb.bottom > m_rcTrack.bottom )
+                OffsetRect( &m_rcThumb, 0, m_rcTrack.bottom - m_rcThumb.bottom );
+
+            // Compute first item index based on thumb position
+
+            int nMaxFirstItem = m_nEnd - m_nStart - m_nPageSize + 1;  // Largest possible index for first item
+            int nMaxThumb = RectHeight( m_rcTrack ) - RectHeight( m_rcThumb );  // Largest possible thumb position from the top
+
+            m_nPosition = m_nStart +
+                          ( m_rcThumb.top - m_rcTrack.top +
+                            nMaxThumb / ( nMaxFirstItem * 2 ) ) * // Shift by half a row to avoid last row covered by only one pixel
+                          nMaxFirstItem / nMaxThumb;
+
+            return true;
+        }
+
+        break;
+    }
     }
 
     return false;
@@ -5309,42 +5314,42 @@ void CDXUTScrollBar::Render( float fElapsedTime )
         {
             switch( m_Arrow )
             {
-                case CLICKED_UP:
-                    if( SCROLLBAR_ARROWCLICK_DELAY < dCurrTime - m_dArrowTS )
-                    {
-                        Scroll( -1 );
-                        m_Arrow = HELD_UP;
-                        m_dArrowTS = dCurrTime;
-                    }
-                    break;
-                case HELD_UP:
-                    if( SCROLLBAR_ARROWCLICK_REPEAT < dCurrTime - m_dArrowTS )
-                    {
-                        Scroll( -1 );
-                        m_dArrowTS = dCurrTime;
-                    }
-                    break;
+            case CLICKED_UP:
+                if( SCROLLBAR_ARROWCLICK_DELAY < dCurrTime - m_dArrowTS )
+                {
+                    Scroll( -1 );
+                    m_Arrow = HELD_UP;
+                    m_dArrowTS = dCurrTime;
+                }
+                break;
+            case HELD_UP:
+                if( SCROLLBAR_ARROWCLICK_REPEAT < dCurrTime - m_dArrowTS )
+                {
+                    Scroll( -1 );
+                    m_dArrowTS = dCurrTime;
+                }
+                break;
             }
         }
         else if( PtInRect( &m_rcDownButton, m_LastMouse ) )
         {
             switch( m_Arrow )
             {
-                case CLICKED_DOWN:
-                    if( SCROLLBAR_ARROWCLICK_DELAY < dCurrTime - m_dArrowTS )
-                    {
-                        Scroll( 1 );
-                        m_Arrow = HELD_DOWN;
-                        m_dArrowTS = dCurrTime;
-                    }
-                    break;
-                case HELD_DOWN:
-                    if( SCROLLBAR_ARROWCLICK_REPEAT < dCurrTime - m_dArrowTS )
-                    {
-                        Scroll( 1 );
-                        m_dArrowTS = dCurrTime;
-                    }
-                    break;
+            case CLICKED_DOWN:
+                if( SCROLLBAR_ARROWCLICK_DELAY < dCurrTime - m_dArrowTS )
+                {
+                    Scroll( 1 );
+                    m_Arrow = HELD_DOWN;
+                    m_dArrowTS = dCurrTime;
+                }
+                break;
+            case HELD_DOWN:
+                if( SCROLLBAR_ARROWCLICK_REPEAT < dCurrTime - m_dArrowTS )
+                {
+                    Scroll( 1 );
+                    m_dArrowTS = dCurrTime;
+                }
+                break;
             }
         }
     }
@@ -5397,7 +5402,8 @@ void CDXUTScrollBar::Render( float fElapsedTime )
 //--------------------------------------------------------------------------------------
 void CDXUTScrollBar::SetTrackRange( int nStart, int nEnd )
 {
-    m_nStart = nStart; m_nEnd = nEnd;
+    m_nStart = nStart;
+    m_nEnd = nEnd;
     Cap();
     UpdateThumbRect();
 }
@@ -5407,7 +5413,7 @@ void CDXUTScrollBar::SetTrackRange( int nStart, int nEnd )
 void CDXUTScrollBar::Cap()  // Clips position at boundaries. Ensures it stays within legal range.
 {
     if( m_nPosition < m_nStart ||
-        m_nEnd - m_nStart <= m_nPageSize )
+            m_nEnd - m_nStart <= m_nPageSize )
     {
         m_nPosition = m_nStart;
     }
@@ -5643,96 +5649,102 @@ bool CDXUTListBox::HandleKeyboard( UINT uMsg, WPARAM wParam, LPARAM lParam )
 
     switch( uMsg )
     {
-        case WM_KEYDOWN:
+    case WM_KEYDOWN:
+        switch( wParam )
+        {
+        case VK_UP:
+        case VK_DOWN:
+        case VK_NEXT:
+        case VK_PRIOR:
+        case VK_HOME:
+        case VK_END:
+        {
+            // If no item exists, do nothing.
+            if( m_Items.GetSize() == 0 )
+                return true;
+
+            int nOldSelected = m_nSelected;
+
+            // Adjust m_nSelected
             switch( wParam )
             {
-                case VK_UP:
-                case VK_DOWN:
-                case VK_NEXT:
-                case VK_PRIOR:
-                case VK_HOME:
-                case VK_END:
+            case VK_UP:
+                --m_nSelected;
+                break;
+            case VK_DOWN:
+                ++m_nSelected;
+                break;
+            case VK_NEXT:
+                m_nSelected += m_ScrollBar.GetPageSize() - 1;
+                break;
+            case VK_PRIOR:
+                m_nSelected -= m_ScrollBar.GetPageSize() - 1;
+                break;
+            case VK_HOME:
+                m_nSelected = 0;
+                break;
+            case VK_END:
+                m_nSelected = m_Items.GetSize() - 1;
+                break;
+            }
+
+            // Perform capping
+            if( m_nSelected < 0 )
+                m_nSelected = 0;
+            if( m_nSelected >= ( int )m_Items.GetSize() )
+                m_nSelected = m_Items.GetSize() - 1;
+
+            if( nOldSelected != m_nSelected )
+            {
+                if( m_dwStyle & MULTISELECTION )
+                {
+                    // Multiple selection
+
+                    // Clear all selection
+                    for( int i = 0; i < ( int )m_Items.GetSize(); ++i )
                     {
-                        // If no item exists, do nothing.
-                        if( m_Items.GetSize() == 0 )
-                            return true;
-
-                        int nOldSelected = m_nSelected;
-
-                        // Adjust m_nSelected
-                        switch( wParam )
-                        {
-                            case VK_UP:
-                                --m_nSelected; break;
-                            case VK_DOWN:
-                                ++m_nSelected; break;
-                            case VK_NEXT:
-                                m_nSelected += m_ScrollBar.GetPageSize() - 1; break;
-                            case VK_PRIOR:
-                                m_nSelected -= m_ScrollBar.GetPageSize() - 1; break;
-                            case VK_HOME:
-                                m_nSelected = 0; break;
-                            case VK_END:
-                                m_nSelected = m_Items.GetSize() - 1; break;
-                        }
-
-                        // Perform capping
-                        if( m_nSelected < 0 )
-                            m_nSelected = 0;
-                        if( m_nSelected >= ( int )m_Items.GetSize() )
-                            m_nSelected = m_Items.GetSize() - 1;
-
-                        if( nOldSelected != m_nSelected )
-                        {
-                            if( m_dwStyle & MULTISELECTION )
-                            {
-                                // Multiple selection
-
-                                // Clear all selection
-                                for( int i = 0; i < ( int )m_Items.GetSize(); ++i )
-                                {
-                                    DXUTListBoxItem* pItem = m_Items[i];
-                                    pItem->bSelected = false;
-                                }
-
-                                if( GetKeyState( VK_SHIFT ) < 0 )
-                                {
-                                    // Select all items from m_nSelStart to
-                                    // m_nSelected
-                                    int nEnd = __max( m_nSelStart, m_nSelected );
-
-                                    for( int n = __min( m_nSelStart, m_nSelected ); n <= nEnd; ++n )
-                                        m_Items[n]->bSelected = true;
-                                }
-                                else
-                                {
-                                    m_Items[m_nSelected]->bSelected = true;
-
-                                    // Update selection start
-                                    m_nSelStart = m_nSelected;
-                                }
-                            }
-                            else
-                                m_nSelStart = m_nSelected;
-
-                            // Adjust scroll bar
-
-                            m_ScrollBar.ShowItem( m_nSelected );
-
-                            // Send notification
-
-                            m_pDialog->SendEvent( EVENT_LISTBOX_SELECTION, true, this );
-                        }
-                        return true;
+                        DXUTListBoxItem* pItem = m_Items[i];
+                        pItem->bSelected = false;
                     }
 
-                    // Space is the hotkey for double-clicking an item.
-                    //
-                case VK_SPACE:
-                    m_pDialog->SendEvent( EVENT_LISTBOX_ITEM_DBLCLK, true, this );
-                    return true;
+                    if( GetKeyState( VK_SHIFT ) < 0 )
+                    {
+                        // Select all items from m_nSelStart to
+                        // m_nSelected
+                        int nEnd = __max( m_nSelStart, m_nSelected );
+
+                        for( int n = __min( m_nSelStart, m_nSelected ); n <= nEnd; ++n )
+                            m_Items[n]->bSelected = true;
+                    }
+                    else
+                    {
+                        m_Items[m_nSelected]->bSelected = true;
+
+                        // Update selection start
+                        m_nSelStart = m_nSelected;
+                    }
+                }
+                else
+                    m_nSelStart = m_nSelected;
+
+                // Adjust scroll bar
+
+                m_ScrollBar.ShowItem( m_nSelected );
+
+                // Send notification
+
+                m_pDialog->SendEvent( EVENT_LISTBOX_SELECTION, true, this );
             }
-            break;
+            return true;
+        }
+
+        // Space is the hotkey for double-clicking an item.
+        //
+        case VK_SPACE:
+            m_pDialog->SendEvent( EVENT_LISTBOX_ITEM_DBLCLK, true, this );
+            return true;
+        }
+        break;
     }
 
     return false;
@@ -5756,205 +5768,205 @@ bool CDXUTListBox::HandleMouse( UINT uMsg, POINT pt, WPARAM wParam, LPARAM lPara
 
     switch( uMsg )
     {
-        case WM_LBUTTONDOWN:
-        case WM_LBUTTONDBLCLK:
-            // Check for clicks in the text area
-            if( m_Items.GetSize() > 0 && PtInRect( &m_rcSelection, pt ) )
-            {
-                // Compute the index of the clicked item
+    case WM_LBUTTONDOWN:
+    case WM_LBUTTONDBLCLK:
+        // Check for clicks in the text area
+        if( m_Items.GetSize() > 0 && PtInRect( &m_rcSelection, pt ) )
+        {
+            // Compute the index of the clicked item
 
-                int nClicked;
-                if( m_nTextHeight )
-                    nClicked = m_ScrollBar.GetTrackPos() + ( pt.y - m_rcText.top ) / m_nTextHeight;
-                else
-                    nClicked = -1;
+            int nClicked;
+            if( m_nTextHeight )
+                nClicked = m_ScrollBar.GetTrackPos() + ( pt.y - m_rcText.top ) / m_nTextHeight;
+            else
+                nClicked = -1;
 
-                // Only proceed if the click falls on top of an item.
+            // Only proceed if the click falls on top of an item.
 
-                if( nClicked >= m_ScrollBar.GetTrackPos() &&
+            if( nClicked >= m_ScrollBar.GetTrackPos() &&
                     nClicked < ( int )m_Items.GetSize() &&
                     nClicked < m_ScrollBar.GetTrackPos() + m_ScrollBar.GetPageSize() )
-                {
-                    SetCapture( DXUTGetHWND() );
-                    m_bDrag = true;
+            {
+                SetCapture( DXUTGetHWND() );
+                m_bDrag = true;
 
-                    // If this is a double click, fire off an event and exit
-                    // since the first click would have taken care of the selection
-                    // updating.
-                    if( uMsg == WM_LBUTTONDBLCLK )
+                // If this is a double click, fire off an event and exit
+                // since the first click would have taken care of the selection
+                // updating.
+                if( uMsg == WM_LBUTTONDBLCLK )
+                {
+                    m_pDialog->SendEvent( EVENT_LISTBOX_ITEM_DBLCLK, true, this );
+                    return true;
+                }
+
+                m_nSelected = nClicked;
+                if( !( wParam & MK_SHIFT ) )
+                    m_nSelStart = m_nSelected;
+
+                // If this is a multi-selection listbox, update per-item
+                // selection data.
+
+                if( m_dwStyle & MULTISELECTION )
+                {
+                    // Determine behavior based on the state of Shift and Ctrl
+
+                    DXUTListBoxItem* pSelItem = m_Items.GetAt( m_nSelected );
+                    if( ( wParam & ( MK_SHIFT | MK_CONTROL ) ) == MK_CONTROL )
                     {
-                        m_pDialog->SendEvent( EVENT_LISTBOX_ITEM_DBLCLK, true, this );
-                        return true;
+                        // Control click. Reverse the selection of this item.
+
+                        pSelItem->bSelected = !pSelItem->bSelected;
                     }
-
-                    m_nSelected = nClicked;
-                    if( !( wParam & MK_SHIFT ) )
-                        m_nSelStart = m_nSelected;
-
-                    // If this is a multi-selection listbox, update per-item
-                    // selection data.
-
-                    if( m_dwStyle & MULTISELECTION )
+                    else if( ( wParam & ( MK_SHIFT | MK_CONTROL ) ) == MK_SHIFT )
                     {
-                        // Determine behavior based on the state of Shift and Ctrl
+                        // Shift click. Set the selection for all items
+                        // from last selected item to the current item.
+                        // Clear everything else.
 
-                        DXUTListBoxItem* pSelItem = m_Items.GetAt( m_nSelected );
-                        if( ( wParam & ( MK_SHIFT | MK_CONTROL ) ) == MK_CONTROL )
+                        int nBegin = __min( m_nSelStart, m_nSelected );
+                        int nEnd = __max( m_nSelStart, m_nSelected );
+
+                        for( int i = 0; i < nBegin; ++i )
                         {
-                            // Control click. Reverse the selection of this item.
-
-                            pSelItem->bSelected = !pSelItem->bSelected;
+                            DXUTListBoxItem* pItem = m_Items.GetAt( i );
+                            pItem->bSelected = false;
                         }
-                        else if( ( wParam & ( MK_SHIFT | MK_CONTROL ) ) == MK_SHIFT )
+
+                        for( int i = nEnd + 1; i < ( int )m_Items.GetSize(); ++i )
                         {
-                            // Shift click. Set the selection for all items
-                            // from last selected item to the current item.
-                            // Clear everything else.
-
-                            int nBegin = __min( m_nSelStart, m_nSelected );
-                            int nEnd = __max( m_nSelStart, m_nSelected );
-
-                            for( int i = 0; i < nBegin; ++i )
-                            {
-                                DXUTListBoxItem* pItem = m_Items.GetAt( i );
-                                pItem->bSelected = false;
-                            }
-
-                            for( int i = nEnd + 1; i < ( int )m_Items.GetSize(); ++i )
-                            {
-                                DXUTListBoxItem* pItem = m_Items.GetAt( i );
-                                pItem->bSelected = false;
-                            }
-
-                            for( int i = nBegin; i <= nEnd; ++i )
-                            {
-                                DXUTListBoxItem* pItem = m_Items.GetAt( i );
-                                pItem->bSelected = true;
-                            }
+                            DXUTListBoxItem* pItem = m_Items.GetAt( i );
+                            pItem->bSelected = false;
                         }
-                        else if( ( wParam & ( MK_SHIFT | MK_CONTROL ) ) == ( MK_SHIFT | MK_CONTROL ) )
+
+                        for( int i = nBegin; i <= nEnd; ++i )
                         {
-                            // Control-Shift-click.
-
-                            // The behavior is:
-                            //   Set all items from m_nSelStart to m_nSelected to
-                            //     the same state as m_nSelStart, not including m_nSelected.
-                            //   Set m_nSelected to selected.
-
-                            int nBegin = __min( m_nSelStart, m_nSelected );
-                            int nEnd = __max( m_nSelStart, m_nSelected );
-
-                            // The two ends do not need to be set here.
-
-                            bool bLastSelected = m_Items.GetAt( m_nSelStart )->bSelected;
-                            for( int i = nBegin + 1; i < nEnd; ++i )
-                            {
-                                DXUTListBoxItem* pItem = m_Items.GetAt( i );
-                                pItem->bSelected = bLastSelected;
-                            }
-
-                            pSelItem->bSelected = true;
-
-                            // Restore m_nSelected to the previous value
-                            // This matches the Windows behavior
-
-                            m_nSelected = m_nSelStart;
+                            DXUTListBoxItem* pItem = m_Items.GetAt( i );
+                            pItem->bSelected = true;
                         }
-                        else
+                    }
+                    else if( ( wParam & ( MK_SHIFT | MK_CONTROL ) ) == ( MK_SHIFT | MK_CONTROL ) )
+                    {
+                        // Control-Shift-click.
+
+                        // The behavior is:
+                        //   Set all items from m_nSelStart to m_nSelected to
+                        //     the same state as m_nSelStart, not including m_nSelected.
+                        //   Set m_nSelected to selected.
+
+                        int nBegin = __min( m_nSelStart, m_nSelected );
+                        int nEnd = __max( m_nSelStart, m_nSelected );
+
+                        // The two ends do not need to be set here.
+
+                        bool bLastSelected = m_Items.GetAt( m_nSelStart )->bSelected;
+                        for( int i = nBegin + 1; i < nEnd; ++i )
                         {
-                            // Simple click.  Clear all items and select the clicked
-                            // item.
-
-
-                            for( int i = 0; i < ( int )m_Items.GetSize(); ++i )
-                            {
-                                DXUTListBoxItem* pItem = m_Items.GetAt( i );
-                                pItem->bSelected = false;
-                            }
-
-                            pSelItem->bSelected = true;
+                            DXUTListBoxItem* pItem = m_Items.GetAt( i );
+                            pItem->bSelected = bLastSelected;
                         }
-                    }  // End of multi-selection case
 
-                    m_pDialog->SendEvent( EVENT_LISTBOX_SELECTION, true, this );
-                }
+                        pSelItem->bSelected = true;
 
-                return true;
+                        // Restore m_nSelected to the previous value
+                        // This matches the Windows behavior
+
+                        m_nSelected = m_nSelStart;
+                    }
+                    else
+                    {
+                        // Simple click.  Clear all items and select the clicked
+                        // item.
+
+
+                        for( int i = 0; i < ( int )m_Items.GetSize(); ++i )
+                        {
+                            DXUTListBoxItem* pItem = m_Items.GetAt( i );
+                            pItem->bSelected = false;
+                        }
+
+                        pSelItem->bSelected = true;
+                    }
+                }  // End of multi-selection case
+
+                m_pDialog->SendEvent( EVENT_LISTBOX_SELECTION, true, this );
             }
-            break;
 
-        case WM_LBUTTONUP:
-        {
-            ReleaseCapture();
-            m_bDrag = false;
-
-            if( m_nSelected != -1 )
-            {
-                // Set all items between m_nSelStart and m_nSelected to
-                // the same state as m_nSelStart
-                int nEnd = __max( m_nSelStart, m_nSelected );
-
-                for( int n = __min( m_nSelStart, m_nSelected ) + 1; n < nEnd; ++n )
-                    m_Items[n]->bSelected = m_Items[m_nSelStart]->bSelected;
-                m_Items[m_nSelected]->bSelected = m_Items[m_nSelStart]->bSelected;
-
-                // If m_nSelStart and m_nSelected are not the same,
-                // the user has dragged the mouse to make a selection.
-                // Notify the application of this.
-                if( m_nSelStart != m_nSelected )
-                    m_pDialog->SendEvent( EVENT_LISTBOX_SELECTION, true, this );
-
-                m_pDialog->SendEvent( EVENT_LISTBOX_SELECTION_END, true, this );
-            }
-            return false;
-        }
-
-        case WM_MOUSEMOVE:
-            if( m_bDrag )
-            {
-                // Compute the index of the item below cursor
-
-                int nItem;
-                if( m_nTextHeight )
-                    nItem = m_ScrollBar.GetTrackPos() + ( pt.y - m_rcText.top ) / m_nTextHeight;
-                else
-                    nItem = -1;
-
-                // Only proceed if the cursor is on top of an item.
-
-                if( nItem >= ( int )m_ScrollBar.GetTrackPos() &&
-                    nItem < ( int )m_Items.GetSize() &&
-                    nItem < m_ScrollBar.GetTrackPos() + m_ScrollBar.GetPageSize() )
-                {
-                    m_nSelected = nItem;
-                    m_pDialog->SendEvent( EVENT_LISTBOX_SELECTION, true, this );
-                }
-                else if( nItem < ( int )m_ScrollBar.GetTrackPos() )
-                {
-                    // User drags the mouse above window top
-                    m_ScrollBar.Scroll( -1 );
-                    m_nSelected = m_ScrollBar.GetTrackPos();
-                    m_pDialog->SendEvent( EVENT_LISTBOX_SELECTION, true, this );
-                }
-                else if( nItem >= m_ScrollBar.GetTrackPos() + m_ScrollBar.GetPageSize() )
-                {
-                    // User drags the mouse below window bottom
-                    m_ScrollBar.Scroll( 1 );
-                    m_nSelected = __min( ( int )m_Items.GetSize(), m_ScrollBar.GetTrackPos() +
-                                         m_ScrollBar.GetPageSize() ) - 1;
-                    m_pDialog->SendEvent( EVENT_LISTBOX_SELECTION, true, this );
-                }
-            }
-            break;
-
-        case WM_MOUSEWHEEL:
-        {
-            UINT uLines;
-            SystemParametersInfo( SPI_GETWHEELSCROLLLINES, 0, &uLines, 0 );
-            int nScrollAmount = int( ( short )HIWORD( wParam ) ) / WHEEL_DELTA * uLines;
-            m_ScrollBar.Scroll( -nScrollAmount );
             return true;
         }
+        break;
+
+    case WM_LBUTTONUP:
+    {
+        ReleaseCapture();
+        m_bDrag = false;
+
+        if( m_nSelected != -1 )
+        {
+            // Set all items between m_nSelStart and m_nSelected to
+            // the same state as m_nSelStart
+            int nEnd = __max( m_nSelStart, m_nSelected );
+
+            for( int n = __min( m_nSelStart, m_nSelected ) + 1; n < nEnd; ++n )
+                m_Items[n]->bSelected = m_Items[m_nSelStart]->bSelected;
+            m_Items[m_nSelected]->bSelected = m_Items[m_nSelStart]->bSelected;
+
+            // If m_nSelStart and m_nSelected are not the same,
+            // the user has dragged the mouse to make a selection.
+            // Notify the application of this.
+            if( m_nSelStart != m_nSelected )
+                m_pDialog->SendEvent( EVENT_LISTBOX_SELECTION, true, this );
+
+            m_pDialog->SendEvent( EVENT_LISTBOX_SELECTION_END, true, this );
+        }
+        return false;
+    }
+
+    case WM_MOUSEMOVE:
+        if( m_bDrag )
+        {
+            // Compute the index of the item below cursor
+
+            int nItem;
+            if( m_nTextHeight )
+                nItem = m_ScrollBar.GetTrackPos() + ( pt.y - m_rcText.top ) / m_nTextHeight;
+            else
+                nItem = -1;
+
+            // Only proceed if the cursor is on top of an item.
+
+            if( nItem >= ( int )m_ScrollBar.GetTrackPos() &&
+                    nItem < ( int )m_Items.GetSize() &&
+                    nItem < m_ScrollBar.GetTrackPos() + m_ScrollBar.GetPageSize() )
+            {
+                m_nSelected = nItem;
+                m_pDialog->SendEvent( EVENT_LISTBOX_SELECTION, true, this );
+            }
+            else if( nItem < ( int )m_ScrollBar.GetTrackPos() )
+            {
+                // User drags the mouse above window top
+                m_ScrollBar.Scroll( -1 );
+                m_nSelected = m_ScrollBar.GetTrackPos();
+                m_pDialog->SendEvent( EVENT_LISTBOX_SELECTION, true, this );
+            }
+            else if( nItem >= m_ScrollBar.GetTrackPos() + m_ScrollBar.GetPageSize() )
+            {
+                // User drags the mouse below window bottom
+                m_ScrollBar.Scroll( 1 );
+                m_nSelected = __min( ( int )m_Items.GetSize(), m_ScrollBar.GetTrackPos() +
+                                     m_ScrollBar.GetPageSize() ) - 1;
+                m_pDialog->SendEvent( EVENT_LISTBOX_SELECTION, true, this );
+            }
+        }
+        break;
+
+    case WM_MOUSEWHEEL:
+    {
+        UINT uLines;
+        SystemParametersInfo( SPI_GETWHEELSCROLLLINES, 0, &uLines, 0 );
+        int nScrollAmount = int( ( short )HIWORD( wParam ) ) / WHEEL_DELTA * uLines;
+        m_ScrollBar.Scroll( -nScrollAmount );
+        return true;
+    }
     }
 
     return false;
@@ -6031,8 +6043,8 @@ void CDXUTListBox::Render( float fElapsedTime )
             else if( m_dwStyle & MULTISELECTION )
             {
                 if( m_bDrag &&
-                    ( ( i >= m_nSelected && i < m_nSelStart ) ||
-                      ( i <= m_nSelected && i > m_nSelStart ) ) )
+                        ( ( i >= m_nSelected && i < m_nSelStart ) ||
+                          ( i <= m_nSelected && i > m_nSelStart ) ) )
                     bSelectedStyle = m_Items[m_nSelStart]->bSelected;
                 else if( pItem->bSelected )
                     bSelectedStyle = true;
@@ -6040,7 +6052,8 @@ void CDXUTListBox::Render( float fElapsedTime )
 
             if( bSelectedStyle )
             {
-                rcSel.top = rc.top; rcSel.bottom = rc.bottom;
+                rcSel.top = rc.top;
+                rcSel.bottom = rc.bottom;
                 m_pDialog->DrawSprite( pSelElement, &rcSel, DXUT_NEAR_BUTTON_DEPTH );
                 m_pDialog->DrawText( pItem->strText, pSelElement, &rc );
             }
@@ -6060,10 +6073,10 @@ void CDXUTListBox::Render( float fElapsedTime )
 // Static member initialization
 HINSTANCE               CUniBuffer::s_hDll = NULL;
 HRESULT ( WINAPI*CUniBuffer::_ScriptApplyDigitSubstitution )( const SCRIPT_DIGITSUBSTITUTE*, SCRIPT_CONTROL*,
-                                                              SCRIPT_STATE* ) = Dummy_ScriptApplyDigitSubstitution;
+        SCRIPT_STATE* ) = Dummy_ScriptApplyDigitSubstitution;
 HRESULT ( WINAPI*CUniBuffer::_ScriptStringAnalyse )( HDC, const void*, int, int, int, DWORD, int, SCRIPT_CONTROL*,
-                                                     SCRIPT_STATE*, const int*, SCRIPT_TABDEF*, const BYTE*,
-                                                     SCRIPT_STRING_ANALYSIS* ) = Dummy_ScriptStringAnalyse;
+        SCRIPT_STATE*, const int*, SCRIPT_TABDEF*, const BYTE*,
+        SCRIPT_STRING_ANALYSIS* ) = Dummy_ScriptStringAnalyse;
 HRESULT ( WINAPI*CUniBuffer::_ScriptStringCPtoX )( SCRIPT_STRING_ANALYSIS, int, BOOL, int* ) = Dummy_ScriptStringCPtoX;
 HRESULT ( WINAPI*CUniBuffer::_ScriptStringXtoCP )( SCRIPT_STRING_ANALYSIS, int, int*, int* ) = Dummy_ScriptStringXtoCP;
 HRESULT ( WINAPI*CUniBuffer::_ScriptStringFree )( SCRIPT_STRING_ANALYSIS* ) = Dummy_ScriptStringFree;
@@ -6141,26 +6154,26 @@ void CDXUTEditBox::PlaceCaret( int nCP )
         m_nFirstVisible = nCP;
     }
     else // If the right of the character is bigger than the offset of the control's
-    // right edge, we need to scroll right to this character.
-    if( nX2 > nX1st + RectWidth( m_rcText ) )
-    {
-        // Compute the X of the new left-most pixel
-        int nXNewLeft = nX2 - RectWidth( m_rcText );
+        // right edge, we need to scroll right to this character.
+        if( nX2 > nX1st + RectWidth( m_rcText ) )
+        {
+            // Compute the X of the new left-most pixel
+            int nXNewLeft = nX2 - RectWidth( m_rcText );
 
-        // Compute the char position of this character
-        int nCPNew1st, nNewTrail;
-        m_Buffer.XtoCP( nXNewLeft, &nCPNew1st, &nNewTrail );
+            // Compute the char position of this character
+            int nCPNew1st, nNewTrail;
+            m_Buffer.XtoCP( nXNewLeft, &nCPNew1st, &nNewTrail );
 
-        // If this coordinate is not on a character border,
-        // start from the next character so that the caret
-        // position does not fall outside the text rectangle.
-        int nXNew1st;
-        m_Buffer.CPtoX( nCPNew1st, FALSE, &nXNew1st );
-        if( nXNew1st < nXNewLeft )
-            ++nCPNew1st;
+            // If this coordinate is not on a character border,
+            // start from the next character so that the caret
+            // position does not fall outside the text rectangle.
+            int nXNew1st;
+            m_Buffer.CPtoX( nCPNew1st, FALSE, &nXNew1st );
+            if( nXNew1st < nXNewLeft )
+                ++nCPNew1st;
 
-        m_nFirstVisible = nCPNew1st;
-    }
+            m_nFirstVisible = nCPNew1st;
+        }
 }
 
 
@@ -6188,7 +6201,7 @@ void CDXUTEditBox::SetText( LPCWSTR wszText, bool bSelected )
 
 
 //--------------------------------------------------------------------------------------
-HRESULT CDXUTEditBox::GetTextCopy( __out_ecount(bufferCount) LPWSTR strDest, 
+HRESULT CDXUTEditBox::GetTextCopy( __out_ecount(bufferCount) LPWSTR strDest,
                                    UINT bufferCount  )
 {
     assert( strDest );
@@ -6305,117 +6318,117 @@ bool CDXUTEditBox::HandleKeyboard( UINT uMsg, WPARAM wParam, LPARAM lParam )
 
     switch( uMsg )
     {
-        case WM_KEYDOWN:
+    case WM_KEYDOWN:
+    {
+        switch( wParam )
         {
-            switch( wParam )
+        case VK_TAB:
+            // We don't process Tab in case keyboard input is enabled and the user
+            // wishes to Tab to other controls.
+            break;
+
+        case VK_HOME:
+            PlaceCaret( 0 );
+            if( GetKeyState( VK_SHIFT ) >= 0 )
+                // Shift is not down. Update selection
+                // start along with the caret.
+                m_nSelStart = m_nCaret;
+            ResetCaretBlink();
+            bHandled = true;
+            break;
+
+        case VK_END:
+            PlaceCaret( m_Buffer.GetTextSize() );
+            if( GetKeyState( VK_SHIFT ) >= 0 )
+                // Shift is not down. Update selection
+                // start along with the caret.
+                m_nSelStart = m_nCaret;
+            ResetCaretBlink();
+            bHandled = true;
+            break;
+
+        case VK_INSERT:
+            if( GetKeyState( VK_CONTROL ) < 0 )
             {
-                case VK_TAB:
-                    // We don't process Tab in case keyboard input is enabled and the user
-                    // wishes to Tab to other controls.
-                    break;
-
-                case VK_HOME:
-                    PlaceCaret( 0 );
-                    if( GetKeyState( VK_SHIFT ) >= 0 )
-                        // Shift is not down. Update selection
-                        // start along with the caret.
-                        m_nSelStart = m_nCaret;
-                    ResetCaretBlink();
-                    bHandled = true;
-                    break;
-
-                case VK_END:
-                    PlaceCaret( m_Buffer.GetTextSize() );
-                    if( GetKeyState( VK_SHIFT ) >= 0 )
-                        // Shift is not down. Update selection
-                        // start along with the caret.
-                        m_nSelStart = m_nCaret;
-                    ResetCaretBlink();
-                    bHandled = true;
-                    break;
-
-                case VK_INSERT:
-                    if( GetKeyState( VK_CONTROL ) < 0 )
-                    {
-                        // Control Insert. Copy to clipboard
-                        CopyToClipboard();
-                    }
-                    else if( GetKeyState( VK_SHIFT ) < 0 )
-                    {
-                        // Shift Insert. Paste from clipboard
-                        PasteFromClipboard();
-                    }
-                    else
-                    {
-                        // Toggle caret insert mode
-                        m_bInsertMode = !m_bInsertMode;
-                    }
-                    break;
-
-                case VK_DELETE:
-                    // Check if there is a text selection.
-                    if( m_nCaret != m_nSelStart )
-                    {
-                        DeleteSelectionText();
-                        m_pDialog->SendEvent( EVENT_EDITBOX_CHANGE, true, this );
-                    }
-                    else
-                    {
-                        // Deleting one character
-                        if( m_Buffer.RemoveChar( m_nCaret ) )
-                            m_pDialog->SendEvent( EVENT_EDITBOX_CHANGE, true, this );
-                    }
-                    ResetCaretBlink();
-                    bHandled = true;
-                    break;
-
-                case VK_LEFT:
-                    if( GetKeyState( VK_CONTROL ) < 0 )
-                    {
-                        // Control is down. Move the caret to a new item
-                        // instead of a character.
-                        m_Buffer.GetPriorItemPos( m_nCaret, &m_nCaret );
-                        PlaceCaret( m_nCaret );
-                    }
-                    else if( m_nCaret > 0 )
-                        PlaceCaret( m_nCaret - 1 );
-                    if( GetKeyState( VK_SHIFT ) >= 0 )
-                        // Shift is not down. Update selection
-                        // start along with the caret.
-                        m_nSelStart = m_nCaret;
-                    ResetCaretBlink();
-                    bHandled = true;
-                    break;
-
-                case VK_RIGHT:
-                    if( GetKeyState( VK_CONTROL ) < 0 )
-                    {
-                        // Control is down. Move the caret to a new item
-                        // instead of a character.
-                        m_Buffer.GetNextItemPos( m_nCaret, &m_nCaret );
-                        PlaceCaret( m_nCaret );
-                    }
-                    else if( m_nCaret < m_Buffer.GetTextSize() )
-                        PlaceCaret( m_nCaret + 1 );
-                    if( GetKeyState( VK_SHIFT ) >= 0 )
-                        // Shift is not down. Update selection
-                        // start along with the caret.
-                        m_nSelStart = m_nCaret;
-                    ResetCaretBlink();
-                    bHandled = true;
-                    break;
-
-                case VK_UP:
-                case VK_DOWN:
-                    // Trap up and down arrows so that the dialog
-                    // does not switch focus to another control.
-                    bHandled = true;
-                    break;
-
-                default:
-                    bHandled = wParam != VK_ESCAPE;  // Let the application handle Esc.
+                // Control Insert. Copy to clipboard
+                CopyToClipboard();
             }
+            else if( GetKeyState( VK_SHIFT ) < 0 )
+            {
+                // Shift Insert. Paste from clipboard
+                PasteFromClipboard();
+            }
+            else
+            {
+                // Toggle caret insert mode
+                m_bInsertMode = !m_bInsertMode;
+            }
+            break;
+
+        case VK_DELETE:
+            // Check if there is a text selection.
+            if( m_nCaret != m_nSelStart )
+            {
+                DeleteSelectionText();
+                m_pDialog->SendEvent( EVENT_EDITBOX_CHANGE, true, this );
+            }
+            else
+            {
+                // Deleting one character
+                if( m_Buffer.RemoveChar( m_nCaret ) )
+                    m_pDialog->SendEvent( EVENT_EDITBOX_CHANGE, true, this );
+            }
+            ResetCaretBlink();
+            bHandled = true;
+            break;
+
+        case VK_LEFT:
+            if( GetKeyState( VK_CONTROL ) < 0 )
+            {
+                // Control is down. Move the caret to a new item
+                // instead of a character.
+                m_Buffer.GetPriorItemPos( m_nCaret, &m_nCaret );
+                PlaceCaret( m_nCaret );
+            }
+            else if( m_nCaret > 0 )
+                PlaceCaret( m_nCaret - 1 );
+            if( GetKeyState( VK_SHIFT ) >= 0 )
+                // Shift is not down. Update selection
+                // start along with the caret.
+                m_nSelStart = m_nCaret;
+            ResetCaretBlink();
+            bHandled = true;
+            break;
+
+        case VK_RIGHT:
+            if( GetKeyState( VK_CONTROL ) < 0 )
+            {
+                // Control is down. Move the caret to a new item
+                // instead of a character.
+                m_Buffer.GetNextItemPos( m_nCaret, &m_nCaret );
+                PlaceCaret( m_nCaret );
+            }
+            else if( m_nCaret < m_Buffer.GetTextSize() )
+                PlaceCaret( m_nCaret + 1 );
+            if( GetKeyState( VK_SHIFT ) >= 0 )
+                // Shift is not down. Update selection
+                // start along with the caret.
+                m_nSelStart = m_nCaret;
+            ResetCaretBlink();
+            bHandled = true;
+            break;
+
+        case VK_UP:
+        case VK_DOWN:
+            // Trap up and down arrows so that the dialog
+            // does not switch focus to another control.
+            bHandled = true;
+            break;
+
+        default:
+            bHandled = wParam != VK_ESCAPE;  // Let the application handle Esc.
         }
+    }
     }
     return bHandled;
 }
@@ -6429,54 +6442,54 @@ bool CDXUTEditBox::HandleMouse( UINT uMsg, POINT pt, WPARAM wParam, LPARAM lPara
 
     switch( uMsg )
     {
-        case WM_LBUTTONDOWN:
-        case WM_LBUTTONDBLCLK:
+    case WM_LBUTTONDOWN:
+    case WM_LBUTTONDBLCLK:
+    {
+        if( !m_bHasFocus )
+            m_pDialog->RequestFocus( this );
+
+        if( !ContainsPoint( pt ) )
+            return false;
+
+        m_bMouseDrag = true;
+        SetCapture( DXUTGetHWND() );
+        // Determine the character corresponding to the coordinates.
+        int nCP, nTrail, nX1st;
+        m_Buffer.CPtoX( m_nFirstVisible, FALSE, &nX1st );  // X offset of the 1st visible char
+        if( SUCCEEDED( m_Buffer.XtoCP( pt.x - m_rcText.left + nX1st, &nCP, &nTrail ) ) )
+        {
+            // Cap at the NULL character.
+            if( nTrail && nCP < m_Buffer.GetTextSize() )
+                PlaceCaret( nCP + 1 );
+            else
+                PlaceCaret( nCP );
+            m_nSelStart = m_nCaret;
+            ResetCaretBlink();
+        }
+        return true;
+    }
+
+    case WM_LBUTTONUP:
+        ReleaseCapture();
+        m_bMouseDrag = false;
+        break;
+
+    case WM_MOUSEMOVE:
+        if( m_bMouseDrag )
+        {
+            // Determine the character corresponding to the coordinates.
+            int nCP, nTrail, nX1st;
+            m_Buffer.CPtoX( m_nFirstVisible, FALSE, &nX1st );  // X offset of the 1st visible char
+            if( SUCCEEDED( m_Buffer.XtoCP( pt.x - m_rcText.left + nX1st, &nCP, &nTrail ) ) )
             {
-                if( !m_bHasFocus )
-                    m_pDialog->RequestFocus( this );
-
-                if( !ContainsPoint( pt ) )
-                    return false;
-
-                m_bMouseDrag = true;
-                SetCapture( DXUTGetHWND() );
-                // Determine the character corresponding to the coordinates.
-                int nCP, nTrail, nX1st;
-                m_Buffer.CPtoX( m_nFirstVisible, FALSE, &nX1st );  // X offset of the 1st visible char
-                if( SUCCEEDED( m_Buffer.XtoCP( pt.x - m_rcText.left + nX1st, &nCP, &nTrail ) ) )
-                {
-                    // Cap at the NULL character.
-                    if( nTrail && nCP < m_Buffer.GetTextSize() )
-                        PlaceCaret( nCP + 1 );
-                    else
-                        PlaceCaret( nCP );
-                    m_nSelStart = m_nCaret;
-                    ResetCaretBlink();
-                }
-                return true;
+                // Cap at the NULL character.
+                if( nTrail && nCP < m_Buffer.GetTextSize() )
+                    PlaceCaret( nCP + 1 );
+                else
+                    PlaceCaret( nCP );
             }
-
-        case WM_LBUTTONUP:
-            ReleaseCapture();
-            m_bMouseDrag = false;
-            break;
-
-        case WM_MOUSEMOVE:
-            if( m_bMouseDrag )
-            {
-                // Determine the character corresponding to the coordinates.
-                int nCP, nTrail, nX1st;
-                m_Buffer.CPtoX( m_nFirstVisible, FALSE, &nX1st );  // X offset of the 1st visible char
-                if( SUCCEEDED( m_Buffer.XtoCP( pt.x - m_rcText.left + nX1st, &nCP, &nTrail ) ) )
-                {
-                    // Cap at the NULL character.
-                    if( nTrail && nCP < m_Buffer.GetTextSize() )
-                        PlaceCaret( nCP + 1 );
-                    else
-                        PlaceCaret( nCP );
-                }
-            }
-            break;
+        }
+        break;
     }
 
     return false;
@@ -6500,133 +6513,133 @@ bool CDXUTEditBox::MsgProc( UINT uMsg, WPARAM wParam, LPARAM lParam )
 
     switch( uMsg )
     {
-            // Make sure that while editing, the keyup and keydown messages associated with 
-            // WM_CHAR messages don't go to any non-focused controls or cameras
-        case WM_KEYUP:
-        case WM_KEYDOWN:
-            return true;
+    // Make sure that while editing, the keyup and keydown messages associated with
+    // WM_CHAR messages don't go to any non-focused controls or cameras
+    case WM_KEYUP:
+    case WM_KEYDOWN:
+        return true;
 
-        case WM_CHAR:
+    case WM_CHAR:
+    {
+        switch( ( WCHAR )wParam )
         {
-            switch( ( WCHAR )wParam )
+        // Backspace
+        case VK_BACK:
+        {
+            // If there's a selection, treat this
+            // like a delete key.
+            if( m_nCaret != m_nSelStart )
             {
-                    // Backspace
-                case VK_BACK:
+                DeleteSelectionText();
+                m_pDialog->SendEvent( EVENT_EDITBOX_CHANGE, true, this );
+            }
+            else if( m_nCaret > 0 )
+            {
+                // Move the caret, then delete the char.
+                PlaceCaret( m_nCaret - 1 );
+                m_nSelStart = m_nCaret;
+                m_Buffer.RemoveChar( m_nCaret );
+                m_pDialog->SendEvent( EVENT_EDITBOX_CHANGE, true, this );
+            }
+            ResetCaretBlink();
+            break;
+        }
+
+        case 24:        // Ctrl-X Cut
+        case VK_CANCEL: // Ctrl-C Copy
+        {
+            CopyToClipboard();
+
+            // If the key is Ctrl-X, delete the selection too.
+            if( ( WCHAR )wParam == 24 )
+            {
+                DeleteSelectionText();
+                m_pDialog->SendEvent( EVENT_EDITBOX_CHANGE, true, this );
+            }
+
+            break;
+        }
+
+        // Ctrl-V Paste
+        case 22:
+        {
+            PasteFromClipboard();
+            m_pDialog->SendEvent( EVENT_EDITBOX_CHANGE, true, this );
+            break;
+        }
+
+        // Ctrl-A Select All
+        case 1:
+            if( m_nSelStart == m_nCaret )
+            {
+                m_nSelStart = 0;
+                PlaceCaret( m_Buffer.GetTextSize() );
+            }
+            break;
+
+        case VK_RETURN:
+            // Invoke the callback when the user presses Enter.
+            m_pDialog->SendEvent( EVENT_EDITBOX_STRING, true, this );
+            break;
+
+        // Junk characters we don't want in the string
+        case 26:  // Ctrl Z
+        case 2:   // Ctrl B
+        case 14:  // Ctrl N
+        case 19:  // Ctrl S
+        case 4:   // Ctrl D
+        case 6:   // Ctrl F
+        case 7:   // Ctrl G
+        case 10:  // Ctrl J
+        case 11:  // Ctrl K
+        case 12:  // Ctrl L
+        case 17:  // Ctrl Q
+        case 23:  // Ctrl W
+        case 5:   // Ctrl E
+        case 18:  // Ctrl R
+        case 20:  // Ctrl T
+        case 25:  // Ctrl Y
+        case 21:  // Ctrl U
+        case 9:   // Ctrl I
+        case 15:  // Ctrl O
+        case 16:  // Ctrl P
+        case 27:  // Ctrl [
+        case 29:  // Ctrl ]
+        case 28:  // Ctrl \ 
+            break;
+
+        default:
+        {
+            // If there's a selection and the user
+            // starts to type, the selection should
+            // be deleted.
+            if( m_nCaret != m_nSelStart )
+                DeleteSelectionText();
+
+            // If we are in overwrite mode and there is already
+            // a char at the caret's position, simply replace it.
+            // Otherwise, we insert the char as normal.
+            if( !m_bInsertMode && m_nCaret < m_Buffer.GetTextSize() )
+            {
+                m_Buffer[m_nCaret] = ( WCHAR )wParam;
+                PlaceCaret( m_nCaret + 1 );
+                m_nSelStart = m_nCaret;
+            }
+            else
+            {
+                // Insert the char
+                if( m_Buffer.InsertChar( m_nCaret, ( WCHAR )wParam ) )
                 {
-                    // If there's a selection, treat this
-                    // like a delete key.
-                    if( m_nCaret != m_nSelStart )
-                    {
-                        DeleteSelectionText();
-                        m_pDialog->SendEvent( EVENT_EDITBOX_CHANGE, true, this );
-                    }
-                    else if( m_nCaret > 0 )
-                    {
-                        // Move the caret, then delete the char.
-                        PlaceCaret( m_nCaret - 1 );
-                        m_nSelStart = m_nCaret;
-                        m_Buffer.RemoveChar( m_nCaret );
-                        m_pDialog->SendEvent( EVENT_EDITBOX_CHANGE, true, this );
-                    }
-                    ResetCaretBlink();
-                    break;
-                }
-
-                case 24:        // Ctrl-X Cut
-                case VK_CANCEL: // Ctrl-C Copy
-                    {
-                        CopyToClipboard();
-
-                        // If the key is Ctrl-X, delete the selection too.
-                        if( ( WCHAR )wParam == 24 )
-                        {
-                            DeleteSelectionText();
-                            m_pDialog->SendEvent( EVENT_EDITBOX_CHANGE, true, this );
-                        }
-
-                        break;
-                    }
-
-                    // Ctrl-V Paste
-                case 22:
-                {
-                    PasteFromClipboard();
-                    m_pDialog->SendEvent( EVENT_EDITBOX_CHANGE, true, this );
-                    break;
-                }
-
-                    // Ctrl-A Select All
-                case 1:
-                    if( m_nSelStart == m_nCaret )
-                    {
-                        m_nSelStart = 0;
-                        PlaceCaret( m_Buffer.GetTextSize() );
-                    }
-                    break;
-
-                case VK_RETURN:
-                    // Invoke the callback when the user presses Enter.
-                    m_pDialog->SendEvent( EVENT_EDITBOX_STRING, true, this );
-                    break;
-
-                    // Junk characters we don't want in the string
-                case 26:  // Ctrl Z
-                case 2:   // Ctrl B
-                case 14:  // Ctrl N
-                case 19:  // Ctrl S
-                case 4:   // Ctrl D
-                case 6:   // Ctrl F
-                case 7:   // Ctrl G
-                case 10:  // Ctrl J
-                case 11:  // Ctrl K
-                case 12:  // Ctrl L
-                case 17:  // Ctrl Q
-                case 23:  // Ctrl W
-                case 5:   // Ctrl E
-                case 18:  // Ctrl R
-                case 20:  // Ctrl T
-                case 25:  // Ctrl Y
-                case 21:  // Ctrl U
-                case 9:   // Ctrl I
-                case 15:  // Ctrl O
-                case 16:  // Ctrl P
-                case 27:  // Ctrl [
-                case 29:  // Ctrl ]
-                case 28:  // Ctrl \ 
-                    break;
-
-                default:
-                {
-                    // If there's a selection and the user
-                    // starts to type, the selection should
-                    // be deleted.
-                    if( m_nCaret != m_nSelStart )
-                        DeleteSelectionText();
-
-                    // If we are in overwrite mode and there is already
-                    // a char at the caret's position, simply replace it.
-                    // Otherwise, we insert the char as normal.
-                    if( !m_bInsertMode && m_nCaret < m_Buffer.GetTextSize() )
-                    {
-                        m_Buffer[m_nCaret] = ( WCHAR )wParam;
-                        PlaceCaret( m_nCaret + 1 );
-                        m_nSelStart = m_nCaret;
-                    }
-                    else
-                    {
-                        // Insert the char
-                        if( m_Buffer.InsertChar( m_nCaret, ( WCHAR )wParam ) )
-                        {
-                            PlaceCaret( m_nCaret + 1 );
-                            m_nSelStart = m_nCaret;
-                        }
-                    }
-                    ResetCaretBlink();
-                    m_pDialog->SendEvent( EVENT_EDITBOX_CHANGE, true, this );
+                    PlaceCaret( m_nCaret + 1 );
+                    m_nSelStart = m_nCaret;
                 }
             }
-            return true;
+            ResetCaretBlink();
+            m_pDialog->SendEvent( EVENT_EDITBOX_CHANGE, true, this );
         }
+        }
+        return true;
+    }
     }
     return false;
 }
@@ -6683,7 +6696,9 @@ void CDXUTEditBox::Render( float fElapsedTime )
         // Swap if left is bigger than right
         if( nSelLeftX > nSelRightX )
         {
-            int nTemp = nSelLeftX; nSelLeftX = nSelRightX; nSelRightX = nTemp;
+            int nTemp = nSelLeftX;
+            nSelLeftX = nSelRightX;
+            nSelRightX = nTemp;
         }
 
         SetRect( &rcSelection, nSelLeftX, m_rcText.top, nSelRightX, m_rcText.bottom );
@@ -6862,7 +6877,7 @@ bool CUniBuffer::SetBufferSize( int nNewSize )
         return false;
 
     int nAllocateSize = ( nNewSize == -1 || nNewSize < m_nBufferSize * 2 ) ? ( m_nBufferSize ? m_nBufferSize *
-                                                                               2 : 256 ) : nNewSize * 2;
+                        2 : 256 ) : nNewSize * 2;
 
     // Cap the buffer size at the maximum allowed.
     if( nAllocateSize > DXUT_MAX_EDITBOXLENGTH )
@@ -6903,7 +6918,7 @@ HRESULT CUniBuffer::Analyse()
     if( !m_pFontNode )
         return E_FAIL;
 
-    HDC hDC = 
+    HDC hDC =
         ( m_pFontNode->pFont9 ? m_pFontNode->pFont9->GetDC() : NULL );
     HRESULT hr = _ScriptStringAnalyse( hDC,
                                        m_pwszBuffer,
@@ -7108,7 +7123,8 @@ HRESULT CUniBuffer::CPtoX( int nCP, BOOL bTrail, int* pX )
 HRESULT CUniBuffer::XtoCP( int nX, int* pCP, int* pnTrail )
 {
     assert( pCP && pnTrail );
-    *pCP = 0; *pnTrail = FALSE;  // Default
+    *pCP = 0;
+    *pnTrail = FALSE;  // Default
 
     HRESULT hr = S_OK;
     if( m_bAnalyseRequired )
@@ -7122,11 +7138,13 @@ HRESULT CUniBuffer::XtoCP( int nX, int* pCP, int* pnTrail )
     // filter them here and convert them to those that do exist.
     if( *pCP == -1 && *pnTrail == TRUE )
     {
-        *pCP = 0; *pnTrail = FALSE;
+        *pCP = 0;
+        *pnTrail = FALSE;
     }
     else if( *pCP > lstrlenW( m_pwszBuffer ) && *pnTrail == FALSE )
     {
-        *pCP = lstrlenW( m_pwszBuffer ); *pnTrail = TRUE;
+        *pCP = lstrlenW( m_pwszBuffer );
+        *pnTrail = TRUE;
     }
 
     return hr;
@@ -7153,8 +7171,8 @@ void CUniBuffer::GetPriorItemPos( int nCP, int* pPrior )
         nInitial = nCP - 1;
     for( int i = nInitial; i > 0; --i )
         if( pLogAttr[i].fWordStop ||       // Either the fWordStop flag is set
-            ( !pLogAttr[i].fWhiteSpace &&  // Or the previous char is whitespace but this isn't.
-              pLogAttr[i - 1].fWhiteSpace ) )
+                ( !pLogAttr[i].fWhiteSpace &&  // Or the previous char is whitespace but this isn't.
+                  pLogAttr[i - 1].fWhiteSpace ) )
         {
             *pPrior = i;
             return;

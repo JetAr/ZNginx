@@ -1,4 +1,4 @@
-//
+﻿//
 // Game.cpp
 //
 
@@ -204,17 +204,17 @@ void Game::CreateDevice()
     if (!debugDXGI)
 #endif
 
-    DX::ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
+        DX::ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
 
     ComPtr<IDXGIAdapter1> adapter;
     GetAdapter(adapter.GetAddressOf());
 
     // Create the DX12 API device object.
     DX::ThrowIfFailed(D3D12CreateDevice(
-        adapter.Get(),
-        m_featureLevel,
-        IID_PPV_ARGS(m_d3dDevice.ReleaseAndGetAddressOf())
-        ));
+                          adapter.Get(),
+                          m_featureLevel,
+                          IID_PPV_ARGS(m_d3dDevice.ReleaseAndGetAddressOf())
+                      ));
 
 #ifndef NDEBUG
     // Configure debug device (if active).
@@ -309,7 +309,7 @@ void Game::CreateResources()
             // If the device was removed for any reason, a new device and swap chain will need to be created.
             OnDeviceLost();
 
-            // Everything is set up now. Do not continue execution of this method. OnDeviceLost will reenter this method 
+            // Everything is set up now. Do not continue execution of this method. OnDeviceLost will reenter this method
             // and correctly set up the new device.
             return;
         }
@@ -339,13 +339,13 @@ void Game::CreateResources()
         // Create a swap chain for the window.
         ComPtr<IDXGISwapChain1> swapChain;
         DX::ThrowIfFailed(m_dxgiFactory->CreateSwapChainForHwnd(
-            m_commandQueue.Get(),
-            m_window,
-            &swapChainDesc,
-            &fsSwapChainDesc,
-            nullptr,
-            swapChain.GetAddressOf()
-            ));
+                              m_commandQueue.Get(),
+                              m_window,
+                              &swapChainDesc,
+                              &fsSwapChainDesc,
+                              nullptr,
+                              swapChain.GetAddressOf()
+                          ));
 
         DX::ThrowIfFailed(swapChain.As(&m_swapChain));
 
@@ -375,12 +375,12 @@ void Game::CreateResources()
     CD3DX12_HEAP_PROPERTIES depthHeapProperties(D3D12_HEAP_TYPE_DEFAULT);
 
     D3D12_RESOURCE_DESC depthStencilDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-        depthBufferFormat,
-        backBufferWidth,
-        backBufferHeight,
-        1, // This depth stencil view has only one texture.
-        1  // Use a single mipmap level.
-        );
+            depthBufferFormat,
+            backBufferWidth,
+            backBufferHeight,
+            1, // This depth stencil view has only one texture.
+            1  // Use a single mipmap level.
+                                           );
     depthStencilDesc.Flags |= D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
 
     D3D12_CLEAR_VALUE depthOptimizedClearValue = {};
@@ -389,13 +389,13 @@ void Game::CreateResources()
     depthOptimizedClearValue.DepthStencil.Stencil = 0;
 
     DX::ThrowIfFailed(m_d3dDevice->CreateCommittedResource(
-        &depthHeapProperties,
-        D3D12_HEAP_FLAG_NONE,
-        &depthStencilDesc,
-        D3D12_RESOURCE_STATE_DEPTH_WRITE,
-        &depthOptimizedClearValue,
-        IID_PPV_ARGS(m_depthStencil.ReleaseAndGetAddressOf())
-        ));
+                          &depthHeapProperties,
+                          D3D12_HEAP_FLAG_NONE,
+                          &depthStencilDesc,
+                          D3D12_RESOURCE_STATE_DEPTH_WRITE,
+                          &depthOptimizedClearValue,
+                          IID_PPV_ARGS(m_depthStencil.ReleaseAndGetAddressOf())
+                      ));
 
     m_depthStencil->SetName(L"Depth stencil");
 

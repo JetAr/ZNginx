@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
 // THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
@@ -8,7 +8,7 @@
 //
 // Developed by Minigraph
 //
-// Author:  James Stanard 
+// Author:  James Stanard
 //
 
 #pragma once
@@ -17,10 +17,10 @@
 
 namespace DepthOfField
 {
-	extern BoolVar Enable;
+extern BoolVar Enable;
 
-	void Initialize( void );
-	void Shutdown( void );
+void Initialize( void );
+void Shutdown( void );
 
-	void Render( CommandContext& BaseContext, float NearClipDist, float FarClipDist );
+void Render( CommandContext& BaseContext, float NearClipDist, float FarClipDist );
 }

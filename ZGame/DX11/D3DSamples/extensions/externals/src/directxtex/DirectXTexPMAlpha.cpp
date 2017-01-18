@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXTexPMAlpha.cpp
-//  
+//
 // DirectX Texture Library - Premultiplied alpha operations
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -114,9 +114,9 @@ HRESULT PremultiplyAlpha( const Image& srcImage, DWORD flags, ScratchImage& imag
         return E_POINTER;
 
     if ( IsCompressed(srcImage.format)
-         || IsVideo(srcImage.format)
-         || IsTypeless(srcImage.format)
-         || !HasAlpha(srcImage.format) )
+            || IsVideo(srcImage.format)
+            || IsTypeless(srcImage.format)
+            || !HasAlpha(srcImage.format) )
         return HRESULT_FROM_WIN32( ERROR_NOT_SUPPORTED );
 
 #ifdef _M_X64
@@ -127,7 +127,7 @@ HRESULT PremultiplyAlpha( const Image& srcImage, DWORD flags, ScratchImage& imag
     HRESULT hr = image.Initialize2D( srcImage.format, srcImage.width, srcImage.height, 1, 1 );
     if ( FAILED(hr) )
         return hr;
-   
+
     const Image *rimage = image.GetImage( 0, 0, 0 );
     if ( !rimage )
     {
@@ -156,9 +156,9 @@ HRESULT PremultiplyAlpha( const Image* srcImages, size_t nimages, const TexMetad
         return E_INVALIDARG;
 
     if ( IsCompressed(metadata.format)
-         || IsVideo(metadata.format)
-         || IsTypeless(metadata.format)
-         || !HasAlpha(metadata.format) )
+            || IsVideo(metadata.format)
+            || IsTypeless(metadata.format)
+            || !HasAlpha(metadata.format) )
         return HRESULT_FROM_WIN32( ERROR_NOT_SUPPORTED );
 
 #ifdef _M_X64

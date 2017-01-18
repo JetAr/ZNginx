@@ -1,11 +1,11 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXSH.h -- C++ Spherical Harmonics Math Library
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
 // ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
 // THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
 // PARTICULAR PURPOSE.
-//  
+//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // http://go.microsoft.com/fwlink/p/?LinkId=262885
@@ -60,16 +60,16 @@ float* XMSHMultiply5( _Out_writes_(25) float *result, _In_reads_(25) const float
 float* XMSHMultiply6( _Out_writes_(36) float *result, _In_reads_(36) const float *inputF, _In_reads_(36) const float *inputG );
 
 bool XM_CALLCONV XMSHEvalDirectionalLight( _In_ size_t order, _In_ FXMVECTOR dir, _In_ FXMVECTOR color,
-                                           _Out_writes_(order*order) float *resultR, _Out_writes_opt_(order*order) float *resultG, _Out_writes_opt_(order*order) float *resultB );
+        _Out_writes_(order*order) float *resultR, _Out_writes_opt_(order*order) float *resultG, _Out_writes_opt_(order*order) float *resultB );
 
 bool XM_CALLCONV XMSHEvalSphericalLight( _In_ size_t order, _In_ FXMVECTOR pos, _In_ float radius, _In_ FXMVECTOR color,
-                                         _Out_writes_(order*order) float *resultR, _Out_writes_opt_(order*order) float *resultG, _Out_writes_opt_(order*order) float *resultB );
+        _Out_writes_(order*order) float *resultR, _Out_writes_opt_(order*order) float *resultG, _Out_writes_opt_(order*order) float *resultB );
 
 bool XM_CALLCONV XMSHEvalConeLight( _In_ size_t order, _In_ FXMVECTOR dir, _In_ float radius, _In_ FXMVECTOR color,
                                     _Out_writes_(order*order) float *resultR, _Out_writes_opt_(order*order) float *resultG, _Out_writes_opt_(order*order) float *resultB );
 
 bool XM_CALLCONV XMSHEvalHemisphereLight( _In_ size_t order, _In_ FXMVECTOR dir, _In_ FXMVECTOR topColor, _In_ FXMVECTOR bottomColor,
-                                          _Out_writes_(order*order) float *resultR, _Out_writes_opt_(order*order) float *resultG, _Out_writes_opt_(order*order) float *resultB );
+        _Out_writes_(order*order) float *resultR, _Out_writes_opt_(order*order) float *resultG, _Out_writes_opt_(order*order) float *resultB );
 
 HRESULT SHProjectCubeMap( _In_ ID3D11DeviceContext *context, _In_ size_t order, _In_ ID3D11Texture2D *cubeMap,
                           _Out_writes_opt_(order*order) float *resultR, _Out_writes_opt_(order*order) float *resultG, _Out_writes_opt_(order*order) float *resultB );

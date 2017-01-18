@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        MotionBlurAdvanced\src/perftracker_int.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -40,31 +40,34 @@
 #include <stdint.h>
 
 #ifdef DISABLE_PERF_TRACKING
-    #define PERF_FRAME_BEGIN_IMPL(ctx) ;
-    #define PERF_FRAME_END_IMPL(ctx) ;
-    #define PERF_EVENT_SCOPED_IMPL(ctx, eventname) ;
-    #define PERF_EVENT_BEGIN_IMPL(ctx, eventname) ;
-    #define PERF_EVENT_END_IMPL(ctx) ;
+#define PERF_FRAME_BEGIN_IMPL(ctx) ;
+#define PERF_FRAME_END_IMPL(ctx) ;
+#define PERF_EVENT_SCOPED_IMPL(ctx, eventname) ;
+#define PERF_EVENT_BEGIN_IMPL(ctx, eventname) ;
+#define PERF_EVENT_END_IMPL(ctx) ;
 #else
 
-namespace PerfTracker {
-    class EventReference {
-    public:
-        EventReference(UINT h, const char * s);
-    };
-    class ScopedEvent {
-    private:
-        ID3D11DeviceContext * ctx;
-        UINT handle;
-        const char * name;
-    public:
-        ScopedEvent(ID3D11DeviceContext * c, UINT handle, const char * s);
-        ~ScopedEvent();
-    };
-    void frame_begin(ID3D11DeviceContext * ctx);
-    void frame_end(ID3D11DeviceContext * ctx);
-    void event_begin(ID3D11DeviceContext * ctx, UINT event_id);
-    void event_end(ID3D11DeviceContext * ctx);
+namespace PerfTracker
+{
+class EventReference
+{
+public:
+    EventReference(UINT h, const char * s);
+};
+class ScopedEvent
+{
+private:
+    ID3D11DeviceContext * ctx;
+    UINT handle;
+    const char * name;
+public:
+    ScopedEvent(ID3D11DeviceContext * c, UINT handle, const char * s);
+    ~ScopedEvent();
+};
+void frame_begin(ID3D11DeviceContext * ctx);
+void frame_end(ID3D11DeviceContext * ctx);
+void event_begin(ID3D11DeviceContext * ctx, UINT event_id);
+void event_end(ID3D11DeviceContext * ctx);
 }
 
 #define H1(s,i,x)   (x*65599u+(uint8_t)s[(i)<strlen(s)?strlen(s)-1-(i):strlen(s)])

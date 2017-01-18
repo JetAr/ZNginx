@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: audio.cpp
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -42,9 +42,9 @@ HRESULT InitAudio()
 #endif
 
     UINT32 flags = 0;
- #if (_WIN32_WINNT < 0x0602 /*_WIN32_WINNT_WIN8*/) && defined(_DEBUG)
+#if (_WIN32_WINNT < 0x0602 /*_WIN32_WINNT_WIN8*/) && defined(_DEBUG)
     flags |= XAUDIO2_DEBUG_ENGINE;
- #endif
+#endif
     hr = XAudio2Create( &g_audioState.pXAudio2, flags );
     if( FAILED( hr  ) )
         return hr;
@@ -53,9 +53,9 @@ HRESULT InitAudio()
     // To see the trace output, you need to view ETW logs for this application:
     //    Go to Control Panel, Administrative Tools, Event Viewer.
     //    View->Show Analytic and Debug Logs.
-    //    Applications and Services Logs / Microsoft / Windows / XAudio2. 
-    //    Right click on Microsoft Windows XAudio2 debug logging, Properties, then Enable Logging, and hit OK 
-    XAUDIO2_DEBUG_CONFIGURATION debug ={0};
+    //    Applications and Services Logs / Microsoft / Windows / XAudio2.
+    //    Right click on Microsoft Windows XAudio2 debug logging, Properties, then Enable Logging, and hit OK
+    XAUDIO2_DEBUG_CONFIGURATION debug = {0};
     debug.TraceMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS;
     debug.BreakMask = XAUDIO2_LOG_ERRORS;
     g_audioState.pXAudio2->SetDebugConfiguration( &debug, 0 );
@@ -127,7 +127,7 @@ HRESULT PrepareAudio( const LPWSTR wavname )
     // Create the source voice
     assert( g_audioState.pXAudio2 != 0 );
     V_RETURN( g_audioState.pXAudio2->CreateSourceVoice( &g_audioState.pSourceVoice, pwfx, 0,
-                                                        XAUDIO2_DEFAULT_FREQ_RATIO, nullptr, nullptr ) );
+              XAUDIO2_DEFAULT_FREQ_RATIO, nullptr, nullptr ) );
 
     // Create the custom APO instances
     CSimpleAPO* pSimpleAPO = nullptr;

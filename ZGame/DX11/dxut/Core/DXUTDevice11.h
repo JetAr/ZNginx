@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DXUTDevice11.h
 //
 // Enumerates D3D adapters, devices, modes, etc.
@@ -19,7 +19,7 @@ void DXUTApplyDefaultDeviceSettings(DXUTDeviceSettings *modifySettings);
 //--------------------------------------------------------------------------------------
 // Functions to get bit depth from formats
 //--------------------------------------------------------------------------------------
-HRESULT WINAPI DXUTGetD3D11AdapterDisplayMode( _In_ UINT AdapterOrdinal, _In_ UINT Output, _Out_ DXGI_MODE_DESC* pModeDesc ); 
+HRESULT WINAPI DXUTGetD3D11AdapterDisplayMode( _In_ UINT AdapterOrdinal, _In_ UINT Output, _Out_ DXGI_MODE_DESC* pModeDesc );
 
 
 
@@ -49,19 +49,25 @@ struct CD3D11EnumDeviceSettingsCombo;
 class CD3D11Enumeration
 {
 public:
-    // These should be called before Enumerate(). 
+    // These should be called before Enumerate().
     //
-    // Use these calls and the IsDeviceAcceptable to control the contents of 
+    // Use these calls and the IsDeviceAcceptable to control the contents of
     // the enumeration object, which affects the device selection and the device settings dialog.
-    void SetResolutionMinMax( _In_ UINT nMinWidth, _In_ UINT nMinHeight, _In_ UINT nMaxWidth, _In_ UINT nMaxHeight );  
+    void SetResolutionMinMax( _In_ UINT nMinWidth, _In_ UINT nMinHeight, _In_ UINT nMaxWidth, _In_ UINT nMaxHeight );
     void SetRefreshMinMax( _In_ UINT nMin, _In_ UINT nMax );
-    void SetForceFeatureLevel( _In_ D3D_FEATURE_LEVEL forceFL) { m_forceFL = forceFL; }
+    void SetForceFeatureLevel( _In_ D3D_FEATURE_LEVEL forceFL)
+    {
+        m_forceFL = forceFL;
+    }
     void SetMultisampleQualityMax( _In_ UINT nMax );
     void ResetPossibleDepthStencilFormats();
     void SetEnumerateAllAdapterFormats( _In_ bool bEnumerateAllAdapterFormats );
-    
+
     // Call Enumerate() to enumerate available D3D11 adapters, devices, modes, etc.
-    bool HasEnumerated() { return m_bHasEnumerated; }
+    bool HasEnumerated()
+    {
+        return m_bHasEnumerated;
+    }
     HRESULT Enumerate( _In_ LPDXUTCALLBACKISD3D11DEVICEACCEPTABLE IsD3D11DeviceAcceptableFunc,
                        _In_opt_ void* pIsD3D11DeviceAcceptableFuncUserContext );
 
@@ -70,10 +76,19 @@ public:
     CD3D11EnumAdapterInfo*                   GetAdapterInfo( _In_ UINT AdapterOrdinal ) const;
     CD3D11EnumDeviceInfo*                    GetDeviceInfo( _In_ UINT AdapterOrdinal, _In_ D3D_DRIVER_TYPE DeviceType ) const;
     CD3D11EnumOutputInfo*                    GetOutputInfo( _In_ UINT AdapterOrdinal, _In_ UINT Output ) const;
-    CD3D11EnumDeviceSettingsCombo*           GetDeviceSettingsCombo( _In_ DXUTD3D11DeviceSettings* pDeviceSettings ) const { return GetDeviceSettingsCombo( pDeviceSettings->AdapterOrdinal, pDeviceSettings->sd.BufferDesc.Format, pDeviceSettings->sd.Windowed ); }
+    CD3D11EnumDeviceSettingsCombo*           GetDeviceSettingsCombo( _In_ DXUTD3D11DeviceSettings* pDeviceSettings ) const
+    {
+        return GetDeviceSettingsCombo( pDeviceSettings->AdapterOrdinal, pDeviceSettings->sd.BufferDesc.Format, pDeviceSettings->sd.Windowed );
+    }
     CD3D11EnumDeviceSettingsCombo*           GetDeviceSettingsCombo( _In_ UINT AdapterOrdinal, _In_ DXGI_FORMAT BackBufferFormat, _In_ BOOL Windowed ) const;
-    D3D_FEATURE_LEVEL                        GetWARPFeaturevel() const { return m_warpFL; }
-    D3D_FEATURE_LEVEL                        GetREFFeaturevel() const { return m_refFL; }
+    D3D_FEATURE_LEVEL                        GetWARPFeaturevel() const
+    {
+        return m_warpFL;
+    }
+    D3D_FEATURE_LEVEL                        GetREFFeaturevel() const
+    {
+        return m_refFL;
+    }
 
     ~CD3D11Enumeration();
 
@@ -100,7 +115,7 @@ private:
     HRESULT EnumerateDevices( _In_ CD3D11EnumAdapterInfo *pAdapterInfo );
     HRESULT EnumerateDeviceCombos(  _In_ CD3D11EnumAdapterInfo* pAdapterInfo );
     HRESULT EnumerateDeviceCombosNoAdapter( _In_ CD3D11EnumAdapterInfo* pAdapterInfo );
-    
+
     HRESULT EnumerateDisplayModes( _In_ CD3D11EnumOutputInfo *pOutputInfo );
     void BuildMultiSampleQualityList( _In_ DXGI_FORMAT fmt, _In_ CD3D11EnumDeviceSettingsCombo* pDeviceCombo );
     void ClearAdapterInfoList();
@@ -112,7 +127,7 @@ CD3D11Enumeration* WINAPI DXUTGetD3D11Enumeration(_In_ bool bForceEnumerate = fa
 #define DXGI_MAX_DEVICE_IDENTIFIER_STRING 128
 
 //--------------------------------------------------------------------------------------
-// A class describing an adapter which contains a unique adapter ordinal 
+// A class describing an adapter which contains a unique adapter ordinal
 // that is installed on the system
 //--------------------------------------------------------------------------------------
 class CD3D11EnumAdapterInfo
@@ -125,8 +140,8 @@ public:
         m_pAdapter( nullptr ),
         bAdapterUnavailable(false)
     {
-       *szUniqueDescription = 0;
-       memset( &AdapterDesc, 0, sizeof(AdapterDesc) );
+        *szUniqueDescription = 0;
+        memset( &AdapterDesc, 0, sizeof(AdapterDesc) );
     }
     ~CD3D11EnumAdapterInfo();
 
@@ -138,7 +153,7 @@ public:
 
     std::vector<CD3D11EnumOutputInfo*> outputInfoList; // Array of CD3D11EnumOutputInfo*
     std::vector<CD3D11EnumDeviceInfo*> deviceInfoList; // Array of CD3D11EnumDeviceInfo*
-    // List of CD3D11EnumDeviceSettingsCombo* with a unique set 
+    // List of CD3D11EnumDeviceSettingsCombo* with a unique set
     // of BackBufferFormat, and Windowed
     std::vector<CD3D11EnumDeviceSettingsCombo*> deviceSettingsComboList;
 };
@@ -183,8 +198,8 @@ public:
 
 
 //--------------------------------------------------------------------------------------
-// A struct describing device settings that contains a unique combination of 
-// adapter format, back buffer format, and windowed that is compatible with a 
+// A struct describing device settings that contains a unique combination of
+// adapter format, back buffer format, and windowed that is compatible with a
 // particular Direct3D device and the app.
 //--------------------------------------------------------------------------------------
 struct CD3D11EnumDeviceSettingsCombo
@@ -203,8 +218,8 @@ struct CD3D11EnumDeviceSettingsCombo
     CD3D11EnumOutputInfo* pOutputInfo;
 };
 
-float   DXUTRankD3D11DeviceCombo( _In_ CD3D11EnumDeviceSettingsCombo* pDeviceSettingsCombo, 
-                                  _In_ DXUTD3D11DeviceSettings* pOptimalDeviceSettings, 
+float   DXUTRankD3D11DeviceCombo( _In_ CD3D11EnumDeviceSettingsCombo* pDeviceSettingsCombo,
+                                  _In_ DXUTD3D11DeviceSettings* pOptimalDeviceSettings,
                                   _Out_ int &bestModeIndex,
                                   _Out_ int &bestMSAAIndex
-                                 );
+                                );

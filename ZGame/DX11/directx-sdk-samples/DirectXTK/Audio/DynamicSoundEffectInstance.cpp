@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DynamicSoundEffectInstance.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -33,7 +33,7 @@ public:
         mObject( object )
     {
         if ( ( sampleRate < XAUDIO2_MIN_SAMPLE_RATE )
-             || ( sampleRate > XAUDIO2_MAX_SAMPLE_RATE ) )
+                || ( sampleRate > XAUDIO2_MAX_SAMPLE_RATE ) )
         {
             DebugTrace( "DynamicSoundEffectInstance sampleRate must be in range %u...%u\n", XAUDIO2_MIN_SAMPLE_RATE, XAUDIO2_MAX_SAMPLE_RATE );
             throw std::invalid_argument( "DynamicSoundEffectInstance" );
@@ -89,7 +89,10 @@ public:
 
     void SubmitBuffer( _In_reads_bytes_(audioBytes) const uint8_t* pAudioData, uint32_t offset, size_t audioBytes );
 
-    const WAVEFORMATEX* GetFormat() const { return &mWaveFormat; } ;
+    const WAVEFORMATEX* GetFormat() const
+    {
+        return &mWaveFormat;
+    } ;
 
     // IVoiceNotify
     virtual void __cdecl OnBufferEnd() override
@@ -192,7 +195,7 @@ void DynamicSoundEffectInstance::Impl::SubmitBuffer( const uint8_t* pAudioData, 
 #ifdef _DEBUG
         DebugTrace( "ERROR: DynamicSoundEffectInstance failed (%08X) when submitting buffer:\n", hr );
 
-        DebugTrace( "\tFormat Tag %u, %u channels, %u-bit, %u Hz, %Iu bytes [%u offset)\n", mWaveFormat.wFormatTag, 
+        DebugTrace( "\tFormat Tag %u, %u channels, %u-bit, %u Hz, %Iu bytes [%u offset)\n", mWaveFormat.wFormatTag,
                     mWaveFormat.nChannels, mWaveFormat.wBitsPerSample, mWaveFormat.nSamplesPerSec, audioBytes, offset );
 #endif
         throw std::exception( "SubmitSourceBuffer" );
@@ -215,7 +218,7 @@ void DynamicSoundEffectInstance::Impl::OnUpdate()
             mBufferNeeded( mObject );
         }
         break;
-    
+
     case WAIT_FAILED:
         throw std::exception( "WaitForSingleObjectEx" );
     }
@@ -232,8 +235,8 @@ void DynamicSoundEffectInstance::Impl::OnUpdate()
 // Public constructors
 _Use_decl_annotations_
 DynamicSoundEffectInstance::DynamicSoundEffectInstance( AudioEngine* engine,
-    std::function<void(DynamicSoundEffectInstance*)> bufferNeeded,
-    int sampleRate, int channels, int sampleBits, SOUND_EFFECT_INSTANCE_FLAGS flags ) :
+        std::function<void(DynamicSoundEffectInstance*)> bufferNeeded,
+        int sampleRate, int channels, int sampleBits, SOUND_EFFECT_INSTANCE_FLAGS flags ) :
     pImpl( new Impl( engine, this, bufferNeeded, sampleRate, channels, sampleBits, flags ) )
 {
 }
@@ -241,7 +244,7 @@ DynamicSoundEffectInstance::DynamicSoundEffectInstance( AudioEngine* engine,
 
 // Move constructor.
 DynamicSoundEffectInstance::DynamicSoundEffectInstance(DynamicSoundEffectInstance&& moveFrom)
-  : pImpl(std::move(moveFrom.pImpl))
+    : pImpl(std::move(moveFrom.pImpl))
 {
 }
 

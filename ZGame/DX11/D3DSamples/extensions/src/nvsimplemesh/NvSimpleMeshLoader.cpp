@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        src\nvsimplemesh/NvSimpleMeshLoader.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -47,7 +47,7 @@
 // XInput includes
 #include <xinput.h>
 
-// HRESULT translation for Direct3D and other APIs 
+// HRESULT translation for Direct3D and other APIs
 #include <dxerr.h>
 
 #ifndef V
@@ -99,7 +99,7 @@ bool NvSimpleMeshLoader::LoadFile(LPWSTR szFilename)
     bool bLoaded = false;
     (void)bLoaded;
 
-    // Create a logger instance 
+    // Create a logger instance
     Assimp::DefaultLogger::create("",Logger::VERBOSE);
 
     // Create an instance of the Importer class
@@ -121,22 +121,22 @@ bool NvSimpleMeshLoader::LoadFile(LPWSTR szFilename)
 
     // load the scene and preprocess it into the form we want
     const aiScene *scene = importer.ReadFile(szFilenameA,
-                                                aiProcess_Triangulate|    // only higher order primitives will be triangulated
-                                                aiProcess_GenNormals|    // if normals exist, will not be generated
-                                                aiProcess_CalcTangentSpace|
-                                                aiProcess_PreTransformVertices| // rolls all node hierarchy(if existant) into the local space of meshes
-                                                //aiProcess_RemoveRedundantMaterials|
-                                                //aiProcess_FixInfacingNormals|
-                                                aiProcess_FindDegenerates|
-                                                aiProcess_SortByPType|
-                                                aiProcess_RemoveComponent|    // processes the above flags set to remove data we don't want
-                                                aiProcess_FindInvalidData|
-                                                aiProcess_GenUVCoords|
-                                                aiProcess_TransformUVCoords|
-                                                aiProcess_OptimizeMeshes |
+                           aiProcess_Triangulate|    // only higher order primitives will be triangulated
+                           aiProcess_GenNormals|    // if normals exist, will not be generated
+                           aiProcess_CalcTangentSpace|
+                           aiProcess_PreTransformVertices| // rolls all node hierarchy(if existant) into the local space of meshes
+                           //aiProcess_RemoveRedundantMaterials|
+                           //aiProcess_FixInfacingNormals|
+                           aiProcess_FindDegenerates|
+                           aiProcess_SortByPType|
+                           aiProcess_RemoveComponent|    // processes the above flags set to remove data we don't want
+                           aiProcess_FindInvalidData|
+                           aiProcess_GenUVCoords|
+                           aiProcess_TransformUVCoords|
+                           aiProcess_OptimizeMeshes |
 
-                                                aiProcessPreset_TargetRealtime_Quality
-                                                );
+                           aiProcessPreset_TargetRealtime_Quality
+                                            );
 
     // can't load?
     if(!scene)
@@ -172,13 +172,15 @@ void NvSimpleMeshLoader::RecurseAddMeshes(const aiScene *scene, aiNode*pNode,D3D
 
     if(pNode->mNumMeshes > 0)
     {
-        for(int iSubMesh=0;iSubMesh < (int)pNode->mNumMeshes;iSubMesh++)
+        for(int iSubMesh=0; iSubMesh < (int)pNode->mNumMeshes; iSubMesh++)
         {
             aiMesh *pMesh = scene->mMeshes[pNode->mMeshes[iSubMesh]];
             NvSimpleRawMesh &activeMesh = pMeshes[pNode->mMeshes[iSubMesh]];    // we'll use the same ordering as the aiScene
 
-            float emin[3]; ::ZeroMemory(emin,3*sizeof(float));
-            float emax[3]; ::ZeroMemory(emax,3*sizeof(float));
+            float emin[3];
+            ::ZeroMemory(emin,3*sizeof(float));
+            float emax[3];
+            ::ZeroMemory(emax,3*sizeof(float));
 
             if(pMesh->HasPositions() && pMesh->HasNormals() && pMesh->HasTextureCoords(0) && pMesh->HasTangentsAndBitangents())
             {
@@ -187,14 +189,14 @@ void NvSimpleMeshLoader::RecurseAddMeshes(const aiScene *scene, aiNode*pNode,D3D
 
                 // copy loaded mesh data into our vertex struct
                 activeMesh.m_pVertexData = new NvSimpleRawMesh::Vertex[pMesh->mNumVertices];
-                for(unsigned int i=0;i<pMesh->mNumVertices;i++)
+                for(unsigned int i=0; i<pMesh->mNumVertices; i++)
                 {
                     memcpy((void*)&(activeMesh.m_pVertexData[i].Position),(void*)&(pMesh->mVertices[i]),sizeof(aiVector3D));
                     memcpy((void*)&(activeMesh.m_pVertexData[i].Normal),(void*)&(pMesh->mNormals[i]),sizeof(aiVector3D));
                     memcpy((void*)&(activeMesh.m_pVertexData[i].Tangent),(void*)&(pMesh->mTangents[i]),sizeof(aiVector3D));
                     memcpy((void*)&(activeMesh.m_pVertexData[i].UV),(void*)&(pMesh->mTextureCoords[0][i]),sizeof(aiVector2D));
 
-                    for(int m=0;m<3;m++)
+                    for(int m=0; m<3; m++)
                     {
                         emin[m] = min(emin[m],activeMesh.m_pVertexData[i].Position[m]);
                         emax[m] = max(emin[m],activeMesh.m_pVertexData[i].Position[m]);
@@ -207,7 +209,7 @@ void NvSimpleMeshLoader::RecurseAddMeshes(const aiScene *scene, aiNode*pNode,D3D
                     activeMesh.m_IndexSize = sizeof(UINT32);
 
                 activeMesh.m_pIndexData = new BYTE[pMesh->mNumFaces * 3 * activeMesh.m_IndexSize];
-                for(unsigned int i=0;i<pMesh->mNumFaces;i++)
+                for(unsigned int i=0; i<pMesh->mNumFaces; i++)
                 {
                     assert(pMesh->mFaces[i].mNumIndices == 3);
                     if(activeMesh.m_IndexSize == sizeof(UINT32))
@@ -254,7 +256,7 @@ void NvSimpleMeshLoader::RecurseAddMeshes(const aiScene *scene, aiNode*pNode,D3D
 
                             StringCchCopyA(szFilenameA,MAX_PATH,qualifiedPath.c_str());
                             MultiByteToWideChar(CP_ACP,0,szFilenameA,MAX_PATH,activeMesh.m_szDiffuseTexture,MAX_PATH);
-                        }    
+                        }
                     }
                     if(pMaterial->GetTextureCount(aiTextureType_NORMALS) > 0)
                     {
@@ -272,14 +274,14 @@ void NvSimpleMeshLoader::RecurseAddMeshes(const aiScene *scene, aiNode*pNode,D3D
 
                             StringCchCopyA(szFilenameA,MAX_PATH,qualifiedPath.c_str());
                             MultiByteToWideChar(CP_ACP,0,szFilenameA,MAX_PATH,activeMesh.m_szNormalTexture,MAX_PATH);
-                        }    
+                        }
                     }
                 }
             }
         }
     }
 
-    for(int iChild=0;iChild<(int)pNode->mNumChildren;iChild++)
+    for(int iChild=0; iChild<(int)pNode->mNumChildren; iChild++)
     {
         RecurseAddMeshes(scene, pNode->mChildren[iChild],&LocalCompositeTransformD3D,bFlattenTransforms);
     }

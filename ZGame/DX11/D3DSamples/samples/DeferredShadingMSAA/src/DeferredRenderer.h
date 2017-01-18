@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeferredShadingMSAA\src/DeferredRenderer.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -42,62 +42,65 @@ class ObjMeshDX;
 
 enum ComplexDetectApproach
 {
-	CoverageMask = 0, Discontinuity
+    CoverageMask = 0, Discontinuity
 };
-	
+
 enum BRDF
 {
-	Lambert = 0, OrenNayar
+    Lambert = 0, OrenNayar
 };
 
 class DeferredRendererController : public IVisualController
 {
 public:
-	DeferredRendererController(CFirstPersonCamera *pCam, int iMSAACount = 1);
-	virtual void Render(ID3D11Device*, ID3D11DeviceContext* pDeviceContext, ID3D11RenderTargetView* pRTV, ID3D11DepthStencilView* pDSV);
-	virtual HRESULT DeviceCreated(ID3D11Device* pDevice);
-	virtual void DeviceDestroyed();
-	virtual void BackBufferResized(ID3D11Device* pDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc);
+    DeferredRendererController(CFirstPersonCamera *pCam, int iMSAACount = 1);
+    virtual void Render(ID3D11Device*, ID3D11DeviceContext* pDeviceContext, ID3D11RenderTargetView* pRTV, ID3D11DepthStencilView* pDSV);
+    virtual HRESULT DeviceCreated(ID3D11Device* pDevice);
+    virtual void DeviceDestroyed();
+    virtual void BackBufferResized(ID3D11Device* pDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc);
 
-	void ChangeConfig(ID3D11Device* pDevice, const ComplexDetectApproach approach, const BRDF brdf, const bool bAdaptiveShading, const bool bShowComplexPixels, const bool bSeperatePass, const bool bPerSampleShader);
-	int GetMSAASampleCount() const { return m_iMSAACount; }
-	
+    void ChangeConfig(ID3D11Device* pDevice, const ComplexDetectApproach approach, const BRDF brdf, const bool bAdaptiveShading, const bool bShowComplexPixels, const bool bSeperatePass, const bool bPerSampleShader);
+    int GetMSAASampleCount() const
+    {
+        return m_iMSAACount;
+    }
+
 
 protected:
-	CFirstPersonCamera *pCamera;
-	std::vector<ObjMeshDX*> m_Meshes;
+    CFirstPersonCamera *pCamera;
+    std::vector<ObjMeshDX*> m_Meshes;
 
-	int					m_iMSAACount;
-	ComplexDetectApproach m_Approach;
-	bool				m_bSeperateComplexPass;
-	bool				m_bUsePerSamplePixelShader;
+    int					m_iMSAACount;
+    ComplexDetectApproach m_Approach;
+    bool				m_bSeperateComplexPass;
+    bool				m_bUsePerSamplePixelShader;
 
-	// GBuffer resources
-	ID3D11InputLayout*	m_pDefaultInputLayout;
-	ID3D11VertexShader* m_pFillGBufVertexShader;
-	ID3D11PixelShader*	m_pFillGBufPixelShader;
-	
-	// Mask Generation
-	ID3D11VertexShader* m_pComplexMaskVertexShader;
-	ID3D11PixelShader*	m_pComplexMaskPixelShader;
+    // GBuffer resources
+    ID3D11InputLayout*	m_pDefaultInputLayout;
+    ID3D11VertexShader* m_pFillGBufVertexShader;
+    ID3D11PixelShader*	m_pFillGBufPixelShader;
 
-	// Lighting resources
-	ID3D11VertexShader* m_pLightingVertexShader;
-	ID3D11PixelShader*	m_pLightingPixelShader;
-	ID3D11PixelShader*	m_pLightingPixelShaderPerSample;
-	
-	ID3D11Buffer*		m_pCBLighting;
-	ID3D11Buffer*		m_pCBMSAAPass;
-	ID3D11Buffer*		m_pCBConfig;
-	
-	// Textures
-	SimpleTexture		m_TexGBuffer;
-	SimpleTexture		m_TexGBuffer2;
-	SimpleTexture		m_TexGBufResolved2;
-	SimpleTexture		m_TexCoverageMask;
-	
-	ID3D11SamplerState*	m_pTextureSampler;
-	ID3D11SamplerState*	m_pPointSampler;
-	ID3D11DepthStencilState* m_pWriteStencilDSState;
-	ID3D11DepthStencilState* m_pTestStencilDSState;
+    // Mask Generation
+    ID3D11VertexShader* m_pComplexMaskVertexShader;
+    ID3D11PixelShader*	m_pComplexMaskPixelShader;
+
+    // Lighting resources
+    ID3D11VertexShader* m_pLightingVertexShader;
+    ID3D11PixelShader*	m_pLightingPixelShader;
+    ID3D11PixelShader*	m_pLightingPixelShaderPerSample;
+
+    ID3D11Buffer*		m_pCBLighting;
+    ID3D11Buffer*		m_pCBMSAAPass;
+    ID3D11Buffer*		m_pCBConfig;
+
+    // Textures
+    SimpleTexture		m_TexGBuffer;
+    SimpleTexture		m_TexGBuffer2;
+    SimpleTexture		m_TexGBufResolved2;
+    SimpleTexture		m_TexCoverageMask;
+
+    ID3D11SamplerState*	m_pTextureSampler;
+    ID3D11SamplerState*	m_pPointSampler;
+    ID3D11DepthStencilState* m_pWriteStencilDSState;
+    ID3D11DepthStencilState* m_pTestStencilDSState;
 };

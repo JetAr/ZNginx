@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXTexD3D11.cpp
-//  
+//
 // DirectX Texture Library - Direct3D 11 helpers
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -28,61 +28,135 @@ using Microsoft::WRL::ComPtr;
 
 namespace
 {
-    HRESULT Capture(
-        _In_ ID3D11DeviceContext* pContext,
-        _In_ ID3D11Resource* pSource,
-        const TexMetadata& metadata,
-        const ScratchImage& result)
-    {
-        if (!pContext || !pSource || !result.GetPixels())
-            return E_POINTER;
+HRESULT Capture(
+    _In_ ID3D11DeviceContext* pContext,
+    _In_ ID3D11Resource* pSource,
+    const TexMetadata& metadata,
+    const ScratchImage& result)
+{
+    if (!pContext || !pSource || !result.GetPixels())
+        return E_POINTER;
 
 #if defined(_XBOX_ONE) && defined(_TITLE)
 
-        ComPtr<ID3D11Device> d3dDevice;
-        pContext->GetDevice(d3dDevice.GetAddressOf());
+    ComPtr<ID3D11Device> d3dDevice;
+    pContext->GetDevice(d3dDevice.GetAddressOf());
 
-        if (d3dDevice->GetCreationFlags() & D3D11_CREATE_DEVICE_IMMEDIATE_CONTEXT_FAST_SEMANTICS)
+    if (d3dDevice->GetCreationFlags() & D3D11_CREATE_DEVICE_IMMEDIATE_CONTEXT_FAST_SEMANTICS)
+    {
+        ComPtr<ID3D11DeviceX> d3dDeviceX;
+        HRESULT hr = d3dDevice.As(&d3dDeviceX);
+        if (FAILED(hr))
+            return hr;
+
+        ComPtr<ID3D11DeviceContextX> d3dContextX;
+        hr = pContext->QueryInterface(IID_GRAPHICS_PPV_ARGS(d3dContextX.GetAddressOf()));
+        if (FAILED(hr))
+            return hr;
+
+        UINT64 copyFence = d3dContextX->InsertFence(0);
+
+        while (d3dDeviceX->IsFencePending(copyFence))
         {
-            ComPtr<ID3D11DeviceX> d3dDeviceX;
-            HRESULT hr = d3dDevice.As(&d3dDeviceX);
-            if (FAILED(hr))
-                return hr;
-
-            ComPtr<ID3D11DeviceContextX> d3dContextX;
-            hr = pContext->QueryInterface(IID_GRAPHICS_PPV_ARGS(d3dContextX.GetAddressOf()));
-            if (FAILED(hr))
-                return hr;
-
-            UINT64 copyFence = d3dContextX->InsertFence(0);
-
-            while (d3dDeviceX->IsFencePending(copyFence))
-            {
-                SwitchToThread();
-            }
+            SwitchToThread();
         }
+    }
 
 #endif
 
-        if (metadata.IsVolumemap())
-        {
-            //--- Volume texture ----------------------------------------------------------
-            assert(metadata.arraySize == 1);
+    if (metadata.IsVolumemap())
+    {
+        //--- Volume texture ----------------------------------------------------------
+        assert(metadata.arraySize == 1);
 
+        size_t height = metadata.height;
+        size_t depth = metadata.depth;
+
+        for (size_t level = 0; level < metadata.mipLevels; ++level)
+        {
+            UINT dindex = D3D11CalcSubresource(static_cast<UINT>(level), 0, static_cast<UINT>(metadata.mipLevels));
+
+            D3D11_MAPPED_SUBRESOURCE mapped;
+            HRESULT hr = pContext->Map(pSource, dindex, D3D11_MAP_READ, 0, &mapped);
+            if (FAILED(hr))
+                return hr;
+
+            auto pslice = reinterpret_cast<const uint8_t*>(mapped.pData);
+            if (!pslice)
+            {
+                pContext->Unmap(pSource, dindex);
+                return E_POINTER;
+            }
+
+            size_t lines = ComputeScanlines(metadata.format, height);
+            if (!lines)
+            {
+                pContext->Unmap(pSource, dindex);
+                return E_UNEXPECTED;
+            }
+
+            for (size_t slice = 0; slice < depth; ++slice)
+            {
+                const Image* img = result.GetImage(level, 0, slice);
+                if (!img)
+                {
+                    pContext->Unmap(pSource, dindex);
+                    return E_FAIL;
+                }
+
+                if (!img->pixels)
+                {
+                    pContext->Unmap(pSource, dindex);
+                    return E_POINTER;
+                }
+
+                const uint8_t* sptr = pslice;
+                uint8_t* dptr = img->pixels;
+                for (size_t h = 0; h < lines; ++h)
+                {
+                    size_t msize = std::min<size_t>(img->rowPitch, mapped.RowPitch);
+                    memcpy_s(dptr, img->rowPitch, sptr, msize);
+                    sptr += mapped.RowPitch;
+                    dptr += img->rowPitch;
+                }
+
+                pslice += mapped.DepthPitch;
+            }
+
+            pContext->Unmap(pSource, dindex);
+
+            if (height > 1)
+                height >>= 1;
+            if (depth > 1)
+                depth >>= 1;
+        }
+    }
+    else
+    {
+        //--- 1D or 2D texture --------------------------------------------------------
+        assert(metadata.depth == 1);
+
+        for (size_t item = 0; item < metadata.arraySize; ++item)
+        {
             size_t height = metadata.height;
-            size_t depth = metadata.depth;
 
             for (size_t level = 0; level < metadata.mipLevels; ++level)
             {
-                UINT dindex = D3D11CalcSubresource(static_cast<UINT>(level), 0, static_cast<UINT>(metadata.mipLevels));
+                UINT dindex = D3D11CalcSubresource(static_cast<UINT>(level), static_cast<UINT>(item), static_cast<UINT>(metadata.mipLevels));
 
                 D3D11_MAPPED_SUBRESOURCE mapped;
                 HRESULT hr = pContext->Map(pSource, dindex, D3D11_MAP_READ, 0, &mapped);
                 if (FAILED(hr))
                     return hr;
 
-                auto pslice = reinterpret_cast<const uint8_t*>(mapped.pData);
-                if (!pslice)
+                const Image* img = result.GetImage(level, item, 0);
+                if (!img)
+                {
+                    pContext->Unmap(pSource, dindex);
+                    return E_FAIL;
+                }
+
+                if (!img->pixels)
                 {
                     pContext->Unmap(pSource, dindex);
                     return E_POINTER;
@@ -95,100 +169,26 @@ namespace
                     return E_UNEXPECTED;
                 }
 
-                for (size_t slice = 0; slice < depth; ++slice)
+                auto sptr = reinterpret_cast<const uint8_t*>(mapped.pData);
+                uint8_t* dptr = img->pixels;
+                for (size_t h = 0; h < lines; ++h)
                 {
-                    const Image* img = result.GetImage(level, 0, slice);
-                    if (!img)
-                    {
-                        pContext->Unmap(pSource, dindex);
-                        return E_FAIL;
-                    }
-
-                    if (!img->pixels)
-                    {
-                        pContext->Unmap(pSource, dindex);
-                        return E_POINTER;
-                    }
-
-                    const uint8_t* sptr = pslice;
-                    uint8_t* dptr = img->pixels;
-                    for (size_t h = 0; h < lines; ++h)
-                    {
-                        size_t msize = std::min<size_t>(img->rowPitch, mapped.RowPitch);
-                        memcpy_s(dptr, img->rowPitch, sptr, msize);
-                        sptr += mapped.RowPitch;
-                        dptr += img->rowPitch;
-                    }
-
-                    pslice += mapped.DepthPitch;
+                    size_t msize = std::min<size_t>(img->rowPitch, mapped.RowPitch);
+                    memcpy_s(dptr, img->rowPitch, sptr, msize);
+                    sptr += mapped.RowPitch;
+                    dptr += img->rowPitch;
                 }
 
                 pContext->Unmap(pSource, dindex);
 
                 if (height > 1)
                     height >>= 1;
-                if (depth > 1)
-                    depth >>= 1;
             }
         }
-        else
-        {
-            //--- 1D or 2D texture --------------------------------------------------------
-            assert(metadata.depth == 1);
-
-            for (size_t item = 0; item < metadata.arraySize; ++item)
-            {
-                size_t height = metadata.height;
-
-                for (size_t level = 0; level < metadata.mipLevels; ++level)
-                {
-                    UINT dindex = D3D11CalcSubresource(static_cast<UINT>(level), static_cast<UINT>(item), static_cast<UINT>(metadata.mipLevels));
-
-                    D3D11_MAPPED_SUBRESOURCE mapped;
-                    HRESULT hr = pContext->Map(pSource, dindex, D3D11_MAP_READ, 0, &mapped);
-                    if (FAILED(hr))
-                        return hr;
-
-                    const Image* img = result.GetImage(level, item, 0);
-                    if (!img)
-                    {
-                        pContext->Unmap(pSource, dindex);
-                        return E_FAIL;
-                    }
-
-                    if (!img->pixels)
-                    {
-                        pContext->Unmap(pSource, dindex);
-                        return E_POINTER;
-                    }
-
-                    size_t lines = ComputeScanlines(metadata.format, height);
-                    if (!lines)
-                    {
-                        pContext->Unmap(pSource, dindex);
-                        return E_UNEXPECTED;
-                    }
-
-                    auto sptr = reinterpret_cast<const uint8_t*>(mapped.pData);
-                    uint8_t* dptr = img->pixels;
-                    for (size_t h = 0; h < lines; ++h)
-                    {
-                        size_t msize = std::min<size_t>(img->rowPitch, mapped.RowPitch);
-                        memcpy_s(dptr, img->rowPitch, sptr, msize);
-                        sptr += mapped.RowPitch;
-                        dptr += img->rowPitch;
-                    }
-
-                    pContext->Unmap(pSource, dindex);
-
-                    if (height > 1)
-                        height >>= 1;
-                }
-            }
-        }
-
-        return S_OK;
     }
+
+    return S_OK;
+}
 }
 
 
@@ -263,13 +263,13 @@ bool DirectX::IsSupportedTexture(
             return false;
 
         if ((arraySize > D3D11_REQ_TEXTURE1D_ARRAY_AXIS_DIMENSION)
-            || (iWidth > D3D11_REQ_TEXTURE1D_U_DIMENSION))
+                || (iWidth > D3D11_REQ_TEXTURE1D_U_DIMENSION))
             return false;
 
         if (fl < D3D_FEATURE_LEVEL_11_0)
         {
             if ((arraySize > D3D10_REQ_TEXTURE1D_ARRAY_AXIS_DIMENSION)
-                || (iWidth > D3D10_REQ_TEXTURE1D_U_DIMENSION))
+                    || (iWidth > D3D10_REQ_TEXTURE1D_U_DIMENSION))
                 return false;
 
             if (fl < D3D_FEATURE_LEVEL_10_0)
@@ -290,15 +290,15 @@ bool DirectX::IsSupportedTexture(
                 return false;
 
             if ((arraySize > D3D11_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION)
-                || (iWidth > D3D11_REQ_TEXTURECUBE_DIMENSION)
-                || (iHeight > D3D11_REQ_TEXTURECUBE_DIMENSION))
+                    || (iWidth > D3D11_REQ_TEXTURECUBE_DIMENSION)
+                    || (iHeight > D3D11_REQ_TEXTURECUBE_DIMENSION))
                 return false;
 
             if (fl < D3D_FEATURE_LEVEL_11_0)
             {
                 if ((arraySize > D3D10_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION)
-                    || (iWidth > D3D10_REQ_TEXTURECUBE_DIMENSION)
-                    || (iHeight > D3D10_REQ_TEXTURECUBE_DIMENSION))
+                        || (iWidth > D3D10_REQ_TEXTURECUBE_DIMENSION)
+                        || (iHeight > D3D10_REQ_TEXTURECUBE_DIMENSION))
                     return false;
 
                 if ((fl < D3D_FEATURE_LEVEL_10_1) && (arraySize != 6))
@@ -307,12 +307,12 @@ bool DirectX::IsSupportedTexture(
                 if (fl < D3D_FEATURE_LEVEL_10_0)
                 {
                     if ((iWidth > D3D_FL9_3_REQ_TEXTURECUBE_DIMENSION)
-                        || (iHeight > D3D_FL9_3_REQ_TEXTURECUBE_DIMENSION))
+                            || (iHeight > D3D_FL9_3_REQ_TEXTURECUBE_DIMENSION))
                         return false;
 
                     if ((fl < D3D_FEATURE_LEVEL_9_3)
-                        && ((iWidth > D3D_FL9_1_REQ_TEXTURECUBE_DIMENSION)
-                            || (iHeight > D3D_FL9_1_REQ_TEXTURECUBE_DIMENSION)))
+                            && ((iWidth > D3D_FL9_1_REQ_TEXTURECUBE_DIMENSION)
+                                || (iHeight > D3D_FL9_1_REQ_TEXTURECUBE_DIMENSION)))
                         return false;
                 }
             }
@@ -323,27 +323,27 @@ bool DirectX::IsSupportedTexture(
                 return false;
 
             if ((arraySize > D3D11_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION)
-                || (iWidth > D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION)
-                || (iHeight > D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION))
+                    || (iWidth > D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION)
+                    || (iHeight > D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION))
                 return false;
 
             if (fl < D3D_FEATURE_LEVEL_11_0)
             {
                 if ((arraySize > D3D10_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION)
-                    || (iWidth > D3D10_REQ_TEXTURE2D_U_OR_V_DIMENSION)
-                    || (iHeight > D3D10_REQ_TEXTURE2D_U_OR_V_DIMENSION))
+                        || (iWidth > D3D10_REQ_TEXTURE2D_U_OR_V_DIMENSION)
+                        || (iHeight > D3D10_REQ_TEXTURE2D_U_OR_V_DIMENSION))
                     return false;
 
                 if (fl < D3D_FEATURE_LEVEL_10_0)
                 {
                     if ((arraySize > 1)
-                        || (iWidth > D3D_FL9_3_REQ_TEXTURE2D_U_OR_V_DIMENSION)
-                        || (iHeight > D3D_FL9_3_REQ_TEXTURE2D_U_OR_V_DIMENSION))
+                            || (iWidth > D3D_FL9_3_REQ_TEXTURE2D_U_OR_V_DIMENSION)
+                            || (iHeight > D3D_FL9_3_REQ_TEXTURE2D_U_OR_V_DIMENSION))
                         return false;
 
                     if ((fl < D3D_FEATURE_LEVEL_9_3)
-                        && ((iWidth > D3D_FL9_1_REQ_TEXTURE2D_U_OR_V_DIMENSION)
-                            || (iHeight > D3D_FL9_1_REQ_TEXTURE2D_U_OR_V_DIMENSION)))
+                            && ((iWidth > D3D_FL9_1_REQ_TEXTURE2D_U_OR_V_DIMENSION)
+                                || (iHeight > D3D_FL9_1_REQ_TEXTURE2D_U_OR_V_DIMENSION)))
                         return false;
                 }
             }
@@ -355,23 +355,23 @@ bool DirectX::IsSupportedTexture(
             return false;
 
         if ((arraySize > 1)
-            || (iWidth > D3D11_REQ_TEXTURE3D_U_V_OR_W_DIMENSION)
-            || (iHeight > D3D11_REQ_TEXTURE3D_U_V_OR_W_DIMENSION)
-            || (iDepth > D3D11_REQ_TEXTURE3D_U_V_OR_W_DIMENSION))
+                || (iWidth > D3D11_REQ_TEXTURE3D_U_V_OR_W_DIMENSION)
+                || (iHeight > D3D11_REQ_TEXTURE3D_U_V_OR_W_DIMENSION)
+                || (iDepth > D3D11_REQ_TEXTURE3D_U_V_OR_W_DIMENSION))
             return false;
 
         if (fl < D3D_FEATURE_LEVEL_11_0)
         {
             if ((iWidth > D3D10_REQ_TEXTURE3D_U_V_OR_W_DIMENSION)
-                || (iHeight > D3D10_REQ_TEXTURE3D_U_V_OR_W_DIMENSION)
-                || (iDepth > D3D10_REQ_TEXTURE3D_U_V_OR_W_DIMENSION))
+                    || (iHeight > D3D10_REQ_TEXTURE3D_U_V_OR_W_DIMENSION)
+                    || (iDepth > D3D10_REQ_TEXTURE3D_U_V_OR_W_DIMENSION))
                 return false;
 
             if (fl < D3D_FEATURE_LEVEL_10_0)
             {
                 if ((iWidth > D3D_FL9_1_REQ_TEXTURE3D_U_V_OR_W_DIMENSION)
-                    || (iHeight > D3D_FL9_1_REQ_TEXTURE3D_U_V_OR_W_DIMENSION)
-                    || (iDepth > D3D_FL9_1_REQ_TEXTURE3D_U_V_OR_W_DIMENSION))
+                        || (iHeight > D3D_FL9_1_REQ_TEXTURE3D_U_V_OR_W_DIMENSION)
+                        || (iDepth > D3D_FL9_1_REQ_TEXTURE3D_U_V_OR_W_DIMENSION))
                     return false;
             }
         }
@@ -398,9 +398,9 @@ HRESULT DirectX::CreateTexture(
     ID3D11Resource** ppResource)
 {
     return CreateTextureEx(
-        pDevice, srcImages, nimages, metadata,
-        D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, 0, false,
-        ppResource);
+               pDevice, srcImages, nimages, metadata,
+               D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, 0, false,
+               ppResource);
 }
 
 _Use_decl_annotations_
@@ -425,7 +425,7 @@ HRESULT DirectX::CreateTextureEx(
         return E_INVALIDARG;
 
     if ((metadata.width > UINT32_MAX) || (metadata.height > UINT32_MAX)
-        || (metadata.mipLevels > UINT32_MAX) || (metadata.arraySize > UINT32_MAX))
+            || (metadata.mipLevels > UINT32_MAX) || (metadata.arraySize > UINT32_MAX))
         return E_INVALIDARG;
 
     std::unique_ptr<D3D11_SUBRESOURCE_DATA[]> initData(new (std::nothrow) D3D11_SUBRESOURCE_DATA[metadata.mipLevels * metadata.arraySize]);
@@ -479,9 +479,9 @@ HRESULT DirectX::CreateTextureEx(
                     return E_POINTER;
 
                 if (timg.pixels != pSlice
-                    || timg.format != metadata.format
-                    || timg.rowPitch != img.rowPitch
-                    || timg.slicePitch != img.slicePitch)
+                        || timg.format != metadata.format
+                        || timg.rowPitch != img.rowPitch
+                        || timg.slicePitch != img.slicePitch)
                     return E_FAIL;
 
                 pSlice = timg.pixels + img.slicePitch;
@@ -607,9 +607,9 @@ HRESULT DirectX::CreateShaderResourceView(
     ID3D11ShaderResourceView** ppSRV)
 {
     return CreateShaderResourceViewEx(
-        pDevice, srcImages, nimages, metadata,
-        D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, 0, false,
-        ppSRV);
+               pDevice, srcImages, nimages, metadata,
+               D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, 0, false,
+               ppSRV);
 }
 
 _Use_decl_annotations_
@@ -632,8 +632,8 @@ HRESULT DirectX::CreateShaderResourceViewEx(
 
     ComPtr<ID3D11Resource> resource;
     HRESULT hr = CreateTextureEx(pDevice, srcImages, nimages, metadata,
-        usage, bindFlags, cpuAccessFlags, miscFlags, forceSRGB,
-        resource.GetAddressOf());
+                                 usage, bindFlags, cpuAccessFlags, miscFlags, forceSRGB,
+                                 resource.GetAddressOf());
     if (FAILED(hr))
         return hr;
 

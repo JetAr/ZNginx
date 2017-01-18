@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        SoftShadows\src/SoftShadowsApp.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -37,7 +37,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // UI Control IDs
 ////////////////////////////////////////////////////////////////////////////////
-enum UIControlIDs 
+enum UIControlIDs
 {
     IDC_TOGGLEFULLSCREEN = 1,
     IDC_TOGGLEWARP,
@@ -88,7 +88,7 @@ SoftShadowsApp::SoftShadowsApp()
     m_d3dSettingsDlg.Init(&m_dialogResourceManager);
     m_sampleUI.Init(&m_dialogResourceManager);
 
-    // Initialize HUD    
+    // Initialize HUD
     m_hud.Init(&m_dialogResourceManager);
     m_hud.SetCallback(onGuiEvent, self);
     m_hud.SetSize(HUD_WIDTH, HUD_HEIGHT);
@@ -163,7 +163,7 @@ bool SoftShadowsApp::modifyDeviceSettings(DXUTDeviceSettings *deviceSettings)
     {
         firstTime = false;
         if ((DXUT_D3D11_DEVICE == deviceSettings->ver &&
-              deviceSettings->d3d11.DriverType == D3D_DRIVER_TYPE_REFERENCE))
+                deviceSettings->d3d11.DriverType == D3D_DRIVER_TYPE_REFERENCE))
         {
             DXUTDisplaySwitchingToREFWarning(deviceSettings->ver);
         }
@@ -303,7 +303,7 @@ HRESULT SoftShadowsApp::onCreateDevice(
     m_renderer.setGroundPlane(height, GROUND_PLANE_RADIUS);
 
     // Create the renderer device resources
-    m_renderer.onCreateDevice(device, backBufferSurfaceDesc);    
+    m_renderer.onCreateDevice(device, backBufferSurfaceDesc);
 
 #if defined(_DEBUG)
     ID3D11Debug *debug;
@@ -355,7 +355,7 @@ void SoftShadowsApp::onDestroyDevice()
     m_renderer.onDestroyDevice();
     m_knightMesh.Destroy();
     m_podiumMesh.Destroy();
-    
+
     m_dialogResourceManager.OnD3D11DestroyDevice();
     m_d3dSettingsDlg.OnD3D11DestroyDevice();
     DXUTGetGlobalResourceCache().OnDestroyDevice();
@@ -398,37 +398,37 @@ void SoftShadowsApp::onGuiEvent(UINT eventId, int controlID, CDXUTControl *contr
     WCHAR str[100];
     switch (controlID)
     {
-        case IDC_TOGGLEFULLSCREEN:
-            DXUTToggleFullScreen();
-            break;
-        case IDC_TOGGLEWARP:
-            DXUTToggleWARP();
-            break;
-        case IDC_TOGGLEREF:
-            DXUTToggleREF();
-            break;
-        case IDC_CHANGEDEVICE:
-            m_d3dSettingsDlg.SetActive(!m_d3dSettingsDlg.IsActive());
-            break;
-        case IDC_LIGHTSIZE_SLIDER:
-            m_renderer.setLightRadiusWorld((float)m_hud.GetSlider(IDC_LIGHTSIZE_SLIDER)->GetValue() / 100);
-            StringCchPrintf(str, 100, L"Light Size: %.2f", m_renderer.getLightRadiusWorld());
-            m_hud.GetStatic(IDC_LIGHTSIZE_STATIC)->SetText(str);
-            break;
-        case IDC_TECHNIQUE_COMBOBOX:
-            m_renderer.setShadowTechnique(static_cast<SoftShadowsRenderer::ShadowTechnique>(
-                m_hud.GetComboBox(IDC_TECHNIQUE_COMBOBOX)->GetSelectedIndex()));
-            break;
-        case IDC_TOGGLE_TEXTURE:
-            m_renderer.useTexture(m_hud.GetCheckBox(IDC_TOGGLE_TEXTURE)->GetChecked());
-            break;
-        case IDC_TOGGLE_VISDEPTH:
-            m_renderer.visualizeDepthTexture(m_hud.GetCheckBox(IDC_TOGGLE_VISDEPTH)->GetChecked());
-            break;
-        case IDC_PRESET_COMBOBOX:
-            m_renderer.setPcssPreset(static_cast<SoftShadowsRenderer::PcssPreset>(
-                m_hud.GetComboBox(IDC_PRESET_COMBOBOX)->GetSelectedIndex()));
-            break;
+    case IDC_TOGGLEFULLSCREEN:
+        DXUTToggleFullScreen();
+        break;
+    case IDC_TOGGLEWARP:
+        DXUTToggleWARP();
+        break;
+    case IDC_TOGGLEREF:
+        DXUTToggleREF();
+        break;
+    case IDC_CHANGEDEVICE:
+        m_d3dSettingsDlg.SetActive(!m_d3dSettingsDlg.IsActive());
+        break;
+    case IDC_LIGHTSIZE_SLIDER:
+        m_renderer.setLightRadiusWorld((float)m_hud.GetSlider(IDC_LIGHTSIZE_SLIDER)->GetValue() / 100);
+        StringCchPrintf(str, 100, L"Light Size: %.2f", m_renderer.getLightRadiusWorld());
+        m_hud.GetStatic(IDC_LIGHTSIZE_STATIC)->SetText(str);
+        break;
+    case IDC_TECHNIQUE_COMBOBOX:
+        m_renderer.setShadowTechnique(static_cast<SoftShadowsRenderer::ShadowTechnique>(
+                                          m_hud.GetComboBox(IDC_TECHNIQUE_COMBOBOX)->GetSelectedIndex()));
+        break;
+    case IDC_TOGGLE_TEXTURE:
+        m_renderer.useTexture(m_hud.GetCheckBox(IDC_TOGGLE_TEXTURE)->GetChecked());
+        break;
+    case IDC_TOGGLE_VISDEPTH:
+        m_renderer.visualizeDepthTexture(m_hud.GetCheckBox(IDC_TOGGLE_VISDEPTH)->GetChecked());
+        break;
+    case IDC_PRESET_COMBOBOX:
+        m_renderer.setPcssPreset(static_cast<SoftShadowsRenderer::PcssPreset>(
+                                     m_hud.GetComboBox(IDC_PRESET_COMBOBOX)->GetSelectedIndex()));
+        break;
     }
 }
 
@@ -436,7 +436,7 @@ void SoftShadowsApp::onGuiEvent(UINT eventId, int controlID, CDXUTControl *contr
 // SoftShadowsApp::onSampleGuiEvent()
 ////////////////////////////////////////////////////////////////////////////////
 void SoftShadowsApp::onSampleGuiEvent(UINT eventId, int controlId, CDXUTControl *control)
-{    
+{
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -472,7 +472,7 @@ void SoftShadowsApp::renderText()
 
         m_textHelper->SetInsertionPos(250, backBufferHeight - 15 * 5);
         m_textHelper->DrawTextLine(
-            L"Hide help: F1\n" 
+            L"Hide help: F1\n"
             L"Quit: ESC\n");
     }
     else

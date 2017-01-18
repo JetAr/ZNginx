@@ -1,4 +1,4 @@
-//
+﻿//
 // Game.cpp
 //
 
@@ -104,7 +104,7 @@ void Game::Clear()
     context->RSSetViewports(1, &viewport);
 
     PIXEndEvent(context);
- }
+}
 #pragma endregion
 
 #pragma region Message Handlers

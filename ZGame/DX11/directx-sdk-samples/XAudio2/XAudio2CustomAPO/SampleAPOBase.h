@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // SampleAPOBase.h
 //
 // Example custom xAPO template for XAudio2
@@ -54,7 +54,10 @@ protected:
     //
     // Accessors
     //
-    const WAVEFORMATEX& WaveFormat() const { return m_wfx; }
+    const WAVEFORMATEX& WaveFormat() const
+    {
+        return m_wfx;
+    }
 
     //
     // Overrides
@@ -81,7 +84,7 @@ protected:
     // Do any necessary calculations in response to parameter changes.
     // NOT marked pure virtual because there may not be a reason to
     // do additional calculations when parameters are set.
-    virtual void OnSetParameters( const ParameterClass& ){}
+    virtual void OnSetParameters( const ParameterClass& ) {}
 
 private:
     // Ring buffer needed by CXAPOParametersBase
@@ -101,19 +104,21 @@ private:
 // Registration properties for the sample xAPO classes.
 //--------------------------------------------------------------------------------------
 template<typename APOClass, typename ParameterClass>
-__declspec(selectany) XAPO_REGISTRATION_PROPERTIES CSampleXAPOBase<APOClass, ParameterClass>::m_regProps = {
-            __uuidof(APOClass),
-            L"SampleAPO",
-            L"Copyright (C)2008 Microsoft Corporation",
-            1,
-            0,
-            XAPO_FLAG_INPLACE_REQUIRED
-            | XAPO_FLAG_CHANNELS_MUST_MATCH
-            | XAPO_FLAG_FRAMERATE_MUST_MATCH
-            | XAPO_FLAG_BITSPERSAMPLE_MUST_MATCH
-            | XAPO_FLAG_BUFFERCOUNT_MUST_MATCH
-            | XAPO_FLAG_INPLACE_SUPPORTED,
-            1, 1, 1, 1 };
+__declspec(selectany) XAPO_REGISTRATION_PROPERTIES CSampleXAPOBase<APOClass, ParameterClass>::m_regProps =
+{
+    __uuidof(APOClass),
+    L"SampleAPO",
+    L"Copyright (C)2008 Microsoft Corporation",
+    1,
+    0,
+    XAPO_FLAG_INPLACE_REQUIRED
+    | XAPO_FLAG_CHANNELS_MUST_MATCH
+    | XAPO_FLAG_FRAMERATE_MUST_MATCH
+    | XAPO_FLAG_BITSPERSAMPLE_MUST_MATCH
+    | XAPO_FLAG_BUFFERCOUNT_MUST_MATCH
+    | XAPO_FLAG_INPLACE_SUPPORTED,
+    1, 1, 1, 1
+};
 
 
 //--------------------------------------------------------------------------------------
@@ -144,7 +149,7 @@ HRESULT CSampleXAPOBase<APOClass, ParameterClass>::CreateInstance( void* pInitDa
 //--------------------------------------------------------------------------------------
 template<typename APOClass, typename ParameterClass>
 CSampleXAPOBase<APOClass, ParameterClass>::CSampleXAPOBase( )
-: CXAPOParametersBase( &m_regProps, (BYTE*)m_parameters, sizeof( ParameterClass ), FALSE )
+    : CXAPOParametersBase( &m_regProps, (BYTE*)m_parameters, sizeof( ParameterClass ), FALSE )
 {
 #ifdef _XBOX_VER
     XMemSet( (BYTE*)m_parameters, 0, sizeof( m_parameters ) );
@@ -177,10 +182,10 @@ HRESULT CSampleXAPOBase<APOClass, ParameterClass>::LockForProcess(
     const XAPO_LOCKFORPROCESS_BUFFER_PARAMETERS *pOutputLockedParameters )
 {
     HRESULT hr = CXAPOParametersBase::LockForProcess(
-        InputLockedParameterCount,
-        pInputLockedParameters,
-        OutputLockedParameterCount,
-        pOutputLockedParameters );
+                     InputLockedParameterCount,
+                     pInputLockedParameters,
+                     OutputLockedParameterCount,
+                     pOutputLockedParameters );
 
     if( SUCCEEDED( hr ) )
     {

@@ -1,4 +1,4 @@
-//////////////////////////////////////////////////////////////////////////////
+﻿//////////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) Microsoft Corporation.  All Rights Reserved.
 //
@@ -194,7 +194,7 @@ lExit:
 
         D3DXASSERT( pSemantic );
 
-        pSemantic = strchr( pSemantic, '.' ); 
+        pSemantic = strchr( pSemantic, '.' );
 
         if( pSemantic == NULL )
         {
@@ -240,7 +240,7 @@ lExit:
         D3DXASSERT( ppSemantic && *ppSemantic );
 
         HRESULT hr = S_OK;
-        LPSTR pColon = strchr( *ppSemantic, ':' ); 
+        LPSTR pColon = strchr( *ppSemantic, ':' );
 
         if( pColon == NULL )
             return S_OK;
@@ -248,7 +248,7 @@ lExit:
         if( pColon == *ppSemantic )
         {
             StringCchCopyA( m_pError, MAX_ERROR_SIZE,
-                           "ID3D11Effect::ParseSODecl - Invalid output slot" );
+                            "ID3D11Effect::ParseSODecl - Invalid output slot" );
             VH( E_FAIL );
         }
 
@@ -257,7 +257,7 @@ lExit:
         if( outputSlot < 0 || outputSlot > 255 )
         {
             StringCchCopyA( m_pError, MAX_ERROR_SIZE,
-                           "ID3D11Effect::ParseSODecl - Invalid output slot" );
+                            "ID3D11Effect::ParseSODecl - Invalid output slot" );
             VH( E_FAIL );
         }
         m_newEntry.OutputSlot = (BYTE)outputSlot;
@@ -297,7 +297,7 @@ lExit:
         {
             m_newEntry.SemanticIndex = atoi( pSemantic + uLen );
             pSemantic[uLen] = '\0';
-        } 
+        }
         else
         {
             m_newEntry.SemanticIndex = 0;

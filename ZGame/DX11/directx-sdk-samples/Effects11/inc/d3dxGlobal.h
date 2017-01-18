@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: D3DXGlobal.h
 //
 // Direct3D 11 Effects helper defines and data structures
@@ -20,27 +20,27 @@
 
 namespace D3DX11Debug
 {
-    // Helper sets a D3D resource name string (used by PIX and debug layer leak reporting).
-    inline void SetDebugObjectName(_In_ ID3D11DeviceChild* resource, _In_z_ const char *name )
-    {
-        #if !defined(NO_D3D11_DEBUG_NAME) && ( defined(_DEBUG) || defined(PROFILE) )
-            resource->SetPrivateData( WKPDID_D3DDebugObjectName, static_cast<UINT>(strlen(name)), name );
-        #else
-            UNREFERENCED_PARAMETER(resource);
-            UNREFERENCED_PARAMETER(name);
-        #endif
-    }
+// Helper sets a D3D resource name string (used by PIX and debug layer leak reporting).
+inline void SetDebugObjectName(_In_ ID3D11DeviceChild* resource, _In_z_ const char *name )
+{
+#if !defined(NO_D3D11_DEBUG_NAME) && ( defined(_DEBUG) || defined(PROFILE) )
+    resource->SetPrivateData( WKPDID_D3DDebugObjectName, static_cast<UINT>(strlen(name)), name );
+#else
+    UNREFERENCED_PARAMETER(resource);
+    UNREFERENCED_PARAMETER(name);
+#endif
+}
 
-    template<UINT TNameLength>
-    inline void SetDebugObjectName(_In_ ID3D11DeviceChild* resource, _In_z_ const char (&name)[TNameLength])
-    {
-        #if !defined(NO_D3D11_DEBUG_NAME) && ( defined(_DEBUG) || defined(PROFILE) )
-            resource->SetPrivateData(WKPDID_D3DDebugObjectName, TNameLength - 1, name);
-        #else
-            UNREFERENCED_PARAMETER(resource);
-            UNREFERENCED_PARAMETER(name);
-        #endif
-    }
+template<UINT TNameLength>
+inline void SetDebugObjectName(_In_ ID3D11DeviceChild* resource, _In_z_ const char (&name)[TNameLength])
+{
+#if !defined(NO_D3D11_DEBUG_NAME) && ( defined(_DEBUG) || defined(PROFILE) )
+    resource->SetPrivateData(WKPDID_D3DDebugObjectName, TNameLength - 1, name);
+#else
+    UNREFERENCED_PARAMETER(resource);
+    UNREFERENCED_PARAMETER(name);
+#endif
+}
 }
 
 using namespace D3DX11Debug;
@@ -54,7 +54,7 @@ using namespace D3DX11Debug;
 #if FXDEBUG
 #define __BREAK_ON_FAIL       { __debugbreak(); }
 #else
-#define __BREAK_ON_FAIL 
+#define __BREAK_ON_FAIL
 #endif
 
 #define VA(x, action) { hr = (x); if (FAILED(hr)) { action; __BREAK_ON_FAIL;                     return hr;  } }
@@ -228,7 +228,7 @@ public:
         HRESULT hr = S_OK;
         Clear();
         VN( m_pData = new uint8_t[vOther.m_MaxSize * sizeof(T)] );
-        
+
         m_CurSize = vOther.m_CurSize;
         m_MaxSize = vOther.m_MaxSize;
         m_hLastError = vOther.m_hLastError;
@@ -271,10 +271,10 @@ lExit:
 
     void Empty()
     {
-       
+
         // manually invoke destructor on all elements
         for (size_t i = 0; i < m_CurSize; ++ i)
-        {   
+        {
             ((T*)m_pData + i)->~T();
         }
         m_CurSize = 0;
@@ -341,7 +341,7 @@ lExit:
     HRESULT Insert(_In_ const T& var, _In_ uint32_t index)
     {
         assert(index < m_CurSize);
-        
+
         if (FAILED(Grow()))
             return m_hLastError;
 
@@ -355,7 +355,7 @@ lExit:
     HRESULT InsertRange(_In_reads_(count) const T *pVar, _In_ uint32_t index, _In_ uint32_t count)
     {
         assert(index < m_CurSize);
-        
+
         if (m_CurSize + count < m_CurSize)
         {
             m_hLastError = E_OUTOFMEMORY;
@@ -409,7 +409,7 @@ lExit:
     uint32_t FindIndexOf(_In_ const void *pEntry) const
     {
         for (size_t i = 0; i < m_CurSize; ++ i)
-        {   
+        {
             if (((T*)m_pData + i) == pEntry)
                 return i;
         }
@@ -603,10 +603,10 @@ public:
 
 public:
     HRESULT AddString(_In_z_ LPCSTR pString, _Inout_ uint32_t *pOffset);
-        // Writes a null-terminated string to buffer
+    // Writes a null-terminated string to buffer
 
     HRESULT AddData(_In_reads_bytes_(bufferSize) const void *pNewData, _In_ uint32_t bufferSize, _Inout_ uint32_t *pOffset);
-        // Writes data block to buffer
+    // Writes data block to buffer
 
     // Memory allocator support
     void*   Allocate(_In_ uint32_t bufferSize);
@@ -672,7 +672,7 @@ static uint32_t ComputeHash(_In_reads_bytes_(cbToHash) const uint8_t *pb, _In_ u
         c += pdw[2];
 
         HASH_MIX(a,b,c);
-        pb += 12; 
+        pb += 12;
         cbLeft -= 12;
     }
 
@@ -680,18 +680,29 @@ static uint32_t ComputeHash(_In_reads_bytes_(cbToHash) const uint8_t *pb, _In_ u
 
     switch(cbLeft) // all the case statements fall through
     {
-    case 11: c+=((uint32_t) pb[10] << 24);
-    case 10: c+=((uint32_t) pb[9]  << 16);
-    case 9 : c+=((uint32_t) pb[8]  <<  8);
-        // the first byte of c is reserved for the length
-    case 8 : b+=((uint32_t) pb[7]  << 24);
-    case 7 : b+=((uint32_t) pb[6]  << 16);
-    case 6 : b+=((uint32_t) pb[5]  <<  8);
-    case 5 : b+=pb[4];
-    case 4 : a+=((uint32_t) pb[3]  << 24);
-    case 3 : a+=((uint32_t) pb[2]  << 16);
-    case 2 : a+=((uint32_t) pb[1]  <<  8);
-    case 1 : a+=pb[0];
+    case 11:
+        c+=((uint32_t) pb[10] << 24);
+    case 10:
+        c+=((uint32_t) pb[9]  << 16);
+    case 9 :
+        c+=((uint32_t) pb[8]  <<  8);
+    // the first byte of c is reserved for the length
+    case 8 :
+        b+=((uint32_t) pb[7]  << 24);
+    case 7 :
+        b+=((uint32_t) pb[6]  << 16);
+    case 6 :
+        b+=((uint32_t) pb[5]  <<  8);
+    case 5 :
+        b+=pb[4];
+    case 4 :
+        a+=((uint32_t) pb[3]  << 24);
+    case 3 :
+        a+=((uint32_t) pb[2]  << 16);
+    case 2 :
+        a+=((uint32_t) pb[1]  <<  8);
+    case 1 :
+        a+=pb[0];
     }
 
     HASH_MIX(a,b,c);
@@ -721,7 +732,7 @@ static uint32_t ComputeHashLower(_In_reads_bytes_(cbToHash) const uint8_t *pb, _
         c += pdw[2];
 
         HASH_MIX(a,b,c);
-        pb += 12; 
+        pb += 12;
         cbLeft -= 12;
     }
 
@@ -733,18 +744,29 @@ static uint32_t ComputeHashLower(_In_reads_bytes_(cbToHash) const uint8_t *pb, _
 
     switch(cbLeft) // all the case statements fall through
     {
-    case 11: c+=((uint32_t) pbT[10] << 24);
-    case 10: c+=((uint32_t) pbT[9]  << 16);
-    case 9 : c+=((uint32_t) pbT[8]  <<  8);
-        // the first byte of c is reserved for the length
-    case 8 : b+=((uint32_t) pbT[7]  << 24);
-    case 7 : b+=((uint32_t) pbT[6]  << 16);
-    case 6 : b+=((uint32_t) pbT[5]  <<  8);
-    case 5 : b+=pbT[4];
-    case 4 : a+=((uint32_t) pbT[3]  << 24);
-    case 3 : a+=((uint32_t) pbT[2]  << 16);
-    case 2 : a+=((uint32_t) pbT[1]  <<  8);
-    case 1 : a+=pbT[0];
+    case 11:
+        c+=((uint32_t) pbT[10] << 24);
+    case 10:
+        c+=((uint32_t) pbT[9]  << 16);
+    case 9 :
+        c+=((uint32_t) pbT[8]  <<  8);
+    // the first byte of c is reserved for the length
+    case 8 :
+        b+=((uint32_t) pbT[7]  << 24);
+    case 7 :
+        b+=((uint32_t) pbT[6]  << 16);
+    case 6 :
+        b+=((uint32_t) pbT[5]  <<  8);
+    case 5 :
+        b+=pbT[4];
+    case 4 :
+        a+=((uint32_t) pbT[3]  << 24);
+    case 3 :
+        a+=((uint32_t) pbT[2]  << 16);
+    case 2 :
+        a+=((uint32_t) pbT[1]  <<  8);
+    case 1 :
+        a+=pbT[0];
     }
 
     HASH_MIX(a,b,c);
@@ -763,7 +785,7 @@ static uint32_t ComputeHash(_In_z_ LPCSTR pString)
 // 4) each is roughly in between two powers of 2;
 //    (2^n hash table sizes are VERY BAD; they effectively truncate your
 //     precision down to the n least significant bits of the hash)
-static const uint32_t c_PrimeSizes[] = 
+static const uint32_t c_PrimeSizes[] =
 {
     11,
     23,
@@ -872,7 +894,7 @@ public:
             // seize this hash entry, migrate it to the new table
             SHashEntry *pNewEntry;
             VN( pNewEntry = new SHashEntry );
-            
+
             pNewEntry->pNext = rgpNewHashEntries[index];
             pNewEntry->Data = iter.pHashEntry->Data;
             pNewEntry->Hash = iter.pHashEntry->Hash;
@@ -943,7 +965,7 @@ public:
 
         return DesiredSize;
     }
-    
+
     // O(n) function
     // Grows to the next suitable size (based off of the prime number table)
     // DesiredSize is merely a suggestion
@@ -962,17 +984,17 @@ public:
         actualSize = GetNextHashTableSize(DesiredSize);
 
         if (ProvidedArray &&
-            ProvidedArraySize >= actualSize)
+                ProvidedArraySize >= actualSize)
         {
             rgpNewHashEntries = reinterpret_cast<SHashEntry**>(ProvidedArray);
         }
         else
         {
             OwnProvidedArray = true;
-            
+
             VN( rgpNewHashEntries = new SHashEntry*[actualSize] );
         }
-        
+
         ZeroMemory(rgpNewHashEntries, sizeof(SHashEntry*) * actualSize);
 
         // Expensive operation: rebuild the hash table
@@ -1026,7 +1048,7 @@ lExit:
             DPF(0, "Uninitialized hash table!");
             return;
         }
-        
+
         float variance = 0.0f;
         float mean = (float)m_NumEntries / (float)m_NumHashSlots;
         uint32_t unusedSlots = 0;
@@ -1041,7 +1063,7 @@ lExit:
             while (nullptr != pCurrentEntry)
             {
                 SHashEntry *pCurrentEntry2 = m_rgpHashEntries[i];
-                
+
                 // check other hash entries in this slot for hash collisions or duplications
                 while (pCurrentEntry2 != pCurrentEntry)
                 {
@@ -1068,7 +1090,7 @@ lExit:
             {
                 ++ unusedSlots;
             }
-            
+
             // mean must be greater than 0 at this point
             variance += (float)entries * (float)entries / mean;
         }

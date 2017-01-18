@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: EnvironmentMapEffect.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -28,7 +28,7 @@ struct EnvironmentMapEffectConstants
 
     XMVECTOR diffuseColor;
     XMVECTOR emissiveColor;
-    
+
     XMVECTOR lightDirection[IEffectLights::MaxDirectionalLights];
     XMVECTOR lightDiffuseColor[IEffectLights::MaxDirectionalLights];
 
@@ -81,47 +81,47 @@ public:
 namespace
 {
 #if defined(_XBOX_ONE) && defined(_TITLE)
-    #include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMap.inc"
-    #include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMapFresnel.inc"
-    #include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMapOneLight.inc"
-    #include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMapOneLightFresnel.inc"
-    #include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMapPixelLighting.inc"
+#include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMap.inc"
+#include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMapFresnel.inc"
+#include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMapOneLight.inc"
+#include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMapOneLightFresnel.inc"
+#include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMapPixelLighting.inc"
 
-    #include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMapBn.inc"
-    #include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMapFresnelBn.inc"
-    #include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMapOneLightBn.inc"
-    #include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMapOneLightFresnelBn.inc"
-    #include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMapPixelLightingBn.inc"
+#include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMapBn.inc"
+#include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMapFresnelBn.inc"
+#include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMapOneLightBn.inc"
+#include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMapOneLightFresnelBn.inc"
+#include "Shaders/Compiled/XboxOneEnvironmentMapEffect_VSEnvMapPixelLightingBn.inc"
 
-    #include "Shaders/Compiled/XboxOneEnvironmentMapEffect_PSEnvMap.inc"
-    #include "Shaders/Compiled/XboxOneEnvironmentMapEffect_PSEnvMapNoFog.inc"
-    #include "Shaders/Compiled/XboxOneEnvironmentMapEffect_PSEnvMapSpecular.inc"
-    #include "Shaders/Compiled/XboxOneEnvironmentMapEffect_PSEnvMapSpecularNoFog.inc"
-    #include "Shaders/Compiled/XboxOneEnvironmentMapEffect_PSEnvMapPixelLighting.inc"
-    #include "Shaders/Compiled/XboxOneEnvironmentMapEffect_PSEnvMapPixelLightingNoFog.inc"
-    #include "Shaders/Compiled/XboxOneEnvironmentMapEffect_PSEnvMapPixelLightingFresnel.inc"
-    #include "Shaders/Compiled/XboxOneEnvironmentMapEffect_PSEnvMapPixelLightingFresnelNoFog.inc"
+#include "Shaders/Compiled/XboxOneEnvironmentMapEffect_PSEnvMap.inc"
+#include "Shaders/Compiled/XboxOneEnvironmentMapEffect_PSEnvMapNoFog.inc"
+#include "Shaders/Compiled/XboxOneEnvironmentMapEffect_PSEnvMapSpecular.inc"
+#include "Shaders/Compiled/XboxOneEnvironmentMapEffect_PSEnvMapSpecularNoFog.inc"
+#include "Shaders/Compiled/XboxOneEnvironmentMapEffect_PSEnvMapPixelLighting.inc"
+#include "Shaders/Compiled/XboxOneEnvironmentMapEffect_PSEnvMapPixelLightingNoFog.inc"
+#include "Shaders/Compiled/XboxOneEnvironmentMapEffect_PSEnvMapPixelLightingFresnel.inc"
+#include "Shaders/Compiled/XboxOneEnvironmentMapEffect_PSEnvMapPixelLightingFresnelNoFog.inc"
 #else
-    #include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMap.inc"
-    #include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMapFresnel.inc"
-    #include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMapOneLight.inc"
-    #include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMapOneLightFresnel.inc"
-    #include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMapPixelLighting.inc"
+#include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMap.inc"
+#include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMapFresnel.inc"
+#include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMapOneLight.inc"
+#include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMapOneLightFresnel.inc"
+#include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMapPixelLighting.inc"
 
-    #include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMapBn.inc"
-    #include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMapFresnelBn.inc"
-    #include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMapOneLightBn.inc"
-    #include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMapOneLightFresnelBn.inc"
-    #include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMapPixelLightingBn.inc"
+#include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMapBn.inc"
+#include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMapFresnelBn.inc"
+#include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMapOneLightBn.inc"
+#include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMapOneLightFresnelBn.inc"
+#include "Shaders/Compiled/EnvironmentMapEffect_VSEnvMapPixelLightingBn.inc"
 
-    #include "Shaders/Compiled/EnvironmentMapEffect_PSEnvMap.inc"
-    #include "Shaders/Compiled/EnvironmentMapEffect_PSEnvMapNoFog.inc"
-    #include "Shaders/Compiled/EnvironmentMapEffect_PSEnvMapSpecular.inc"
-    #include "Shaders/Compiled/EnvironmentMapEffect_PSEnvMapSpecularNoFog.inc"
-    #include "Shaders/Compiled/EnvironmentMapEffect_PSEnvMapPixelLighting.inc"
-    #include "Shaders/Compiled/EnvironmentMapEffect_PSEnvMapPixelLightingNoFog.inc"
-    #include "Shaders/Compiled/EnvironmentMapEffect_PSEnvMapPixelLightingFresnel.inc"
-    #include "Shaders/Compiled/EnvironmentMapEffect_PSEnvMapPixelLightingFresnelNoFog.inc"
+#include "Shaders/Compiled/EnvironmentMapEffect_PSEnvMap.inc"
+#include "Shaders/Compiled/EnvironmentMapEffect_PSEnvMapNoFog.inc"
+#include "Shaders/Compiled/EnvironmentMapEffect_PSEnvMapSpecular.inc"
+#include "Shaders/Compiled/EnvironmentMapEffect_PSEnvMapSpecularNoFog.inc"
+#include "Shaders/Compiled/EnvironmentMapEffect_PSEnvMapPixelLighting.inc"
+#include "Shaders/Compiled/EnvironmentMapEffect_PSEnvMapPixelLightingNoFog.inc"
+#include "Shaders/Compiled/EnvironmentMapEffect_PSEnvMapPixelLightingFresnel.inc"
+#include "Shaders/Compiled/EnvironmentMapEffect_PSEnvMapPixelLightingFresnelNoFog.inc"
 #endif
 }
 
@@ -261,11 +261,11 @@ SharedResourcePool<ID3D11Device*, EffectBase<EnvironmentMapEffectTraits>::Device
 
 // Constructor.
 EnvironmentMapEffect::Impl::Impl(_In_ ID3D11Device* device)
-  : EffectBase(device),
-    preferPerPixelLighting(false),
-    fresnelEnabled(true),
-    specularEnabled(false),
-    biasedVertexNormals(false)
+    : EffectBase(device),
+      preferPerPixelLighting(false),
+      fresnelEnabled(true),
+      specularEnabled(false),
+      biasedVertexNormals(false)
 {
     static_assert( _countof(EffectBase<EnvironmentMapEffectTraits>::VertexShaderIndices) == EnvironmentMapEffectTraits::ShaderPermutationCount, "array/max mismatch" );
     static_assert( _countof(EffectBase<EnvironmentMapEffectTraits>::VertexShaderBytecode) == EnvironmentMapEffectTraits::VertexShaderCount, "array/max mismatch" );
@@ -333,7 +333,7 @@ void EnvironmentMapEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
     matrices.SetConstants(dirtyFlags, constants.worldViewProj);
 
     fog.SetConstants(dirtyFlags, matrices.worldView, constants.fogVector);
-            
+
     lights.SetConstants(dirtyFlags, matrices, constants.world, constants.worldInverseTranspose, constants.eyePosition, constants.diffuseColor, constants.emissiveColor, true);
 
     // Set the textures.
@@ -344,7 +344,7 @@ void EnvironmentMapEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
     };
 
     deviceContext->PSSetShaderResources(0, 2, textures);
-    
+
     // Set shaders and constant buffers.
     ApplyShaders(deviceContext, GetCurrentShaderPermutation());
 }
@@ -352,14 +352,14 @@ void EnvironmentMapEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
 
 // Public constructor.
 EnvironmentMapEffect::EnvironmentMapEffect(_In_ ID3D11Device* device)
-  : pImpl(new Impl(device))
+    : pImpl(new Impl(device))
 {
 }
 
 
 // Move constructor.
 EnvironmentMapEffect::EnvironmentMapEffect(EnvironmentMapEffect&& moveFrom)
-  : pImpl(std::move(moveFrom.pImpl))
+    : pImpl(std::move(moveFrom.pImpl))
 {
 }
 

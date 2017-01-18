@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXMeshOptimize.cpp
-//  
+//
 // DirectX Mesh Geometry Library - Mesh optimization
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -79,11 +79,11 @@ public:
                 index_t i2 = indices[ face*3 + 2 ];
 
                 if ( i0 == index_t(-1)
-                     || i1 == index_t(-1)
-                     || i2 == index_t(-1)
-                     || i0 == i1
-                     || i0 == i2
-                     || i1 == i2 )
+                        || i1 == index_t(-1)
+                        || i2 == index_t(-1)
+                        || i0 == i1
+                        || i0 == i2
+                        || i1 == i2 )
                 {
                     // unused and degenerate faces should not have neighbors
                     for( uint32_t point = 0; point < 3; ++point )
@@ -94,7 +94,7 @@ public:
                         {
                             if ( k >= nFaces )
                                 return E_UNEXPECTED;
- 
+
                             if ( adjacency[ k*3 ] == face )
                                 mPhysicalNeighbors[ k ].neighbors[ 0 ] = UNUSED32;
 
@@ -117,8 +117,8 @@ public:
                         if ( neighbor != UNUSED32 )
                         {
                             if ( ( neighbor < faceOffset ) || ( neighbor >= faceMax )
-                                 || ( neighbor == adjacency[ face * 3 + ( ( n + 1 ) % 3 ) ] )
-                                 || ( neighbor == adjacency[ face * 3 + ( ( n + 2 ) % 3 ) ] ) )
+                                    || ( neighbor == adjacency[ face * 3 + ( ( n + 1 ) % 3 ) ] )
+                                    || ( neighbor == adjacency[ face * 3 + ( ( n + 2 ) % 3 ) ] ) )
                             {
                                 // Break links for any neighbors outside of our attribute set, and remove duplicate neighbors
                                 neighbor = UNUSED32;
@@ -152,7 +152,7 @@ public:
                 }
             }
         }
-        
+
         if ( !mMaxSubset )
             return E_FAIL;
 
@@ -197,8 +197,8 @@ public:
             index_t i2 = indices[ face*3 + 2 ];
 
             if ( i0 == index_t(-1)
-                 || i1 == index_t(-1)
-                 || i2 == index_t(-1) )
+                    || i1 == index_t(-1)
+                    || i2 == index_t(-1) )
             {
                 // filter out unused triangles
                 continue;
@@ -227,7 +227,7 @@ public:
         return S_OK;
     }
 
-    bool isprocessed( uint32_t face ) const 
+    bool isprocessed( uint32_t face ) const
     {
         assert( face < mTotalFaces );
         assert( ( face >= mFaceOffset ) || ( face < ( mFaceOffset + mFaceCount ) ) );
@@ -347,7 +347,7 @@ private:
         assert( faceIndex < mFaceCount );
 
         uint32_t unprocessed = mListElements[ faceIndex ].unprocessed;
-    
+
         uint32_t head = mUnprocessed[ unprocessed ];
         mListElements[ faceIndex ].next = head;
 
@@ -393,7 +393,7 @@ private:
         }
 
         mListElements[ faceIndex ].prev =
-        mListElements[ faceIndex ].next = UNUSED32;
+            mListElements[ faceIndex ].next = UNUSED32;
     }
 
     void decrement( uint32_t face )
@@ -653,7 +653,7 @@ HRESULT _VertexCacheStripReorder( _In_reads_(nFaces*3) const index_t* indices, _
                     curCorner.second = 0;
                 }
             }
-             
+
             bool striprestart = false;
             for(;;)
             {
@@ -846,9 +846,9 @@ HRESULT AttributeSort( size_t nFaces, uint32_t* attributes, uint32_t* faceRemap 
     }
 
     std::stable_sort( list.begin(), list.end(), [](const intpair_t& a, const intpair_t& b ) -> bool
-                                                {
-                                                    return (a.first < b.first);
-                                                });
+    {
+        return (a.first < b.first);
+    });
 
     auto it = list.begin();
     for( uint32_t j = 0; j < nFaces; ++j, ++it )

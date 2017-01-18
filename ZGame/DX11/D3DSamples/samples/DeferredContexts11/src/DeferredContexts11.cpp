@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeferredContexts11\src/DeferredContexts11.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -183,7 +183,7 @@ public:
                 break;
             }
             default:
-            break;
+                break;
             }
 
         }
@@ -319,7 +319,8 @@ public:
         sprintf_s(options, "min=1 max=%d step=1 group=Basic help='Number of rendering threads.\nThis number only has an effect under DC rendering.'", g_iMaxNumRenderThreads);
         TwAddVarRW(bar, "Render Threads", TW_TYPE_INT32, &g_iNumRenderThreads, options);
         sprintf_s(options, "min=0 max=%d step=1 group=Basic help=`Number of threads that calculate objects's movement.`", g_iMaxNumUpdateThreads);
-        TwAddVarRW(bar, "Update Threads", TW_TYPE_INT32, &g_iNumUpdateThreads, options);\
+        TwAddVarRW(bar, "Update Threads", TW_TYPE_INT32, &g_iNumUpdateThreads, options);
+        \
 
         TwType enumModeType = TwDefineEnum("Render Strategy", g_renderStrategyEV, sizeof(g_renderStrategyEV) / sizeof(g_renderStrategyEV[0]));
         TwAddVarRW(bar, "Render Strategy", enumModeType, &g_activeRenderPath, "group=Basic help=`Immediate(IC):\n   Immediate context.\nIC w/ Instancing:\n   Immediate context with instancing drawcalls. This strategy uses VTF. 'Vary Shader'/'Unify VSPS CB' does not take effect under this strategy.\nDeferred(DC):\n   Deferred contexts.`");

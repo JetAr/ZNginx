@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXMeshVBReader.cpp
-//  
+//
 // DirectX Mesh Geometry Library - Vertex Buffer Reader
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -21,40 +21,40 @@ using namespace DirectX::PackedVector;
 
 namespace
 {
-    const size_t c_MaxSlot = 32;
-    const size_t c_MaxStride = 2048;
+const size_t c_MaxSlot = 32;
+const size_t c_MaxStride = 2048;
 
-    enum INPUT_CLASSIFICATION
-    {
-        PER_VERTEX_DATA = 0,
-        PER_INSTANCE_DATA = 1
-    };
+enum INPUT_CLASSIFICATION
+{
+    PER_VERTEX_DATA = 0,
+    PER_INSTANCE_DATA = 1
+};
 
-    struct InputElementDesc
-    {
-        const char*             SemanticName;
-        unsigned int            SemanticIndex;
-        DXGI_FORMAT             Format;
-        unsigned int            InputSlot;
-        unsigned int            AlignedByteOffset;
-        INPUT_CLASSIFICATION    InputSlotClass;
-        unsigned int            InstanceDataStepRate;
-    };
+struct InputElementDesc
+{
+    const char*             SemanticName;
+    unsigned int            SemanticIndex;
+    DXGI_FORMAT             Format;
+    unsigned int            InputSlot;
+    unsigned int            AlignedByteOffset;
+    INPUT_CLASSIFICATION    InputSlotClass;
+    unsigned int            InstanceDataStepRate;
+};
 
 #if defined(__d3d11_h__) || defined(__d3d11_x_h__)
-    static_assert(sizeof(InputElementDesc) == sizeof(D3D11_INPUT_ELEMENT_DESC), "D3D11 mismatch");
-    static_assert(PER_VERTEX_DATA == D3D11_INPUT_PER_VERTEX_DATA, "D3D11 mismatch");
-    static_assert(PER_INSTANCE_DATA == D3D11_INPUT_PER_INSTANCE_DATA, "D3D11 mismatch");
-    static_assert(c_MaxSlot == D3D11_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT, "D3D11 mismatch");
-    static_assert(c_MaxStride == D3D11_REQ_MULTI_ELEMENT_STRUCTURE_SIZE_IN_BYTES, "D3D11 mismatch");
+static_assert(sizeof(InputElementDesc) == sizeof(D3D11_INPUT_ELEMENT_DESC), "D3D11 mismatch");
+static_assert(PER_VERTEX_DATA == D3D11_INPUT_PER_VERTEX_DATA, "D3D11 mismatch");
+static_assert(PER_INSTANCE_DATA == D3D11_INPUT_PER_INSTANCE_DATA, "D3D11 mismatch");
+static_assert(c_MaxSlot == D3D11_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT, "D3D11 mismatch");
+static_assert(c_MaxStride == D3D11_REQ_MULTI_ELEMENT_STRUCTURE_SIZE_IN_BYTES, "D3D11 mismatch");
 #endif
 
 #if defined(__d3d12_h__) || defined(__d3d12_x_h__)
-    static_assert(sizeof(InputElementDesc) == sizeof(D3D12_INPUT_ELEMENT_DESC), "D3D12 mismatch");
-    static_assert(PER_VERTEX_DATA == D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, "D3D12 mismatch");
-    static_assert(PER_INSTANCE_DATA == D3D12_INPUT_CLASSIFICATION_PER_INSTANCE_DATA, "D3D12 mismatch");
-    static_assert(c_MaxSlot == D3D12_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT, "D3D12 mismatch");
-    static_assert(c_MaxStride == D3D12_REQ_MULTI_ELEMENT_STRUCTURE_SIZE_IN_BYTES, "D3D12 mismatch");
+static_assert(sizeof(InputElementDesc) == sizeof(D3D12_INPUT_ELEMENT_DESC), "D3D12 mismatch");
+static_assert(PER_VERTEX_DATA == D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, "D3D12 mismatch");
+static_assert(PER_INSTANCE_DATA == D3D12_INPUT_CLASSIFICATION_PER_INSTANCE_DATA, "D3D12 mismatch");
+static_assert(c_MaxSlot == D3D12_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT, "D3D12 mismatch");
+static_assert(c_MaxStride == D3D12_REQ_MULTI_ELEMENT_STRUCTURE_SIZE_IN_BYTES, "D3D12 mismatch");
 #endif
 }
 
@@ -285,7 +285,7 @@ HRESULT VBReader::Impl::Read( XMVECTOR* buffer, const char* semanticName, unsign
         return E_INVALIDARG;
 
     auto range = mSemantics.equal_range( semanticName );
-    
+
     auto it = range.first;
     for( ; it != range.second; ++it )
     {
@@ -535,50 +535,50 @@ HRESULT VBReader::Impl::Read( XMVECTOR* buffer, const char* semanticName, unsign
             if ( ( ptr + sizeof(int8_t) ) > eptr )
                 return E_UNEXPECTED;
             auto i = *reinterpret_cast<const int8_t*>(ptr);
-               *buffer++ = XMVectorSet( static_cast<float>(i), 0.f, 0.f, 0.f );
+            *buffer++ = XMVectorSet( static_cast<float>(i), 0.f, 0.f, 0.f );
             ptr += stride;
         }
         break;
 
     case DXGI_FORMAT_B5G6R5_UNORM:
+    {
+        static XMVECTORF32 s_Scale = { 1.f/31.f, 1.f/63.f, 1.f/31.f, 1.f };
+        for( size_t icount = 0; icount < count; ++icount )
         {
-            static XMVECTORF32 s_Scale = { 1.f/31.f, 1.f/63.f, 1.f/31.f, 1.f };
-            for( size_t icount = 0; icount < count; ++icount )
+            if ( ( ptr + sizeof(XMU565) ) > eptr )
+                return E_UNEXPECTED;
+            XMVECTOR v = XMLoadU565( reinterpret_cast<const XMU565*>(ptr) );
+            v = XMVectorMultiply( v, s_Scale );
+            if (x2bias)
             {
-                if ( ( ptr + sizeof(XMU565) ) > eptr )
-                    return E_UNEXPECTED;
-                XMVECTOR v = XMLoadU565( reinterpret_cast<const XMU565*>(ptr) );
-                v = XMVectorMultiply( v, s_Scale );
-                if (x2bias)
-                {
-                    XMVECTOR v2 = XMVectorMultiplyAdd(v, g_XMTwo, g_XMNegativeOne);
-                    v = XMVectorSelect(v, v2, g_XMSelect1110);
-                }
-                *buffer++ = XMVectorSwizzle<2, 1, 0, 3>( v );
-                ptr += stride;
+                XMVECTOR v2 = XMVectorMultiplyAdd(v, g_XMTwo, g_XMNegativeOne);
+                v = XMVectorSelect(v, v2, g_XMSelect1110);
             }
+            *buffer++ = XMVectorSwizzle<2, 1, 0, 3>( v );
+            ptr += stride;
         }
-        break;
+    }
+    break;
 
     case DXGI_FORMAT_B5G5R5A1_UNORM:
+    {
+        static XMVECTORF32 s_Scale = { 1.f/31.f, 1.f/31.f, 1.f/31.f, 1.f };
+        for( size_t icount = 0; icount < count; ++icount )
         {
-            static XMVECTORF32 s_Scale = { 1.f/31.f, 1.f/31.f, 1.f/31.f, 1.f };
-            for( size_t icount = 0; icount < count; ++icount )
+            if ( ( ptr + sizeof(XMU555) ) > eptr )
+                return E_UNEXPECTED;
+            XMVECTOR v = XMLoadU555( reinterpret_cast<const XMU555*>(ptr) );
+            v = XMVectorMultiply( v, s_Scale );
+            if (x2bias)
             {
-                if ( ( ptr + sizeof(XMU555) ) > eptr )
-                    return E_UNEXPECTED;
-                XMVECTOR v = XMLoadU555( reinterpret_cast<const XMU555*>(ptr) );
-                v = XMVectorMultiply( v, s_Scale );
-                if (x2bias)
-                {
-                    XMVECTOR v2 = XMVectorMultiplyAdd(v, g_XMTwo, g_XMNegativeOne);
-                    v = XMVectorSelect(v, v2, g_XMSelect1110);
-                }
-                *buffer++ = XMVectorSwizzle<2, 1, 0, 3>( v );
-                ptr += stride;
+                XMVECTOR v2 = XMVectorMultiplyAdd(v, g_XMTwo, g_XMNegativeOne);
+                v = XMVectorSelect(v, v2, g_XMSelect1110);
             }
+            *buffer++ = XMVectorSwizzle<2, 1, 0, 3>( v );
+            ptr += stride;
         }
-        break;
+    }
+    break;
 
     case DXGI_FORMAT_B8G8R8A8_UNORM:
         for( size_t icount = 0; icount < count; ++icount )
@@ -613,23 +613,23 @@ HRESULT VBReader::Impl::Read( XMVECTOR* buffer, const char* semanticName, unsign
         break;
 
     case DXGI_FORMAT_B4G4R4A4_UNORM:
+    {
+        static XMVECTORF32 s_Scale = { 1.f/15.f, 1.f/15.f, 1.f/15.f, 1.f/15.f };
+        for( size_t icount = 0; icount < count; ++icount )
         {
-            static XMVECTORF32 s_Scale = { 1.f/15.f, 1.f/15.f, 1.f/15.f, 1.f/15.f };
-            for( size_t icount = 0; icount < count; ++icount )
+            if ( ( ptr + sizeof(XMUNIBBLE4) ) > eptr )
+                return E_UNEXPECTED;
+            XMVECTOR v = XMLoadUNibble4( reinterpret_cast<const XMUNIBBLE4*>(ptr) );
+            v = XMVectorMultiply( v, s_Scale );
+            if (x2bias)
             {
-                if ( ( ptr + sizeof(XMUNIBBLE4) ) > eptr )
-                    return E_UNEXPECTED;
-                XMVECTOR v = XMLoadUNibble4( reinterpret_cast<const XMUNIBBLE4*>(ptr) );
-                v = XMVectorMultiply( v, s_Scale );
-                if (x2bias)
-                {
-                    v = XMVectorMultiplyAdd(v, g_XMTwo, g_XMNegativeOne);
-                }
-                *buffer++ = XMVectorSwizzle<2, 1, 0, 3>( v );
-                ptr += stride;
+                v = XMVectorMultiplyAdd(v, g_XMTwo, g_XMNegativeOne);
             }
+            *buffer++ = XMVectorSwizzle<2, 1, 0, 3>( v );
+            ptr += stride;
         }
-        break;
+    }
+    break;
 
     case XBOX_DXGI_FORMAT_R10G10B10_SNORM_A2_UNORM:
         // Xbox One specific format
@@ -649,14 +649,14 @@ HRESULT VBReader::Impl::Read( XMVECTOR* buffer, const char* semanticName, unsign
 
 // Public constructor.
 VBReader::VBReader()
-  : pImpl( new Impl() )
+    : pImpl( new Impl() )
 {
 }
 
 
 // Move constructor.
 VBReader::VBReader(VBReader&& moveFrom)
-  : pImpl(std::move(moveFrom.pImpl))
+    : pImpl(std::move(moveFrom.pImpl))
 {
 }
 

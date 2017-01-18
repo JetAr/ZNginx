@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        ComputeFilter\src/perftracker.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -37,98 +37,113 @@
 
 #include "perftracker_int.h"
 
-namespace PerfTracker {
-    class CPUTimer {
-    private:
-        class SystemInfo {
-        public:
-            float freq_scale;
-            SystemInfo() {
-                LARGE_INTEGER f;
-                QueryPerformanceFrequency(&f);
-                this->freq_scale = 1.f / float(f.QuadPart);
-            }
-        };
-        static SystemInfo system_info;
-
-        LARGE_INTEGER start_time;
-        LARGE_INTEGER stop_time;
-
+namespace PerfTracker
+{
+class CPUTimer
+{
+private:
+    class SystemInfo
+    {
     public:
-
-        void start() {
-            QueryPerformanceCounter(&this->start_time);
-        };
-
-        void stop() {
-            QueryPerformanceCounter(&this->stop_time);
-        };
-
-        float value() {
-            float dt = max(0.f, float(stop_time.QuadPart) - float(start_time.QuadPart));
-            return dt * CPUTimer::system_info.freq_scale;
-        };
-    };
-
-    struct PerfMeasurements {
-        double cpu_time;
-        double gpu_time;
-        struct {
-            double drawn_vertices;
-            double drawn_primitives;
-            double shaded_primitives;
-            double shaded_fragments;
-        } gpu_stats;
-
-        PerfMeasurements() {
-            this->cpu_time = 0;
-            this->gpu_time = 0;
-            this->gpu_stats.drawn_vertices = 0;
-            this->gpu_stats.drawn_primitives = 0;
-            this->gpu_stats.shaded_primitives = 0;
-            this->gpu_stats.shaded_fragments = 0;
-        }
-
-        void accumulate(const PerfMeasurements & other) {
-            this->cpu_time += other.cpu_time;
-            this->gpu_time += other.gpu_time;
-            this->gpu_stats.drawn_vertices += other.gpu_stats.drawn_vertices;
-            this->gpu_stats.drawn_primitives += other.gpu_stats.drawn_primitives;
-            this->gpu_stats.shaded_primitives += other.gpu_stats.shaded_primitives;
-            this->gpu_stats.shaded_fragments += other.gpu_stats.shaded_fragments;
-        };
-
-        void scale(float scale) {
-            this->cpu_time /= scale;
-            this->gpu_time /= scale;
-            this->gpu_stats.drawn_vertices /= scale;
-            this->gpu_stats.drawn_primitives /= scale;
-            this->gpu_stats.shaded_primitives /= scale;
-            this->gpu_stats.shaded_fragments /= scale;
+        float freq_scale;
+        SystemInfo()
+        {
+            LARGE_INTEGER f;
+            QueryPerformanceFrequency(&f);
+            this->freq_scale = 1.f / float(f.QuadPart);
         }
     };
+    static SystemInfo system_info;
 
-    struct EventMeasurements {
-        UINT id;
-        PerfMeasurements data;
+    LARGE_INTEGER start_time;
+    LARGE_INTEGER stop_time;
+
+public:
+
+    void start()
+    {
+        QueryPerformanceCounter(&this->start_time);
     };
 
-    struct FrameMeasurements {
-        PerfMeasurements frame_total;
-        std::vector<EventMeasurements> events;
+    void stop()
+    {
+        QueryPerformanceCounter(&this->stop_time);
     };
 
-    struct EventDesc {
-        UINT id;
-        char * name;
+    float value()
+    {
+        float dt = max(0.f, float(stop_time.QuadPart) - float(start_time.QuadPart));
+        return dt * CPUTimer::system_info.freq_scale;
+    };
+};
+
+struct PerfMeasurements
+{
+    double cpu_time;
+    double gpu_time;
+    struct
+    {
+        double drawn_vertices;
+        double drawn_primitives;
+        double shaded_primitives;
+        double shaded_fragments;
+    } gpu_stats;
+
+    PerfMeasurements()
+    {
+        this->cpu_time = 0;
+        this->gpu_time = 0;
+        this->gpu_stats.drawn_vertices = 0;
+        this->gpu_stats.drawn_primitives = 0;
+        this->gpu_stats.shaded_primitives = 0;
+        this->gpu_stats.shaded_fragments = 0;
+    }
+
+    void accumulate(const PerfMeasurements & other)
+    {
+        this->cpu_time += other.cpu_time;
+        this->gpu_time += other.gpu_time;
+        this->gpu_stats.drawn_vertices += other.gpu_stats.drawn_vertices;
+        this->gpu_stats.drawn_primitives += other.gpu_stats.drawn_primitives;
+        this->gpu_stats.shaded_primitives += other.gpu_stats.shaded_primitives;
+        this->gpu_stats.shaded_fragments += other.gpu_stats.shaded_fragments;
     };
 
-    void initialize();
-    void shutdown();
-    void get_results(std::vector<FrameMeasurements> & out_results);
-    void ui_setup(EventDesc * events, size_t event_count, const char * dialog_prefs);
-    void ui_update(std::vector<PerfTracker::FrameMeasurements> & new_results);
-    void ui_toggle_visibility();
+    void scale(float scale)
+    {
+        this->cpu_time /= scale;
+        this->gpu_time /= scale;
+        this->gpu_stats.drawn_vertices /= scale;
+        this->gpu_stats.drawn_primitives /= scale;
+        this->gpu_stats.shaded_primitives /= scale;
+        this->gpu_stats.shaded_fragments /= scale;
+    }
+};
+
+struct EventMeasurements
+{
+    UINT id;
+    PerfMeasurements data;
+};
+
+struct FrameMeasurements
+{
+    PerfMeasurements frame_total;
+    std::vector<EventMeasurements> events;
+};
+
+struct EventDesc
+{
+    UINT id;
+    char * name;
+};
+
+void initialize();
+void shutdown();
+void get_results(std::vector<FrameMeasurements> & out_results);
+void ui_setup(EventDesc * events, size_t event_count, const char * dialog_prefs);
+void ui_update(std::vector<PerfTracker::FrameMeasurements> & new_results);
+void ui_toggle_visibility();
 }
 
 #define PERF_EVENT_DESC(id) \

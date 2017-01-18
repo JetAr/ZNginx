@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: SoundEffectInstance.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -164,7 +164,7 @@ void SoundEffectInstance::Impl::Play( bool loop )
     }
 
 #endif
-    
+
     buffer.Flags = XAUDIO2_END_OF_STREAM;
     if ( loop )
     {
@@ -197,11 +197,11 @@ void SoundEffectInstance::Impl::Play( bool loop )
 
         char buff[64];
         auto wfx = ( mWaveBank ) ? mWaveBank->GetFormat( mIndex, reinterpret_cast<WAVEFORMATEX*>( buff ), 64 )
-                                 : mEffect->GetFormat();
+                   : mEffect->GetFormat();
 
         size_t length = ( mWaveBank ) ? mWaveBank->GetSampleSizeInBytes( mIndex ) : mEffect->GetSampleSizeInBytes();
 
-        DebugTrace( "\tFormat Tag %u, %u channels, %u-bit, %u Hz, %Iu bytes\n", wfx->wFormatTag, 
+        DebugTrace( "\tFormat Tag %u, %u channels, %u-bit, %u Hz, %Iu bytes\n", wfx->wFormatTag,
                     wfx->nChannels, wfx->wBitsPerSample, wfx->nSamplesPerSec, length );
 #endif
         mBase.Stop( true, mLooped );
@@ -230,7 +230,7 @@ SoundEffectInstance::SoundEffectInstance( AudioEngine* engine, WaveBank* waveBan
 
 // Move constructor.
 SoundEffectInstance::SoundEffectInstance(SoundEffectInstance&& moveFrom)
-  : pImpl(std::move(moveFrom.pImpl))
+    : pImpl(std::move(moveFrom.pImpl))
 {
 }
 

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: SimpleBezier11.cpp
 //
 // This sample shows an simple implementation of the DirectX 11 Hardware Tessellator
@@ -27,7 +27,7 @@ const DWORD MAX_DIVS = 16; // Min and Max divisions of the patch per side for th
 CDXUTDialogResourceManager          g_DialogResourceManager; // manager for shared resources of dialogs
 CModelViewerCamera                  g_Camera;                // A model viewing camera
 CD3DSettingsDlg                     g_D3DSettingsDlg;        // Device settings dialog
-CDXUTDialog                         g_HUD;                   // manages the 3D   
+CDXUTDialog                         g_HUD;                   // manages the 3D
 CDXUTDialog                         g_SampleUI;              // dialog for sample specific controls
 
 // Resources
@@ -64,9 +64,9 @@ bool                                g_bDrawWires = false;    // Draw the mesh wi
 
 enum E_PARTITION_MODE
 {
-   PARTITION_INTEGER,
-   PARTITION_FRACTIONAL_EVEN,
-   PARTITION_FRACTIONAL_ODD
+    PARTITION_INTEGER,
+    PARTITION_FRACTIONAL_EVEN,
+    PARTITION_FRACTIONAL_ODD
 };
 
 E_PARTITION_MODE                    g_iPartitionMode = PARTITION_INTEGER;
@@ -87,7 +87,7 @@ E_PARTITION_MODE                    g_iPartitionMode = PARTITION_INTEGER;
 #define IDC_PARTITION_FRAC_ODD    11
 
 //--------------------------------------------------------------------------------------
-// Forward declarations 
+// Forward declarations
 //--------------------------------------------------------------------------------------
 bool CALLBACK ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* pUserContext );
 void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext );
@@ -100,7 +100,7 @@ bool CALLBACK IsD3D11DeviceAcceptable( const CD3D11EnumAdapterInfo *AdapterInfo,
 HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc,
                                       void* pUserContext );
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                          const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext );
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext );
 void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime,
@@ -111,7 +111,7 @@ void InitApp();
 void RenderText();
 
 //--------------------------------------------------------------------------------------
-// Entry point to the program. Initializes everything and goes into a message processing 
+// Entry point to the program. Initializes everything and goes into a message processing
 // loop. Idle time is used to render the scene.
 //--------------------------------------------------------------------------------------
 int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow )
@@ -148,7 +148,7 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 
 //--------------------------------------------------------------------------------------
-// Initialize the app 
+// Initialize the app
 //--------------------------------------------------------------------------------------
 void InitApp()
 {
@@ -157,12 +157,14 @@ void InitApp()
     g_HUD.Init( &g_DialogResourceManager );
     g_SampleUI.Init( &g_DialogResourceManager );
 
-    g_HUD.SetCallback( OnGUIEvent ); int iY = 20;
+    g_HUD.SetCallback( OnGUIEvent );
+    int iY = 20;
     g_HUD.AddButton( IDC_TOGGLEFULLSCREEN, L"Toggle full screen", 0, iY, 170, 22 );
     g_HUD.AddButton( IDC_TOGGLEREF, L"Toggle REF (F3)", 0, iY += 26, 170, 22, VK_F3 );
     g_HUD.AddButton( IDC_CHANGEDEVICE, L"Change device (F2)", 0, iY += 26, 170, 22, VK_F2 );
 
-    g_SampleUI.SetCallback( OnGUIEvent ); iY = 10;
+    g_SampleUI.SetCallback( OnGUIEvent );
+    iY = 10;
 
     WCHAR sz[100];
     iY += 24;
@@ -201,7 +203,7 @@ bool CALLBACK ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* p
 //--------------------------------------------------------------------------------------
 void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext )
 {
-    // Update the camera's position based on user input 
+    // Update the camera's position based on user input
     g_Camera.FrameMove( fElapsedTime );
 }
 
@@ -261,36 +263,39 @@ void CALLBACK OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, v
 {
     switch( nControlID )
     {
-            // Standard DXUT controls
-        case IDC_TOGGLEFULLSCREEN:
-            DXUTToggleFullScreen(); break;
-        case IDC_TOGGLEREF:
-            DXUTToggleREF(); break;
-        case IDC_CHANGEDEVICE:
-            g_D3DSettingsDlg.SetActive( !g_D3DSettingsDlg.IsActive() ); break;
+    // Standard DXUT controls
+    case IDC_TOGGLEFULLSCREEN:
+        DXUTToggleFullScreen();
+        break;
+    case IDC_TOGGLEREF:
+        DXUTToggleREF();
+        break;
+    case IDC_CHANGEDEVICE:
+        g_D3DSettingsDlg.SetActive( !g_D3DSettingsDlg.IsActive() );
+        break;
 
-            // Custom app controls
-        case IDC_PATCH_SUBDIVS:
-        {
-            g_fSubdivs = g_SampleUI.GetSlider( IDC_PATCH_SUBDIVS )->GetValue() / 10.0f;
+    // Custom app controls
+    case IDC_PATCH_SUBDIVS:
+    {
+        g_fSubdivs = g_SampleUI.GetSlider( IDC_PATCH_SUBDIVS )->GetValue() / 10.0f;
 
-            WCHAR sz[100];
-            swprintf_s( sz, L"Patch Divisions: %2.1f", g_fSubdivs );
-            g_SampleUI.GetStatic( IDC_PATCH_SUBDIVS_STATIC )->SetText( sz );
-        }
-            break;
-        case IDC_TOGGLE_LINES:
-            g_bDrawWires = g_SampleUI.GetCheckBox( IDC_TOGGLE_LINES )->GetChecked();
-            break;
-        case IDC_PARTITION_INTEGER:
-            g_iPartitionMode = PARTITION_INTEGER;
-            break;
-        case IDC_PARTITION_FRAC_EVEN:
-            g_iPartitionMode = PARTITION_FRACTIONAL_EVEN;
-            break;
-        case IDC_PARTITION_FRAC_ODD:
-            g_iPartitionMode = PARTITION_FRACTIONAL_ODD;
-            break;
+        WCHAR sz[100];
+        swprintf_s( sz, L"Patch Divisions: %2.1f", g_fSubdivs );
+        g_SampleUI.GetStatic( IDC_PATCH_SUBDIVS_STATIC )->SetText( sz );
+    }
+    break;
+    case IDC_TOGGLE_LINES:
+        g_bDrawWires = g_SampleUI.GetCheckBox( IDC_TOGGLE_LINES )->GetChecked();
+        break;
+    case IDC_PARTITION_INTEGER:
+        g_iPartitionMode = PARTITION_INTEGER;
+        break;
+    case IDC_PARTITION_FRAC_EVEN:
+        g_iPartitionMode = PARTITION_FRACTIONAL_EVEN;
+        break;
+    case IDC_PARTITION_FRAC_ODD:
+        g_iPartitionMode = PARTITION_FRACTIONAL_ODD;
+        break;
     }
 }
 
@@ -377,7 +382,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     };
 
     V_RETURN( pd3dDevice->CreateInputLayout( patchlayout, ARRAYSIZE( patchlayout ), pBlobVS->GetBufferPointer(),
-                                             pBlobVS->GetBufferSize(), &g_pPatchLayout ) );
+              pBlobVS->GetBufferSize(), &g_pPatchLayout ) );
     DXUT_SetDebugName( g_pPatchLayout, "Primary" );
 
     SAFE_RELEASE( pBlobVS );
@@ -432,7 +437,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 // Create any D3D11 resources that depend on the back buffer
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                          const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
     HRESULT hr;
 
@@ -518,7 +523,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
     if( g_bDrawWires )
     {
         pd3dImmediateContext->PSSetShader( g_pSolidColorPS, nullptr, 0 );
-        pd3dImmediateContext->RSSetState( g_pRasterizerStateWireframe ); 
+        pd3dImmediateContext->RSSetState( g_pRasterizerStateWireframe );
     }
 
     // Set the input assembler
@@ -546,7 +551,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11ResizedSwapChain 
+// Release D3D11 resources created in OnD3D11ResizedSwapChain
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 {
@@ -555,7 +560,7 @@ void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11CreateDevice 
+// Release D3D11 resources created in OnD3D11CreateDevice
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
 {

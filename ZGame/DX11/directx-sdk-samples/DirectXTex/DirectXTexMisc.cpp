@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXTexMisc.cpp
-//  
+//
 // DirectX Texture Library - Misc image operations
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -19,247 +19,247 @@ using namespace DirectX;
 
 namespace
 {
-    const XMVECTORF32 g_Gamma22 = { 2.2f, 2.2f, 2.2f, 1.f };
+const XMVECTORF32 g_Gamma22 = { 2.2f, 2.2f, 2.2f, 1.f };
 
-    //-------------------------------------------------------------------------------------
-    HRESULT ComputeMSE_(
-        const Image& image1,
-        const Image& image2,
-        float& mse,
-        _Out_writes_opt_(4) float* mseV,
-        DWORD flags)
+//-------------------------------------------------------------------------------------
+HRESULT ComputeMSE_(
+    const Image& image1,
+    const Image& image2,
+    float& mse,
+    _Out_writes_opt_(4) float* mseV,
+    DWORD flags)
+{
+    if (!image1.pixels || !image2.pixels)
+        return E_POINTER;
+
+    assert(image1.width == image2.width && image1.height == image2.height);
+    assert(!IsCompressed(image1.format) && !IsCompressed(image2.format));
+
+    const size_t width = image1.width;
+
+    ScopedAlignedArrayXMVECTOR scanline(reinterpret_cast<XMVECTOR*>(_aligned_malloc((sizeof(XMVECTOR)*width) * 2, 16)));
+    if (!scanline)
+        return E_OUTOFMEMORY;
+
+    // Flags implied from image formats
+    switch (image1.format)
     {
-        if (!image1.pixels || !image2.pixels)
-            return E_POINTER;
+    case DXGI_FORMAT_B8G8R8X8_UNORM:
+        flags |= CMSE_IGNORE_ALPHA;
+        break;
 
-        assert(image1.width == image2.width && image1.height == image2.height);
-        assert(!IsCompressed(image1.format) && !IsCompressed(image2.format));
+    case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:
+        flags |= CMSE_IMAGE1_SRGB | CMSE_IGNORE_ALPHA;
+        break;
 
-        const size_t width = image1.width;
-
-        ScopedAlignedArrayXMVECTOR scanline(reinterpret_cast<XMVECTOR*>(_aligned_malloc((sizeof(XMVECTOR)*width) * 2, 16)));
-        if (!scanline)
-            return E_OUTOFMEMORY;
-
-        // Flags implied from image formats
-        switch (image1.format)
-        {
-        case DXGI_FORMAT_B8G8R8X8_UNORM:
-            flags |= CMSE_IGNORE_ALPHA;
-            break;
-
-        case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:
-            flags |= CMSE_IMAGE1_SRGB | CMSE_IGNORE_ALPHA;
-            break;
-
-        case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
-        case DXGI_FORMAT_BC1_UNORM_SRGB:
-        case DXGI_FORMAT_BC2_UNORM_SRGB:
-        case DXGI_FORMAT_BC3_UNORM_SRGB:
-        case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
-        case DXGI_FORMAT_BC7_UNORM_SRGB:
-            flags |= CMSE_IMAGE1_SRGB;
-            break;
-        }
-
-        switch (image2.format)
-        {
-        case DXGI_FORMAT_B8G8R8X8_UNORM:
-            flags |= CMSE_IGNORE_ALPHA;
-            break;
-
-        case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:
-            flags |= CMSE_IMAGE2_SRGB | CMSE_IGNORE_ALPHA;
-            break;
-
-        case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
-        case DXGI_FORMAT_BC1_UNORM_SRGB:
-        case DXGI_FORMAT_BC2_UNORM_SRGB:
-        case DXGI_FORMAT_BC3_UNORM_SRGB:
-        case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
-        case DXGI_FORMAT_BC7_UNORM_SRGB:
-            flags |= CMSE_IMAGE2_SRGB;
-            break;
-        }
-
-        const uint8_t *pSrc1 = image1.pixels;
-        const size_t rowPitch1 = image1.rowPitch;
-
-        const uint8_t *pSrc2 = image2.pixels;
-        const size_t rowPitch2 = image2.rowPitch;
-
-        XMVECTOR acc = g_XMZero;
-        static XMVECTORF32 two = { 2.0f, 2.0f, 2.0f, 2.0f };
-
-        for (size_t h = 0; h < image1.height; ++h)
-        {
-            XMVECTOR* ptr1 = scanline.get();
-            if (!_LoadScanline(ptr1, width, pSrc1, rowPitch1, image1.format))
-                return E_FAIL;
-
-            XMVECTOR* ptr2 = scanline.get() + width;
-            if (!_LoadScanline(ptr2, width, pSrc2, rowPitch2, image2.format))
-                return E_FAIL;
-
-            for (size_t i = 0; i < width; ++i)
-            {
-                XMVECTOR v1 = *(ptr1++);
-                if (flags & CMSE_IMAGE1_SRGB)
-                {
-                    v1 = XMVectorPow(v1, g_Gamma22);
-                }
-                if (flags & CMSE_IMAGE1_X2_BIAS)
-                {
-                    v1 = XMVectorMultiplyAdd(v1, two, g_XMNegativeOne);
-                }
-
-                XMVECTOR v2 = *(ptr2++);
-                if (flags & CMSE_IMAGE2_SRGB)
-                {
-                    v2 = XMVectorPow(v2, g_Gamma22);
-                }
-                if (flags & CMSE_IMAGE2_X2_BIAS)
-                {
-                    v1 = XMVectorMultiplyAdd(v2, two, g_XMNegativeOne);
-                }
-
-                // sum[ (I1 - I2)^2 ]
-                XMVECTOR v = XMVectorSubtract(v1, v2);
-                if (flags & CMSE_IGNORE_RED)
-                {
-                    v = XMVectorSelect(v, g_XMZero, g_XMMaskX);
-                }
-                if (flags & CMSE_IGNORE_GREEN)
-                {
-                    v = XMVectorSelect(v, g_XMZero, g_XMMaskY);
-                }
-                if (flags & CMSE_IGNORE_BLUE)
-                {
-                    v = XMVectorSelect(v, g_XMZero, g_XMMaskZ);
-                }
-                if (flags & CMSE_IGNORE_ALPHA)
-                {
-                    v = XMVectorSelect(v, g_XMZero, g_XMMaskW);
-                }
-
-                acc = XMVectorMultiplyAdd(v, v, acc);
-            }
-
-            pSrc1 += rowPitch1;
-            pSrc2 += rowPitch2;
-        }
-
-        // MSE = sum[ (I1 - I2)^2 ] / w*h
-        XMVECTOR d = XMVectorReplicate(float(image1.width * image1.height));
-        XMVECTOR v = XMVectorDivide(acc, d);
-        if (mseV)
-        {
-            XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(mseV), v);
-            mse = mseV[0] + mseV[1] + mseV[2] + mseV[3];
-        }
-        else
-        {
-            XMFLOAT4 _mseV;
-            XMStoreFloat4(&_mseV, v);
-            mse = _mseV.x + _mseV.y + _mseV.z + _mseV.w;
-        }
-
-        return S_OK;
+    case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
+    case DXGI_FORMAT_BC1_UNORM_SRGB:
+    case DXGI_FORMAT_BC2_UNORM_SRGB:
+    case DXGI_FORMAT_BC3_UNORM_SRGB:
+    case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
+    case DXGI_FORMAT_BC7_UNORM_SRGB:
+        flags |= CMSE_IMAGE1_SRGB;
+        break;
     }
 
-    //-------------------------------------------------------------------------------------
-    HRESULT EvaluateImage_(
-        const Image& image,
-        std::function<void __cdecl(_In_reads_(width) const XMVECTOR* pixels, size_t width, size_t y)> pixelFunc)
+    switch (image2.format)
     {
-        if (!pixelFunc)
-            return E_INVALIDARG;
+    case DXGI_FORMAT_B8G8R8X8_UNORM:
+        flags |= CMSE_IGNORE_ALPHA;
+        break;
 
-        if (!image.pixels)
-            return E_POINTER;
+    case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:
+        flags |= CMSE_IMAGE2_SRGB | CMSE_IGNORE_ALPHA;
+        break;
 
-        assert(!IsCompressed(image.format));
-
-        const size_t width = image.width;
-
-        ScopedAlignedArrayXMVECTOR scanline(reinterpret_cast<XMVECTOR*>(_aligned_malloc((sizeof(XMVECTOR)*width), 16)));
-        if (!scanline)
-            return E_OUTOFMEMORY;
-
-        const uint8_t *pSrc = image.pixels;
-        const size_t rowPitch = image.rowPitch;
-
-        for (size_t h = 0; h < image.height; ++h)
-        {
-            if (!_LoadScanline(scanline.get(), width, pSrc, rowPitch, image.format))
-                return E_FAIL;
-
-            pixelFunc(scanline.get(), width, h);
-
-            pSrc += rowPitch;
-        }
-
-        return S_OK;
+    case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
+    case DXGI_FORMAT_BC1_UNORM_SRGB:
+    case DXGI_FORMAT_BC2_UNORM_SRGB:
+    case DXGI_FORMAT_BC3_UNORM_SRGB:
+    case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
+    case DXGI_FORMAT_BC7_UNORM_SRGB:
+        flags |= CMSE_IMAGE2_SRGB;
+        break;
     }
 
+    const uint8_t *pSrc1 = image1.pixels;
+    const size_t rowPitch1 = image1.rowPitch;
 
-    //-------------------------------------------------------------------------------------
-    HRESULT TransformImage_(
-        const Image& srcImage,
-        std::function<void __cdecl(_Out_writes_(width) XMVECTOR* outPixels, _In_reads_(width) const XMVECTOR* inPixels, size_t width, size_t y)> pixelFunc,
-        const Image& destImage)
+    const uint8_t *pSrc2 = image2.pixels;
+    const size_t rowPitch2 = image2.rowPitch;
+
+    XMVECTOR acc = g_XMZero;
+    static XMVECTORF32 two = { 2.0f, 2.0f, 2.0f, 2.0f };
+
+    for (size_t h = 0; h < image1.height; ++h)
     {
-        if (!pixelFunc)
-            return E_INVALIDARG;
-
-        if (!srcImage.pixels || !destImage.pixels)
-            return E_POINTER;
-
-        if (srcImage.width != destImage.width || srcImage.height != destImage.height || srcImage.format != destImage.format)
+        XMVECTOR* ptr1 = scanline.get();
+        if (!_LoadScanline(ptr1, width, pSrc1, rowPitch1, image1.format))
             return E_FAIL;
 
-        const size_t width = srcImage.width;
+        XMVECTOR* ptr2 = scanline.get() + width;
+        if (!_LoadScanline(ptr2, width, pSrc2, rowPitch2, image2.format))
+            return E_FAIL;
 
-        ScopedAlignedArrayXMVECTOR scanlines(reinterpret_cast<XMVECTOR*>(_aligned_malloc((sizeof(XMVECTOR)*width*2), 16)));
-        if (!scanlines)
-            return E_OUTOFMEMORY;
-
-        XMVECTOR* sScanline = scanlines.get();
-        XMVECTOR* dScanline = scanlines.get() + width;
-
-        const uint8_t *pSrc = srcImage.pixels;
-        const size_t spitch = srcImage.rowPitch;
-
-        uint8_t *pDest = destImage.pixels;
-        const size_t dpitch = destImage.rowPitch;
-
-        for (size_t h = 0; h < srcImage.height; ++h)
+        for (size_t i = 0; i < width; ++i)
         {
-            if (!_LoadScanline(sScanline, width, pSrc, spitch, srcImage.format))
-                return E_FAIL;
+            XMVECTOR v1 = *(ptr1++);
+            if (flags & CMSE_IMAGE1_SRGB)
+            {
+                v1 = XMVectorPow(v1, g_Gamma22);
+            }
+            if (flags & CMSE_IMAGE1_X2_BIAS)
+            {
+                v1 = XMVectorMultiplyAdd(v1, two, g_XMNegativeOne);
+            }
 
-#ifdef _DEBUG
-            memset(dScanline, 0xCD, sizeof(XMVECTOR)*width);
-#endif
+            XMVECTOR v2 = *(ptr2++);
+            if (flags & CMSE_IMAGE2_SRGB)
+            {
+                v2 = XMVectorPow(v2, g_Gamma22);
+            }
+            if (flags & CMSE_IMAGE2_X2_BIAS)
+            {
+                v1 = XMVectorMultiplyAdd(v2, two, g_XMNegativeOne);
+            }
 
-            pixelFunc(dScanline, sScanline, width, h);
+            // sum[ (I1 - I2)^2 ]
+            XMVECTOR v = XMVectorSubtract(v1, v2);
+            if (flags & CMSE_IGNORE_RED)
+            {
+                v = XMVectorSelect(v, g_XMZero, g_XMMaskX);
+            }
+            if (flags & CMSE_IGNORE_GREEN)
+            {
+                v = XMVectorSelect(v, g_XMZero, g_XMMaskY);
+            }
+            if (flags & CMSE_IGNORE_BLUE)
+            {
+                v = XMVectorSelect(v, g_XMZero, g_XMMaskZ);
+            }
+            if (flags & CMSE_IGNORE_ALPHA)
+            {
+                v = XMVectorSelect(v, g_XMZero, g_XMMaskW);
+            }
 
-            if (!_StoreScanline(pDest, destImage.rowPitch, destImage.format, dScanline, width))
-                return E_FAIL;
-
-            pSrc += spitch;
-            pDest += dpitch;
+            acc = XMVectorMultiplyAdd(v, v, acc);
         }
 
-        return S_OK;
+        pSrc1 += rowPitch1;
+        pSrc2 += rowPitch2;
     }
+
+    // MSE = sum[ (I1 - I2)^2 ] / w*h
+    XMVECTOR d = XMVectorReplicate(float(image1.width * image1.height));
+    XMVECTOR v = XMVectorDivide(acc, d);
+    if (mseV)
+    {
+        XMStoreFloat4(reinterpret_cast<XMFLOAT4*>(mseV), v);
+        mse = mseV[0] + mseV[1] + mseV[2] + mseV[3];
+    }
+    else
+    {
+        XMFLOAT4 _mseV;
+        XMStoreFloat4(&_mseV, v);
+        mse = _mseV.x + _mseV.y + _mseV.z + _mseV.w;
+    }
+
+    return S_OK;
+}
+
+//-------------------------------------------------------------------------------------
+HRESULT EvaluateImage_(
+    const Image& image,
+    std::function<void __cdecl(_In_reads_(width) const XMVECTOR* pixels, size_t width, size_t y)> pixelFunc)
+{
+    if (!pixelFunc)
+        return E_INVALIDARG;
+
+    if (!image.pixels)
+        return E_POINTER;
+
+    assert(!IsCompressed(image.format));
+
+    const size_t width = image.width;
+
+    ScopedAlignedArrayXMVECTOR scanline(reinterpret_cast<XMVECTOR*>(_aligned_malloc((sizeof(XMVECTOR)*width), 16)));
+    if (!scanline)
+        return E_OUTOFMEMORY;
+
+    const uint8_t *pSrc = image.pixels;
+    const size_t rowPitch = image.rowPitch;
+
+    for (size_t h = 0; h < image.height; ++h)
+    {
+        if (!_LoadScanline(scanline.get(), width, pSrc, rowPitch, image.format))
+            return E_FAIL;
+
+        pixelFunc(scanline.get(), width, h);
+
+        pSrc += rowPitch;
+    }
+
+    return S_OK;
+}
+
+
+//-------------------------------------------------------------------------------------
+HRESULT TransformImage_(
+    const Image& srcImage,
+    std::function<void __cdecl(_Out_writes_(width) XMVECTOR* outPixels, _In_reads_(width) const XMVECTOR* inPixels, size_t width, size_t y)> pixelFunc,
+    const Image& destImage)
+{
+    if (!pixelFunc)
+        return E_INVALIDARG;
+
+    if (!srcImage.pixels || !destImage.pixels)
+        return E_POINTER;
+
+    if (srcImage.width != destImage.width || srcImage.height != destImage.height || srcImage.format != destImage.format)
+        return E_FAIL;
+
+    const size_t width = srcImage.width;
+
+    ScopedAlignedArrayXMVECTOR scanlines(reinterpret_cast<XMVECTOR*>(_aligned_malloc((sizeof(XMVECTOR)*width*2), 16)));
+    if (!scanlines)
+        return E_OUTOFMEMORY;
+
+    XMVECTOR* sScanline = scanlines.get();
+    XMVECTOR* dScanline = scanlines.get() + width;
+
+    const uint8_t *pSrc = srcImage.pixels;
+    const size_t spitch = srcImage.rowPitch;
+
+    uint8_t *pDest = destImage.pixels;
+    const size_t dpitch = destImage.rowPitch;
+
+    for (size_t h = 0; h < srcImage.height; ++h)
+    {
+        if (!_LoadScanline(sScanline, width, pSrc, spitch, srcImage.format))
+            return E_FAIL;
+
+#ifdef _DEBUG
+        memset(dScanline, 0xCD, sizeof(XMVECTOR)*width);
+#endif
+
+        pixelFunc(dScanline, sScanline, width, h);
+
+        if (!_StoreScanline(pDest, destImage.rowPitch, destImage.format, dScanline, width))
+            return E_FAIL;
+
+        pSrc += spitch;
+        pDest += dpitch;
+    }
+
+    return S_OK;
+}
 };
 
 
 //=====================================================================================
 // Entry points
 //=====================================================================================
-        
+
 //-------------------------------------------------------------------------------------
 // Copies a rectangle from one image into another
 //-------------------------------------------------------------------------------------
@@ -276,8 +276,8 @@ HRESULT DirectX::CopyRectangle(
         return E_POINTER;
 
     if (IsCompressed(srcImage.format) || IsCompressed(dstImage.format)
-        || IsPlanar(srcImage.format) || IsPlanar(dstImage.format)
-        || IsPalettized(srcImage.format) || IsPalettized(dstImage.format))
+            || IsPlanar(srcImage.format) || IsPlanar(dstImage.format)
+            || IsPalettized(srcImage.format) || IsPalettized(dstImage.format))
         return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
 
     // Validate rectangle/offset
@@ -372,7 +372,7 @@ HRESULT DirectX::CopyRectangle(
     return S_OK;
 }
 
-    
+
 //-------------------------------------------------------------------------------------
 // Computes the Mean-Squared-Error (MSE) between two images
 //-------------------------------------------------------------------------------------
@@ -394,8 +394,8 @@ HRESULT DirectX::ComputeMSE(
         return E_INVALIDARG;
 
     if (IsPlanar(image1.format) || IsPlanar(image2.format)
-        || IsPalettized(image1.format) || IsPalettized(image2.format)
-        || IsTypeless(image1.format) || IsTypeless(image2.format))
+            || IsPalettized(image1.format) || IsPalettized(image2.format)
+            || IsTypeless(image1.format) || IsTypeless(image2.format))
         return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
 
     if (IsCompressed(image1.format))
@@ -469,7 +469,7 @@ HRESULT DirectX::EvaluateImage(
     std::function<void __cdecl(_In_reads_(width) const XMVECTOR* pixels, size_t width, size_t y)> pixelFunc)
 {
     if (image.width > UINT32_MAX
-        || image.height > UINT32_MAX)
+            || image.height > UINT32_MAX)
         return E_INVALIDARG;
 
     if (!IsValid(image.format))
@@ -514,7 +514,7 @@ HRESULT DirectX::EvaluateImage(
         return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
 
     if (metadata.width > UINT32_MAX
-        || metadata.height > UINT32_MAX)
+            || metadata.height > UINT32_MAX)
         return E_INVALIDARG;
 
     if (metadata.IsVolumemap() && metadata.depth > UINT32_MAX)
@@ -601,7 +601,7 @@ HRESULT DirectX::TransformImage(
     ScratchImage& result)
 {
     if (image.width > UINT32_MAX
-        || image.height > UINT32_MAX)
+            || image.height > UINT32_MAX)
         return E_INVALIDARG;
 
     if (IsPlanar(image.format) || IsPalettized(image.format) || IsCompressed(image.format) || IsTypeless(image.format))
@@ -624,7 +624,7 @@ HRESULT DirectX::TransformImage(
         result.Release();
         return hr;
     }
-    
+
     return S_OK;
 }
 
@@ -642,7 +642,7 @@ HRESULT DirectX::TransformImage(
         return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
 
     if (metadata.width > UINT32_MAX
-        || metadata.height > UINT32_MAX)
+            || metadata.height > UINT32_MAX)
         return E_INVALIDARG;
 
     if (metadata.IsVolumemap() && metadata.depth > UINT32_MAX)

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DualTextureEffect.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -48,7 +48,7 @@ public:
     Impl(_In_ ID3D11Device* device);
 
     bool vertexColorEnabled;
-    
+
     EffectColor color;
 
     ComPtr<ID3D11ShaderResourceView> texture2;
@@ -63,21 +63,21 @@ public:
 namespace
 {
 #if defined(_XBOX_ONE) && defined(_TITLE)
-    #include "Shaders/Compiled/XboxOneDualTextureEffect_VSDualTexture.inc"
-    #include "Shaders/Compiled/XboxOneDualTextureEffect_VSDualTextureNoFog.inc"
-    #include "Shaders/Compiled/XboxOneDualTextureEffect_VSDualTextureVc.inc"
-    #include "Shaders/Compiled/XboxOneDualTextureEffect_VSDualTextureVcNoFog.inc"
+#include "Shaders/Compiled/XboxOneDualTextureEffect_VSDualTexture.inc"
+#include "Shaders/Compiled/XboxOneDualTextureEffect_VSDualTextureNoFog.inc"
+#include "Shaders/Compiled/XboxOneDualTextureEffect_VSDualTextureVc.inc"
+#include "Shaders/Compiled/XboxOneDualTextureEffect_VSDualTextureVcNoFog.inc"
 
-    #include "Shaders/Compiled/XboxOneDualTextureEffect_PSDualTexture.inc"
-    #include "Shaders/Compiled/XboxOneDualTextureEffect_PSDualTextureNoFog.inc"
+#include "Shaders/Compiled/XboxOneDualTextureEffect_PSDualTexture.inc"
+#include "Shaders/Compiled/XboxOneDualTextureEffect_PSDualTextureNoFog.inc"
 #else
-    #include "Shaders/Compiled/DualTextureEffect_VSDualTexture.inc"
-    #include "Shaders/Compiled/DualTextureEffect_VSDualTextureNoFog.inc"
-    #include "Shaders/Compiled/DualTextureEffect_VSDualTextureVc.inc"
-    #include "Shaders/Compiled/DualTextureEffect_VSDualTextureVcNoFog.inc"
+#include "Shaders/Compiled/DualTextureEffect_VSDualTexture.inc"
+#include "Shaders/Compiled/DualTextureEffect_VSDualTextureNoFog.inc"
+#include "Shaders/Compiled/DualTextureEffect_VSDualTextureVc.inc"
+#include "Shaders/Compiled/DualTextureEffect_VSDualTextureVcNoFog.inc"
 
-    #include "Shaders/Compiled/DualTextureEffect_PSDualTexture.inc"
-    #include "Shaders/Compiled/DualTextureEffect_PSDualTextureNoFog.inc"
+#include "Shaders/Compiled/DualTextureEffect_PSDualTexture.inc"
+#include "Shaders/Compiled/DualTextureEffect_PSDualTextureNoFog.inc"
 #endif
 }
 
@@ -124,8 +124,8 @@ SharedResourcePool<ID3D11Device*, EffectBase<DualTextureEffectTraits>::DeviceRes
 
 // Constructor.
 DualTextureEffect::Impl::Impl(_In_ ID3D11Device* device)
-  : EffectBase(device),
-    vertexColorEnabled(false)
+    : EffectBase(device),
+      vertexColorEnabled(false)
 {
     static_assert( _countof(EffectBase<DualTextureEffectTraits>::VertexShaderIndices) == DualTextureEffectTraits::ShaderPermutationCount, "array/max mismatch" );
     static_assert( _countof(EffectBase<DualTextureEffectTraits>::VertexShaderBytecode) == DualTextureEffectTraits::VertexShaderCount, "array/max mismatch" );
@@ -172,7 +172,7 @@ void DualTextureEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
     };
 
     deviceContext->PSSetShaderResources(0, 2, textures);
-    
+
     // Set shaders and constant buffers.
     ApplyShaders(deviceContext, GetCurrentShaderPermutation());
 }
@@ -180,14 +180,14 @@ void DualTextureEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
 
 // Public constructor.
 DualTextureEffect::DualTextureEffect(_In_ ID3D11Device* device)
-  : pImpl(new Impl(device))
+    : pImpl(new Impl(device))
 {
 }
 
 
 // Move constructor.
 DualTextureEffect::DualTextureEffect(DualTextureEffect&& moveFrom)
-  : pImpl(std::move(moveFrom.pImpl))
+    : pImpl(std::move(moveFrom.pImpl))
 {
 }
 

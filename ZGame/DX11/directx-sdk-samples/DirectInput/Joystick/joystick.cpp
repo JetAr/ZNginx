@@ -1,7 +1,7 @@
-//-----------------------------------------------------------------------------
+ï»¿//-----------------------------------------------------------------------------
 // File: Joystick.cpp
 //
-// Desc: Demonstrates an application which receives immediate 
+// Desc: Demonstrates an application which receives immediate
 //       joystick data in exclusive mode via a dialog timer.
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -81,7 +81,7 @@ LPDIRECTINPUTDEVICE8    g_pJoystick = nullptr;
 
 //-----------------------------------------------------------------------------
 // Name: WinMain()
-// Desc: Entry point for the application.  Since we use a simple dialog for 
+// Desc: Entry point for the application.  Since we use a simple dialog for
 //       user interaction we don't need to pump messages.
 //-----------------------------------------------------------------------------
 int APIENTRY WinMain( _In_ HINSTANCE hInst, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int )
@@ -129,55 +129,55 @@ INT_PTR CALLBACK MainDlgProc( HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam 
 
     switch( msg )
     {
-        case WM_INITDIALOG:
-            if( FAILED( InitDirectInput( hDlg ) ) )
-            {
-                MessageBox( nullptr, TEXT( "Error Initializing DirectInput" ),
-                            TEXT( "DirectInput Sample" ), MB_ICONERROR | MB_OK );
-                EndDialog( hDlg, 0 );
-            }
+    case WM_INITDIALOG:
+        if( FAILED( InitDirectInput( hDlg ) ) )
+        {
+            MessageBox( nullptr, TEXT( "Error Initializing DirectInput" ),
+                        TEXT( "DirectInput Sample" ), MB_ICONERROR | MB_OK );
+            EndDialog( hDlg, 0 );
+        }
 
-            // Set a timer to go off 30 times a second. At every timer message
-            // the input device will be read
-            SetTimer( hDlg, 0, 1000 / 30, nullptr );
-            return TRUE;
+        // Set a timer to go off 30 times a second. At every timer message
+        // the input device will be read
+        SetTimer( hDlg, 0, 1000 / 30, nullptr );
+        return TRUE;
 
-        case WM_ACTIVATE:
-            if( WA_INACTIVE != wParam && g_pJoystick )
-            {
-                // Make sure the device is acquired, if we are gaining focus.
-                g_pJoystick->Acquire();
-            }
-            return TRUE;
+    case WM_ACTIVATE:
+        if( WA_INACTIVE != wParam && g_pJoystick )
+        {
+            // Make sure the device is acquired, if we are gaining focus.
+            g_pJoystick->Acquire();
+        }
+        return TRUE;
 
-        case WM_TIMER:
-            // Update the input device every timer message
-            if( FAILED( UpdateInputState( hDlg ) ) )
-            {
-                KillTimer( hDlg, 0 );
-                MessageBox( nullptr, TEXT( "Error Reading Input State. " ) \
-                            TEXT( "The sample will now exit." ), TEXT( "DirectInput Sample" ),
-                            MB_ICONERROR | MB_OK );
-                EndDialog( hDlg, TRUE );
-            }
-            return TRUE;
-
-        case WM_COMMAND:
-            switch( LOWORD( wParam ) )
-            {
-                case IDCANCEL:
-                    EndDialog( hDlg, 0 );
-                    return TRUE;
-            }
-
-        case WM_DESTROY:
-            // Cleanup everything
+    case WM_TIMER:
+        // Update the input device every timer message
+        if( FAILED( UpdateInputState( hDlg ) ) )
+        {
             KillTimer( hDlg, 0 );
-            FreeDirectInput();
+            MessageBox( nullptr, TEXT( "Error Reading Input State. " ) \
+                        TEXT( "The sample will now exit." ), TEXT( "DirectInput Sample" ),
+                        MB_ICONERROR | MB_OK );
+            EndDialog( hDlg, TRUE );
+        }
+        return TRUE;
+
+    case WM_COMMAND:
+        switch( LOWORD( wParam ) )
+        {
+        case IDCANCEL:
+            EndDialog( hDlg, 0 );
             return TRUE;
+        }
+
+    case WM_DESTROY:
+        // Cleanup everything
+        KillTimer( hDlg, 0 );
+        FreeDirectInput();
+        return TRUE;
     }
 
-    return FALSE; // Message not handled 
+    return FALSE; // Message not handled
 }
 
 
@@ -235,7 +235,7 @@ HRESULT InitDirectInput( HWND hDlg )
         return S_OK;
     }
 
-    // Set the data format to "simple joystick" - a predefined data format 
+    // Set the data format to "simple joystick" - a predefined data format
     //
     // A data format specifies which controls on a device we are interested in,
     // and how they should be reported. This tells DInput that we will be
@@ -246,14 +246,14 @@ HRESULT InitDirectInput( HWND hDlg )
     // Set the cooperative level to let DInput know how this device should
     // interact with the system and with other DInput applications.
     if( FAILED( hr = g_pJoystick->SetCooperativeLevel( hDlg, DISCL_EXCLUSIVE |
-                                                       DISCL_FOREGROUND ) ) )
+                     DISCL_FOREGROUND ) ) )
         return hr;
 
     // Enumerate the joystick objects. The callback function enabled user
     // interface elements for objects that are found, and sets the min/max
     // values property for discovered axes.
     if( FAILED( hr = g_pJoystick->EnumObjects( EnumObjectsCallback,
-                                               ( VOID* )hDlg, DIDFT_ALL ) ) )
+                     ( VOID* )hDlg, DIDFT_ALL ) ) )
         return hr;
 
     return S_OK;
@@ -261,13 +261,13 @@ HRESULT InitDirectInput( HWND hDlg )
 
 
 //-----------------------------------------------------------------------------
-// Enum each PNP device using WMI and check each device ID to see if it contains 
-// "IG_" (ex. "VID_045E&PID_028E&IG_00").  If it does, then it’s an XInput device
+// Enum each PNP device using WMI and check each device ID to see if it contains
+// "IG_" (ex. "VID_045E&PID_028E&IG_00").  If it does, then itâ€™s an XInput device
 // Unfortunately this information can not be found by just using DirectInput.
-// Checking against a VID/PID of 0x028E/0x045E won't find 3rd party or future 
+// Checking against a VID/PID of 0x028E/0x045E won't find 3rd party or future
 // XInput devices.
 //
-// This function stores the list of xinput devices in a linked list 
+// This function stores the list of xinput devices in a linked list
 // at g_pXInputDeviceList, and IsXInputDevice() searchs that linked list
 //-----------------------------------------------------------------------------
 HRESULT SetupForIsXInputDevice()
@@ -299,11 +299,14 @@ HRESULT SetupForIsXInputDevice()
         goto LCleanup;
 
     // Create BSTRs for WMI
-    bstrNamespace = SysAllocString( L"\\\\.\\root\\cimv2" ); if( bstrNamespace == nullptr ) goto LCleanup;
-    bstrDeviceID = SysAllocString( L"DeviceID" );           if( bstrDeviceID == nullptr )  goto LCleanup;
-    bstrClassName = SysAllocString( L"Win32_PNPEntity" );    if( bstrClassName == nullptr ) goto LCleanup;
+    bstrNamespace = SysAllocString( L"\\\\.\\root\\cimv2" );
+    if( bstrNamespace == nullptr ) goto LCleanup;
+    bstrDeviceID = SysAllocString( L"DeviceID" );
+    if( bstrDeviceID == nullptr )  goto LCleanup;
+    bstrClassName = SysAllocString( L"Win32_PNPEntity" );
+    if( bstrClassName == nullptr ) goto LCleanup;
 
-    // Connect to WMI 
+    // Connect to WMI
     hr = pIWbemLocator->ConnectServer( bstrNamespace, nullptr, nullptr, 0L,
                                        0L, nullptr, nullptr, &pIWbemServices );
     if( FAILED( hr ) || pIWbemServices == nullptr )
@@ -331,14 +334,14 @@ HRESULT SetupForIsXInputDevice()
         for( iDevice = 0; iDevice < uReturned; iDevice++ )
         {
             if ( !pDevices[iDevice] )
-               continue;
+                continue;
 
             // For each device, get its device ID
             hr = pDevices[iDevice]->Get( bstrDeviceID, 0L, &var, nullptr, nullptr );
             if( SUCCEEDED( hr ) && var.vt == VT_BSTR && var.bstrVal != nullptr )
             {
-                // Check if the device ID contains "IG_".  If it does, then it’s an XInput device
-                // Unfortunately this information can not be found by just using DirectInput 
+                // Check if the device ID contains "IG_".  If it does, then itâ€™s an XInput device
+                // Unfortunately this information can not be found by just using DirectInput
                 if( wcsstr( var.bstrVal, L"IG_" ) )
                 {
                     // If it does, then get the VID/PID from var.bstrVal
@@ -374,7 +377,7 @@ LCleanup:
     if( bstrClassName )
         SysFreeString( bstrClassName );
     for( iDevice = 0; iDevice < 20; iDevice++ )
-    SAFE_RELEASE( pDevices[iDevice] );
+        SAFE_RELEASE( pDevices[iDevice] );
     SAFE_RELEASE( pEnumDevices );
     SAFE_RELEASE( pIWbemLocator );
     SAFE_RELEASE( pIWbemServices );
@@ -433,10 +436,10 @@ BOOL CALLBACK EnumJoysticksCallback( const DIDEVICEINSTANCE* pdidInstance,
     if( g_bFilterOutXinputDevices && IsXInputDevice( &pdidInstance->guidProduct ) )
         return DIENUM_CONTINUE;
 
-    // Skip anything other than the perferred joystick device as defined by the control panel.  
+    // Skip anything other than the perferred joystick device as defined by the control panel.
     // Instead you could store all the enumerated joysticks and let the user pick.
     if( pEnumContext->bPreferredJoyCfgValid &&
-        !IsEqualGUID( pdidInstance->guidInstance, pEnumContext->pPreferredJoyCfg->guidInstance ) )
+            !IsEqualGUID( pdidInstance->guidInstance, pEnumContext->pPreferredJoyCfg->guidInstance ) )
         return DIENUM_CONTINUE;
 
     // Obtain an interface to the enumerated joystick.
@@ -457,7 +460,7 @@ BOOL CALLBACK EnumJoysticksCallback( const DIDEVICEINSTANCE* pdidInstance,
 
 //-----------------------------------------------------------------------------
 // Name: EnumObjectsCallback()
-// Desc: Callback function for enumerating objects (axes, buttons, POVs) on a 
+// Desc: Callback function for enumerating objects (axes, buttons, POVs) on a
 //       joystick. This function enables user interface elements for objects
 //       that are found to exist, and scales axes min/max values.
 //-----------------------------------------------------------------------------
@@ -523,40 +526,40 @@ BOOL CALLBACK EnumObjectsCallback( const DIDEVICEOBJECTINSTANCE* pdidoi,
     {
         switch( nSliderCount++ )
         {
-            case 0 :
-                EnableWindow( GetDlgItem( hDlg, IDC_SLIDER0 ), TRUE );
-                EnableWindow( GetDlgItem( hDlg, IDC_SLIDER0_TEXT ), TRUE );
-                break;
+        case 0 :
+            EnableWindow( GetDlgItem( hDlg, IDC_SLIDER0 ), TRUE );
+            EnableWindow( GetDlgItem( hDlg, IDC_SLIDER0_TEXT ), TRUE );
+            break;
 
-            case 1 :
-                EnableWindow( GetDlgItem( hDlg, IDC_SLIDER1 ), TRUE );
-                EnableWindow( GetDlgItem( hDlg, IDC_SLIDER1_TEXT ), TRUE );
-                break;
+        case 1 :
+            EnableWindow( GetDlgItem( hDlg, IDC_SLIDER1 ), TRUE );
+            EnableWindow( GetDlgItem( hDlg, IDC_SLIDER1_TEXT ), TRUE );
+            break;
         }
     }
     if( pdidoi->guidType == GUID_POV )
     {
         switch( nPOVCount++ )
         {
-            case 0 :
-                EnableWindow( GetDlgItem( hDlg, IDC_POV0 ), TRUE );
-                EnableWindow( GetDlgItem( hDlg, IDC_POV0_TEXT ), TRUE );
-                break;
+        case 0 :
+            EnableWindow( GetDlgItem( hDlg, IDC_POV0 ), TRUE );
+            EnableWindow( GetDlgItem( hDlg, IDC_POV0_TEXT ), TRUE );
+            break;
 
-            case 1 :
-                EnableWindow( GetDlgItem( hDlg, IDC_POV1 ), TRUE );
-                EnableWindow( GetDlgItem( hDlg, IDC_POV1_TEXT ), TRUE );
-                break;
+        case 1 :
+            EnableWindow( GetDlgItem( hDlg, IDC_POV1 ), TRUE );
+            EnableWindow( GetDlgItem( hDlg, IDC_POV1_TEXT ), TRUE );
+            break;
 
-            case 2 :
-                EnableWindow( GetDlgItem( hDlg, IDC_POV2 ), TRUE );
-                EnableWindow( GetDlgItem( hDlg, IDC_POV2_TEXT ), TRUE );
-                break;
+        case 2 :
+            EnableWindow( GetDlgItem( hDlg, IDC_POV2 ), TRUE );
+            EnableWindow( GetDlgItem( hDlg, IDC_POV2_TEXT ), TRUE );
+            break;
 
-            case 3 :
-                EnableWindow( GetDlgItem( hDlg, IDC_POV3 ), TRUE );
-                EnableWindow( GetDlgItem( hDlg, IDC_POV3_TEXT ), TRUE );
-                break;
+        case 3 :
+            EnableWindow( GetDlgItem( hDlg, IDC_POV3 ), TRUE );
+            EnableWindow( GetDlgItem( hDlg, IDC_POV3_TEXT ), TRUE );
+            break;
         }
     }
 
@@ -574,7 +577,7 @@ HRESULT UpdateInputState( HWND hDlg )
 {
     HRESULT hr;
     TCHAR strText[512] = {0}; // Device state text
-    DIJOYSTATE2 js;           // DInput joystick state 
+    DIJOYSTATE2 js;           // DInput joystick state
 
     if( !g_pJoystick )
         return S_OK;
@@ -592,8 +595,8 @@ HRESULT UpdateInputState( HWND hDlg )
             hr = g_pJoystick->Acquire();
 
         // hr may be DIERR_OTHERAPPHASPRIO or other errors.  This
-        // may occur when the app is minimized or in the process of 
-        // switching, so just try again later 
+        // may occur when the app is minimized or in the process of
+        // switching, so just try again later
         return S_OK;
     }
 
@@ -660,7 +663,7 @@ HRESULT UpdateInputState( HWND hDlg )
 //-----------------------------------------------------------------------------
 VOID FreeDirectInput()
 {
-    // Unacquire the device one last time just in case 
+    // Unacquire the device one last time just in case
     // the app tried to exit while the device is still acquired.
     if( g_pJoystick )
         g_pJoystick->Unacquire();

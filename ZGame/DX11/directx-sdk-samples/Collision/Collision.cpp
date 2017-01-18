@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: Collision.cpp
 //
 // Sample demonstrating DirectXMath's collision types using Direct3D 11, DXUT,
@@ -122,7 +122,7 @@ XMVECTOR g_CameraOrigins[CAMERA_COUNT];
 #define IDC_GROUP               5
 
 //--------------------------------------------------------------------------------------
-// Forward declarations 
+// Forward declarations
 //--------------------------------------------------------------------------------------
 LRESULT CALLBACK MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bool* pbNoFurtherProcessing,
                           void* pUserContext );
@@ -135,13 +135,13 @@ bool CALLBACK IsD3D11DeviceAcceptable( const CD3D11EnumAdapterInfo *AdapterInfo,
                                        const CD3D11EnumDeviceInfo *DeviceInfo,
                                        DXGI_FORMAT BackBufferFormat, bool bWindowed, void* pUserContext );
 HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc,
-                                     void* pUserContext );
+                                      void* pUserContext );
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                         const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext );
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext );
 void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime,
-                                 float fElapsedTime, void* pUserContext );
+                                  float fElapsedTime, void* pUserContext );
 
 void InitApp();
 void RenderText();
@@ -161,7 +161,7 @@ void DrawRay( FXMVECTOR Origin, FXMVECTOR Direction, bool bNormalize, FXMVECTOR 
 void DrawTriangle( FXMVECTOR PointA, FXMVECTOR PointB, FXMVECTOR PointC, CXMVECTOR color );
 
 //--------------------------------------------------------------------------------------
-// Entry point to the program. Initializes everything and goes into a message processing 
+// Entry point to the program. Initializes everything and goes into a message processing
 // loop. Idle time is used to render the scene.
 //--------------------------------------------------------------------------------------
 int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow )
@@ -212,7 +212,7 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 
 //--------------------------------------------------------------------------------------
-// Initialize the app 
+// Initialize the app
 //--------------------------------------------------------------------------------------
 void InitApp()
 {
@@ -339,8 +339,8 @@ void Animate( double fTime )
     g_SecondaryOrientedBoxes[0].obox.Center.x = 8 * sinf( 3.5f * t );
     g_SecondaryOrientedBoxes[0].obox.Center.y = 5 * cosf( 5.1f * t );
     XMStoreFloat4( &( g_SecondaryOrientedBoxes[0].obox.Orientation ), XMQuaternionRotationRollPitchYaw( t * 1.4f,
-                                                                                                          t * 0.2f,
-                                                                                                          t ) );
+                   t * 0.2f,
+                   t ) );
 
     // animate aligned box 0 around the frustum
     g_SecondaryAABoxes[0].aabox.Center.x = 10 * sinf( 2.1f * t );
@@ -350,14 +350,14 @@ void Animate( double fTime )
     g_SecondarySpheres[1].sphere.Center.x = 8 * sinf( 2.9f * t ) + camera1OriginX;
     g_SecondarySpheres[1].sphere.Center.y = 8 * cosf( 4.6f * t );
     g_SecondarySpheres[1].sphere.Center.z = 8 * cosf( 1.6f * t );
-  
+
     // animate oriented box 1 around the aligned box
     g_SecondaryOrientedBoxes[1].obox.Center.x = 8 * sinf( 3.2f * t ) + camera1OriginX;
     g_SecondaryOrientedBoxes[1].obox.Center.y = 8 * cosf( 2.1f * t );
     g_SecondaryOrientedBoxes[1].obox.Center.z = 8 * sinf( 1.6f * t );
     XMStoreFloat4( &( g_SecondaryOrientedBoxes[1].obox.Orientation ), XMQuaternionRotationRollPitchYaw( t * 0.7f,
-                                                                                                          t * 1.3f,
-                                                                                                          t ) );
+                   t * 1.3f,
+                   t ) );
 
     // animate aligned box 1 around the aligned box
     g_SecondaryAABoxes[1].aabox.Center.x = 8 * sinf( 1.1f * t ) + camera1OriginX;
@@ -374,8 +374,8 @@ void Animate( double fTime )
     g_SecondaryOrientedBoxes[2].obox.Center.y = 8 * cosf( 2.5f * t );
     g_SecondaryOrientedBoxes[2].obox.Center.z = 8 * sinf( 1.1f * t );
     XMStoreFloat4( &( g_SecondaryOrientedBoxes[2].obox.Orientation ), XMQuaternionRotationRollPitchYaw( t * 0.9f,
-                                                                                                          t * 1.8f,
-                                                                                                          t ) );
+                   t * 1.8f,
+                   t ) );
 
     // animate aligned box 2 around the oriented box
     g_SecondaryAABoxes[2].aabox.Center.x = 8 * sinf( 1.3f * t ) + camera2OriginX;
@@ -390,8 +390,8 @@ void Animate( double fTime )
     // animate triangle 0 around the frustum
     XMMATRIX TriangleCoords = XMMatrixRotationRollPitchYaw( t * 1.4f, t * 2.5f, t );
     XMMATRIX Translation = XMMatrixTranslation( 5 * sinf( 5.3f * t ) + camera0OriginX,
-                                                5 * cosf( 2.3f * t ),
-                                                5 * sinf( 3.4f * t ) );
+                           5 * cosf( 2.3f * t ),
+                           5 * sinf( 3.4f * t ) );
     TriangleCoords = XMMatrixMultiply( TriangleCoords, Translation );
     g_SecondaryTriangles[0].pointa = XMVector3Transform( TrianglePointA, TriangleCoords );
     g_SecondaryTriangles[0].pointb = XMVector3Transform( TrianglePointB, TriangleCoords );
@@ -422,21 +422,21 @@ void Animate( double fTime )
 
     // animate sphere 3 around the ray
     g_SecondarySpheres[3].sphere.Center = XMFLOAT3( camera3OriginX - 3,
-                                                      0.5f * sinf( t * 5 ),
-                                                      camera3OriginZ );
+                                          0.5f * sinf( t * 5 ),
+                                          camera3OriginZ );
 
     // animate aligned box 3 around the ray
     g_SecondaryAABoxes[3].aabox.Center = XMFLOAT3( camera3OriginX + 3,
-                                                     0.5f * sinf( t * 4 ),
-                                                     camera3OriginZ );
+                                         0.5f * sinf( t * 4 ),
+                                         camera3OriginZ );
 
     // animate oriented box 3 around the ray
     g_SecondaryOrientedBoxes[3].obox.Center = XMFLOAT3( camera3OriginX,
-                                                          0.5f * sinf( t * 4.5f ),
-                                                          camera3OriginZ + 3 );
+            0.5f * sinf( t * 4.5f ),
+            camera3OriginZ + 3 );
     XMStoreFloat4( &( g_SecondaryOrientedBoxes[3].obox.Orientation ), XMQuaternionRotationRollPitchYaw( t * 0.9f,
-                                                                                                          t * 1.8f,
-                                                                                                          t ) );
+                   t * 1.8f,
+                   t ) );
 
     // animate triangle 3 around the ray
     TriangleCoords = XMMatrixRotationRollPitchYaw( t * 1.4f, t * 2.5f, t );
@@ -460,24 +460,24 @@ void Collide()
     g_SecondaryOrientedBoxes[0].collision = g_PrimaryFrustum.Contains( g_SecondaryOrientedBoxes[0].obox );
     g_SecondaryAABoxes[0].collision = g_PrimaryFrustum.Contains( g_SecondaryAABoxes[0].aabox );
     g_SecondaryTriangles[0].collision = g_PrimaryFrustum.Contains( g_SecondaryTriangles[0].pointa,
-                                                                   g_SecondaryTriangles[0].pointb,
-                                                                   g_SecondaryTriangles[0].pointc );
+                                        g_SecondaryTriangles[0].pointb,
+                                        g_SecondaryTriangles[0].pointc );
 
     // test collisions between objects and aligned box
     g_SecondarySpheres[1].collision = g_PrimaryAABox.Contains( g_SecondarySpheres[1].sphere );
     g_SecondaryOrientedBoxes[1].collision = g_PrimaryAABox.Contains( g_SecondaryOrientedBoxes[1].obox );
     g_SecondaryAABoxes[1].collision = g_PrimaryAABox.Contains( g_SecondaryAABoxes[1].aabox );
     g_SecondaryTriangles[1].collision = g_PrimaryAABox.Contains( g_SecondaryTriangles[1].pointa,
-                                                                 g_SecondaryTriangles[1].pointb,
-                                                                 g_SecondaryTriangles[1].pointc );
+                                        g_SecondaryTriangles[1].pointb,
+                                        g_SecondaryTriangles[1].pointc );
 
     // test collisions between objects and oriented box
     g_SecondarySpheres[2].collision = g_PrimaryOrientedBox.Contains( g_SecondarySpheres[2].sphere );
     g_SecondaryOrientedBoxes[2].collision = g_PrimaryOrientedBox.Contains( g_SecondaryOrientedBoxes[2].obox );
     g_SecondaryAABoxes[2].collision = g_PrimaryOrientedBox.Contains( g_SecondaryAABoxes[2].aabox );
     g_SecondaryTriangles[2].collision = g_PrimaryOrientedBox.Contains( g_SecondaryTriangles[2].pointa,
-                                                                       g_SecondaryTriangles[2].pointb,
-                                                                       g_SecondaryTriangles[2].pointc );
+                                        g_SecondaryTriangles[2].pointb,
+                                        g_SecondaryTriangles[2].pointc );
 
     // test collisions between objects and ray
     float fDistance = -1.0f;
@@ -525,7 +525,7 @@ void Collide()
     {
         // The primary ray's direction is assumed to be normalized.
         XMVECTOR HitLocation = XMVectorMultiplyAdd( g_PrimaryRay.direction, XMVectorReplicate( fDistance ),
-                                                    g_PrimaryRay.origin );
+                               g_PrimaryRay.origin );
         XMStoreFloat3( &g_RayHitResultBox.aabox.Center, HitLocation );
         g_RayHitResultBox.collision = INTERSECTS;
     }
@@ -549,10 +549,13 @@ inline XMVECTOR GetCollisionColor( ContainmentType collision, int groupnumber )
 
     switch( collision )
     {
-    case DISJOINT:      return Colors::Green;
-    case INTERSECTS:    return Colors::Yellow;
+    case DISJOINT:
+        return Colors::Green;
+    case INTERSECTS:
+        return Colors::Yellow;
     case CONTAINS:
-    default:            return Colors::Red;
+    default:
+        return Colors::Red;
     }
 }
 
@@ -722,7 +725,7 @@ void DrawFrustum( const BoundingFrustum& frustum, FXMVECTOR color )
     g_Batch->Begin();
 
     g_Batch->Draw( D3D11_PRIMITIVE_TOPOLOGY_LINELIST, verts, _countof( verts ) );
-    
+
     g_Batch->End();
 }
 
@@ -949,7 +952,7 @@ bool CALLBACK IsD3D11DeviceAcceptable( const CD3D11EnumAdapterInfo *AdapterInfo,
 // Create any D3D11 resources that aren't dependant on the back buffer
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc,
-                                     void* pUserContext )
+                                      void* pUserContext )
 {
     HRESULT hr;
 
@@ -993,7 +996,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 // Create any D3D11 resources that depend on the back buffer
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                         const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
     HRESULT hr;
 
@@ -1019,14 +1022,14 @@ HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapCha
 // Render the scene using the D3D11 device
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime,
-                                 float fElapsedTime, void* pUserContext )
+                                  float fElapsedTime, void* pUserContext )
 {
     // If the settings dialog is being shown, then render it instead of rendering the app's scene
     if( g_SettingsDlg.IsActive() )
     {
         g_SettingsDlg.OnRender( fElapsedTime );
         return;
-    }       
+    }
 
     auto pRTV = DXUTGetD3D11RenderTargetView();
     pd3dImmediateContext->ClearRenderTargetView( pRTV, Colors::MidnightBlue );
@@ -1056,7 +1059,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
 
     static ULONGLONG timefirst = GetTickCount64();
     if ( GetTickCount64() - timefirst > 5000 )
-    {    
+    {
         OutputDebugString( DXUTGetFrameStats( DXUTIsVsyncEnabled() ) );
         OutputDebugString( L"\n" );
         timefirst = GetTickCount64();
@@ -1065,7 +1068,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11ResizedSwapChain 
+// Release D3D11 resources created in OnD3D11ResizedSwapChain
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 {
@@ -1074,7 +1077,7 @@ void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11CreateDevice 
+// Release D3D11 resources created in OnD3D11CreateDevice
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
 {
@@ -1111,7 +1114,7 @@ void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext 
     // Compute collisions
     Collide();
 
-    // Update the camera's position based on user input 
+    // Update the camera's position based on user input
     g_Camera.FrameMove( fElapsedTime );
 }
 
@@ -1160,14 +1163,14 @@ void CALLBACK OnKeyboard( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserC
     case '2':
     case '3':
     case '4':
-        {
-            int group = (nChar - '1');
-            auto pComboBox = g_SampleUI.GetComboBox( IDC_GROUP );
-            assert(pComboBox != NULL);
-            pComboBox->SetSelectedByData( IntToPtr( group ) );
-            SetViewForGroup( group );
-        }
-        break;
+    {
+        int group = (nChar - '1');
+        auto pComboBox = g_SampleUI.GetComboBox( IDC_GROUP );
+        assert(pComboBox != NULL);
+        pComboBox->SetSelectedByData( IntToPtr( group ) );
+        SetViewForGroup( group );
+    }
+    break;
     }
 }
 
@@ -1179,23 +1182,23 @@ void CALLBACK OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, v
 {
     switch( nControlID )
     {
-        case IDC_TOGGLEFULLSCREEN:
-            DXUTToggleFullScreen();
-            break;
-        case IDC_TOGGLEREF:
-            DXUTToggleREF();
-            break;
-        case IDC_TOGGLEWARP:
-            DXUTToggleWARP();
-            break;
-        case IDC_CHANGEDEVICE:
-            g_SettingsDlg.SetActive( !g_SettingsDlg.IsActive() );
-            break;
-        case IDC_GROUP:
-            {
-                auto pComboBox = reinterpret_cast<CDXUTComboBox*>( pControl );
-                SetViewForGroup( (int)PtrToInt( pComboBox->GetSelectedData() ) );
-            }
-            break;
+    case IDC_TOGGLEFULLSCREEN:
+        DXUTToggleFullScreen();
+        break;
+    case IDC_TOGGLEREF:
+        DXUTToggleREF();
+        break;
+    case IDC_TOGGLEWARP:
+        DXUTToggleWARP();
+        break;
+    case IDC_CHANGEDEVICE:
+        g_SettingsDlg.SetActive( !g_SettingsDlg.IsActive() );
+        break;
+    case IDC_GROUP:
+    {
+        auto pComboBox = reinterpret_cast<CDXUTComboBox*>( pControl );
+        SetViewForGroup( (int)PtrToInt( pComboBox->GetSelectedData() ) );
+    }
+    break;
     }
 }

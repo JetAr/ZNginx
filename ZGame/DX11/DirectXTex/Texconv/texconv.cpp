@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: TexConv.cpp
 //
 // DirectX Texture Converter
@@ -331,7 +331,7 @@ const SValue g_pFilters[] =
     { nullptr,                      TEX_FILTER_DEFAULT                              }
 };
 
-#define CODEC_DDS 0xFFFF0001 
+#define CODEC_DDS 0xFFFF0001
 #define CODEC_TGA 0xFFFF0002
 #define CODEC_HDP 0xFFFF0003
 #define CODEC_JXR 0xFFFF0004
@@ -380,485 +380,501 @@ const SValue g_pFeatureLevels[] =   // valid feature levels for -fl for maximimu
 
 namespace
 {
-    inline HANDLE safe_handle(HANDLE h) { return (h == INVALID_HANDLE_VALUE) ? 0 : h; }
+inline HANDLE safe_handle(HANDLE h)
+{
+    return (h == INVALID_HANDLE_VALUE) ? 0 : h;
+}
 
-    struct find_closer { void operator()(HANDLE h) { assert(h != INVALID_HANDLE_VALUE); if (h) FindClose(h); } };
-
-    typedef public std::unique_ptr<void, find_closer> ScopedFindHandle;
-
-    inline static bool ispow2(size_t x)
+struct find_closer
+{
+    void operator()(HANDLE h)
     {
-        return ((x != 0) && !(x & (x - 1)));
+        assert(h != INVALID_HANDLE_VALUE);
+        if (h) FindClose(h);
     }
+};
+
+typedef public std::unique_ptr<void, find_closer> ScopedFindHandle;
+
+inline static bool ispow2(size_t x)
+{
+    return ((x != 0) && !(x & (x - 1)));
+}
 
 #pragma prefast(disable : 26018, "Only used with static internal arrays")
 
-    DWORD LookupByName(const wchar_t *pName, const SValue *pArray)
+DWORD LookupByName(const wchar_t *pName, const SValue *pArray)
+{
+    while (pArray->pName)
     {
-        while (pArray->pName)
-        {
-            if (!_wcsicmp(pName, pArray->pName))
-                return pArray->dwValue;
+        if (!_wcsicmp(pName, pArray->pName))
+            return pArray->dwValue;
 
-            pArray++;
-        }
-
-        return 0;
+        pArray++;
     }
 
+    return 0;
+}
 
-    const wchar_t* LookupByValue(DWORD pValue, const SValue *pArray)
+
+const wchar_t* LookupByValue(DWORD pValue, const SValue *pArray)
+{
+    while (pArray->pName)
     {
-        while (pArray->pName)
-        {
-            if (pValue == pArray->dwValue)
-                return pArray->pName;
+        if (pValue == pArray->dwValue)
+            return pArray->pName;
 
-            pArray++;
-        }
-
-        return L"";
+        pArray++;
     }
 
+    return L"";
+}
 
-    void SearchForFiles(const wchar_t* path, std::list<SConversion>& files, bool recursive)
+
+void SearchForFiles(const wchar_t* path, std::list<SConversion>& files, bool recursive)
+{
+    // Process files
+    WIN32_FIND_DATA findData = {};
+    ScopedFindHandle hFile(safe_handle(FindFirstFileExW(path,
+                                       FindExInfoBasic, &findData,
+                                       FindExSearchNameMatch, nullptr,
+                                       FIND_FIRST_EX_LARGE_FETCH)));
+    if (hFile)
     {
-        // Process files
-        WIN32_FIND_DATA findData = {};
-        ScopedFindHandle hFile(safe_handle(FindFirstFileExW(path,
-            FindExInfoBasic, &findData,
-            FindExSearchNameMatch, nullptr,
-            FIND_FIRST_EX_LARGE_FETCH)));
-        if (hFile)
+        for (;;)
         {
-            for (;;)
-            {
-                if (!(findData.dwFileAttributes & (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_DIRECTORY)))
-                {
-                    wchar_t drive[_MAX_DRIVE] = {};
-                    wchar_t dir[_MAX_DIR] = {};
-                    _wsplitpath_s(path, drive, _MAX_DRIVE, dir, _MAX_DIR, nullptr, 0, nullptr, 0);
-
-                    SConversion conv;
-                    _wmakepath_s(conv.szSrc, drive, dir, findData.cFileName, nullptr);
-                    files.push_back(conv);
-                }
-
-                if (!FindNextFile(hFile.get(), &findData))
-                    break;
-            }
-        }
-
-        // Process directories
-        if (recursive)
-        {
-            wchar_t searchDir[MAX_PATH] = {};
+            if (!(findData.dwFileAttributes & (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_DIRECTORY)))
             {
                 wchar_t drive[_MAX_DRIVE] = {};
                 wchar_t dir[_MAX_DIR] = {};
                 _wsplitpath_s(path, drive, _MAX_DRIVE, dir, _MAX_DIR, nullptr, 0, nullptr, 0);
-                _wmakepath_s(searchDir, drive, dir, L"*", nullptr);
+
+                SConversion conv;
+                _wmakepath_s(conv.szSrc, drive, dir, findData.cFileName, nullptr);
+                files.push_back(conv);
             }
 
-            hFile.reset(safe_handle(FindFirstFileExW(searchDir,
-                FindExInfoBasic, &findData,
-                FindExSearchLimitToDirectories, nullptr,
-                FIND_FIRST_EX_LARGE_FETCH)));
-            if (!hFile)
-                return;
+            if (!FindNextFile(hFile.get(), &findData))
+                break;
+        }
+    }
 
-            for (;;)
+    // Process directories
+    if (recursive)
+    {
+        wchar_t searchDir[MAX_PATH] = {};
+        {
+            wchar_t drive[_MAX_DRIVE] = {};
+            wchar_t dir[_MAX_DIR] = {};
+            _wsplitpath_s(path, drive, _MAX_DRIVE, dir, _MAX_DIR, nullptr, 0, nullptr, 0);
+            _wmakepath_s(searchDir, drive, dir, L"*", nullptr);
+        }
+
+        hFile.reset(safe_handle(FindFirstFileExW(searchDir,
+                                FindExInfoBasic, &findData,
+                                FindExSearchLimitToDirectories, nullptr,
+                                FIND_FIRST_EX_LARGE_FETCH)));
+        if (!hFile)
+            return;
+
+        for (;;)
+        {
+            if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
             {
-                if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+                if (findData.cFileName[0] != L'.')
                 {
-                    if (findData.cFileName[0] != L'.')
+                    wchar_t subdir[MAX_PATH] = {};
+
                     {
-                        wchar_t subdir[MAX_PATH] = {};
-
-                        {
-                            wchar_t drive[_MAX_DRIVE] = {};
-                            wchar_t dir[_MAX_DIR] = {};
-                            wchar_t fname[_MAX_FNAME] = {};
-                            wchar_t ext[_MAX_FNAME] = {};
-                            _wsplitpath_s(path, drive, dir, fname, ext);
-                            wcscat_s(dir, findData.cFileName);
-                            _wmakepath_s(subdir, drive, dir, fname, ext);
-                        }
-
-                        SearchForFiles(subdir, files, recursive);
+                        wchar_t drive[_MAX_DRIVE] = {};
+                        wchar_t dir[_MAX_DIR] = {};
+                        wchar_t fname[_MAX_FNAME] = {};
+                        wchar_t ext[_MAX_FNAME] = {};
+                        _wsplitpath_s(path, drive, dir, fname, ext);
+                        wcscat_s(dir, findData.cFileName);
+                        _wmakepath_s(subdir, drive, dir, fname, ext);
                     }
+
+                    SearchForFiles(subdir, files, recursive);
                 }
-
-                if (!FindNextFile(hFile.get(), &findData))
-                    break;
             }
+
+            if (!FindNextFile(hFile.get(), &findData))
+                break;
+        }
+    }
+}
+
+
+void PrintFormat(DXGI_FORMAT Format)
+{
+    for (const SValue *pFormat = g_pFormats; pFormat->pName; pFormat++)
+    {
+        if ((DXGI_FORMAT)pFormat->dwValue == Format)
+        {
+            wprintf(pFormat->pName);
+            return;
         }
     }
 
-
-    void PrintFormat(DXGI_FORMAT Format)
+    for (const SValue *pFormat = g_pReadOnlyFormats; pFormat->pName; pFormat++)
     {
-        for (const SValue *pFormat = g_pFormats; pFormat->pName; pFormat++)
+        if ((DXGI_FORMAT)pFormat->dwValue == Format)
         {
-            if ((DXGI_FORMAT)pFormat->dwValue == Format)
-            {
-                wprintf(pFormat->pName);
-                return;
-            }
+            wprintf(pFormat->pName);
+            return;
         }
-
-        for (const SValue *pFormat = g_pReadOnlyFormats; pFormat->pName; pFormat++)
-        {
-            if ((DXGI_FORMAT)pFormat->dwValue == Format)
-            {
-                wprintf(pFormat->pName);
-                return;
-            }
-        }
-
-        wprintf(L"*UNKNOWN*");
     }
 
+    wprintf(L"*UNKNOWN*");
+}
 
-    void PrintInfo(const TexMetadata& info)
+
+void PrintInfo(const TexMetadata& info)
+{
+    wprintf(L" (%Iux%Iu", info.width, info.height);
+
+    if (TEX_DIMENSION_TEXTURE3D == info.dimension)
+        wprintf(L"x%Iu", info.depth);
+
+    if (info.mipLevels > 1)
+        wprintf(L",%Iu", info.mipLevels);
+
+    if (info.arraySize > 1)
+        wprintf(L",%Iu", info.arraySize);
+
+    wprintf(L" ");
+    PrintFormat(info.format);
+
+    switch (info.dimension)
     {
-        wprintf(L" (%Iux%Iu", info.width, info.height);
+    case TEX_DIMENSION_TEXTURE1D:
+        wprintf((info.arraySize > 1) ? L" 1DArray" : L" 1D");
+        break;
 
-        if (TEX_DIMENSION_TEXTURE3D == info.dimension)
-            wprintf(L"x%Iu", info.depth);
-
-        if (info.mipLevels > 1)
-            wprintf(L",%Iu", info.mipLevels);
-
-        if (info.arraySize > 1)
-            wprintf(L",%Iu", info.arraySize);
-
-        wprintf(L" ");
-        PrintFormat(info.format);
-
-        switch (info.dimension)
+    case TEX_DIMENSION_TEXTURE2D:
+        if (info.IsCubemap())
         {
-        case TEX_DIMENSION_TEXTURE1D:
-            wprintf((info.arraySize > 1) ? L" 1DArray" : L" 1D");
-            break;
-
-        case TEX_DIMENSION_TEXTURE2D:
-            if (info.IsCubemap())
-            {
-                wprintf((info.arraySize > 6) ? L" CubeArray" : L" Cube");
-            }
-            else
-            {
-                wprintf((info.arraySize > 1) ? L" 2DArray" : L" 2D");
-            }
-            break;
-
-        case TEX_DIMENSION_TEXTURE3D:
-            wprintf(L" 3D");
-            break;
+            wprintf((info.arraySize > 6) ? L" CubeArray" : L" Cube");
         }
-
-        switch (info.GetAlphaMode())
+        else
         {
-        case TEX_ALPHA_MODE_OPAQUE:
-            wprintf(L" \x0e0:Opaque");
-            break;
-        case TEX_ALPHA_MODE_PREMULTIPLIED:
-            wprintf(L" \x0e0:PM");
-            break;
-        case TEX_ALPHA_MODE_STRAIGHT:
-            wprintf(L" \x0e0:NonPM");
-            break;
+            wprintf((info.arraySize > 1) ? L" 2DArray" : L" 2D");
         }
+        break;
 
-        wprintf(L")");
+    case TEX_DIMENSION_TEXTURE3D:
+        wprintf(L" 3D");
+        break;
     }
 
-
-    void PrintList(size_t cch, const SValue *pValue)
+    switch (info.GetAlphaMode())
     {
-        while (pValue->pName)
-        {
-            size_t cchName = wcslen(pValue->pName);
-
-            if (cch + cchName + 2 >= 80)
-            {
-                wprintf(L"\n      ");
-                cch = 6;
-            }
-
-            wprintf(L"%ls ", pValue->pName);
-            cch += cchName + 2;
-            pValue++;
-        }
-
-        wprintf(L"\n");
+    case TEX_ALPHA_MODE_OPAQUE:
+        wprintf(L" \x0e0:Opaque");
+        break;
+    case TEX_ALPHA_MODE_PREMULTIPLIED:
+        wprintf(L" \x0e0:PM");
+        break;
+    case TEX_ALPHA_MODE_STRAIGHT:
+        wprintf(L" \x0e0:NonPM");
+        break;
     }
 
+    wprintf(L")");
+}
 
-    void PrintLogo()
+
+void PrintList(size_t cch, const SValue *pValue)
+{
+    while (pValue->pName)
     {
-        wprintf(L"Microsoft (R) DirectX Texture Converter (DirectXTex version)\n");
-        wprintf(L"Copyright (C) Microsoft Corp. All rights reserved.\n");
+        size_t cchName = wcslen(pValue->pName);
+
+        if (cch + cchName + 2 >= 80)
+        {
+            wprintf(L"\n      ");
+            cch = 6;
+        }
+
+        wprintf(L"%ls ", pValue->pName);
+        cch += cchName + 2;
+        pValue++;
+    }
+
+    wprintf(L"\n");
+}
+
+
+void PrintLogo()
+{
+    wprintf(L"Microsoft (R) DirectX Texture Converter (DirectXTex version)\n");
+    wprintf(L"Copyright (C) Microsoft Corp. All rights reserved.\n");
 #ifdef _DEBUG
-        wprintf(L"*** Debug build ***\n");
+    wprintf(L"*** Debug build ***\n");
 #endif
-        wprintf(L"\n");
-    }
+    wprintf(L"\n");
+}
 
 
-    _Success_(return != false)
-        bool GetDXGIFactory(_Outptr_ IDXGIFactory1** pFactory)
+_Success_(return != false)
+bool GetDXGIFactory(_Outptr_ IDXGIFactory1** pFactory)
+{
+    if (!pFactory)
+        return false;
+
+    *pFactory = nullptr;
+
+    typedef HRESULT(WINAPI* pfn_CreateDXGIFactory1)(REFIID riid, _Out_ void **ppFactory);
+
+    static pfn_CreateDXGIFactory1 s_CreateDXGIFactory1 = nullptr;
+
+    if (!s_CreateDXGIFactory1)
     {
-        if (!pFactory)
+        HMODULE hModDXGI = LoadLibrary(L"dxgi.dll");
+        if (!hModDXGI)
             return false;
 
-        *pFactory = nullptr;
-
-        typedef HRESULT(WINAPI* pfn_CreateDXGIFactory1)(REFIID riid, _Out_ void **ppFactory);
-
-        static pfn_CreateDXGIFactory1 s_CreateDXGIFactory1 = nullptr;
-
+        s_CreateDXGIFactory1 = reinterpret_cast<pfn_CreateDXGIFactory1>(reinterpret_cast<void*>(GetProcAddress(hModDXGI, "CreateDXGIFactory1")));
         if (!s_CreateDXGIFactory1)
-        {
-            HMODULE hModDXGI = LoadLibrary(L"dxgi.dll");
-            if (!hModDXGI)
-                return false;
-
-            s_CreateDXGIFactory1 = reinterpret_cast<pfn_CreateDXGIFactory1>(reinterpret_cast<void*>(GetProcAddress(hModDXGI, "CreateDXGIFactory1")));
-            if (!s_CreateDXGIFactory1)
-                return false;
-        }
-
-        return SUCCEEDED(s_CreateDXGIFactory1(IID_PPV_ARGS(pFactory)));
+            return false;
     }
 
+    return SUCCEEDED(s_CreateDXGIFactory1(IID_PPV_ARGS(pFactory)));
+}
 
-    void PrintUsage()
-    {
-        PrintLogo();
 
-        wprintf(L"Usage: texconv <options> <files>\n\n");
-        wprintf(L"   -r                  wildcard filename search is recursive\n");
-        wprintf(L"   -w <n>              width\n");
-        wprintf(L"   -h <n>              height\n");
-        wprintf(L"   -m <n>              miplevels\n");
-        wprintf(L"   -f <format>         format\n");
-        wprintf(L"   -if <filter>        image filtering\n");
-        wprintf(L"   -srgb{i|o}          sRGB {input, output}\n");
-        wprintf(L"   -px <string>        name prefix\n");
-        wprintf(L"   -sx <string>        name suffix\n");
-        wprintf(L"   -o <directory>      output directory\n");
-        wprintf(L"   -y                  overwrite existing output file (if any)\n");
-        wprintf(L"   -ft <filetype>      output file type\n");
-        wprintf(L"   -hflip              horizonal flip of source image\n");
-        wprintf(L"   -vflip              vertical flip of source image\n");
-        wprintf(L"   -sepalpha           resize/generate mips alpha channel separately\n");
-        wprintf(L"                       from color channels\n");
-        wprintf(L"   -wrap, -mirror      texture addressing mode (wrap, mirror, or clamp)\n");
-        wprintf(L"   -pmalpha            convert final texture to use premultiplied alpha\n");
-        wprintf(L"   -alpha              convert premultiplied alpha to straight alpha\n");
-        wprintf(L"   -pow2               resize to fit a power-of-2, respecting aspect ratio\n");
-        wprintf(
-            L"   -nmap <options>     converts height-map to normal-map\n"
-            L"                       options must be one or more of\n"
-            L"                          r, g, b, a, l, m, u, v, i, o\n");
-        wprintf(L"   -nmapamp <weight>   normal map amplitude (defaults to 1.0)\n");
-        wprintf(L"   -fl <feature-level> Set maximum feature level target (defaults to 11.0)\n");
-        wprintf(L"\n                       (DDS input only)\n");
-        wprintf(L"   -t{u|f}             TYPELESS format is treated as UNORM or FLOAT\n");
-        wprintf(L"   -dword              Use DWORD instead of BYTE alignment\n");
-        wprintf(L"   -badtails           Fix for older DXTn with bad mipchain tails\n");
-        wprintf(L"   -xlum               expand legacy L8, L16, and A8P8 formats\n");
-        wprintf(L"\n                       (DDS output only)\n");
-        wprintf(L"   -dx10               Force use of 'DX10' extended header\n");
-        wprintf(L"\n   -nologo             suppress copyright message\n");
-        wprintf(L"   -timing             Display elapsed processing time\n\n");
+void PrintUsage()
+{
+    PrintLogo();
+
+    wprintf(L"Usage: texconv <options> <files>\n\n");
+    wprintf(L"   -r                  wildcard filename search is recursive\n");
+    wprintf(L"   -w <n>              width\n");
+    wprintf(L"   -h <n>              height\n");
+    wprintf(L"   -m <n>              miplevels\n");
+    wprintf(L"   -f <format>         format\n");
+    wprintf(L"   -if <filter>        image filtering\n");
+    wprintf(L"   -srgb{i|o}          sRGB {input, output}\n");
+    wprintf(L"   -px <string>        name prefix\n");
+    wprintf(L"   -sx <string>        name suffix\n");
+    wprintf(L"   -o <directory>      output directory\n");
+    wprintf(L"   -y                  overwrite existing output file (if any)\n");
+    wprintf(L"   -ft <filetype>      output file type\n");
+    wprintf(L"   -hflip              horizonal flip of source image\n");
+    wprintf(L"   -vflip              vertical flip of source image\n");
+    wprintf(L"   -sepalpha           resize/generate mips alpha channel separately\n");
+    wprintf(L"                       from color channels\n");
+    wprintf(L"   -wrap, -mirror      texture addressing mode (wrap, mirror, or clamp)\n");
+    wprintf(L"   -pmalpha            convert final texture to use premultiplied alpha\n");
+    wprintf(L"   -alpha              convert premultiplied alpha to straight alpha\n");
+    wprintf(L"   -pow2               resize to fit a power-of-2, respecting aspect ratio\n");
+    wprintf(
+        L"   -nmap <options>     converts height-map to normal-map\n"
+        L"                       options must be one or more of\n"
+        L"                          r, g, b, a, l, m, u, v, i, o\n");
+    wprintf(L"   -nmapamp <weight>   normal map amplitude (defaults to 1.0)\n");
+    wprintf(L"   -fl <feature-level> Set maximum feature level target (defaults to 11.0)\n");
+    wprintf(L"\n                       (DDS input only)\n");
+    wprintf(L"   -t{u|f}             TYPELESS format is treated as UNORM or FLOAT\n");
+    wprintf(L"   -dword              Use DWORD instead of BYTE alignment\n");
+    wprintf(L"   -badtails           Fix for older DXTn with bad mipchain tails\n");
+    wprintf(L"   -xlum               expand legacy L8, L16, and A8P8 formats\n");
+    wprintf(L"\n                       (DDS output only)\n");
+    wprintf(L"   -dx10               Force use of 'DX10' extended header\n");
+    wprintf(L"\n   -nologo             suppress copyright message\n");
+    wprintf(L"   -timing             Display elapsed processing time\n\n");
 #ifdef _OPENMP
-        wprintf(L"   -singleproc         Do not use multi-threaded compression\n");
+    wprintf(L"   -singleproc         Do not use multi-threaded compression\n");
 #endif
-        wprintf(L"   -gpu <adapter>      Select GPU for DirectCompute-based codecs (0 is default)\n");
-        wprintf(L"   -nogpu              Do not use DirectCompute-based codecs\n");
-        wprintf(L"   -bcuniform          Use uniform rather than perceptual weighting for BC1-3\n");
-        wprintf(L"   -bcdither           Use dithering for BC1-3\n");
-        wprintf(L"   -bcmax              Use exhaustive compression (BC7 only)\n");
-        wprintf(L"   -bcquick            Use quick compression (BC7 only)\n");
-        wprintf(L"   -wicq <quality>     When writing images with WIC use quality (0.0 to 1.0)\n");
-        wprintf(L"   -wiclossless        When writing images with WIC use lossless mode\n");
-        wprintf(
-            L"   -aw <weight>        BC7 GPU compressor weighting for alpha error metric\n"
-            L"                       (defaults to 1.0)\n");
-        wprintf(L"   -c <hex-RGB>        colorkey (a.k.a. chromakey) transparency\n");
-        wprintf(L"   -tonemap            Apply a tonemap operator based on maximum luminance\n");
-        wprintf(L"   -x2bias             Enable *2 - 1 conversion cases for unorm/pos-only-float\n");
+    wprintf(L"   -gpu <adapter>      Select GPU for DirectCompute-based codecs (0 is default)\n");
+    wprintf(L"   -nogpu              Do not use DirectCompute-based codecs\n");
+    wprintf(L"   -bcuniform          Use uniform rather than perceptual weighting for BC1-3\n");
+    wprintf(L"   -bcdither           Use dithering for BC1-3\n");
+    wprintf(L"   -bcmax              Use exhaustive compression (BC7 only)\n");
+    wprintf(L"   -bcquick            Use quick compression (BC7 only)\n");
+    wprintf(L"   -wicq <quality>     When writing images with WIC use quality (0.0 to 1.0)\n");
+    wprintf(L"   -wiclossless        When writing images with WIC use lossless mode\n");
+    wprintf(
+        L"   -aw <weight>        BC7 GPU compressor weighting for alpha error metric\n"
+        L"                       (defaults to 1.0)\n");
+    wprintf(L"   -c <hex-RGB>        colorkey (a.k.a. chromakey) transparency\n");
+    wprintf(L"   -tonemap            Apply a tonemap operator based on maximum luminance\n");
+    wprintf(L"   -x2bias             Enable *2 - 1 conversion cases for unorm/pos-only-float\n");
 
-        wprintf(L"\n   <format>: ");
-        PrintList(13, g_pFormats);
+    wprintf(L"\n   <format>: ");
+    PrintList(13, g_pFormats);
 
-        wprintf(L"\n   <filter>: ");
-        PrintList(13, g_pFilters);
+    wprintf(L"\n   <filter>: ");
+    PrintList(13, g_pFilters);
 
-        wprintf(L"\n   <filetype>: ");
-        PrintList(15, g_pSaveFileTypes);
+    wprintf(L"\n   <filetype>: ");
+    PrintList(15, g_pSaveFileTypes);
 
-        wprintf(L"\n   <feature-level>: ");
-        PrintList(13, g_pFeatureLevels);
+    wprintf(L"\n   <feature-level>: ");
+    PrintList(13, g_pFeatureLevels);
 
+    ComPtr<IDXGIFactory1> dxgiFactory;
+    if (GetDXGIFactory(dxgiFactory.GetAddressOf()))
+    {
+        wprintf(L"\n   <adapter>:\n");
+
+        ComPtr<IDXGIAdapter> adapter;
+        for (UINT adapterIndex = 0; DXGI_ERROR_NOT_FOUND != dxgiFactory->EnumAdapters(adapterIndex, adapter.ReleaseAndGetAddressOf()); ++adapterIndex)
+        {
+            DXGI_ADAPTER_DESC desc;
+            if (SUCCEEDED(adapter->GetDesc(&desc)))
+            {
+                wprintf(L"      %u: VID:%04X, PID:%04X - %ls\n", adapterIndex, desc.VendorId, desc.DeviceId, desc.Description);
+            }
+        }
+    }
+}
+
+
+_Success_(return != false)
+bool CreateDevice(int adapter, _Outptr_ ID3D11Device** pDevice)
+{
+    if (!pDevice)
+        return false;
+
+    *pDevice = nullptr;
+
+    static PFN_D3D11_CREATE_DEVICE s_DynamicD3D11CreateDevice = nullptr;
+
+    if (!s_DynamicD3D11CreateDevice)
+    {
+        HMODULE hModD3D11 = LoadLibrary(L"d3d11.dll");
+        if (!hModD3D11)
+            return false;
+
+        s_DynamicD3D11CreateDevice = reinterpret_cast<PFN_D3D11_CREATE_DEVICE>(reinterpret_cast<void*>(GetProcAddress(hModD3D11, "D3D11CreateDevice")));
+        if (!s_DynamicD3D11CreateDevice)
+            return false;
+    }
+
+    D3D_FEATURE_LEVEL featureLevels[] =
+    {
+        D3D_FEATURE_LEVEL_11_0,
+        D3D_FEATURE_LEVEL_10_1,
+        D3D_FEATURE_LEVEL_10_0,
+    };
+
+    UINT createDeviceFlags = 0;
+#ifdef _DEBUG
+    createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+
+    ComPtr<IDXGIAdapter> pAdapter;
+    if (adapter >= 0)
+    {
         ComPtr<IDXGIFactory1> dxgiFactory;
         if (GetDXGIFactory(dxgiFactory.GetAddressOf()))
         {
-            wprintf(L"\n   <adapter>:\n");
-
-            ComPtr<IDXGIAdapter> adapter;
-            for (UINT adapterIndex = 0; DXGI_ERROR_NOT_FOUND != dxgiFactory->EnumAdapters(adapterIndex, adapter.ReleaseAndGetAddressOf()); ++adapterIndex)
+            if (FAILED(dxgiFactory->EnumAdapters(adapter, pAdapter.GetAddressOf())))
             {
-                DXGI_ADAPTER_DESC desc;
-                if (SUCCEEDED(adapter->GetDesc(&desc)))
-                {
-                    wprintf(L"      %u: VID:%04X, PID:%04X - %ls\n", adapterIndex, desc.VendorId, desc.DeviceId, desc.Description);
-                }
+                wprintf(L"\nERROR: Invalid GPU adapter index (%d)!\n", adapter);
+                return false;
             }
         }
     }
 
-
-    _Success_(return != false)
-        bool CreateDevice(int adapter, _Outptr_ ID3D11Device** pDevice)
+    D3D_FEATURE_LEVEL fl;
+    HRESULT hr = s_DynamicD3D11CreateDevice(pAdapter.Get(),
+                                            (pAdapter) ? D3D_DRIVER_TYPE_UNKNOWN : D3D_DRIVER_TYPE_HARDWARE,
+                                            nullptr, createDeviceFlags, featureLevels, _countof(featureLevels),
+                                            D3D11_SDK_VERSION, pDevice, &fl, nullptr);
+    if (SUCCEEDED(hr))
     {
-        if (!pDevice)
-            return false;
-
-        *pDevice = nullptr;
-
-        static PFN_D3D11_CREATE_DEVICE s_DynamicD3D11CreateDevice = nullptr;
-
-        if (!s_DynamicD3D11CreateDevice)
+        if (fl < D3D_FEATURE_LEVEL_11_0)
         {
-            HMODULE hModD3D11 = LoadLibrary(L"d3d11.dll");
-            if (!hModD3D11)
-                return false;
+            D3D11_FEATURE_DATA_D3D10_X_HARDWARE_OPTIONS hwopts;
+            hr = (*pDevice)->CheckFeatureSupport(D3D11_FEATURE_D3D10_X_HARDWARE_OPTIONS, &hwopts, sizeof(hwopts));
+            if (FAILED(hr))
+                memset(&hwopts, 0, sizeof(hwopts));
 
-            s_DynamicD3D11CreateDevice = reinterpret_cast<PFN_D3D11_CREATE_DEVICE>(reinterpret_cast<void*>(GetProcAddress(hModD3D11, "D3D11CreateDevice")));
-            if (!s_DynamicD3D11CreateDevice)
-                return false;
-        }
-
-        D3D_FEATURE_LEVEL featureLevels[] =
-        {
-            D3D_FEATURE_LEVEL_11_0,
-            D3D_FEATURE_LEVEL_10_1,
-            D3D_FEATURE_LEVEL_10_0,
-        };
-
-        UINT createDeviceFlags = 0;
-#ifdef _DEBUG
-        createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
-#endif
-
-        ComPtr<IDXGIAdapter> pAdapter;
-        if (adapter >= 0)
-        {
-            ComPtr<IDXGIFactory1> dxgiFactory;
-            if (GetDXGIFactory(dxgiFactory.GetAddressOf()))
+            if (!hwopts.ComputeShaders_Plus_RawAndStructuredBuffers_Via_Shader_4_x)
             {
-                if (FAILED(dxgiFactory->EnumAdapters(adapter, pAdapter.GetAddressOf())))
+                if (*pDevice)
                 {
-                    wprintf(L"\nERROR: Invalid GPU adapter index (%d)!\n", adapter);
-                    return false;
+                    (*pDevice)->Release();
+                    *pDevice = nullptr;
                 }
+                hr = HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
             }
         }
+    }
 
-        D3D_FEATURE_LEVEL fl;
-        HRESULT hr = s_DynamicD3D11CreateDevice(pAdapter.Get(),
-            (pAdapter) ? D3D_DRIVER_TYPE_UNKNOWN : D3D_DRIVER_TYPE_HARDWARE,
-            nullptr, createDeviceFlags, featureLevels, _countof(featureLevels),
-            D3D11_SDK_VERSION, pDevice, &fl, nullptr);
+    if (SUCCEEDED(hr))
+    {
+        ComPtr<IDXGIDevice> dxgiDevice;
+        hr = (*pDevice)->QueryInterface(IID_PPV_ARGS(dxgiDevice.GetAddressOf()));
         if (SUCCEEDED(hr))
         {
-            if (fl < D3D_FEATURE_LEVEL_11_0)
-            {
-                D3D11_FEATURE_DATA_D3D10_X_HARDWARE_OPTIONS hwopts;
-                hr = (*pDevice)->CheckFeatureSupport(D3D11_FEATURE_D3D10_X_HARDWARE_OPTIONS, &hwopts, sizeof(hwopts));
-                if (FAILED(hr))
-                    memset(&hwopts, 0, sizeof(hwopts));
-
-                if (!hwopts.ComputeShaders_Plus_RawAndStructuredBuffers_Via_Shader_4_x)
-                {
-                    if (*pDevice)
-                    {
-                        (*pDevice)->Release();
-                        *pDevice = nullptr;
-                    }
-                    hr = HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
-                }
-            }
-        }
-
-        if (SUCCEEDED(hr))
-        {
-            ComPtr<IDXGIDevice> dxgiDevice;
-            hr = (*pDevice)->QueryInterface(IID_PPV_ARGS(dxgiDevice.GetAddressOf()));
+            hr = dxgiDevice->GetAdapter(pAdapter.ReleaseAndGetAddressOf());
             if (SUCCEEDED(hr))
             {
-                hr = dxgiDevice->GetAdapter(pAdapter.ReleaseAndGetAddressOf());
+                DXGI_ADAPTER_DESC desc;
+                hr = pAdapter->GetDesc(&desc);
                 if (SUCCEEDED(hr))
                 {
-                    DXGI_ADAPTER_DESC desc;
-                    hr = pAdapter->GetDesc(&desc);
-                    if (SUCCEEDED(hr))
-                    {
-                        wprintf(L"\n[Using DirectCompute on \"%ls\"]\n", desc.Description);
-                    }
+                    wprintf(L"\n[Using DirectCompute on \"%ls\"]\n", desc.Description);
                 }
             }
-
-            return true;
         }
-        else
-            return false;
+
+        return true;
     }
+    else
+        return false;
+}
 
 
-    void FitPowerOf2(size_t origx, size_t origy, size_t& targetx, size_t& targety, size_t maxsize)
+void FitPowerOf2(size_t origx, size_t origy, size_t& targetx, size_t& targety, size_t maxsize)
+{
+    float origAR = float(origx) / float(origy);
+
+    if (origx > origy)
     {
-        float origAR = float(origx) / float(origy);
-
-        if (origx > origy)
+        size_t x;
+        for (x = maxsize; x > 1; x >>= 1)
         {
-            size_t x;
-            for (x = maxsize; x > 1; x >>= 1) { if (x <= targetx) break; };
-            targetx = x;
+            if (x <= targetx) break;
+        };
+        targetx = x;
 
-            float bestScore = FLT_MAX;
-            for (size_t y = maxsize; y > 0; y >>= 1)
-            {
-                float score = fabs((float(x) / float(y)) - origAR);
-                if (score < bestScore)
-                {
-                    bestScore = score;
-                    targety = y;
-                }
-            }
-        }
-        else
+        float bestScore = FLT_MAX;
+        for (size_t y = maxsize; y > 0; y >>= 1)
         {
-            size_t y;
-            for (y = maxsize; y > 1; y >>= 1) { if (y <= targety) break; };
-            targety = y;
-
-            float bestScore = FLT_MAX;
-            for (size_t x = maxsize; x > 0; x >>= 1)
+            float score = fabs((float(x) / float(y)) - origAR);
+            if (score < bestScore)
             {
-                float score = fabs((float(x) / float(y)) - origAR);
-                if (score < bestScore)
-                {
-                    bestScore = score;
-                    targetx = x;
-                }
+                bestScore = score;
+                targety = y;
             }
         }
     }
+    else
+    {
+        size_t y;
+        for (y = maxsize; y > 1; y >>= 1)
+        {
+            if (y <= targety) break;
+        };
+        targety = y;
+
+        float bestScore = FLT_MAX;
+        for (size_t x = maxsize; x > 0; x >>= 1)
+        {
+            float score = fabs((float(x) / float(y)) - origAR);
+            if (score < bestScore)
+            {
+                bestScore = score;
+                targetx = x;
+            }
+        }
+    }
+}
 }
 
 
@@ -1250,8 +1266,8 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
 
             case OPT_WIC_QUALITY:
                 if (swscanf_s(pValue, L"%f", &wicQuality) != 1
-                    || (wicQuality < 0.f)
-                    || (wicQuality > 1.f))
+                        || (wicQuality < 0.f)
+                        || (wicQuality > 1.f))
                 {
                     wprintf(L"Invalid value specified with -wicq (%ls)\n", pValue);
                     printf("\n");
@@ -1589,8 +1605,8 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
 
         // --- Undo Premultiplied Alpha (if requested) ---------------------------------
         if ((dwOptions & (DWORD64(1) << OPT_DEMUL_ALPHA))
-            && HasAlpha(info.format)
-            && info.format != DXGI_FORMAT_A8_UNORM)
+                && HasAlpha(info.format)
+                && info.format != DXGI_FORMAT_A8_UNORM)
         {
             if (info.GetAlphaMode() == TEX_ALPHA_MODE_STRAIGHT)
             {
@@ -1764,7 +1780,7 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
             }
 
             hr = Convert(image->GetImages(), image->GetImageCount(), image->GetMetadata(), tformat,
-                dwFilter | dwFilterOpts | dwSRGB | dwConvert, TEX_THRESHOLD_DEFAULT, *timage);
+                         dwFilter | dwFilterOpts | dwSRGB | dwConvert, TEX_THRESHOLD_DEFAULT, *timage);
             if (FAILED(hr))
             {
                 wprintf(L" FAILED [convert] (%x)\n", hr);
@@ -1801,7 +1817,7 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
             XMVECTOR colorKeyValue = XMLoadColor(reinterpret_cast<const XMCOLOR*>(&colorKey));
 
             hr = TransformImage(image->GetImages(), image->GetImageCount(), image->GetMetadata(),
-                [&](XMVECTOR* outPixels, const XMVECTOR* inPixels, size_t width, size_t y)
+                                [&](XMVECTOR* outPixels, const XMVECTOR* inPixels, size_t width, size_t y)
             {
                 static const XMVECTORF32 s_tolerance = { 0.2f, 0.2f, 0.2f, 0.f };
 
@@ -1889,7 +1905,7 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
                 for (size_t d = 0; d < info.depth; ++d)
                 {
                     hr = CopyRectangle(*image->GetImage(0, 0, d), Rect(0, 0, info.width, info.height),
-                        *timage->GetImage(0, 0, d), TEX_FILTER_DEFAULT, 0, 0);
+                                       *timage->GetImage(0, 0, d), TEX_FILTER_DEFAULT, 0, 0);
                     if (FAILED(hr))
                     {
                         wprintf(L" FAILED [copy to single level] (%x)\n", hr);
@@ -1902,7 +1918,7 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
                 for (size_t i = 0; i < info.arraySize; ++i)
                 {
                     hr = CopyRectangle(*image->GetImage(0, i, 0), Rect(0, 0, info.width, info.height),
-                        *timage->GetImage(0, i, 0), TEX_FILTER_DEFAULT, 0, 0);
+                                       *timage->GetImage(0, i, 0), TEX_FILTER_DEFAULT, 0, 0);
                     if (FAILED(hr))
                     {
                         wprintf(L" FAILED [copy to single level] (%x)\n", hr);
@@ -2005,7 +2021,7 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
             // Compute max luminosity across all images
             XMVECTOR maxLum = XMVectorZero();
             hr = EvaluateImage(image->GetImages(), image->GetImageCount(), image->GetMetadata(),
-                [&](const XMVECTOR* pixels, size_t width, size_t y)
+                               [&](const XMVECTOR* pixels, size_t width, size_t y)
             {
                 UNREFERENCED_PARAMETER(y);
 
@@ -2026,12 +2042,12 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
                 return 1;
             }
 
-            // Reinhard et al, "Photographic Tone Reproduction for Digital Images" 
+            // Reinhard et al, "Photographic Tone Reproduction for Digital Images"
             // http://www.cs.utah.edu/~reinhard/cdrom/
             maxLum = XMVectorMultiply(maxLum, maxLum);
 
             hr = TransformImage(image->GetImages(), image->GetImageCount(), image->GetMetadata(),
-                [&](XMVECTOR* outPixels, const XMVECTOR* inPixels, size_t width, size_t y)
+                                [&](XMVECTOR* outPixels, const XMVECTOR* inPixels, size_t width, size_t y)
             {
                 UNREFERENCED_PARAMETER(y);
 
@@ -2040,8 +2056,8 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
                     XMVECTOR value = inPixels[j];
 
                     XMVECTOR scale = XMVectorDivide(
-                        XMVectorAdd(g_XMOne, XMVectorDivide(value, maxLum)),
-                        XMVectorAdd(g_XMOne, value));
+                                         XMVectorAdd(g_XMOne, XMVectorDivide(value, maxLum)),
+                                         XMVectorAdd(g_XMOne, value));
                     XMVECTOR nvalue = XMVectorMultiply(value, scale);
 
                     value = XMVectorSelect(value, nvalue, g_XMSelect1110);
@@ -2072,8 +2088,8 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
 
         // --- Premultiplied alpha (if requested) --------------------------------------
         if ((dwOptions & (DWORD64(1) << OPT_PREMUL_ALPHA))
-            && HasAlpha(info.format)
-            && info.format != DXGI_FORMAT_A8_UNORM)
+                && HasAlpha(info.format)
+                && info.format != DXGI_FORMAT_A8_UNORM)
         {
             if (info.IsPMAlpha())
             {
@@ -2234,7 +2250,7 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
 
         // --- Set alpha mode ----------------------------------------------------------
         if (HasAlpha(info.format)
-            && info.format != DXGI_FORMAT_A8_UNORM)
+                && info.format != DXGI_FORMAT_A8_UNORM)
         {
             if (image->IsAlphaAllOpaque())
             {
@@ -2303,8 +2319,8 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
             {
             case CODEC_DDS:
                 hr = SaveToDDSFile(img, nimg, info,
-                    (dwOptions & (DWORD64(1) << OPT_USE_DX10)) ? (DDS_FLAGS_FORCE_DX10_EXT | DDS_FLAGS_FORCE_DX10_EXT_MISC2) : DDS_FLAGS_NONE,
-                    pConv->szDest);
+                                   (dwOptions & (DWORD64(1) << OPT_USE_DX10)) ? (DDS_FLAGS_FORCE_DX10_EXT | DDS_FLAGS_FORCE_DX10_EXT_MISC2) : DDS_FLAGS_NONE,
+                                   pConv->szDest);
                 break;
 
             case CODEC_TGA:
@@ -2325,7 +2341,7 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
             {
                 WICCodecs codec = (FileType == CODEC_HDP || FileType == CODEC_JXR) ? WIC_CODEC_WMP : static_cast<WICCodecs>(FileType);
                 hr = SaveToWICFile(img, nimg, WIC_FLAGS_ALL_FRAMES, GetWICCodec(codec), pConv->szDest, nullptr,
-                    [&](IPropertyBag2* props)
+                                   [&](IPropertyBag2* props)
                 {
                     switch (FileType)
                     {

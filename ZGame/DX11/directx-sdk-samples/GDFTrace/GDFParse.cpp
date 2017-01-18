@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: GDFParse.cpp
 //
 // GDFTrace - Game Definition File trace utility
@@ -29,7 +29,7 @@
 CGDFParse::CGDFParse(void)
 {
     HRESULT hr = CoInitialize( 0 );
-    m_bCleanupCOM = SUCCEEDED(hr); 
+    m_bCleanupCOM = SUCCEEDED(hr);
     m_pRootNode = nullptr;
 }
 
@@ -52,9 +52,9 @@ HRESULT CGDFParse::LoadXML( const WCHAR* strGDFPath )
     HRESULT hr;
 
     // Load the XML into a IXMLDOMDocument object
-    hr = CoCreateInstance( CLSID_DOMDocument, nullptr, CLSCTX_INPROC_SERVER, 
+    hr = CoCreateInstance( CLSID_DOMDocument, nullptr, CLSCTX_INPROC_SERVER,
                            IID_IXMLDOMDocument, (void**)&pDoc );
-    if( SUCCEEDED(hr) ) 
+    if( SUCCEEDED(hr) )
     {
         VARIANT var;
         VARIANT_BOOL cvar;
@@ -68,7 +68,7 @@ HRESULT CGDFParse::LoadXML( const WCHAR* strGDFPath )
         }
         VariantClear( &var );
 
-        // Get the root node to the XML doc and store it 
+        // Get the root node to the XML doc and store it
         pDoc->QueryInterface( IID_IXMLDOMNode, (void**)&m_pRootNode );
 
         SAFE_RELEASE( pDoc );
@@ -83,7 +83,7 @@ HRESULT CGDFParse::LoadXML( const WCHAR* strGDFPath )
 
 //--------------------------------------------------------------------------------------
 BOOL CALLBACK CGDFParse::StaticEnumResLangProc( HMODULE hModule, LPCWSTR lpType,
-                                                LPCWSTR lpName, WORD wLanguage, LONG_PTR lParam )
+        LPCWSTR lpName, WORD wLanguage, LONG_PTR lParam )
 {
     CGDFParse* pParse = (CGDFParse*)lParam;
     return pParse->EnumResLangProc( hModule, lpType, lpName, wLanguage );
@@ -98,13 +98,13 @@ BOOL CGDFParse::EnumResLangProc( HMODULE hModule, LPCWSTR lpType, LPCWSTR lpName
 
     m_Languages[m_LanguageCount] = wLanguage;
     m_LanguageCount++;
-    return TRUE;    
+    return TRUE;
 }
 
 
 //--------------------------------------------------------------------------------------
 HRESULT CGDFParse::EnumLangs( const WCHAR* strGDFBinPath )
-{   
+{
     ZeroMemory( &m_Languages, sizeof(WORD)*MAX_LANG );
     m_LanguageCount = 0;
 
@@ -115,7 +115,7 @@ HRESULT CGDFParse::EnumLangs( const WCHAR* strGDFBinPath )
     SetErrorMode( old );
 
     if( hGDFDll )
-    {       
+    {
         EnumResourceLanguages( hGDFDll, L"DATA", ID_GDF_XML_STR, StaticEnumResLangProc, (LPARAM)this );
 
         FreeLibrary( hGDFDll );
@@ -133,7 +133,7 @@ HRESULT CGDFParse::EnumLangs( const WCHAR* strGDFBinPath )
 //--------------------------------------------------------------------------------------
 HRESULT CGDFParse::LoadXMLinMemory( const WCHAR* strGDFBinPath, WORD wLanguage, HGLOBAL* phResourceCopy )
 {
-   // Extract the GDF XML from the GDF binary 
+    // Extract the GDF XML from the GDF binary
     UINT old = SetErrorMode( SEM_FAILCRITICALERRORS | SEM_NOOPENFILEERRORBOX );
     HMODULE hGDFDll = LoadLibraryEx( strGDFBinPath, nullptr, LOAD_LIBRARY_AS_DATAFILE);
     SetErrorMode( old );
@@ -143,15 +143,15 @@ HRESULT CGDFParse::LoadXMLinMemory( const WCHAR* strGDFBinPath, WORD wLanguage, 
     if( hGDFDll )
     {
         // Find resource will pick the right ID_GDF_XML_STR based on the current language
-        HRSRC hrsrc = FindResourceEx( hGDFDll, L"DATA", ID_GDF_XML_STR, wLanguage ); 
-        if( hrsrc ) 
-        { 
-            HGLOBAL hgResource = LoadResource( hGDFDll, hrsrc ); 
-            if( hgResource ) 
-            { 
-                BYTE* pResourceBuffer = (BYTE*)LockResource( hgResource ); 
-                if( pResourceBuffer ) 
-                { 
+        HRSRC hrsrc = FindResourceEx( hGDFDll, L"DATA", ID_GDF_XML_STR, wLanguage );
+        if( hrsrc )
+        {
+            HGLOBAL hgResource = LoadResource( hGDFDll, hrsrc );
+            if( hgResource )
+            {
+                BYTE* pResourceBuffer = (BYTE*)LockResource( hgResource );
+                if( pResourceBuffer )
+                {
                     DWORD dwGDFXMLSize = SizeofResource( hGDFDll, hrsrc );
                     if( dwGDFXMLSize )
                     {
@@ -168,9 +168,9 @@ HRESULT CGDFParse::LoadXMLinMemory( const WCHAR* strGDFBinPath, WORD wLanguage, 
                             }
                         }
                     }
-                } 
-            } 
-        } 
+                }
+            }
+        }
 
         // Don't free hGDFDll so it stays resident for additional checks
     }
@@ -192,24 +192,24 @@ HRESULT CGDFParse::ExtractXML( const WCHAR* strGDFBinPath, WORD wLanguage )
     if( SUCCEEDED( LoadXMLinMemory( strGDFBinPath, wLanguage, &hgResourceCopy ) ) )
     {
         IStream* piStream = nullptr;
-        HRESULT hr = CreateStreamOnHGlobal( hgResourceCopy, TRUE, &piStream ); 
+        HRESULT hr = CreateStreamOnHGlobal( hgResourceCopy, TRUE, &piStream );
         if( SUCCEEDED(hr) && piStream )
         {
             IXMLDOMDocument *pDoc = nullptr;
 
             // Load the XML into a IXMLDOMDocument object
-            hr = CoCreateInstance( CLSID_DOMDocument, nullptr, CLSCTX_INPROC_SERVER, 
+            hr = CoCreateInstance( CLSID_DOMDocument, nullptr, CLSCTX_INPROC_SERVER,
                                    IID_IXMLDOMDocument, (void**)&pDoc );
-            if( SUCCEEDED(hr) ) 
+            if( SUCCEEDED(hr) )
             {
                 IPersistStreamInit* pPersistStreamInit = nullptr;
                 hr = pDoc->QueryInterface( IID_IPersistStreamInit, (void**) &pPersistStreamInit );
-                if( SUCCEEDED(hr) ) 
+                if( SUCCEEDED(hr) )
                 {
                     hr = pPersistStreamInit->Load( piStream );
-                    if( SUCCEEDED(hr) ) 
+                    if( SUCCEEDED(hr) )
                     {
-                        // Get the root node to the XML doc and store it 
+                        // Get the root node to the XML doc and store it
                         pDoc->QueryInterface( IID_IXMLDOMNode, (void**)&m_pRootNode );
                     }
                     SAFE_RELEASE( pPersistStreamInit );
@@ -253,7 +253,7 @@ bool CGDFParse::ValidateUsingSchema( VOID* pDoc, WCHAR* strReason, int cchReason
 
     HRESULT hr;
     IXMLDOMSchemaCollection* pSchemaCollection = nullptr;
-    hr = CoCreateInstance( CLSID_XMLSchemaCache60, nullptr, CLSCTX_INPROC_SERVER, 
+    hr = CoCreateInstance( CLSID_XMLSchemaCache60, nullptr, CLSCTX_INPROC_SERVER,
                            IID_IXMLDOMSchemaCollection, (void**)&pSchemaCollection );
     if( SUCCEEDED(hr) && pSchemaCollection )
     {
@@ -297,8 +297,8 @@ bool CGDFParse::ValidateUsingSchema( VOID* pDoc, WCHAR* strReason, int cchReason
 
         var.vt = VT_DISPATCH;
         var.byref = (VOID*) pSchemaCollection;
-          
-        hr = pDoc2->putref_schemas( var ); 
+
+        hr = pDoc2->putref_schemas( var );
         if( FAILED(hr) )
             bSkipValidate = true;
         VariantClear( &var );
@@ -344,10 +344,10 @@ HRESULT CGDFParse::ValidateGDF( const WCHAR* strGDFPath, WCHAR* strReason, int c
     HRESULT hr;
 
     // Load the XML into a IXMLDOMDocument object
-    hr = CoCreateInstance( CLSID_DOMDocument60, nullptr, CLSCTX_INPROC_SERVER, 
+    hr = CoCreateInstance( CLSID_DOMDocument60, nullptr, CLSCTX_INPROC_SERVER,
                            IID_IXMLDOMDocument2, (void**)&pDoc );
-   if( SUCCEEDED(hr) ) 
-   {
+    if( SUCCEEDED(hr) )
+    {
         VARIANT var;
         VARIANT_BOOL cvar;
         var.vt = VT_BSTR;
@@ -391,22 +391,22 @@ HRESULT CGDFParse::ValidateXML( const WCHAR* strGDFBinPath, WORD wLanguage, WCHA
     if( SUCCEEDED( LoadXMLinMemory( strGDFBinPath, wLanguage, &hgResourceCopy ) ) )
     {
         IStream* piStream = nullptr;
-        HRESULT hr = CreateStreamOnHGlobal( hgResourceCopy, TRUE, &piStream ); 
+        HRESULT hr = CreateStreamOnHGlobal( hgResourceCopy, TRUE, &piStream );
         if( SUCCEEDED(hr) && piStream )
         {
             IXMLDOMDocument2* pDoc = nullptr;
 
             // Load the XML into a IXMLDOMDocument object
-            hr = CoCreateInstance( CLSID_DOMDocument60, nullptr, CLSCTX_INPROC_SERVER, 
+            hr = CoCreateInstance( CLSID_DOMDocument60, nullptr, CLSCTX_INPROC_SERVER,
                                    IID_IXMLDOMDocument2, (void**)&pDoc );
-            if( SUCCEEDED(hr) ) 
+            if( SUCCEEDED(hr) )
             {
                 IPersistStreamInit* pPersistStreamInit = nullptr;
                 hr = pDoc->QueryInterface( IID_IPersistStreamInit, (void**) &pPersistStreamInit );
-                if( SUCCEEDED(hr) ) 
+                if( SUCCEEDED(hr) )
                 {
                     hr = pPersistStreamInit->Load( piStream );
-                    if( SUCCEEDED(hr) ) 
+                    if( SUCCEEDED(hr) )
                     {
                         bLoadSuccess = true;
                         bValidateSuccess = ValidateUsingSchema( (VOID*)pDoc, strReason, cchReason );
@@ -443,12 +443,12 @@ BOOL ConvertStringToGUID( const WCHAR* strIn, GUID* pGuidOut )
     UINT aiTmp[10];
 
     if( swscanf_s( strIn, L"{%8X-%4X-%4X-%2X%2X-%2X%2X%2X%2X%2X%2X}",
-                    &pGuidOut->Data1, 
-                    &aiTmp[0], &aiTmp[1], 
-                    &aiTmp[2], &aiTmp[3],
-                    &aiTmp[4], &aiTmp[5],
-                    &aiTmp[6], &aiTmp[7],
-                    &aiTmp[8], &aiTmp[9] ) != 11 )
+                   &pGuidOut->Data1,
+                   &aiTmp[0], &aiTmp[1],
+                   &aiTmp[2], &aiTmp[3],
+                   &aiTmp[4], &aiTmp[5],
+                   &aiTmp[6], &aiTmp[7],
+                   &aiTmp[8], &aiTmp[9] ) != 11 )
     {
         ZeroMemory( pGuidOut, sizeof(GUID) );
         return FALSE;
@@ -473,18 +473,54 @@ BOOL ConvertStringToGUID( const WCHAR* strIn, GUID* pGuidOut )
 //--------------------------------------------------------------------------------------
 // Various get methods
 //--------------------------------------------------------------------------------------
-HRESULT CGDFParse::GetName( WCHAR* strDest, int cchDest )        { return GetXMLValue( L"//GameDefinitionFile/GameDefinition/Name", strDest, cchDest ); }
-HRESULT CGDFParse::GetType( WCHAR* strDest, int cchDest )        { return GetXMLValue( L"//GameDefinitionFile/GameDefinition/ExtendedProperties/Type", strDest, cchDest ); }
-HRESULT CGDFParse::GetRSS( WCHAR* strDest, int cchDest )        { return GetXMLValue( L"//GameDefinitionFile/GameDefinition/ExtendedProperties/RSS", strDest, cchDest ); }
-HRESULT CGDFParse::GetDescription( WCHAR* strDest, int cchDest ) { return GetXMLValue( L"//GameDefinitionFile/GameDefinition/Description", strDest, cchDest ); }
-HRESULT CGDFParse::GetReleaseDate( WCHAR* strDest, int cchDest ) { return GetXMLValue( L"//GameDefinitionFile/GameDefinition/ReleaseDate", strDest, cchDest ); }
-HRESULT CGDFParse::GetGenre( WCHAR* strDest, int cchDest )       { return GetXMLValue( L"//GameDefinitionFile/GameDefinition/Genres/Genre", strDest, cchDest ); }
-HRESULT CGDFParse::GetDeveloper( WCHAR* strDest, int cchDest )   { return GetXMLValue( L"//GameDefinitionFile/GameDefinition/Developers/Developer", strDest, cchDest ); }
-HRESULT CGDFParse::GetPublisher( WCHAR* strDest, int cchDest )   { return GetXMLValue( L"//GameDefinitionFile/GameDefinition/Publishers/Publisher", strDest, cchDest ); }
-HRESULT CGDFParse::GetGameID( WCHAR* strDest, int cchDest )      { return GetXMLAttrib( L"//GameDefinitionFile/GameDefinition", L"gameID", strDest, cchDest );  }
-HRESULT CGDFParse::GetDeveloperLink( WCHAR* strDest, int cchDest ) { return GetXMLAttrib( L"//GameDefinitionFile/GameDefinition/Developers/Developer", L"URI", strDest, cchDest );  }
-HRESULT CGDFParse::GetPublisherLink( WCHAR* strDest, int cchDest ) { return GetXMLAttrib( L"//GameDefinitionFile/GameDefinition/Publishers/Publisher", L"URI", strDest, cchDest );  }
-HRESULT CGDFParse::GetVersion( WCHAR* strDest, int cchDest )       { return GetXMLAttrib( L"//GameDefinitionFile/GameDefinition/Version/VersionNumber", L"versionNumber", strDest, cchDest );  }
+HRESULT CGDFParse::GetName( WCHAR* strDest, int cchDest )
+{
+    return GetXMLValue( L"//GameDefinitionFile/GameDefinition/Name", strDest, cchDest );
+}
+HRESULT CGDFParse::GetType( WCHAR* strDest, int cchDest )
+{
+    return GetXMLValue( L"//GameDefinitionFile/GameDefinition/ExtendedProperties/Type", strDest, cchDest );
+}
+HRESULT CGDFParse::GetRSS( WCHAR* strDest, int cchDest )
+{
+    return GetXMLValue( L"//GameDefinitionFile/GameDefinition/ExtendedProperties/RSS", strDest, cchDest );
+}
+HRESULT CGDFParse::GetDescription( WCHAR* strDest, int cchDest )
+{
+    return GetXMLValue( L"//GameDefinitionFile/GameDefinition/Description", strDest, cchDest );
+}
+HRESULT CGDFParse::GetReleaseDate( WCHAR* strDest, int cchDest )
+{
+    return GetXMLValue( L"//GameDefinitionFile/GameDefinition/ReleaseDate", strDest, cchDest );
+}
+HRESULT CGDFParse::GetGenre( WCHAR* strDest, int cchDest )
+{
+    return GetXMLValue( L"//GameDefinitionFile/GameDefinition/Genres/Genre", strDest, cchDest );
+}
+HRESULT CGDFParse::GetDeveloper( WCHAR* strDest, int cchDest )
+{
+    return GetXMLValue( L"//GameDefinitionFile/GameDefinition/Developers/Developer", strDest, cchDest );
+}
+HRESULT CGDFParse::GetPublisher( WCHAR* strDest, int cchDest )
+{
+    return GetXMLValue( L"//GameDefinitionFile/GameDefinition/Publishers/Publisher", strDest, cchDest );
+}
+HRESULT CGDFParse::GetGameID( WCHAR* strDest, int cchDest )
+{
+    return GetXMLAttrib( L"//GameDefinitionFile/GameDefinition", L"gameID", strDest, cchDest );
+}
+HRESULT CGDFParse::GetDeveloperLink( WCHAR* strDest, int cchDest )
+{
+    return GetXMLAttrib( L"//GameDefinitionFile/GameDefinition/Developers/Developer", L"URI", strDest, cchDest );
+}
+HRESULT CGDFParse::GetPublisherLink( WCHAR* strDest, int cchDest )
+{
+    return GetXMLAttrib( L"//GameDefinitionFile/GameDefinition/Publishers/Publisher", L"URI", strDest, cchDest );
+}
+HRESULT CGDFParse::GetVersion( WCHAR* strDest, int cchDest )
+{
+    return GetXMLAttrib( L"//GameDefinitionFile/GameDefinition/Version/VersionNumber", L"versionNumber", strDest, cchDest );
+}
 
 
 //--------------------------------------------------------------------------------------
@@ -493,13 +529,13 @@ HRESULT CGDFParse::GetGameExe( int iGameExe, WCHAR* strEXE, int cchEXE )
     HRESULT hr;
     assert( m_pRootNode );  // must call CGDFParse::ExtractXML() or LoadXML() first
     if( !m_pRootNode )
-        return E_FAIL; 
+        return E_FAIL;
 
     wcscpy_s( strEXE, cchEXE, L"" );
 
     WCHAR str[512];
     IXMLDOMNode* pNode = nullptr;
-    swprintf_s( str, 512, L"//GameDefinitionFile/GameDefinition/GameExecutables/GameExecutable[%d]", iGameExe );          
+    swprintf_s( str, 512, L"//GameDefinitionFile/GameDefinition/GameExecutables/GameExecutable[%d]", iGameExe );
     hr = m_pRootNode->selectSingleNode( str, &pNode );
     if( pNode )
     {
@@ -518,13 +554,13 @@ HRESULT CGDFParse::GetRatingSystem( int iRating, WCHAR* strRatingSystem, int cch
     HRESULT hr;
     assert( m_pRootNode );  // must call CGDFParse::ExtractXML() or LoadXML() first
     if( !m_pRootNode )
-        return E_FAIL; 
+        return E_FAIL;
 
     wcscpy_s( strRatingSystem, cchRatingSystem, L"" );
 
     WCHAR str[512];
     IXMLDOMNode* pNode = nullptr;
-    swprintf_s( str, 512, L"//GameDefinitionFile/GameDefinition/Ratings/Rating[%d]", iRating );          
+    swprintf_s( str, 512, L"//GameDefinitionFile/GameDefinition/Ratings/Rating[%d]", iRating );
     hr = m_pRootNode->selectSingleNode( str, &pNode );
     if( pNode )
     {
@@ -543,13 +579,13 @@ HRESULT CGDFParse::GetRatingID( int iRating, WCHAR* strRatingID, int cchRatingID
     HRESULT hr;
     assert( m_pRootNode );  // must call CGDFParse::ExtractXML() or LoadXML() first
     if( !m_pRootNode )
-        return E_FAIL; 
+        return E_FAIL;
 
     wcscpy_s( strRatingID, cchRatingID, L"" );
 
     WCHAR str[512];
     IXMLDOMNode* pNode = nullptr;
-    swprintf_s( str, 512, L"//GameDefinitionFile/GameDefinition/Ratings/Rating[%d]", iRating );          
+    swprintf_s( str, 512, L"//GameDefinitionFile/GameDefinition/Ratings/Rating[%d]", iRating );
     hr = m_pRootNode->selectSingleNode( str, &pNode );
     if( pNode )
     {
@@ -568,19 +604,19 @@ HRESULT CGDFParse::GetRatingDescriptor( int iRating, int iDescriptor, WCHAR* str
     HRESULT hr;
     assert( m_pRootNode );  // must call CGDFParse::ExtractXML() or LoadXML() first
     if( !m_pRootNode )
-        return E_FAIL; 
+        return E_FAIL;
 
     wcscpy_s( strDescriptor, cchDescriptor, L"" );
 
     WCHAR str[512];
     IXMLDOMNode* pNode = nullptr;
-    swprintf_s( str, 512, L"//GameDefinitionFile/GameDefinition/Ratings/Rating[%d]", iRating );          
+    swprintf_s( str, 512, L"//GameDefinitionFile/GameDefinition/Ratings/Rating[%d]", iRating );
     hr = m_pRootNode->selectSingleNode( str, &pNode );
     if( pNode )
     {
         IXMLDOMNode* pDescriptorNode = nullptr;
 
-        swprintf_s( str, 512, L"Descriptor[%d]", iDescriptor );          
+        swprintf_s( str, 512, L"Descriptor[%d]", iDescriptor );
         hr = pNode->selectSingleNode( str, &pDescriptorNode );
         if( pDescriptorNode )
         {
@@ -602,7 +638,7 @@ HRESULT CGDFParse::GetRatingDescriptor( int iRating, int iDescriptor, WCHAR* str
 //--------------------------------------------------------------------------------------
 bool IsFolderMatch( const WCHAR* strFolderGuid, const WCHAR* strGUID, const WCHAR* strFolder, WCHAR* strFolderName, int cchDest )
 {
-    if( _wcsicmp( strFolderGuid, strGUID ) == 0 )  
+    if( _wcsicmp( strFolderGuid, strGUID ) == 0 )
     {
         wcscpy_s( strFolderName, cchDest, strFolder );
         return true;
@@ -612,66 +648,66 @@ bool IsFolderMatch( const WCHAR* strFolderGuid, const WCHAR* strGUID, const WCHA
 
 
 //--------------------------------------------------------------------------------------
-HRESULT CGDFParse::GetSavedGameFolder( WCHAR* strDest, int cchDest ) 
-{ 
-    WCHAR strSubFolder[MAX_PATH] = {0};   
+HRESULT CGDFParse::GetSavedGameFolder( WCHAR* strDest, int cchDest )
+{
+    WCHAR strSubFolder[MAX_PATH] = {0};
     WCHAR strBaseFolder[MAX_PATH] = {0};
 
-    GetXMLAttrib( L"//GameDefinitionFile/GameDefinition/SavedGames", L"path", strSubFolder, MAX_PATH );  
+    GetXMLAttrib( L"//GameDefinitionFile/GameDefinition/SavedGames", L"path", strSubFolder, MAX_PATH );
 
     HRESULT hr;
-    hr = GetXMLAttrib( L"//GameDefinitionFile/GameDefinition/SavedGames", L"baseKnownFolderID", strBaseFolder, MAX_PATH );  
+    hr = GetXMLAttrib( L"//GameDefinitionFile/GameDefinition/SavedGames", L"baseKnownFolderID", strBaseFolder, MAX_PATH );
     if( SUCCEEDED(hr) )
     {
         GUID guidBaseFolder;
-        ConvertStringToGUID( strBaseFolder, &guidBaseFolder ); 
+        ConvertStringToGUID( strBaseFolder, &guidBaseFolder );
 
         WCHAR strFolderName[256];
         ConvertGuidToFolderName( strBaseFolder, strFolderName, 256 );
-/*
-        CoInitialize(nullptr);
-        IKnownFolderManager* pManager = nullptr;
-        IKnownFolder* pFolder = nullptr;
-        
-        bool bFound = false
-        HRESULT hr = CoCreateInstance(CLSID_KnownFolderManager, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pManager) );
-        if (SUCCEEDED(hr))
-        {
-            hr = pManager->GetFolder( guidBaseFolder, &pFolder );
-            if( SUCCEEDED(hr) )
-            {
-                WCHAR* wstrPathInCoTaskMem = nullptr;
-                CoTaskMemFree( wstrPathInCoTaskMem );
+        /*
+                CoInitialize(nullptr);
+                IKnownFolderManager* pManager = nullptr;
+                IKnownFolder* pFolder = nullptr;
 
-                hr = pFolder->GetPath( KF_FLAG_DEFAULT_PATH | KF_FLAG_DONT_VERIFY, &wstrPathInCoTaskMem );
-                if( SUCCEEDED(hr) )
+                bool bFound = false
+                HRESULT hr = CoCreateInstance(CLSID_KnownFolderManager, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pManager) );
+                if (SUCCEEDED(hr))
                 {
-                    wcscpy_s( strBaseFolder, MAX_PATH, wstrPathInCoTaskMem );                    
-                    bFound = true;
+                    hr = pManager->GetFolder( guidBaseFolder, &pFolder );
+                    if( SUCCEEDED(hr) )
+                    {
+                        WCHAR* wstrPathInCoTaskMem = nullptr;
+                        CoTaskMemFree( wstrPathInCoTaskMem );
+
+                        hr = pFolder->GetPath( KF_FLAG_DEFAULT_PATH | KF_FLAG_DONT_VERIFY, &wstrPathInCoTaskMem );
+                        if( SUCCEEDED(hr) )
+                        {
+                            wcscpy_s( strBaseFolder, MAX_PATH, wstrPathInCoTaskMem );
+                            bFound = true;
+                        }
+
+                        CoTaskMemFree( wstrPathInCoTaskMem );
+
+                        pFolder->Release();
+                        pFolder = nullptr;
+                    }
+
+                    pManager->Release();
+                    pManager = nullptr;
                 }
 
-                CoTaskMemFree( wstrPathInCoTaskMem );
-
-                pFolder->Release();
-                pFolder = nullptr;
-            }
-
-            pManager->Release();
-            pManager = nullptr;
-        }
-
-        if( !bFound )
-        {
-            hr = SHGetFolderPath( guidBaseFolder, nullptr, nullptr, SHGFP_TYPE_CURRENT, strBaseFolder );
-            if(SUCCEEDED(hr))
-                bFound = true;
-        }
-*/
-        swprintf_s( strDest, cchDest, L"%s\\%s", strFolderName, strSubFolder );          
+                if( !bFound )
+                {
+                    hr = SHGetFolderPath( guidBaseFolder, nullptr, nullptr, SHGFP_TYPE_CURRENT, strBaseFolder );
+                    if(SUCCEEDED(hr))
+                        bFound = true;
+                }
+        */
+        swprintf_s( strDest, cchDest, L"%s\\%s", strFolderName, strSubFolder );
     }
     else
     {
-        swprintf_s( strDest, cchDest, L"%s", strSubFolder );          
+        swprintf_s( strDest, cchDest, L"%s", strSubFolder );
     }
 
     return S_OK;
@@ -679,14 +715,14 @@ HRESULT CGDFParse::GetSavedGameFolder( WCHAR* strDest, int cchDest )
 
 
 //--------------------------------------------------------------------------------------
-HRESULT CGDFParse::GetWinSPR( float* pnMin, float* pnRecommended ) 
-{ 
+HRESULT CGDFParse::GetWinSPR( float* pnMin, float* pnRecommended )
+{
     WCHAR strDest[256];
 
-    GetXMLAttrib( L"//GameDefinitionFile/GameDefinition/WindowsSystemPerformanceRating", L"minimum", strDest, 256 ); 
+    GetXMLAttrib( L"//GameDefinitionFile/GameDefinition/WindowsSystemPerformanceRating", L"minimum", strDest, 256 );
     *pnMin = (float)_wtof( strDest );
 
-    GetXMLAttrib( L"//GameDefinitionFile/GameDefinition/WindowsSystemPerformanceRating", L"recommended", strDest, 256 ); 
+    GetXMLAttrib( L"//GameDefinitionFile/GameDefinition/WindowsSystemPerformanceRating", L"recommended", strDest, 256 );
     *pnRecommended = (float)_wtof( strDest );
 
     return S_OK;
@@ -696,8 +732,8 @@ HRESULT CGDFParse::GetWinSPR( float* pnMin, float* pnRecommended )
 //--------------------------------------------------------------------------------------
 HRESULT CGDFParse::ExtractGDFThumbnail( WCHAR* strGDFBinPath, ImageInfo* info, WORD wLanguage )
 {
-    HGLOBAL hgResource = nullptr; 
-    HRSRC   hrsrc   = nullptr; 
+    HGLOBAL hgResource = nullptr;
+    HRSRC   hrsrc   = nullptr;
     DWORD dwGDFThumbnailSize = 0;
 
     HRESULT hr = E_FAIL;
@@ -708,22 +744,22 @@ HRESULT CGDFParse::ExtractGDFThumbnail( WCHAR* strGDFBinPath, ImageInfo* info, W
 
     if( hGDFDll )
     {
-        // Extract GDF thumbnail 
-        hrsrc = FindResourceEx( hGDFDll, L"DATA", ID_GDF_THUMBNAIL_STR, wLanguage ); 
-        if( hrsrc ) 
-        { 
-            hgResource = LoadResource( hGDFDll, hrsrc ); 
-            if( hgResource ) 
-            { 
-                BYTE* pResourceBuffer = (BYTE*)LockResource( hgResource ); 
-                if( pResourceBuffer ) 
-                { 
+        // Extract GDF thumbnail
+        hrsrc = FindResourceEx( hGDFDll, L"DATA", ID_GDF_THUMBNAIL_STR, wLanguage );
+        if( hrsrc )
+        {
+            hgResource = LoadResource( hGDFDll, hrsrc );
+            if( hgResource )
+            {
+                BYTE* pResourceBuffer = (BYTE*)LockResource( hgResource );
+                if( pResourceBuffer )
+                {
                     dwGDFThumbnailSize = SizeofResource( hGDFDll, hrsrc );
                     if( dwGDFThumbnailSize )
                     {
                         hr = GetImageInfoFromMemory( pResourceBuffer, dwGDFThumbnailSize, *info );
                     }
-                } 
+                }
             }
         }
 
@@ -741,8 +777,8 @@ HRESULT CGDFParse::ExtractGDFThumbnail( WCHAR* strGDFBinPath, ImageInfo* info, W
 static bool IsPNG(_In_count_c_(8) const unsigned char* pData)
 {
     unsigned char   signature[] = {0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a};
-    
-    for (int i = 0; i < sizeof(signature)/ sizeof(unsigned char); i++) 
+
+    for (int i = 0; i < sizeof(signature)/ sizeof(unsigned char); i++)
     {
         if (signature[i] != pData[i])
         {
@@ -756,8 +792,8 @@ static bool IsPNG(_In_count_c_(8) const unsigned char* pData)
 //--------------------------------------------------------------------------------------
 HRESULT CGDFParse::OutputGDFIconInfo( WCHAR* strGDFBinPath, BOOL* pIconEightBits,BOOL* pIconThirtyTwoBits, WORD wLanguage )
 {
-    HGLOBAL hgResource = nullptr; 
-    HRSRC   hrsrc   = nullptr; 
+    HGLOBAL hgResource = nullptr;
+    HRSRC   hrsrc   = nullptr;
     DWORD dwGDFIconSize = 0;
 
     HRESULT hr = E_FAIL;
@@ -768,12 +804,12 @@ HRESULT CGDFParse::OutputGDFIconInfo( WCHAR* strGDFBinPath, BOOL* pIconEightBits
 
     if( hGDFDll )
     {
-        // Extract GDF Icon 
-        hrsrc = FindResourceEx( hGDFDll, RT_GROUP_ICON, (LPCTSTR)101, wLanguage ); 
-        if( hrsrc ) 
-        { 
-            hgResource = LoadResource( hGDFDll, hrsrc ); 
-            if( hgResource ) 
+        // Extract GDF Icon
+        hrsrc = FindResourceEx( hGDFDll, RT_GROUP_ICON, (LPCTSTR)101, wLanguage );
+        if( hrsrc )
+        {
+            hgResource = LoadResource( hGDFDll, hrsrc );
+            if( hgResource )
             {
                 LPMEMICONDIR lpIcon = (LPMEMICONDIR)LockResource(hgResource);
                 for(int i = 0; i < lpIcon->idCount; i++ )
@@ -822,7 +858,7 @@ HRESULT CGDFParse::OutputGDFIconInfo( WCHAR* strGDFBinPath, BOOL* pIconEightBits
                                         {
                                             pIconEightBits[res] = TRUE;
                                         }
-                                
+
                                         if (wBitCount == 32)
                                         {
                                             pIconThirtyTwoBits[res] = TRUE;
@@ -843,7 +879,7 @@ HRESULT CGDFParse::OutputGDFIconInfo( WCHAR* strGDFBinPath, BOOL* pIconEightBits
     {
         hr = HRESULT_FROM_WIN32( GetLastError() );
     }
-    
+
     wprintf( L"\n" );
 
     return hr;
@@ -872,7 +908,7 @@ HRESULT CGDFParse::GetXMLValue( WCHAR* strXPath, WCHAR* strValue, int cchValue )
 {
     assert( m_pRootNode );  // must call CGDFParse::ExtractXML() or LoadXML() first
     if( !m_pRootNode )
-        return E_FAIL; 
+        return E_FAIL;
 
     IXMLDOMNode* pNode = nullptr;
     m_pRootNode->selectSingleNode( strXPath, &pNode );
@@ -880,7 +916,7 @@ HRESULT CGDFParse::GetXMLValue( WCHAR* strXPath, WCHAR* strValue, int cchValue )
         return E_FAIL;
 
     VARIANT v;
-    IXMLDOMNode* pChild = nullptr;    
+    IXMLDOMNode* pChild = nullptr;
     pNode->get_firstChild(&pChild);
     if( pChild )
     {
@@ -902,7 +938,7 @@ HRESULT CGDFParse::GetXMLAttrib( WCHAR* strXPath, WCHAR* strAttribName, WCHAR* s
     bool bFound = false;
     assert( m_pRootNode );  // must call CGDFParse::ExtractXML() or LoadXML() first
     if( !m_pRootNode )
-        return E_FAIL; 
+        return E_FAIL;
 
     IXMLDOMNode* pNode = nullptr;
     m_pRootNode->selectSingleNode( strXPath, &pNode );
@@ -911,8 +947,8 @@ HRESULT CGDFParse::GetXMLAttrib( WCHAR* strXPath, WCHAR* strAttribName, WCHAR* s
 
     IXMLDOMNamedNodeMap *pIXMLDOMNamedNodeMap = nullptr;
     BSTR bstrAttributeName = ::SysAllocString(strAttribName);
-    IXMLDOMNode* pIXMLDOMNode = nullptr;    
-    
+    IXMLDOMNode* pIXMLDOMNode = nullptr;
+
     HRESULT hr;
     VARIANT v;
     hr = pNode->get_attributes(&pIXMLDOMNamedNodeMap);
@@ -950,7 +986,7 @@ HRESULT CGDFParse::GetAttribFromNode( IXMLDOMNode* pNode, WCHAR* strAttrib, WCHA
 {
     IXMLDOMNamedNodeMap *pIXMLDOMNamedNodeMap = nullptr;
     BSTR bstrAttributeName = ::SysAllocString( strAttrib );
-    IXMLDOMNode* pIXMLDOMNode = nullptr;    
+    IXMLDOMNode* pIXMLDOMNode = nullptr;
     bool bFound = false;
 
     HRESULT hr;
@@ -1074,14 +1110,14 @@ HRESULT CGDFParse::ConvertGuidToFolderName( const WCHAR* strFolderGuid, WCHAR* s
     if( IsFolderMatch( strFolderGuid, L"{f3ce0f7c-4901-4acc-8648-d5d44b04ef8f}", L"FOLDERID_UsersFiles", strFolderName, cchDest )) return S_OK;
     if( IsFolderMatch( strFolderGuid, L"{190337d1-b8ca-4121-a639-6d472d16972a}", L"FOLDERID_SearchHome", strFolderName, cchDest )) return S_OK;
     if( IsFolderMatch( strFolderGuid, L"{2C36C0AA-5812-4b87-BFD0-4CD0DFB19B39}", L"FOLDERID_OriginalImages", strFolderName, cchDest )) return S_OK;
-    wcscpy_s( strFolderName, cchDest, strFolderGuid ); 
+    wcscpy_s( strFolderName, cchDest, strFolderGuid );
     return S_OK;
 }
 
 /******************************************************************
 
 GDF V2
- 
+
 ********************************************************************/
 HRESULT CGDFParse::IsV2GDF (BOOL* pfV2GDF)
 {
@@ -1110,7 +1146,7 @@ HRESULT CGDFParse::IsV2GDF (BOOL* pfV2GDF)
             hr = HRESULT_FROM_WIN32(ERROR_INVALID_DATA);
         }
     }
-    
+
     return hr;
 }
 
@@ -1121,7 +1157,7 @@ HRESULT CGDFParse::GetPrimaryPlayTask( WCHAR* strDest, int cchDest, WCHAR* strAr
 
     assert( m_pRootNode );  // must call CGDFParse::ExtractXML() or LoadXML() first
     if( !m_pRootNode )
-        return E_FAIL; 
+        return E_FAIL;
 
     islink = false;
     wcscpy_s( strDest, cchDest, L"" );
@@ -1153,7 +1189,7 @@ HRESULT CGDFParse::GetPrimaryPlayTask( WCHAR* strDest, int cchDest, WCHAR* strAr
         }
         return hr;
     }
-    
+
     return E_FAIL;
 }
 
@@ -1164,7 +1200,7 @@ HRESULT CGDFParse::GetTask( int iTask, bool support, WCHAR* strName, int cchName
 
     assert( m_pRootNode );  // must call CGDFParse::ExtractXML() or LoadXML() first
     if( !m_pRootNode )
-        return E_FAIL; 
+        return E_FAIL;
 
     islink = false;
     index = 0;
@@ -1174,8 +1210,8 @@ HRESULT CGDFParse::GetTask( int iTask, bool support, WCHAR* strName, int cchName
 
     IXMLDOMNode* pBaseNode = nullptr;
     HRESULT hr = m_pRootNode->selectSingleNode( (support)
-                                                ? L"//GameDefinitionFile/GameDefinition/ExtendedProperties/GameTasks/Support"
-                                                : L"//GameDefinitionFile/GameDefinition/ExtendedProperties/GameTasks/Play" , &pBaseNode );
+                 ? L"//GameDefinitionFile/GameDefinition/ExtendedProperties/GameTasks/Support"
+                 : L"//GameDefinitionFile/GameDefinition/ExtendedProperties/GameTasks/Play" , &pBaseNode );
     if ( pBaseNode )
     {
         IXMLDOMNodeList* pChildren = nullptr;

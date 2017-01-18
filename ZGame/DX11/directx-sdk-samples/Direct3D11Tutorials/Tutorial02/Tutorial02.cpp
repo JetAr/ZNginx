@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: Tutorial02.cpp
 //
 // This application displays a triangle using Direct3D 11
@@ -61,7 +61,7 @@ void Render();
 
 
 //--------------------------------------------------------------------------------------
-// Entry point to the program. Initializes everything and goes into a message processing 
+// Entry point to the program. Initializes everything and goes into a message processing
 // loop. Idle time is used to render the scene.
 //--------------------------------------------------------------------------------------
 int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow )
@@ -150,8 +150,8 @@ HRESULT CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR sz
     DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG
     // Set the D3DCOMPILE_DEBUG flag to embed debug information in the shaders.
-    // Setting this flag improves the shader debugging experience, but still allows 
-    // the shaders to be optimized and to run exactly the way they will run in 
+    // Setting this flag improves the shader debugging experience, but still allows
+    // the shaders to be optimized and to run exactly the way they will run in
     // the release configuration of this program.
     dwShaderFlags |= D3DCOMPILE_DEBUG;
 
@@ -160,8 +160,8 @@ HRESULT CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR sz
 #endif
 
     ID3DBlob* pErrorBlob = nullptr;
-    hr = D3DCompileFromFile( szFileName, nullptr, nullptr, szEntryPoint, szShaderModel, 
-        dwShaderFlags, 0, ppBlobOut, &pErrorBlob );
+    hr = D3DCompileFromFile( szFileName, nullptr, nullptr, szEntryPoint, szShaderModel,
+                             dwShaderFlags, 0, ppBlobOut, &pErrorBlob );
     if( FAILED(hr) )
     {
         if( pErrorBlob )
@@ -209,7 +209,7 @@ HRESULT InitDevice()
         D3D_FEATURE_LEVEL_10_1,
         D3D_FEATURE_LEVEL_10_0,
     };
-	UINT numFeatureLevels = ARRAYSIZE( featureLevels );
+    UINT numFeatureLevels = ARRAYSIZE( featureLevels );
 
     for( UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++ )
     {
@@ -341,33 +341,33 @@ HRESULT InitDevice()
         return hr;
     }
 
-	// Create the vertex shader
-	hr = g_pd3dDevice->CreateVertexShader( pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), nullptr, &g_pVertexShader );
-	if( FAILED( hr ) )
-	{	
-		pVSBlob->Release();
+    // Create the vertex shader
+    hr = g_pd3dDevice->CreateVertexShader( pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), nullptr, &g_pVertexShader );
+    if( FAILED( hr ) )
+    {
+        pVSBlob->Release();
         return hr;
-	}
+    }
 
     // Define the input layout
     D3D11_INPUT_ELEMENT_DESC layout[] =
     {
         { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
     };
-	UINT numElements = ARRAYSIZE( layout );
+    UINT numElements = ARRAYSIZE( layout );
 
     // Create the input layout
-	hr = g_pd3dDevice->CreateInputLayout( layout, numElements, pVSBlob->GetBufferPointer(),
+    hr = g_pd3dDevice->CreateInputLayout( layout, numElements, pVSBlob->GetBufferPointer(),
                                           pVSBlob->GetBufferSize(), &g_pVertexLayout );
-	pVSBlob->Release();
-	if( FAILED( hr ) )
+    pVSBlob->Release();
+    if( FAILED( hr ) )
         return hr;
 
     // Set the input layout
     g_pImmediateContext->IASetInputLayout( g_pVertexLayout );
 
-	// Compile the pixel shader
-	ID3DBlob* pPSBlob = nullptr;
+    // Compile the pixel shader
+    ID3DBlob* pPSBlob = nullptr;
     hr = CompileShaderFromFile( L"Tutorial02.fx", "PS", "ps_4_0", &pPSBlob );
     if( FAILED( hr ) )
     {
@@ -376,9 +376,9 @@ HRESULT InitDevice()
         return hr;
     }
 
-	// Create the pixel shader
-	hr = g_pd3dDevice->CreatePixelShader( pPSBlob->GetBufferPointer(), pPSBlob->GetBufferSize(), nullptr, &g_pPixelShader );
-	pPSBlob->Release();
+    // Create the pixel shader
+    hr = g_pd3dDevice->CreatePixelShader( pPSBlob->GetBufferPointer(), pPSBlob->GetBufferSize(), nullptr, &g_pPixelShader );
+    pPSBlob->Release();
     if( FAILED( hr ) )
         return hr;
 
@@ -390,13 +390,13 @@ HRESULT InitDevice()
         XMFLOAT3( -0.5f, -0.5f, 0.5f ),
     };
     D3D11_BUFFER_DESC bd;
-	ZeroMemory( &bd, sizeof(bd) );
+    ZeroMemory( &bd, sizeof(bd) );
     bd.Usage = D3D11_USAGE_DEFAULT;
     bd.ByteWidth = sizeof( SimpleVertex ) * 3;
     bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bd.CPUAccessFlags = 0;
+    bd.CPUAccessFlags = 0;
     D3D11_SUBRESOURCE_DATA InitData;
-	ZeroMemory( &InitData, sizeof(InitData) );
+    ZeroMemory( &InitData, sizeof(InitData) );
     InitData.pSysMem = vertices;
     hr = g_pd3dDevice->CreateBuffer( &bd, &InitData, &g_pVertexBuffer );
     if( FAILED( hr ) )
@@ -454,8 +454,8 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
         PostQuitMessage( 0 );
         break;
 
-        // Note that this tutorial does not handle resizing (WM_SIZE) requests,
-        // so we created the window without the resize border.
+    // Note that this tutorial does not handle resizing (WM_SIZE) requests,
+    // so we created the window without the resize border.
 
     default:
         return DefWindowProc( hWnd, message, wParam, lParam );
@@ -470,12 +470,12 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 //--------------------------------------------------------------------------------------
 void Render()
 {
-    // Clear the back buffer 
+    // Clear the back buffer
     g_pImmediateContext->ClearRenderTargetView( g_pRenderTargetView, Colors::MidnightBlue );
 
     // Render a triangle
-	g_pImmediateContext->VSSetShader( g_pVertexShader, nullptr, 0 );
-	g_pImmediateContext->PSSetShader( g_pPixelShader, nullptr, 0 );
+    g_pImmediateContext->VSSetShader( g_pVertexShader, nullptr, 0 );
+    g_pImmediateContext->PSSetShader( g_pPixelShader, nullptr, 0 );
     g_pImmediateContext->Draw( 3, 0 );
 
     // Present the information rendered to the back buffer to the front buffer (the screen)

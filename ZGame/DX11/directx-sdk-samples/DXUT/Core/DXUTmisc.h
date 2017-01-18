@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DXUTMisc.h
 //
 // Helper functions for Direct3D programming.
@@ -17,7 +17,7 @@
 //--------------------------------------------------------------------------------------
 // XInput helper state/function
 // This performs extra processing on XInput gamepad data to make it slightly more convenient to use
-// 
+//
 // Example usage:
 //
 //      DXUT_GAMEPAD gamepad[4];
@@ -91,7 +91,10 @@ public:
     double          GetTime() const; // get the current time
     float           GetElapsedTime(); // get the time that elapsed between Get*ElapsedTime() calls
     void            GetTimeValues( _Out_ double* pfTime, _Out_ double* pfAbsoluteTime, _Out_ float* pfElapsedTime ); // get all time values at once
-    bool            IsStopped() const { return m_bTimerStopped; } // returns true if timer stopped
+    bool            IsStopped() const
+    {
+        return m_bTimerStopped;    // returns true if timer stopped
+    }
 
     // Limit the current thread to one processor (the current one). This ensures that timing code runs
     // on only one processor, and will not suffer any ill effects from power management.
@@ -135,7 +138,7 @@ const WCHAR* WINAPI DXUTTraceWindowsMessage( _In_ UINT uMsg );
 #endif
 
 // These macros are very similar to dxerr's but it special cases the HRESULT defined
-// by DXUT to pop better message boxes. 
+// by DXUT to pop better message boxes.
 #if defined(DEBUG) || defined(_DEBUG)
 #define DXUT_ERR(str,hr)           DXUTTrace( __FILE__, (DWORD)__LINE__, hr, str, false )
 #define DXUT_ERR_MSGBOX(str,hr)    DXUTTrace( __FILE__, (DWORD)__LINE__, hr, str, true )
@@ -163,15 +166,15 @@ HRESULT WINAPI DXUT_Dynamic_CreateDXGIFactory1( _In_ REFIID rInterface, _Out_ vo
 HRESULT WINAPI DXUT_Dynamic_DXGIGetDebugInterface( _In_ REFIID rInterface, _Out_ void** ppOut );
 
 HRESULT WINAPI DXUT_Dynamic_D3D11CreateDevice( _In_opt_ IDXGIAdapter* pAdapter,
-                                               _In_ D3D_DRIVER_TYPE DriverType,
-                                               _In_opt_ HMODULE Software,
-                                               _In_ UINT32 Flags,
-                                               _In_reads_(FeatureLevels) const D3D_FEATURE_LEVEL* pFeatureLevels,
-                                               _In_ UINT FeatureLevels,
-                                               _In_ UINT32 SDKVersion,
-                                               _Deref_out_ ID3D11Device** ppDevice,
-                                               _Out_opt_ D3D_FEATURE_LEVEL* pFeatureLevel,
-                                               _Out_opt_ ID3D11DeviceContext** ppImmediateContext );
+        _In_ D3D_DRIVER_TYPE DriverType,
+        _In_opt_ HMODULE Software,
+        _In_ UINT32 Flags,
+        _In_reads_(FeatureLevels) const D3D_FEATURE_LEVEL* pFeatureLevels,
+        _In_ UINT FeatureLevels,
+        _In_ UINT32 SDKVersion,
+        _Deref_out_ ID3D11Device** ppDevice,
+        _Out_opt_ D3D_FEATURE_LEVEL* pFeatureLevel,
+        _Out_opt_ ID3D11DeviceContext** ppImmediateContext );
 
 bool DXUT_EnsureD3D11APIs();
 
@@ -180,13 +183,13 @@ bool DXUT_EnsureD3D11APIs();
 // Profiling/instrumentation support
 //--------------------------------------------------------------------------------------
 
-// Use DXUT_SetDebugName() to attach names to D3D objects for use by 
+// Use DXUT_SetDebugName() to attach names to D3D objects for use by
 // SDKDebugLayer, PIX's object table, etc.
 #if defined(PROFILE) || defined(DEBUG)
 inline void DXUT_SetDebugName( _In_ IDXGIObject* pObj, _In_z_ const CHAR* pstrName )
 {
     if ( pObj )
-       pObj->SetPrivateData( WKPDID_D3DDebugObjectName, (UINT)strlen(pstrName), pstrName );
+        pObj->SetPrivateData( WKPDID_D3DDebugObjectName, (UINT)strlen(pstrName), pstrName );
 }
 inline void DXUT_SetDebugName( _In_ ID3D11Device* pObj, _In_z_ const CHAR* pstrName )
 {
@@ -204,8 +207,8 @@ inline void DXUT_SetDebugName( _In_ ID3D11DeviceChild* pObj, _In_z_ const CHAR* 
 
 
 //--------------------------------------------------------------------------------------
-// Some D3DPERF APIs take a color that can be used when displaying user events in 
-// performance analysis tools.  The following constants are provided for your 
+// Some D3DPERF APIs take a color that can be used when displaying user events in
+// performance analysis tools.  The following constants are provided for your
 // convenience, but you can use any colors you like.
 //--------------------------------------------------------------------------------------
 const DWORD DXUT_PERFEVENTCOLOR = 0xFFC86464;
@@ -213,8 +216,8 @@ const DWORD DXUT_PERFEVENTCOLOR2 = 0xFF64C864;
 const DWORD DXUT_PERFEVENTCOLOR3 = 0xFF6464C8;
 
 //--------------------------------------------------------------------------------------
-// The following macros provide a convenient way for your code to call the D3DPERF 
-// functions only when PROFILE is defined.  If PROFILE is not defined (as for the final 
+// The following macros provide a convenient way for your code to call the D3DPERF
+// functions only when PROFILE is defined.  If PROFILE is not defined (as for the final
 // release version of a program), these macros evaluate to nothing, so no detailed event
 // information is embedded in your shipping program.  It is recommended that you create
 // and use three build configurations for your projects:
@@ -236,33 +239,33 @@ const DWORD DXUT_PERFEVENTCOLOR3 = 0xFF6464C8;
 
 //--------------------------------------------------------------------------------------
 // CDXUTPerfEventGenerator is a helper class that makes it easy to attach begin and end
-// events to a block of code.  Simply define a CDXUTPerfEventGenerator variable anywhere 
-// in a block of code, and the class's constructor will call DXUT_BeginPerfEvent when 
-// the block of code begins, and the class's destructor will call DXUT_EndPerfEvent when 
+// events to a block of code.  Simply define a CDXUTPerfEventGenerator variable anywhere
+// in a block of code, and the class's constructor will call DXUT_BeginPerfEvent when
+// the block of code begins, and the class's destructor will call DXUT_EndPerfEvent when
 // the block ends.
 //--------------------------------------------------------------------------------------
 class CDXUTPerfEventGenerator
 {
 public:
-CDXUTPerfEventGenerator( _In_ DWORD color, _In_z_ LPCWSTR pstrMessage )
-{
+    CDXUTPerfEventGenerator( _In_ DWORD color, _In_z_ LPCWSTR pstrMessage )
+    {
 #ifdef PROFILE
-    DXUT_BeginPerfEvent( color, pstrMessage );
+        DXUT_BeginPerfEvent( color, pstrMessage );
 #else
-    UNREFERENCED_PARAMETER(color);
-    UNREFERENCED_PARAMETER(pstrMessage);
+        UNREFERENCED_PARAMETER(color);
+        UNREFERENCED_PARAMETER(pstrMessage);
 #endif
-}
-~CDXUTPerfEventGenerator()
-{
-    DXUT_EndPerfEvent();
-}
+    }
+    ~CDXUTPerfEventGenerator()
+    {
+        DXUT_EndPerfEvent();
+    }
 };
 
 
 //--------------------------------------------------------------------------------------
-// Multimon handling to support OSes with or without multimon API support.  
-// Purposely avoiding the use of multimon.h so DXUT.lib doesn't require 
+// Multimon handling to support OSes with or without multimon API support.
+// Purposely avoiding the use of multimon.h so DXUT.lib doesn't require
 // COMPILE_MULTIMON_STUBS and cause complication with MFC or other users of multimon.h
 //--------------------------------------------------------------------------------------
 #ifndef MONITOR_DEFAULTTOPRIMARY

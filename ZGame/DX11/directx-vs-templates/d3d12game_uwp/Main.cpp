@@ -1,4 +1,4 @@
-//
+﻿//
 // Main.cpp
 //
 
@@ -206,9 +206,9 @@ protected:
     void OnAcceleratorKeyActivated(CoreDispatcher^, AcceleratorKeyEventArgs^ args)
     {
         if (args->EventType == CoreAcceleratorKeyEventType::SystemKeyDown
-            && args->VirtualKey == VirtualKey::Enter
-            && args->KeyStatus.IsMenuKeyDown 
-            && !args->KeyStatus.WasKeyDown)
+                && args->VirtualKey == VirtualKey::Enter
+                && args->KeyStatus.IsMenuKeyDown
+                && !args->KeyStatus.WasKeyDown)
         {
             // Implements the classic ALT+ENTER fullscreen toggle
             auto view = ApplicationView::GetForCurrentView();

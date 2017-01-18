@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DXUTMisc.cpp
 //
 // Shortcut macros and functions for using DX objects
@@ -128,11 +128,11 @@ void CDXUTTimer::GetTimeValues( double* pfTime, double* pfAbsoluteTime, float* p
     m_llLastElapsedTime = qwTime.QuadPart;
 
     // Clamp the timer to non-negative values to ensure the timer is accurate.
-    // fElapsedTime can be outside this range if processor goes into a 
-    // power save mode or we somehow get shuffled to another processor.  
-    // However, the main thread should call SetThreadAffinityMask to ensure that 
-    // we don't get shuffled to another processor.  Other worker threads should NOT call 
-    // SetThreadAffinityMask, but use a shared copy of the timer data gathered from 
+    // fElapsedTime can be outside this range if processor goes into a
+    // power save mode or we somehow get shuffled to another processor.
+    // However, the main thread should call SetThreadAffinityMask to ensure that
+    // we don't get shuffled to another processor.  Other worker threads should NOT call
+    // SetThreadAffinityMask, but use a shared copy of the timer data gathered from
     // the main thread.
     if( fElapsedTime < 0.0f )
         fElapsedTime = 0.0f;
@@ -173,7 +173,7 @@ LARGE_INTEGER CDXUTTimer::GetAdjustedCurrentTime() const
 }
 
 //--------------------------------------------------------------------------------------
-// Limit the current thread to one processor (the current one). This ensures that timing code 
+// Limit the current thread to one processor (the current one). This ensures that timing code
 // runs on only one processor, and will not suffer any ill effects from power management.
 // See "Game Timing and Multicore Processors" for more details
 //--------------------------------------------------------------------------------------
@@ -186,7 +186,7 @@ void CDXUTTimer::LimitThreadAffinityToCurrentProc()
     DWORD_PTR dwSystemAffinityMask = 0;
 
     if( GetProcessAffinityMask( hCurrentProcess, &dwProcessAffinityMask, &dwSystemAffinityMask ) != 0 &&
-        dwProcessAffinityMask )
+            dwProcessAffinityMask )
     {
         // Find the lowest processor that our process is allows to run against
         DWORD_PTR dwAffinityMask = ( dwProcessAffinityMask & ( ( ~dwProcessAffinityMask ) + 1 ) );
@@ -321,8 +321,9 @@ LPCWSTR WINAPI DXUTDXGIFormatToString( DXGI_FORMAT format, bool bWithPrefix )
         // DXGI 1.2
         DXUTDXGIFMTSTR(DXGI_FORMAT_B4G4R4A4_UNORM)
 
-        default:
-            pstr = L"Unknown format"; break;
+    default:
+        pstr = L"Unknown format";
+        break;
     }
     if( bWithPrefix || !wcsstr( pstr, L"DXGI_FORMAT_" ) )
         return pstr;
@@ -541,15 +542,15 @@ HRESULT WINAPI DXUT_Dynamic_DXGIGetDebugInterface( REFIID rInterface, void** ppO
 
 _Use_decl_annotations_
 HRESULT WINAPI DXUT_Dynamic_D3D11CreateDevice( IDXGIAdapter* pAdapter,
-                                               D3D_DRIVER_TYPE DriverType,
-                                               HMODULE Software,
-                                               UINT32 Flags,
-                                               const D3D_FEATURE_LEVEL* pFeatureLevels,
-                                               UINT FeatureLevels,
-                                               UINT32 SDKVersion,
-                                               ID3D11Device** ppDevice,
-                                               D3D_FEATURE_LEVEL* pFeatureLevel,
-                                               ID3D11DeviceContext** ppImmediateContext )
+        D3D_DRIVER_TYPE DriverType,
+        HMODULE Software,
+        UINT32 Flags,
+        const D3D_FEATURE_LEVEL* pFeatureLevels,
+        UINT FeatureLevels,
+        UINT32 SDKVersion,
+        ID3D11Device** ppDevice,
+        D3D_FEATURE_LEVEL* pFeatureLevel,
+        ID3D11DeviceContext** ppImmediateContext )
 {
     if( DXUT_EnsureD3D11APIs() && s_DynamicD3D11CreateDevice )
         return s_DynamicD3D11CreateDevice( pAdapter, DriverType, Software, Flags, pFeatureLevels, FeatureLevels,
@@ -779,8 +780,8 @@ const WCHAR* WINAPI DXUTTraceWindowsMessage( _In_ UINT uMsg )
         TRACE_ID(WM_PENWINFIRST);
         TRACE_ID(WM_PENWINLAST);
         TRACE_ID(WM_APP);
-        default:
-            return L"Unknown";
+    default:
+        return L"Unknown";
     }
 }
 
@@ -814,7 +815,7 @@ BOOL WINAPI DXUTGetMonitorInfo( HMONITOR hMonitor, LPMONITORINFO lpMonitorInfo )
 
     RECT rcWork;
     if( ( hMonitor == DXUT_PRIMARY_MONITOR ) && lpMonitorInfo && ( lpMonitorInfo->cbSize >= sizeof( MONITORINFO ) ) &&
-        SystemParametersInfoA( SPI_GETWORKAREA, 0, &rcWork, 0 ) )
+            SystemParametersInfoA( SPI_GETWORKAREA, 0, &rcWork, 0 ) )
     {
         lpMonitorInfo->rcMonitor.left = 0;
         lpMonitorInfo->rcMonitor.top = 0;
@@ -838,7 +839,7 @@ HMONITOR WINAPI DXUTMonitorFromWindow( HWND hWnd, DWORD dwFlags )
         s_bInited = true;
         HMODULE hUser32 = GetModuleHandle( L"USER32" );
         if( hUser32 ) s_pFnGetMonitorFromWindow = reinterpret_cast<LPMONITORFROMWINDOW>( reinterpret_cast<void*>( GetProcAddress( hUser32,
-                                                                                         "MonitorFromWindow" ) ) );
+                    "MonitorFromWindow" ) ) );
     }
 
     if( s_pFnGetMonitorFromWindow )
@@ -868,8 +869,8 @@ HMONITOR WINAPI DXUTMonitorFromRect( LPCRECT lprcScreenCoords, DWORD dwFlags )
 
 
 //--------------------------------------------------------------------------------------
-// Get the desktop resolution of an adapter. This isn't the same as the current resolution 
-// from GetAdapterDisplayMode since the device might be fullscreen 
+// Get the desktop resolution of an adapter. This isn't the same as the current resolution
+// from GetAdapterDisplayMode since the device might be fullscreen
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
 void WINAPI DXUTGetDesktopResolution( UINT AdapterOrdinal, UINT* pWidth, UINT* pHeight )
@@ -900,7 +901,7 @@ void WINAPI DXUTGetDesktopResolution( UINT AdapterOrdinal, UINT* pWidth, UINT* p
 
 
 //--------------------------------------------------------------------------------------
-// Display error msg box to help debug 
+// Display error msg box to help debug
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
 HRESULT WINAPI DXUTTrace( const CHAR* strFile, DWORD dwLine, HRESULT hr,
@@ -912,7 +913,7 @@ HRESULT WINAPI DXUTTrace( const CHAR* strFile, DWORD dwLine, HRESULT hr,
 
     WCHAR buff[ MAX_PATH ];
     int result = MultiByteToWideChar( CP_ACP,
-                                      MB_PRECOMPOSED, 
+                                      MB_PRECOMPOSED,
                                       strFile,
                                       -1,
                                       buff,
@@ -928,7 +929,7 @@ HRESULT WINAPI DXUTTrace( const CHAR* strFile, DWORD dwLine, HRESULT hr,
 typedef DWORD ( WINAPI* LPXINPUTGETSTATE )( DWORD dwUserIndex, XINPUT_STATE* pState );
 typedef DWORD ( WINAPI* LPXINPUTSETSTATE )( DWORD dwUserIndex, XINPUT_VIBRATION* pVibration );
 typedef DWORD ( WINAPI* LPXINPUTGETCAPABILITIES )( DWORD dwUserIndex, DWORD dwFlags,
-                                                   XINPUT_CAPABILITIES* pCapabilities );
+        XINPUT_CAPABILITIES* pCapabilities );
 typedef void ( WINAPI* LPXINPUTENABLE )( BOOL bEnable );
 
 //--------------------------------------------------------------------------------------
@@ -985,33 +986,33 @@ HRESULT DXUTGetGamepadState( DWORD dwPort, DXUT_GAMEPAD* pGamePad, bool bThumbst
     {
         // Apply deadzone to each axis independantly to slightly snap to up/down/left/right
         if( pGamePad->sThumbLX < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
-            pGamePad->sThumbLX > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE )
+                pGamePad->sThumbLX > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE )
             pGamePad->sThumbLX = 0;
         if( pGamePad->sThumbLY < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
-            pGamePad->sThumbLY > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE )
+                pGamePad->sThumbLY > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE )
             pGamePad->sThumbLY = 0;
         if( pGamePad->sThumbRX < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
-            pGamePad->sThumbRX > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE )
+                pGamePad->sThumbRX > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE )
             pGamePad->sThumbRX = 0;
         if( pGamePad->sThumbRY < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
-            pGamePad->sThumbRY > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE )
+                pGamePad->sThumbRY > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE )
             pGamePad->sThumbRY = 0;
     }
     else if( bThumbstickDeadZone )
     {
         // Apply deadzone if centered
         if( ( pGamePad->sThumbLX < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
-              pGamePad->sThumbLX > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ) &&
-            ( pGamePad->sThumbLY < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
-              pGamePad->sThumbLY > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ) )
+                pGamePad->sThumbLX > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ) &&
+                ( pGamePad->sThumbLY < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
+                  pGamePad->sThumbLY > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ) )
         {
             pGamePad->sThumbLX = 0;
             pGamePad->sThumbLY = 0;
         }
         if( ( pGamePad->sThumbRX < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
-              pGamePad->sThumbRX > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ) &&
-            ( pGamePad->sThumbRY < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
-              pGamePad->sThumbRY > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ) )
+                pGamePad->sThumbRX > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ) &&
+                ( pGamePad->sThumbRY < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
+                  pGamePad->sThumbRY > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ) )
         {
             pGamePad->sThumbRX = 0;
             pGamePad->sThumbRY = 0;
@@ -1024,7 +1025,7 @@ HRESULT DXUTGetGamepadState( DWORD dwPort, DXUT_GAMEPAD* pGamePad, bool bThumbst
     pGamePad->fThumbRX = pGamePad->sThumbRX / 32767.0f;
     pGamePad->fThumbRY = pGamePad->sThumbRY / 32767.0f;
 
-    // Get the boolean buttons that have been pressed since the last call. 
+    // Get the boolean buttons that have been pressed since the last call.
     // Each button is represented by one bit.
     pGamePad->wPressedButtons = ( pGamePad->wLastButtons ^ pGamePad->wButtons ) & pGamePad->wButtons;
     pGamePad->wLastButtons = pGamePad->wButtons;
@@ -1044,7 +1045,7 @@ HRESULT DXUTGetGamepadState( DWORD dwPort, DXUT_GAMEPAD* pGamePad, bool bThumbst
 
 
 //--------------------------------------------------------------------------------------
-// Don't pause the game or deactive the window without first stopping rumble otherwise 
+// Don't pause the game or deactive the window without first stopping rumble otherwise
 // the controller will continue to rumble
 //--------------------------------------------------------------------------------------
 void DXUTEnableXInput( _In_ bool bEnable )
@@ -1063,7 +1064,7 @@ void DXUTEnableXInput( _In_ bool bEnable )
 
 
 //--------------------------------------------------------------------------------------
-// Don't pause the game or deactive the window without first stopping rumble otherwise 
+// Don't pause the game or deactive the window without first stopping rumble otherwise
 // the controller will continue to rumble
 //--------------------------------------------------------------------------------------
 HRESULT DXUTStopRumbleOnAllControllers()
@@ -1097,36 +1098,36 @@ DXGI_FORMAT MAKE_SRGB( _In_ DXGI_FORMAT format )
 
     switch( format )
     {
-        case DXGI_FORMAT_R8G8B8A8_TYPELESS:
-        case DXGI_FORMAT_R8G8B8A8_UNORM:
-        case DXGI_FORMAT_R8G8B8A8_UINT:
-        case DXGI_FORMAT_R8G8B8A8_SNORM:
-        case DXGI_FORMAT_R8G8B8A8_SINT:
-            return DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+    case DXGI_FORMAT_R8G8B8A8_TYPELESS:
+    case DXGI_FORMAT_R8G8B8A8_UNORM:
+    case DXGI_FORMAT_R8G8B8A8_UINT:
+    case DXGI_FORMAT_R8G8B8A8_SNORM:
+    case DXGI_FORMAT_R8G8B8A8_SINT:
+        return DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 
-        case DXGI_FORMAT_BC1_TYPELESS:
-        case DXGI_FORMAT_BC1_UNORM:
-            return DXGI_FORMAT_BC1_UNORM_SRGB;
+    case DXGI_FORMAT_BC1_TYPELESS:
+    case DXGI_FORMAT_BC1_UNORM:
+        return DXGI_FORMAT_BC1_UNORM_SRGB;
 
-        case DXGI_FORMAT_BC2_TYPELESS:
-        case DXGI_FORMAT_BC2_UNORM:
-            return DXGI_FORMAT_BC2_UNORM_SRGB;
+    case DXGI_FORMAT_BC2_TYPELESS:
+    case DXGI_FORMAT_BC2_UNORM:
+        return DXGI_FORMAT_BC2_UNORM_SRGB;
 
-        case DXGI_FORMAT_BC3_TYPELESS:
-        case DXGI_FORMAT_BC3_UNORM:
-            return DXGI_FORMAT_BC3_UNORM_SRGB;
+    case DXGI_FORMAT_BC3_TYPELESS:
+    case DXGI_FORMAT_BC3_UNORM:
+        return DXGI_FORMAT_BC3_UNORM_SRGB;
 
-        case DXGI_FORMAT_B8G8R8A8_UNORM:
-        case DXGI_FORMAT_B8G8R8A8_TYPELESS:
-            return DXGI_FORMAT_B8G8R8A8_UNORM_SRGB;
+    case DXGI_FORMAT_B8G8R8A8_UNORM:
+    case DXGI_FORMAT_B8G8R8A8_TYPELESS:
+        return DXGI_FORMAT_B8G8R8A8_UNORM_SRGB;
 
-        case DXGI_FORMAT_B8G8R8X8_UNORM:
-        case DXGI_FORMAT_B8G8R8X8_TYPELESS:
-            return DXGI_FORMAT_B8G8R8X8_UNORM_SRGB;
+    case DXGI_FORMAT_B8G8R8X8_UNORM:
+    case DXGI_FORMAT_B8G8R8X8_TYPELESS:
+        return DXGI_FORMAT_B8G8R8X8_UNORM_SRGB;
 
-        case DXGI_FORMAT_BC7_TYPELESS:
-        case DXGI_FORMAT_BC7_UNORM:
-            return DXGI_FORMAT_BC7_UNORM_SRGB;
+    case DXGI_FORMAT_BC7_TYPELESS:
+    case DXGI_FORMAT_BC7_UNORM:
+        return DXGI_FORMAT_BC7_UNORM_SRGB;
     };
 
     return format;
@@ -1245,21 +1246,22 @@ DXGI_FORMAT MAKE_TYPELESS( _In_ DXGI_FORMAT format )
     }
 }
 
-//-------------------------------------------------------------------------------------- 
+//--------------------------------------------------------------------------------------
 HRESULT DXUTSnapD3D11Screenshot( _In_z_ LPCWSTR szFileName, _In_ bool usedds )
 {
     IDXGISwapChain *pSwap = DXUTGetDXGISwapChain();
 
     if (!pSwap)
         return E_FAIL;
-    
+
     ID3D11Texture2D* pBackBuffer;
     HRESULT hr = pSwap->GetBuffer( 0, __uuidof( *pBackBuffer ), ( LPVOID* )&pBackBuffer );
     if (hr != S_OK)
         return hr;
 
     auto dc  = DXUTGetD3D11DeviceContext();
-    if (!dc) {
+    if (!dc)
+    {
         SAFE_RELEASE(pBackBuffer);
         return E_FAIL;
     }

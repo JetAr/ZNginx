@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeinterleavedTexturing\src\SSAO/States.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -86,25 +86,28 @@ void SSAO::States::CreateDepthStencilStates(ID3D11Device* pD3DDevice)
     // Create DepthStencilState_Disabled
     //
 
-    static D3D11_DEPTH_STENCIL_DESC DepthStencilDesc = 
-    {0x0, //DepthEnable
-     D3D11_DEPTH_WRITE_MASK_ZERO, //DepthWriteMask
-     D3D11_COMPARISON_NEVER, //DepthFunc
-     0x0, //StencilEnable
-     0xFF, //StencilReadMask
-     0xFF, //StencilWriteMask
-     
-    {D3D11_STENCIL_OP_KEEP, //StencilFailOp
-     D3D11_STENCIL_OP_KEEP, //StencilDepthFailOp
-     D3D11_STENCIL_OP_KEEP, //StencilPassOp
-     D3D11_COMPARISON_ALWAYS  //StencilFunc
-    }, //FrontFace
-     
-    {D3D11_STENCIL_OP_KEEP, //StencilFailOp
-     D3D11_STENCIL_OP_KEEP, //StencilDepthFailOp
-     D3D11_STENCIL_OP_KEEP, //StencilPassOp
-     D3D11_COMPARISON_ALWAYS  //StencilFunc
-    }  //BackFace
+    static D3D11_DEPTH_STENCIL_DESC DepthStencilDesc =
+    {
+        0x0, //DepthEnable
+        D3D11_DEPTH_WRITE_MASK_ZERO, //DepthWriteMask
+        D3D11_COMPARISON_NEVER, //DepthFunc
+        0x0, //StencilEnable
+        0xFF, //StencilReadMask
+        0xFF, //StencilWriteMask
+
+        {
+            D3D11_STENCIL_OP_KEEP, //StencilFailOp
+            D3D11_STENCIL_OP_KEEP, //StencilDepthFailOp
+            D3D11_STENCIL_OP_KEEP, //StencilPassOp
+            D3D11_COMPARISON_ALWAYS  //StencilFunc
+        }, //FrontFace
+
+        {
+            D3D11_STENCIL_OP_KEEP, //StencilFailOp
+            D3D11_STENCIL_OP_KEEP, //StencilDepthFailOp
+            D3D11_STENCIL_OP_KEEP, //StencilPassOp
+            D3D11_COMPARISON_ALWAYS  //StencilFunc
+        }  //BackFace
     };
 
     SAFE_D3D_CALL( pD3DDevice->CreateDepthStencilState(&DepthStencilDesc, &m_pDepthStencilState_Disabled) );
@@ -117,17 +120,18 @@ void SSAO::States::CreateRasterizerStates(ID3D11Device* pD3DDevice)
     // Create RasterizerState_Fullscreen_NoScissor
     //
 
-    static D3D11_RASTERIZER_DESC D3D11_RASTERIZER_DESC_0 = 
-    {D3D11_FILL_SOLID, //FillMode
-     D3D11_CULL_BACK, //CullMode
-     0x0, //FrontCounterClockwise
-     0x0/*0.000000f*/, //DepthBias
-                   0.f, //DepthBiasClamp
-                   0.f, //SlopeScaledDepthBias
-     0x1, //DepthClipEnable
-     0x0, //ScissorEnable
-     0x0, //MultisampleEnable
-     0x0  //AntialiasedLineEnable
+    static D3D11_RASTERIZER_DESC D3D11_RASTERIZER_DESC_0 =
+    {
+        D3D11_FILL_SOLID, //FillMode
+        D3D11_CULL_BACK, //CullMode
+        0x0, //FrontCounterClockwise
+        0x0/*0.000000f*/, //DepthBias
+        0.f, //DepthBiasClamp
+        0.f, //SlopeScaledDepthBias
+        0x1, //DepthClipEnable
+        0x0, //ScissorEnable
+        0x0, //MultisampleEnable
+        0x0  //AntialiasedLineEnable
     };
 
     SAFE_D3D_CALL( pD3DDevice->CreateRasterizerState(&D3D11_RASTERIZER_DESC_0, &m_pRasterizerState_Fullscreen_NoScissor) );

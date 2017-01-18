@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: WaitDlg.h
 //
 // Wait dialog for shader compilation
@@ -26,17 +26,23 @@ private:
     WCHAR   m_szText[MAX_PATH];
 
 public:
-    CWaitDlg() : 
-          m_hDialogWnd( nullptr ),
-          m_hThread( nullptr ), 
-          m_hProgressWnd( nullptr ), 
-          m_iProgress( 0 ), 
-          m_bDone( false ) 
+    CWaitDlg() :
+        m_hDialogWnd( nullptr ),
+        m_hThread( nullptr ),
+        m_hProgressWnd( nullptr ),
+        m_iProgress( 0 ),
+        m_bDone( false )
     {
     }
-    ~CWaitDlg() { DestroyDialog(); }
+    ~CWaitDlg()
+    {
+        DestroyDialog();
+    }
 
-    bool IsRunning() const { return !m_bDone; }
+    bool IsRunning() const
+    {
+        return !m_bDone;
+    }
 
     void UpdateProgressBar()
     {
@@ -98,7 +104,7 @@ public:
 
         if ( !DXUTIsWindowed() )
             return;
-        
+
         WaitForSingleObject( m_hThread, INFINITE );
 
         if( m_hDialogWnd )

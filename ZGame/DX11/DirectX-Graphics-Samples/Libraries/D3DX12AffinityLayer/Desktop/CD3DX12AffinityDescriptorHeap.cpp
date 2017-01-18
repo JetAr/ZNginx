@@ -1,4 +1,4 @@
-//*********************************************************
+﻿//*********************************************************
 //
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
@@ -78,7 +78,7 @@ void CD3DX12AffinityDescriptorHeap::InitDescriptorHandles(D3D12_DESCRIPTOR_HEAP_
     for (UINT i = 0; i < NodeCount; ++i)
     {
         DebugLog(L"  Device %u CPU starts at 0x%IX and GPU starts at 0x%IX\n",
-            i, mDescriptorHeaps[i]->GetCPUDescriptorHandleForHeapStart().ptr, mDescriptorHeaps[i]->GetGPUDescriptorHandleForHeapStart().ptr);
+                 i, mDescriptorHeaps[i]->GetCPUDescriptorHandleForHeapStart().ptr, mDescriptorHeaps[i]->GetGPUDescriptorHandleForHeapStart().ptr);
     }
 
 #ifdef D3DX_AFFINITY_ENABLE_HEAP_POINTER_VALIDATION

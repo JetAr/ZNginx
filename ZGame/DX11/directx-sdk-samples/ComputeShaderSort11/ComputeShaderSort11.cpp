@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: ComputeShaderSort11.cpp
 //
 // Demonstrates how to use compute shaders to perform sorting on the GPU with DirectX 11.
@@ -27,7 +27,7 @@
 
 #if defined(_MSC_VER) && (_MSC_VER<1610) && !defined(_In_reads_)
 #define _Outptr_
-#define _Outptr_opt_ 
+#define _Outptr_opt_
 #define _In_reads_(exp)
 #define _In_reads_opt_(exp)
 #define _Out_writes_(exp)
@@ -74,11 +74,11 @@ struct CB
 
 
 //--------------------------------------------------------------------------------------
-// Forward declarations 
+// Forward declarations
 //--------------------------------------------------------------------------------------
 HRESULT CompileShaderFromFile( _In_z_ const WCHAR* szFileName, _In_z_ LPCSTR szEntryPoint, _In_z_ LPCSTR szShaderModel, _Outptr_ ID3DBlob** ppBlobOut );
 HRESULT FindDXSDKShaderFileCch( _Out_writes_(cchDest) WCHAR* strDestPath,
-                                _In_ int cchDest, 
+                                _In_ int cchDest,
                                 _In_z_ LPCWSTR strFilename );
 
 //--------------------------------------------------------------------------------------
@@ -93,7 +93,8 @@ HRESULT InitDevice()
     createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-    D3D_FEATURE_LEVEL fl[] = {
+    D3D_FEATURE_LEVEL fl[] =
+    {
         D3D_FEATURE_LEVEL_11_0,
         D3D_FEATURE_LEVEL_10_1,
         D3D_FEATURE_LEVEL_10_0
@@ -119,7 +120,7 @@ HRESULT InitDevice()
                                  L"Compute Shader Sort", MB_ICONQUESTION | MB_YESNO );
         if( result == IDNO )
             return E_FAIL;
-        
+
         // Create a reference device if hardware is not available
         // This DXUT helper calls D3D11CreateDevice via LoadLibrary
         hr = D3D11CreateDevice( nullptr, D3D_DRIVER_TYPE_REFERENCE, nullptr, createDeviceFlags,
@@ -153,8 +154,8 @@ HRESULT CompileShaderFromFile( const WCHAR* szFileName, LPCSTR szEntryPoint, LPC
     DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG
     // Set the D3DCOMPILE_DEBUG flag to embed debug information in the shaders.
-    // Setting this flag improves the shader debugging experience, but still allows 
-    // the shaders to be optimized and to run exactly the way they will run in 
+    // Setting this flag improves the shader debugging experience, but still allows
+    // the shaders to be optimized and to run exactly the way they will run in
     // the release configuration of this program.
     dwShaderFlags |= D3DCOMPILE_DEBUG;
 
@@ -166,12 +167,12 @@ HRESULT CompileShaderFromFile( const WCHAR* szFileName, LPCSTR szEntryPoint, LPC
 
 #if D3D_COMPILER_VERSION >= 46
 
-    hr = D3DCompileFromFile( str, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, szEntryPoint, szShaderModel, 
+    hr = D3DCompileFromFile( str, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, szEntryPoint, szShaderModel,
                              dwShaderFlags, 0, ppBlobOut, &pErrorBlob );
 
 #else
 
-    hr = D3DX11CompileFromFile( str, nullptr, nullptr, szEntryPoint, szShaderModel, 
+    hr = D3DX11CompileFromFile( str, nullptr, nullptr, szEntryPoint, szShaderModel,
                                 dwShaderFlags, 0, nullptr, ppBlobOut, &pErrorBlob, nullptr );
 
 #endif
@@ -297,7 +298,7 @@ HRESULT CreateResources()
     if( FAILED( hr ) )
         return hr;
 #if defined(_DEBUG) || defined(PROFILE)
-     g_pBuffer1UAV->SetPrivateData( WKPDID_D3DDebugObjectName, sizeof( "Buffer1 UAV" ) - 1, "Buffer1 UAV" );
+    g_pBuffer1UAV->SetPrivateData( WKPDID_D3DDebugObjectName, sizeof( "Buffer1 UAV" ) - 1, "Buffer1 UAV" );
 #endif
 
     hr = g_pd3dDevice->CreateUnorderedAccessView( g_pBuffer2, &uavbuffer_desc, &g_pBuffer2UAV );
@@ -319,7 +320,7 @@ HRESULT CreateResources()
     if( FAILED( hr ) )
         return hr;
 #if defined(_DEBUG) || defined(PROFILE)
-     g_pReadBackBuffer->SetPrivateData( WKPDID_D3DDebugObjectName, sizeof( "ReadBack" ) - 1, "ReadBack" );
+    g_pReadBackBuffer->SetPrivateData( WKPDID_D3DDebugObjectName, sizeof( "ReadBack" ) - 1, "ReadBack" );
 #endif
 
     return hr;
@@ -356,7 +357,7 @@ void GPUSort()
         g_pd3dImmediateContext->CSSetShader( g_pComputeShaderBitonic, nullptr, 0 );
         g_pd3dImmediateContext->Dispatch( NUM_ELEMENTS / BITONIC_BLOCK_SIZE, 1, 1 );
     }
-    
+
     // Then sort the rows and columns for the levels > than the block size
     // Transpose. Sort the Columns. Transpose. Sort the Rows.
     for( UINT level = (BITONIC_BLOCK_SIZE * 2) ; level <= NUM_ELEMENTS ; level = level * 2 )
@@ -390,7 +391,7 @@ void GPUSort()
     }
 
     // Download the data
-    D3D11_MAPPED_SUBRESOURCE MappedResource = {0}; 
+    D3D11_MAPPED_SUBRESOURCE MappedResource = {0};
     g_pd3dImmediateContext->CopyResource( g_pReadBackBuffer, g_pBuffer1 );
     if( SUCCEEDED( g_pd3dImmediateContext->Map( g_pReadBackBuffer, 0, D3D11_MAP_READ, 0, &MappedResource ) ) )
     {
@@ -428,7 +429,7 @@ int __cdecl wmain()
 
     // Create the device
     HRESULT hr = InitDevice();
-    if ( FAILED (hr) ) 
+    if ( FAILED (hr) )
     {
         printf( "Failed to create the device.  Exiting.\n" );
         return 1;
@@ -488,7 +489,7 @@ int __cdecl wmain()
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
 HRESULT FindDXSDKShaderFileCch( WCHAR* strDestPath,
-                                int cchDest, 
+                                int cchDest,
                                 LPCWSTR strFilename )
 {
     if( !strFilename || strFilename[0] == 0 || !strDestPath || cchDest < 10 )
@@ -530,7 +531,7 @@ HRESULT FindDXSDKShaderFileCch( WCHAR* strDestPath,
 
     swprintf_s( strDestPath, cchDest, L"%s\\..\\..\\%s\\%s", strExePath, strExeName, strFilename );
     if( GetFileAttributes( strDestPath ) != 0xFFFFFFFF )
-        return S_OK;    
+        return S_OK;
 
     // On failure, return the file as the path but also return an error code
     wcscpy_s( strDestPath, cchDest, strFilename );

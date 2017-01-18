@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeferredContexts11\src\testing/AutomatedTestingHarness.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -47,10 +47,19 @@ public:
     bool FrameUpdate(float elapsedTime); // returns true if new event triggered
     void FrameRender();
     void WriteOutData();
-    bool GetSimulationComplete() {return m_complete;};
+    bool GetSimulationComplete()
+    {
+        return m_complete;
+    };
 
-    int GetCurrentEventIndex() { return m_currentEvent;}
-    int GetNumEvents() {return (int)m_events.size();}
+    int GetCurrentEventIndex()
+    {
+        return m_currentEvent;
+    }
+    int GetNumEvents()
+    {
+        return (int)m_events.size();
+    }
 
     // UI Variables
     int iStartingInstances;
@@ -91,7 +100,10 @@ public:
         return m_events[m_currentEvent];
     }
 
-    bool IsComplete() {return m_complete;}
+    bool IsComplete()
+    {
+        return m_complete;
+    }
 
     std::vector<SimulationTestResult> m_results;
     std::vector<SimulationTestEvent> m_events;

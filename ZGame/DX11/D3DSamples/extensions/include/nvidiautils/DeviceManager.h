@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        include\nvidiautils/DeviceManager.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -56,7 +56,7 @@ struct DeviceCreationParameters
     D3D_DRIVER_TYPE driverType;
     D3D_FEATURE_LEVEL featureLevel;
 
-    DeviceCreationParameters() 
+    DeviceCreationParameters()
         : startMaximized(false)
         , startFullscreen(false)
         , backBufferWidth(1280)
@@ -83,16 +83,31 @@ private:
 public:
     IVisualController() : m_Enabled(true) { }
 
-    virtual LRESULT MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) { return 1; }
+    virtual LRESULT MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+    {
+        return 1;
+    }
     virtual void Render(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, ID3D11RenderTargetView* pRTV, ID3D11DepthStencilView* pDSV) { }
     virtual void Animate(double fElapsedTimeSeconds) { }
-    virtual HRESULT DeviceCreated(ID3D11Device* pDevice) { return S_OK; }
+    virtual HRESULT DeviceCreated(ID3D11Device* pDevice)
+    {
+        return S_OK;
+    }
     virtual void DeviceDestroyed() { }
     virtual void BackBufferResized(ID3D11Device* pDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc) { }
 
-    virtual void EnableController() { m_Enabled = true; }
-    virtual void DisableController() { m_Enabled = false; }
-    virtual bool IsEnabled() { return m_Enabled; }
+    virtual void EnableController()
+    {
+        m_Enabled = true;
+    }
+    virtual void DisableController()
+    {
+        m_Enabled = false;
+    }
+    virtual bool IsEnabled()
+    {
+        return m_Enabled;
+    }
 };
 #pragma warning(pop)
 
@@ -144,8 +159,10 @@ public:
         , m_AverageTimeUpdateInterval(0.5)
     { }
 
-    virtual ~DeviceManager() 
-    { Shutdown(); }
+    virtual ~DeviceManager()
+    {
+        Shutdown();
+    }
 
     virtual HRESULT CreateWindowDeviceAndSwapChain(const DeviceCreationParameters& params, LPWSTR windowTitle);
     virtual HRESULT ChangeBackBufferFormat(DXGI_FORMAT format, UINT sampleCount);
@@ -167,16 +184,40 @@ public:
     void            AddControllerToBack(IVisualController* pController);
     void            RemoveController(IVisualController* pController);
 
-    void            SetFixedFrameInterval(double seconds) { m_FixedFrameInterval = seconds; }
-    void            DisableFixedFrameInterval() { m_FixedFrameInterval = -1; }
+    void            SetFixedFrameInterval(double seconds)
+    {
+        m_FixedFrameInterval = seconds;
+    }
+    void            DisableFixedFrameInterval()
+    {
+        m_FixedFrameInterval = -1;
+    }
 
-    HWND            GetHWND() { return m_hWnd; }
-    ID3D11Device*   GetDevice() { return m_Device; }
+    HWND            GetHWND()
+    {
+        return m_hWnd;
+    }
+    ID3D11Device*   GetDevice()
+    {
+        return m_Device;
+    }
     WindowState     GetWindowState();
-    bool            GetVsyncEnabled() { return m_SyncInterval > 0; }
-    void            SetVsyncEnabled(bool enabled) { m_SyncInterval = enabled ? 1 : 0; }
+    bool            GetVsyncEnabled()
+    {
+        return m_SyncInterval > 0;
+    }
+    void            SetVsyncEnabled(bool enabled)
+    {
+        m_SyncInterval = enabled ? 1 : 0;
+    }
     HRESULT         GetDisplayResolution(int& width, int& height);
     IDXGIAdapter*   GetDXGIAdapter();
-    double          GetAverageFrameTime() { return m_AverageFrameTime; }
-    void            SetAverageTimeUpdateInterval(double value) { m_AverageTimeUpdateInterval = value; }
+    double          GetAverageFrameTime()
+    {
+        return m_AverageFrameTime;
+    }
+    void            SetAverageTimeUpdateInterval(double value)
+    {
+        m_AverageTimeUpdateInterval = value;
+    }
 };

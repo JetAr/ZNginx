@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        src\nvidiautils/DeviceManager.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -65,38 +65,39 @@ DeviceManager::CreateWindowDeviceAndSwapChain(const DeviceCreationParameters& pa
 
     HINSTANCE hInstance = GetModuleHandle(NULL);
     WNDCLASSEX windowClass = { sizeof(WNDCLASSEX), CS_HREDRAW | CS_VREDRAW, WindowProc,
-                        0L, 0L, hInstance, NULL, NULL, NULL, NULL, WINDOW_CLASS_NAME, NULL };
+                               0L, 0L, hInstance, NULL, NULL, NULL, NULL, WINDOW_CLASS_NAME, NULL
+                             };
 
     RegisterClassEx(&windowClass);
 
-    UINT windowStyle = params.startFullscreen 
-        ? WINDOW_STYLE_FULLSCREEN
-        : params.startMaximized 
-            ? (WINDOW_STYLE_NORMAL | WS_MAXIMIZE) 
-            : WINDOW_STYLE_NORMAL;
-        
+    UINT windowStyle = params.startFullscreen
+                       ? WINDOW_STYLE_FULLSCREEN
+                       : params.startMaximized
+                       ? (WINDOW_STYLE_NORMAL | WS_MAXIMIZE)
+                       : WINDOW_STYLE_NORMAL;
+
     RECT rect = { 0, 0, params.backBufferWidth, params.backBufferHeight };
     AdjustWindowRect(&rect, windowStyle, FALSE);
 
     m_hWnd = CreateWindowEx(
-        0,
-        WINDOW_CLASS_NAME, 
-        title, 
-        windowStyle, 
-        CW_USEDEFAULT, 
-        CW_USEDEFAULT, 
-        rect.right - rect.left, 
-        rect.bottom - rect.top, 
-        GetDesktopWindow(),
-        NULL,
-        hInstance,
-        NULL
-    );
+                 0,
+                 WINDOW_CLASS_NAME,
+                 title,
+                 windowStyle,
+                 CW_USEDEFAULT,
+                 CW_USEDEFAULT,
+                 rect.right - rect.left,
+                 rect.bottom - rect.top,
+                 GetDesktopWindow(),
+                 NULL,
+                 hInstance,
+                 NULL
+             );
 
     if(!m_hWnd)
     {
 #ifdef DEBUG
-        DWORD errorCode = GetLastError();    
+        DWORD errorCode = GetLastError();
         printf("CreateWindowEx error code = 0x%x\n", errorCode);
 #endif
 
@@ -128,20 +129,20 @@ DeviceManager::CreateWindowDeviceAndSwapChain(const DeviceCreationParameters& pa
     m_SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
     hr = D3D11CreateDeviceAndSwapChain(
-        NULL,                   // pAdapter
-        params.driverType,      // DriverType
-        NULL,                   // Software
-        params.createDeviceFlags, // Flags
-        &params.featureLevel,   // pFeatureLevels
-        1,                      // FeatureLevels
-        D3D11_SDK_VERSION,      // SDKVersion
-        &m_SwapChainDesc,       // pSwapChainDesc
-        &m_SwapChain,           // ppSwapChain
-        &m_Device,              // ppDevice
-        NULL,                   // pFeatureLevel
-        &m_ImmediateContext     // ppImmediateContext
-    );
-    
+             NULL,                   // pAdapter
+             params.driverType,      // DriverType
+             NULL,                   // Software
+             params.createDeviceFlags, // Flags
+             &params.featureLevel,   // pFeatureLevels
+             1,                      // FeatureLevels
+             D3D11_SDK_VERSION,      // SDKVersion
+             &m_SwapChainDesc,       // pSwapChainDesc
+             &m_SwapChain,           // ppSwapChain
+             &m_Device,              // ppDevice
+             NULL,                   // pFeatureLevel
+             &m_ImmediateContext     // ppImmediateContext
+         );
+
     if(FAILED(hr))
         return hr;
 
@@ -156,7 +157,7 @@ DeviceManager::CreateWindowDeviceAndSwapChain(const DeviceCreationParameters& pa
     m_DepthStencilDesc.SampleDesc.Count = params.swapChainSampleCount;
     m_DepthStencilDesc.SampleDesc.Quality = 0;
     m_DepthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
-    
+
     hr = CreateRenderTargetAndDepthStencil();
 
     if(FAILED(hr))
@@ -169,8 +170,8 @@ DeviceManager::CreateWindowDeviceAndSwapChain(const DeviceCreationParameters& pa
 }
 
 void
-DeviceManager::Shutdown() 
-{   
+DeviceManager::Shutdown()
+{
     if(m_SwapChain && GetWindowState() == kWindowFullscreen)
         m_SwapChain->SetFullscreenState(false, NULL);
 
@@ -196,7 +197,7 @@ DeviceManager::CreateRenderTargetAndDepthStencil()
 {
     HRESULT hr;
 
-    ID3D11Texture2D *backBuffer = NULL; 
+    ID3D11Texture2D *backBuffer = NULL;
     hr = m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
     if (FAILED(hr))
         return hr;
@@ -221,14 +222,14 @@ DeviceManager::CreateRenderTargetAndDepthStencil()
 }
 
 void
-DeviceManager::MessageLoop() 
+DeviceManager::MessageLoop()
 {
     MSG msg = {0};
 
     LARGE_INTEGER perfFreq, previousTime;
     QueryPerformanceFrequency(&perfFreq);
     QueryPerformanceCounter(&previousTime);
-    
+
     while (WM_QUIT != msg.message)
     {
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -240,15 +241,15 @@ DeviceManager::MessageLoop()
         {
             LARGE_INTEGER newTime;
             QueryPerformanceCounter(&newTime);
-            
-            double elapsedSeconds = (m_FixedFrameInterval >= 0) 
-                ? m_FixedFrameInterval  
-                : (double)(newTime.QuadPart - previousTime.QuadPart) / (double)perfFreq.QuadPart;
+
+            double elapsedSeconds = (m_FixedFrameInterval >= 0)
+                                    ? m_FixedFrameInterval
+                                    : (double)(newTime.QuadPart - previousTime.QuadPart) / (double)perfFreq.QuadPart;
 
             if(m_SwapChain && GetWindowState() != kWindowMinimized)
             {
                 Animate(elapsedSeconds);
-                Render(); 
+                Render();
                 m_SwapChain->Present(m_SyncInterval, 0);
                 Sleep(0);
             }
@@ -276,59 +277,59 @@ DeviceManager::MessageLoop()
     }
 }
 
-LRESULT 
+LRESULT
 DeviceManager::MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch(uMsg)
     {
-        case WM_DESTROY:
-        case WM_CLOSE:
+    case WM_DESTROY:
+    case WM_CLOSE:
+        PostQuitMessage(0);
+        return 0;
+
+    case WM_SYSKEYDOWN:
+        if(wParam == VK_F4)
+        {
             PostQuitMessage(0);
             return 0;
+        }
+        break;
 
-        case WM_SYSKEYDOWN:
-            if(wParam == VK_F4)
-            {
-                PostQuitMessage(0);
-                return 0;
-            }
-            break;
-
-        case WM_SIZE:
-            // Ignore the WM_SIZE event if there is no device,
-            // or if the window has been minimized (size == 0),
-            // or if it has been restored to the previous size
-            if (m_Device 
-                && (lParam != 0) 
+    case WM_SIZE:
+        // Ignore the WM_SIZE event if there is no device,
+        // or if the window has been minimized (size == 0),
+        // or if it has been restored to the previous size
+        if (m_Device
+                && (lParam != 0)
                 && (LOWORD(lParam) != m_SwapChainDesc.BufferDesc.Width || HIWORD(lParam) != m_SwapChainDesc.BufferDesc.Height))
+        {
+            ID3D11RenderTargetView *nullRTV = NULL;
+            m_ImmediateContext->OMSetRenderTargets(1, &nullRTV, NULL);
+            SAFE_RELEASE(m_BackBufferRTV);
+            SAFE_RELEASE(m_DepthStencilDSV);
+            SAFE_RELEASE(m_DepthStencilBuffer);
+
+            if (m_SwapChain)
             {
-                ID3D11RenderTargetView *nullRTV = NULL;
-                m_ImmediateContext->OMSetRenderTargets(1, &nullRTV, NULL);
-                SAFE_RELEASE(m_BackBufferRTV);
-                SAFE_RELEASE(m_DepthStencilDSV);
-                SAFE_RELEASE(m_DepthStencilBuffer);
+                // Resize the swap chain
+                m_SwapChainDesc.BufferDesc.Width = LOWORD(lParam);
+                m_SwapChainDesc.BufferDesc.Height = HIWORD(lParam);
+                m_SwapChain->ResizeBuffers(m_SwapChainDesc.BufferCount, m_SwapChainDesc.BufferDesc.Width,
+                                           m_SwapChainDesc.BufferDesc.Height, m_SwapChainDesc.BufferDesc.Format,
+                                           m_SwapChainDesc.Flags);
 
-                if (m_SwapChain)
-                {
-                    // Resize the swap chain
-                    m_SwapChainDesc.BufferDesc.Width = LOWORD(lParam);
-                    m_SwapChainDesc.BufferDesc.Height = HIWORD(lParam);
-                    m_SwapChain->ResizeBuffers(m_SwapChainDesc.BufferCount, m_SwapChainDesc.BufferDesc.Width, 
-                                               m_SwapChainDesc.BufferDesc.Height, m_SwapChainDesc.BufferDesc.Format, 
-                                               m_SwapChainDesc.Flags);
-                    
-                    m_DepthStencilDesc.Width = LOWORD(lParam);
-                    m_DepthStencilDesc.Height = HIWORD(lParam);
+                m_DepthStencilDesc.Width = LOWORD(lParam);
+                m_DepthStencilDesc.Height = HIWORD(lParam);
 
-                    CreateRenderTargetAndDepthStencil();
+                CreateRenderTargetAndDepthStencil();
 
-                    BackBufferResized();
-                }
+                BackBufferResized();
             }
+        }
     }
 
-    if( uMsg >= WM_MOUSEFIRST && uMsg <= WM_MOUSELAST || 
-        uMsg >= WM_KEYFIRST && uMsg <= WM_KEYLAST )
+    if( uMsg >= WM_MOUSEFIRST && uMsg <= WM_MOUSELAST ||
+            uMsg >= WM_KEYFIRST && uMsg <= WM_KEYLAST )
     {
         // processing messages front-to-back
         for(auto it = m_vControllers.begin(); it != m_vControllers.end(); it++)
@@ -419,7 +420,7 @@ DeviceManager::ChangeBackBufferFormat(DXGI_FORMAT format, UINT sampleCount)
     HRESULT hr = E_FAIL;
 
     if((format == DXGI_FORMAT_UNKNOWN || format == m_SwapChainDesc.BufferDesc.Format) &&
-       (sampleCount == 0 || sampleCount == m_SwapChainDesc.SampleDesc.Count))
+            (sampleCount == 0 || sampleCount == m_SwapChainDesc.SampleDesc.Count))
         return S_FALSE;
 
     if(m_Device)
@@ -445,7 +446,7 @@ DeviceManager::ChangeBackBufferFormat(DXGI_FORMAT format, UINT sampleCount)
 
         pDXGIFactory->Release();
         pDXGIAdapter->Release();
-        
+
         if (FAILED(hr))
         {
             if(fullscreen)
@@ -464,7 +465,7 @@ DeviceManager::ChangeBackBufferFormat(DXGI_FORMAT format, UINT sampleCount)
 
         m_DepthStencilDesc.SampleDesc.Count = sampleCount;
 
-        if(fullscreen)                
+        if(fullscreen)
             m_SwapChain->SetFullscreenState(true, NULL);
 
         CreateRenderTargetAndDepthStencil();
@@ -475,26 +476,26 @@ DeviceManager::ChangeBackBufferFormat(DXGI_FORMAT format, UINT sampleCount)
 }
 
 void
-DeviceManager::AddControllerToFront(IVisualController* pController) 
-{ 
+DeviceManager::AddControllerToFront(IVisualController* pController)
+{
     m_vControllers.remove(pController);
     m_vControllers.push_front(pController);
 }
 
 void
-DeviceManager::AddControllerToBack(IVisualController* pController) 
+DeviceManager::AddControllerToBack(IVisualController* pController)
 {
     m_vControllers.remove(pController);
     m_vControllers.push_back(pController);
 }
 
 void
-DeviceManager::RemoveController(IVisualController* pController) 
-{ 
+DeviceManager::RemoveController(IVisualController* pController)
+{
     m_vControllers.remove(pController);
 }
 
-HRESULT 
+HRESULT
 DeviceManager::ResizeWindow(int width, int height)
 {
     if(m_SwapChain == NULL)
@@ -513,7 +514,7 @@ DeviceManager::ResizeWindow(int width, int height)
     return S_OK;
 }
 
-HRESULT            
+HRESULT
 DeviceManager::EnterFullscreenMode(int width, int height)
 {
     if(m_SwapChain == NULL)
@@ -521,19 +522,19 @@ DeviceManager::EnterFullscreenMode(int width, int height)
 
     if(GetWindowState() == kWindowFullscreen)
         return S_FALSE;
-    
+
     if(width <= 0 || height <= 0)
     {
         width = m_SwapChainDesc.BufferDesc.Width;
         height = m_SwapChainDesc.BufferDesc.Height;
     }
-     
+
     SetWindowLong(m_hWnd, GWL_STYLE, WINDOW_STYLE_FULLSCREEN);
     MoveWindow(m_hWnd, 0, 0, width, height, true);
 
     HRESULT hr = m_SwapChain->SetFullscreenState(true, NULL);
 
-    if(FAILED(hr)) 
+    if(FAILED(hr))
     {
         SetWindowLong(m_hWnd, GWL_STYLE, WINDOW_STYLE_NORMAL);
         return hr;
@@ -545,7 +546,7 @@ DeviceManager::EnterFullscreenMode(int width, int height)
     return S_OK;
 }
 
-HRESULT            
+HRESULT
 DeviceManager::LeaveFullscreenMode(int windowWidth, int windowHeight)
 {
     if(m_SwapChain == NULL)
@@ -553,7 +554,7 @@ DeviceManager::LeaveFullscreenMode(int windowWidth, int windowHeight)
 
     if(GetWindowState() != kWindowFullscreen)
         return S_FALSE;
-     
+
     HRESULT hr = m_SwapChain->SetFullscreenState(false, NULL);
     if(FAILED(hr)) return hr;
 
@@ -564,7 +565,7 @@ DeviceManager::LeaveFullscreenMode(int windowWidth, int windowHeight)
         windowWidth = m_SwapChainDesc.BufferDesc.Width;
         windowHeight = m_SwapChainDesc.BufferDesc.Height;
     }
-    
+
     RECT rect = { 0, 0, windowWidth, windowHeight };
     AdjustWindowRect(&rect, WINDOW_STYLE_NORMAL, FALSE);
     MoveWindow(m_hWnd, 0, 0, rect.right - rect.left, rect.bottom - rect.top, true);
@@ -575,7 +576,7 @@ DeviceManager::LeaveFullscreenMode(int windowWidth, int windowHeight)
     return S_OK;
 }
 
-HRESULT            
+HRESULT
 DeviceManager::ToggleFullscreen()
 {
     if(GetWindowState() == kWindowFullscreen)
@@ -585,8 +586,8 @@ DeviceManager::ToggleFullscreen()
 }
 
 DeviceManager::WindowState
-DeviceManager::GetWindowState() 
-{ 
+DeviceManager::GetWindowState()
+{
     if(m_SwapChain && !m_SwapChainDesc.Windowed)
         return kWindowFullscreen;
 
@@ -622,9 +623,9 @@ DeviceManager::GetDisplayResolution(int& width, int& height)
     return E_FAIL;
 }
 
-IDXGIAdapter*   
+IDXGIAdapter*
 DeviceManager::GetDXGIAdapter()
-{   
+{
     if(!m_Device)
         return NULL;
 

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: NormalMapEffect.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -23,7 +23,7 @@ struct NormalMapEffectConstants
     XMVECTOR diffuseColor;
     XMVECTOR emissiveColor;
     XMVECTOR specularColorAndPower;
-    
+
     XMVECTOR lightDirection[IEffectLights::MaxDirectionalLights];
     XMVECTOR lightDiffuseColor[IEffectLights::MaxDirectionalLights];
     XMVECTOR lightSpecularColor[IEffectLights::MaxDirectionalLights];
@@ -63,7 +63,7 @@ public:
 
     bool vertexColorEnabled;
     bool biasedVertexNormals;
-  
+
     EffectLights lights;
 
     int GetCurrentShaderPermutation() const;
@@ -76,33 +76,33 @@ public:
 namespace
 {
 #if defined(_XBOX_ONE) && defined(_TITLE)
-    #include "Shaders/Compiled/XboxOneNormalMapEffect_VSNormalPixelLightingTx.inc"
-    #include "Shaders/Compiled/XboxOneNormalMapEffect_VSNormalPixelLightingTxVc.inc"
+#include "Shaders/Compiled/XboxOneNormalMapEffect_VSNormalPixelLightingTx.inc"
+#include "Shaders/Compiled/XboxOneNormalMapEffect_VSNormalPixelLightingTxVc.inc"
 
-    #include "Shaders/Compiled/XboxOneNormalMapEffect_VSNormalPixelLightingTxBn.inc"
-    #include "Shaders/Compiled/XboxOneNormalMapEffect_VSNormalPixelLightingTxVcBn.inc"
+#include "Shaders/Compiled/XboxOneNormalMapEffect_VSNormalPixelLightingTxBn.inc"
+#include "Shaders/Compiled/XboxOneNormalMapEffect_VSNormalPixelLightingTxVcBn.inc"
 
-    #include "Shaders/Compiled/XboxOneNormalMapEffect_PSNormalPixelLightingTx.inc"
-    #include "Shaders/Compiled/XboxOneNormalMapEffect_PSNormalPixelLightingTxNoFog.inc"
-    #include "Shaders/Compiled/XboxOneNormalMapEffect_PSNormalPixelLightingTxNoSpec.inc"
-    #include "Shaders/Compiled/XboxOneNormalMapEffect_PSNormalPixelLightingTxNoFogSpec.inc"
-#else    
-    #include "Shaders/Compiled/NormalMapEffect_VSNormalPixelLightingTx.inc"
-    #include "Shaders/Compiled/NormalMapEffect_VSNormalPixelLightingTxVc.inc"
+#include "Shaders/Compiled/XboxOneNormalMapEffect_PSNormalPixelLightingTx.inc"
+#include "Shaders/Compiled/XboxOneNormalMapEffect_PSNormalPixelLightingTxNoFog.inc"
+#include "Shaders/Compiled/XboxOneNormalMapEffect_PSNormalPixelLightingTxNoSpec.inc"
+#include "Shaders/Compiled/XboxOneNormalMapEffect_PSNormalPixelLightingTxNoFogSpec.inc"
+#else
+#include "Shaders/Compiled/NormalMapEffect_VSNormalPixelLightingTx.inc"
+#include "Shaders/Compiled/NormalMapEffect_VSNormalPixelLightingTxVc.inc"
 
-    #include "Shaders/Compiled/NormalMapEffect_VSNormalPixelLightingTxBn.inc"
-    #include "Shaders/Compiled/NormalMapEffect_VSNormalPixelLightingTxVcBn.inc"
+#include "Shaders/Compiled/NormalMapEffect_VSNormalPixelLightingTxBn.inc"
+#include "Shaders/Compiled/NormalMapEffect_VSNormalPixelLightingTxVcBn.inc"
 
-    #include "Shaders/Compiled/NormalMapEffect_PSNormalPixelLightingTx.inc"
-    #include "Shaders/Compiled/NormalMapEffect_PSNormalPixelLightingTxNoFog.inc"
-    #include "Shaders/Compiled/NormalMapEffect_PSNormalPixelLightingTxNoSpec.inc"
-    #include "Shaders/Compiled/NormalMapEffect_PSNormalPixelLightingTxNoFogSpec.inc"
+#include "Shaders/Compiled/NormalMapEffect_PSNormalPixelLightingTx.inc"
+#include "Shaders/Compiled/NormalMapEffect_PSNormalPixelLightingTxNoFog.inc"
+#include "Shaders/Compiled/NormalMapEffect_PSNormalPixelLightingTxNoSpec.inc"
+#include "Shaders/Compiled/NormalMapEffect_PSNormalPixelLightingTxNoFogSpec.inc"
 #endif
 }
 
 
 const ShaderBytecode EffectBase<NormalMapEffectTraits>::VertexShaderBytecode[] =
-{    
+{
     { NormalMapEffect_VSNormalPixelLightingTx,     sizeof(NormalMapEffect_VSNormalPixelLightingTx)     },
     { NormalMapEffect_VSNormalPixelLightingTxVc,   sizeof(NormalMapEffect_VSNormalPixelLightingTxVc)   },
 
@@ -112,7 +112,7 @@ const ShaderBytecode EffectBase<NormalMapEffectTraits>::VertexShaderBytecode[] =
 
 
 const int EffectBase<NormalMapEffectTraits>::VertexShaderIndices[] =
-{    
+{
     0,      // pixel lighting + texture
     0,      // pixel lighting + texture, no fog
     1,      // pixel lighting + texture + vertex color
@@ -145,7 +145,7 @@ const ShaderBytecode EffectBase<NormalMapEffectTraits>::PixelShaderBytecode[] =
 
 
 const int EffectBase<NormalMapEffectTraits>::PixelShaderIndices[] =
-{    
+{
     0,      // pixel lighting + texture
     1,      // pixel lighting + texture, no fog
     0,      // pixel lighting + texture + vertex color
@@ -174,9 +174,9 @@ SharedResourcePool<ID3D11Device*, EffectBase<NormalMapEffectTraits>::DeviceResou
 
 // Constructor.
 NormalMapEffect::Impl::Impl(_In_ ID3D11Device* device)
-  : EffectBase(device),
-    vertexColorEnabled(false),
-    biasedVertexNormals(false)
+    : EffectBase(device),
+      vertexColorEnabled(false),
+      biasedVertexNormals(false)
 {
     static_assert( _countof(EffectBase<NormalMapEffectTraits>::VertexShaderIndices) == NormalMapEffectTraits::ShaderPermutationCount, "array/max mismatch" );
     static_assert( _countof(EffectBase<NormalMapEffectTraits>::VertexShaderBytecode) == NormalMapEffectTraits::VertexShaderCount, "array/max mismatch" );
@@ -226,13 +226,13 @@ void NormalMapEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
     matrices.SetConstants(dirtyFlags, constants.worldViewProj);
 
     fog.SetConstants(dirtyFlags, matrices.worldView, constants.fogVector);
-            
+
     lights.SetConstants(dirtyFlags, matrices, constants.world, constants.worldInverseTranspose, constants.eyePosition, constants.diffuseColor, constants.emissiveColor, true);
 
     // Set the textures
     ID3D11ShaderResourceView* textures[] = { texture.Get(), specularTexture.Get(), normalTexture.Get()};
     deviceContext->PSSetShaderResources(0, _countof(textures), textures);
-    
+
     // Set shaders and constant buffers.
     ApplyShaders(deviceContext, GetCurrentShaderPermutation());
 }
@@ -240,14 +240,14 @@ void NormalMapEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
 
 // Public constructor.
 NormalMapEffect::NormalMapEffect(_In_ ID3D11Device* device)
-  : pImpl(new Impl(device))
+    : pImpl(new Impl(device))
 {
 }
 
 
 // Move constructor.
 NormalMapEffect::NormalMapEffect(NormalMapEffect&& moveFrom)
-  : pImpl(std::move(moveFrom.pImpl))
+    : pImpl(std::move(moveFrom.pImpl))
 {
 }
 
@@ -354,7 +354,7 @@ void NormalMapEffect::DisableSpecular()
     // Set specular color to black, power to 1
     // Note: Don't use a power of 0 or the shader will generate strange highlights on non-specular materials
 
-    pImpl->constants.specularColorAndPower = g_XMIdentityR3; 
+    pImpl->constants.specularColorAndPower = g_XMIdentityR3;
 
     pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }

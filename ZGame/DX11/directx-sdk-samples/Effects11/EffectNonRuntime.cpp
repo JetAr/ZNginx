@@ -1,9 +1,9 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: EffectNonRuntime.cpp
 //
 // D3DX11 Effect low-frequency utility functions
 // These functions are not intended to be called regularly.  They
-// are typically called when creating, cloning, or optimizing an 
+// are typically called when creating, cloning, or optimizing an
 // Effect, or reflecting a variable.
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -25,10 +25,10 @@ namespace D3DX11Effects
 extern SUnorderedAccessView g_NullUnorderedAccessView;
 
 SBaseBlock::SBaseBlock()
-: BlockType(EBT_Invalid)
-, IsUserManaged(false)
-, AssignmentCount(0)
-, pAssignments(nullptr)
+    : BlockType(EBT_Invalid)
+    , IsUserManaged(false)
+    , AssignmentCount(0)
+    , pAssignments(nullptr)
 {
 
 }
@@ -44,24 +44,24 @@ SPassBlock::SPassBlock()
 }
 
 STechnique::STechnique()
-: pName(nullptr)
-, PassCount(0)
-, pPasses(nullptr)
-, AnnotationCount(0)
-, pAnnotations(nullptr)
-, InitiallyValid( true )
-, HasDependencies( false )
+    : pName(nullptr)
+    , PassCount(0)
+    , pPasses(nullptr)
+    , AnnotationCount(0)
+    , pAnnotations(nullptr)
+    , InitiallyValid( true )
+    , HasDependencies( false )
 {
 }
 
 SGroup::SGroup()
-: pName(nullptr)
-, TechniqueCount(0)
-, pTechniques(nullptr)
-, AnnotationCount(0)
-, pAnnotations(nullptr)
-, InitiallyValid( true )
-, HasDependencies( false )
+    : pName(nullptr)
+    , TechniqueCount(0)
+    , pTechniques(nullptr)
+    , AnnotationCount(0)
+    , pAnnotations(nullptr)
+    , InitiallyValid( true )
+    , HasDependencies( false )
 {
 }
 
@@ -152,7 +152,7 @@ SShaderBlock::SShaderBlock(SD3DShaderVTable *pVirtualTable)
     pVT = pVirtualTable;
 
     pReflectionData = nullptr;
-    
+
     pD3DObject = nullptr;
 
     CBDepCount = 0;
@@ -236,7 +236,7 @@ EObjectType SShaderBlock::GetShaderType()
         return EOT_DomainShader5;
     else if (&g_vtCS == pVT)
         return EOT_ComputeShader5;
-    
+
     return EOT_Invalid;
 }
 
@@ -364,7 +364,7 @@ lExit:
 HRESULT SShaderBlock::GetShaderDesc(_Out_ D3DX11_EFFECT_SHADER_DESC *pDesc, _In_ bool IsInline)
 {
     HRESULT hr = S_OK;
-    
+
     ZeroMemory(pDesc, sizeof(*pDesc));
 
     pDesc->pInputSignature = pInputSignatureBlob ? (const uint8_t*)pInputSignatureBlob->GetBufferPointer() : nullptr;
@@ -401,7 +401,7 @@ lExit:
 HRESULT SShaderBlock::GetVertexShader(_Outptr_ ID3D11VertexShader **ppVS)
 {
     if (EOT_VertexShader == GetShaderType() ||
-        EOT_VertexShader5 == GetShaderType())
+            EOT_VertexShader5 == GetShaderType())
     {
         assert( pD3DObject != 0 );
         _Analysis_assume_( pD3DObject != 0 );
@@ -420,8 +420,8 @@ HRESULT SShaderBlock::GetVertexShader(_Outptr_ ID3D11VertexShader **ppVS)
 HRESULT SShaderBlock::GetGeometryShader(_Outptr_ ID3D11GeometryShader **ppGS)
 {
     if (EOT_GeometryShader == GetShaderType() ||
-        EOT_GeometryShaderSO == GetShaderType() ||
-        EOT_GeometryShader5 == GetShaderType())
+            EOT_GeometryShaderSO == GetShaderType() ||
+            EOT_GeometryShader5 == GetShaderType())
     {
         assert( pD3DObject != 0 );
         _Analysis_assume_( pD3DObject != 0 );
@@ -440,7 +440,7 @@ HRESULT SShaderBlock::GetGeometryShader(_Outptr_ ID3D11GeometryShader **ppGS)
 HRESULT SShaderBlock::GetPixelShader(_Outptr_ ID3D11PixelShader **ppPS)
 {
     if (EOT_PixelShader == GetShaderType() ||
-        EOT_PixelShader5 == GetShaderType())
+            EOT_PixelShader5 == GetShaderType())
     {
         assert( pD3DObject != 0 );
         _Analysis_assume_( pD3DObject != 0 );
@@ -540,7 +540,7 @@ HRESULT SShaderBlock::GetSignatureElementDesc(ESigType SigType, uint32_t Element
         D3D11_SHADER_DESC ShaderDesc;
         VH( pReflectionData->pReflection->GetDesc( &ShaderDesc ) );
 
-        D3D11_SIGNATURE_PARAMETER_DESC ParamDesc ={0};
+        D3D11_SIGNATURE_PARAMETER_DESC ParamDesc = {0};
         if( pReflectionData->IsNullGS )
         {
             switch( SigType )
@@ -592,11 +592,11 @@ HRESULT SShaderBlock::GetSignatureElementDesc(ESigType SigType, uint32_t Element
             if( _stricmp(pDesc->SemanticName, "SV_TARGET") == 0 )
             {
                 pDesc->SystemValueType = D3D_NAME_TARGET;
-            } 
+            }
             else if( _stricmp(pDesc->SemanticName, "SV_DEPTH") == 0 )
             {
                 pDesc->SystemValueType = D3D_NAME_DEPTH;
-            } 
+            }
             else if( _stricmp(pDesc->SemanticName, "SV_COVERAGE") == 0 )
             {
                 pDesc->SystemValueType = D3D_NAME_COVERAGE;
@@ -614,7 +614,7 @@ HRESULT SShaderBlock::GetSignatureElementDesc(ESigType SigType, uint32_t Element
         DPF(0, "%s: Cannot get signatures; shader bytecode is not present", pFuncName);
         VH( D3DERR_INVALIDCALL );
     }
-    
+
 lExit:
     return hr;
 }
@@ -693,7 +693,7 @@ void * GetBlockByIndex(EVarType VarType, EObjectType ObjectType, void *pBaseBloc
         case EOT_RWStructuredBufferAlloc:
         case EOT_RWStructuredBufferConsume:
         case EOT_AppendStructuredBuffer:
-        case EOT_ConsumeStructuredBuffer:    
+        case EOT_ConsumeStructuredBuffer:
             return (SUnorderedAccessView *)pBaseBlock + Index;
         default:
             assert(0);
@@ -1183,7 +1183,7 @@ HRESULT CEffect::BindToDevice(ID3D11Device *pDevice, LPCSTR srcName)
 
                 VH( pDevice->CreateBuffer( &bufDesc, nullptr, &pCB->pD3DObject) );
                 SetDebugObjectName(pCB->pD3DObject, srcName );
-                
+
                 D3D11_SHADER_RESOURCE_VIEW_DESC viewDesc;
                 viewDesc.Format = DXGI_FORMAT_R32G32B32A32_UINT;
                 viewDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
@@ -1288,9 +1288,9 @@ HRESULT CEffect::BindToDevice(ID3D11Device *pDevice, LPCSTR srcName)
             // SetPixelShader( nullptr );
             continue;
         }
-        
-        if (pShader->pReflectionData->pStreamOutDecls[0] || pShader->pReflectionData->pStreamOutDecls[1] || 
-            pShader->pReflectionData->pStreamOutDecls[2] || pShader->pReflectionData->pStreamOutDecls[3] )
+
+        if (pShader->pReflectionData->pStreamOutDecls[0] || pShader->pReflectionData->pStreamOutDecls[1] ||
+                pShader->pReflectionData->pStreamOutDecls[2] || pShader->pReflectionData->pStreamOutDecls[3] )
         {
             // This is a geometry shader, process it's data
             CSOParser soParser;
@@ -1298,14 +1298,14 @@ HRESULT CEffect::BindToDevice(ID3D11Device *pDevice, LPCSTR srcName)
             uint32_t strides[4];
             soParser.GetStrides( strides );
             hr = m_pDevice->CreateGeometryShaderWithStreamOutput(pShader->pReflectionData->pBytecode,
-                                                                pShader->pReflectionData->BytecodeLength,
-                                                                soParser.GetDeclArray(),
-                                                                soParser.GetDeclCount(),
-                                                                strides,
-                                                                featureLevelGE11 ? 4 : 1,
-                                                                pShader->pReflectionData->RasterizedStream,
-                                                                neededClassLinkage,
-                                                                reinterpret_cast<ID3D11GeometryShader**>(&pShader->pD3DObject) );
+                    pShader->pReflectionData->BytecodeLength,
+                    soParser.GetDeclArray(),
+                    soParser.GetDeclCount(),
+                    strides,
+                    featureLevelGE11 ? 4 : 1,
+                    pShader->pReflectionData->RasterizedStream,
+                    neededClassLinkage,
+                    reinterpret_cast<ID3D11GeometryShader**>(&pShader->pD3DObject) );
             if (FAILED(hr))
             {
                 DPF(1, "ID3DX11Effect::Load - failed to create GeometryShader with StreamOutput decl: \"%s\"", soParser.GetErrorString() );
@@ -1322,7 +1322,7 @@ HRESULT CEffect::BindToDevice(ID3D11Device *pDevice, LPCSTR srcName)
             // This is a regular shader
             if( pShader->pReflectionData->RasterizedStream == D3D11_SO_NO_RASTERIZED_STREAM )
                 pShader->IsValid = false;
-            else 
+            else
             {
                 if( FAILED( (m_pDevice->*(pShader->pVT->pCreateShader))( (uint32_t *) pShader->pReflectionData->pBytecode, pShader->pReflectionData->BytecodeLength, neededClassLinkage, &pShader->pD3DObject) ) )
                 {
@@ -1429,7 +1429,7 @@ HRESULT CEffect::BindToDevice(ID3D11Device *pDevice, LPCSTR srcName)
         {
             STechnique* pTechnique = &pGroup->pTechniques[iTech];
             pTechnique->InitiallyValid = true;
-           
+
             for( size_t iPass = 0; iPass < pTechnique->PassCount; iPass++ )
             {
                 SPassBlock* pPass = &pTechnique->pPasses[iPass];
@@ -1579,7 +1579,7 @@ SGlobalVariable * CEffect::FindLocalVariableByName(_In_z_ LPCSTR pName)
 bool SType::IsEqual(SType *pOtherType) const
 {
     if (VarType != pOtherType->VarType || Elements != pOtherType->Elements
-        || strcmp(pTypeName, pOtherType->pTypeName) != 0)
+            || strcmp(pTypeName, pOtherType->pTypeName) != 0)
     {
         return false;
     }
@@ -1587,65 +1587,65 @@ bool SType::IsEqual(SType *pOtherType) const
     switch (VarType)
     {
     case EVT_Struct:
+    {
+        if (StructType.Members != pOtherType->StructType.Members)
         {
-            if (StructType.Members != pOtherType->StructType.Members)
-            {
-                return false;
-            }
-            assert(StructType.pMembers != nullptr && pOtherType->StructType.pMembers != nullptr);
+            return false;
+        }
+        assert(StructType.pMembers != nullptr && pOtherType->StructType.pMembers != nullptr);
 
-            uint32_t  i;
-            for (i = 0; i < StructType.Members; ++ i)
-            {
-                // names for types must exist (not true for semantics)
-                assert(StructType.pMembers[i].pName != nullptr && pOtherType->StructType.pMembers[i].pName != nullptr);
+        uint32_t  i;
+        for (i = 0; i < StructType.Members; ++ i)
+        {
+            // names for types must exist (not true for semantics)
+            assert(StructType.pMembers[i].pName != nullptr && pOtherType->StructType.pMembers[i].pName != nullptr);
 
-                if (StructType.pMembers[i].pType != pOtherType->StructType.pMembers[i].pType ||
+            if (StructType.pMembers[i].pType != pOtherType->StructType.pMembers[i].pType ||
                     StructType.pMembers[i].Data.Offset != pOtherType->StructType.pMembers[i].Data.Offset ||
                     StructType.pMembers[i].pName != pOtherType->StructType.pMembers[i].pName ||
                     StructType.pMembers[i].pSemantic != pOtherType->StructType.pMembers[i].pSemantic)
-                {
-                    return false;
-                }
-            }
-        }
-        break;
-
-    case EVT_Object:
-        {
-            if (ObjectType != pOtherType->ObjectType)
             {
                 return false;
             }
         }
-        break;
+    }
+    break;
+
+    case EVT_Object:
+    {
+        if (ObjectType != pOtherType->ObjectType)
+        {
+            return false;
+        }
+    }
+    break;
 
     case EVT_Numeric:
-        {
-            if (NumericType.Rows != pOtherType->NumericType.Rows ||
+    {
+        if (NumericType.Rows != pOtherType->NumericType.Rows ||
                 NumericType.Columns != pOtherType->NumericType.Columns ||
                 NumericType.ScalarType != pOtherType->NumericType.ScalarType ||
                 NumericType.NumericLayout != pOtherType->NumericType.NumericLayout ||
                 NumericType.IsColumnMajor != pOtherType->NumericType.IsColumnMajor ||
                 NumericType.IsPackedArray != pOtherType->NumericType.IsPackedArray)
-            {
-                return false;
-            }
-        }
-        break;
-
-    case EVT_Interface:
         {
-            // VarType and pTypeName handled above
-        }
-        break;
-
-    default:
-        {
-            assert(0);
             return false;
         }
-        break;
+    }
+    break;
+
+    case EVT_Interface:
+    {
+        // VarType and pTypeName handled above
+    }
+    break;
+
+    default:
+    {
+        assert(0);
+        return false;
+    }
+    break;
     }
 
     assert(TotalSize == pOtherType->TotalSize && Stride == pOtherType->Stride && PackedSize == pOtherType->PackedSize);
@@ -1666,7 +1666,7 @@ uint32_t SType::GetTotalUnpackedSize(_In_ bool IsSingleElement) const
     else if (Elements > 0 && IsSingleElement)
     {
         assert( ( TotalSize == 0 && Stride == 0 ) ||
-                    ( (TotalSize > (Stride * (Elements - 1))) && (TotalSize <= (Stride * Elements)) ) );
+                ( (TotalSize > (Stride * (Elements - 1))) && (TotalSize <= (Stride * Elements)) ) );
         return TotalSize - Stride * (Elements - 1);
     }
     else
@@ -1912,7 +1912,7 @@ HRESULT CEffect::CopyTypePool( CEffect* pEffectSource, CPointerMappingTable& map
                 }
             }
         }
-    } 
+    }
 
 lExit:
     return hr;
@@ -1980,7 +1980,7 @@ HRESULT CEffect::CopyOptimizedTypePool( CEffect* pEffectSource, CPointerMappingT
                 VH( RemapType((SType**)&pType->StructType.pMembers[i].pType, &mappingTableTypes) );
             }
         }
-    }  
+    }
 
 lExit:
     return hr;
@@ -2092,7 +2092,7 @@ HRESULT CEffect::CloneEffect(_In_ uint32_t Flags, _Outptr_ ID3DX11Effect** ppClo
     CPointerMappingTable mappingTableStrings;
 
     CEffectLoader loader;
-    CEffect* pNewEffect = nullptr;    
+    CEffect* pNewEffect = nullptr;
     CDataBlockStore* pTempHeap = nullptr;
 
 
@@ -2140,7 +2140,7 @@ HRESULT CEffect::CloneEffect(_In_ uint32_t Flags, _Outptr_ ID3DX11Effect** ppClo
     pNewEffect->m_RenderTargetViewCount = m_RenderTargetViewCount;
     pNewEffect->m_pRenderTargetViews = m_pRenderTargetViews;
     pNewEffect->m_DepthStencilViewCount = m_DepthStencilViewCount;
-    pNewEffect->m_pDepthStencilViews = m_pDepthStencilViews; 
+    pNewEffect->m_pDepthStencilViews = m_pDepthStencilViews;
     pNewEffect->m_LocalTimer = m_LocalTimer;
     pNewEffect->m_FXLIndex = m_FXLIndex;
     pNewEffect->m_pDevice = m_pDevice;
@@ -2290,7 +2290,7 @@ HRESULT CEffect::Optimize()
 {
     HRESULT hr = S_OK;
     CEffectHeap *pOptimizedTypeHeap = nullptr;
-    
+
     if (IsOptimized())
     {
         DPF(0, "ID3DX11Effect::Optimize: Effect has already been Optimize()'ed");
@@ -2298,7 +2298,7 @@ HRESULT CEffect::Optimize()
     }
 
     // Delete annotations, names, semantics, and string data on variables
-    
+
     for (size_t i = 0; i < m_VariableCount; ++ i)
     {
         m_pVariables[i].AnnotationCount = 0;
@@ -2381,7 +2381,7 @@ HRESULT CEffect::Optimize()
 
 
 
-    // get rid of the name/type hash tables and string data, 
+    // get rid of the name/type hash tables and string data,
     // then reallocate the type data and fix up this effect
     CPointerMappingTable mappingTable;
     CTypeHashTable::CIterator typeIter;
@@ -2393,7 +2393,7 @@ HRESULT CEffect::Optimize()
     for (m_pTypePool->GetFirstEntry(&typeIter); !m_pTypePool->PastEnd(&typeIter); m_pTypePool->GetNextEntry(&typeIter))
     {
         SType *pType = typeIter.GetData();
-        
+
         chkSpaceNeeded += AlignToPowerOf2(sizeof(SType), c_DataAlignment);
 
         // if this is a struct, allocate room for its members
@@ -2432,7 +2432,7 @@ HRESULT CEffect::Optimize()
 
         VH( mappingTable.AddValueWithHash(ptrMapping, ptrMapping.Hash()) );
     }
-    
+
     // third pass: fixup structure member & name pointers
     for (mappingTable.GetFirstEntry(&mapIter); !mappingTable.PastEnd(&mapIter); mappingTable.GetNextEntry(&mapIter))
     {
@@ -2451,7 +2451,7 @@ HRESULT CEffect::Optimize()
                 pType->StructType.pMembers[i].pSemantic = nullptr;
             }
         }
-    }        
+    }
 
     // fixup this effect's variable's types
     VH( OptimizeTypes(&mappingTable) );
@@ -2735,7 +2735,7 @@ SMember * CreateNewMember(_In_ SType *pType, _In_ bool IsAnnotation)
                 DPF( 0, "Internal loading error: invalid scalar type." );
                 assert(0);
                 break;
-            }            
+            }
             break;
         default:
             assert(0);
@@ -2767,7 +2767,7 @@ HRESULT PlacementNewVariable(_In_ void *pVar, _In_ SType *pType, _In_ bool IsAnn
             assert(sizeof(SClassInstanceGlobalVariable) == sizeof(SGlobalVariable));
             new(pVar) SClassInstanceGlobalVariable;
         }
-        else 
+        else
         {
             assert(sizeof(SNumericGlobalVariable) == sizeof(SGlobalVariable));
             new(pVar) SNumericGlobalVariable;
@@ -2791,7 +2791,7 @@ HRESULT PlacementNewVariable(_In_ void *pVar, _In_ SType *pType, _In_ bool IsAnn
                 assert(sizeof(SStringGlobalVariable) == sizeof(SGlobalVariable));
                 new(pVar) SStringGlobalVariable;
             }
-            
+
             break;
         case EOT_Texture:
         case EOT_Texture1D:
@@ -2891,7 +2891,7 @@ HRESULT PlacementNewVariable(_In_ void *pVar, _In_ SType *pType, _In_ bool IsAnn
                 assert(sizeof(SMatrixGlobalVariable) == sizeof(SGlobalVariable));
                 assert(sizeof(SMatrix4x4ColumnMajorGlobalVariable) == sizeof(SGlobalVariable));
                 assert(sizeof(SMatrix4x4RowMajorGlobalVariable) == sizeof(SGlobalVariable));
-                
+
                 if (pType->NumericType.Rows == 4 && pType->NumericType.Columns == 4)
                 {
                     if (pType->NumericType.IsColumnMajor)
@@ -3005,7 +3005,7 @@ HRESULT PlacementNewVariable(_In_ void *pVar, _In_ SType *pType, _In_ bool IsAnn
                 DPF( 0, "Internal loading error: invalid scalar type." );
                 return E_FAIL;
                 break;
-            }            
+            }
             break;
         default:
             assert(0);

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: AlphaTestEffect.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -64,25 +64,25 @@ public:
 namespace
 {
 #if defined(_XBOX_ONE) && defined(_TITLE)
-    #include "Shaders/Compiled/XboxOneAlphaTestEffect_VSAlphaTest.inc"
-    #include "Shaders/Compiled/XboxOneAlphaTestEffect_VSAlphaTestNoFog.inc"
-    #include "Shaders/Compiled/XboxOneAlphaTestEffect_VSAlphaTestVc.inc"
-    #include "Shaders/Compiled/XboxOneAlphaTestEffect_VSAlphaTestVcNoFog.inc"
+#include "Shaders/Compiled/XboxOneAlphaTestEffect_VSAlphaTest.inc"
+#include "Shaders/Compiled/XboxOneAlphaTestEffect_VSAlphaTestNoFog.inc"
+#include "Shaders/Compiled/XboxOneAlphaTestEffect_VSAlphaTestVc.inc"
+#include "Shaders/Compiled/XboxOneAlphaTestEffect_VSAlphaTestVcNoFog.inc"
 
-    #include "Shaders/Compiled/XboxOneAlphaTestEffect_PSAlphaTestLtGt.inc"
-    #include "Shaders/Compiled/XboxOneAlphaTestEffect_PSAlphaTestLtGtNoFog.inc"
-    #include "Shaders/Compiled/XboxOneAlphaTestEffect_PSAlphaTestEqNe.inc"
-    #include "Shaders/Compiled/XboxOneAlphaTestEffect_PSAlphaTestEqNeNoFog.inc"
+#include "Shaders/Compiled/XboxOneAlphaTestEffect_PSAlphaTestLtGt.inc"
+#include "Shaders/Compiled/XboxOneAlphaTestEffect_PSAlphaTestLtGtNoFog.inc"
+#include "Shaders/Compiled/XboxOneAlphaTestEffect_PSAlphaTestEqNe.inc"
+#include "Shaders/Compiled/XboxOneAlphaTestEffect_PSAlphaTestEqNeNoFog.inc"
 #else
-    #include "Shaders/Compiled/AlphaTestEffect_VSAlphaTest.inc"
-    #include "Shaders/Compiled/AlphaTestEffect_VSAlphaTestNoFog.inc"
-    #include "Shaders/Compiled/AlphaTestEffect_VSAlphaTestVc.inc"
-    #include "Shaders/Compiled/AlphaTestEffect_VSAlphaTestVcNoFog.inc"
+#include "Shaders/Compiled/AlphaTestEffect_VSAlphaTest.inc"
+#include "Shaders/Compiled/AlphaTestEffect_VSAlphaTestNoFog.inc"
+#include "Shaders/Compiled/AlphaTestEffect_VSAlphaTestVc.inc"
+#include "Shaders/Compiled/AlphaTestEffect_VSAlphaTestVcNoFog.inc"
 
-    #include "Shaders/Compiled/AlphaTestEffect_PSAlphaTestLtGt.inc"
-    #include "Shaders/Compiled/AlphaTestEffect_PSAlphaTestLtGtNoFog.inc"
-    #include "Shaders/Compiled/AlphaTestEffect_PSAlphaTestEqNe.inc"
-    #include "Shaders/Compiled/AlphaTestEffect_PSAlphaTestEqNeNoFog.inc"
+#include "Shaders/Compiled/AlphaTestEffect_PSAlphaTestLtGt.inc"
+#include "Shaders/Compiled/AlphaTestEffect_PSAlphaTestLtGtNoFog.inc"
+#include "Shaders/Compiled/AlphaTestEffect_PSAlphaTestEqNe.inc"
+#include "Shaders/Compiled/AlphaTestEffect_PSAlphaTestEqNeNoFog.inc"
 #endif
 }
 
@@ -102,7 +102,7 @@ const int EffectBase<AlphaTestEffectTraits>::VertexShaderIndices[] =
     1,      // lt/gt, no fog
     2,      // lt/gt, vertex color
     3,      // lt/gt, vertex color, no fog
-    
+
     0,      // eq/ne
     1,      // eq/ne, no fog
     2,      // eq/ne, vertex color
@@ -125,7 +125,7 @@ const int EffectBase<AlphaTestEffectTraits>::PixelShaderIndices[] =
     1,      // lt/gt, no fog
     0,      // lt/gt, vertex color
     1,      // lt/gt, vertex color, no fog
-    
+
     2,      // eq/ne
     3,      // eq/ne, no fog
     2,      // eq/ne, vertex color
@@ -139,10 +139,10 @@ SharedResourcePool<ID3D11Device*, EffectBase<AlphaTestEffectTraits>::DeviceResou
 
 // Constructor.
 AlphaTestEffect::Impl::Impl(_In_ ID3D11Device* device)
-  : EffectBase(device),
-    alphaFunction(D3D11_COMPARISON_GREATER),
-    referenceAlpha(0),
-    vertexColorEnabled(false)
+    : EffectBase(device),
+      alphaFunction(D3D11_COMPARISON_GREATER),
+      referenceAlpha(0),
+      vertexColorEnabled(false)
 {
     static_assert( _countof(EffectBase<AlphaTestEffectTraits>::VertexShaderIndices) == AlphaTestEffectTraits::ShaderPermutationCount, "array/max mismatch" );
     static_assert( _countof(EffectBase<AlphaTestEffectTraits>::VertexShaderBytecode) == AlphaTestEffectTraits::VertexShaderCount, "array/max mismatch" );
@@ -169,7 +169,7 @@ int AlphaTestEffect::Impl::GetCurrentShaderPermutation() const
 
     // Which alpha compare mode?
     if (alphaFunction == D3D11_COMPARISON_EQUAL ||
-        alphaFunction == D3D11_COMPARISON_NOT_EQUAL)
+            alphaFunction == D3D11_COMPARISON_NOT_EQUAL)
     {
         permutation += 4;
     }
@@ -185,7 +185,7 @@ void AlphaTestEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
     matrices.SetConstants(dirtyFlags, constants.worldViewProj);
 
     fog.SetConstants(dirtyFlags, matrices.worldView, constants.fogVector);
-            
+
     color.SetConstants(dirtyFlags, constants.diffuseColor);
 
     // Recompute the alpha test settings?
@@ -193,7 +193,7 @@ void AlphaTestEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
     {
         // Convert reference alpha from 8 bit integer to 0-1 float format.
         float reference = (float)referenceAlpha / 255.0f;
-                
+
         // Comparison tolerance of half the 8 bit integer precision.
         const float threshold = 0.5f / 255.0f;
 
@@ -208,61 +208,61 @@ void AlphaTestEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
 
         switch (alphaFunction)
         {
-            case D3D11_COMPARISON_LESS:
-                // Shader will evaluate: clip((a < x) ? z : w)
-                compareTo = reference - threshold;
-                resultSelector = selectIfTrue;
-                break;
+        case D3D11_COMPARISON_LESS:
+            // Shader will evaluate: clip((a < x) ? z : w)
+            compareTo = reference - threshold;
+            resultSelector = selectIfTrue;
+            break;
 
-            case D3D11_COMPARISON_LESS_EQUAL:
-                // Shader will evaluate: clip((a < x) ? z : w)
-                compareTo = reference + threshold;
-                resultSelector = selectIfTrue;
-                break;
+        case D3D11_COMPARISON_LESS_EQUAL:
+            // Shader will evaluate: clip((a < x) ? z : w)
+            compareTo = reference + threshold;
+            resultSelector = selectIfTrue;
+            break;
 
-            case D3D11_COMPARISON_GREATER_EQUAL:
-                // Shader will evaluate: clip((a < x) ? z : w)
-                compareTo = reference - threshold;
-                resultSelector = selectIfFalse;
-                break;
+        case D3D11_COMPARISON_GREATER_EQUAL:
+            // Shader will evaluate: clip((a < x) ? z : w)
+            compareTo = reference - threshold;
+            resultSelector = selectIfFalse;
+            break;
 
-            case D3D11_COMPARISON_GREATER:
-                // Shader will evaluate: clip((a < x) ? z : w)
-                compareTo = reference + threshold;
-                resultSelector = selectIfFalse;
-                break;
+        case D3D11_COMPARISON_GREATER:
+            // Shader will evaluate: clip((a < x) ? z : w)
+            compareTo = reference + threshold;
+            resultSelector = selectIfFalse;
+            break;
 
-            case D3D11_COMPARISON_EQUAL:
-                // Shader will evaluate: clip((abs(a - x) < y) ? z : w)
-                compareTo = reference;
-                resultSelector = selectIfTrue;
-                break;
+        case D3D11_COMPARISON_EQUAL:
+            // Shader will evaluate: clip((abs(a - x) < y) ? z : w)
+            compareTo = reference;
+            resultSelector = selectIfTrue;
+            break;
 
-            case D3D11_COMPARISON_NOT_EQUAL:
-                // Shader will evaluate: clip((abs(a - x) < y) ? z : w)
-                compareTo = reference;
-                resultSelector = selectIfFalse;
-                break;
+        case D3D11_COMPARISON_NOT_EQUAL:
+            // Shader will evaluate: clip((abs(a - x) < y) ? z : w)
+            compareTo = reference;
+            resultSelector = selectIfFalse;
+            break;
 
-            case D3D11_COMPARISON_NEVER:
-                // Shader will evaluate: clip((a < x) ? z : w)
-                compareTo = 0;
-                resultSelector = selectNever;
-                break;
+        case D3D11_COMPARISON_NEVER:
+            // Shader will evaluate: clip((a < x) ? z : w)
+            compareTo = 0;
+            resultSelector = selectNever;
+            break;
 
-            case D3D11_COMPARISON_ALWAYS:
-                // Shader will evaluate: clip((a < x) ? z : w)
-                compareTo = 0;
-                resultSelector = selectAlways;
-                break;
+        case D3D11_COMPARISON_ALWAYS:
+            // Shader will evaluate: clip((a < x) ? z : w)
+            compareTo = 0;
+            resultSelector = selectAlways;
+            break;
 
-            default:
-                throw std::exception("Unknown alpha test function");
+        default:
+            throw std::exception("Unknown alpha test function");
         }
 
         // x = compareTo, y = threshold, zw = resultSelector.
         constants.alphaTest = XMVectorPermute<0, 1, 4, 5>(XMVectorSet(compareTo, threshold, 0, 0), resultSelector);
-                
+
         dirtyFlags &= ~EffectDirtyFlags::AlphaTest;
         dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
     }
@@ -271,7 +271,7 @@ void AlphaTestEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
     ID3D11ShaderResourceView* textures[1] = { texture.Get() };
 
     deviceContext->PSSetShaderResources(0, 1, textures);
-    
+
     // Set shaders and constant buffers.
     ApplyShaders(deviceContext, GetCurrentShaderPermutation());
 }
@@ -279,14 +279,14 @@ void AlphaTestEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
 
 // Public constructor.
 AlphaTestEffect::AlphaTestEffect(_In_ ID3D11Device* device)
-  : pImpl(new Impl(device))
+    : pImpl(new Impl(device))
 {
 }
 
 
 // Move constructor.
 AlphaTestEffect::AlphaTestEffect(AlphaTestEffect&& moveFrom)
-  : pImpl(std::move(moveFrom.pImpl))
+    : pImpl(std::move(moveFrom.pImpl))
 {
 }
 

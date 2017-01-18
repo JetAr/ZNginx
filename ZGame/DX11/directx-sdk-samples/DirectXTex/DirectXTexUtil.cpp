@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXTexUtil.cpp
-//  
+//
 // DirectX Texture Library - Utilities
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -36,45 +36,45 @@ using Microsoft::WRL::ComPtr;
 
 namespace
 {
-    //-------------------------------------------------------------------------------------
-    // WIC Pixel Format Translation Data
-    //-------------------------------------------------------------------------------------
-    struct WICTranslate
-    {
-        GUID        wic;
-        DXGI_FORMAT format;
-        bool        srgb;
-    };
+//-------------------------------------------------------------------------------------
+// WIC Pixel Format Translation Data
+//-------------------------------------------------------------------------------------
+struct WICTranslate
+{
+    GUID        wic;
+    DXGI_FORMAT format;
+    bool        srgb;
+};
 
-    const WICTranslate g_WICFormats[] =
-    {
-        { GUID_WICPixelFormat128bppRGBAFloat,       DXGI_FORMAT_R32G32B32A32_FLOAT,         false },
+const WICTranslate g_WICFormats[] =
+{
+    { GUID_WICPixelFormat128bppRGBAFloat,       DXGI_FORMAT_R32G32B32A32_FLOAT,         false },
 
-        { GUID_WICPixelFormat64bppRGBAHalf,         DXGI_FORMAT_R16G16B16A16_FLOAT,         false },
-        { GUID_WICPixelFormat64bppRGBA,             DXGI_FORMAT_R16G16B16A16_UNORM,         true },
+    { GUID_WICPixelFormat64bppRGBAHalf,         DXGI_FORMAT_R16G16B16A16_FLOAT,         false },
+    { GUID_WICPixelFormat64bppRGBA,             DXGI_FORMAT_R16G16B16A16_UNORM,         true },
 
-        { GUID_WICPixelFormat32bppRGBA,             DXGI_FORMAT_R8G8B8A8_UNORM,             true },
-        { GUID_WICPixelFormat32bppBGRA,             DXGI_FORMAT_B8G8R8A8_UNORM,             true }, // DXGI 1.1
-        { GUID_WICPixelFormat32bppBGR,              DXGI_FORMAT_B8G8R8X8_UNORM,             true }, // DXGI 1.1
+    { GUID_WICPixelFormat32bppRGBA,             DXGI_FORMAT_R8G8B8A8_UNORM,             true },
+    { GUID_WICPixelFormat32bppBGRA,             DXGI_FORMAT_B8G8R8A8_UNORM,             true }, // DXGI 1.1
+    { GUID_WICPixelFormat32bppBGR,              DXGI_FORMAT_B8G8R8X8_UNORM,             true }, // DXGI 1.1
 
-        { GUID_WICPixelFormat32bppRGBA1010102XR,    DXGI_FORMAT_R10G10B10_XR_BIAS_A2_UNORM, true }, // DXGI 1.1
-        { GUID_WICPixelFormat32bppRGBA1010102,      DXGI_FORMAT_R10G10B10A2_UNORM,          true },
+    { GUID_WICPixelFormat32bppRGBA1010102XR,    DXGI_FORMAT_R10G10B10_XR_BIAS_A2_UNORM, true }, // DXGI 1.1
+    { GUID_WICPixelFormat32bppRGBA1010102,      DXGI_FORMAT_R10G10B10A2_UNORM,          true },
 
-        { GUID_WICPixelFormat16bppBGRA5551,         DXGI_FORMAT_B5G5R5A1_UNORM,             true },
-        { GUID_WICPixelFormat16bppBGR565,           DXGI_FORMAT_B5G6R5_UNORM,               true },
+    { GUID_WICPixelFormat16bppBGRA5551,         DXGI_FORMAT_B5G5R5A1_UNORM,             true },
+    { GUID_WICPixelFormat16bppBGR565,           DXGI_FORMAT_B5G6R5_UNORM,               true },
 
-        { GUID_WICPixelFormat32bppGrayFloat,        DXGI_FORMAT_R32_FLOAT,                  false },
-        { GUID_WICPixelFormat16bppGrayHalf,         DXGI_FORMAT_R16_FLOAT,                  false },
-        { GUID_WICPixelFormat16bppGray,             DXGI_FORMAT_R16_UNORM,                  true },
-        { GUID_WICPixelFormat8bppGray,              DXGI_FORMAT_R8_UNORM,                   true },
+    { GUID_WICPixelFormat32bppGrayFloat,        DXGI_FORMAT_R32_FLOAT,                  false },
+    { GUID_WICPixelFormat16bppGrayHalf,         DXGI_FORMAT_R16_FLOAT,                  false },
+    { GUID_WICPixelFormat16bppGray,             DXGI_FORMAT_R16_UNORM,                  true },
+    { GUID_WICPixelFormat8bppGray,              DXGI_FORMAT_R8_UNORM,                   true },
 
-        { GUID_WICPixelFormat8bppAlpha,             DXGI_FORMAT_A8_UNORM,                   false },
+    { GUID_WICPixelFormat8bppAlpha,             DXGI_FORMAT_A8_UNORM,                   false },
 
-        { GUID_WICPixelFormatBlackWhite,            DXGI_FORMAT_R1_UNORM,                   false },
-    };
+    { GUID_WICPixelFormatBlackWhite,            DXGI_FORMAT_R1_UNORM,                   false },
+};
 
-    bool g_WIC2 = false;
-    IWICImagingFactory* g_Factory = nullptr;
+bool g_WIC2 = false;
+IWICImagingFactory* g_Factory = nullptr;
 }
 
 
@@ -117,7 +117,7 @@ bool DirectX::_DXGIToWIC( DXGI_FORMAT format, GUID& guid, bool ignoreRGBvsBGR )
         }
         else
         {
-            memcpy( &guid, &GUID_WICPixelFormat32bppRGBA, sizeof(GUID) );      
+            memcpy( &guid, &GUID_WICPixelFormat32bppRGBA, sizeof(GUID) );
         }
         return true;
 
@@ -127,7 +127,7 @@ bool DirectX::_DXGIToWIC( DXGI_FORMAT format, GUID& guid, bool ignoreRGBvsBGR )
 
     case DXGI_FORMAT_D16_UNORM:
         memcpy( &guid, &GUID_WICPixelFormat16bppGray, sizeof(GUID) );
-        return true;    
+        return true;
 
     case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
         memcpy( &guid, &GUID_WICPixelFormat32bppBGRA, sizeof(GUID) );
@@ -240,7 +240,7 @@ IWICImagingFactory* DirectX::GetWICFactory(bool& iswic2)
     static INIT_ONCE s_initOnce = INIT_ONCE_STATIC_INIT;
 
     InitOnceExecuteOnce(&s_initOnce,
-        [](PINIT_ONCE, PVOID, LPVOID *factory) -> BOOL
+                        [](PINIT_ONCE, PVOID, LPVOID *factory) -> BOOL
     {
 #if (_WIN32_WINNT >= _WIN32_WINNT_WIN8) || defined(_WIN7_PLATFORM_UPDATE)
         HRESULT hr = CoCreateInstance(
@@ -356,14 +356,14 @@ bool DirectX::IsVideo(DXGI_FORMAT fmt)
     case DXGI_FORMAT_Y210:
     case DXGI_FORMAT_Y216:
     case DXGI_FORMAT_NV11:
-        // These video formats can be used with the 3D pipeline through special view mappings
+    // These video formats can be used with the 3D pipeline through special view mappings
 
     case DXGI_FORMAT_420_OPAQUE:
     case DXGI_FORMAT_AI44:
     case DXGI_FORMAT_IA44:
     case DXGI_FORMAT_P8:
     case DXGI_FORMAT_A8P8:
-        // These are limited use video formats not usable in any way by the 3D pipeline
+    // These are limited use video formats not usable in any way by the 3D pipeline
 
     case WIN10_DXGI_FORMAT_P208:
     case WIN10_DXGI_FORMAT_V208:
@@ -392,7 +392,7 @@ bool DirectX::IsPlanar(DXGI_FORMAT fmt)
     case WIN10_DXGI_FORMAT_P208: // 4:2:2 8-bit
     case WIN10_DXGI_FORMAT_V208: // 4:4:0 8-bit
     case WIN10_DXGI_FORMAT_V408: // 4:4:4 8-bit
-        // These are JPEG Hardware decode formats (DXGI 1.4)
+    // These are JPEG Hardware decode formats (DXGI 1.4)
 
     case XBOX_DXGI_FORMAT_D16_UNORM_S8_UINT:
     case XBOX_DXGI_FORMAT_R16_UNORM_X8_TYPELESS:
@@ -855,7 +855,7 @@ size_t DirectX::BitsPerColor(DXGI_FORMAT fmt)
     case DXGI_FORMAT_IA44:
     case DXGI_FORMAT_P8:
     case DXGI_FORMAT_A8P8:
-        // Palettized formats return 0 for this function
+    // Palettized formats return 0 for this function
 
     default:
         return 0;
@@ -869,7 +869,7 @@ size_t DirectX::BitsPerColor(DXGI_FORMAT fmt)
 //-------------------------------------------------------------------------------------
 _Use_decl_annotations_
 void DirectX::ComputePitch(DXGI_FORMAT fmt, size_t width, size_t height,
-    size_t& rowPitch, size_t& slicePitch, DWORD flags)
+                           size_t& rowPitch, size_t& slicePitch, DWORD flags)
 {
     switch (static_cast<int>(fmt))
     {

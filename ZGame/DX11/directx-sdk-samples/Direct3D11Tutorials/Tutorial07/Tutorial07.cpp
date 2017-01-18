@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: Tutorial07.cpp
 //
 // This application demonstrates texturing
@@ -91,7 +91,7 @@ void Render();
 
 
 //--------------------------------------------------------------------------------------
-// Entry point to the program. Initializes everything and goes into a message processing 
+// Entry point to the program. Initializes everything and goes into a message processing
 // loop. Idle time is used to render the scene.
 //--------------------------------------------------------------------------------------
 int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow )
@@ -180,8 +180,8 @@ HRESULT CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR sz
     DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG
     // Set the D3DCOMPILE_DEBUG flag to embed debug information in the shaders.
-    // Setting this flag improves the shader debugging experience, but still allows 
-    // the shaders to be optimized and to run exactly the way they will run in 
+    // Setting this flag improves the shader debugging experience, but still allows
+    // the shaders to be optimized and to run exactly the way they will run in
     // the release configuration of this program.
     dwShaderFlags |= D3DCOMPILE_DEBUG;
 
@@ -190,8 +190,8 @@ HRESULT CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR sz
 #endif
 
     ID3DBlob* pErrorBlob = nullptr;
-    hr = D3DCompileFromFile( szFileName, nullptr, nullptr, szEntryPoint, szShaderModel, 
-        dwShaderFlags, 0, ppBlobOut, &pErrorBlob );
+    hr = D3DCompileFromFile( szFileName, nullptr, nullptr, szEntryPoint, szShaderModel,
+                             dwShaderFlags, 0, ppBlobOut, &pErrorBlob );
     if( FAILED(hr) )
     {
         if( pErrorBlob )
@@ -402,7 +402,7 @@ HRESULT InitDevice()
     // Create the vertex shader
     hr = g_pd3dDevice->CreateVertexShader( pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), nullptr, &g_pVertexShader );
     if( FAILED( hr ) )
-    {    
+    {
         pVSBlob->Release();
         return hr;
     }
@@ -539,12 +539,12 @@ HRESULT InitDevice()
     hr = g_pd3dDevice->CreateBuffer( &bd, nullptr, &g_pCBNeverChanges );
     if( FAILED( hr ) )
         return hr;
-    
+
     bd.ByteWidth = sizeof(CBChangeOnResize);
     hr = g_pd3dDevice->CreateBuffer( &bd, nullptr, &g_pCBChangeOnResize );
     if( FAILED( hr ) )
         return hr;
-    
+
     bd.ByteWidth = sizeof(CBChangesEveryFrame);
     hr = g_pd3dDevice->CreateBuffer( &bd, nullptr, &g_pCBChangesEveryFrame );
     if( FAILED( hr ) )
@@ -584,7 +584,7 @@ HRESULT InitDevice()
 
     // Initialize the projection matrix
     g_Projection = XMMatrixPerspectiveFovLH( XM_PIDIV4, width / (FLOAT)height, 0.01f, 100.0f );
-    
+
     CBChangeOnResize cbChangesOnResize;
     cbChangesOnResize.mProjection = XMMatrixTranspose( g_Projection );
     g_pImmediateContext->UpdateSubresource( g_pCBChangeOnResize, 0, nullptr, &cbChangesOnResize, 0, 0 );
@@ -641,8 +641,8 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
         PostQuitMessage( 0 );
         break;
 
-        // Note that this tutorial does not handle resizing (WM_SIZE) requests,
-        // so we created the window without the resize border.
+    // Note that this tutorial does not handle resizing (WM_SIZE) requests,
+    // so we created the window without the resize border.
 
     default:
         return DefWindowProc( hWnd, message, wParam, lParam );

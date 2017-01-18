@@ -1,4 +1,4 @@
-//*********************************************************
+﻿//*********************************************************
 //
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
@@ -16,7 +16,7 @@
 class __declspec(uuid("BE1D71C8-88FD-4623-ABFA-D0E546D12FAF")) CD3DX12AffinityObject : public IUnknown
 {
 public:
-#pragma region
+    #pragma region
     // IUnknown
     virtual HRESULT STDMETHODCALLTYPE QueryInterface(
         REFIID riid,
@@ -28,7 +28,7 @@ public:
         AddRef();
         return S_OK;
     }
-#pragma endregion
+    #pragma endregion
 
     HRESULT STDMETHODCALLTYPE GetPrivateData(
         _In_  REFGUID guid,

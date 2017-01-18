@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXMeshGSAdjacency.cpp
-//  
+//
 // DirectX Mesh Geometry Library - Geometry Shader adjacency computation
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -26,7 +26,7 @@ namespace DirectX
 template<class index_t>
 HRESULT _GenerateGSAdjacency( _In_reads_(nFaces*3) const index_t* indices, _In_ size_t nFaces,
                               _In_reads_(nVerts) const uint32_t* pointRep,
-                              _In_reads_(nFaces*3) const uint32_t* adjacency, _In_ size_t nVerts, 
+                              _In_reads_(nFaces*3) const uint32_t* adjacency, _In_ size_t nVerts,
                               _Out_writes_(nFaces*6) index_t* indicesAdj )
 {
     if ( !indices || !nFaces || !pointRep || !adjacency || !nVerts || !indicesAdj )
@@ -78,7 +78,7 @@ HRESULT _GenerateGSAdjacency( _In_reads_(nFaces*3) const index_t* indices, _In_ 
                 else
                 {
                     if ( v1 >= nVerts
-                         || v2 >= nVerts )
+                            || v2 >= nVerts )
                         return E_UNEXPECTED;
 
                     v1 = pointRep[ v1 ];
@@ -124,7 +124,7 @@ HRESULT _GenerateGSAdjacency( _In_reads_(nFaces*3) const index_t* indices, _In_ 
 
     assert( inputi == ( nFaces * 3 ) );
     assert( outputi == ( nFaces * 6 ) );
-    
+
     return S_OK;
 }
 
@@ -135,7 +135,7 @@ HRESULT _GenerateGSAdjacency( _In_reads_(nFaces*3) const index_t* indices, _In_ 
 
 //-------------------------------------------------------------------------------------
 _Use_decl_annotations_
-HRESULT GenerateGSAdjacency( const uint16_t* indices, size_t nFaces, const uint32_t* pointRep, const uint32_t* adjacency, size_t nVerts, 
+HRESULT GenerateGSAdjacency( const uint16_t* indices, size_t nFaces, const uint32_t* pointRep, const uint32_t* adjacency, size_t nVerts,
                              uint16_t* indicesAdj )
 {
     return _GenerateGSAdjacency<uint16_t>( indices, nFaces, pointRep, adjacency, nVerts, indicesAdj );

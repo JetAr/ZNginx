@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
 // THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
@@ -8,7 +8,7 @@
 //
 // Developed by Minigraph
 //
-// Author:  James Stanard 
+// Author:  James Stanard
 //
 
 #pragma once
@@ -17,44 +17,44 @@
 
 namespace Math
 {
-	class BoundingSphere
-	{
-	public:
-		BoundingSphere() {}
-		BoundingSphere( Vector3 center, Scalar radius );
-		explicit BoundingSphere( Vector4 sphere );
+class BoundingSphere
+{
+public:
+    BoundingSphere() {}
+    BoundingSphere( Vector3 center, Scalar radius );
+    explicit BoundingSphere( Vector4 sphere );
 
-		Vector3 GetCenter( void ) const;
-		Scalar GetRadius( void ) const;
+    Vector3 GetCenter( void ) const;
+    Scalar GetRadius( void ) const;
 
-	private:
+private:
 
-		Vector4 m_repr;
-	};
+    Vector4 m_repr;
+};
 
-	//=======================================================================================================
-	// Inline implementations
-	//
+//=======================================================================================================
+// Inline implementations
+//
 
-	inline BoundingSphere::BoundingSphere( Vector3 center, Scalar radius )
-	{
-		m_repr = Vector4(center);
-		m_repr.SetW(radius);
-	}
+inline BoundingSphere::BoundingSphere( Vector3 center, Scalar radius )
+{
+    m_repr = Vector4(center);
+    m_repr.SetW(radius);
+}
 
-	inline BoundingSphere::BoundingSphere( Vector4 sphere )
-		: m_repr(sphere)
-	{
-	}
+inline BoundingSphere::BoundingSphere( Vector4 sphere )
+    : m_repr(sphere)
+{
+}
 
-	inline Vector3 BoundingSphere::GetCenter( void ) const
-	{
-		return Vector3(m_repr);
-	}
+inline Vector3 BoundingSphere::GetCenter( void ) const
+{
+    return Vector3(m_repr);
+}
 
-	inline Scalar BoundingSphere::GetRadius( void ) const
-	{
-		return m_repr.GetW();
-	}
+inline Scalar BoundingSphere::GetRadius( void ) const
+{
+    return m_repr.GetW();
+}
 
 } // namespace Math

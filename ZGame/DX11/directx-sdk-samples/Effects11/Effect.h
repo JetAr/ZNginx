@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: Effect.h
 //
 //  Direct3D 11 Effects Header for ID3DX11Effect Implementation
@@ -76,11 +76,11 @@ typedef size_t Timer;
 //////////////////////////////////////////////////////////////////////////
 
 // CEffectMatrix is used internally instead of float arrays
-struct CEffectMatrix 
+struct CEffectMatrix
 {
-    union 
+    union
     {
-        struct 
+        struct
         {
             float        _11, _12, _13, _14;
             float        _21, _22, _23, _24;
@@ -92,7 +92,7 @@ struct CEffectMatrix
     };
 };
 
-struct CEffectVector4 
+struct CEffectVector4
 {
     float x;
     float y;
@@ -103,7 +103,7 @@ struct CEffectVector4
 union UDataPointer
 {
     void                    *pGeneric;
-    uint8_t                 *pNumeric; 
+    uint8_t                 *pNumeric;
     float                   *pNumericFloat;
     uint32_t                *pNumericDword;
     int                     *pNumericInt;
@@ -153,14 +153,14 @@ struct SMemberDataPointer
 };
 
 struct SType : public ID3DX11EffectType
-{   
+{
     static const UINT_PTR c_InvalidIndex = (uint32_t) -1;
     static const uint32_t c_ScalarSize = sizeof(uint32_t);
 
     // packing rule constants
     static const uint32_t c_ScalarsPerRegister = 4;
-    static const uint32_t c_RegisterSize = c_ScalarsPerRegister * c_ScalarSize; // must be a power of 2!!    
-    
+    static const uint32_t c_RegisterSize = c_ScalarsPerRegister * c_ScalarSize; // must be a power of 2!!
+
     EVarType    VarType;        // numeric, object, struct
     uint32_t    Elements;       // # of array elements (0 for non-arrays)
     char        *pTypeName;     // friendly name of the type: "VS_OUTPUT", "float4", etc.
@@ -176,18 +176,18 @@ struct SType : public ID3DX11EffectType
     //  register aligned
 
     uint32_t    TotalSize;      // Total size of this data type in a constant buffer from
-                                // start to finish (padding in between elements is included,
-                                // but padding at the end is not since that would require
-                                // knowledge of the following data type).
+    // start to finish (padding in between elements is included,
+    // but padding at the end is not since that would require
+    // knowledge of the following data type).
 
     uint32_t    Stride;         // Number of bytes to advance between elements.
-                                // Typically a multiple of 16 for arrays, vectors, matrices.
-                                // For scalars and small vectors/matrices, this can be 4 or 8.    
+    // Typically a multiple of 16 for arrays, vectors, matrices.
+    // For scalars and small vectors/matrices, this can be 4 or 8.
 
     uint32_t    PackedSize;     // Size, in bytes, of this data typed when fully packed
 
     union
-    {        
+    {
         SBinaryNumericType  NumericType;
         EObjectType         ObjectType;         // not all values of EObjectType are valid here (e.g. constant buffer)
         struct
@@ -202,12 +202,12 @@ struct SType : public ID3DX11EffectType
 
 
     SType() :
-       VarType(EVT_Invalid),
-       Elements(0),
-       pTypeName(nullptr),
-       TotalSize(0),
-       Stride(0),
-       PackedSize(0)
+        VarType(EVT_Invalid),
+        Elements(0),
+        pTypeName(nullptr),
+        TotalSize(0),
+        Stride(0),
+        PackedSize(0)
     {
         C_ASSERT( sizeof(NumericType) <= sizeof(StructType) );
         C_ASSERT( sizeof(ObjectType) <= sizeof(StructType) );
@@ -216,7 +216,7 @@ struct SType : public ID3DX11EffectType
     }
 
     bool IsEqual(SType *pOtherType) const;
-    
+
     bool IsObjectType(EObjectType ObjType) const
     {
         return IsObjectTypeHelper(VarType, ObjectType, ObjType);
@@ -262,12 +262,18 @@ struct SType : public ID3DX11EffectType
         return IsDepthStencilViewHelper(VarType, ObjectType);
     }
 
-    uint32_t GetTotalUnpackedSize(_In_ bool IsSingleElement) const; 
-    uint32_t GetTotalPackedSize(_In_ bool IsSingleElement) const; 
+    uint32_t GetTotalUnpackedSize(_In_ bool IsSingleElement) const;
+    uint32_t GetTotalPackedSize(_In_ bool IsSingleElement) const;
     HRESULT GetDescHelper(_Out_ D3DX11_EFFECT_TYPE_DESC *pDesc, _In_ bool IsSingleElement) const;
 
-    STDMETHOD_(bool, IsValid)() override { return true; }
-    STDMETHOD(GetDesc)(_Out_ D3DX11_EFFECT_TYPE_DESC *pDesc) override { return GetDescHelper(pDesc, false); }
+    STDMETHOD_(bool, IsValid)() override
+    {
+        return true;
+    }
+    STDMETHOD(GetDesc)(_Out_ D3DX11_EFFECT_TYPE_DESC *pDesc) override
+    {
+        return GetDescHelper(pDesc, false);
+    }
     STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByIndex)(_In_ uint32_t Index) override;
     STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByName)(_In_z_ LPCSTR Name) override;
     STDMETHOD_(ID3DX11EffectType*, GetMemberTypeBySemantic)(_In_z_ LPCSTR Semantic) override;
@@ -284,13 +290,34 @@ struct SSingleElementType : public ID3DX11EffectType
 {
     SType *pType;
 
-    STDMETHOD_(bool, IsValid)() override { return true; }
-    STDMETHOD(GetDesc)(_Out_ D3DX11_EFFECT_TYPE_DESC *pDesc) override { return ((SType*)pType)->GetDescHelper(pDesc, true); }
-    STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByIndex)(uint32_t Index) override { return ((SType*)pType)->GetMemberTypeByIndex(Index); }
-    STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByName)(LPCSTR Name) override { return ((SType*)pType)->GetMemberTypeByName(Name); }
-    STDMETHOD_(ID3DX11EffectType*, GetMemberTypeBySemantic)(LPCSTR Semantic) override { return ((SType*)pType)->GetMemberTypeBySemantic(Semantic); }
-    STDMETHOD_(LPCSTR, GetMemberName)(uint32_t Index) override { return ((SType*)pType)->GetMemberName(Index); }
-    STDMETHOD_(LPCSTR, GetMemberSemantic)(uint32_t Index) override { return ((SType*)pType)->GetMemberSemantic(Index); }
+    STDMETHOD_(bool, IsValid)() override
+    {
+        return true;
+    }
+    STDMETHOD(GetDesc)(_Out_ D3DX11_EFFECT_TYPE_DESC *pDesc) override
+    {
+        return ((SType*)pType)->GetDescHelper(pDesc, true);
+    }
+    STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByIndex)(uint32_t Index) override
+    {
+        return ((SType*)pType)->GetMemberTypeByIndex(Index);
+    }
+    STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByName)(LPCSTR Name) override
+    {
+        return ((SType*)pType)->GetMemberTypeByName(Name);
+    }
+    STDMETHOD_(ID3DX11EffectType*, GetMemberTypeBySemantic)(LPCSTR Semantic) override
+    {
+        return ((SType*)pType)->GetMemberTypeBySemantic(Semantic);
+    }
+    STDMETHOD_(LPCSTR, GetMemberName)(uint32_t Index) override
+    {
+        return ((SType*)pType)->GetMemberName(Index);
+    }
+    STDMETHOD_(LPCSTR, GetMemberSemantic)(uint32_t Index) override
+    {
+        return ((SType*)pType)->GetMemberSemantic(Index);
+    }
 
     IUNKNOWN_IMP(SSingleElementType, ID3DX11EffectType, IUnknown);
 };
@@ -464,7 +491,7 @@ struct SPassBlock : SBaseBlock, public ID3DX11EffectPass
     STDMETHOD_(ID3DX11EffectVariable*, GetAnnotationByName)(_In_z_ LPCSTR Name) override;
 
     STDMETHOD(Apply)(_In_ uint32_t Flags, _In_ ID3D11DeviceContext* pContext) override;
-    
+
     STDMETHOD(ComputeStateBlockMask)(_Inout_ D3DX11_STATE_BLOCK_MASK *pStateBlockMask) override;
 
     IUNKNOWN_IMP(SPassBlock, ID3DX11EffectPass, IUnknown);
@@ -524,7 +551,7 @@ struct SShaderResource
 {
     ID3D11ShaderResourceView *pShaderResource;
 
-    SShaderResource() 
+    SShaderResource()
     {
         pShaderResource = nullptr;
     }
@@ -535,7 +562,7 @@ struct SUnorderedAccessView
 {
     ID3D11UnorderedAccessView *pUnorderedAccessView;
 
-    SUnorderedAccessView() 
+    SUnorderedAccessView()
     {
         pUnorderedAccessView = nullptr;
     }
@@ -621,7 +648,7 @@ struct SShaderBlock
     };
 
     bool                            IsValid;
-    SD3DShaderVTable                *pVT;                
+    SD3DShaderVTable                *pVT;
 
     // This value is nullptr if the shader is nullptr or was never initialized
     SReflectionData                 *pReflectionData;
@@ -646,8 +673,8 @@ struct SShaderBlock
     uint32_t                        TBufferDepCount;
     SConstantBuffer                 **ppTbufDeps;
 
-    ID3DBlob                        *pInputSignatureBlob;   // The input signature is separated from the bytecode because it 
-                                                            // is always available, even after Optimize() has been called.
+    ID3DBlob                        *pInputSignatureBlob;   // The input signature is separated from the bytecode because it
+    // is always available, even after Optimize() has been called.
 
     SShaderBlock(SD3DShaderVTable *pVirtualTable = nullptr);
 
@@ -802,7 +829,7 @@ struct SConstantBuffer : public TUncastableVariable<ID3DX11EffectConstantBuffer>
     SGlobalVariable         *pVariables;        // array of size [VariableCount], points into effect's contiguous variable list
     uint32_t                ExplicitBindPoint;  // Used when a CB has been explicitly bound (register(bXX)). -1 if not
 
-    bool                    IsDirty:1;          // Set when any member is updated; cleared on CB apply    
+    bool                    IsDirty:1;          // Set when any member is updated; cleared on CB apply
     bool                    IsTBuffer:1;        // true iff TBuffer.pShaderResource != nullptr
     bool                    IsUserManaged:1;    // Set if you don't want effects to update this buffer
     bool                    IsEffectOptimized:1;// Set if the effect has been optimized
@@ -895,30 +922,30 @@ struct SConstantBuffer : public TUncastableVariable<ID3DX11EffectConstantBuffer>
 enum ERuntimeAssignmentType
 {
     ERAT_Invalid,
-    // [Destination] refers to the destination location, which is always the backing store of the pass/state block. 
-    // [Source] refers to the current source of data, always coming from either a constant buffer's 
+    // [Destination] refers to the destination location, which is always the backing store of the pass/state block.
+    // [Source] refers to the current source of data, always coming from either a constant buffer's
     //  backing store (for numeric assignments), an object variable's block array, or an anonymous (unowned) block
 
     // Numeric variables:
     ERAT_Constant,                  // Source is unused.
-                                    // No dependencies; this assignment can be safely removed after load.
+    // No dependencies; this assignment can be safely removed after load.
     ERAT_NumericVariable,           // Source points to the CB's backing store where the value lives.
-                                    // 1 dependency: the variable itself.
+    // 1 dependency: the variable itself.
     ERAT_NumericConstIndex,         // Source points to the CB's backing store where the value lives, offset by N.
-                                    // 1 dependency: the variable array being indexed.
+    // 1 dependency: the variable array being indexed.
     ERAT_NumericVariableIndex,      // Source points to the last used element of the variable in the CB's backing store.
-                                    // 2 dependencies: the index variable followed by the array variable.
+    // 2 dependencies: the index variable followed by the array variable.
 
     // Object variables:
     ERAT_ObjectInlineShader,        // An anonymous, immutable shader block pointer is copied to the destination immediately.
-                                    // No dependencies; this assignment can be safely removed after load.
+    // No dependencies; this assignment can be safely removed after load.
     ERAT_ObjectVariable,            // A pointer to the block owned by the object variable is copied to the destination immediately.
-                                    // No dependencies; this assignment can be safely removed after load.
+    // No dependencies; this assignment can be safely removed after load.
     ERAT_ObjectConstIndex,          // A pointer to the Nth block owned by an object variable is copied to the destination immediately.
-                                    // No dependencies; this assignment can be safely removed after load.
+    // No dependencies; this assignment can be safely removed after load.
     ERAT_ObjectVariableIndex,       // Source points to the first block owned by an object variable array
-                                    // (the offset from this, N, is taken from another variable).
-                                    // 1 dependency: the variable being used to index the array.
+    // (the offset from this, N, is taken from another variable).
+    // 1 dependency: the variable being used to index the array.
 };
 
 struct SAssignment
@@ -937,7 +964,7 @@ struct SAssignment
 
     // The value of SAssignment.AssignmentType determines how the other fields behave
     // (DependencyCount, pDependencies, Destination, and Source)
-    ERuntimeAssignmentType  AssignmentType;      
+    ERuntimeAssignmentType  AssignmentType;
 
     Timer                   LastRecomputedTime;
 
@@ -949,9 +976,9 @@ struct SAssignment
     UDataPointer            Source;             // This value, on the other hand, can change if variable- or expression- driven
 
     uint32_t                DataSize : 16;      // Size of the data element to be copied in bytes (if numeric) or
-                                                // stride of the block type (if object)
+    // stride of the block type (if object)
     uint32_t                MaxElements : 16;   // Max allowable index (needed because we don't store object arrays as dependencies,
-                                                // and therefore have no way of getting their Element count)
+    // and therefore have no way of getting their Element count)
 
     bool IsObjectAssignment()                   // True for Shader and RObject assignments (the type that appear in pass blocks)
     {
@@ -995,7 +1022,7 @@ struct SPointerMapping
 
     uint32_t Hash()
     {
-        // hash the pointer itself 
+        // hash the pointer itself
         // (using the pointer as a hash would be very bad)
         return ComputeHash((uint8_t*)&pOld, sizeof(pOld));
     }
@@ -1017,14 +1044,17 @@ protected:
 public:
     HRESULT ReserveMemory(uint32_t dwSize);
     uint32_t GetSize();
-    uint8_t* GetDataStart() { return m_pData; }
+    uint8_t* GetDataStart()
+    {
+        return m_pData;
+    }
 
-    // AddData and AddString append existing data to the buffer - they change m_dwSize. Users are 
+    // AddData and AddString append existing data to the buffer - they change m_dwSize. Users are
     //   not expected to modify the data pointed to by the return pointer
     HRESULT AddString(_In_z_ const char *pString, _Outptr_result_z_ char **ppPointer);
     HRESULT AddData(_In_reads_(dwSize) const void *pData, _In_ uint32_t dwSize, _Outptr_ void **ppPointer);
 
-    // Allocate behaves like a standard new - it will allocate memory, move m_dwSize. The caller is 
+    // Allocate behaves like a standard new - it will allocate memory, move m_dwSize. The caller is
     //   expected to use the returned pointer
     void* Allocate(uint32_t dwSize);
 
@@ -1059,7 +1089,7 @@ class CEffect : public ID3DX11Effect
     friend struct SConstantBuffer;
     friend struct TSamplerVariable<TGlobalVariable<ID3DX11EffectSamplerVariable>>;
     friend struct TSamplerVariable<TVariable<TMember<ID3DX11EffectSamplerVariable>>>;
-    
+
 protected:
 
     uint32_t                m_RefCount;
@@ -1124,10 +1154,10 @@ protected:
     SRenderTargetView       *m_pRenderTargetViews;
 
     uint32_t                m_DepthStencilViewCount;
-    SDepthStencilView       *m_pDepthStencilViews; 
+    SDepthStencilView       *m_pDepthStencilViews;
 
     Timer                   m_LocalTimer;
-    
+
     // temporary index variable for assignment evaluation
     uint32_t                m_FXLIndex;
 
@@ -1139,12 +1169,18 @@ protected:
     CEffectVectorOwner<SSingleElementType> m_pTypeInterfaces;
     CEffectVectorOwner<SMember>            m_pMemberInterfaces;
 
-    //////////////////////////////////////////////////////////////////////////    
+    //////////////////////////////////////////////////////////////////////////
     // String & Type pooling
 
     typedef SType *LPSRUNTIMETYPE;
-    static bool AreTypesEqual(const LPSRUNTIMETYPE &pType1, const LPSRUNTIMETYPE &pType2) { return (pType1->IsEqual(pType2)); }
-    static bool AreStringsEqual(const LPCSTR &pStr1, const LPCSTR &pStr2) { return strcmp(pStr1, pStr2) == 0; }
+    static bool AreTypesEqual(const LPSRUNTIMETYPE &pType1, const LPSRUNTIMETYPE &pType2)
+    {
+        return (pType1->IsEqual(pType2));
+    }
+    static bool AreStringsEqual(const LPCSTR &pStr1, const LPCSTR &pStr2)
+    {
+        return strcmp(pStr1, pStr2) == 0;
+    }
 
     typedef CEffectHashTableWithPrivateHeap<SType *, AreTypesEqual> CTypeHashTable;
     typedef CEffectHashTableWithPrivateHeap<LPCSTR, AreStringsEqual> CStringHashTable;
@@ -1165,9 +1201,9 @@ protected:
     HRESULT OptimizeTypes(_Inout_ CPointerMappingTable *pMappingTable, _In_ bool Cloning = false);
 
 
-    //////////////////////////////////////////////////////////////////////////    
+    //////////////////////////////////////////////////////////////////////////
     // Runtime (performance critical)
-    
+
     void ApplyShaderBlock(_In_ SShaderBlock *pBlock);
     bool ApplyRenderStateBlock(_In_ SBaseBlock *pBlock);
     bool ApplySamplerBlock(_In_ SSamplerBlock *pBlock);
@@ -1175,9 +1211,9 @@ protected:
     bool EvaluateAssignment(_Inout_  SAssignment *pAssignment);
     bool ValidateShaderBlock(_Inout_ SShaderBlock* pBlock );
     bool ValidatePassBlock(_Inout_ SPassBlock* pBlock );
-    
-    //////////////////////////////////////////////////////////////////////////    
-    // Non-runtime functions (not performance critical)    
+
+    //////////////////////////////////////////////////////////////////////////
+    // Non-runtime functions (not performance critical)
 
     SGlobalVariable *FindLocalVariableByName(_In_z_ LPCSTR pVarName);      // Looks in the current effect only
     SGlobalVariable *FindVariableByName(_In_z_ LPCSTR pVarName);
@@ -1195,7 +1231,7 @@ protected:
 
     void ValidateIndex(_In_ uint32_t Elements);
 
-    void IncrementTimer();    
+    void IncrementTimer();
     void HandleLocalTimerRollover();
 
     friend struct SConstantBuffer;
@@ -1211,12 +1247,21 @@ public:
     // Once the effect is fully loaded, call BindToDevice to attach it to a device
     HRESULT BindToDevice(_In_ ID3D11Device *pDevice, _In_z_ LPCSTR srcName );
 
-    Timer GetCurrentTime() const { return m_LocalTimer; }
-    
-    bool IsReflectionData(void *pData) const { return m_pReflection->m_Heap.IsInHeap(pData); }
-    bool IsRuntimeData(void *pData) const { return m_Heap.IsInHeap(pData); }
+    Timer GetCurrentTime() const
+    {
+        return m_LocalTimer;
+    }
 
-    //////////////////////////////////////////////////////////////////////////    
+    bool IsReflectionData(void *pData) const
+    {
+        return m_pReflection->m_Heap.IsInHeap(pData);
+    }
+    bool IsRuntimeData(void *pData) const
+    {
+        return m_Heap.IsInHeap(pData);
+    }
+
+    //////////////////////////////////////////////////////////////////////////
     // Public interface
 
     // IUnknown
@@ -1225,9 +1270,12 @@ public:
     STDMETHOD_(ULONG, Release)() override;
 
     // ID3DX11Effect
-    STDMETHOD_(bool, IsValid)() override { return true; }
+    STDMETHOD_(bool, IsValid)() override
+    {
+        return true;
+    }
 
-    STDMETHOD(GetDevice)(_Outptr_ ID3D11Device** ppDevice) override;    
+    STDMETHOD(GetDevice)(_Outptr_ ID3D11Device** ppDevice) override;
 
     STDMETHOD(GetDesc)(_Out_ D3DX11_EFFECT_DESC *pDesc) override;
 
@@ -1250,13 +1298,13 @@ public:
     STDMETHOD(Optimize)() override;
     STDMETHOD_(bool, IsOptimized)() override;
 
-    //////////////////////////////////////////////////////////////////////////    
+    //////////////////////////////////////////////////////////////////////////
     // New reflection helpers
 
     ID3DX11EffectType * CreatePooledSingleElementTypeInterface(_In_ SType *pType);
     ID3DX11EffectVariable * CreatePooledVariableMemberInterface(_In_ TTopLevelVariable<ID3DX11EffectVariable> *pTopLevelEntity,
-                                                                _In_ const SVariable *pMember,
-                                                                _In_ const UDataPointer Data, _In_ bool IsSingleElement, _In_ uint32_t Index);
+            _In_ const SVariable *pMember,
+            _In_ const UDataPointer Data, _In_ bool IsSingleElement, _In_ uint32_t Index);
 
 };
 

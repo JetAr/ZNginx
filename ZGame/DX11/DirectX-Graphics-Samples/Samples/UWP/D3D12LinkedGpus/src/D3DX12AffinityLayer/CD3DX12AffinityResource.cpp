@@ -1,4 +1,4 @@
-//*********************************************************
+﻿//*********************************************************
 //
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
@@ -26,7 +26,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityResource::Map(
     {
         DEBUG_ASSERT(mMappedAddresses.empty());
 
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & mAffinityMask) != 0)
             {
@@ -83,7 +83,7 @@ void STDMETHODCALLTYPE CD3DX12AffinityResource::Unmap(
     {
         SynchronizeAcrossDevices();
 
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & mAffinityMask) != 0)
             {
@@ -115,16 +115,16 @@ D3D12_GPU_VIRTUAL_ADDRESS STDMETHODCALLTYPE CD3DX12AffinityResource::GetGPUVirtu
 {
     if (GetNodeCount() == 1
 #if TILE_MAPPING_GPUVA
-        || GetParentDevice()->GetAffinityMode() == EAffinityMode::LDA
+            || GetParentDevice()->GetAffinityMode() == EAffinityMode::LDA
 #endif
-        )
+       )
     {
         return mResources[0]->GetGPUVirtualAddress();
     }
     if (0 == mVirtualAddress)
     {
         std::vector<D3D12_GPU_VIRTUAL_ADDRESS> Addresses(GetNodeCount());
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & mAffinityMask) != 0)
             {
@@ -148,17 +148,17 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityResource::WriteToSubresource(
     UINT SrcRowPitch,
     UINT SrcDepthPitch)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {
             ID3D12Resource* Resource = mResources[i];
             HRESULT const hr = Resource->WriteToSubresource(
-                DstSubresource,
-                pDstBox,
-                pSrcData,
-                SrcRowPitch,
-                SrcDepthPitch);
+                                   DstSubresource,
+                                   pDstBox,
+                                   pSrcData,
+                                   SrcRowPitch,
+                                   SrcDepthPitch);
 
             if (S_OK != hr)
             {
@@ -179,11 +179,11 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityResource::ReadFromSubresource(
     UINT AffinityIndex)
 {
     return mResources[AffinityIndex]->ReadFromSubresource(
-        pDstData,
-        DstRowPitch,
-        DstDepthPitch,
-        SrcSubresource,
-        pSrcBox);
+               pDstData,
+               DstRowPitch,
+               DstDepthPitch,
+               SrcSubresource,
+               pSrcBox);
 }
 
 HRESULT STDMETHODCALLTYPE CD3DX12AffinityResource::GetHeapProperties(

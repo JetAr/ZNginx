@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: BC6HEncoderCS10.cpp
 //
 // Compute Shader 4.0 Accelerated BC6H Encoder
@@ -25,11 +25,11 @@ namespace
 //--------------------------------------------------------------------------------------
 HRESULT CGPUBC6HEncoder::Initialize( ID3D11Device* pDevice, ID3D11DeviceContext* pContext )
 {
-    HRESULT hr = S_OK;  
-    
-    V_RETURN( EncoderBase::Initialize( pDevice, pContext ) );          
+    HRESULT hr = S_OK;
 
-    // Compile and create Compute Shader 
+    V_RETURN( EncoderBase::Initialize( pDevice, pContext ) );
+
+    // Compile and create Compute Shader
     V_RETURN( pDevice->CreateComputeShader( BC6HEncode_TryModeG10CS, sizeof(BC6HEncode_TryModeG10CS), nullptr, &m_pTryModeG10CS ) );
     V_RETURN( pDevice->CreateComputeShader( BC6HEncode_TryModeLE10CS, sizeof(BC6HEncode_TryModeLE10CS), nullptr, &m_pTryModeLE10CS ) );
     V_RETURN( pDevice->CreateComputeShader( BC6HEncode_EncodeBlockCS, sizeof(BC6HEncode_EncodeBlockCS), nullptr, &m_pEncodeBlockCS ) );
@@ -50,7 +50,7 @@ HRESULT CGPUBC6HEncoder::Initialize( ID3D11Device* pDevice, ID3D11DeviceContext*
 // Cleanup before exit
 //--------------------------------------------------------------------------------------
 void CGPUBC6HEncoder::Cleanup()
-{    
+{
     SAFE_RELEASE( m_pTryModeG10CS );
     SAFE_RELEASE( m_pTryModeLE10CS );
     SAFE_RELEASE( m_pEncodeBlockCS );
@@ -62,7 +62,7 @@ void CGPUBC6HEncoder::Cleanup()
 // The job of breaking down texture arrays, or texture with multiple mip levels is taken care of in the base class
 //--------------------------------------------------------------------------------------
 HRESULT CGPUBC6HEncoder::GPU_Encode( ID3D11Device* pDevice, ID3D11DeviceContext* pContext,
-                                     ID3D11Texture2D* pSrcTexture, 
+                                     ID3D11Texture2D* pSrcTexture,
                                      DXGI_FORMAT dstFormat, ID3D11Buffer** ppDstTextureAsBufOut )
 {
     ID3D11ShaderResourceView* pSRV = nullptr;
@@ -70,10 +70,10 @@ HRESULT CGPUBC6HEncoder::GPU_Encode( ID3D11Device* pDevice, ID3D11DeviceContext*
     ID3D11UnorderedAccessView* pUAV = nullptr;
     ID3D11UnorderedAccessView* pErrBestModeUAV[2] = { nullptr, nullptr };
     ID3D11ShaderResourceView* pErrBestModeSRV[2] = { nullptr, nullptr };
-    ID3D11Buffer* pCBCS = nullptr;        
+    ID3D11Buffer* pCBCS = nullptr;
 
-    if ( !(dstFormat == DXGI_FORMAT_BC6H_SF16 || dstFormat == DXGI_FORMAT_BC6H_UF16) || 
-         !ppDstTextureAsBufOut )
+    if ( !(dstFormat == DXGI_FORMAT_BC6H_SF16 || dstFormat == DXGI_FORMAT_BC6H_UF16) ||
+            !ppDstTextureAsBufOut )
         return E_INVALIDARG;
 
     HRESULT hr = S_OK;
@@ -88,7 +88,7 @@ HRESULT CGPUBC6HEncoder::GPU_Encode( ID3D11Device* pDevice, ID3D11DeviceContext*
         SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
         SRVDesc.Format = DXGI_FORMAT_UNKNOWN;
         SRVDesc.Texture2D.MipLevels = 1;
-        SRVDesc.Texture2D.MostDetailedMip = 0;        
+        SRVDesc.Texture2D.MostDetailedMip = 0;
         V_GOTO( pDevice->CreateShaderResourceView( pSrcTexture, &SRVDesc, &pSRV ) )
 #if defined(_DEBUG) || defined(PROFILE)
         if ( pSRV )
@@ -122,7 +122,7 @@ HRESULT CGPUBC6HEncoder::GPU_Encode( ID3D11Device* pDevice, ID3D11DeviceContext*
 #endif
     }
 
-    // Create UAV of the output resources    
+    // Create UAV of the output resources
     {
         D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc;
         ZeroMemory( &UAVDesc, sizeof( UAVDesc ) );
@@ -195,17 +195,17 @@ HRESULT CGPUBC6HEncoder::GPU_Encode( ID3D11Device* pDevice, ID3D11DeviceContext*
             pCBCS->SetPrivateData( WKPDID_D3DDebugObjectName, sizeof( "BC6HEncode" ) - 1, "BC6HEncode" );
         }
 #endif
-    }       
+    }
 
     const INT MAX_BLOCK_BATCH = 64;
-	INT num_total_blocks = texSrcDesc.Width / BLOCK_SIZE_X * texSrcDesc.Height / BLOCK_SIZE_Y;
+    INT num_total_blocks = texSrcDesc.Width / BLOCK_SIZE_X * texSrcDesc.Height / BLOCK_SIZE_Y;
     INT num_blocks = num_total_blocks;
     INT start_block_id = 0;
     while ( num_blocks > 0 )
     {
         INT n = __min( num_blocks, MAX_BLOCK_BATCH );
         UINT uThreadGroupCount = n;
-        
+
         {
             D3D11_MAPPED_SUBRESOURCE cbMapped;
             pContext->Map( pCBCS, 0, D3D11_MAP_WRITE_DISCARD, 0, &cbMapped );
@@ -216,7 +216,7 @@ HRESULT CGPUBC6HEncoder::GPU_Encode( ID3D11Device* pDevice, ID3D11DeviceContext*
             param[2] = dstFormat;// fixed a bug in v0.2
             param[3] = 0;
             param[4] = start_block_id;
-			param[5] = num_total_blocks;
+            param[5] = num_total_blocks;
             memcpy( cbMapped.pData, param, sizeof( param ) );
             pContext->Unmap( pCBCS, 0 );
         }
@@ -225,32 +225,32 @@ HRESULT CGPUBC6HEncoder::GPU_Encode( ID3D11Device* pDevice, ID3D11DeviceContext*
         RunComputeShader( pContext, m_pTryModeG10CS, pSRVs, 2, pCBCS, pErrBestModeUAV[0], __max(uThreadGroupCount / 4, 1), 1, 1 );
 
         for ( INT modeID = 0; modeID < 10; ++modeID )
-		{
-			{
-				D3D11_MAPPED_SUBRESOURCE cbMapped;
-				pContext->Map( pCBCS, 0, D3D11_MAP_WRITE_DISCARD, 0, &cbMapped );
+        {
+            {
+                D3D11_MAPPED_SUBRESOURCE cbMapped;
+                pContext->Map( pCBCS, 0, D3D11_MAP_WRITE_DISCARD, 0, &cbMapped );
 
-				UINT param[8];
-				param[0] = texSrcDesc.Width;
-				param[1] = texSrcDesc.Width / BLOCK_SIZE_X;
-				param[2] = dstFormat;// fixed a bug in v0.2
-				param[3] = modeID;
-				param[4] = start_block_id;
-				param[5] = num_total_blocks;
-				memcpy( cbMapped.pData, param, sizeof( param ) );
-				pContext->Unmap( pCBCS, 0 );
-			}
+                UINT param[8];
+                param[0] = texSrcDesc.Width;
+                param[1] = texSrcDesc.Width / BLOCK_SIZE_X;
+                param[2] = dstFormat;// fixed a bug in v0.2
+                param[3] = modeID;
+                param[4] = start_block_id;
+                param[5] = num_total_blocks;
+                memcpy( cbMapped.pData, param, sizeof( param ) );
+                pContext->Unmap( pCBCS, 0 );
+            }
 
-			pSRVs[1] = pErrBestModeSRV[modeID & 1];
-			RunComputeShader( pContext, m_pTryModeLE10CS, pSRVs, 2, pCBCS, pErrBestModeUAV[!(modeID & 1)], __max(uThreadGroupCount / 2, 1), 1, 1 );
-		}
+            pSRVs[1] = pErrBestModeSRV[modeID & 1];
+            RunComputeShader( pContext, m_pTryModeLE10CS, pSRVs, 2, pCBCS, pErrBestModeUAV[!(modeID & 1)], __max(uThreadGroupCount / 2, 1), 1, 1 );
+        }
 
         pSRVs[1] = pErrBestModeSRV[0];
         RunComputeShader( pContext, m_pEncodeBlockCS, pSRVs, 2, pCBCS, pUAV, __max(uThreadGroupCount / 2, 1), 1, 1 );
 
         start_block_id += n;
         num_blocks -= n;
-    }   
+    }
 
 quit:
     SAFE_RELEASE(pSRV);

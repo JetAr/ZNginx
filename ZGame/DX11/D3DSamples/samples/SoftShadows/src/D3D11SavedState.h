@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        SoftShadows\src/D3D11SavedState.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -82,7 +82,7 @@ public:
     {
         // first set NULL RTs in case we have bounds targets that need to go back to SRVs
         ID3D11RenderTargetView *pNULLRTVs[D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT];
-        for(int i=0;i<D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT;i++)
+        for(int i=0; i<D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT; i++)
             pNULLRTVs[i] = NULL;
         pd3dContext->OMSetRenderTargets(D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT,pNULLRTVs,NULL);
 
@@ -105,18 +105,18 @@ public:
 
         SAFE_RELEASE(pd3dContext);    // we added a manual ref
 
-        for(int i=0;i<D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT;i++)
+        for(int i=0; i<D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT; i++)
             SAFE_RELEASE(pRTVs[i]);
         SAFE_RELEASE(pDSV);
-        for(int i=0;i<D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT;i++)
+        for(int i=0; i<D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT; i++)
             SAFE_RELEASE(pPSSRVs[i]);
         SAFE_RELEASE(pVertexShader);
         SAFE_RELEASE(pPixelShader);
-        for(int i=0;i<D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT;i++)
+        for(int i=0; i<D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT; i++)
             SAFE_RELEASE(pSamplers[i]);
-        for(int i=0;i<D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT;i++)
+        for(int i=0; i<D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT; i++)
             SAFE_RELEASE(pVSConstantBuffers[i]);
-        for(int i=0;i<D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT;i++)
+        for(int i=0; i<D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT; i++)
             SAFE_RELEASE(pPSConstantBuffers[i]);
         SAFE_RELEASE(pRasterizer);
         SAFE_RELEASE(pDepthStencil);

@@ -1,11 +1,11 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXCollision.h -- C++ Collision Math library
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
 // ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
 // THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
 // PARTICULAR PURPOSE.
-//  
+//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // http://go.microsoft.com/fwlink/?LinkID=615560
@@ -57,11 +57,16 @@ struct BoundingSphere
         : Center(sp.Center), Radius(sp.Radius) {}
 
     // Methods
-    BoundingSphere& operator=( _In_ const BoundingSphere& sp ) { Center = sp.Center; Radius = sp.Radius; return *this; }
+    BoundingSphere& operator=( _In_ const BoundingSphere& sp )
+    {
+        Center = sp.Center;
+        Radius = sp.Radius;
+        return *this;
+    }
 
     void    XM_CALLCONV     Transform( _Out_ BoundingSphere& Out, _In_ FXMMATRIX M ) const;
     void    XM_CALLCONV     Transform( _Out_ BoundingSphere& Out, _In_ float Scale, _In_ FXMVECTOR Rotation, _In_ FXMVECTOR Translation ) const;
-        // Transform the sphere
+    // Transform the sphere
 
     ContainmentType    XM_CALLCONV     Contains( _In_ FXMVECTOR Point ) const;
     ContainmentType    XM_CALLCONV     Contains( _In_ FXMVECTOR V0, _In_ FXMVECTOR V1, _In_ FXMVECTOR V2 ) const;
@@ -74,19 +79,19 @@ struct BoundingSphere
     bool Intersects( _In_ const BoundingBox& box ) const;
     bool Intersects( _In_ const BoundingOrientedBox& box ) const;
     bool Intersects( _In_ const BoundingFrustum& fr ) const;
-    
+
     bool    XM_CALLCONV     Intersects( _In_ FXMVECTOR V0, _In_ FXMVECTOR V1, _In_ FXMVECTOR V2 ) const;
-        // Triangle-sphere test
+    // Triangle-sphere test
 
     PlaneIntersectionType    XM_CALLCONV     Intersects( _In_ FXMVECTOR Plane ) const;
-        // Plane-sphere test
-    
+    // Plane-sphere test
+
     bool    XM_CALLCONV     Intersects( _In_ FXMVECTOR Origin, _In_ FXMVECTOR Direction, _Out_ float& Dist ) const;
-        // Ray-sphere test
+    // Ray-sphere test
 
     ContainmentType     XM_CALLCONV     ContainedBy( _In_ FXMVECTOR Plane0, _In_ FXMVECTOR Plane1, _In_ FXMVECTOR Plane2,
-                                                     _In_ GXMVECTOR Plane3, _In_ HXMVECTOR Plane4, _In_ HXMVECTOR Plane5 ) const;
-        // Test sphere against six planes (see BoundingFrustum::GetPlanes)
+            _In_ GXMVECTOR Plane3, _In_ HXMVECTOR Plane4, _In_ HXMVECTOR Plane5 ) const;
+    // Test sphere against six planes (see BoundingFrustum::GetPlanes)
 
     // Static methods
     static void CreateMerged( _Out_ BoundingSphere& Out, _In_ const BoundingSphere& S1, _In_ const BoundingSphere& S2 );
@@ -115,15 +120,20 @@ struct BoundingBox
     XM_CONSTEXPR BoundingBox( _In_ const XMFLOAT3& center, _In_ const XMFLOAT3& extents )
         : Center(center), Extents(extents) {}
     BoundingBox( _In_ const BoundingBox& box ) : Center(box.Center), Extents(box.Extents) {}
-    
+
     // Methods
-    BoundingBox& operator=( _In_ const BoundingBox& box) { Center = box.Center; Extents = box.Extents; return *this; }
+    BoundingBox& operator=( _In_ const BoundingBox& box)
+    {
+        Center = box.Center;
+        Extents = box.Extents;
+        return *this;
+    }
 
     void    XM_CALLCONV     Transform( _Out_ BoundingBox& Out, _In_ FXMMATRIX M ) const;
     void    XM_CALLCONV     Transform( _Out_ BoundingBox& Out, _In_ float Scale, _In_ FXMVECTOR Rotation, _In_ FXMVECTOR Translation ) const;
 
     void GetCorners( _Out_writes_(8) XMFLOAT3* Corners ) const;
-        // Gets the 8 corners of the box
+    // Gets the 8 corners of the box
 
     ContainmentType    XM_CALLCONV     Contains( _In_ FXMVECTOR Point ) const;
     ContainmentType    XM_CALLCONV     Contains( _In_ FXMVECTOR V0, _In_ FXMVECTOR V1, _In_ FXMVECTOR V2 ) const;
@@ -131,24 +141,24 @@ struct BoundingBox
     ContainmentType Contains( _In_ const BoundingBox& box ) const;
     ContainmentType Contains( _In_ const BoundingOrientedBox& box ) const;
     ContainmentType Contains( _In_ const BoundingFrustum& fr ) const;
-    
+
     bool Intersects( _In_ const BoundingSphere& sh ) const;
     bool Intersects( _In_ const BoundingBox& box ) const;
     bool Intersects( _In_ const BoundingOrientedBox& box ) const;
     bool Intersects( _In_ const BoundingFrustum& fr ) const;
 
     bool    XM_CALLCONV     Intersects( _In_ FXMVECTOR V0, _In_ FXMVECTOR V1, _In_ FXMVECTOR V2 ) const;
-        // Triangle-Box test
+    // Triangle-Box test
 
     PlaneIntersectionType    XM_CALLCONV     Intersects( _In_ FXMVECTOR Plane ) const;
-        // Plane-box test
+    // Plane-box test
 
     bool    XM_CALLCONV     Intersects( _In_ FXMVECTOR Origin, _In_ FXMVECTOR Direction, _Out_ float& Dist ) const;
-        // Ray-Box test
+    // Ray-Box test
 
     ContainmentType     XM_CALLCONV     ContainedBy( _In_ FXMVECTOR Plane0, _In_ FXMVECTOR Plane1, _In_ FXMVECTOR Plane2,
-                                                     _In_ GXMVECTOR Plane3, _In_ HXMVECTOR Plane4, _In_ HXMVECTOR Plane5 ) const;
-        // Test box against six planes (see BoundingFrustum::GetPlanes)
+            _In_ GXMVECTOR Plane3, _In_ HXMVECTOR Plane4, _In_ HXMVECTOR Plane5 ) const;
+    // Test box against six planes (see BoundingFrustum::GetPlanes)
 
     // Static methods
     static void CreateMerged( _Out_ BoundingBox& Out, _In_ const BoundingBox& b1, _In_ const BoundingBox& b2 );
@@ -179,13 +189,19 @@ struct BoundingOrientedBox
         : Center(box.Center), Extents(box.Extents), Orientation(box.Orientation) {}
 
     // Methods
-    BoundingOrientedBox& operator=( _In_ const BoundingOrientedBox& box ) { Center = box.Center; Extents = box.Extents; Orientation = box.Orientation; return *this; }
+    BoundingOrientedBox& operator=( _In_ const BoundingOrientedBox& box )
+    {
+        Center = box.Center;
+        Extents = box.Extents;
+        Orientation = box.Orientation;
+        return *this;
+    }
 
     void    XM_CALLCONV     Transform( _Out_ BoundingOrientedBox& Out, _In_ FXMMATRIX M ) const;
     void    XM_CALLCONV     Transform( _Out_ BoundingOrientedBox& Out, _In_ float Scale, _In_ FXMVECTOR Rotation, _In_ FXMVECTOR Translation ) const;
 
     void GetCorners( _Out_writes_(8) XMFLOAT3* Corners ) const;
-        // Gets the 8 corners of the box
+    // Gets the 8 corners of the box
 
     ContainmentType    XM_CALLCONV     Contains( _In_ FXMVECTOR Point ) const;
     ContainmentType    XM_CALLCONV     Contains( _In_ FXMVECTOR V0, _In_ FXMVECTOR V1, _In_ FXMVECTOR V2 ) const;
@@ -200,17 +216,17 @@ struct BoundingOrientedBox
     bool Intersects( _In_ const BoundingFrustum& fr ) const;
 
     bool    XM_CALLCONV     Intersects( _In_ FXMVECTOR V0, _In_ FXMVECTOR V1, _In_ FXMVECTOR V2 ) const;
-        // Triangle-OrientedBox test
+    // Triangle-OrientedBox test
 
     PlaneIntersectionType    XM_CALLCONV     Intersects( _In_ FXMVECTOR Plane ) const;
-        // Plane-OrientedBox test
-    
+    // Plane-OrientedBox test
+
     bool    XM_CALLCONV     Intersects( _In_ FXMVECTOR Origin, _In_ FXMVECTOR Direction, _Out_ float& Dist ) const;
-        // Ray-OrientedBox test
+    // Ray-OrientedBox test
 
     ContainmentType     XM_CALLCONV     ContainedBy( _In_ FXMVECTOR Plane0, _In_ FXMVECTOR Plane1, _In_ FXMVECTOR Plane2,
-                                                     _In_ GXMVECTOR Plane3, _In_ HXMVECTOR Plane4, _In_ HXMVECTOR Plane5 ) const;
-        // Test OrientedBox against six planes (see BoundingFrustum::GetPlanes)
+            _In_ GXMVECTOR Plane3, _In_ HXMVECTOR Plane4, _In_ HXMVECTOR Plane5 ) const;
+    // Test OrientedBox against six planes (see BoundingFrustum::GetPlanes)
 
     // Static methods
     static void CreateFromBoundingBox( _Out_ BoundingOrientedBox& Out, _In_ const BoundingBox& box );
@@ -237,29 +253,40 @@ struct BoundingFrustum
 
     // Creators
     BoundingFrustum() : Origin(0,0,0), Orientation(0,0,0, 1.f), RightSlope( 1.f ), LeftSlope( -1.f ),
-                        TopSlope( 1.f ), BottomSlope( -1.f ), Near(0), Far( 1.f ) {}
+        TopSlope( 1.f ), BottomSlope( -1.f ), Near(0), Far( 1.f ) {}
     XM_CONSTEXPR BoundingFrustum( _In_ const XMFLOAT3& _Origin, _In_ const XMFLOAT4& _Orientation,
-                     _In_ float _RightSlope, _In_ float _LeftSlope, _In_ float _TopSlope, _In_ float _BottomSlope,
-                     _In_ float _Near, _In_ float _Far )
+                                  _In_ float _RightSlope, _In_ float _LeftSlope, _In_ float _TopSlope, _In_ float _BottomSlope,
+                                  _In_ float _Near, _In_ float _Far )
         : Origin(_Origin), Orientation(_Orientation),
           RightSlope(_RightSlope), LeftSlope(_LeftSlope), TopSlope(_TopSlope), BottomSlope(_BottomSlope),
           Near(_Near), Far(_Far) {}
     BoundingFrustum( _In_ const BoundingFrustum& fr )
         : Origin(fr.Origin), Orientation(fr.Orientation), RightSlope(fr.RightSlope), LeftSlope(fr.LeftSlope),
           TopSlope(fr.TopSlope), BottomSlope(fr.BottomSlope), Near(fr.Near), Far(fr.Far) {}
-    BoundingFrustum( _In_ CXMMATRIX Projection ) { CreateFromMatrix( *this, Projection ); }
+    BoundingFrustum( _In_ CXMMATRIX Projection )
+    {
+        CreateFromMatrix( *this, Projection );
+    }
 
     // Methods
-    BoundingFrustum& operator=( _In_ const BoundingFrustum& fr ) { Origin=fr.Origin; Orientation=fr.Orientation;
-                                                                   RightSlope=fr.RightSlope; LeftSlope=fr.LeftSlope;
-                                                                   TopSlope=fr.TopSlope; BottomSlope=fr.BottomSlope;
-                                                                   Near=fr.Near; Far=fr.Far; return *this; }
+    BoundingFrustum& operator=( _In_ const BoundingFrustum& fr )
+    {
+        Origin=fr.Origin;
+        Orientation=fr.Orientation;
+        RightSlope=fr.RightSlope;
+        LeftSlope=fr.LeftSlope;
+        TopSlope=fr.TopSlope;
+        BottomSlope=fr.BottomSlope;
+        Near=fr.Near;
+        Far=fr.Far;
+        return *this;
+    }
 
     void    XM_CALLCONV     Transform( _Out_ BoundingFrustum& Out, _In_ FXMMATRIX M ) const;
     void    XM_CALLCONV     Transform( _Out_ BoundingFrustum& Out, _In_ float Scale, _In_ FXMVECTOR Rotation, _In_ FXMVECTOR Translation ) const;
 
     void GetCorners( _Out_writes_(8) XMFLOAT3* Corners ) const;
-        // Gets the 8 corners of the frustum
+    // Gets the 8 corners of the frustum
 
     ContainmentType    XM_CALLCONV     Contains( _In_ FXMVECTOR Point ) const;
     ContainmentType    XM_CALLCONV     Contains( _In_ FXMVECTOR V0, _In_ FXMVECTOR V1, _In_ FXMVECTOR V2 ) const;
@@ -267,7 +294,7 @@ struct BoundingFrustum
     ContainmentType Contains( _In_ const BoundingBox& box ) const;
     ContainmentType Contains( _In_ const BoundingOrientedBox& box ) const;
     ContainmentType Contains( _In_ const BoundingFrustum& fr ) const;
-        // Frustum-Frustum test
+    // Frustum-Frustum test
 
     bool Intersects( _In_ const BoundingSphere& sh ) const;
     bool Intersects( _In_ const BoundingBox& box ) const;
@@ -275,21 +302,21 @@ struct BoundingFrustum
     bool Intersects( _In_ const BoundingFrustum& fr ) const;
 
     bool    XM_CALLCONV     Intersects( _In_ FXMVECTOR V0, _In_ FXMVECTOR V1, _In_ FXMVECTOR V2 ) const;
-        // Triangle-Frustum test
+    // Triangle-Frustum test
 
     PlaneIntersectionType    XM_CALLCONV     Intersects( _In_ FXMVECTOR Plane ) const;
-        // Plane-Frustum test
+    // Plane-Frustum test
 
     bool    XM_CALLCONV     Intersects( _In_ FXMVECTOR rayOrigin, _In_ FXMVECTOR Direction, _Out_ float& Dist ) const;
-        // Ray-Frustum test
+    // Ray-Frustum test
 
     ContainmentType     XM_CALLCONV     ContainedBy( _In_ FXMVECTOR Plane0, _In_ FXMVECTOR Plane1, _In_ FXMVECTOR Plane2,
-                                                     _In_ GXMVECTOR Plane3, _In_ HXMVECTOR Plane4, _In_ HXMVECTOR Plane5 ) const;
-        // Test frustum against six planes (see BoundingFrustum::GetPlanes)
+            _In_ GXMVECTOR Plane3, _In_ HXMVECTOR Plane4, _In_ HXMVECTOR Plane5 ) const;
+    // Test frustum against six planes (see BoundingFrustum::GetPlanes)
 
     void GetPlanes( _Out_opt_ XMVECTOR* NearPlane, _Out_opt_ XMVECTOR* FarPlane, _Out_opt_ XMVECTOR* RightPlane,
                     _Out_opt_ XMVECTOR* LeftPlane, _Out_opt_ XMVECTOR* TopPlane, _Out_opt_ XMVECTOR* BottomPlane ) const;
-        // Create 6 Planes representation of Frustum
+    // Create 6 Planes representation of Frustum
 
     // Static methods
     static void     XM_CALLCONV     CreateFromMatrix( _Out_ BoundingFrustum& Out, _In_ FXMMATRIX Projection );
@@ -300,19 +327,19 @@ struct BoundingFrustum
 //-----------------------------------------------------------------------------
 namespace TriangleTests
 {
-    bool                    XM_CALLCONV     Intersects( _In_ FXMVECTOR Origin, _In_ FXMVECTOR Direction, _In_ FXMVECTOR V0, _In_ GXMVECTOR V1, _In_ HXMVECTOR V2, _Out_ float& Dist );
-        // Ray-Triangle
+bool                    XM_CALLCONV     Intersects( _In_ FXMVECTOR Origin, _In_ FXMVECTOR Direction, _In_ FXMVECTOR V0, _In_ GXMVECTOR V1, _In_ HXMVECTOR V2, _Out_ float& Dist );
+// Ray-Triangle
 
-    bool                    XM_CALLCONV     Intersects( _In_ FXMVECTOR A0, _In_ FXMVECTOR A1, _In_ FXMVECTOR A2, _In_ GXMVECTOR B0, _In_ HXMVECTOR B1, _In_ HXMVECTOR B2 );
-        // Triangle-Triangle
+bool                    XM_CALLCONV     Intersects( _In_ FXMVECTOR A0, _In_ FXMVECTOR A1, _In_ FXMVECTOR A2, _In_ GXMVECTOR B0, _In_ HXMVECTOR B1, _In_ HXMVECTOR B2 );
+// Triangle-Triangle
 
-    PlaneIntersectionType   XM_CALLCONV     Intersects( _In_ FXMVECTOR V0, _In_ FXMVECTOR V1, _In_ FXMVECTOR V2, _In_ GXMVECTOR Plane );
-        // Plane-Triangle
+PlaneIntersectionType   XM_CALLCONV     Intersects( _In_ FXMVECTOR V0, _In_ FXMVECTOR V1, _In_ FXMVECTOR V2, _In_ GXMVECTOR Plane );
+// Plane-Triangle
 
-    ContainmentType         XM_CALLCONV     ContainedBy( _In_ FXMVECTOR V0, _In_ FXMVECTOR V1, _In_ FXMVECTOR V2,
-                                                         _In_ GXMVECTOR Plane0, _In_ HXMVECTOR Plane1, _In_ HXMVECTOR Plane2,
-                                                         _In_ CXMVECTOR Plane3, _In_ CXMVECTOR Plane4, _In_ CXMVECTOR Plane5 );
-        // Test a triangle against six planes at once (see BoundingFrustum::GetPlanes)
+ContainmentType         XM_CALLCONV     ContainedBy( _In_ FXMVECTOR V0, _In_ FXMVECTOR V1, _In_ FXMVECTOR V2,
+        _In_ GXMVECTOR Plane0, _In_ HXMVECTOR Plane1, _In_ HXMVECTOR Plane2,
+        _In_ CXMVECTOR Plane3, _In_ CXMVECTOR Plane4, _In_ CXMVECTOR Plane5 );
+// Test a triangle against six planes at once (see BoundingFrustum::GetPlanes)
 };
 
 #pragma warning(pop)

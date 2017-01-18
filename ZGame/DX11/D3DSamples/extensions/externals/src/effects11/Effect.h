@@ -1,4 +1,4 @@
-//////////////////////////////////////////////////////////////////////////////
+﻿//////////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) Microsoft Corporation.  All Rights Reserved.
 //
@@ -56,11 +56,11 @@ typedef SIZE_T Timer;
 //////////////////////////////////////////////////////////////////////////
 
 // CEffectMatrix is used internally instead of float arrays
-struct CEffectMatrix 
+struct CEffectMatrix
 {
-    union 
+    union
     {
-        struct 
+        struct
         {
             float        _11, _12, _13, _14;
             float        _21, _22, _23, _24;
@@ -72,7 +72,7 @@ struct CEffectMatrix
     };
 };
 
-struct CEffectVector4 
+struct CEffectVector4
 {
     float x;
     float y;
@@ -83,7 +83,7 @@ struct CEffectVector4
 union UDataPointer
 {
     void                    *pGeneric;
-    BYTE                    *pNumeric; 
+    BYTE                    *pNumeric;
     float                   *pNumericFloat;
     UINT                    *pNumericDword;
     int                     *pNumericInt;
@@ -133,14 +133,14 @@ struct SMemberDataPointer
 };
 
 struct SType : public ID3DX11EffectType
-{   
+{
     static const UINT_PTR c_InvalidIndex = (UINT) -1;
     static const UINT c_ScalarSize = sizeof(UINT);
 
     // packing rule constants
     static const UINT c_ScalarsPerRegister = 4;
-    static const UINT c_RegisterSize = c_ScalarsPerRegister * c_ScalarSize; // must be a power of 2!!    
-    
+    static const UINT c_RegisterSize = c_ScalarsPerRegister * c_ScalarSize; // must be a power of 2!!
+
     EVarType    VarType;        // numeric, object, struct
     UINT        Elements;       // # of array elements (0 for non-arrays)
     char        *pTypeName;     // friendly name of the type: "VS_OUTPUT", "float4", etc.
@@ -156,18 +156,18 @@ struct SType : public ID3DX11EffectType
     //  register aligned
 
     UINT        TotalSize;      // Total size of this data type in a constant buffer from
-                                // start to finish (padding in between elements is included,
-                                // but padding at the end is not since that would require
-                                // knowledge of the following data type).
+    // start to finish (padding in between elements is included,
+    // but padding at the end is not since that would require
+    // knowledge of the following data type).
 
     UINT        Stride;         // Number of bytes to advance between elements.
-                                // Typically a multiple of 16 for arrays, vectors, matrices.
-                                // For scalars and small vectors/matrices, this can be 4 or 8.    
+    // Typically a multiple of 16 for arrays, vectors, matrices.
+    // For scalars and small vectors/matrices, this can be 4 or 8.
 
     UINT        PackedSize;     // Size, in bytes, of this data typed when fully packed
 
     union
-    {        
+    {
         SBinaryNumericType  NumericType;
         EObjectType         ObjectType;         // not all values of EObjectType are valid here (e.g. constant buffer)
         struct
@@ -182,12 +182,12 @@ struct SType : public ID3DX11EffectType
 
 
     SType() :
-       VarType(EVT_Invalid),
-       Elements(0),
-       pTypeName(NULL),
-       TotalSize(0),
-       Stride(0),
-       PackedSize(0)
+        VarType(EVT_Invalid),
+        Elements(0),
+        pTypeName(NULL),
+        TotalSize(0),
+        Stride(0),
+        PackedSize(0)
     {
         C_ASSERT( sizeof(NumericType) <= sizeof(StructType) );
         C_ASSERT( sizeof(ObjectType) <= sizeof(StructType) );
@@ -196,7 +196,7 @@ struct SType : public ID3DX11EffectType
     }
 
     BOOL IsEqual(SType *pOtherType) const;
-    
+
     BOOL IsObjectType(EObjectType ObjType) const
     {
         return IsObjectTypeHelper(VarType, ObjectType, ObjType);
@@ -242,12 +242,18 @@ struct SType : public ID3DX11EffectType
         return IsDepthStencilViewHelper(VarType, ObjectType);
     }
 
-    UINT GetTotalUnpackedSize(BOOL IsSingleElement) const; 
-    UINT GetTotalPackedSize(BOOL IsSingleElement) const; 
+    UINT GetTotalUnpackedSize(BOOL IsSingleElement) const;
+    UINT GetTotalPackedSize(BOOL IsSingleElement) const;
     HRESULT GetDescHelper(D3DX11_EFFECT_TYPE_DESC *pDesc, BOOL IsSingleElement) const;
 
-    STDMETHOD_(BOOL, IsValid)() { return TRUE; }
-    STDMETHOD(GetDesc)(D3DX11_EFFECT_TYPE_DESC *pDesc) { return GetDescHelper(pDesc, FALSE); }
+    STDMETHOD_(BOOL, IsValid)()
+    {
+        return TRUE;
+    }
+    STDMETHOD(GetDesc)(D3DX11_EFFECT_TYPE_DESC *pDesc)
+    {
+        return GetDescHelper(pDesc, FALSE);
+    }
     STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByIndex)(UINT Index);
     STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByName)(LPCSTR Name);
     STDMETHOD_(ID3DX11EffectType*, GetMemberTypeBySemantic)(LPCSTR Semantic);
@@ -262,13 +268,34 @@ struct SSingleElementType : public ID3DX11EffectType
 {
     SType *pType;
 
-    STDMETHOD_(BOOL, IsValid)() { return TRUE; }
-    STDMETHOD(GetDesc)(D3DX11_EFFECT_TYPE_DESC *pDesc) { return ((SType*)pType)->GetDescHelper(pDesc, TRUE); }
-    STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByIndex)(UINT Index) { return ((SType*)pType)->GetMemberTypeByIndex(Index); }
-    STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByName)(LPCSTR Name) { return ((SType*)pType)->GetMemberTypeByName(Name); }
-    STDMETHOD_(ID3DX11EffectType*, GetMemberTypeBySemantic)(LPCSTR Semantic) { return ((SType*)pType)->GetMemberTypeBySemantic(Semantic); }
-    STDMETHOD_(LPCSTR, GetMemberName)(UINT Index) { return ((SType*)pType)->GetMemberName(Index); }
-    STDMETHOD_(LPCSTR, GetMemberSemantic)(UINT Index) { return ((SType*)pType)->GetMemberSemantic(Index); }
+    STDMETHOD_(BOOL, IsValid)()
+    {
+        return TRUE;
+    }
+    STDMETHOD(GetDesc)(D3DX11_EFFECT_TYPE_DESC *pDesc)
+    {
+        return ((SType*)pType)->GetDescHelper(pDesc, TRUE);
+    }
+    STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByIndex)(UINT Index)
+    {
+        return ((SType*)pType)->GetMemberTypeByIndex(Index);
+    }
+    STDMETHOD_(ID3DX11EffectType*, GetMemberTypeByName)(LPCSTR Name)
+    {
+        return ((SType*)pType)->GetMemberTypeByName(Name);
+    }
+    STDMETHOD_(ID3DX11EffectType*, GetMemberTypeBySemantic)(LPCSTR Semantic)
+    {
+        return ((SType*)pType)->GetMemberTypeBySemantic(Semantic);
+    }
+    STDMETHOD_(LPCSTR, GetMemberName)(UINT Index)
+    {
+        return ((SType*)pType)->GetMemberName(Index);
+    }
+    STDMETHOD_(LPCSTR, GetMemberSemantic)(UINT Index)
+    {
+        return ((SType*)pType)->GetMemberSemantic(Index);
+    }
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -436,7 +463,7 @@ struct SPassBlock : SBaseBlock, public ID3DX11EffectPass
     STDMETHOD_(ID3DX11EffectVariable*, GetAnnotationByName)(LPCSTR Name);
 
     STDMETHOD(Apply)(UINT Flags, ID3D11DeviceContext* pContext);
-    
+
     STDMETHOD(ComputeStateBlockMask)(D3DX11_STATE_BLOCK_MASK *pStateBlockMask);
 };
 
@@ -494,7 +521,7 @@ struct SShaderResource
 {
     ID3D11ShaderResourceView *pShaderResource;
 
-    SShaderResource() 
+    SShaderResource()
     {
         pShaderResource = NULL;
     }
@@ -505,7 +532,7 @@ struct SUnorderedAccessView
 {
     ID3D11UnorderedAccessView *pUnorderedAccessView;
 
-    SUnorderedAccessView() 
+    SUnorderedAccessView()
     {
         pUnorderedAccessView = NULL;
     }
@@ -591,7 +618,7 @@ struct SShaderBlock
     };
 
     BOOL                            IsValid;
-    SD3DShaderVTable                *pVT;                
+    SD3DShaderVTable                *pVT;
 
     // This value is NULL if the shader is NULL or was never initialized
     SReflectionData                 *pReflectionData;
@@ -616,8 +643,8 @@ struct SShaderBlock
     UINT                            TBufferDepCount;
     SConstantBuffer                 **ppTbufDeps;
 
-    ID3DBlob                        *pInputSignatureBlob;   // The input signature is separated from the bytecode because it 
-                                                            // is always available, even after Optimize() has been called.
+    ID3DBlob                        *pInputSignatureBlob;   // The input signature is separated from the bytecode because it
+    // is always available, even after Optimize() has been called.
 
     SShaderBlock(SD3DShaderVTable *pVirtualTable = NULL);
 
@@ -770,7 +797,7 @@ struct SConstantBuffer : public TUncastableVariable<ID3DX11EffectConstantBuffer>
     SGlobalVariable         *pVariables;        // array of size [VariableCount], points into effect's contiguous variable list
     UINT                    ExplicitBindPoint;  // Used when a CB has been explicitly bound (register(bXX)). -1 if not
 
-    BOOL                    IsDirty:1;          // Set when any member is updated; cleared on CB apply    
+    BOOL                    IsDirty:1;          // Set when any member is updated; cleared on CB apply
     BOOL                    IsTBuffer:1;        // TRUE iff TBuffer.pShaderResource != NULL
     BOOL                    IsUserManaged:1;    // Set if you don't want effects to update this buffer
     BOOL                    IsEffectOptimized:1;// Set if the effect has been optimized
@@ -861,30 +888,30 @@ struct SConstantBuffer : public TUncastableVariable<ID3DX11EffectConstantBuffer>
 enum ERuntimeAssignmentType
 {
     ERAT_Invalid,
-    // [Destination] refers to the destination location, which is always the backing store of the pass/state block. 
-    // [Source] refers to the current source of data, always coming from either a constant buffer's 
+    // [Destination] refers to the destination location, which is always the backing store of the pass/state block.
+    // [Source] refers to the current source of data, always coming from either a constant buffer's
     //  backing store (for numeric assignments), an object variable's block array, or an anonymous (unowned) block
 
     // Numeric variables:
     ERAT_Constant,                  // Source is unused.
-                                    // No dependencies; this assignment can be safely removed after load.
+    // No dependencies; this assignment can be safely removed after load.
     ERAT_NumericVariable,           // Source points to the CB's backing store where the value lives.
-                                    // 1 dependency: the variable itself.
+    // 1 dependency: the variable itself.
     ERAT_NumericConstIndex,         // Source points to the CB's backing store where the value lives, offset by N.
-                                    // 1 dependency: the variable array being indexed.
+    // 1 dependency: the variable array being indexed.
     ERAT_NumericVariableIndex,      // Source points to the last used element of the variable in the CB's backing store.
-                                    // 2 dependencies: the index variable followed by the array variable.
+    // 2 dependencies: the index variable followed by the array variable.
 
     // Object variables:
     ERAT_ObjectInlineShader,        // An anonymous, immutable shader block pointer is copied to the destination immediately.
-                                    // No dependencies; this assignment can be safely removed after load.
+    // No dependencies; this assignment can be safely removed after load.
     ERAT_ObjectVariable,            // A pointer to the block owned by the object variable is copied to the destination immediately.
-                                    // No dependencies; this assignment can be safely removed after load.
+    // No dependencies; this assignment can be safely removed after load.
     ERAT_ObjectConstIndex,          // A pointer to the Nth block owned by an object variable is copied to the destination immediately.
-                                    // No dependencies; this assignment can be safely removed after load.
+    // No dependencies; this assignment can be safely removed after load.
     ERAT_ObjectVariableIndex,       // Source points to the first block owned by an object variable array
-                                    // (the offset from this, N, is taken from another variable).
-                                    // 1 dependency: the variable being used to index the array.
+    // (the offset from this, N, is taken from another variable).
+    // 1 dependency: the variable being used to index the array.
 };
 
 struct SAssignment
@@ -903,7 +930,7 @@ struct SAssignment
 
     // The value of SAssignment.AssignmentType determines how the other fields behave
     // (DependencyCount, pDependencies, Destination, and Source)
-    ERuntimeAssignmentType  AssignmentType;      
+    ERuntimeAssignmentType  AssignmentType;
 
     Timer                   LastRecomputedTime;
 
@@ -915,9 +942,9 @@ struct SAssignment
     UDataPointer            Source;             // This value, on the other hand, can change if variable- or expression- driven
 
     UINT                    DataSize : 16;      // Size of the data element to be copied in bytes (if numeric) or
-                                                // stride of the block type (if object)
+    // stride of the block type (if object)
     UINT                    MaxElements : 16;   // Max allowable index (needed because we don't store object arrays as dependencies,
-                                                // and therefore have no way of getting their Element count)
+    // and therefore have no way of getting their Element count)
 
     BOOL IsObjectAssignment()                   // True for Shader and RObject assignments (the type that appear in pass blocks)
     {
@@ -961,7 +988,7 @@ struct SPointerMapping
 
     UINT Hash()
     {
-        // hash the pointer itself 
+        // hash the pointer itself
         // (using the pointer as a hash would be very bad)
         return ComputeHash((BYTE*)&pOld, sizeof(pOld));
     }
@@ -983,14 +1010,17 @@ protected:
 public:
     HRESULT ReserveMemory(UINT dwSize);
     UINT GetSize();
-    BYTE* GetDataStart() { return m_pData; }
+    BYTE* GetDataStart()
+    {
+        return m_pData;
+    }
 
-    // AddData and AddString append existing data to the buffer - they change m_dwSize. Users are 
+    // AddData and AddString append existing data to the buffer - they change m_dwSize. Users are
     //   not expected to modify the data pointed to by the return pointer
     HRESULT AddString(const char *pString, __deref_out_z char **ppPointer);
     HRESULT AddData(const void *pData, UINT  dwSize, void **ppPointer);
 
-    // Allocate behaves like a standard new - it will allocate memory, move m_dwSize. The caller is 
+    // Allocate behaves like a standard new - it will allocate memory, move m_dwSize. The caller is
     //   expected to use the returned pointer
     void* Allocate(UINT dwSize);
 
@@ -1025,7 +1055,7 @@ class CEffect : public ID3DX11Effect
     friend struct SConstantBuffer;
     friend struct TSamplerVariable<TGlobalVariable<ID3DX11EffectSamplerVariable>>;
     friend struct TSamplerVariable<TVariable<TMember<ID3DX11EffectSamplerVariable>>>;
-    
+
 protected:
 
     UINT                    m_RefCount;
@@ -1090,10 +1120,10 @@ protected:
     SRenderTargetView       *m_pRenderTargetViews;
 
     UINT                    m_DepthStencilViewCount;
-    SDepthStencilView       *m_pDepthStencilViews; 
+    SDepthStencilView       *m_pDepthStencilViews;
 
     Timer                   m_LocalTimer;
-    
+
     // temporary index variable for assignment evaluation
     UINT                    m_FXLIndex;
 
@@ -1105,12 +1135,18 @@ protected:
     CEffectVectorOwner<SSingleElementType> m_pTypeInterfaces;
     CEffectVectorOwner<SMember>            m_pMemberInterfaces;
 
-    //////////////////////////////////////////////////////////////////////////    
+    //////////////////////////////////////////////////////////////////////////
     // String & Type pooling
 
     typedef SType *LPSRUNTIMETYPE;
-    static BOOL AreTypesEqual(const LPSRUNTIMETYPE &pType1, const LPSRUNTIMETYPE &pType2) { return (pType1->IsEqual(pType2)); }
-    static BOOL AreStringsEqual(__in const LPCSTR &pStr1, __in const LPCSTR &pStr2) { return strcmp(pStr1, pStr2) == 0; }
+    static BOOL AreTypesEqual(const LPSRUNTIMETYPE &pType1, const LPSRUNTIMETYPE &pType2)
+    {
+        return (pType1->IsEqual(pType2));
+    }
+    static BOOL AreStringsEqual(__in const LPCSTR &pStr1, __in const LPCSTR &pStr2)
+    {
+        return strcmp(pStr1, pStr2) == 0;
+    }
 
     typedef CEffectHashTableWithPrivateHeap<SType *, AreTypesEqual> CTypeHashTable;
     typedef CEffectHashTableWithPrivateHeap<LPCSTR, AreStringsEqual> CStringHashTable;
@@ -1131,9 +1167,9 @@ protected:
     HRESULT OptimizeTypes(CPointerMappingTable *pMappingTable, bool Cloning = false);
 
 
-    //////////////////////////////////////////////////////////////////////////    
+    //////////////////////////////////////////////////////////////////////////
     // Runtime (performance critical)
-    
+
     void ApplyShaderBlock(SShaderBlock *pBlock);
     BOOL ApplyRenderStateBlock(SBaseBlock *pBlock);
     BOOL ApplySamplerBlock(SSamplerBlock *pBlock);
@@ -1141,9 +1177,9 @@ protected:
     BOOL EvaluateAssignment(SAssignment *pAssignment);
     BOOL ValidateShaderBlock( SShaderBlock* pBlock );
     BOOL ValidatePassBlock( SPassBlock* pBlock );
-    
-    //////////////////////////////////////////////////////////////////////////    
-    // Non-runtime functions (not performance critical)    
+
+    //////////////////////////////////////////////////////////////////////////
+    // Non-runtime functions (not performance critical)
 
     SGlobalVariable *FindLocalVariableByName(LPCSTR pVarName);      // Looks in the current effect only
     SGlobalVariable *FindVariableByName(LPCSTR pVarName);
@@ -1161,7 +1197,7 @@ protected:
 
     void ValidateIndex(UINT Elements);
 
-    void IncrementTimer();    
+    void IncrementTimer();
     void HandleLocalTimerRollover();
 
     friend struct SConstantBuffer;
@@ -1177,12 +1213,21 @@ public:
     // Once the effect is fully loaded, call BindToDevice to attach it to a device
     HRESULT BindToDevice(ID3D11Device *pDevice);
 
-    Timer GetCurrentTime() const { return m_LocalTimer; }
-    
-    BOOL IsReflectionData(void *pData) const { return m_pReflection->m_Heap.IsInHeap(pData); }
-    BOOL IsRuntimeData(void *pData) const { return m_Heap.IsInHeap(pData); }
+    Timer GetCurrentTime() const
+    {
+        return m_LocalTimer;
+    }
 
-    //////////////////////////////////////////////////////////////////////////    
+    BOOL IsReflectionData(void *pData) const
+    {
+        return m_pReflection->m_Heap.IsInHeap(pData);
+    }
+    BOOL IsRuntimeData(void *pData) const
+    {
+        return m_Heap.IsInHeap(pData);
+    }
+
+    //////////////////////////////////////////////////////////////////////////
     // Public interface
 
     // IUnknown
@@ -1190,9 +1235,12 @@ public:
     STDMETHOD_(ULONG, AddRef)();
     STDMETHOD_(ULONG, Release)();
 
-    STDMETHOD_(BOOL, IsValid)() { return TRUE; }
+    STDMETHOD_(BOOL, IsValid)()
+    {
+        return TRUE;
+    }
 
-    STDMETHOD(GetDevice)(ID3D11Device** ppDevice);    
+    STDMETHOD(GetDevice)(ID3D11Device** ppDevice);
 
     STDMETHOD(GetDesc)(D3DX11_EFFECT_DESC *pDesc);
 
@@ -1215,7 +1263,7 @@ public:
     STDMETHOD(Optimize)();
     STDMETHOD_(BOOL, IsOptimized)();
 
-    //////////////////////////////////////////////////////////////////////////    
+    //////////////////////////////////////////////////////////////////////////
     // New reflection helpers
 
     ID3DX11EffectType * CreatePooledSingleElementTypeInterface(SType *pType);

@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeinterleavedTexturing\src\SSAO/Renderer.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -204,8 +204,8 @@ void GFSDK_SSAO_Renderer::DrawReinterleavedAO(ID3D11DeviceContext* pDeviceContex
 
     ID3D11ShaderResourceView* pSRVs[] =
     {
-         m_RTs.GetQuarterResAOTextureArray()->pSRV,
-         m_RTs.GetFullResViewDepthTexture()->pSRV
+        m_RTs.GetQuarterResAOTextureArray()->pSRV,
+        m_RTs.GetFullResViewDepthTexture()->pSRV
     };
 
     if (m_Options.Blur.Enable)
@@ -335,7 +335,7 @@ void GFSDK_SSAO_Renderer::Render(ID3D11DeviceContext* pDeviceContext)
 void GFSDK_SSAO_Renderer::SetAOResolution(UINT Width, UINT Height)
 {
     if (Width  != m_RTs.GetFullWidth() ||
-        Height != m_RTs.GetFullHeight())
+            Height != m_RTs.GetFullHeight())
     {
         m_RTs.Release();
         m_RTs.SetFullResolution(Width, Height);
@@ -346,9 +346,9 @@ void GFSDK_SSAO_Renderer::SetAOResolution(UINT Width, UINT Height)
 
 //--------------------------------------------------------------------------------
 GFSDK_SSAO_Status GFSDK_SSAO_Renderer::RenderAO(ID3D11DeviceContext* pDeviceContext,
-                                                const GFSDK_SSAO_InputDepthData* pInputDepths,
-                                                const GFSDK_SSAO_Parameters* pParameters,
-                                                ID3D11RenderTargetView* pOutputColorRTV)
+        const GFSDK_SSAO_InputDepthData* pInputDepths,
+        const GFSDK_SSAO_Parameters* pParameters,
+        ID3D11RenderTargetView* pOutputColorRTV)
 {
     GFSDK_SSAO_Status status;
 
@@ -392,8 +392,8 @@ GFSDK_SSAO_Status GFSDK_SSAO_Renderer::SetOutputColors(ID3D11RenderTargetView* p
 
 //--------------------------------------------------------------------------------
 GFSDK_SSAO_Status GFSDK_SSAO_Renderer::SetDataFlow(const GFSDK_SSAO_InputDepthData* pDepthData,
-                                                   const GFSDK_SSAO_Parameters* pParameters,
-                                                   ID3D11RenderTargetView* pOutputColorRTV)
+        const GFSDK_SSAO_Parameters* pParameters,
+        ID3D11RenderTargetView* pOutputColorRTV)
 {
     GFSDK_SSAO_Status status;
 
@@ -444,7 +444,7 @@ GFSDK_SSAO_Status GFSDK_SSAO_Renderer::SetInputDepths(const GFSDK_SSAO_InputDept
 GFSDK_SSAO_Status GFSDK_SSAO_Renderer::ValidateDataFlow()
 {
     if (m_Options.Output.MSAAMode == GFSDK_SSAO_PER_SAMPLE_AO &&
-        m_OutputColors.SampleCount != m_InputDepths.SampleCount)
+            m_OutputColors.SampleCount != m_InputDepths.SampleCount)
     {
         return GFSDK_SSAO_INVALID_OUTPUT_MSAA_SAMPLE_COUNT;
     }

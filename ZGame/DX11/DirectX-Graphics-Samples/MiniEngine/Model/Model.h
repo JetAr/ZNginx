@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
 // THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
@@ -20,219 +20,219 @@
 
 namespace Graphics
 {
-	using namespace Math;
+using namespace Math;
 
 class Model
 {
 public:
 
-	enum
-	{
-		format_none = 0,
-		format_h3d, // native format
-		
-		formats,
-	};
-	static const char *s_FormatString[];
-	static int FormatFromFilename(const char *filename);
+    enum
+    {
+        format_none = 0,
+        format_h3d, // native format
 
-	Model();
-	~Model();
+        formats,
+    };
+    static const char *s_FormatString[];
+    static int FormatFromFilename(const char *filename);
 
-	void Clear();
-	bool Load(const char *filename);
-	bool Save(const char *filename) const;
+    Model();
+    ~Model();
 
-	struct BoundingBox
-	{
-		Vector3 min;
-		Vector3 max;
-	};
-	const BoundingBox& GetBoundingBox() const
-	{
-		return m_Header.boundingBox;
-	}
+    void Clear();
+    bool Load(const char *filename);
+    bool Save(const char *filename) const;
 
-	enum
-	{
-		attrib_mask_0 = (1 << 0),
-		attrib_mask_1 = (1 << 1),
-		attrib_mask_2 = (1 << 2),
-		attrib_mask_3 = (1 << 3),
-		attrib_mask_4 = (1 << 4),
-		attrib_mask_5 = (1 << 5),
-		attrib_mask_6 = (1 << 6),
-		attrib_mask_7 = (1 << 7),
-		attrib_mask_8 = (1 << 8),
-		attrib_mask_9 = (1 << 9),
-		attrib_mask_10 = (1 << 10),
-		attrib_mask_11 = (1 << 11),
-		attrib_mask_12 = (1 << 12),
-		attrib_mask_13 = (1 << 13),
-		attrib_mask_14 = (1 << 14),
-		attrib_mask_15 = (1 << 15),
+    struct BoundingBox
+    {
+        Vector3 min;
+        Vector3 max;
+    };
+    const BoundingBox& GetBoundingBox() const
+    {
+        return m_Header.boundingBox;
+    }
 
-		// friendly name aliases
-		attrib_mask_position = attrib_mask_0,
-		attrib_mask_texcoord0 = attrib_mask_1,
-		attrib_mask_normal = attrib_mask_2,
-		attrib_mask_tangent = attrib_mask_3,
-		attrib_mask_bitangent = attrib_mask_4,
-	};
+    enum
+    {
+        attrib_mask_0 = (1 << 0),
+        attrib_mask_1 = (1 << 1),
+        attrib_mask_2 = (1 << 2),
+        attrib_mask_3 = (1 << 3),
+        attrib_mask_4 = (1 << 4),
+        attrib_mask_5 = (1 << 5),
+        attrib_mask_6 = (1 << 6),
+        attrib_mask_7 = (1 << 7),
+        attrib_mask_8 = (1 << 8),
+        attrib_mask_9 = (1 << 9),
+        attrib_mask_10 = (1 << 10),
+        attrib_mask_11 = (1 << 11),
+        attrib_mask_12 = (1 << 12),
+        attrib_mask_13 = (1 << 13),
+        attrib_mask_14 = (1 << 14),
+        attrib_mask_15 = (1 << 15),
 
-	enum
-	{
-		attrib_0 = 0,
-		attrib_1 = 1,
-		attrib_2 = 2,
-		attrib_3 = 3,
-		attrib_4 = 4,
-		attrib_5 = 5,
-		attrib_6 = 6,
-		attrib_7 = 7,
-		attrib_8 = 8,
-		attrib_9 = 9,
-		attrib_10 = 10,
-		attrib_11 = 11,
-		attrib_12 = 12,
-		attrib_13 = 13,
-		attrib_14 = 14,
-		attrib_15 = 15,
+        // friendly name aliases
+        attrib_mask_position = attrib_mask_0,
+        attrib_mask_texcoord0 = attrib_mask_1,
+        attrib_mask_normal = attrib_mask_2,
+        attrib_mask_tangent = attrib_mask_3,
+        attrib_mask_bitangent = attrib_mask_4,
+    };
 
-		// friendly name aliases
-		attrib_position = attrib_0,
-		attrib_texcoord0 = attrib_1,
-		attrib_normal = attrib_2,
-		attrib_tangent = attrib_3,
-		attrib_bitangent = attrib_4,
+    enum
+    {
+        attrib_0 = 0,
+        attrib_1 = 1,
+        attrib_2 = 2,
+        attrib_3 = 3,
+        attrib_4 = 4,
+        attrib_5 = 5,
+        attrib_6 = 6,
+        attrib_7 = 7,
+        attrib_8 = 8,
+        attrib_9 = 9,
+        attrib_10 = 10,
+        attrib_11 = 11,
+        attrib_12 = 12,
+        attrib_13 = 13,
+        attrib_14 = 14,
+        attrib_15 = 15,
 
-		maxAttribs = 16
-	};
+        // friendly name aliases
+        attrib_position = attrib_0,
+        attrib_texcoord0 = attrib_1,
+        attrib_normal = attrib_2,
+        attrib_tangent = attrib_3,
+        attrib_bitangent = attrib_4,
 
-	enum
-	{
-		attrib_format_none = 0,
-		attrib_format_ubyte,
-		attrib_format_byte,
-		attrib_format_ushort,
-		attrib_format_short,
-		attrib_format_float,
+        maxAttribs = 16
+    };
 
-		attrib_formats
-	};
+    enum
+    {
+        attrib_format_none = 0,
+        attrib_format_ubyte,
+        attrib_format_byte,
+        attrib_format_ushort,
+        attrib_format_short,
+        attrib_format_float,
 
-	struct Attrib
-	{
-		uint16_t offset; // byte offset from the start of the vertex
-		uint16_t normalized; // if true, integer formats are interpreted as [-1, 1] or [0, 1]
-		uint16_t components; // 1-4
-		uint16_t format;
-	};
+        attrib_formats
+    };
 
-	struct Header
-	{
-		uint32_t meshCount;
-		uint32_t materialCount;
-		uint32_t vertexDataByteSize;
-		uint32_t indexDataByteSize;
-		uint32_t vertexDataByteSizeDepth;
+    struct Attrib
+    {
+        uint16_t offset; // byte offset from the start of the vertex
+        uint16_t normalized; // if true, integer formats are interpreted as [-1, 1] or [0, 1]
+        uint16_t components; // 1-4
+        uint16_t format;
+    };
 
-		BoundingBox boundingBox;
-	};
-	Header m_Header;
+    struct Header
+    {
+        uint32_t meshCount;
+        uint32_t materialCount;
+        uint32_t vertexDataByteSize;
+        uint32_t indexDataByteSize;
+        uint32_t vertexDataByteSizeDepth;
 
-	struct Mesh
-	{
-		BoundingBox boundingBox;
+        BoundingBox boundingBox;
+    };
+    Header m_Header;
 
-		unsigned int materialIndex;
+    struct Mesh
+    {
+        BoundingBox boundingBox;
 
-		unsigned int attribsEnabled;
-		unsigned int attribsEnabledDepth;
-		unsigned int vertexStride;
-		unsigned int vertexStrideDepth;
-		Attrib attrib[maxAttribs];
-		Attrib attribDepth[maxAttribs];
+        unsigned int materialIndex;
 
-		unsigned int vertexDataByteOffset;
-		unsigned int vertexCount;
-		unsigned int indexDataByteOffset;
-		unsigned int indexCount;
+        unsigned int attribsEnabled;
+        unsigned int attribsEnabledDepth;
+        unsigned int vertexStride;
+        unsigned int vertexStrideDepth;
+        Attrib attrib[maxAttribs];
+        Attrib attribDepth[maxAttribs];
 
-		unsigned int vertexDataByteOffsetDepth;
-		unsigned int vertexCountDepth;
-	};
-	Mesh *m_pMesh;
+        unsigned int vertexDataByteOffset;
+        unsigned int vertexCount;
+        unsigned int indexDataByteOffset;
+        unsigned int indexCount;
 
-	struct Material
-	{
-		Vector3 diffuse;
-		Vector3 specular;
-		Vector3 ambient;
-		Vector3 emissive;
-		Vector3 transparent; // light passing through a transparent surface is multiplied by this filter color
-		float opacity;
-		float shininess; // specular exponent
-		float specularStrength; // multiplier on top of specular color
+        unsigned int vertexDataByteOffsetDepth;
+        unsigned int vertexCountDepth;
+    };
+    Mesh *m_pMesh;
 
-		enum {maxTexPath = 128};
-		enum {texCount = 6};
-		char texDiffusePath[maxTexPath];
-		char texSpecularPath[maxTexPath];
-		char texEmissivePath[maxTexPath];
-		char texNormalPath[maxTexPath];
-		char texLightmapPath[maxTexPath];
-		char texReflectionPath[maxTexPath];
+    struct Material
+    {
+        Vector3 diffuse;
+        Vector3 specular;
+        Vector3 ambient;
+        Vector3 emissive;
+        Vector3 transparent; // light passing through a transparent surface is multiplied by this filter color
+        float opacity;
+        float shininess; // specular exponent
+        float specularStrength; // multiplier on top of specular color
 
-		enum {maxMaterialName = 128};
-		char name[maxMaterialName];
-	};
-	Material *m_pMaterial;
+        enum {maxTexPath = 128};
+        enum {texCount = 6};
+        char texDiffusePath[maxTexPath];
+        char texSpecularPath[maxTexPath];
+        char texEmissivePath[maxTexPath];
+        char texNormalPath[maxTexPath];
+        char texLightmapPath[maxTexPath];
+        char texReflectionPath[maxTexPath];
 
-	unsigned char *m_pVertexData;
-	unsigned char *m_pIndexData;
-	StructuredBuffer m_VertexBuffer;
-	ByteAddressBuffer m_IndexBuffer;
-	uint32_t m_VertexStride;
+        enum {maxMaterialName = 128};
+        char name[maxMaterialName];
+    };
+    Material *m_pMaterial;
 
-	// optimized for depth-only rendering
-	unsigned char *m_pVertexDataDepth;
-	unsigned char *m_pIndexDataDepth;
-	StructuredBuffer m_VertexBufferDepth;
-	ByteAddressBuffer m_IndexBufferDepth;
-	uint32_t m_VertexStrideDepth;
+    unsigned char *m_pVertexData;
+    unsigned char *m_pIndexData;
+    StructuredBuffer m_VertexBuffer;
+    ByteAddressBuffer m_IndexBuffer;
+    uint32_t m_VertexStride;
 
-	D3D12_CPU_DESCRIPTOR_HANDLE* GetSRVs( uint32_t materialIdx ) const
-	{
-		return m_SRVs + materialIdx * 6;
-	}
+    // optimized for depth-only rendering
+    unsigned char *m_pVertexDataDepth;
+    unsigned char *m_pIndexDataDepth;
+    StructuredBuffer m_VertexBufferDepth;
+    ByteAddressBuffer m_IndexBufferDepth;
+    uint32_t m_VertexStrideDepth;
+
+    D3D12_CPU_DESCRIPTOR_HANDLE* GetSRVs( uint32_t materialIdx ) const
+    {
+        return m_SRVs + materialIdx * 6;
+    }
 
 private:
 
-	bool LoadH3D(const char *filename);
+    bool LoadH3D(const char *filename);
 #ifdef MODEL_ENABLE_ASSIMP
-	bool LoadAssimp(const char *filename);
+    bool LoadAssimp(const char *filename);
 #endif
 
-	bool SaveH3D(const char *filename) const;
+    bool SaveH3D(const char *filename) const;
 
-	void LoadPostProcess(bool needToOptimize);
+    void LoadPostProcess(bool needToOptimize);
 
-	void ComputeMeshBoundingBox(unsigned int meshIndex, BoundingBox &bbox) const;
-	// requires all mesh bounding boxes to be computed
-	void ComputeGlobalBoundingBox(BoundingBox &bbox) const;
-	void ComputeAllBoundingBoxes();
+    void ComputeMeshBoundingBox(unsigned int meshIndex, BoundingBox &bbox) const;
+    // requires all mesh bounding boxes to be computed
+    void ComputeGlobalBoundingBox(BoundingBox &bbox) const;
+    void ComputeAllBoundingBoxes();
 
 #ifdef MODEL_ENABLE_OPTIMIZER
-	void Optimize();
-	void OptimizeRemoveDuplicateVertices(bool depth);
-	void OptimizePostTransform(bool depth);
-	void OptimizePreTransform(bool depth);
+    void Optimize();
+    void OptimizeRemoveDuplicateVertices(bool depth);
+    void OptimizePostTransform(bool depth);
+    void OptimizePreTransform(bool depth);
 #endif
 
-	void ReleaseTextures();
-	void LoadTextures();
-	D3D12_CPU_DESCRIPTOR_HANDLE* m_SRVs;
+    void ReleaseTextures();
+    void LoadTextures();
+    D3D12_CPU_DESCRIPTOR_HANDLE* m_SRVs;
 };
 
 }

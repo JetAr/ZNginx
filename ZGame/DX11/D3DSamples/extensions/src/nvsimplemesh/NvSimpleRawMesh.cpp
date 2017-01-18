@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        src\nvsimplemesh/NvSimpleRawMesh.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -48,7 +48,7 @@
 // XInput includes
 #include <xinput.h>
 
-// HRESULT translation for Direct3D and other APIs 
+// HRESULT translation for Direct3D and other APIs
 #include <dxerr.h>
 
 #ifndef V
@@ -82,7 +82,7 @@ const D3D11_INPUT_ELEMENT_DESC NvSimpleRawMesh::D3D11InputElements[] =
 const int NvSimpleRawMesh::D3D11ElementsSize = sizeof(NvSimpleRawMesh::D3D11InputElements)/sizeof(D3D11_INPUT_ELEMENT_DESC);
 
 
-NvSimpleRawMesh::NvSimpleRawMesh() : 
+NvSimpleRawMesh::NvSimpleRawMesh() :
     m_pVertexData(NULL),
     m_pIndexData(NULL),
     m_iNumVertices(0),
@@ -140,25 +140,25 @@ BYTE * NvSimpleRawMesh::GetRawIndices()
 HRESULT NvSimpleRawMesh::TryGuessFilename(WCHAR *szDestBuffer,WCHAR *szMeshFilename, WCHAR *szGuessSuffix)
 {
     HRESULT hr = E_FAIL;
-/*
-    WCHAR szBaseFilename[MAX_PATH];
-    WCHAR szGuessFilename[MAX_PATH];
-    // Start with mesh file
-    StringCchCopyW(szBaseFilename,MAX_PATH,szMeshFilename);
-    size_t len = 0;
-    StringCchLength(szBaseFilename,MAX_PATH,&len);
+    /*
+        WCHAR szBaseFilename[MAX_PATH];
+        WCHAR szGuessFilename[MAX_PATH];
+        // Start with mesh file
+        StringCchCopyW(szBaseFilename,MAX_PATH,szMeshFilename);
+        size_t len = 0;
+        StringCchLength(szBaseFilename,MAX_PATH,&len);
 
-    // work backwards to first "." and null which strips extension
-    for(int i=(int)len-1;i>=0;i--) 
-    {
-        if(szBaseFilename[i] == L'.') {szBaseFilename[i] = 0; break;}
-    }
+        // work backwards to first "." and null which strips extension
+        for(int i=(int)len-1;i>=0;i--)
+        {
+            if(szBaseFilename[i] == L'.') {szBaseFilename[i] = 0; break;}
+        }
 
-    StringCchCopy(szGuessFilename,MAX_PATH,szBaseFilename);
-    StringCchCat(szGuessFilename,MAX_PATH,szGuessSuffix);
+        StringCchCopy(szGuessFilename,MAX_PATH,szBaseFilename);
+        StringCchCat(szGuessFilename,MAX_PATH,szGuessSuffix);
 
-    hr = DXUTFindDXSDKMediaFileCch(szDestBuffer,MAX_PATH,szGuessFilename);
-    */
+        hr = DXUTFindDXSDKMediaFileCch(szDestBuffer,MAX_PATH,szGuessFilename);
+        */
     return hr;
 }
 
@@ -166,20 +166,20 @@ ID3D11Texture2D *NvSimpleRawMesh::CreateD3D11DiffuseTextureFor(ID3D11Device *pd3
 {
     HRESULT hr = S_OK;
     //if(m_szDiffuseTexture[0] == 0) return NULL;
-/*
-    WCHAR szTextureFilename[MAX_PATH];
+    /*
+        WCHAR szTextureFilename[MAX_PATH];
 
-    if(m_szDiffuseTexture[0] != 0)
-    {
-        hr = DXUTFindDXSDKMediaFileCch(szTextureFilename,MAX_PATH,m_szDiffuseTexture);
-    }
+        if(m_szDiffuseTexture[0] != 0)
+        {
+            hr = DXUTFindDXSDKMediaFileCch(szTextureFilename,MAX_PATH,m_szDiffuseTexture);
+        }
 
-    // Try to guess a file name in same location 
-    if(hr != S_OK)
-    {
-        hr = TryGuessFilename(szTextureFilename,m_szMeshFilename,L"_diffuse.dds");
-    }
-    */
+        // Try to guess a file name in same location
+        if(hr != S_OK)
+        {
+            hr = TryGuessFilename(szTextureFilename,m_szMeshFilename,L"_diffuse.dds");
+        }
+        */
     ID3D11Resource *pTexture = NULL;
     if(hr == S_OK)
     {
@@ -193,25 +193,25 @@ ID3D11Texture2D *NvSimpleRawMesh::CreateD3D11NormalsTextureFor(ID3D11Device *pd3
 {
     HRESULT hr = S_OK;
     //if(m_szNormalTexture[0] == 0) return NULL;
-/*
-    WCHAR szTextureFilename[MAX_PATH];
-    
+    /*
+        WCHAR szTextureFilename[MAX_PATH];
 
-    if(m_szNormalTexture[0] != 0)
-    {
-        hr = DXUTFindDXSDKMediaFileCch(szTextureFilename,MAX_PATH,m_szNormalTexture);
-    }
 
-    // Try to guess a file name in same location for normals
-    if(hr != S_OK)
-    {
-        hr = TryGuessFilename(szTextureFilename,m_szMeshFilename,L"_normals.dds");
-    }
-    if(hr != S_OK)
-    {
-        hr = TryGuessFilename(szTextureFilename,m_szDiffuseTexture,L"_nm.dds");
-    }
-    */
+        if(m_szNormalTexture[0] != 0)
+        {
+            hr = DXUTFindDXSDKMediaFileCch(szTextureFilename,MAX_PATH,m_szNormalTexture);
+        }
+
+        // Try to guess a file name in same location for normals
+        if(hr != S_OK)
+        {
+            hr = TryGuessFilename(szTextureFilename,m_szMeshFilename,L"_normals.dds");
+        }
+        if(hr != S_OK)
+        {
+            hr = TryGuessFilename(szTextureFilename,m_szDiffuseTexture,L"_nm.dds");
+        }
+        */
     ID3D11Resource *pTexture = NULL;
     if(hr == S_OK)
     {

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: PrimitiveBatch.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -54,7 +54,7 @@ private:
 
     size_t mCurrentIndex;
     size_t mCurrentVertex;
-    
+
     size_t mBaseIndex;
     size_t mBaseVertex;
 
@@ -108,16 +108,16 @@ static void CreateBuffer(_In_ ID3D11Device* device, size_t bufferSize, D3D11_BIN
 
 // Constructor.
 PrimitiveBatchBase::Impl::Impl(_In_ ID3D11DeviceContext* deviceContext, size_t maxIndices, size_t maxVertices, size_t vertexSize)
-  : mMaxIndices(maxIndices),
-    mMaxVertices(maxVertices),
-    mVertexSize(vertexSize),
-    mCurrentTopology(D3D11_PRIMITIVE_TOPOLOGY_UNDEFINED),
-    mInBeginEndPair(false),
-    mCurrentlyIndexed(false),
-    mCurrentIndex(0),
-    mCurrentVertex(0),
-    mBaseIndex(0),
-    mBaseVertex(0)
+    : mMaxIndices(maxIndices),
+      mMaxVertices(maxVertices),
+      mVertexSize(vertexSize),
+      mCurrentTopology(D3D11_PRIMITIVE_TOPOLOGY_UNDEFINED),
+      mInBeginEndPair(false),
+      mCurrentlyIndexed(false),
+      mCurrentIndex(0),
+      mCurrentVertex(0),
+      mBaseIndex(0),
+      mBaseVertex(0)
 {
     ComPtr<ID3D11Device> device;
     deviceContext->GetDevice(&device);
@@ -175,7 +175,7 @@ void PrimitiveBatchBase::Impl::Begin()
 
     mDeviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &vertexStride, &vertexOffset);
 #endif
-     
+
     // If this is a deferred D3D context, reset position so the first Map calls will use D3D11_MAP_WRITE_DISCARD.
     if (mDeviceContext->GetType() == D3D11_DEVICE_CONTEXT_DEFERRED)
     {
@@ -204,15 +204,15 @@ static bool CanBatchPrimitives(D3D11_PRIMITIVE_TOPOLOGY topology)
 {
     switch (topology)
     {
-        case D3D11_PRIMITIVE_TOPOLOGY_POINTLIST:
-        case D3D11_PRIMITIVE_TOPOLOGY_LINELIST:
-        case D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST:
-            // Lists can easily be merged.
-            return true;
+    case D3D11_PRIMITIVE_TOPOLOGY_POINTLIST:
+    case D3D11_PRIMITIVE_TOPOLOGY_LINELIST:
+    case D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST:
+        // Lists can easily be merged.
+        return true;
 
-        default:
-            // Strips cannot.
-            return false;
+    default:
+        // Strips cannot.
+        return false;
     }
 
     // We could also merge indexed strips by inserting degenerates,
@@ -256,9 +256,9 @@ void PrimitiveBatchBase::Impl::Draw(D3D11_PRIMITIVE_TOPOLOGY topology, bool isIn
     bool wrapVertexBuffer = (mCurrentVertex + vertexCount > mMaxVertices);
 
     if ((topology != mCurrentTopology) ||
-        (isIndexed != mCurrentlyIndexed) ||
-        !CanBatchPrimitives(topology) ||
-        wrapIndexBuffer || wrapVertexBuffer)
+            (isIndexed != mCurrentlyIndexed) ||
+            !CanBatchPrimitives(topology) ||
+            wrapIndexBuffer || wrapVertexBuffer)
     {
         FlushBatch();
     }
@@ -319,17 +319,17 @@ void PrimitiveBatchBase::Impl::Draw(D3D11_PRIMITIVE_TOPOLOGY topology, bool isIn
         mCurrentTopology = topology;
         mCurrentlyIndexed = isIndexed;
     }
-    
+
     // Copy over the index data.
     if (isIndexed)
     {
         auto outputIndices = reinterpret_cast<uint16_t*>(mMappedIndices.pData) + mCurrentIndex;
-        
+
         for (size_t i = 0; i < indexCount; i++)
         {
             outputIndices[i] = (uint16_t)(indices[i] + mCurrentVertex - mBaseVertex);
         }
- 
+
         mCurrentIndex += indexCount;
     }
 
@@ -391,14 +391,14 @@ void PrimitiveBatchBase::Impl::FlushBatch()
 
 // Public constructor.
 PrimitiveBatchBase::PrimitiveBatchBase(_In_ ID3D11DeviceContext* deviceContext, size_t maxIndices, size_t maxVertices, size_t vertexSize)
-  : pImpl(new Impl(deviceContext, maxIndices, maxVertices, vertexSize))
+    : pImpl(new Impl(deviceContext, maxIndices, maxVertices, vertexSize))
 {
 }
 
 
 // Move constructor.
 PrimitiveBatchBase::PrimitiveBatchBase(PrimitiveBatchBase&& moveFrom)
-  : pImpl(std::move(moveFrom.pImpl))
+    : pImpl(std::move(moveFrom.pImpl))
 {
 }
 

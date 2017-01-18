@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: GamePad.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -22,57 +22,57 @@ using Microsoft::WRL::ComPtr;
 
 namespace
 {
-    float ApplyLinearDeadZone( float value, float maxValue, float deadZoneSize )
+float ApplyLinearDeadZone( float value, float maxValue, float deadZoneSize )
+{
+    if ( value < -deadZoneSize )
     {
-        if ( value < -deadZoneSize )
-        {
-            // Increase negative values to remove the deadzone discontinuity.
-            value += deadZoneSize;
-        }
-        else if ( value > deadZoneSize )
-        {
-            // Decrease positive values to remove the deadzone discontinuity.
-            value -= deadZoneSize;
-        }
-        else
-        {
-            // Values inside the deadzone come out zero.
-            return 0;
-        }
-
-        // Scale into 0-1 range.
-        float scaledValue = value / (maxValue - deadZoneSize);
-        return std::max( -1.f, std::min( scaledValue, 1.f ) );
+        // Increase negative values to remove the deadzone discontinuity.
+        value += deadZoneSize;
+    }
+    else if ( value > deadZoneSize )
+    {
+        // Decrease positive values to remove the deadzone discontinuity.
+        value -= deadZoneSize;
+    }
+    else
+    {
+        // Values inside the deadzone come out zero.
+        return 0;
     }
 
-    void ApplyStickDeadZone( float x, float y, GamePad::DeadZone deadZoneMode, float maxValue, float deadZoneSize,
-                             _Out_ float& resultX, _Out_ float& resultY)
+    // Scale into 0-1 range.
+    float scaledValue = value / (maxValue - deadZoneSize);
+    return std::max( -1.f, std::min( scaledValue, 1.f ) );
+}
+
+void ApplyStickDeadZone( float x, float y, GamePad::DeadZone deadZoneMode, float maxValue, float deadZoneSize,
+                         _Out_ float& resultX, _Out_ float& resultY)
+{
+    switch( deadZoneMode )
     {
-        switch( deadZoneMode )
-        {
-        case GamePad::DEAD_ZONE_INDEPENDENT_AXES:
-            resultX = ApplyLinearDeadZone( x, maxValue, deadZoneSize );
-            resultY = ApplyLinearDeadZone( y, maxValue, deadZoneSize );
-            break;
+    case GamePad::DEAD_ZONE_INDEPENDENT_AXES:
+        resultX = ApplyLinearDeadZone( x, maxValue, deadZoneSize );
+        resultY = ApplyLinearDeadZone( y, maxValue, deadZoneSize );
+        break;
 
-        case GamePad::DEAD_ZONE_CIRCULAR:
-            {
-                float dist = sqrtf( x*x + y*y );
-                float wanted = ApplyLinearDeadZone( dist, maxValue, deadZoneSize );
+    case GamePad::DEAD_ZONE_CIRCULAR:
+    {
+        float dist = sqrtf( x*x + y*y );
+        float wanted = ApplyLinearDeadZone( dist, maxValue, deadZoneSize );
 
-                float scale = (wanted > 0.f) ? ( wanted / dist ) : 0.f;
+        float scale = (wanted > 0.f) ? ( wanted / dist ) : 0.f;
 
-                resultX = std::max( -1.f, std::min( x * scale, 1.f ) );
-                resultY = std::max( -1.f, std::min( y * scale, 1.f ) );
-            }
-            break;
-
-        default: // GamePad::DEAD_ZONE_NONE
-            resultX = ApplyLinearDeadZone( x, maxValue, 0 );
-            resultY = ApplyLinearDeadZone( y, maxValue, 0 );
-            break;
-        }
+        resultX = std::max( -1.f, std::min( x * scale, 1.f ) );
+        resultY = std::max( -1.f, std::min( y * scale, 1.f ) );
     }
+    break;
+
+    default: // GamePad::DEAD_ZONE_NONE
+        resultX = ApplyLinearDeadZone( x, maxValue, 0 );
+        resultY = ApplyLinearDeadZone( y, maxValue, 0 );
+        break;
+    }
+}
 }
 
 
@@ -95,7 +95,7 @@ public:
         using namespace Microsoft::WRL;
         using namespace Microsoft::WRL::Wrappers;
         using namespace ABI::Windows::Foundation;
-        
+
         mAddedToken.value = 0;
         mRemovedToken.value = 0;
 
@@ -209,7 +209,7 @@ public:
 
                     state.triggers.left = static_cast<float>(reading.LeftTrigger);
                     state.triggers.right = static_cast<float>(reading.RightTrigger);
-                     
+
                     return;
                 }
             }
@@ -531,7 +531,7 @@ public:
         using namespace Microsoft::WRL;
         using namespace Microsoft::WRL::Wrappers;
         using namespace ABI::Windows::Foundation;
-        
+
         mAddedToken.value = 0;
         mRemovedToken.value = 0;
         mUserParingToken.value = 0;
@@ -636,7 +636,7 @@ public:
 
                     state.triggers.left = reading.LeftTrigger;
                     state.triggers.right = reading.RightTrigger;
-                     
+
                     return;
                 }
             }
@@ -691,7 +691,7 @@ public:
                 }
                 else
                     caps.id = 0;
-                
+
                 return;
             }
         }
@@ -992,7 +992,7 @@ public:
                     state.triggers.left = ApplyLinearDeadZone( float(xstate.Gamepad.bLeftTrigger), 255.f, float(XINPUT_GAMEPAD_TRIGGER_THRESHOLD) );
                     state.triggers.right = ApplyLinearDeadZone( float(xstate.Gamepad.bRightTrigger), 255.f, float(XINPUT_GAMEPAD_TRIGGER_THRESHOLD) );
                 }
-            
+
                 ApplyStickDeadZone( float(xstate.Gamepad.sThumbLX), float(xstate.Gamepad.sThumbLY),
                                     deadZoneMode, 32767.f, float(XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE),
                                     state.thumbSticks.leftX, state.thumbSticks.leftY );
@@ -1208,7 +1208,7 @@ GamePad::GamePad()
 
 // Move constructor.
 GamePad::GamePad(GamePad&& moveFrom)
-  : pImpl(std::move(moveFrom.pImpl))
+    : pImpl(std::move(moveFrom.pImpl))
 {
     pImpl->mOwner = this;
 }

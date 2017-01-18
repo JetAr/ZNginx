@@ -1,4 +1,4 @@
-//*********************************************************
+﻿//*********************************************************
 //
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
@@ -62,7 +62,7 @@ BOOL STDMETHODCALLTYPE CD3DX12AffinityCommandList::AssertResourceState(
 HRESULT STDMETHODCALLTYPE CD3DX12AffinityCommandList::SetFeatureMask(
     D3D12_DEBUG_FEATURE Mask)
 {
-    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+    for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
     {
         if (((1 << i) & mAffinityMask) != 0)
         {

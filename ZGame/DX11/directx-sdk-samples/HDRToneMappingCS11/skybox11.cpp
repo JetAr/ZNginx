@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------------
 // File: skybox11.cpp
 //
 // Desc: Encapsulation of skybox geometry and textures
@@ -26,7 +26,7 @@ const D3D11_INPUT_ELEMENT_DESC g_aVertexLayout[] =
 CSkybox11::CSkybox11() :
     m_pEnvironmentMap11(nullptr),
     m_pEnvironmentRV11(nullptr),
-     m_pd3dDevice11(nullptr),
+    m_pd3dDevice11(nullptr),
     m_pVertexShader(nullptr),
     m_pPixelShader(nullptr),
     m_pSam(nullptr),
@@ -40,11 +40,11 @@ CSkybox11::CSkybox11() :
 
 
 //--------------------------------------------------------------------------------------
-HRESULT CSkybox11::OnD3D11CreateDevice( ID3D11Device* pd3dDevice, float fSize, 
+HRESULT CSkybox11::OnD3D11CreateDevice( ID3D11Device* pd3dDevice, float fSize,
                                         ID3D11Texture2D* pCubeTexture, ID3D11ShaderResourceView* pCubeRV )
 {
     HRESULT hr;
-    
+
     m_pd3dDevice11 = pd3dDevice;
     m_fSize = fSize;
     m_pEnvironmentMap11 = pCubeTexture;
@@ -65,7 +65,7 @@ HRESULT CSkybox11::OnD3D11CreateDevice( ID3D11Device* pd3dDevice, float fSize,
 
     // Create an input layout
     V_RETURN( pd3dDevice->CreateInputLayout( g_aVertexLayout, 1, pBlobVS->GetBufferPointer(),
-                                             pBlobVS->GetBufferSize(), &m_pVertexLayout11 ) );
+              pBlobVS->GetBufferSize(), &m_pVertexLayout11 ) );
     DXUT_SetDebugName( m_pVertexLayout11, "Primary" );
 
     SAFE_RELEASE( pBlobVS );
@@ -87,7 +87,7 @@ HRESULT CSkybox11::OnD3D11CreateDevice( ID3D11Device* pd3dDevice, float fSize,
     SamDesc.BorderColor[0] = SamDesc.BorderColor[1] = SamDesc.BorderColor[2] = SamDesc.BorderColor[3] = 0;
     SamDesc.MinLOD = 0;
     SamDesc.MaxLOD = D3D11_FLOAT32_MAX;
-    V_RETURN( pd3dDevice->CreateSamplerState( &SamDesc, &m_pSam ) );  
+    V_RETURN( pd3dDevice->CreateSamplerState( &SamDesc, &m_pSam ) );
     DXUT_SetDebugName( m_pSam, "Primary" );
 
     // Setup constant buffer
@@ -99,7 +99,7 @@ HRESULT CSkybox11::OnD3D11CreateDevice( ID3D11Device* pd3dDevice, float fSize,
     Desc.ByteWidth = sizeof( CB_VS_PER_OBJECT );
     V_RETURN( pd3dDevice->CreateBuffer( &Desc, nullptr, &m_pcbVSPerObject ) );
     DXUT_SetDebugName( m_pcbVSPerObject, "CB_VS_PER_OBJECT" );
-    
+
     // Depth stencil state
     D3D11_DEPTH_STENCIL_DESC DSDesc;
     ZeroMemory( &DSDesc, sizeof( D3D11_DEPTH_STENCIL_DESC ) );
@@ -127,12 +127,12 @@ void CSkybox11::OnD3D11ResizedSwapChain( const DXGI_SURFACE_DESC* pBackBufferSur
     if ( !pVertex )
         return;
 
-    // Map texels to pixels 
+    // Map texels to pixels
     float fHighW = -1.0f - ( 1.0f / ( float )pBackBufferSurfaceDesc->Width );
     float fHighH = -1.0f - ( 1.0f / ( float )pBackBufferSurfaceDesc->Height );
     float fLowW = 1.0f + ( 1.0f / ( float )pBackBufferSurfaceDesc->Width );
     float fLowH = 1.0f + ( 1.0f / ( float )pBackBufferSurfaceDesc->Height );
-    
+
     pVertex[0].pos = XMFLOAT4( fLowW, fLowH, 1.0f, 1.0f );
     pVertex[1].pos = XMFLOAT4( fLowW, fHighH, 1.0f, 1.0f );
     pVertex[2].pos = XMFLOAT4( fHighW, fLowH, 1.0f, 1.0f );
@@ -145,13 +145,13 @@ void CSkybox11::OnD3D11ResizedSwapChain( const DXGI_SURFACE_DESC* pBackBufferSur
     vbdesc.Usage = D3D11_USAGE_IMMUTABLE;
     vbdesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     vbdesc.CPUAccessFlags = 0;
-    vbdesc.MiscFlags = 0;    
+    vbdesc.MiscFlags = 0;
 
     D3D11_SUBRESOURCE_DATA InitData;
-    InitData.pSysMem = pVertex;    
+    InitData.pSysMem = pVertex;
     V( m_pd3dDevice11->CreateBuffer( &vbdesc, &InitData, &m_pVB11 ) );
     DXUT_SetDebugName( m_pVB11, "SkyBox" );
-    SAFE_DELETE_ARRAY( pVertex ); 
+    SAFE_DELETE_ARRAY( pVertex );
 }
 
 
@@ -159,7 +159,7 @@ void CSkybox11::OnD3D11ResizedSwapChain( const DXGI_SURFACE_DESC* pBackBufferSur
 void CSkybox11::D3D11Render( CXMMATRIX mWorldViewProj, ID3D11DeviceContext* pd3dImmediateContext )
 {
     HRESULT hr;
-    
+
     pd3dImmediateContext->IASetInputLayout( m_pVertexLayout11 );
 
     UINT uStrides = sizeof( SKYBOX_VERTEX );
@@ -174,7 +174,7 @@ void CSkybox11::D3D11Render( CXMMATRIX mWorldViewProj, ID3D11DeviceContext* pd3d
 
     D3D11_MAPPED_SUBRESOURCE MappedResource;
     V( pd3dImmediateContext->Map( m_pcbVSPerObject, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedResource ) );
-    auto pVSPerObject = reinterpret_cast<CB_VS_PER_OBJECT*>( MappedResource.pData ); 
+    auto pVSPerObject = reinterpret_cast<CB_VS_PER_OBJECT*>( MappedResource.pData );
     XMMATRIX m = XMMatrixInverse( nullptr, mWorldViewProj );
     XMStoreFloat4x4( &pVSPerObject->m_WorldViewProj, m );
     pd3dImmediateContext->Unmap( m_pcbVSPerObject, 0 );

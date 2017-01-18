@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
 // THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
@@ -8,7 +8,7 @@
 //
 // Developed by Minigraph
 //
-// Author:  James Stanard 
+// Author:  James Stanard
 //
 
 #pragma once
@@ -20,42 +20,42 @@ class CommandContext;
 
 namespace EngineProfiling
 {
-	void Update();
+void Update();
 
-	void BeginBlock(const std::wstring& name, CommandContext* Context = nullptr);
-	void EndBlock(CommandContext* Context = nullptr);
+void BeginBlock(const std::wstring& name, CommandContext* Context = nullptr);
+void EndBlock(CommandContext* Context = nullptr);
 
-	void DisplayFrameRate(TextContext& Text);
-	void DisplayPerfGraph(GraphicsContext& Text);
-	void Display(TextContext& Text, float x, float y, float w, float h);
-	bool IsPaused();
+void DisplayFrameRate(TextContext& Text);
+void DisplayPerfGraph(GraphicsContext& Text);
+void Display(TextContext& Text, float x, float y, float w, float h);
+bool IsPaused();
 }
 
 #ifdef RELEASE
 class ScopedTimer
 {
 public:
-	ScopedTimer(const std::wstring& name) {}
-	ScopedTimer(const std::wstring& name, CommandContext& Context) {}
+    ScopedTimer(const std::wstring& name) {}
+    ScopedTimer(const std::wstring& name, CommandContext& Context) {}
 };
 #else
 class ScopedTimer
 {
 public:
-	ScopedTimer( const std::wstring& name ) : m_Context(nullptr)
-	{
-		EngineProfiling::BeginBlock(name);
-	}
-	ScopedTimer( const std::wstring& name, CommandContext& Context ) : m_Context(&Context)
-	{
-		EngineProfiling::BeginBlock(name, m_Context);
-	}
-	~ScopedTimer()
-	{
-		EngineProfiling::EndBlock(m_Context);
-	}
+    ScopedTimer( const std::wstring& name ) : m_Context(nullptr)
+    {
+        EngineProfiling::BeginBlock(name);
+    }
+    ScopedTimer( const std::wstring& name, CommandContext& Context ) : m_Context(&Context)
+    {
+        EngineProfiling::BeginBlock(name, m_Context);
+    }
+    ~ScopedTimer()
+    {
+        EngineProfiling::EndBlock(m_Context);
+    }
 
 private:
-	CommandContext* m_Context;
+    CommandContext* m_Context;
 };
 #endif

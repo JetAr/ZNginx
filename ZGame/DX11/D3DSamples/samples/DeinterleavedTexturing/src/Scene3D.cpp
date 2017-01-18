@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeinterleavedTexturing\src/Scene3D.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -111,16 +111,16 @@ HRESULT SceneRenderer::OnCreateDevice(ID3D11Device* pd3dDevice)
         InitData.pSysMem = indices;
         V( pd3dDevice->CreateBuffer(&bd, &InitData, &m_IndexBuffer) );
     }
-    
+
     {
         // Create constant buffer
-        static D3D11_BUFFER_DESC desc = 
+        static D3D11_BUFFER_DESC desc =
         {
-             sizeof(m_Constants), //ByteWidth
-             D3D11_USAGE_DEFAULT, //Usage
-             D3D11_BIND_CONSTANT_BUFFER, //BindFlags
-             0, //CPUAccessFlags
-             0  //MiscFlags
+            sizeof(m_Constants), //ByteWidth
+            D3D11_USAGE_DEFAULT, //Usage
+            D3D11_BIND_CONSTANT_BUFFER, //BindFlags
+            0, //CPUAccessFlags
+            0  //MiscFlags
         };
         V( pd3dDevice->CreateBuffer(&desc, NULL, &m_pConstantBuffer) );
     }
@@ -138,41 +138,45 @@ HRESULT SceneRenderer::OnCreateDevice(ID3D11Device* pd3dDevice)
     }
 
     {
-        static D3D11_RASTERIZER_DESC RasterStateDesc = 
-        {D3D11_FILL_SOLID, //FillMode
-         D3D11_CULL_NONE, //CullMode
-         0x0, //FrontCounterClockwise
-         0x0/*0.000000f*/, //DepthBias
-                       0.f, //DepthBiasClamp
-                       0.f, //SlopeScaledDepthBias
-         0x1, //DepthClipEnable
-         0x0, //ScissorEnable
-         0x0, //MultisampleEnable
-         0x0  //AntialiasedLineEnable
+        static D3D11_RASTERIZER_DESC RasterStateDesc =
+        {
+            D3D11_FILL_SOLID, //FillMode
+            D3D11_CULL_NONE, //CullMode
+            0x0, //FrontCounterClockwise
+            0x0/*0.000000f*/, //DepthBias
+            0.f, //DepthBiasClamp
+            0.f, //SlopeScaledDepthBias
+            0x1, //DepthClipEnable
+            0x0, //ScissorEnable
+            0x0, //MultisampleEnable
+            0x0  //AntialiasedLineEnable
         };
         V( pd3dDevice->CreateRasterizerState(&RasterStateDesc, &m_pRasterizerState_NoCull_NoScissor) );
     }
 
     {
-        static D3D11_DEPTH_STENCIL_DESC DepthStencilStateDesc = 
-        {0x0, //DepthEnable
-         D3D11_DEPTH_WRITE_MASK_ZERO, //DepthWriteMask
-         D3D11_COMPARISON_NEVER, //DepthFunc
-         0x0, //StencilEnable
-         0xFF, //StencilReadMask
-         0xFF, //StencilWriteMask
-     
-        {D3D11_STENCIL_OP_KEEP, //StencilFailOp
-         D3D11_STENCIL_OP_KEEP, //StencilDepthFailOp
-         D3D11_STENCIL_OP_KEEP, //StencilPassOp
-         D3D11_COMPARISON_ALWAYS  //StencilFunc
-        }, //FrontFace
-     
-        {D3D11_STENCIL_OP_KEEP, //StencilFailOp
-         D3D11_STENCIL_OP_KEEP, //StencilDepthFailOp
-         D3D11_STENCIL_OP_KEEP, //StencilPassOp
-         D3D11_COMPARISON_ALWAYS  //StencilFunc
-        }  //BackFace
+        static D3D11_DEPTH_STENCIL_DESC DepthStencilStateDesc =
+        {
+            0x0, //DepthEnable
+            D3D11_DEPTH_WRITE_MASK_ZERO, //DepthWriteMask
+            D3D11_COMPARISON_NEVER, //DepthFunc
+            0x0, //StencilEnable
+            0xFF, //StencilReadMask
+            0xFF, //StencilWriteMask
+
+            {
+                D3D11_STENCIL_OP_KEEP, //StencilFailOp
+                D3D11_STENCIL_OP_KEEP, //StencilDepthFailOp
+                D3D11_STENCIL_OP_KEEP, //StencilPassOp
+                D3D11_COMPARISON_ALWAYS  //StencilFunc
+            }, //FrontFace
+
+            {
+                D3D11_STENCIL_OP_KEEP, //StencilFailOp
+                D3D11_STENCIL_OP_KEEP, //StencilDepthFailOp
+                D3D11_STENCIL_OP_KEEP, //StencilPassOp
+                D3D11_COMPARISON_ALWAYS  //StencilFunc
+            }  //BackFace
         };
         V( pd3dDevice->CreateDepthStencilState(&DepthStencilStateDesc, &m_pDepthStencilState_Disabled) );
 

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: CommonStates.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -27,7 +27,7 @@ class CommonStates::Impl
 {
 public:
     Impl(_In_ ID3D11Device* device)
-      : device(device)
+        : device(device)
     { }
 
     HRESULT CreateBlendState(D3D11_BLEND srcBlend, D3D11_BLEND destBlend, _Out_ ID3D11BlendState** pResult);
@@ -151,7 +151,7 @@ HRESULT CommonStates::Impl::CreateSamplerState(D3D11_FILTER filter, D3D11_TEXTUR
     desc.AddressW = addressMode;
 
     desc.MaxAnisotropy = (device->GetFeatureLevel() > D3D_FEATURE_LEVEL_9_1) ? D3D11_MAX_MAXANISOTROPY : 2;
-    
+
     desc.MaxLOD = FLT_MAX;
     desc.ComparisonFunc = D3D11_COMPARISON_NEVER;
 
@@ -170,14 +170,14 @@ HRESULT CommonStates::Impl::CreateSamplerState(D3D11_FILTER filter, D3D11_TEXTUR
 
 // Public constructor.
 CommonStates::CommonStates(_In_ ID3D11Device* device)
-  : pImpl(Impl::instancePool.DemandCreate(device))
+    : pImpl(Impl::instancePool.DemandCreate(device))
 {
 }
 
 
 // Move constructor.
 CommonStates::CommonStates(CommonStates&& moveFrom)
-  : pImpl(std::move(moveFrom.pImpl))
+    : pImpl(std::move(moveFrom.pImpl))
 {
 }
 

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: FirewallInstallHelper.cpp
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -17,14 +17,14 @@
 //#define SHOW_DEBUG_MSGBOXES
 
 //--------------------------------------------------------------------------------------
-// Forward declarations 
+// Forward declarations
 //--------------------------------------------------------------------------------------
 LPTSTR GetPropertyFromMSI( MSIHANDLE hMSI, LPCWSTR szPropName );
 INetFwProfile* GetFirewallProfile();
 
 
 //--------------------------------------------------------------------------------------
-// This stores the install location, generates a instance GUID one hasn't been set, and 
+// This stores the install location, generates a instance GUID one hasn't been set, and
 // sets up the CustomActionData properties for the deferred custom actions
 //--------------------------------------------------------------------------------------
 UINT WINAPI SetMSIFirewallProperties( MSIHANDLE hModule )
@@ -36,7 +36,7 @@ UINT WINAPI SetMSIFirewallProperties( MSIHANDLE hModule )
     WCHAR* szRelativePath = GetPropertyFromMSI( hModule, L"RelativePathToExeForFirewall" );
     WCHAR* szProductCode = GetPropertyFromMSI( hModule, L"ProductCode" );
 
-    // See if the install location property is set.  If it is, use that.  
+    // See if the install location property is set.  If it is, use that.
     // Otherwise, get the property from TARGETDIR
     bool bGotInstallDir = false;
     if( szProductCode )
@@ -52,11 +52,11 @@ UINT WINAPI SetMSIFirewallProperties( MSIHANDLE hModule )
 
     if( szFriendlyName && szRelativePath && szInstallDir )
     {
-        // Set the ARPINSTALLLOCATION property to the install dir so that 
+        // Set the ARPINSTALLLOCATION property to the install dir so that
         // the uninstall custom action can have it when getting the INSTALLPROPERTY_INSTALLLOCATION
         MsiSetPropertyW( hModule, L"ARPINSTALLLOCATION", szInstallDir );
 
-        // Setup the CustomActionData property for the "RollBackAddToFirewall" and 
+        // Setup the CustomActionData property for the "RollBackAddToFirewall" and
         // "RemoveFromExceptionListUsingMSI" deferred custom actions.
         // This should be full path to the exe
         StringCchCopy( strFullPath, 1024, szInstallDir );
@@ -76,7 +76,7 @@ UINT WINAPI SetMSIFirewallProperties( MSIHANDLE hModule )
 #ifdef SHOW_DEBUG_MSGBOXES
     WCHAR sz[1024];
     StringCchPrintf( sz, 1024, L"szFriendlyName='%s' szRelativePath='%s' szInstallDir='%s' strFullPath='%s'",
-            szFriendlyName, szRelativePath, szInstallDir, strFullPath );
+                     szFriendlyName, szRelativePath, szInstallDir, strFullPath );
     MessageBox( NULL, sz, L"SetMSIPropertyOnInstall", MB_OK );
 #endif
 
@@ -172,9 +172,9 @@ STDAPI AddApplicationToExceptionListW( WCHAR* strGameExeFullPath, WCHAR* strFrie
     INetFwProfile* pFwProfile = NULL;
 
 #ifdef SHOW_DEBUG_MSGBOXES
-		WCHAR sz[1024];
-		StringCchPrintf( sz, 1024, L"strFriendlyAppName='%s' strGameExeFullPath='%s'", strFriendlyAppName, strGameExeFullPath );
-		MessageBox( NULL, sz, L"AddApplicationToExceptionListW", MB_OK );
+    WCHAR sz[1024];
+    StringCchPrintf( sz, 1024, L"strFriendlyAppName='%s' strGameExeFullPath='%s'", strFriendlyAppName, strGameExeFullPath );
+    MessageBox( NULL, sz, L"AddApplicationToExceptionListW", MB_OK );
 #endif
 
     if( strGameExeFullPath == NULL || strFriendlyAppName == NULL )
@@ -248,9 +248,9 @@ STDAPI RemoveApplicationFromExceptionListW( WCHAR* strGameExeFullPath )
     INetFwProfile* pFwProfile = NULL;
 
 #ifdef SHOW_DEBUG_MSGBOXES
-		WCHAR sz[1024];
-		StringCchPrintf( sz, 1024, L"strGameExeFullPath='%s'", strGameExeFullPath );
-		MessageBox( NULL, sz, L"RemoveApplicationFromExceptionListW", MB_OK );
+    WCHAR sz[1024];
+    StringCchPrintf( sz, 1024, L"strGameExeFullPath='%s'", strGameExeFullPath );
+    MessageBox( NULL, sz, L"RemoveApplicationFromExceptionListW", MB_OK );
 #endif
 
     if( strGameExeFullPath == NULL )

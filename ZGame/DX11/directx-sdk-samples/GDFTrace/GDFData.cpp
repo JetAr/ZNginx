@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: GDFData.cpp
 //
 // GDFTrace - Game Definition File trace utility
@@ -56,7 +56,7 @@ HRESULT GetGDFData( GDFData* pGDFData, CGDFParse& gdfParse )
 {
     CRatingsDB ratingsDB;
     ratingsDB.LoadDB();
-    
+
     gdfParse.GetGameID( pGDFData->strGameID, MAX_LEN );
     gdfParse.GetName( pGDFData->strName, MAX_NAME );
     gdfParse.GetDescription( pGDFData->strDescription, MAX_DESC );
@@ -106,7 +106,7 @@ HRESULT GetGDFData( GDFData* pGDFData, CGDFParse& gdfParse )
         GDFTask* pGDFTask = &pGDFData->primaryPlayTask;
         pGDFTask->index = 0;
         gdfParse.GetPrimaryPlayTask( pGDFTask->strPathOrLink, MAX_LINK, pGDFTask->strArgs, MAX_PATH, pGDFTask->islink );
-        
+
         for( int iTask=0; iTask < MAX_TASKS; ++iTask )
         {
             GDFTask* pGDFTask2 = &pGDFData->secondaryPlayTasks[ iTask ];

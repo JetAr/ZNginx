@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: audio.cpp
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -99,9 +99,9 @@ HRESULT InitAudio()
 #endif
 
     UINT32 flags = 0;
- #if (_WIN32_WINNT < 0x0602 /*_WIN32_WINNT_WIN8*/) && defined(_DEBUG)
+#if (_WIN32_WINNT < 0x0602 /*_WIN32_WINNT_WIN8*/) && defined(_DEBUG)
     flags |= XAUDIO2_DEBUG_ENGINE;
- #endif
+#endif
     hr = XAudio2Create( &g_audioState.pXAudio2, flags );
     if( FAILED( hr ) )
         return hr;
@@ -110,9 +110,9 @@ HRESULT InitAudio()
     // To see the trace output, you need to view ETW logs for this application:
     //    Go to Control Panel, Administrative Tools, Event Viewer.
     //    View->Show Analytic and Debug Logs.
-    //    Applications and Services Logs / Microsoft / Windows / XAudio2. 
-    //    Right click on Microsoft Windows XAudio2 debug logging, Properties, then Enable Logging, and hit OK 
-    XAUDIO2_DEBUG_CONFIGURATION debug ={0};
+    //    Applications and Services Logs / Microsoft / Windows / XAudio2.
+    //    Right click on Microsoft Windows XAudio2 debug logging, Properties, then Enable Logging, and hit OK
+    XAUDIO2_DEBUG_CONFIGURATION debug = {0};
     debug.TraceMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS;
     debug.BreakMask = XAUDIO2_LOG_ERRORS;
     g_audioState.pXAudio2->SetDebugConfiguration( &debug, 0 );
@@ -177,9 +177,9 @@ HRESULT InitAudio()
     // Create reverb effect
     //
     UINT32 rflags = 0;
- #if (_WIN32_WINNT < 0x0602 /*_WIN32_WINNT_WIN8*/) && defined(_DEBUG)
+#if (_WIN32_WINNT < 0x0602 /*_WIN32_WINNT_WIN8*/) && defined(_DEBUG)
     rflags |= XAUDIO2FX_DEBUG;
- #endif
+#endif
     if( FAILED( hr = XAudio2CreateReverb( &g_audioState.pReverbEffect, rflags ) ) )
     {
         SAFE_RELEASE( g_audioState.pXAudio2 );
@@ -197,8 +197,8 @@ HRESULT InitAudio()
     XAUDIO2_EFFECT_CHAIN effectChain = { 1, effects };
 
     if( FAILED( hr = g_audioState.pXAudio2->CreateSubmixVoice( &g_audioState.pSubmixVoice, 1,
-                                                               nSampleRate, 0, 0,
-                                                               nullptr, &effectChain ) ) )
+                     nSampleRate, 0, 0,
+                     nullptr, &effectChain ) ) )
     {
         SAFE_RELEASE( g_audioState.pXAudio2 );
         SAFE_RELEASE( g_audioState.pReverbEffect );
@@ -223,10 +223,10 @@ HRESULT InitAudio()
     X3DAudioInitialize( dwChannelMask, SPEEDOFSOUND, g_audioState.x3DInstance );
 
     g_audioState.vListenerPos.x =
-    g_audioState.vListenerPos.y = 
-    g_audioState.vListenerPos.z =
-    g_audioState.vEmitterPos.x = 
-    g_audioState.vEmitterPos.y = 0.f;
+        g_audioState.vListenerPos.y =
+            g_audioState.vListenerPos.z =
+                g_audioState.vEmitterPos.x =
+                    g_audioState.vEmitterPos.y = 0.f;
 
     g_audioState.vEmitterPos.z = float( ZMAX );
 
@@ -243,12 +243,12 @@ HRESULT InitAudio()
     g_audioState.listener.Position.z = g_audioState.vListenerPos.z;
 
     g_audioState.listener.OrientFront.x =
-    g_audioState.listener.OrientFront.y = 
-    g_audioState.listener.OrientTop.x = 
-    g_audioState.listener.OrientTop.z = 0.f;
+        g_audioState.listener.OrientFront.y =
+            g_audioState.listener.OrientTop.x =
+                g_audioState.listener.OrientTop.z = 0.f;
 
-    g_audioState.listener.OrientFront.z = 
-    g_audioState.listener.OrientTop.y = 1.f;
+    g_audioState.listener.OrientFront.z =
+        g_audioState.listener.OrientTop.y = 1.f;
 
     g_audioState.listener.pCone = (X3DAUDIO_CONE*)&Listener_DirectionalCone;
 
@@ -274,12 +274,12 @@ HRESULT InitAudio()
     g_audioState.emitter.Position.z = g_audioState.vEmitterPos.z;
 
     g_audioState.emitter.OrientFront.x =
-    g_audioState.emitter.OrientFront.y = 
-    g_audioState.emitter.OrientTop.x = 
-    g_audioState.emitter.OrientTop.z = 0.f;
+        g_audioState.emitter.OrientFront.y =
+            g_audioState.emitter.OrientTop.x =
+                g_audioState.emitter.OrientTop.z = 0.f;
 
-    g_audioState.emitter.OrientFront.z = 
-    g_audioState.emitter.OrientTop.y = 1.f;
+    g_audioState.emitter.OrientFront.z =
+        g_audioState.emitter.OrientTop.y = 1.f;
 
     g_audioState.emitter.ChannelCount = INPUTCHANNELS;
     g_audioState.emitter.ChannelRadius = 1.0f;
@@ -361,7 +361,7 @@ HRESULT PrepareAudio( _In_z_ const LPWSTR wavname )
 
     // create the source voice
     V_RETURN( g_audioState.pXAudio2->CreateSourceVoice( &g_audioState.pSourceVoice, pwfx, 0,
-                                                        2.0f, nullptr, &sendList ) );
+              2.0f, nullptr, &sendList ) );
 
     // Submit the wave sample data using an XAUDIO2_BUFFER structure
     XAUDIO2_BUFFER buffer = {0};
@@ -392,7 +392,7 @@ HRESULT UpdateAudio( float fElapsedTime )
     {
         // Calculate listener orientation in x-z plane
         if( g_audioState.vListenerPos.x != g_audioState.listener.Position.x
-            || g_audioState.vListenerPos.z != g_audioState.listener.Position.z )
+                || g_audioState.vListenerPos.z != g_audioState.listener.Position.z )
         {
             XMVECTOR v1 = XMLoadFloat3( &g_audioState.vListenerPos );
             XMVECTOR v2 = XMVectorSet( g_audioState.listener.Position.x, g_audioState.listener.Position.y, g_audioState.listener.Position.z, 0.f  );
@@ -462,8 +462,8 @@ HRESULT UpdateAudio( float fElapsedTime )
         }
 
         DWORD dwCalcFlags = X3DAUDIO_CALCULATE_MATRIX | X3DAUDIO_CALCULATE_DOPPLER
-            | X3DAUDIO_CALCULATE_LPF_DIRECT | X3DAUDIO_CALCULATE_LPF_REVERB
-            | X3DAUDIO_CALCULATE_REVERB;
+                            | X3DAUDIO_CALCULATE_LPF_DIRECT | X3DAUDIO_CALCULATE_LPF_REVERB
+                            | X3DAUDIO_CALCULATE_REVERB;
         if (g_audioState.fUseRedirectToLFE)
         {
             // On devices with an LFE channel, allow the mono source data

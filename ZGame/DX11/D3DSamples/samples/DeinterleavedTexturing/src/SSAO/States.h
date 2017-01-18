@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeinterleavedTexturing\src\SSAO/States.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -53,8 +53,8 @@ public:
         , m_pSamplerState_PointClamp(NULL)
         , m_pSamplerState_LinearClamp(NULL)
         , m_pSamplerState_PointWrap(NULL)
-      {
-      }
+    {
+    }
 
     void Create(ID3D11Device* pD3DDevice);
     void Release();

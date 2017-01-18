@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: Tutorial11.cpp
 //
 // Advanced Vertex Shader
@@ -61,7 +61,7 @@ ID3DX11EffectScalarVariable*        g_pTimeVariable = nullptr;
 
 
 //--------------------------------------------------------------------------------------
-// Forward declarations 
+// Forward declarations
 //--------------------------------------------------------------------------------------
 void RenderText();
 void InitApp();
@@ -102,8 +102,8 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG
     // Set the D3DCOMPILE_DEBUG flag to embed debug information in the shaders.
-    // Setting this flag improves the shader debugging experience, but still allows 
-    // the shaders to be optimized and to run exactly the way they will run in 
+    // Setting this flag improves the shader debugging experience, but still allows
+    // the shaders to be optimized and to run exactly the way they will run in
     // the release configuration of this program.
     dwShaderFlags |= D3DCOMPILE_DEBUG;
 
@@ -127,7 +127,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     SAFE_RELEASE( pEffectBuffer );
     if ( FAILED(hr) )
         return hr;
-    
+
 #endif
 
     // Obtain the technique
@@ -157,7 +157,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     D3DX11_PASS_DESC PassDesc;
     V_RETURN( g_pTechnique->GetPassByIndex( 0 )->GetDesc( &PassDesc ) );
     V_RETURN( pd3dDevice->CreateInputLayout( layout, numElements, PassDesc.pIAInputSignature,
-                                             PassDesc.IAInputSignatureSize, &g_pVertexLayout ) );
+              PassDesc.IAInputSignatureSize, &g_pVertexLayout ) );
 
     // Set the input layout
     pd3dImmediateContext->IASetInputLayout( g_pVertexLayout );
@@ -181,7 +181,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 // Create any D3D11 resources that depend on the back buffer
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                          const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
     HRESULT hr;
 
@@ -208,7 +208,7 @@ HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapCha
 //--------------------------------------------------------------------------------------
 void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext )
 {
-    // Update the camera's position based on user input 
+    // Update the camera's position based on user input
     g_Camera.FrameMove( fElapsedTime );
 
     if( g_bSpinning )
@@ -324,7 +324,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11ResizedSwapChain 
+// Release D3D11 resources created in OnD3D11ResizedSwapChain
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 {
@@ -333,7 +333,7 @@ void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11CreateDevice 
+// Release D3D11 resources created in OnD3D11CreateDevice
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
 {
@@ -391,8 +391,8 @@ void CALLBACK OnKeyboard( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserC
     {
         switch( nChar )
         {
-            case VK_F1: // Change as needed                
-                break;
+        case VK_F1: // Change as needed
+            break;
         }
     }
 }
@@ -405,36 +405,36 @@ void CALLBACK OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, v
 {
     switch( nControlID )
     {
-        case IDC_TOGGLEFULLSCREEN:
-            DXUTToggleFullScreen();
-            break;
-        case IDC_TOGGLEREF:
-            DXUTToggleREF();
-            break;
-        case IDC_CHANGEDEVICE:
-            g_SettingsDlg.SetActive( !g_SettingsDlg.IsActive() );
-            break;
-        case IDC_TOGGLEWARP:
-            DXUTToggleWARP();
-            break;
+    case IDC_TOGGLEFULLSCREEN:
+        DXUTToggleFullScreen();
+        break;
+    case IDC_TOGGLEREF:
+        DXUTToggleREF();
+        break;
+    case IDC_CHANGEDEVICE:
+        g_SettingsDlg.SetActive( !g_SettingsDlg.IsActive() );
+        break;
+    case IDC_TOGGLEWARP:
+        DXUTToggleWARP();
+        break;
 
-        case IDC_TOGGLESPIN:
-        {
-            g_bSpinning = g_SampleUI.GetCheckBox( IDC_TOGGLESPIN )->GetChecked();
-            break;
-        }
+    case IDC_TOGGLESPIN:
+    {
+        g_bSpinning = g_SampleUI.GetCheckBox( IDC_TOGGLESPIN )->GetChecked();
+        break;
+    }
 
-        case IDC_PUFF_SCALE:
-        {
-            g_fModelWaviness = ( float )( g_SampleUI.GetSlider( IDC_PUFF_SCALE )->GetValue() * 0.01f );
+    case IDC_PUFF_SCALE:
+    {
+        g_fModelWaviness = ( float )( g_SampleUI.GetSlider( IDC_PUFF_SCALE )->GetValue() * 0.01f );
 
-            WCHAR sz[100];
-            swprintf_s( sz, 100, L"Waviness: %0.2f", g_fModelWaviness );
-            g_SampleUI.GetStatic( IDC_PUFF_STATIC )->SetText( sz );
+        WCHAR sz[100];
+        swprintf_s( sz, 100, L"Waviness: %0.2f", g_fModelWaviness );
+        g_SampleUI.GetStatic( IDC_PUFF_STATIC )->SetText( sz );
 
-            g_pWavinessVariable->SetFloat( g_fModelWaviness );
-            break;
-        }
+        g_pWavinessVariable->SetFloat( g_fModelWaviness );
+        break;
+    }
     }
 }
 
@@ -495,7 +495,7 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 
 //--------------------------------------------------------------------------------------
-// Initialize the app 
+// Initialize the app
 //--------------------------------------------------------------------------------------
 void InitApp()
 {
@@ -506,13 +506,15 @@ void InitApp()
     g_HUD.Init( &g_DialogResourceManager );
     g_SampleUI.Init( &g_DialogResourceManager );
 
-    g_HUD.SetCallback( OnGUIEvent ); int iY = 10;
+    g_HUD.SetCallback( OnGUIEvent );
+    int iY = 10;
     g_HUD.AddButton( IDC_TOGGLEFULLSCREEN, L"Toggle full screen", 0, iY, 170, 22 );
     g_HUD.AddButton( IDC_CHANGEDEVICE, L"Change device (F2)", 0, iY += 26, 170, 22, VK_F2 );
     g_HUD.AddButton( IDC_TOGGLEREF, L"Toggle REF (F3)", 0, iY += 26, 170, 22, VK_F3 );
     g_HUD.AddButton( IDC_TOGGLEWARP, L"Toggle WARP (F4)", 0, iY += 26, 170, 22, VK_F4 );
 
-    g_SampleUI.SetCallback( OnGUIEvent ); iY = 10;
+    g_SampleUI.SetCallback( OnGUIEvent );
+    iY = 10;
 
     WCHAR sz[100];
     iY += 24;

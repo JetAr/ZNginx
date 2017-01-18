@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        src\nvsimplemesh/NvSimpleMesh.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -47,7 +47,7 @@
 // XInput includes
 #include <xinput.h>
 
-// HRESULT translation for Direct3D and other APIs 
+// HRESULT translation for Direct3D and other APIs
 #include <dxerr.h>
 
 #ifndef V
@@ -114,7 +114,7 @@ inline ID3D11ShaderResourceView * UtilCreateTexture2DSRV(ID3D11Device *pd3dDevic
 HRESULT NvSimpleMesh::Initialize(ID3D11Device *pd3dDevice,NvSimpleRawMesh *pRawMesh)
 {
     HRESULT hr = S_OK;
-    
+
     if(pRawMesh)
     {
         memcpy(&Extents,pRawMesh->GetExtents(),3*sizeof(float));
@@ -192,7 +192,7 @@ void NvSimpleMesh::SetupDraw(ID3D11DeviceContext *pd3dContext, int iDiffuseTexSl
 
 void NvSimpleMesh::Draw(ID3D11DeviceContext *pd3dContext)
 {
-    if(!pVB) 
+    if(!pVB)
     {
         return;
     }
@@ -223,7 +223,7 @@ HRESULT NvAggregateSimpleMesh::Initialize(ID3D11Device *pd3dDevice,NvSimpleMeshL
     if(pMeshLoader->pMeshes == NULL) return E_FAIL;
     NumSimpleMeshes = pMeshLoader->NumMeshes;
     pSimpleMeshes = new NvSimpleMesh[NumSimpleMeshes];
-    for(int iMesh=0;iMesh<NumSimpleMeshes;iMesh++)
+    for(int iMesh=0; iMesh<NumSimpleMeshes; iMesh++)
     {
         V_RETURN(pSimpleMeshes[iMesh].Initialize(pd3dDevice,&pMeshLoader->pMeshes[iMesh]));
     }
@@ -235,7 +235,7 @@ HRESULT NvAggregateSimpleMesh::InitializeWithInputLayout(ID3D11Device *pd3dDevic
     if(pMeshLoader->pMeshes == NULL) return E_FAIL;
     NumSimpleMeshes = pMeshLoader->NumMeshes;
     pSimpleMeshes = new NvSimpleMesh[NumSimpleMeshes];
-    for(int iMesh=0;iMesh<NumSimpleMeshes;iMesh++)
+    for(int iMesh=0; iMesh<NumSimpleMeshes; iMesh++)
     {
         V_RETURN(pSimpleMeshes[iMesh].InitializeWithInputLayout(pd3dDevice,&pMeshLoader->pMeshes[iMesh],pIAsig,pIAsigSize));
     }
@@ -245,7 +245,7 @@ HRESULT NvAggregateSimpleMesh::InitializeWithInputLayout(ID3D11Device *pd3dDevic
 void NvAggregateSimpleMesh::Release()
 {
     if(pSimpleMeshes == NULL) return;
-    for(int iMesh=0;iMesh<NumSimpleMeshes;iMesh++)
+    for(int iMesh=0; iMesh<NumSimpleMeshes; iMesh++)
     {
         pSimpleMeshes[iMesh].Release();
     }
@@ -254,7 +254,7 @@ void NvAggregateSimpleMesh::Release()
 void NvAggregateSimpleMesh::Draw(ID3D11DeviceContext *pd3dContext, int iDiffuseTexSlot, int iNormalsTexSlot)
 {
     if(pSimpleMeshes == NULL) return;
-    for(int iMesh=0;iMesh<NumSimpleMeshes;iMesh++)
+    for(int iMesh=0; iMesh<NumSimpleMeshes; iMesh++)
     {
         pSimpleMeshes[iMesh].SetupDraw(pd3dContext,iDiffuseTexSlot,iNormalsTexSlot);
         pSimpleMeshes[iMesh].Draw(pd3dContext);

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: TessellatorCS40.cpp
 //
 // Demos how to use Compute Shader 4.0 to do adaptive tessellation schemes
@@ -156,7 +156,7 @@ CTessellator::CTessellator() :
 //--------------------------------------------------------------------------------------
 CTessellator::~CTessellator()
 {
-    DeleteDeviceObjects();    
+    DeleteDeviceObjects();
 }
 
 
@@ -199,9 +199,9 @@ HRESULT CTessellator::OnD3D11CreateDevice( ID3D11Device* pd3dDevice )
 void CTessellator::OnDestroyDevice()
 {
     s_ScanCS.OnD3D11DestroyDevice();
-    
+
     DeleteDeviceObjects();
-    
+
     SAFE_RELEASE( s_pCSReadBackBuf );
     SAFE_RELEASE( s_pEdgeFactorCSCB );
     SAFE_RELEASE( s_pLookupTableCSCB );
@@ -236,15 +236,16 @@ HRESULT CTessellator::OnD3D11ResizedSwapChain( const DXGI_SURFACE_DESC* pBackBuf
 
 
 //--------------------------------------------------------------------------------------
-HRESULT CTessellator::CreateCSForPartitioningMode( PARTITIONING_MODE mode, 
-                                                   ID3D11ComputeShader** pNumVerticesIndicesCS, ID3D11ComputeShader** pTessVerticesCS, ID3D11ComputeShader** pTessIndicesCS )
+HRESULT CTessellator::CreateCSForPartitioningMode( PARTITIONING_MODE mode,
+        ID3D11ComputeShader** pNumVerticesIndicesCS, ID3D11ComputeShader** pTessVerticesCS, ID3D11ComputeShader** pTessIndicesCS )
 {
     HRESULT hr;
-    
-    LPCSTR define_map[] = { "D3D11_TESSELLATOR_PARTITIONING_INTEGER", "D3D11_TESSELLATOR_PARTITIONING_POW2", 
-                            "D3D11_TESSELLATOR_PARTITIONING_FRACTIONAL_ODD", "D3D11_TESSELLATOR_PARTITIONING_FRACTIONAL_EVEN" };
 
-    D3D_SHADER_MACRO define[] = 
+    LPCSTR define_map[] = { "D3D11_TESSELLATOR_PARTITIONING_INTEGER", "D3D11_TESSELLATOR_PARTITIONING_POW2",
+                            "D3D11_TESSELLATOR_PARTITIONING_FRACTIONAL_ODD", "D3D11_TESSELLATOR_PARTITIONING_FRACTIONAL_EVEN"
+                          };
+
+    D3D_SHADER_MACRO define[] =
     {
         { "g_partitioning", define_map[mode] },
         { nullptr, nullptr }
@@ -271,14 +272,14 @@ HRESULT CTessellator::CreateCSForPartitioningMode( PARTITIONING_MODE mode,
 
 
 //--------------------------------------------------------------------------------------
-HRESULT CTessellator::SetBaseMesh( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, 
+HRESULT CTessellator::SetBaseMesh( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext,
                                    INT nVertices,
                                    ID3D11Buffer* pBaseVB )
 {
     DeleteDeviceObjects();
 
     HRESULT hr;
-    
+
     m_pd3dDevice = pd3dDevice;
     m_pd3dImmediateContext = pd3dImmediateContext;
     m_nVertices = nVertices;
@@ -286,7 +287,7 @@ HRESULT CTessellator::SetBaseMesh( ID3D11Device* pd3dDevice, ID3D11DeviceContext
     if ( !s_pEdgeFactorCS )
     {
         SetPartitioningMode( PARTITIONING_MODE_FRACTIONAL_EVEN );
-        
+
         ID3DBlob* pBlobCS = nullptr;
         V_RETURN( DXUTCompileFromFile( L"TessellatorCS40_EdgeFactorCS.hlsl", nullptr, "CSEdgeFactor", "cs_4_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &pBlobCS ) );
         V_RETURN( pd3dDevice->CreateComputeShader( pBlobCS->GetBufferPointer(), pBlobCS->GetBufferSize(), nullptr, &s_pEdgeFactorCS ) );
@@ -303,27 +304,27 @@ HRESULT CTessellator::SetBaseMesh( ID3D11Device* pd3dDevice, ID3D11DeviceContext
         SAFE_RELEASE( pBlobCS );
         DXUT_SetDebugName( s_pScatterIndexTriIDIndexIDCS, "CSScatterIndexTriIDIndexID" );
 
-        V_RETURN( CreateCSForPartitioningMode( PARTITIONING_MODE_INTEGER, 
-                                               &s_pNumVerticesIndicesCSs[PARTITIONING_MODE_INTEGER], 
-                                               &s_pTessVerticesCSs[PARTITIONING_MODE_INTEGER], 
+        V_RETURN( CreateCSForPartitioningMode( PARTITIONING_MODE_INTEGER,
+                                               &s_pNumVerticesIndicesCSs[PARTITIONING_MODE_INTEGER],
+                                               &s_pTessVerticesCSs[PARTITIONING_MODE_INTEGER],
                                                &s_pTessIndicesCSs[PARTITIONING_MODE_INTEGER] ) );
-        V_RETURN( CreateCSForPartitioningMode( PARTITIONING_MODE_POW2, 
-                                               &s_pNumVerticesIndicesCSs[PARTITIONING_MODE_POW2], 
-                                               &s_pTessVerticesCSs[PARTITIONING_MODE_POW2], 
+        V_RETURN( CreateCSForPartitioningMode( PARTITIONING_MODE_POW2,
+                                               &s_pNumVerticesIndicesCSs[PARTITIONING_MODE_POW2],
+                                               &s_pTessVerticesCSs[PARTITIONING_MODE_POW2],
                                                &s_pTessIndicesCSs[PARTITIONING_MODE_POW2] ) );
-        V_RETURN( CreateCSForPartitioningMode( PARTITIONING_MODE_FRACTIONAL_ODD, 
-                                               &s_pNumVerticesIndicesCSs[PARTITIONING_MODE_FRACTIONAL_ODD], 
-                                               &s_pTessVerticesCSs[PARTITIONING_MODE_FRACTIONAL_ODD], 
+        V_RETURN( CreateCSForPartitioningMode( PARTITIONING_MODE_FRACTIONAL_ODD,
+                                               &s_pNumVerticesIndicesCSs[PARTITIONING_MODE_FRACTIONAL_ODD],
+                                               &s_pTessVerticesCSs[PARTITIONING_MODE_FRACTIONAL_ODD],
                                                &s_pTessIndicesCSs[PARTITIONING_MODE_FRACTIONAL_ODD] ) );
-        V_RETURN( CreateCSForPartitioningMode( PARTITIONING_MODE_FRACTIONAL_EVEN, 
-                                               &s_pNumVerticesIndicesCSs[PARTITIONING_MODE_FRACTIONAL_EVEN], 
-                                               &s_pTessVerticesCSs[PARTITIONING_MODE_FRACTIONAL_EVEN], 
+        V_RETURN( CreateCSForPartitioningMode( PARTITIONING_MODE_FRACTIONAL_EVEN,
+                                               &s_pNumVerticesIndicesCSs[PARTITIONING_MODE_FRACTIONAL_EVEN],
+                                               &s_pTessVerticesCSs[PARTITIONING_MODE_FRACTIONAL_EVEN],
                                                &s_pTessIndicesCSs[PARTITIONING_MODE_FRACTIONAL_EVEN] ) );
 
 
         // constant buffers used to pass parameters to CS
         D3D11_BUFFER_DESC Desc;
-        
+
         int lut[(sizeof(insidePointIndex) + sizeof(outsidePointIndex)) / sizeof(int)];
         memcpy(&lut[0], &insidePointIndex[0][0][0], sizeof(insidePointIndex));
         memcpy(&lut[sizeof(insidePointIndex) / sizeof(int)], &outsidePointIndex[0][0][0], sizeof(outsidePointIndex));
@@ -359,7 +360,7 @@ HRESULT CTessellator::SetBaseMesh( ID3D11Device* pd3dDevice, ID3D11DeviceContext
         DXUT_SetDebugName( s_pCSReadBackBuf, "Read Back Buffer" );
     }
 
-    // shader resource view of base mesh vertex data 
+    // shader resource view of base mesh vertex data
     D3D11_SHADER_RESOURCE_VIEW_DESC DescRV;
     ZeroMemory( &DescRV, sizeof( DescRV ) );
     DescRV.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -377,7 +378,7 @@ HRESULT CTessellator::SetBaseMesh( ID3D11Device* pd3dDevice, ID3D11DeviceContext
     desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
     desc.StructureByteStride = sizeof(float) * 4;
     desc.Usage = D3D11_USAGE_DEFAULT;
-    V_RETURN( pd3dDevice->CreateBuffer(&desc, nullptr, &m_pEdgeFactorBuf) );    
+    V_RETURN( pd3dDevice->CreateBuffer(&desc, nullptr, &m_pEdgeFactorBuf) );
     DXUT_SetDebugName( m_pEdgeFactorBuf, "Edge Tessellation Factor" );
 
     // shader resource view of the buffer above
@@ -398,7 +399,7 @@ HRESULT CTessellator::SetBaseMesh( ID3D11Device* pd3dDevice, ID3D11DeviceContext
     DescUAV.Buffer.NumElements = m_nVertices / 3;
     V_RETURN( pd3dDevice->CreateUnorderedAccessView( m_pEdgeFactorBuf, &DescUAV, &m_pEdgeFactorBufUAV ) );
     DXUT_SetDebugName( m_pEdgeFactorBufUAV, "Edge Tessellation Factor UAV" );
-    
+
     // Buffers for scan
     desc.ByteWidth = sizeof(INT)* 2 * m_nVertices / 3;
     desc.StructureByteStride = sizeof(INT)* 2;
@@ -454,7 +455,7 @@ ID3D11Buffer* CreateAndCopyToDebugBuf( ID3D11Device* pDevice, ID3D11DeviceContex
 //--------------------------------------------------------------------------------------
 void RunComputeShader( ID3D11DeviceContext* pd3dImmediateContext,
                        ID3D11ComputeShader* pComputeShader,
-                       UINT nNumViews, ID3D11ShaderResourceView** pShaderResourceViews, 
+                       UINT nNumViews, ID3D11ShaderResourceView** pShaderResourceViews,
                        ID3D11Buffer* pNeverChangesCBCS,
                        ID3D11Buffer* pCBCS, void* pCSData, DWORD dwNumDataBytes,
                        ID3D11UnorderedAccessView* pUnorderedAccessView,
@@ -466,7 +467,7 @@ void RunComputeShader( ID3D11DeviceContext* pd3dImmediateContext,
     if ( pCBCS )
     {
         pd3dImmediateContext->UpdateSubresource(pCBCS, D3D11CalcSubresource(0, 0, 1), nullptr, pCSData,
-                        dwNumDataBytes, dwNumDataBytes);
+                                                dwNumDataBytes, dwNumDataBytes);
     }
     if ( pNeverChangesCBCS && pCBCS )
     {
@@ -497,11 +498,11 @@ void RunComputeShader( ID3D11DeviceContext* pd3dImmediateContext,
 
 //--------------------------------------------------------------------------------------
 void CTessellator::PerEdgeTessellation( CXMMATRIX matWVP,
-                                        ID3D11Buffer** ppTessedVerticesBuf, ID3D11Buffer** ppTessedIndicesBuf, 
+                                        ID3D11Buffer** ppTessedVerticesBuf, ID3D11Buffer** ppTessedIndicesBuf,
                                         DWORD* num_tessed_vertices, DWORD* num_tessed_indices )
 {
     HRESULT hr;
-    
+
     // Update per-edge tessellation factors
     {
         CB_EdgeFactorCS cbCS;
@@ -510,14 +511,14 @@ void CTessellator::PerEdgeTessellation( CXMMATRIX matWVP,
         cbCS.num_triangles = m_nVertices/3;
 
         ID3D11ShaderResourceView* aRViews[1] = { m_pBaseVBSRV };
-        RunComputeShader( m_pd3dImmediateContext, 
+        RunComputeShader( m_pd3dImmediateContext,
                           s_pEdgeFactorCS,
                           1, aRViews,
                           nullptr,
                           s_pEdgeFactorCSCB, &cbCS, sizeof(cbCS),
                           m_pEdgeFactorBufUAV,
                           INT(ceil(m_nVertices/3 / 128.0f)), 1, 1 );
-    }    
+    }
 
     // How many vertices/indices are needed for the tessellated mesh?
     {
@@ -541,8 +542,8 @@ void CTessellator::PerEdgeTessellation( CXMMATRIX matWVP,
         box.front = 0;
         box.back = 1;
         m_pd3dImmediateContext->CopySubresourceRegion(s_pCSReadBackBuf, 0, 0, 0, 0, m_pScanBuf0, 0, &box);
-        D3D11_MAPPED_SUBRESOURCE MappedResource; 
-        V( m_pd3dImmediateContext->Map( s_pCSReadBackBuf, 0, D3D11_MAP_READ, 0, &MappedResource ) );       
+        D3D11_MAPPED_SUBRESOURCE MappedResource;
+        V( m_pd3dImmediateContext->Map( s_pCSReadBackBuf, 0, D3D11_MAP_READ, 0, &MappedResource ) );
         *num_tessed_vertices = ((DWORD*)MappedResource.pData)[0];
         *num_tessed_indices = ((DWORD*)MappedResource.pData)[1];
         m_pd3dImmediateContext->Unmap( s_pCSReadBackBuf, 0 );
@@ -555,7 +556,7 @@ void CTessellator::PerEdgeTessellation( CXMMATRIX matWVP,
 #if 0
     {
         ID3D11Buffer* debugbuf = CreateAndCopyToDebugBuf( m_pd3dDevice, m_pd3dImmediateContext, m_pScanBuf0 );
-        D3D11_MAPPED_SUBRESOURCE MappedResource; 
+        D3D11_MAPPED_SUBRESOURCE MappedResource;
         struct VT
         {
             UINT v, t;
@@ -581,7 +582,7 @@ void CTessellator::PerEdgeTessellation( CXMMATRIX matWVP,
             SAFE_RELEASE( *ppTessedVerticesBuf );
             SAFE_RELEASE( m_pTessedVerticesBufUAV );
             SAFE_RELEASE( m_pTessedVerticesBufSRV );
-            
+
             D3D11_BUFFER_DESC desc;
             ZeroMemory( &desc, sizeof(desc) );
             desc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
@@ -589,7 +590,7 @@ void CTessellator::PerEdgeTessellation( CXMMATRIX matWVP,
             desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
             desc.StructureByteStride = sizeof(INT) * 2;
             desc.Usage = D3D11_USAGE_DEFAULT;
-            V( m_pd3dDevice->CreateBuffer(&desc, nullptr, &m_pScatterVertexBuf) );  
+            V( m_pd3dDevice->CreateBuffer(&desc, nullptr, &m_pScatterVertexBuf) );
             DXUT_SetDebugName( m_pScatterVertexBuf, "ScatterVB" );
 
             D3D11_SHADER_RESOURCE_VIEW_DESC DescRV;
@@ -636,7 +637,7 @@ void CTessellator::PerEdgeTessellation( CXMMATRIX matWVP,
 
             SAFE_RELEASE( *ppTessedIndicesBuf );
             SAFE_RELEASE( m_pTessedIndicesBufUAV );
-            
+
             D3D11_BUFFER_DESC desc;
             ZeroMemory( &desc, sizeof(desc) );
             desc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS;
@@ -644,7 +645,7 @@ void CTessellator::PerEdgeTessellation( CXMMATRIX matWVP,
             desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
             desc.StructureByteStride = sizeof(INT) * 2;
             desc.Usage = D3D11_USAGE_DEFAULT;
-            V( m_pd3dDevice->CreateBuffer(&desc, nullptr, &m_pScatterIndexBuf) ); 
+            V( m_pd3dDevice->CreateBuffer(&desc, nullptr, &m_pScatterIndexBuf) );
             DXUT_SetDebugName( m_pScatterIndexBuf, "ScatterIB" );
 
             D3D11_SHADER_RESOURCE_VIEW_DESC DescRV;
@@ -696,7 +697,7 @@ void CTessellator::PerEdgeTessellation( CXMMATRIX matWVP,
                           s_pCSCB, cbCS, sizeof(INT)*4,
                           m_pScatterVertexBufUAV,
                           INT(ceil(m_nVertices/3 / 128.0f)), 1, 1 );
-        
+
         // Scatter index TriID, IndexID
         RunComputeShader( m_pd3dImmediateContext,
                           s_pScatterIndexTriIDIndexIDCS,
@@ -711,7 +712,7 @@ void CTessellator::PerEdgeTessellation( CXMMATRIX matWVP,
 #if 0
     {
         ID3D11Buffer* debugbuf = CreateAndCopyToDebugBuf( m_pd3dDevice, m_pd3dImmediateContext , m_pScatterVertexBuf );
-        D3D11_MAPPED_SUBRESOURCE MappedResource; 
+        D3D11_MAPPED_SUBRESOURCE MappedResource;
         struct VT
         {
             UINT v, t;
@@ -720,7 +721,7 @@ void CTessellator::PerEdgeTessellation( CXMMATRIX matWVP,
         p = (VT*)MappedResource.pData;
         m_pd3dImmediateContext->Unmap( debugbuf, 0 );
 
-        SAFE_RELEASE( debugbuf );        
+        SAFE_RELEASE( debugbuf );
     }
 #endif
 
@@ -741,11 +742,12 @@ void CTessellator::PerEdgeTessellation( CXMMATRIX matWVP,
 #if 0
     {
         ID3D11Buffer* debugbuf = CreateAndCopyToDebugBuf( m_pd3dDevice, m_pd3dImmediateContext, *ppTessedVerticesBuf );
-        D3D11_MAPPED_SUBRESOURCE MappedResource; 
+        D3D11_MAPPED_SUBRESOURCE MappedResource;
         struct VT
         {
             UINT id;
-            float u; float v;
+            float u;
+            float v;
         } *p;
         V( m_pd3dImmediateContext->Map( debugbuf, 0, D3D11_MAP_READ, 0, &MappedResource ) );
         p = (VT*)MappedResource.pData;
@@ -760,19 +762,19 @@ void CTessellator::PerEdgeTessellation( CXMMATRIX matWVP,
         INT cbCS[4] = { static_cast<INT>(*num_tessed_indices), 0, 0, 0};
         ID3D11ShaderResourceView* aRViews[3] = { m_pScatterIndexBufSRV, m_pEdgeFactorBufSRV, m_pScanBuf0SRV };
         RunComputeShader( m_pd3dImmediateContext,
-            s_pTessIndicesCSs[m_PartitioningMode],
-            3, aRViews,
-            s_pLookupTableCSCB,
-            s_pCSCB, cbCS, sizeof(INT)*4,
-            m_pTessedIndicesBufUAV,
-            INT(ceil(*num_tessed_indices/128.0f)), 1, 1 );
+                          s_pTessIndicesCSs[m_PartitioningMode],
+                          3, aRViews,
+                          s_pLookupTableCSCB,
+                          s_pCSCB, cbCS, sizeof(INT)*4,
+                          m_pTessedIndicesBufUAV,
+                          INT(ceil(*num_tessed_indices/128.0f)), 1, 1 );
     }
 
     // Turn on this and set a breakpoint on the line beginning with "p = " and see what has been written to *ppTessedIndicesBuf
 #if 0
     {
         ID3D11Buffer* debugbuf = CreateAndCopyToDebugBuf( m_pd3dDevice, m_pd3dImmediateContext, *ppTessedIndicesBuf );
-        D3D11_MAPPED_SUBRESOURCE MappedResource; 
+        D3D11_MAPPED_SUBRESOURCE MappedResource;
         INT *p = nullptr;
         V( m_pd3dImmediateContext->Map( debugbuf, 0, D3D11_MAP_READ, 0, &MappedResource ) );
         p = (INT *)MappedResource.pData;

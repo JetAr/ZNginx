@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXMeshRemap.cpp
-//  
+//
 // DirectX Mesh Geometry Library - Remap functions for applying face/vertex mappings
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -26,17 +26,17 @@ namespace
 
 template<class index_t>
 HRESULT ReorderFaces( _In_reads_(nFaces*3) const index_t* ibin, _In_ size_t nFaces,
-                        _In_reads_opt_(nFaces*3) const uint32_t* adjin, 
-                        _In_reads_(nFaces) const uint32_t* faceRemap,
-                        _Out_writes_(nFaces*3) index_t* ibout,
-                        _Out_writes_opt_(nFaces*3) uint32_t* adjout )
+                      _In_reads_opt_(nFaces*3) const uint32_t* adjin,
+                      _In_reads_(nFaces) const uint32_t* faceRemap,
+                      _Out_writes_(nFaces*3) index_t* ibout,
+                      _Out_writes_opt_(nFaces*3) uint32_t* adjout )
 {
     assert( ibin != 0 && faceRemap != 0 && ibout != 0 && ibin != ibout );
     _Analysis_assume_( ibin != 0 && faceRemap != 0 && ibout != 0 && ibin != ibout );
 
     assert( ( !adjin && !adjout ) || ( (adjin && adjout) && adjin != adjout ) );
     _Analysis_assume_( ( !adjin && !adjout ) || ( (adjin && adjout) && adjin != adjout ) );
-    
+
     for( size_t j = 0; j < nFaces; ++j )
     {
         uint32_t src = faceRemap[ j ];
@@ -46,21 +46,21 @@ HRESULT ReorderFaces( _In_reads_(nFaces*3) const index_t* ibin, _In_ size_t nFac
 
         if ( src < nFaces )
         {
-            ibout[ j*3 ] = ibin[ src*3 ]; 
-            ibout[ j*3 + 1 ] = ibin[ src*3 + 1 ]; 
+            ibout[ j*3 ] = ibin[ src*3 ];
+            ibout[ j*3 + 1 ] = ibin[ src*3 + 1 ];
             ibout[ j*3 + 2 ] = ibin[ src*3 + 2 ];
 
             if ( adjin && adjout )
             {
-                adjout[ j*3 ] = adjin[ src*3 ]; 
-                adjout[ j*3 + 1 ] = adjin[ src*3 + 1 ]; 
+                adjout[ j*3 ] = adjin[ src*3 ];
+                adjout[ j*3 + 1 ] = adjin[ src*3 + 1 ];
                 adjout[ j*3 + 2 ] = adjin[ src*3 + 2 ];
             }
         }
         else
             return E_FAIL;
     }
-    
+
     return S_OK;
 }
 
@@ -70,8 +70,8 @@ HRESULT ReorderFaces( _In_reads_(nFaces*3) const index_t* ibin, _In_ size_t nFac
 //-------------------------------------------------------------------------------------
 template<class index_t>
 HRESULT SwapFaces( _Inout_updates_all_(nFaces*3) index_t* ib, _In_ size_t nFaces,
-                    _Inout_updates_all_opt_(nFaces*3) uint32_t* adj,
-                    _In_reads_(nFaces) const uint32_t* faceRemap)
+                   _Inout_updates_all_opt_(nFaces*3) uint32_t* adj,
+                   _In_reads_(nFaces) const uint32_t* faceRemap)
 {
     assert( ib != 0 && faceRemap != 0 );
     _Analysis_assume_( ib != 0 && faceRemap != 0 );
@@ -189,12 +189,12 @@ HRESULT SwapVertices( _Inout_updates_bytes_all_(nVerts*stride) void* vb, size_t 
         while( dest != j )
         {
             // Swap vertex
-            #pragma prefast(push)
-            #pragma prefast(disable : 26019, "PREfast noise: Esp:1307")
+#pragma prefast(push)
+#pragma prefast(disable : 26019, "PREfast noise: Esp:1307")
             memcpy( vbtemp, ptr + dest*stride, stride );
             memcpy( ptr + dest*stride, ptr + j*stride, stride );
             memcpy( ptr + j*stride, vbtemp, stride );
-            #pragma prefast(pop)
+#pragma prefast(pop)
 
             if ( pointRep )
             {
@@ -533,7 +533,7 @@ HRESULT FinalizeVB( const void* vbin, size_t stride, size_t nVerts,
         }
         else if ( dest < newVerts )
         {
-            memcpy( dptr + dest * stride, sptr, stride ); 
+            memcpy( dptr + dest * stride, sptr, stride );
         }
         else
             return E_FAIL;
@@ -554,8 +554,8 @@ HRESULT FinalizeVB( const void* vbin, size_t stride, size_t nVerts,
             }
             else if ( dup < nVerts && dest < newVerts )
             {
-                sptr = reinterpret_cast<const uint8_t*>( vbin ) + dup * stride; 
-                memcpy( dptr + dest * stride, sptr, stride ); 
+                sptr = reinterpret_cast<const uint8_t*>( vbin ) + dup * stride;
+                memcpy( dptr + dest * stride, sptr, stride );
             }
             else
                 return E_FAIL;
@@ -585,8 +585,8 @@ HRESULT FinalizeVB( void* vb, size_t stride, size_t nVerts, const uint32_t* vert
 #pragma warning( disable : 6101 )
 
 _Use_decl_annotations_
-HRESULT FinalizeVBAndPointReps( const void* vbin, size_t stride, size_t nVerts, const uint32_t* prin, 
-                                const uint32_t* dupVerts, size_t nDupVerts, const uint32_t* vertexRemap, 
+HRESULT FinalizeVBAndPointReps( const void* vbin, size_t stride, size_t nVerts, const uint32_t* prin,
+                                const uint32_t* dupVerts, size_t nDupVerts, const uint32_t* vertexRemap,
                                 void* vbout, uint32_t* prout )
 {
     if ( !vbin || !stride || !nVerts || !prin || !vbout || !prout )
@@ -628,7 +628,7 @@ HRESULT FinalizeVBAndPointReps( const void* vbin, size_t stride, size_t nVerts, 
     {
         pointRep[ i + nVerts ] = prin[ dupVerts[ i ] ];
     }
-    
+
     if ( vertexRemap )
     {
         // clean up point reps for any removed vertices
@@ -663,7 +663,7 @@ HRESULT FinalizeVBAndPointReps( const void* vbin, size_t stride, size_t nVerts, 
         }
         else if ( dest < newVerts )
         {
-            memcpy( dptr + dest * stride, sptr, stride ); 
+            memcpy( dptr + dest * stride, sptr, stride );
 
             uint32_t pr = pointRep[ j ];
             if ( pr < newVerts )
@@ -690,8 +690,8 @@ HRESULT FinalizeVBAndPointReps( const void* vbin, size_t stride, size_t nVerts, 
             }
             else if ( dup < nVerts && dest < newVerts )
             {
-                sptr = reinterpret_cast<const uint8_t*>( vbin ) + dup * stride; 
-                memcpy( dptr + dest * stride, sptr, stride ); 
+                sptr = reinterpret_cast<const uint8_t*>( vbin ) + dup * stride;
+                memcpy( dptr + dest * stride, sptr, stride );
 
                 uint32_t pr = pointRep[ nVerts + k ];
                 if (pr < (nVerts + nDupVerts) )

@@ -23,27 +23,27 @@ static_assert(sizeof(Keyboard::State) == (256 / 8), "Size mismatch for State");
 
 namespace
 {
-    void KeyDown(int key, Keyboard::State& state)
-    {
-        if (key < 0 || key > 0xfe)
-            return;
+void KeyDown(int key, Keyboard::State& state)
+{
+    if (key < 0 || key > 0xfe)
+        return;
 
-        auto ptr = reinterpret_cast<uint32_t*>(&state);
+    auto ptr = reinterpret_cast<uint32_t*>(&state);
 
-        unsigned int bf = 1u << (key & 0x1f);
-        ptr[(key >> 5)] |= bf;
-    }
+    unsigned int bf = 1u << (key & 0x1f);
+    ptr[(key >> 5)] |= bf;
+}
 
-    void KeyUp(int key, Keyboard::State& state)
-    {
-        if (key < 0 || key > 0xfe)
-            return;
+void KeyUp(int key, Keyboard::State& state)
+{
+    if (key < 0 || key > 0xfe)
+        return;
 
-        auto ptr = reinterpret_cast<uint32_t*>(&state);
+    auto ptr = reinterpret_cast<uint32_t*>(&state);
 
-        unsigned int bf = 1u << (key & 0x1f);
-        ptr[(key >> 5)] &= ~bf;
-    }
+    unsigned int bf = 1u << (key & 0x1f);
+    ptr[(key >> 5)] &= ~bf;
+}
 }
 
 
@@ -444,7 +444,7 @@ Keyboard::Keyboard()
 
 // Move constructor.
 Keyboard::Keyboard(Keyboard&& moveFrom)
-  : pImpl(std::move(moveFrom.pImpl))
+    : pImpl(std::move(moveFrom.pImpl))
 {
     pImpl->mOwner = this;
 }

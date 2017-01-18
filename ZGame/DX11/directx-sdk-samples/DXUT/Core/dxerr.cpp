@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DXErr.cpp
 //
 // DirectX Error Library
@@ -71,8 +71,8 @@
 //-----------------------------------------------------
 const WCHAR* WINAPI DXGetErrorStringW( _In_ HRESULT hr )
 {
-   switch(hr)
-   {
+    switch(hr)
+    {
 // Commmented out codes are actually alises for other codes
 
 // -------------------------------------------------------------
@@ -3276,7 +3276,8 @@ const WCHAR* WINAPI DXGetErrorStringW( _In_ HRESULT hr )
 // -------------------------------------------------------------
         CHK_ERRA(XAPO_E_FORMAT_UNSUPPORTED)
 
-        default: return L"Unknown error.";
+    default:
+        return L"Unknown error.";
     }
 }
 
@@ -3307,7 +3308,7 @@ void WINAPI DXGetErrorDescriptionW( _In_ HRESULT hr, _Out_cap_(count) WCHAR* des
     // First try to see if FormatMessage knows this hr
     LPWSTR errorText = nullptr;
 
-    DWORD result = FormatMessageW( FORMAT_MESSAGE_FROM_SYSTEM |FORMAT_MESSAGE_ALLOCATE_BUFFER, nullptr, hr, 
+    DWORD result = FormatMessageW( FORMAT_MESSAGE_FROM_SYSTEM |FORMAT_MESSAGE_ALLOCATE_BUFFER, nullptr, hr,
                                    MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&errorText, 0, nullptr );
 
     if (result > 0 && errorText)
@@ -3603,7 +3604,9 @@ void WINAPI DXGetErrorDescriptionW( _In_ HRESULT hr, _Out_cap_(count) WCHAR* des
 // -------------------------------------------------------------
         CHK_ERR(XAPO_E_FORMAT_UNSUPPORTED, "Requested audio format unsupported.")
 
-        default: wcscpy_s( desc, count, L"Unknown error." ); break;
+    default:
+        wcscpy_s( desc, count, L"Unknown error." );
+        break;
     }
 }
 
@@ -3620,8 +3623,8 @@ HRESULT WINAPI DXTraceW( _In_z_ const WCHAR* strFile, _In_ DWORD dwLine, _In_ HR
     swprintf_s( strBufferLine, 128, L"%lu", dwLine );
     if( strFile )
     {
-       swprintf_s( strBuffer, BUFFER_SIZE, L"%ls(%ls): ", strFile, strBufferLine );
-       OutputDebugStringW( strBuffer );
+        swprintf_s( strBuffer, BUFFER_SIZE, L"%ls(%ls): ", strFile, strBufferLine );
+        OutputDebugStringW( strBuffer );
     }
 
     size_t nMsgLen = (strMsg) ? wcsnlen_s( strMsg, 1024 ) : 0;

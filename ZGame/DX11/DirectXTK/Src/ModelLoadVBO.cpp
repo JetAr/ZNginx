@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: ModelLoadVBO.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -30,29 +30,29 @@ static_assert(sizeof(VertexPositionNormalTexture) == 32, "VBO vertex size mismat
 
 namespace
 {
-    //--------------------------------------------------------------------------------------
-    // Shared VB input element description
-    INIT_ONCE g_InitOnce = INIT_ONCE_STATIC_INIT;
-    std::shared_ptr<std::vector<D3D11_INPUT_ELEMENT_DESC>> g_vbdecl;
+//--------------------------------------------------------------------------------------
+// Shared VB input element description
+INIT_ONCE g_InitOnce = INIT_ONCE_STATIC_INIT;
+std::shared_ptr<std::vector<D3D11_INPUT_ELEMENT_DESC>> g_vbdecl;
 
-    BOOL CALLBACK InitializeDecl(PINIT_ONCE initOnce, PVOID Parameter, PVOID *lpContext)
-    {
-        UNREFERENCED_PARAMETER(initOnce);
-        UNREFERENCED_PARAMETER(Parameter);
-        UNREFERENCED_PARAMETER(lpContext);
+BOOL CALLBACK InitializeDecl(PINIT_ONCE initOnce, PVOID Parameter, PVOID *lpContext)
+{
+    UNREFERENCED_PARAMETER(initOnce);
+    UNREFERENCED_PARAMETER(Parameter);
+    UNREFERENCED_PARAMETER(lpContext);
 
-        g_vbdecl = std::make_shared<std::vector<D3D11_INPUT_ELEMENT_DESC>>(VertexPositionNormalTexture::InputElements,
-            VertexPositionNormalTexture::InputElements + VertexPositionNormalTexture::InputElementCount);
+    g_vbdecl = std::make_shared<std::vector<D3D11_INPUT_ELEMENT_DESC>>(VertexPositionNormalTexture::InputElements,
+               VertexPositionNormalTexture::InputElements + VertexPositionNormalTexture::InputElementCount);
 
-        return TRUE;
-    }
+    return TRUE;
+}
 }
 
 
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
 std::unique_ptr<Model> DirectX::Model::CreateFromVBO(ID3D11Device* d3dDevice, const uint8_t* meshData, size_t dataSize,
-                                                     std::shared_ptr<IEffect> ieffect, bool ccw, bool pmalpha)
+        std::shared_ptr<IEffect> ieffect, bool ccw, bool pmalpha)
 {
     if (!InitOnceExecuteOnce(&g_InitOnce, InitializeDecl, nullptr, nullptr))
         throw std::exception("One-time initialization failed");
@@ -93,7 +93,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromVBO(ID3D11Device* d3dDevice, co
 
         ThrowIfFailed(
             d3dDevice->CreateBuffer(&desc, &initData, vb.GetAddressOf())
-            );
+        );
 
         SetDebugObjectName(vb.Get(), "ModelVBO");
     }
@@ -111,7 +111,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromVBO(ID3D11Device* d3dDevice, co
 
         ThrowIfFailed(
             d3dDevice->CreateBuffer(&desc, &initData, ib.GetAddressOf())
-            );
+        );
 
         SetDebugObjectName(ib.Get(), "ModelVBO");
     }
@@ -135,9 +135,9 @@ std::unique_ptr<Model> DirectX::Model::CreateFromVBO(ID3D11Device* d3dDevice, co
 
         ThrowIfFailed(
             d3dDevice->CreateInputLayout(VertexPositionNormalTexture::InputElements,
-            VertexPositionNormalTexture::InputElementCount,
-            shaderByteCode, byteCodeLength,
-            il.GetAddressOf()));
+                                         VertexPositionNormalTexture::InputElementCount,
+                                         shaderByteCode, byteCodeLength,
+                                         il.GetAddressOf()));
 
         SetDebugObjectName(il.Get(), "ModelVBO");
     }
@@ -161,7 +161,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromVBO(ID3D11Device* d3dDevice, co
 
     std::unique_ptr<Model> model(new Model());
     model->meshes.emplace_back(mesh);
- 
+
     return model;
 }
 
@@ -169,7 +169,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromVBO(ID3D11Device* d3dDevice, co
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
 std::unique_ptr<Model> DirectX::Model::CreateFromVBO(ID3D11Device* d3dDevice, const wchar_t* szFileName,
-                                                     std::shared_ptr<IEffect> ieffect, bool ccw, bool pmalpha)
+        std::shared_ptr<IEffect> ieffect, bool ccw, bool pmalpha)
 {
     size_t dataSize = 0;
     std::unique_ptr<uint8_t[]> data;

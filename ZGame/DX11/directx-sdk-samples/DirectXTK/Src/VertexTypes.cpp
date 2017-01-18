@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: VertexTypes.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -74,7 +74,7 @@ const D3D11_INPUT_ELEMENT_DESC VertexPositionNormal::InputElements[] =
 
 static_assert( sizeof(VertexPositionNormal) == 24, "Vertex struct/layout mismatch" );
 
-        
+
 //--------------------------------------------------------------------------------------
 // Vertex struct holding position, color, and texture mapping information.
 const D3D11_INPUT_ELEMENT_DESC VertexPositionColorTexture::InputElements[] =

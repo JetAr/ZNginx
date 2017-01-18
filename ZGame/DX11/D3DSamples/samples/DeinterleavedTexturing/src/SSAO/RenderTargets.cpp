@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeinterleavedTexturing\src\SSAO/RenderTargets.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -40,24 +40,24 @@ UINT GFSDK::SSAO::RTTexture::FormatSizeInBytes(DXGI_FORMAT Format)
     UINT NumBytes = 0;
     switch (Format)
     {
-        case DXGI_FORMAT_R16G16B16A16_FLOAT:
-            NumBytes = 8;
-            break;
-        case DXGI_FORMAT_R32_FLOAT:
-        case DXGI_FORMAT_R16G16_FLOAT:
-        case DXGI_FORMAT_R8G8B8A8_UNORM:
-        case DXGI_FORMAT_R11G11B10_FLOAT:
-            NumBytes = 4;
-            break;
-        case DXGI_FORMAT_R16_FLOAT:
-            NumBytes = 2;
-            break;
-        case DXGI_FORMAT_R8_UNORM:
-            NumBytes = 1;
-            break;
-        default:
-            assert(0);
-            break;
+    case DXGI_FORMAT_R16G16B16A16_FLOAT:
+        NumBytes = 8;
+        break;
+    case DXGI_FORMAT_R32_FLOAT:
+    case DXGI_FORMAT_R16G16_FLOAT:
+    case DXGI_FORMAT_R8G8B8A8_UNORM:
+    case DXGI_FORMAT_R11G11B10_FLOAT:
+        NumBytes = 4;
+        break;
+    case DXGI_FORMAT_R16_FLOAT:
+        NumBytes = 2;
+        break;
+    case DXGI_FORMAT_R8_UNORM:
+        NumBytes = 1;
+        break;
+    default:
+        assert(0);
+        break;
     }
     return NumBytes;
 }

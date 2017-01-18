@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: GDFParse.h
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -6,8 +6,8 @@
 class CGDFParse
 {
 public:
-            CGDFParse();
-            ~CGDFParse();
+    CGDFParse();
+    ~CGDFParse();
 
     HRESULT ExtractXML( WCHAR* strGDFBinPath );
 

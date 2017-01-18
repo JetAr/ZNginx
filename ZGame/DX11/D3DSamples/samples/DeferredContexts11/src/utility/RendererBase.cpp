@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeferredContexts11\src\utility/RendererBase.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -260,13 +260,15 @@ ID3D11PixelShader* RendererBase::PickAppropriatePixelShader(const UINT idx)
 {
     if(bSkipShadows)
     {
-        if (bVTFPositions || bUnifyVSPSCB) {
+        if (bVTFPositions || bUnifyVSPSCB)
+        {
             return m_ShaderPermutations.m_pPixelShaderNoShadowVertexColor[idx];
         }
         return m_ShaderPermutations.m_pPixelShaderNoShadow[idx];
     }
 
-    if (bVTFPositions || bUnifyVSPSCB) {
+    if (bVTFPositions || bUnifyVSPSCB)
+    {
         return m_ShaderPermutations.m_pPixelShaderVertexColor[idx];
     }
     return m_ShaderPermutations.m_pPixelShader[idx];
@@ -274,11 +276,13 @@ ID3D11PixelShader* RendererBase::PickAppropriatePixelShader(const UINT idx)
 
 ID3D11VertexShader* RendererBase::PickAppropriateVertexShader(const UINT idx)
 {
-    if (bVTFPositions) {
+    if (bVTFPositions)
+    {
         return  m_ShaderPermutations.m_pVertexShaderVTFVertexColor[idx];
     }
 
-    if (bUnifyVSPSCB) {
+    if (bUnifyVSPSCB)
+    {
         return m_ShaderPermutations.m_pVertexShaderNoVTFVertexColor[idx];
     }
 
@@ -370,8 +374,9 @@ void RendererBase::RenderMeshToContext(ID3D11DeviceContext* pd3dContext, UINT iM
     // optionally map the constant buffer per instance to update world position
     // Draw the mesh to the immediate context
 
-    if (bVaryShaders) {
-        // change sahders according to the instance index. 
+    if (bVaryShaders)
+    {
+        // change sahders according to the instance index.
         const size_t shIdx = iMeshInstance % m_ShaderPermutations.m_shaderVariations;
         const bool bShadow = (iRenderPass >= DC_RP_SHADOW1 && iRenderPass < DC_RP_SHADOW1 + g_iNumShadows) ? true : false;
 
@@ -410,7 +415,8 @@ void RendererBase::RenderMeshToContext(ID3D11DeviceContext* pd3dContext, UINT iM
     // Set the VS per-object constant data
     if(!bVTFPositions)
     {
-        if (! bUnifyVSPSCB) {
+        if (! bUnifyVSPSCB)
+        {
             // constant buffer positioning
             D3D11_MAPPED_SUBRESOURCE MappedResource;
 
@@ -422,7 +428,9 @@ void RendererBase::RenderMeshToContext(ID3D11DeviceContext* pd3dContext, UINT iM
             pd3dContext->Unmap(m_pcbVSPerObject[iResourceIndex], 0);
 
             pd3dContext->VSSetConstantBuffers(m_iCBVSPerObjectBind, 1, &m_pcbVSPerObject[iResourceIndex]);
-        } else {
+        }
+        else
+        {
             // constant buffer positioning, color
             D3D11_MAPPED_SUBRESOURCE MappedResource;
 
@@ -438,7 +446,7 @@ void RendererBase::RenderMeshToContext(ID3D11DeviceContext* pd3dContext, UINT iM
             pVSPerObject->m_mWorld._42 = vColor.y;
             pVSPerObject->m_mWorld._43 = vColor.z;
             pVSPerObject->m_mWorld._44 = vColor.w;
-    
+
             pd3dContext->Unmap(m_pcbVSPerObject[iResourceIndex], 0);
 
             pd3dContext->VSSetConstantBuffers(m_iCBVSPerObjectBind, 1, &m_pcbVSPerObject[iResourceIndex]);

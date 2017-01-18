@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DXUTSettingsDlg.h
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -58,7 +58,7 @@
 #endif
 
 //--------------------------------------------------------------------------------------
-// Dialog for selection of device settings 
+// Dialog for selection of device settings
 // Use DXUTGetD3DSettingsDialog() to access global instance
 // To control the contents of the dialog, use the CD3D11Enumeration class.
 //--------------------------------------------------------------------------------------
@@ -81,8 +81,14 @@ public:
                                      _In_ const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc );
     void OnD3D11DestroyDevice();
 
-    CDXUTDialog* GetDialogControl() { return &m_Dialog; }
-    bool IsActive() const { return m_bActive; }
+    CDXUTDialog* GetDialogControl()
+    {
+        return &m_Dialog;
+    }
+    bool IsActive() const
+    {
+        return m_bActive;
+    }
     void SetActive( _In_ bool bActive )
     {
         m_bActive = bActive;
@@ -142,7 +148,7 @@ protected:
 
     DWORD               GetSelectedD3D11PresentInterval() const;
     bool                GetSelectedDebugDeviceValue() const;
-    
+
     HRESULT             OnD3D11ResolutionChanged ();
     HRESULT             OnFeatureLevelChanged();
     HRESULT             OnAdapterChanged();

@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        ComputeFilter\src/main.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -59,7 +59,8 @@ const float CAMERA_CLIP_FAR = 3000.00f;
 
 bool g_bRenderHUD = true;
 
-typedef enum eViewMode {
+typedef enum eViewMode
+{
     VIEW_MODE_DOF = 0,
     VIEW_MODE_BLUR_SIZE
 };
@@ -82,7 +83,7 @@ private:
 
     CFirstPersonCamera * camera;
 
-    struct CBCamera 
+    struct CBCamera
     {
         DirectX::XMMATRIX world_view_proj_xform;
         DirectX::XMFLOAT3 eye_pos;
@@ -110,7 +111,7 @@ private:
     ID3D11PixelShader * ps_scene;
     ID3D11PixelShader * ps_post;
     ID3D11PixelShader * ps_post_blursize;
-    
+
     ID3D11RasterizerState * rs_state;
 
     ID3D11SamplerState * samp_linear_wrap;
@@ -119,7 +120,7 @@ private:
 
     ID3D11DepthStencilState * ds_state;
     ID3D11DepthStencilState * ds_state_disabled;
-    
+
     ID3D11BlendState * blend_state;
     ID3D11BlendState * enabled_blend_state;
 
@@ -193,7 +194,8 @@ public:
         get_shader_resource(L"VS_SCENE", &bytecode, bytecode_length);
         device->CreateVertexShader(bytecode, bytecode_length, nullptr, &this->vs_scene);
 
-        D3D11_INPUT_ELEMENT_DESC scene_layout_desc[] = {
+        D3D11_INPUT_ELEMENT_DESC scene_layout_desc[] =
+        {
             { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
             { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 1,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
             { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 2,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 }
@@ -238,7 +240,10 @@ public:
             desc.MipLODBias = 0.0f;
             desc.MaxAnisotropy = 1;
             desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-            desc.BorderColor[0] = 0.f; desc.BorderColor[0] = 0.f; desc.BorderColor[0] = 0.f; desc.BorderColor[0] = 0.f;
+            desc.BorderColor[0] = 0.f;
+            desc.BorderColor[0] = 0.f;
+            desc.BorderColor[0] = 0.f;
+            desc.BorderColor[0] = 0.f;
             desc.MinLOD = 0;
             desc.MaxLOD = D3D11_FLOAT32_MAX;
             device->CreateSamplerState(&desc, &this->samp_linear_wrap);
@@ -253,7 +258,10 @@ public:
             desc.MipLODBias = 0.0f;
             desc.MaxAnisotropy = 1;
             desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-            desc.BorderColor[0] = 0.f; desc.BorderColor[0] = 0.f; desc.BorderColor[0] = 0.f; desc.BorderColor[0] = 0.f;
+            desc.BorderColor[0] = 0.f;
+            desc.BorderColor[0] = 0.f;
+            desc.BorderColor[0] = 0.f;
+            desc.BorderColor[0] = 0.f;
             desc.MinLOD = 0;
             desc.MaxLOD = D3D11_FLOAT32_MAX;
             device->CreateSamplerState(&desc, &this->samp_linear_clamp);
@@ -268,7 +276,10 @@ public:
             desc.MipLODBias = 0.0f;
             desc.MaxAnisotropy = 1;
             desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-            desc.BorderColor[0] = 0.f; desc.BorderColor[0] = 0.f; desc.BorderColor[0] = 0.f; desc.BorderColor[0] = 0.f;
+            desc.BorderColor[0] = 0.f;
+            desc.BorderColor[0] = 0.f;
+            desc.BorderColor[0] = 0.f;
+            desc.BorderColor[0] = 0.f;
             desc.MinLOD = 0;
             desc.MaxLOD = D3D11_FLOAT32_MAX;
             device->CreateSamplerState(&desc, &this->samp_point_clamp);
@@ -446,7 +457,7 @@ public:
             ctx->ClearDepthStencilView( this->scene_depth_dsv, D3D11_CLEAR_DEPTH, 1.0, 0 );
             ctx->RSSetViewports(1, &viewport);
             ctx->OMSetRenderTargets(1, &this->scene_rtv, this->scene_depth_dsv);
-        
+
             ID3D11Buffer * cbs[16] = {nullptr};
             {
                 D3DXMATRIX view_matrix = *(this->camera->GetViewMatrix());
@@ -497,8 +508,8 @@ public:
             }
             ctx->OMSetRenderTargets(1, &pRTV, nullptr);
         }
-        
-        {    
+
+        {
             PERF_EVENT_SCOPED(ctx, "DoF");
             SAT::GenerateSAT(ctx, this->scene_srv);
 
@@ -554,7 +565,7 @@ public:
         this->camera = cam;
     }
 
-    virtual LRESULT MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
+    virtual LRESULT MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         (void) hWnd;
         (void) uMsg;
@@ -569,7 +580,7 @@ public:
         this->camera->HandleMessages( hWnd, uMsg, wParam, lParam );
 
         if(uMsg == WM_KEYDOWN)
-        {        
+        {
             int iKeyPressed = static_cast<int>(wParam);
             switch( iKeyPressed )
             {
@@ -586,7 +597,7 @@ public:
                 break;
             }
         }
-        return 1; 
+        return 1;
     }
 
     virtual void Animate(double fElapsedTimeSeconds)
@@ -603,8 +614,8 @@ public:
         }
     }
 
-    virtual void Render(ID3D11Device*, ID3D11DeviceContext*, ID3D11RenderTargetView*, ID3D11DepthStencilView*) 
-    { 
+    virtual void Render(ID3D11Device*, ID3D11DeviceContext*, ID3D11RenderTargetView*, ID3D11DepthStencilView*)
+    {
         if (g_bRenderHUD)
         {
             TwBeginText(2, 0, 0, 0);
@@ -619,9 +630,9 @@ public:
         }
     }
 
-    virtual HRESULT DeviceCreated(ID3D11Device* pDevice) 
-    { 
-        TwInit(TW_DIRECT3D11, pDevice);        
+    virtual HRESULT DeviceCreated(ID3D11Device* pDevice)
+    {
+        TwInit(TW_DIRECT3D11, pDevice);
         TwDefine("GLOBAL fontstyle=fixed contained=true");
         InitDialogs();
 
@@ -639,21 +650,22 @@ public:
         return S_OK;
     }
 
-    virtual void DeviceDestroyed() 
-    { 
+    virtual void DeviceDestroyed()
+    {
         TwTerminate();
     }
 
-    virtual void BackBufferResized(ID3D11Device* pDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc) 
+    virtual void BackBufferResized(ID3D11Device* pDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc)
     {
         (void)pDevice;
         TwWindowSize(pBackBufferSurfaceDesc->Width, pBackBufferSurfaceDesc->Height);
 
-        // Setup the camera's projection parameters    
+        // Setup the camera's projection parameters
         float fAspectRatio = pBackBufferSurfaceDesc->Width / ( FLOAT )pBackBufferSurfaceDesc->Height;
         this->camera->SetProjParams( D3DX_PI / 4, fAspectRatio, CAMERA_CLIP_NEAR, CAMERA_CLIP_FAR );
 
-        if (settings_bar) {
+        if (settings_bar)
+        {
         }
     }
 
@@ -669,7 +681,8 @@ public:
         TwAddVarRW(settings_bar, "Aperture", TW_TYPE_FLOAT, &g_focal_aperture, "group='Depth of Field' min=0.01 max=1.00 step=0.01 keydecr=n keyincr=m");
 
         {
-            TwEnumVal enumModeTypeEV[] = {
+            TwEnumVal enumModeTypeEV[] =
+            {
                 { VIEW_MODE_DOF, "SAT Blur" },
                 { VIEW_MODE_BLUR_SIZE, "Blur Size" }
             };
@@ -680,7 +693,7 @@ public:
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// Entry point to the program. Initializes everything and goes into a message processing 
+// Entry point to the program. Initializes everything and goes into a message processing
 // loop. Idle time is used to render the scene.
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -706,10 +719,10 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
     CFirstPersonCamera eye_camera;
     auto scene_controller = SceneController(&eye_camera);
     g_device_manager->AddControllerToFront(&scene_controller);
-    
+
     auto ui_controller = UIController(&eye_camera);
     g_device_manager->AddControllerToFront(&ui_controller);
-    
+
     DeviceCreationParameters deviceParams;
     deviceParams.swapChainFormat = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
     deviceParams.swapChainSampleCount = 1;
@@ -723,7 +736,8 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
         return 1;
     }
     PerfTracker::initialize();
-    PerfTracker::EventDesc perf_events[] = {
+    PerfTracker::EventDesc perf_events[] =
+    {
         PERF_EVENT_DESC("Render Scene"),
         PERF_EVENT_DESC("DoF"),
         PERF_EVENT_DESC("DoF > SAT"),

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DXUTgui.h
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -12,7 +12,7 @@
 
 
 //--------------------------------------------------------------------------------------
-// Defines and macros 
+// Defines and macros
 //--------------------------------------------------------------------------------------
 #define EVENT_BUTTON_CLICKED                0x0101
 #define EVENT_COMBOBOX_SELECTION_CHANGED    0x0201
@@ -51,7 +51,7 @@ struct DXUTElementHolder;
 struct DXUTTextureNode;
 struct DXUTFontNode;
 typedef VOID ( CALLBACK*PCALLBACKDXUTGUIEVENT )( UINT nEvent, int nControlID, CDXUTControl* pControl,
-                                                 void* pUserContext );
+        void* pUserContext );
 
 
 //--------------------------------------------------------------------------------------
@@ -101,16 +101,16 @@ class CDXUTElement
 {
 public:
     void    SetTexture( UINT iTexture, RECT* prcTexture, D3DCOLOR defaultTextureColor = D3DCOLOR_ARGB( 255, 255, 255,
-                                                                                                       255 ) );
+                        255 ) );
     void    SetFont( UINT iFont, D3DCOLOR defaultFontColor = D3DCOLOR_ARGB( 255, 255, 255,
-                                                                            255 ), DWORD dwTextFormat = DT_CENTER |
-                     DT_VCENTER );
+                     255 ), DWORD dwTextFormat = DT_CENTER |
+                             DT_VCENTER );
 
     void    Refresh();
 
-    UINT iTexture;          // Index of the texture for this Element 
+    UINT iTexture;          // Index of the texture for this Element
     UINT iFont;             // Index of the font for this Element
-    DWORD dwTextFormat;     // The format argument to DrawText 
+    DWORD dwTextFormat;     // The format argument to DrawText
 
     RECT rcTexture;         // Bounding rect of this element on the composite texture
 
@@ -128,8 +128,8 @@ class CDXUTDialog
     friend class CDXUTDialogResourceManager;
 
 public:
-                        CDXUTDialog();
-                        ~CDXUTDialog();
+    CDXUTDialog();
+    ~CDXUTDialog();
 
     // Need to call this now
     void                Init( CDXUTDialogResourceManager* pManager, bool bRegisterDialog = true );
@@ -152,12 +152,12 @@ public:
                                         int height, bool bChecked=false, UINT nHotkey=0, bool bIsDefault=false,
                                         CDXUTRadioButton** ppCreated=NULL );
     HRESULT             AddComboBox( int ID, int x, int y, int width, int height, UINT nHotKey=0, bool bIsDefault=
-                                     false, CDXUTComboBox** ppCreated=NULL );
+                                         false, CDXUTComboBox** ppCreated=NULL );
     HRESULT             AddSlider( int ID, int x, int y, int width, int height, int min=0, int max=100, int value=50,
                                    bool bIsDefault=false, CDXUTSlider** ppCreated=NULL );
     //      AddIMEEditBox has been renamed into DXUTguiIME.cpp as CDXUTIMEEditBox::CreateIMEEditBox
     HRESULT             AddEditBox( int ID, LPCWSTR strText, int x, int y, int width, int height, bool bIsDefault=
-                                    false, CDXUTEditBox** ppCreated=NULL );
+                                        false, CDXUTEditBox** ppCreated=NULL );
     HRESULT             AddListBox( int ID, int x, int y, int width, int height, DWORD dwStyle=0,
                                     CDXUTListBox** ppCreated=NULL );
     HRESULT             AddControl( CDXUTControl* pControl );
@@ -253,7 +253,7 @@ public:
         SetBackgroundColors( colorAllCorners, colorAllCorners, colorAllCorners, colorAllCorners );
     }
     void                SetBackgroundColors( D3DCOLOR colorTopLeft, D3DCOLOR colorTopRight, D3DCOLOR colorBottomLeft,
-                                             D3DCOLOR colorBottomRight );
+            D3DCOLOR colorBottomRight );
     void                EnableCaption( bool bEnable )
     {
         m_bCaption = bEnable;
@@ -272,15 +272,18 @@ public:
     }
     void                GetLocation( POINT& Pt ) const
     {
-        Pt.x = m_x; Pt.y = m_y;
+        Pt.x = m_x;
+        Pt.y = m_y;
     }
     void                SetLocation( int x, int y )
     {
-        m_x = x; m_y = y;
+        m_x = x;
+        m_y = y;
     }
     void                SetSize( int width, int height )
     {
-        m_width = width; m_height = height;
+        m_width = width;
+        m_height = height;
     }
     int                 GetWidth()
     {
@@ -444,8 +447,8 @@ struct DXUTSpriteVertex
 class CDXUTDialogResourceManager
 {
 public:
-            CDXUTDialogResourceManager();
-            ~CDXUTDialogResourceManager();
+    CDXUTDialogResourceManager();
+    ~CDXUTDialogResourceManager();
 
     bool    MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 
@@ -554,8 +557,8 @@ protected:
 
 void BeginText11();
 void DrawText11DXUT( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3d11DeviceContext,
-                 LPCWSTR strText, RECT rcScreen, D3DXCOLOR vFontColor,
-                 float fBBWidth, float fBBHeight, bool bCenter );
+                     LPCWSTR strText, RECT rcScreen, D3DXCOLOR vFontColor,
+                     float fBBWidth, float fBBHeight, bool bCenter );
 void EndText11( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3d11DeviceContext );
 
 //-----------------------------------------------------------------------------
@@ -564,7 +567,7 @@ void EndText11( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3d11DeviceConte
 class CDXUTControl
 {
 public:
-                    CDXUTControl( CDXUTDialog* pDialog = NULL );
+    CDXUTControl( CDXUTDialog* pDialog = NULL );
     virtual         ~CDXUTControl();
 
     virtual HRESULT OnInit()
@@ -653,11 +656,15 @@ public:
 
     void            SetLocation( int x, int y )
     {
-        m_x = x; m_y = y; UpdateRects();
+        m_x = x;
+        m_y = y;
+        UpdateRects();
     }
     void            SetSize( int width, int height )
     {
-        m_width = width; m_height = height; UpdateRects();
+        m_width = width;
+        m_height = height;
+        UpdateRects();
     }
 
     void            SetHotkey( UINT nHotkey )
@@ -704,7 +711,7 @@ protected:
     virtual void    UpdateRects();
 
     int m_ID;                 // ID number
-    DXUT_CONTROL_TYPE m_Type;  // Control type, set once in constructor  
+    DXUT_CONTROL_TYPE m_Type;  // Control type, set once in constructor
     UINT m_nHotkey;            // Virtual key code for this control's hotkey
     void* m_pUserData;         // Data associated with this control that is set by user.
 
@@ -732,7 +739,7 @@ struct DXUTElementHolder
 class CDXUTStatic : public CDXUTControl
 {
 public:
-                    CDXUTStatic( CDXUTDialog* pDialog = NULL );
+    CDXUTStatic( CDXUTDialog* pDialog = NULL );
 
     virtual void    Render( float fElapsedTime );
     virtual BOOL    ContainsPoint( POINT pt )
@@ -740,7 +747,7 @@ public:
         return false;
     }
 
-    HRESULT         GetTextCopy( __out_ecount(bufferCount) LPWSTR strDest, 
+    HRESULT         GetTextCopy( __out_ecount(bufferCount) LPWSTR strDest,
                                  UINT bufferCount );
     LPCWSTR         GetText()
     {
@@ -750,7 +757,7 @@ public:
 
 
 protected:
-    WCHAR           m_strText[MAX_PATH];      // Window text  
+    WCHAR           m_strText[MAX_PATH];      // Window text
 };
 
 
@@ -760,7 +767,7 @@ protected:
 class CDXUTButton : public CDXUTStatic
 {
 public:
-                    CDXUTButton( CDXUTDialog* pDialog = NULL );
+    CDXUTButton( CDXUTDialog* pDialog = NULL );
 
     virtual bool    HandleKeyboard( UINT uMsg, WPARAM wParam, LPARAM lParam );
     virtual bool    HandleMouse( UINT uMsg, POINT pt, WPARAM wParam, LPARAM lParam );
@@ -792,7 +799,7 @@ protected:
 class CDXUTCheckBox : public CDXUTButton
 {
 public:
-                    CDXUTCheckBox( CDXUTDialog* pDialog = NULL );
+    CDXUTCheckBox( CDXUTDialog* pDialog = NULL );
 
     virtual bool    HandleKeyboard( UINT uMsg, WPARAM wParam, LPARAM lParam );
     virtual bool    HandleMouse( UINT uMsg, POINT pt, WPARAM wParam, LPARAM lParam );
@@ -831,7 +838,7 @@ protected:
 class CDXUTRadioButton : public CDXUTCheckBox
 {
 public:
-                    CDXUTRadioButton( CDXUTDialog* pDialog = NULL );
+    CDXUTRadioButton( CDXUTDialog* pDialog = NULL );
 
     virtual bool    HandleKeyboard( UINT uMsg, WPARAM wParam, LPARAM lParam );
     virtual bool    HandleMouse( UINT uMsg, POINT pt, WPARAM wParam, LPARAM lParam );
@@ -866,7 +873,7 @@ protected:
 class CDXUTScrollBar : public CDXUTControl
 {
 public:
-                    CDXUTScrollBar( CDXUTDialog* pDialog = NULL );
+    CDXUTScrollBar( CDXUTDialog* pDialog = NULL );
     virtual         ~CDXUTScrollBar();
 
     virtual bool    HandleKeyboard( UINT uMsg, WPARAM wParam, LPARAM lParam );
@@ -883,7 +890,9 @@ public:
     }
     void            SetTrackPos( int nPosition )
     {
-        m_nPosition = nPosition; Cap(); UpdateThumbRect();
+        m_nPosition = nPosition;
+        Cap();
+        UpdateThumbRect();
     }
     int             GetPageSize()
     {
@@ -891,7 +900,9 @@ public:
     }
     void            SetPageSize( int nPageSize )
     {
-        m_nPageSize = nPageSize; Cap(); UpdateThumbRect();
+        m_nPageSize = nPageSize;
+        Cap();
+        UpdateThumbRect();
     }
 
     void            Scroll( int nDelta );    // Scroll by nDelta items (plus or minus)
@@ -947,7 +958,7 @@ struct DXUTListBoxItem
 class CDXUTListBox : public CDXUTControl
 {
 public:
-                    CDXUTListBox( CDXUTDialog* pDialog = NULL );
+    CDXUTListBox( CDXUTDialog* pDialog = NULL );
     virtual         ~CDXUTListBox();
 
     virtual HRESULT OnInit()
@@ -983,11 +994,13 @@ public:
     }
     void            SetScrollBarWidth( int nWidth )
     {
-        m_nSBWidth = nWidth; UpdateRects();
+        m_nSBWidth = nWidth;
+        UpdateRects();
     }
     void            SetBorder( int nBorder, int nMargin )
     {
-        m_nBorder = nBorder; m_nMargin = nMargin;
+        m_nBorder = nBorder;
+        m_nMargin = nMargin;
     }
     HRESULT         AddItem( const WCHAR* wszText, void* pData );
     HRESULT         InsertItem( int nIndex, const WCHAR* wszText, void* pData );
@@ -1040,7 +1053,7 @@ struct DXUTComboBoxItem
 class CDXUTComboBox : public CDXUTButton
 {
 public:
-                    CDXUTComboBox( CDXUTDialog* pDialog = NULL );
+    CDXUTComboBox( CDXUTDialog* pDialog = NULL );
     virtual         ~CDXUTComboBox();
 
     virtual void    SetTextColor( D3DCOLOR Color );
@@ -1071,7 +1084,8 @@ public:
     void* GetItemData( int nIndex );
     void            SetDropHeight( UINT nHeight )
     {
-        m_nDropHeight = nHeight; UpdateRects();
+        m_nDropHeight = nHeight;
+        UpdateRects();
     }
     int             GetScrollBarWidth() const
     {
@@ -1079,7 +1093,8 @@ public:
     }
     void            SetScrollBarWidth( int nWidth )
     {
-        m_nSBWidth = nWidth; UpdateRects();
+        m_nSBWidth = nWidth;
+        UpdateRects();
     }
 
     int             GetSelectedIndex() const
@@ -1127,7 +1142,7 @@ protected:
 class CDXUTSlider : public CDXUTControl
 {
 public:
-                    CDXUTSlider( CDXUTDialog* pDialog = NULL );
+    CDXUTSlider( CDXUTDialog* pDialog = NULL );
 
     virtual BOOL    ContainsPoint( POINT pt );
     virtual bool    CanHaveFocus()
@@ -1152,7 +1167,8 @@ public:
 
     void            GetRange( int& nMin, int& nMax ) const
     {
-        nMin = m_nMin; nMax = m_nMax;
+        nMin = m_nMin;
+        nMax = m_nMax;
     }
     void            SetRange( int nMin, int nMax );
 
@@ -1180,8 +1196,8 @@ protected:
 class CUniBuffer
 {
 public:
-                            CUniBuffer( int nInitialSize = 1 );
-                            ~CUniBuffer();
+    CUniBuffer( int nInitialSize = 1 );
+    ~CUniBuffer();
 
     static void WINAPI      Initialize();
     static void WINAPI      Uninitialize();
@@ -1239,13 +1255,13 @@ private:
 private:
     // Empty implementation of the Uniscribe API
     static HRESULT WINAPI   Dummy_ScriptApplyDigitSubstitution( const SCRIPT_DIGITSUBSTITUTE*, SCRIPT_CONTROL*,
-                                                                SCRIPT_STATE* )
+            SCRIPT_STATE* )
     {
         return E_NOTIMPL;
     }
     static HRESULT WINAPI   Dummy_ScriptStringAnalyse( HDC, const void*, int, int, int, DWORD, int, SCRIPT_CONTROL*,
-                                                       SCRIPT_STATE*, const int*, SCRIPT_TABDEF*, const BYTE*,
-                                                       SCRIPT_STRING_ANALYSIS* )
+            SCRIPT_STATE*, const int*, SCRIPT_TABDEF*, const BYTE*,
+            SCRIPT_STRING_ANALYSIS* )
     {
         return E_NOTIMPL;
     }
@@ -1272,11 +1288,11 @@ private:
 
     // Function pointers
     static                  HRESULT( WINAPI* _ScriptApplyDigitSubstitution )( const SCRIPT_DIGITSUBSTITUTE*,
-                                                                              SCRIPT_CONTROL*, SCRIPT_STATE* );
+            SCRIPT_CONTROL*, SCRIPT_STATE* );
     static                  HRESULT( WINAPI* _ScriptStringAnalyse )( HDC, const void*, int, int, int, DWORD, int,
-                                                                     SCRIPT_CONTROL*, SCRIPT_STATE*, const int*,
-                                                                     SCRIPT_TABDEF*, const BYTE*,
-                                                                     SCRIPT_STRING_ANALYSIS* );
+            SCRIPT_CONTROL*, SCRIPT_STATE*, const int*,
+            SCRIPT_TABDEF*, const BYTE*,
+            SCRIPT_STRING_ANALYSIS* );
     static                  HRESULT( WINAPI* _ScriptStringCPtoX )( SCRIPT_STRING_ANALYSIS, int, BOOL, int* );
     static                  HRESULT( WINAPI* _ScriptStringXtoCP )( SCRIPT_STRING_ANALYSIS, int, int*, int* );
     static                  HRESULT( WINAPI* _ScriptStringFree )( SCRIPT_STRING_ANALYSIS* );
@@ -1293,7 +1309,7 @@ private:
 class CDXUTEditBox : public CDXUTControl
 {
 public:
-                    CDXUTEditBox( CDXUTDialog* pDialog = NULL );
+    CDXUTEditBox( CDXUTDialog* pDialog = NULL );
     virtual         ~CDXUTEditBox();
 
     virtual bool    HandleKeyboard( UINT uMsg, WPARAM wParam, LPARAM lParam );
@@ -1316,8 +1332,8 @@ public:
     {
         return m_Buffer.GetTextSize();
     }  // Returns text length in chars excluding NULL.
-    HRESULT         GetTextCopy(  __out_ecount(bufferCount) LPWSTR strDest, 
-                    UINT bufferCount );
+    HRESULT         GetTextCopy(  __out_ecount(bufferCount) LPWSTR strDest,
+                                  UINT bufferCount );
     void            ClearText();
     virtual void    SetTextColor( D3DCOLOR Color )
     {
@@ -1337,11 +1353,13 @@ public:
     }  // Caret color
     void            SetBorderWidth( int nBorder )
     {
-        m_nBorder = nBorder; UpdateRects();
+        m_nBorder = nBorder;
+        UpdateRects();
     }  // Border of the window
     void            SetSpacing( int nSpacing )
     {
-        m_nSpacing = nSpacing; UpdateRects();
+        m_nSpacing = nSpacing;
+        UpdateRects();
     }
     void            ParseFloatArray( float* pNumbers, int nCount );
     void            SetTextFloatArray( const float* pNumbers, int nCount );

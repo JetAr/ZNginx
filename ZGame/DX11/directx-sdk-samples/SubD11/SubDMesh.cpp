@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: SubDMesh.cpp
 //
 // This class encapsulates the mesh loading and housekeeping functions for a SubDMesh.
@@ -92,7 +92,7 @@ VOID CreateDefaultTextures( ID3D11Device* pd3dDevice )
 // well as a VB.
 //--------------------------------------------------------------------------------------
 VOID CALLBACK CreateVertexBufferAndShaderResource( ID3D11Device* pDev, ID3D11Buffer** ppBuffer,
-                                                   D3D11_BUFFER_DESC BufferDesc, void* pData, void* pContext )
+        D3D11_BUFFER_DESC BufferDesc, void* pData, void* pContext )
 {
     UNREFERENCED_PARAMETER(pContext);
 
@@ -114,7 +114,7 @@ VOID CALLBACK CreateVertexBufferAndShaderResource( ID3D11Device* pDev, ID3D11Buf
             pstrName = strFileA;
         else
             pstrName++;
-        
+
         DXUT_SetDebugName( *ppBuffer, pstrName );
     }
 #endif
@@ -256,21 +256,21 @@ HRESULT CSubDMesh::LoadSubDFromSDKMesh( ID3D11Device* pd3dDevice, const WCHAR* s
             pPatchPiece->m_pPerPatchDataVB = m_pMeshFile->GetVB11( i, 1 );
 
             INT iNumPatches = (int)m_pMeshFile->GetNumIndices( i ) / MAX_EXTRAORDINARY_POINTS;
-            pPatchPiece->m_iPatchCount = iNumPatches;            
+            pPatchPiece->m_iPatchCount = iNumPatches;
 
-            struct PatchData 
+            struct PatchData
             {
                 BYTE val[4]; // Valence of this patch
                 BYTE pre[4]; // Prefix of this patch
             }* pPatchData;
             pPatchData = (PatchData*)m_pMeshFile->GetRawVerticesAt( pMesh->VertexBuffers[1] ); // This is the same data as what's in pPatchPiece->m_pPerPatchDataVB
-            
+
             nPatches += iNumPatches;
 
             pPatchPiece->m_iRegularExtraodinarySplitPoint = -1;
 
             // Loop through all patches inside this patch piece (patch piece is one mesh inside our sdkmesh) to get some statistical data
-            for ( INT k = 0; k < iNumPatches; ++k ) 
+            for ( INT k = 0; k < iNumPatches; ++k )
             {
                 // How many regular patches do we have?
                 if ( pPatchData[k].val[0] == 4 && pPatchData[k].val[1] == 4 && pPatchData[k].val[2] == 4 && pPatchData[k].val[3] == 4 )
@@ -285,10 +285,10 @@ HRESULT CSubDMesh::LoadSubDFromSDKMesh( ID3D11Device* pd3dDevice, const WCHAR* s
                     if ( pPatchData[k].val[j] < nLowestVal )
                         nLowestVal = pPatchData[k].val[j];
                 }
-                
+
                 // Met with the first patch which is extraordinary?
-                if ( (pPatchData[k].val[0] != 4 || pPatchData[k].val[1] != 4 || pPatchData[k].val[2] != 4 || pPatchData[k].val[3] != 4) && 
-                     pPatchPiece->m_iRegularExtraodinarySplitPoint == -1 )
+                if ( (pPatchData[k].val[0] != 4 || pPatchData[k].val[1] != 4 || pPatchData[k].val[2] != 4 || pPatchData[k].val[3] != 4) &&
+                        pPatchPiece->m_iRegularExtraodinarySplitPoint == -1 )
                 {
                     pPatchPiece->m_iRegularExtraodinarySplitPoint = i;
                 }
@@ -298,11 +298,11 @@ HRESULT CSubDMesh::LoadSubDFromSDKMesh( ID3D11Device* pd3dDevice, const WCHAR* s
                 {
                     assert( pPatchData[k].val[0] != 4 || pPatchData[k].val[1] != 4 || pPatchData[k].val[2] != 4 || pPatchData[k].val[3] != 4 );
                 }
-            }            
+            }
 
-            
+
             UINT *pIdx = (UINT*)m_pMeshFile->GetRawIndicesAt( pMesh->IndexBuffer ); // this is the same data as what's in pPatchPiece->m_pExtraordinaryPatchIB//MappedResource.pData;
-            
+
 
             std::vector<UINT> vRegularIdxBuf;
             std::vector<UINT> vExtraordinaryIdxBuf;
@@ -316,21 +316,22 @@ HRESULT CSubDMesh::LoadSubDFromSDKMesh( ID3D11Device* pd3dDevice, const WCHAR* s
 
                 UINT NumIndices = (UINT)pSubset->IndexCount; // this is actually the number of patches in current subset
                 UINT StartIndex = (UINT)pSubset->IndexStart; // this is actually the patch start index of current subset in patch data
-                
+
                 pPatchPiece->RegularPatchStart.push_back( (UINT)vRegularPatchData.size() );
                 pPatchPiece->ExtraordinaryPatchStart.push_back( (UINT)vExtraordinaryPatchData.size() );
-                
+
                 for ( UINT j = 0; j < NumIndices; ++j ) // loop through all patches inside this subset
                 {
                     if ( pPatchData[j+StartIndex].val[0] == 4 && pPatchData[j+StartIndex].val[1] == 4 &&
-                         pPatchData[j+StartIndex].val[2] == 4 && pPatchData[j+StartIndex].val[3] == 4 )
+                            pPatchData[j+StartIndex].val[2] == 4 && pPatchData[j+StartIndex].val[3] == 4 )
                     {
                         // this patch is regular
                         for ( INT k = 0; k < MAX_EXTRAORDINARY_POINTS; ++k )
                             vRegularIdxBuf.push_back( pIdx[(StartIndex + j) * MAX_EXTRAORDINARY_POINTS + k] );
 
                         vRegularPatchData.push_back( pPatchData[j+StartIndex] );
-                    } else
+                    }
+                    else
                     {
                         // this patch is extraordinary
                         for ( INT k = 0; k < MAX_EXTRAORDINARY_POINTS; ++k )
@@ -340,9 +341,9 @@ HRESULT CSubDMesh::LoadSubDFromSDKMesh( ID3D11Device* pd3dDevice, const WCHAR* s
                     }
                 }
 
-                pPatchPiece->RegularPatchCount.push_back( 
+                pPatchPiece->RegularPatchCount.push_back(
                     UINT( vRegularPatchData.size() - pPatchPiece->RegularPatchStart[pPatchPiece->RegularPatchStart.size()-1] ) );
-                pPatchPiece->ExtraordinaryPatchCount.push_back( 
+                pPatchPiece->ExtraordinaryPatchCount.push_back(
                     UINT( vExtraordinaryPatchData.size() - pPatchPiece->ExtraordinaryPatchStart[pPatchPiece->ExtraordinaryPatchStart.size()-1] ) );
             }
 
@@ -354,7 +355,7 @@ HRESULT CSubDMesh::LoadSubDFromSDKMesh( ID3D11Device* pd3dDevice, const WCHAR* s
             desc.Usage = D3D11_USAGE_DEFAULT;
             desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
             desc.CPUAccessFlags = 0;
-            desc.MiscFlags = 0;            
+            desc.MiscFlags = 0;
             DXUTGetD3D11Device()->CreateBuffer( &desc, &initdata, &pPatchPiece->m_pMyRegularPatchIB );
             DXUT_SetDebugName( pPatchPiece->m_pMyRegularPatchIB, "CSubDMesh IB" );
 
@@ -376,8 +377,8 @@ HRESULT CSubDMesh::LoadSubDFromSDKMesh( ID3D11Device* pd3dDevice, const WCHAR* s
             initdata.pSysMem = &vExtraordinaryPatchData[0];
             DXUTGetD3D11Device()->CreateBuffer( &desc, &initdata, &pPatchPiece->m_pMyExtraordinaryPatchData );
             DXUT_SetDebugName( pPatchPiece->m_pMyExtraordinaryPatchData, "CSubDMesh Xord PerPatch" );
-            
-            // Create a SRV for the per-patch data            
+
+            // Create a SRV for the per-patch data
             D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc;
             SRVDesc.Format = DXGI_FORMAT_R8G8B8A8_UINT;
             SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
@@ -462,7 +463,7 @@ bool CSubDMesh::GetCameraViewMatrix( XMMATRIX* pViewMatrix, XMVECTOR* pCameraPos
     *pCameraPosWorld = mCameraWorld.r[3];
 
     XMMATRIX matCamera = matRotation * mCameraWorld;
-    
+
     *pViewMatrix = XMMatrixInverse( nullptr, matCamera );
 
     return true;
@@ -560,7 +561,7 @@ void CSubDMesh::RenderPatchPiece_OnlyRegular( ID3D11DeviceContext* pd3dDeviceCon
     {
         auto pSubset = m_pMeshFile->GetSubset( pPiece->m_MeshIndex, i );
         if( pSubset->PrimitiveType != PT_QUAD_PATCH_LIST )
-            continue;        
+            continue;
 
         // Set per-subset constant buffer, so the hull shader references the proper index in the per-patch data
         D3D11_MAPPED_SUBRESOURCE MappedResource;
@@ -573,9 +574,9 @@ void CSubDMesh::RenderPatchPiece_OnlyRegular( ID3D11DeviceContext* pd3dDeviceCon
         // Set up the material for this subset
         SetupMaterial( pd3dDeviceContext, pSubset->MaterialID );
 
-        // Draw      
+        // Draw
         UINT NumIndices = (UINT)pPiece->RegularPatchCount[i] * MAX_EXTRAORDINARY_POINTS;
-        UINT StartIndex = (UINT)pPiece->RegularPatchStart[i] * MAX_EXTRAORDINARY_POINTS;        
+        UINT StartIndex = (UINT)pPiece->RegularPatchStart[i] * MAX_EXTRAORDINARY_POINTS;
         pd3dDeviceContext->DrawIndexed( NumIndices, StartIndex, 0 );
     }
 }
@@ -603,7 +604,7 @@ void CSubDMesh::RenderPatchPiece_OnlyExtraordinary( ID3D11DeviceContext* pd3dDev
     {
         auto pSubset = m_pMeshFile->GetSubset( pPiece->m_MeshIndex, i );
         if( pSubset->PrimitiveType != PT_QUAD_PATCH_LIST )
-            continue;        
+            continue;
 
         // Set per-subset constant buffer, so the hull shader references the proper index in the per-patch data
         D3D11_MAPPED_SUBRESOURCE MappedResource;
@@ -616,9 +617,9 @@ void CSubDMesh::RenderPatchPiece_OnlyExtraordinary( ID3D11DeviceContext* pd3dDev
         // Set up the material for this subset
         SetupMaterial( pd3dDeviceContext, pSubset->MaterialID );
 
-        // Draw       
+        // Draw
         UINT NumIndices = (UINT)pPiece->ExtraordinaryPatchCount[i] * MAX_EXTRAORDINARY_POINTS;
-        UINT StartIndex = (UINT)pPiece->ExtraordinaryPatchStart[i] * MAX_EXTRAORDINARY_POINTS;        
+        UINT StartIndex = (UINT)pPiece->ExtraordinaryPatchStart[i] * MAX_EXTRAORDINARY_POINTS;
         pd3dDeviceContext->DrawIndexed( NumIndices, StartIndex, 0 );
     }
 }
@@ -667,7 +668,7 @@ void CSubDMesh::SetupMaterial( ID3D11DeviceContext* pd3dDeviceContext, int Mater
     {
         Resources[2] = g_pDefaultSpecularSRV;
     }
-    
+
     // The domain shader only needs the heightmap, so we only set 1 slot here.
     pd3dDeviceContext->DSSetShaderResources( 0, 1, Resources );
 

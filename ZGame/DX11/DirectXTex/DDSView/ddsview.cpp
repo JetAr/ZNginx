@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DDSView.cpp
 //
 // DirectX 11 DDS File Viewer
@@ -167,18 +167,18 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
         break;
 
     default:
+    {
+        UINT flags = 0;
+        hr = g_pd3dDevice->CheckFormatSupport ( mdata.format, &flags );
+        if ( FAILED(hr) || !(flags & (D3D11_FORMAT_SUPPORT_TEXTURE1D|D3D11_FORMAT_SUPPORT_TEXTURE2D|D3D11_FORMAT_SUPPORT_TEXTURE3D)) )
         {
-            UINT flags = 0;
-            hr = g_pd3dDevice->CheckFormatSupport ( mdata.format, &flags );
-            if ( FAILED(hr) || !(flags & (D3D11_FORMAT_SUPPORT_TEXTURE1D|D3D11_FORMAT_SUPPORT_TEXTURE2D|D3D11_FORMAT_SUPPORT_TEXTURE3D)) )
-            {
-                wchar_t buff[2048] = { 0 };
-                swprintf_s( buff, L"Format not supported by DirectX hardware\n\nFilename = %ls\nDXGI Format %d\nFeature Level %d\nHRESULT = %08X", lpCmdLine, mdata.format, g_featureLevel, hr );
-                MessageBox( nullptr, buff, L"DDSView", MB_OK | MB_ICONEXCLAMATION );
-                return 0;
-            }
+            wchar_t buff[2048] = { 0 };
+            swprintf_s( buff, L"Format not supported by DirectX hardware\n\nFilename = %ls\nDXGI Format %d\nFeature Level %d\nHRESULT = %08X", lpCmdLine, mdata.format, g_featureLevel, hr );
+            MessageBox( nullptr, buff, L"DDSView", MB_OK | MB_ICONEXCLAMATION );
+            return 0;
         }
-        break;
+    }
+    break;
     }
 
     ScratchImage image;
@@ -284,39 +284,39 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 
     switch( message )
     {
-        case WM_PAINT:
-            hdc = BeginPaint( hWnd, &ps );
-            EndPaint( hWnd, &ps );
-            break;
+    case WM_PAINT:
+        hdc = BeginPaint( hWnd, &ps );
+        EndPaint( hWnd, &ps );
+        break;
 
-        case WM_DESTROY:
-            PostQuitMessage( 0 );
-            break;
+    case WM_DESTROY:
+        PostQuitMessage( 0 );
+        break;
 
-        case WM_KEYDOWN:
-            if ( wParam == VK_RIGHT )
+    case WM_KEYDOWN:
+        if ( wParam == VK_RIGHT )
+        {
+            if ( g_iCurrentIndex < g_iMaxIndex-1 )
+                ++g_iCurrentIndex;
+        }
+        else if ( wParam == VK_LEFT )
+        {
+            if ( g_iCurrentIndex > 0 )
             {
-                if ( g_iCurrentIndex < g_iMaxIndex-1 )
-                    ++g_iCurrentIndex;
+                --g_iCurrentIndex;
             }
-            else if ( wParam == VK_LEFT )
-            {
-                if ( g_iCurrentIndex > 0 )
-                {
-                    --g_iCurrentIndex;
-                }
-            }
-            else if ( wParam >= '0' && wParam <= '9' )
-            {
-                UINT index = (wParam == '0') ? 10 : ((UINT) (wParam - '1'));
-                if ( index < g_iMaxIndex )
-                    g_iCurrentIndex = index;
-            }
-            InvalidateRect( hWnd, nullptr, FALSE );
-            break;
+        }
+        else if ( wParam >= '0' && wParam <= '9' )
+        {
+            UINT index = (wParam == '0') ? 10 : ((UINT) (wParam - '1'));
+            if ( index < g_iMaxIndex )
+                g_iCurrentIndex = index;
+        }
+        InvalidateRect( hWnd, nullptr, FALSE );
+        break;
 
-        default:
-            return DefWindowProc( hWnd, message, wParam, lParam );
+    default:
+        return DefWindowProc( hWnd, message, wParam, lParam );
     }
 
     return 0;
@@ -352,7 +352,7 @@ HRESULT InitDevice( const TexMetadata& mdata )
         D3D_FEATURE_LEVEL_10_1,
         D3D_FEATURE_LEVEL_10_0,
     };
-	UINT numFeatureLevels = ARRAYSIZE( featureLevels );
+    UINT numFeatureLevels = ARRAYSIZE( featureLevels );
 
     DXGI_SWAP_CHAIN_DESC sd;
     ZeroMemory( &sd, sizeof( sd ) );
@@ -604,24 +604,24 @@ HRESULT InitDevice( const TexMetadata& mdata )
     // Create index buffer
     static const WORD indicesCube[] =
     {
-            0, 1, 2,
-            2, 1, 3,
-            4, 5, 6,
-            6, 5, 7,
-            8, 9, 10,
-            10, 9, 11,
-            12, 13, 14,
-            14, 13, 15,
-            16, 17, 18,
-            18, 17, 19,
-            20, 21, 22,
-            22, 21, 23
+        0, 1, 2,
+        2, 1, 3,
+        4, 5, 6,
+        6, 5, 7,
+        8, 9, 10,
+        10, 9, 11,
+        12, 13, 14,
+        14, 13, 15,
+        16, 17, 18,
+        18, 17, 19,
+        20, 21, 22,
+        22, 21, 23
     };
 
     static const WORD indices[] =
     {
-            0, 1, 2,
-            2, 1, 3
+        0, 1, 2,
+        2, 1, 3
     };
 
     if ( isCubeMap )
@@ -672,20 +672,20 @@ HRESULT InitDevice( const TexMetadata& mdata )
     if( FAILED( hr ) )
         return hr;
 
-    D3D11_BLEND_DESC dsc = 
+    D3D11_BLEND_DESC dsc =
     {
         false,
         false,
         {
-        true,
-        D3D11_BLEND_SRC_ALPHA,
-        D3D11_BLEND_INV_SRC_ALPHA,
-        D3D11_BLEND_OP_ADD,
-        D3D11_BLEND_ZERO,
-        D3D11_BLEND_ZERO,
-        D3D11_BLEND_OP_ADD,
-        D3D11_COLOR_WRITE_ENABLE_ALL
-        } 
+            true,
+            D3D11_BLEND_SRC_ALPHA,
+            D3D11_BLEND_INV_SRC_ALPHA,
+            D3D11_BLEND_OP_ADD,
+            D3D11_BLEND_ZERO,
+            D3D11_BLEND_ZERO,
+            D3D11_BLEND_OP_ADD,
+            D3D11_COLOR_WRITE_ENABLE_ALL
+        }
     };
     hr = g_pd3dDevice->CreateBlendState(&dsc, &g_AlphaBlendState );
     if( FAILED(hr) )

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DXUTMisc.h
 //
 // Helper functions for Direct3D programming.
@@ -16,7 +16,7 @@
 //--------------------------------------------------------------------------------------
 // XInput helper state/function
 // This performs extra processing on XInput gamepad data to make it slightly more convenient to use
-// 
+//
 // Example usage:
 //
 //      DXUT_GAMEPAD gamepad[4];
@@ -85,35 +85,89 @@ HRESULT DXUTSnapD3D11Screenshot( LPCTSTR szFileName, D3DX11_IMAGE_FILE_FORMAT if
 template<typename TYPE> class CGrowableArray
 {
 public:
-    CGrowableArray()  { m_pData = NULL; m_nSize = 0; m_nMaxSize = 0; }
-    CGrowableArray( const CGrowableArray<TYPE>& a ) { for( int i=0; i < a.m_nSize; i++ ) Add( a.m_pData[i] ); }
-    ~CGrowableArray() { RemoveAll(); }
+    CGrowableArray()
+    {
+        m_pData = NULL;
+        m_nSize = 0;
+        m_nMaxSize = 0;
+    }
+    CGrowableArray( const CGrowableArray<TYPE>& a )
+    {
+        for( int i=0; i < a.m_nSize; i++ ) Add( a.m_pData[i] );
+    }
+    ~CGrowableArray()
+    {
+        RemoveAll();
+    }
 
-    const TYPE& operator[]( int nIndex ) const { return GetAt( nIndex ); }
-    TYPE& operator[]( int nIndex ) { return GetAt( nIndex ); }
-   
-    CGrowableArray& operator=( const CGrowableArray<TYPE>& a ) { if( this == &a ) return *this; RemoveAll(); for( int i=0; i < a.m_nSize; i++ ) Add( a.m_pData[i] ); return *this; }
+    const TYPE& operator[]( int nIndex ) const
+    {
+        return GetAt( nIndex );
+    }
+    TYPE& operator[]( int nIndex )
+    {
+        return GetAt( nIndex );
+    }
+
+    CGrowableArray& operator=( const CGrowableArray<TYPE>& a )
+    {
+        if( this == &a ) return *this;
+        RemoveAll();
+        for( int i=0; i < a.m_nSize; i++ ) Add( a.m_pData[i] );
+        return *this;
+    }
 
     HRESULT SetSize( int nNewMaxSize );
     HRESULT Add( const TYPE& value );
     HRESULT Insert( int nIndex, const TYPE& value );
     HRESULT SetAt( int nIndex, const TYPE& value );
-    TYPE&   GetAt( int nIndex ) const { assert( nIndex >= 0 && nIndex < m_nSize ); return m_pData[nIndex]; }
-    int     GetSize() const { return m_nSize; }
-    TYPE*   GetData() { return m_pData; }
-    bool    Contains( const TYPE& value ){ return ( -1 != IndexOf( value ) ); }
+    TYPE&   GetAt( int nIndex ) const
+    {
+        assert( nIndex >= 0 && nIndex < m_nSize );
+        return m_pData[nIndex];
+    }
+    int     GetSize() const
+    {
+        return m_nSize;
+    }
+    TYPE*   GetData()
+    {
+        return m_pData;
+    }
+    bool    Contains( const TYPE& value )
+    {
+        return ( -1 != IndexOf( value ) );
+    }
 
-    int     IndexOf( const TYPE& value ) { return ( m_nSize > 0 ) ? IndexOf( value, 0, m_nSize ) : -1; }
-    int     IndexOf( const TYPE& value, int iStart ) { return IndexOf( value, iStart, m_nSize - iStart ); }
+    int     IndexOf( const TYPE& value )
+    {
+        return ( m_nSize > 0 ) ? IndexOf( value, 0, m_nSize ) : -1;
+    }
+    int     IndexOf( const TYPE& value, int iStart )
+    {
+        return IndexOf( value, iStart, m_nSize - iStart );
+    }
     int     IndexOf( const TYPE& value, int nIndex, int nNumElements );
 
-    int     LastIndexOf( const TYPE& value ) { return ( m_nSize > 0 ) ? LastIndexOf( value, m_nSize-1, m_nSize ) : -1; }
-    int     LastIndexOf( const TYPE& value, int nIndex ) { return LastIndexOf( value, nIndex, nIndex+1 ); }
+    int     LastIndexOf( const TYPE& value )
+    {
+        return ( m_nSize > 0 ) ? LastIndexOf( value, m_nSize-1, m_nSize ) : -1;
+    }
+    int     LastIndexOf( const TYPE& value, int nIndex )
+    {
+        return LastIndexOf( value, nIndex, nIndex+1 );
+    }
     int     LastIndexOf( const TYPE& value, int nIndex, int nNumElements );
 
     HRESULT Remove( int nIndex );
-    void    RemoveAll() { SetSize(0); }
-    void	Reset() { m_nSize = 0; }
+    void    RemoveAll()
+    {
+        SetSize(0);
+    }
+    void	Reset()
+    {
+        m_nSize = 0;
+    }
 
 protected:
     TYPE* m_pData;      // the actual array of data
@@ -206,7 +260,7 @@ WCHAR* WINAPI DXUTTraceWindowsMessage( UINT uMsg );
 #endif
 
 // These macros are very similar to dxerr's but it special cases the HRESULT defined
-// by DXUT to pop better message boxes. 
+// by DXUT to pop better message boxes.
 #if defined(DEBUG) || defined(_DEBUG)
 #define DXUT_ERR(str,hr)           DXUTTrace( __FILE__, (DWORD)__LINE__, hr, str, false )
 #define DXUT_ERR_MSGBOX(str,hr)    DXUTTrace( __FILE__, (DWORD)__LINE__, hr, str, true )
@@ -234,15 +288,15 @@ DWORD WINAPI DXUT_Dynamic_D3DPERF_GetStatus( void );
 HRESULT WINAPI DXUT_Dynamic_CreateDXGIFactory1( REFIID rInterface, void** ppOut );
 
 HRESULT WINAPI DXUT_Dynamic_D3D11CreateDevice( IDXGIAdapter* pAdapter,
-                                               D3D_DRIVER_TYPE DriverType,
-                                               HMODULE Software,
-                                               UINT32 Flags,
-                                               D3D_FEATURE_LEVEL* pFeatureLevels,
-                                               UINT FeatureLevels,
-                                               UINT32 SDKVersion,
-                                               ID3D11Device** ppDevice,
-                                               D3D_FEATURE_LEVEL* pFeatureLevel,
-                                               ID3D11DeviceContext** ppImmediateContext );
+        D3D_DRIVER_TYPE DriverType,
+        HMODULE Software,
+        UINT32 Flags,
+        D3D_FEATURE_LEVEL* pFeatureLevels,
+        UINT FeatureLevels,
+        UINT32 SDKVersion,
+        ID3D11Device** ppDevice,
+        D3D_FEATURE_LEVEL* pFeatureLevel,
+        ID3D11DeviceContext** ppImmediateContext );
 
 bool DXUT_EnsureD3D11APIs( void );
 
@@ -251,7 +305,7 @@ bool DXUT_EnsureD3D11APIs( void );
 // Profiling/instrumentation support
 //--------------------------------------------------------------------------------------
 
-// Use DXUT_SetDebugName() to attach names to D3D objects for use by 
+// Use DXUT_SetDebugName() to attach names to D3D objects for use by
 // SDKDebugLayer, PIX's object table, etc.
 #if defined(PROFILE) || defined(DEBUG)
 inline void DXUT_SetDebugName( IDirect3DResource9* pObj, const CHAR* pstrName )
@@ -262,7 +316,7 @@ inline void DXUT_SetDebugName( IDirect3DResource9* pObj, const CHAR* pstrName )
 inline void DXUT_SetDebugName( IDXGIObject* pObj, const CHAR* pstrName )
 {
     if ( pObj )
-       pObj->SetPrivateData( WKPDID_D3DDebugObjectName, lstrlenA(pstrName), pstrName );
+        pObj->SetPrivateData( WKPDID_D3DDebugObjectName, lstrlenA(pstrName), pstrName );
 }
 inline void DXUT_SetDebugName( ID3D10Device* pObj, const CHAR* pstrName )
 {
@@ -290,8 +344,8 @@ inline void DXUT_SetDebugName( ID3D11DeviceChild* pObj, const CHAR* pstrName )
 
 
 //--------------------------------------------------------------------------------------
-// Some D3DPERF APIs take a color that can be used when displaying user events in 
-// performance analysis tools.  The following constants are provided for your 
+// Some D3DPERF APIs take a color that can be used when displaying user events in
+// performance analysis tools.  The following constants are provided for your
 // convenience, but you can use any colors you like.
 //--------------------------------------------------------------------------------------
 const D3DCOLOR              DXUT_PERFEVENTCOLOR = D3DCOLOR_XRGB( 200, 100, 100 );
@@ -299,8 +353,8 @@ const D3DCOLOR              DXUT_PERFEVENTCOLOR2 = D3DCOLOR_XRGB( 100, 200, 100 
 const D3DCOLOR              DXUT_PERFEVENTCOLOR3 = D3DCOLOR_XRGB( 100, 100, 200 );
 
 //--------------------------------------------------------------------------------------
-// The following macros provide a convenient way for your code to call the D3DPERF 
-// functions only when PROFILE is defined.  If PROFILE is not defined (as for the final 
+// The following macros provide a convenient way for your code to call the D3DPERF
+// functions only when PROFILE is defined.  If PROFILE is not defined (as for the final
 // release version of a program), these macros evaluate to nothing, so no detailed event
 // information is embedded in your shipping program.  It is recommended that you create
 // and use three build configurations for your projects:
@@ -322,28 +376,28 @@ const D3DCOLOR              DXUT_PERFEVENTCOLOR3 = D3DCOLOR_XRGB( 100, 100, 200 
 
 //--------------------------------------------------------------------------------------
 // CDXUTPerfEventGenerator is a helper class that makes it easy to attach begin and end
-// events to a block of code.  Simply define a CDXUTPerfEventGenerator variable anywhere 
-// in a block of code, and the class's constructor will call DXUT_BeginPerfEvent when 
-// the block of code begins, and the class's destructor will call DXUT_EndPerfEvent when 
+// events to a block of code.  Simply define a CDXUTPerfEventGenerator variable anywhere
+// in a block of code, and the class's constructor will call DXUT_BeginPerfEvent when
+// the block of code begins, and the class's destructor will call DXUT_EndPerfEvent when
 // the block ends.
 //--------------------------------------------------------------------------------------
 class CDXUTPerfEventGenerator
 {
 public:
-CDXUTPerfEventGenerator( D3DCOLOR color, LPCWSTR pstrMessage )
-{
-    DXUT_BeginPerfEvent( color, pstrMessage );
-}
-~CDXUTPerfEventGenerator( void )
-{
-    DXUT_EndPerfEvent();
-}
+    CDXUTPerfEventGenerator( D3DCOLOR color, LPCWSTR pstrMessage )
+    {
+        DXUT_BeginPerfEvent( color, pstrMessage );
+    }
+    ~CDXUTPerfEventGenerator( void )
+    {
+        DXUT_EndPerfEvent();
+    }
 };
 
 
 //--------------------------------------------------------------------------------------
-// Multimon handling to support OSes with or without multimon API support.  
-// Purposely avoiding the use of multimon.h so DXUT.lib doesn't require 
+// Multimon handling to support OSes with or without multimon API support.
+// Purposely avoiding the use of multimon.h so DXUT.lib doesn't require
 // COMPILE_MULTIMON_STUBS and cause complication with MFC or other users of multimon.h
 //--------------------------------------------------------------------------------------
 #ifndef MONITOR_DEFAULTTOPRIMARY
@@ -488,7 +542,7 @@ template<typename TYPE> HRESULT CGrowableArray <TYPE>::Insert( int nIndex, const
 
     // Validate index
     if( nIndex < 0 ||
-        nIndex > m_nSize )
+            nIndex > m_nSize )
     {
         assert( false );
         return E_INVALIDARG;
@@ -517,7 +571,7 @@ template<typename TYPE> HRESULT CGrowableArray <TYPE>::SetAt( int nIndex, const 
 {
     // Validate arguments
     if( nIndex < 0 ||
-        nIndex >= m_nSize )
+            nIndex >= m_nSize )
     {
         assert( false );
         return E_INVALIDARG;
@@ -530,17 +584,17 @@ template<typename TYPE> HRESULT CGrowableArray <TYPE>::SetAt( int nIndex, const 
 
 //--------------------------------------------------------------------------------------
 // Searches for the specified value and returns the index of the first occurrence
-// within the section of the data array that extends from iStart and contains the 
-// specified number of elements. Returns -1 if value is not found within the given 
+// within the section of the data array that extends from iStart and contains the
+// specified number of elements. Returns -1 if value is not found within the given
 // section.
 //--------------------------------------------------------------------------------------
 template<typename TYPE> int CGrowableArray <TYPE>::IndexOf( const TYPE& value, int iStart, int nNumElements )
 {
     // Validate arguments
     if( iStart < 0 ||
-        iStart >= m_nSize ||
-        nNumElements < 0 ||
-        iStart + nNumElements > m_nSize )
+            iStart >= m_nSize ||
+            nNumElements < 0 ||
+            iStart + nNumElements > m_nSize )
     {
         assert( false );
         return -1;
@@ -567,9 +621,9 @@ template<typename TYPE> int CGrowableArray <TYPE>::LastIndexOf( const TYPE& valu
 {
     // Validate arguments
     if( iEnd < 0 ||
-        iEnd >= m_nSize ||
-        nNumElements < 0 ||
-        iEnd - nNumElements < 0 )
+            iEnd >= m_nSize ||
+            nNumElements < 0 ||
+            iEnd - nNumElements < 0 )
     {
         assert( false );
         return -1;
@@ -592,7 +646,7 @@ template<typename TYPE> int CGrowableArray <TYPE>::LastIndexOf( const TYPE& valu
 template<typename TYPE> HRESULT CGrowableArray <TYPE>::Remove( int nIndex )
 {
     if( nIndex < 0 ||
-        nIndex >= m_nSize )
+            nIndex >= m_nSize )
     {
         assert( false );
         return E_INVALIDARG;

@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // BCDirectCompute.cpp
-//  
+//
 // Direct3D 11 Compute Shader BC Compressor
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -23,63 +23,63 @@ using Microsoft::WRL::ComPtr;
 
 namespace
 {
-    #include "Shaders\Compiled\BC7Encode_EncodeBlockCS.inc"
-    #include "Shaders\Compiled\BC7Encode_TryMode02CS.inc"
-    #include "Shaders\Compiled\BC7Encode_TryMode137CS.inc"
-    #include "Shaders\Compiled\BC7Encode_TryMode456CS.inc"
-    #include "Shaders\Compiled\BC6HEncode_EncodeBlockCS.inc"
-    #include "Shaders\Compiled\BC6HEncode_TryModeG10CS.inc"
-    #include "Shaders\Compiled\BC6HEncode_TryModeLE10CS.inc"
+#include "Shaders\Compiled\BC7Encode_EncodeBlockCS.inc"
+#include "Shaders\Compiled\BC7Encode_TryMode02CS.inc"
+#include "Shaders\Compiled\BC7Encode_TryMode137CS.inc"
+#include "Shaders\Compiled\BC7Encode_TryMode456CS.inc"
+#include "Shaders\Compiled\BC6HEncode_EncodeBlockCS.inc"
+#include "Shaders\Compiled\BC6HEncode_TryModeG10CS.inc"
+#include "Shaders\Compiled\BC6HEncode_TryModeLE10CS.inc"
 
-    struct BufferBC6HBC7
-    {
-        UINT color[4];
-    };
+struct BufferBC6HBC7
+{
+    UINT color[4];
+};
 
-    struct ConstantsBC6HBC7
-    {
-        UINT    tex_width;
-        UINT    num_block_x;
-        UINT    format;
-        UINT    mode_id;
-        UINT    start_block_id;
-        UINT    num_total_blocks;
-        float   alpha_weight;
-        UINT    reserved;
-    };
+struct ConstantsBC6HBC7
+{
+    UINT    tex_width;
+    UINT    num_block_x;
+    UINT    format;
+    UINT    mode_id;
+    UINT    start_block_id;
+    UINT    num_total_blocks;
+    float   alpha_weight;
+    UINT    reserved;
+};
 
-    static_assert( sizeof(ConstantsBC6HBC7) == sizeof(UINT)*8, "Constant buffer size mismatch" );
+static_assert( sizeof(ConstantsBC6HBC7) == sizeof(UINT)*8, "Constant buffer size mismatch" );
 
-    inline void RunComputeShader( ID3D11DeviceContext* pContext,
-                                  ID3D11ComputeShader* shader,
-                                  ID3D11ShaderResourceView** pSRVs, 
-                                  UINT srvCount,
-                                  ID3D11Buffer* pCB, 
-                                  ID3D11UnorderedAccessView* pUAV,
-                                  UINT X )
-    {
-        // Force UAV to nullptr before setting SRV since we are swapping buffers
-        ID3D11UnorderedAccessView* nullUAV = nullptr;
-        pContext->CSSetUnorderedAccessViews( 0, 1, &nullUAV, nullptr );
+inline void RunComputeShader( ID3D11DeviceContext* pContext,
+                              ID3D11ComputeShader* shader,
+                              ID3D11ShaderResourceView** pSRVs,
+                              UINT srvCount,
+                              ID3D11Buffer* pCB,
+                              ID3D11UnorderedAccessView* pUAV,
+                              UINT X )
+{
+    // Force UAV to nullptr before setting SRV since we are swapping buffers
+    ID3D11UnorderedAccessView* nullUAV = nullptr;
+    pContext->CSSetUnorderedAccessViews( 0, 1, &nullUAV, nullptr );
 
-        pContext->CSSetShader( shader, nullptr, 0 );
-        pContext->CSSetShaderResources( 0, srvCount, pSRVs );
-        pContext->CSSetUnorderedAccessViews( 0, 1, &pUAV, nullptr );
-        pContext->CSSetConstantBuffers( 0, 1, &pCB );
-        pContext->Dispatch( X, 1, 1 );
-    }
+    pContext->CSSetShader( shader, nullptr, 0 );
+    pContext->CSSetShaderResources( 0, srvCount, pSRVs );
+    pContext->CSSetUnorderedAccessViews( 0, 1, &pUAV, nullptr );
+    pContext->CSSetConstantBuffers( 0, 1, &pCB );
+    pContext->Dispatch( X, 1, 1 );
+}
 
-    inline void ResetContext( ID3D11DeviceContext* pContext )
-    {
-        ID3D11UnorderedAccessView* nullUAV = nullptr;
-        pContext->CSSetUnorderedAccessViews( 0, 1, &nullUAV, nullptr );
+inline void ResetContext( ID3D11DeviceContext* pContext )
+{
+    ID3D11UnorderedAccessView* nullUAV = nullptr;
+    pContext->CSSetUnorderedAccessViews( 0, 1, &nullUAV, nullptr );
 
-        ID3D11ShaderResourceView* nullSRV[3] = { nullptr, nullptr, nullptr };
-        pContext->CSSetShaderResources( 0, 3, nullSRV );
+    ID3D11ShaderResourceView* nullSRV[3] = { nullptr, nullptr, nullptr };
+    pContext->CSSetShaderResources( 0, 3, nullSRV );
 
-        ID3D11Buffer* nullBuffer[1] = { nullptr };
-        pContext->CSSetConstantBuffers( 0, 1, nullBuffer );
-    }
+    ID3D11Buffer* nullBuffer[1] = { nullptr };
+    pContext->CSSetConstantBuffers( 0, 1, nullBuffer );
+}
 };
 
 namespace DirectX
@@ -331,7 +331,7 @@ HRESULT GPUCompressBC::Prepare( size_t width, size_t height, DXGI_FORMAT format,
             return hr;
         }
     }
-    
+
     return S_OK;
 }
 
@@ -344,11 +344,11 @@ HRESULT GPUCompressBC::Compress( const Image& srcImage, const Image& destImage )
         return E_INVALIDARG;
 
     if ( srcImage.width != destImage.width
-         || srcImage.height != destImage.height
-         || srcImage.width != m_width
-         || srcImage.height != m_height
-         || srcImage.format != m_srcformat
-         || destImage.format != m_bcformat )
+            || srcImage.height != destImage.height
+            || srcImage.width != m_width
+            || srcImage.height != m_height
+            || srcImage.format != m_srcformat
+            || destImage.format != m_bcformat )
     {
         return E_UNEXPECTED;
     }
@@ -366,7 +366,7 @@ HRESULT GPUCompressBC::Compress( const Image& srcImage, const Image& destImage )
         D3D11_TEXTURE2D_DESC desc;
         memset( &desc, 0, sizeof(desc) );
         desc.Width = static_cast<UINT>( srcImage.width );
-        desc.Height = static_cast<UINT>( srcImage.height ); 
+        desc.Height = static_cast<UINT>( srcImage.height );
         desc.MipLevels = 1;
         desc.ArraySize = 1;
         desc.Format = inputFormat;
@@ -490,7 +490,7 @@ HRESULT GPUCompressBC::Compress( const Image& srcImage, const Image& destImage )
                 pSRVs[1] = (i & 1) ? m_err2SRV.Get() : m_err1SRV.Get();
                 RunComputeShader( pContext, m_BC7_tryMode137CS.Get(), pSRVs, 2, m_constBuffer.Get(),
                                   (i & 1) ? m_err1UAV.Get() : m_err2UAV.Get(), uThreadGroupCount );
-            }               
+            }
 
             for ( UINT i = 0; i < 2; ++i )
             {
@@ -557,7 +557,7 @@ HRESULT GPUCompressBC::Compress( const Image& srcImage, const Image& destImage )
                 pSRVs[1] = (i & 1) ? m_err2SRV.Get() : m_err1SRV.Get();
                 RunComputeShader( pContext, m_BC6H_tryModeLE10CS.Get(), pSRVs, 2, m_constBuffer.Get(),
                                   (i & 1) ? m_err1UAV.Get() : m_err2UAV.Get(), std::max<UINT>( (uThreadGroupCount + 1) / 2, 1) );
-            }               
+            }
 
             pSRVs[1] = m_err1SRV.Get();
             RunComputeShader( pContext, m_BC6H_encodeBlockCS.Get(), pSRVs, 2, m_constBuffer.Get(),

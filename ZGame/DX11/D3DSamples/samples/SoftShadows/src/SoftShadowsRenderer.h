@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        SoftShadows\src/SoftShadowsRenderer.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -60,17 +60,29 @@ public:
 
         virtual ~MeshInstance() {}
 
-        const wchar_t *getName() const { return m_name.c_str(); }
+        const wchar_t *getName() const
+        {
+            return m_name.c_str();
+        }
 
-        void setWorldTransform(const D3DMATRIX &worldTransform) { m_worldTransform = worldTransform; }
-        const D3DMATRIX &getWorldTransform() const { return m_worldTransform; }
+        void setWorldTransform(const D3DMATRIX &worldTransform)
+        {
+            m_worldTransform = worldTransform;
+        }
+        const D3DMATRIX &getWorldTransform() const
+        {
+            return m_worldTransform;
+        }
 
         D3DXVECTOR3 getWorldCenter() const;
 
         virtual D3DXVECTOR3 getCenter() const = 0;
         virtual D3DXVECTOR3 getExtents() const = 0;
 
-        virtual HRESULT createInputLayout(ID3D11Device *device, BYTE *iaSig, SIZE_T iaSigSize) { return S_OK; }
+        virtual HRESULT createInputLayout(ID3D11Device *device, BYTE *iaSig, SIZE_T iaSigSize)
+        {
+            return S_OK;
+        }
         virtual void releaseInputLayout() {}
 
         virtual void draw(
@@ -87,7 +99,7 @@ public:
     protected:
 
         std::wstring m_name;
-        D3DXMATRIX m_worldTransform;        
+        D3DXMATRIX m_worldTransform;
     };
 
     void onFrameMove(double time, float elapsedTime);
@@ -105,24 +117,51 @@ public:
     void renderPost(ID3D11DeviceContext* pd3dImmediateContext,ID3D11RenderTargetView *pBackBufferRTV, ID3D11DepthStencilView *pBackBufferDST);
 
     // Camera access
-    const CBaseCamera &getCamera() const { return m_camera; }
-    CBaseCamera &getCamera() { return m_camera; }
+    const CBaseCamera &getCamera() const
+    {
+        return m_camera;
+    }
+    CBaseCamera &getCamera()
+    {
+        return m_camera;
+    }
 
     // Light camera access
-    const CBaseCamera &getLightCamera() const { return m_lightCamera; }
-    CBaseCamera &getLightCamera() { return m_lightCamera; }
+    const CBaseCamera &getLightCamera() const
+    {
+        return m_lightCamera;
+    }
+    CBaseCamera &getLightCamera()
+    {
+        return m_lightCamera;
+    }
 
     // Light radius access
     void setLightRadiusWorld(float radius);
-    float getLightRadiusWorld() const { return m_lightRadiusWorld; }
+    float getLightRadiusWorld() const
+    {
+        return m_lightRadiusWorld;
+    }
 
     // World width offset access
-    void changeWorldWidthOffset(float deltaOffset) { m_worldWidthOffset += deltaOffset; }
-    float getWorldWidthOffset() const { return m_worldWidthOffset; }
+    void changeWorldWidthOffset(float deltaOffset)
+    {
+        m_worldWidthOffset += deltaOffset;
+    }
+    float getWorldWidthOffset() const
+    {
+        return m_worldWidthOffset;
+    }
 
     // World height offset access
-    void changeWorldHeightOffset(float deltaOffset) { m_worldHeightOffset += deltaOffset; }
-    float getWorldHeightOffset() const { return m_worldHeightOffset; }
+    void changeWorldHeightOffset(float deltaOffset)
+    {
+        m_worldHeightOffset += deltaOffset;
+    }
+    float getWorldHeightOffset() const
+    {
+        return m_worldHeightOffset;
+    }
 
     // PCSS preset access
     enum PcssPreset
@@ -134,11 +173,21 @@ public:
         Regular_49_225
     };
 
-    void setPcssPreset(PcssPreset preset) { m_pcssPreset = preset; m_reloadEffect = true; }
-    PcssPreset getPcssPreset() const { return m_pcssPreset; }
+    void setPcssPreset(PcssPreset preset)
+    {
+        m_pcssPreset = preset;
+        m_reloadEffect = true;
+    }
+    PcssPreset getPcssPreset() const
+    {
+        return m_pcssPreset;
+    }
 
     // Force reloading the effect
-    void reloadEffect() { m_reloadEffect = true; }
+    void reloadEffect()
+    {
+        m_reloadEffect = true;
+    }
 
     // Shadow technique access
     enum ShadowTechnique
@@ -149,16 +198,34 @@ public:
         CHS
     };
 
-    void setShadowTechnique(ShadowTechnique technique) { m_shadowTechnique = technique; }
-    ShadowTechnique getShadowTechnique() const { return m_shadowTechnique; }
+    void setShadowTechnique(ShadowTechnique technique)
+    {
+        m_shadowTechnique = technique;
+    }
+    ShadowTechnique getShadowTechnique() const
+    {
+        return m_shadowTechnique;
+    }
 
     // Use texture
-    void useTexture(bool enable) { m_useTexture = enable; }
-    bool useTexture() const { return m_useTexture; }
+    void useTexture(bool enable)
+    {
+        m_useTexture = enable;
+    }
+    bool useTexture() const
+    {
+        return m_useTexture;
+    }
 
     // Display texture
-    void visualizeDepthTexture(bool enable) { m_visualizeDepthTexture = enable; }
-    bool visualizeDepthTexture() const { return m_visualizeDepthTexture; }
+    void visualizeDepthTexture(bool enable)
+    {
+        m_visualizeDepthTexture = enable;
+    }
+    bool visualizeDepthTexture() const
+    {
+        return m_visualizeDepthTexture;
+    }
 
     // Scene access
     std::shared_ptr<MeshInstance> addMeshInstance(NvSimpleMesh *mesh, const D3DXMATRIX &worldTransform, const wchar_t *name);
@@ -172,11 +239,23 @@ public:
         m_groundRadius = radius;
     }
 
-    void setKnightMesh(std::shared_ptr<MeshInstance> mesh) { m_knightMesh = mesh; }
-    std::shared_ptr<MeshInstance> getKnightMesh() { return m_knightMesh; }
+    void setKnightMesh(std::shared_ptr<MeshInstance> mesh)
+    {
+        m_knightMesh = mesh;
+    }
+    std::shared_ptr<MeshInstance> getKnightMesh()
+    {
+        return m_knightMesh;
+    }
 
-    void setPodiumMesh(std::shared_ptr<MeshInstance> mesh) { m_podiumMesh = mesh; }
-    std::shared_ptr<MeshInstance> getPodiumMesh() { return m_podiumMesh; }
+    void setPodiumMesh(std::shared_ptr<MeshInstance> mesh)
+    {
+        m_podiumMesh = mesh;
+    }
+    std::shared_ptr<MeshInstance> getPodiumMesh()
+    {
+        return m_podiumMesh;
+    }
 
     // Stats
     void getSceneStats(UINT64 &numIndices, UINT64 &numVertices, UINT &lightResolution) const;

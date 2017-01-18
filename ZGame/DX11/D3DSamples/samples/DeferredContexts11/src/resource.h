@@ -1,4 +1,4 @@
-// TAGRELEASE: PUBLIC
+﻿// TAGRELEASE: PUBLIC
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
 // Used by BasicHLSL10.rc

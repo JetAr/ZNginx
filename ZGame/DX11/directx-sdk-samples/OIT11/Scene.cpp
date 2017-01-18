@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------------
 // File: Scene.cpp
 //
 // Desc: Holds a description for a simple scene usend in the Order Independent
@@ -36,7 +36,7 @@ CScene::CScene() :
 HRESULT CScene::OnD3D11CreateDevice( ID3D11Device* pDevice )
 {
     HRESULT hr;
-    
+
     // Create the vertex shader
     ID3DBlob* pBlobVS = nullptr;
     V_RETURN( DXUTCompileFromFile( L"SceneVS.hlsl", nullptr, "SceneVS", "vs_5_0",
@@ -51,7 +51,7 @@ HRESULT CScene::OnD3D11CreateDevice( ID3D11Device* pDevice )
         { "COLOR",  0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
     };
     V_RETURN( pDevice->CreateInputLayout( vertexLayout, 2, pBlobVS->GetBufferPointer(),
-                                             pBlobVS->GetBufferSize(), &m_pVertexLayout ) );
+                                          pBlobVS->GetBufferSize(), &m_pVertexLayout ) );
     DXUT_SetDebugName( m_pVertexLayout, "Primary" );
     SAFE_RELEASE( pBlobVS );
 
@@ -77,7 +77,7 @@ HRESULT CScene::OnD3D11CreateDevice( ID3D11Device* pDevice )
     pVertex[1].pos = XMFLOAT4( fLeft, fTop, 50.0f, 1.0f );
     pVertex[2].pos = XMFLOAT4( fRight, fLowH, 50.0f, 1.0f );
     pVertex[3].pos = XMFLOAT4( fRight, fTop, 50.0f, 1.0f );
-    
+
     pVertex[0].color = XMFLOAT4( 1.0f, 0.0f, 0.0f, 0.5f );
     pVertex[1].color = XMFLOAT4( 1.0f, 0.0f, 0.0f, 0.5f );
     pVertex[2].color = XMFLOAT4( 1.0f, 0.0f, 0.0f, 0.5f );
@@ -108,10 +108,10 @@ HRESULT CScene::OnD3D11CreateDevice( ID3D11Device* pDevice )
     vbdesc.Usage = D3D11_USAGE_IMMUTABLE;
     vbdesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     vbdesc.CPUAccessFlags = 0;
-    vbdesc.MiscFlags = 0;    
+    vbdesc.MiscFlags = 0;
 
     D3D11_SUBRESOURCE_DATA InitData;
-    InitData.pSysMem = pVertex;    
+    InitData.pSysMem = pVertex;
     V( pDevice->CreateBuffer( &vbdesc, &InitData, &m_pVB ) );
     DXUT_SetDebugName( m_pVB, "Vertices") ;
 
@@ -125,7 +125,7 @@ HRESULT CScene::OnD3D11CreateDevice( ID3D11Device* pDevice )
 void CScene::D3D11Render( CXMMATRIX mWVP, ID3D11DeviceContext* pd3dImmediateContext )
 {
     HRESULT hr;
-    
+
     pd3dImmediateContext->IASetInputLayout( m_pVertexLayout );
 
     UINT uStrides = sizeof( SCENE_VERTEX );
@@ -139,7 +139,7 @@ void CScene::D3D11Render( CXMMATRIX mWVP, ID3D11DeviceContext* pd3dImmediateCont
     // Update the constant buffer
     D3D11_MAPPED_SUBRESOURCE MappedResource;
     V( pd3dImmediateContext->Map( m_pVS_CB, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedResource ) );
-    auto pVS_CB = reinterpret_cast<VS_CB*>( MappedResource.pData ); 
+    auto pVS_CB = reinterpret_cast<VS_CB*>( MappedResource.pData );
     XMStoreFloat4x4( &pVS_CB->mWorldViewProj, mWVP );
     pd3dImmediateContext->Unmap( m_pVS_CB, 0 );
     pd3dImmediateContext->VSSetConstantBuffers( 0, 1, &m_pVS_CB );

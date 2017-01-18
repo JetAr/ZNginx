@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: d3dxGlobal.cpp
 //
 // Direct3D 11 Effects implementation for helper data structures
@@ -99,7 +99,7 @@ HRESULT CMemoryStream::Read(LPCSTR *ppString)
     for(; m_pData[iChar]; iChar++)
     {
         if (iChar > m_cbData)
-            return E_FAIL;      
+            return E_FAIL;
     }
 
     *ppString = (LPCSTR) (m_pData + m_readPtr);
@@ -168,7 +168,7 @@ HRESULT CDataBlock::AddData(const void *pvNewData, uint32_t bufferSize, CDataBlo
     bytesToCopy = std::min(m_maxSize - m_size, bufferSize);
     memcpy(m_pData + m_size, pNewData, bytesToCopy);
     pNewData += bytesToCopy;
-    
+
     if (m_IsAligned)
     {
         assert(m_size == AlignToPowerOf2(m_size, c_DataAlignment));
@@ -178,7 +178,7 @@ HRESULT CDataBlock::AddData(const void *pvNewData, uint32_t bufferSize, CDataBlo
     {
         m_size += bytesToCopy;
     }
-    
+
     bufferSize -= bytesToCopy;
     *ppBlock = this;
 
@@ -301,7 +301,7 @@ HRESULT CDataBlockStore::AddData(const void *pNewData, uint32_t bufferSize, uint
     HRESULT hr = S_OK;
 
     if (bufferSize == 0)
-    {        
+    {
         if (pCurOffset)
         {
             *pCurOffset = 0;

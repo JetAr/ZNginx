@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeferredContexts11\src\utility/RendererBase.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -118,7 +118,10 @@ struct SceneParamsStatic
 
 struct SceneParamsDynamic
 {
-    SceneParamsDynamic() {D3DXMatrixIdentity(&m_mViewProj);}
+    SceneParamsDynamic()
+    {
+        D3DXMatrixIdentity(&m_mViewProj);
+    }
     D3DXMATRIX                  m_mViewProj;
 };
 
@@ -139,10 +142,20 @@ public:
     virtual void OnD3D11DestroyDevice();
     virtual void OnD3D11BufferResized(ID3D11Device* pd3dDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc);
 
-    void SetActiveTargets(ID3D11RenderTargetView* pRTV, ID3D11DepthStencilView* pDSV) {m_pRTV = pRTV; m_pDSV = pDSV;}
+    void SetActiveTargets(ID3D11RenderTargetView* pRTV, ID3D11DepthStencilView* pDSV)
+    {
+        m_pRTV = pRTV;
+        m_pDSV = pDSV;
+    }
 
-    void SetViewMatrix(const D3DXMATRIX* pView) {memcpy(&m_viewMatrix, pView, sizeof(D3DXMATRIX));}
-    void SetProjMatrix(const D3DXMATRIX* pProj) {memcpy(&m_projMatrix, pProj, sizeof(D3DXMATRIX));}
+    void SetViewMatrix(const D3DXMATRIX* pView)
+    {
+        memcpy(&m_viewMatrix, pView, sizeof(D3DXMATRIX));
+    }
+    void SetProjMatrix(const D3DXMATRIX* pProj)
+    {
+        memcpy(&m_projMatrix, pProj, sizeof(D3DXMATRIX));
+    }
 
     void SetScene(Scene* scene)
     {

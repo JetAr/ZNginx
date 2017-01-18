@@ -1,4 +1,4 @@
-//*********************************************************
+﻿//*********************************************************
 //
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
@@ -102,15 +102,15 @@ HRESULT STDMETHODCALLTYPE DXGIXAffinityCreateSingleWindowSwapChain(
             DeviceContext.mCrossAdapterCopyBuffers.reserve(pDesc->BufferCount);
 
             RETURN_IF_FAILED(CDXGIAffinitySwapChain::CreateDummyRenderTargetsAndCrossAdapterCopyBuffers(
-                i,
-                AffinityDevice,
-                HostDevice,
-                DeviceContext,
-                pDesc->Width,
-                pDesc->Height,
-                pDesc->Format,
-                pDesc->BufferCount
-            ));
+                                 i,
+                                 AffinityDevice,
+                                 HostDevice,
+                                 DeviceContext,
+                                 pDesc->Width,
+                                 pDesc->Height,
+                                 pDesc->Format,
+                                 pDesc->BufferCount
+                             ));
         }
     }
 

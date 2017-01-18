@@ -1,11 +1,11 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXPackedVector.h -- SIMD C++ Math library
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
 // ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
 // THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
 // PARTICULAR PURPOSE.
-//  
+//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // http://go.microsoft.com/fwlink/?LinkID=615560
@@ -17,7 +17,7 @@
 
 namespace DirectX
 {
-    
+
 namespace PackedVector
 {
 
@@ -54,14 +54,25 @@ struct XMCOLOR
     XMCOLOR(float _r, float _g, float _b, float _a);
     explicit XMCOLOR(_In_reads_(4) const float *pArray);
 
-    operator uint32_t () const { return c; }
+    operator uint32_t () const
+    {
+        return c;
+    }
 
-    XMCOLOR& operator= (const XMCOLOR& Color) { c = Color.c; return *this; }
-    XMCOLOR& operator= (const uint32_t Color) { c = Color; return *this; }
+    XMCOLOR& operator= (const XMCOLOR& Color)
+    {
+        c = Color.c;
+        return *this;
+    }
+    XMCOLOR& operator= (const uint32_t Color)
+    {
+        c = Color;
+        return *this;
+    }
 };
 
 //------------------------------------------------------------------------------
-// 16 bit floating point number consisting of a sign bit, a 5 bit biased 
+// 16 bit floating point number consisting of a sign bit, a 5 bit biased
 // exponent, and a 10 bit mantissa
 typedef uint16_t HALF;
 
@@ -86,8 +97,17 @@ struct XMHALF2
     XMHALF2(float _x, float _y);
     explicit XMHALF2(_In_reads_(2) const float *pArray);
 
-    XMHALF2& operator= (const XMHALF2& Half2) { x = Half2.x; y = Half2.y; return *this; }
-    XMHALF2& operator= (uint32_t Packed) { v = Packed; return *this; }
+    XMHALF2& operator= (const XMHALF2& Half2)
+    {
+        x = Half2.x;
+        y = Half2.y;
+        return *this;
+    }
+    XMHALF2& operator= (uint32_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 //------------------------------------------------------------------------------
@@ -111,8 +131,17 @@ struct XMSHORTN2
     XMSHORTN2(float _x, float _y);
     explicit XMSHORTN2(_In_reads_(2) const float *pArray);
 
-    XMSHORTN2& operator= (const XMSHORTN2& ShortN2) { x = ShortN2.x; y = ShortN2.y; return *this; }
-    XMSHORTN2& operator= (uint32_t Packed) { v = Packed; return *this; }
+    XMSHORTN2& operator= (const XMSHORTN2& ShortN2)
+    {
+        x = ShortN2.x;
+        y = ShortN2.y;
+        return *this;
+    }
+    XMSHORTN2& operator= (uint32_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 // 2D Vector; 16 bit signed integer components
@@ -135,8 +164,17 @@ struct XMSHORT2
     XMSHORT2(float _x, float _y);
     explicit XMSHORT2(_In_reads_(2) const float *pArray);
 
-    XMSHORT2& operator= (const XMSHORT2& Short2) { x = Short2.x; y = Short2.y; return *this; }
-    XMSHORT2& operator= (uint32_t Packed) { v = Packed; return *this; }
+    XMSHORT2& operator= (const XMSHORT2& Short2)
+    {
+        x = Short2.x;
+        y = Short2.y;
+        return *this;
+    }
+    XMSHORT2& operator= (uint32_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 // 2D Vector; 16 bit unsigned normalized integer components
@@ -159,8 +197,17 @@ struct XMUSHORTN2
     XMUSHORTN2(float _x, float _y);
     explicit XMUSHORTN2(_In_reads_(2) const float *pArray);
 
-    XMUSHORTN2& operator= (const XMUSHORTN2& UShortN2) { x = UShortN2.x; y = UShortN2.y; return *this; }
-    XMUSHORTN2& operator= (uint32_t Packed) { v = Packed; return *this; }
+    XMUSHORTN2& operator= (const XMUSHORTN2& UShortN2)
+    {
+        x = UShortN2.x;
+        y = UShortN2.y;
+        return *this;
+    }
+    XMUSHORTN2& operator= (uint32_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 // 2D Vector; 16 bit unsigned integer components
@@ -183,8 +230,17 @@ struct XMUSHORT2
     XMUSHORT2(float _x, float _y);
     explicit XMUSHORT2(_In_reads_(2) const float *pArray);
 
-    XMUSHORT2& operator= (const XMUSHORT2& UShort2) { x = UShort2.x; y = UShort2.y; return *this; }
-    XMUSHORT2& operator= (uint32_t Packed) { v = Packed; return *this; }
+    XMUSHORT2& operator= (const XMUSHORT2& UShort2)
+    {
+        x = UShort2.x;
+        y = UShort2.y;
+        return *this;
+    }
+    XMUSHORT2& operator= (uint32_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 //------------------------------------------------------------------------------
@@ -208,8 +264,17 @@ struct XMBYTEN2
     XMBYTEN2(float _x, float _y);
     explicit XMBYTEN2(_In_reads_(2) const float *pArray);
 
-    XMBYTEN2& operator= (const XMBYTEN2& ByteN2) { x = ByteN2.x; y = ByteN2.y; return *this; }
-    XMBYTEN2& operator= (uint16_t Packed) { v = Packed; return *this; }
+    XMBYTEN2& operator= (const XMBYTEN2& ByteN2)
+    {
+        x = ByteN2.x;
+        y = ByteN2.y;
+        return *this;
+    }
+    XMBYTEN2& operator= (uint16_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 // 2D Vector; 8 bit signed integer components
@@ -232,8 +297,17 @@ struct XMBYTE2
     XMBYTE2(float _x, float _y);
     explicit XMBYTE2(_In_reads_(2) const float *pArray);
 
-    XMBYTE2& operator= (const XMBYTE2& Byte2) { x = Byte2.x; y = Byte2.y; return *this; }
-    XMBYTE2& operator= (uint16_t Packed) { v = Packed; return *this; }
+    XMBYTE2& operator= (const XMBYTE2& Byte2)
+    {
+        x = Byte2.x;
+        y = Byte2.y;
+        return *this;
+    }
+    XMBYTE2& operator= (uint16_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 // 2D Vector; 8 bit unsigned normalized integer components
@@ -256,8 +330,17 @@ struct XMUBYTEN2
     XMUBYTEN2(float _x, float _y);
     explicit XMUBYTEN2(_In_reads_(2) const float *pArray);
 
-    XMUBYTEN2& operator= (const XMUBYTEN2& UByteN2) { x = UByteN2.x; y = UByteN2.y; return *this; }
-    XMUBYTEN2& operator= (uint16_t Packed) { v = Packed; return *this; }
+    XMUBYTEN2& operator= (const XMUBYTEN2& UByteN2)
+    {
+        x = UByteN2.x;
+        y = UByteN2.y;
+        return *this;
+    }
+    XMUBYTEN2& operator= (uint16_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 // 2D Vector; 8 bit unsigned integer components
@@ -280,8 +363,17 @@ struct XMUBYTE2
     XMUBYTE2(float _x, float _y);
     explicit XMUBYTE2(_In_reads_(2) const float *pArray);
 
-    XMUBYTE2& operator= (const XMUBYTE2& UByte2) { x = UByte2.x; y = UByte2.y; return *this; }
-    XMUBYTE2& operator= (uint16_t Packed) { v = Packed; return *this; }
+    XMUBYTE2& operator= (const XMUBYTE2& UByte2)
+    {
+        x = UByte2.x;
+        y = UByte2.y;
+        return *this;
+    }
+    XMUBYTE2& operator= (uint16_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 //------------------------------------------------------------------------------
@@ -306,10 +398,21 @@ struct XMU565
     XMU565(float _x, float _y, float _z);
     explicit XMU565(_In_reads_(3) const float *pArray);
 
-    operator uint16_t () const { return v; }
+    operator uint16_t () const
+    {
+        return v;
+    }
 
-    XMU565& operator= (const XMU565& U565) { v = U565.v; return *this; }
-    XMU565& operator= (uint16_t Packed) { v = Packed; return *this; }
+    XMU565& operator= (const XMU565& U565)
+    {
+        v = U565.v;
+        return *this;
+    }
+    XMU565& operator= (uint16_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 //------------------------------------------------------------------------------
@@ -342,10 +445,21 @@ struct XMFLOAT3PK
     XMFLOAT3PK(float _x, float _y, float _z);
     explicit XMFLOAT3PK(_In_reads_(3) const float *pArray);
 
-    operator uint32_t () const { return v; }
+    operator uint32_t () const
+    {
+        return v;
+    }
 
-    XMFLOAT3PK& operator= (const XMFLOAT3PK& float3pk) { v = float3pk.v; return *this; }
-    XMFLOAT3PK& operator= (uint32_t Packed) { v = Packed; return *this; }
+    XMFLOAT3PK& operator= (const XMFLOAT3PK& float3pk)
+    {
+        v = float3pk.v;
+        return *this;
+    }
+    XMFLOAT3PK& operator= (uint32_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 //------------------------------------------------------------------------------
@@ -375,10 +489,21 @@ struct XMFLOAT3SE
     XMFLOAT3SE(float _x, float _y, float _z);
     explicit XMFLOAT3SE(_In_reads_(3) const float *pArray);
 
-    operator uint32_t () const { return v; }
+    operator uint32_t () const
+    {
+        return v;
+    }
 
-    XMFLOAT3SE& operator= (const XMFLOAT3SE& float3se) { v = float3se.v; return *this; }
-    XMFLOAT3SE& operator= (uint32_t Packed) { v = Packed; return *this; }
+    XMFLOAT3SE& operator= (const XMFLOAT3SE& float3se)
+    {
+        v = float3se.v;
+        return *this;
+    }
+    XMFLOAT3SE& operator= (uint32_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 //------------------------------------------------------------------------------
@@ -404,8 +529,19 @@ struct XMHALF4
     XMHALF4(float _x, float _y, float _z, float _w);
     explicit XMHALF4(_In_reads_(4) const float *pArray);
 
-    XMHALF4& operator= (const XMHALF4& Half4) { x = Half4.x; y = Half4.y; z = Half4.z; w = Half4.w; return *this; }
-    XMHALF4& operator= (uint64_t Packed) { v = Packed; return *this; }
+    XMHALF4& operator= (const XMHALF4& Half4)
+    {
+        x = Half4.x;
+        y = Half4.y;
+        z = Half4.z;
+        w = Half4.w;
+        return *this;
+    }
+    XMHALF4& operator= (uint64_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 //------------------------------------------------------------------------------
@@ -431,8 +567,19 @@ struct XMSHORTN4
     XMSHORTN4(float _x, float _y, float _z, float _w);
     explicit XMSHORTN4(_In_reads_(4) const float *pArray);
 
-    XMSHORTN4& operator= (const XMSHORTN4& ShortN4) { x = ShortN4.x; y = ShortN4.y; z = ShortN4.z; w = ShortN4.w; return *this; }
-    XMSHORTN4& operator= (uint64_t Packed) { v = Packed; return *this; }
+    XMSHORTN4& operator= (const XMSHORTN4& ShortN4)
+    {
+        x = ShortN4.x;
+        y = ShortN4.y;
+        z = ShortN4.z;
+        w = ShortN4.w;
+        return *this;
+    }
+    XMSHORTN4& operator= (uint64_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 // 4D Vector; 16 bit signed integer components
@@ -457,8 +604,19 @@ struct XMSHORT4
     XMSHORT4(float _x, float _y, float _z, float _w);
     explicit XMSHORT4(_In_reads_(4) const float *pArray);
 
-    XMSHORT4& operator= (const XMSHORT4& Short4) { x = Short4.x; y = Short4.y; z = Short4.z; w = Short4.w; return *this; }
-    XMSHORT4& operator= (uint64_t Packed) { v = Packed; return *this; }
+    XMSHORT4& operator= (const XMSHORT4& Short4)
+    {
+        x = Short4.x;
+        y = Short4.y;
+        z = Short4.z;
+        w = Short4.w;
+        return *this;
+    }
+    XMSHORT4& operator= (uint64_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 // 4D Vector; 16 bit unsigned normalized integer components
@@ -483,8 +641,19 @@ struct XMUSHORTN4
     XMUSHORTN4(float _x, float _y, float _z, float _w);
     explicit XMUSHORTN4(_In_reads_(4) const float *pArray);
 
-    XMUSHORTN4& operator= (const XMUSHORTN4& UShortN4) { x = UShortN4.x; y = UShortN4.y; z = UShortN4.z; w = UShortN4.w; return *this; }
-    XMUSHORTN4& operator= (uint64_t Packed) { v = Packed; return *this; }
+    XMUSHORTN4& operator= (const XMUSHORTN4& UShortN4)
+    {
+        x = UShortN4.x;
+        y = UShortN4.y;
+        z = UShortN4.z;
+        w = UShortN4.w;
+        return *this;
+    }
+    XMUSHORTN4& operator= (uint64_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 // 4D Vector; 16 bit unsigned integer components
@@ -509,15 +678,26 @@ struct XMUSHORT4
     XMUSHORT4(float _x, float _y, float _z, float _w);
     explicit XMUSHORT4(_In_reads_(4) const float *pArray);
 
-    XMUSHORT4& operator= (const XMUSHORT4& UShort4) { x = UShort4.x; y = UShort4.y; z = UShort4.z; w = UShort4.w; return *this; }
-    XMUSHORT4& operator= (uint32_t Packed) { v = Packed; return *this; }
+    XMUSHORT4& operator= (const XMUSHORT4& UShort4)
+    {
+        x = UShort4.x;
+        y = UShort4.y;
+        z = UShort4.z;
+        w = UShort4.w;
+        return *this;
+    }
+    XMUSHORT4& operator= (uint32_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 //------------------------------------------------------------------------------
 // 4D Vector; 10-10-10-2 bit normalized components packed into a 32 bit integer
-// The normalized 4D Vector is packed into 32 bits as follows: a 2 bit unsigned, 
-// normalized integer for the w component and 10 bit signed, normalized 
-// integers for the z, y, and x components.  The w component is stored in the 
+// The normalized 4D Vector is packed into 32 bits as follows: a 2 bit unsigned,
+// normalized integer for the w component and 10 bit signed, normalized
+// integers for the z, y, and x components.  The w component is stored in the
 // most significant bits and the x component in the least significant bits
 // (W2Z10Y10X10): [32] wwzzzzzz zzzzyyyy yyyyyyxx xxxxxxxx [0]
 struct XMXDECN4
@@ -539,16 +719,27 @@ struct XMXDECN4
     XMXDECN4(float _x, float _y, float _z, float _w);
     explicit XMXDECN4(_In_reads_(4) const float *pArray);
 
-    operator uint32_t () const { return v; }
+    operator uint32_t () const
+    {
+        return v;
+    }
 
-    XMXDECN4& operator= (const XMXDECN4& XDecN4) { v = XDecN4.v; return *this; }
-    XMXDECN4& operator= (uint32_t Packed) { v = Packed; return *this; }
+    XMXDECN4& operator= (const XMXDECN4& XDecN4)
+    {
+        v = XDecN4.v;
+        return *this;
+    }
+    XMXDECN4& operator= (uint32_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 // 4D Vector; 10-10-10-2 bit components packed into a 32 bit integer
 // The normalized 4D Vector is packed into 32 bits as follows: a 2 bit unsigned
-// integer for the w component and 10 bit signed integers for the 
-// z, y, and x components.  The w component is stored in the 
+// integer for the w component and 10 bit signed integers for the
+// z, y, and x components.  The w component is stored in the
 // most significant bits and the x component in the least significant bits
 // (W2Z10Y10X10): [32] wwzzzzzz zzzzyyyy yyyyyyxx xxxxxxxx [0]
 struct XM_DEPRECATED XMXDEC4
@@ -570,16 +761,27 @@ struct XM_DEPRECATED XMXDEC4
     XMXDEC4(float _x, float _y, float _z, float _w);
     explicit XMXDEC4(_In_reads_(4) const float *pArray);
 
-    operator uint32_t () const { return v; }
+    operator uint32_t () const
+    {
+        return v;
+    }
 
-    XMXDEC4& operator= (const XMXDEC4& XDec4) { v = XDec4.v; return *this; }
-    XMXDEC4& operator= (uint32_t Packed) { v = Packed; return *this; }
+    XMXDEC4& operator= (const XMXDEC4& XDec4)
+    {
+        v = XDec4.v;
+        return *this;
+    }
+    XMXDEC4& operator= (uint32_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 // 4D Vector; 10-10-10-2 bit normalized components packed into a 32 bit integer
-// The normalized 4D Vector is packed into 32 bits as follows: a 2 bit signed, 
-// normalized integer for the w component and 10 bit signed, normalized 
-// integers for the z, y, and x components.  The w component is stored in the 
+// The normalized 4D Vector is packed into 32 bits as follows: a 2 bit signed,
+// normalized integer for the w component and 10 bit signed, normalized
+// integers for the z, y, and x components.  The w component is stored in the
 // most significant bits and the x component in the least significant bits
 // (W2Z10Y10X10): [32] wwzzzzzz zzzzyyyy yyyyyyxx xxxxxxxx [0]
 struct XM_DEPRECATED XMDECN4
@@ -601,16 +803,27 @@ struct XM_DEPRECATED XMDECN4
     XMDECN4(float _x, float _y, float _z, float _w);
     explicit XMDECN4(_In_reads_(4) const float *pArray);
 
-    operator uint32_t () const { return v; }
+    operator uint32_t () const
+    {
+        return v;
+    }
 
-    XMDECN4& operator= (const XMDECN4& DecN4) { v = DecN4.v; return *this; }
-    XMDECN4& operator= (uint32_t Packed) { v = Packed; return *this; }
+    XMDECN4& operator= (const XMDECN4& DecN4)
+    {
+        v = DecN4.v;
+        return *this;
+    }
+    XMDECN4& operator= (uint32_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 // 4D Vector; 10-10-10-2 bit components packed into a 32 bit integer
-// The 4D Vector is packed into 32 bits as follows: a 2 bit signed, 
-// integer for the w component and 10 bit signed integers for the 
-// z, y, and x components.  The w component is stored in the 
+// The 4D Vector is packed into 32 bits as follows: a 2 bit signed,
+// integer for the w component and 10 bit signed integers for the
+// z, y, and x components.  The w component is stored in the
 // most significant bits and the x component in the least significant bits
 // (W2Z10Y10X10): [32] wwzzzzzz zzzzyyyy yyyyyyxx xxxxxxxx [0]
 struct XM_DEPRECATED XMDEC4
@@ -632,16 +845,27 @@ struct XM_DEPRECATED XMDEC4
     XMDEC4(float _x, float _y, float _z, float _w);
     explicit XMDEC4(_In_reads_(4) const float *pArray);
 
-    operator uint32_t () const { return v; }
+    operator uint32_t () const
+    {
+        return v;
+    }
 
-    XMDEC4& operator= (const XMDEC4& Dec4) { v = Dec4.v; return *this; }
-    XMDEC4& operator= (uint32_t Packed) { v = Packed; return *this; }
+    XMDEC4& operator= (const XMDEC4& Dec4)
+    {
+        v = Dec4.v;
+        return *this;
+    }
+    XMDEC4& operator= (uint32_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 // 4D Vector; 10-10-10-2 bit normalized components packed into a 32 bit integer
-// The normalized 4D Vector is packed into 32 bits as follows: a 2 bit unsigned, 
-// normalized integer for the w component and 10 bit unsigned, normalized 
-// integers for the z, y, and x components.  The w component is stored in the 
+// The normalized 4D Vector is packed into 32 bits as follows: a 2 bit unsigned,
+// normalized integer for the w component and 10 bit unsigned, normalized
+// integers for the z, y, and x components.  The w component is stored in the
 // most significant bits and the x component in the least significant bits
 // (W2Z10Y10X10): [32] wwzzzzzz zzzzyyyy yyyyyyxx xxxxxxxx [0]
 struct XMUDECN4
@@ -663,16 +887,27 @@ struct XMUDECN4
     XMUDECN4(float _x, float _y, float _z, float _w);
     explicit XMUDECN4(_In_reads_(4) const float *pArray);
 
-    operator uint32_t () const { return v; }
+    operator uint32_t () const
+    {
+        return v;
+    }
 
-    XMUDECN4& operator= (const XMUDECN4& UDecN4) { v = UDecN4.v; return *this; }
-    XMUDECN4& operator= (uint32_t Packed) { v = Packed; return *this; }
+    XMUDECN4& operator= (const XMUDECN4& UDecN4)
+    {
+        v = UDecN4.v;
+        return *this;
+    }
+    XMUDECN4& operator= (uint32_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 // 4D Vector; 10-10-10-2 bit components packed into a 32 bit integer
-// The 4D Vector is packed into 32 bits as follows: a 2 bit unsigned, 
-// integer for the w component and 10 bit unsigned integers 
-// for the z, y, and x components.  The w component is stored in the 
+// The 4D Vector is packed into 32 bits as follows: a 2 bit unsigned,
+// integer for the w component and 10 bit unsigned integers
+// for the z, y, and x components.  The w component is stored in the
 // most significant bits and the x component in the least significant bits
 // (W2Z10Y10X10): [32] wwzzzzzz zzzzyyyy yyyyyyxx xxxxxxxx [0]
 struct XMUDEC4
@@ -694,10 +929,21 @@ struct XMUDEC4
     XMUDEC4(float _x, float _y, float _z, float _w);
     explicit XMUDEC4(_In_reads_(4) const float *pArray);
 
-    operator uint32_t () const { return v; }
+    operator uint32_t () const
+    {
+        return v;
+    }
 
-    XMUDEC4& operator= (const XMUDEC4& UDec4) { v = UDec4.v; return *this; }
-    XMUDEC4& operator= (uint32_t Packed) { v = Packed; return *this; }
+    XMUDEC4& operator= (const XMUDEC4& UDec4)
+    {
+        v = UDec4.v;
+        return *this;
+    }
+    XMUDEC4& operator= (uint32_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 //------------------------------------------------------------------------------
@@ -723,8 +969,19 @@ struct XMBYTEN4
     XMBYTEN4(float _x, float _y, float _z, float _w);
     explicit XMBYTEN4(_In_reads_(4) const float *pArray);
 
-    XMBYTEN4& operator= (const XMBYTEN4& ByteN4) { x = ByteN4.x; y = ByteN4.y; z = ByteN4.z; w = ByteN4.w; return *this; }
-    XMBYTEN4& operator= (uint32_t Packed) { v = Packed; return *this; }
+    XMBYTEN4& operator= (const XMBYTEN4& ByteN4)
+    {
+        x = ByteN4.x;
+        y = ByteN4.y;
+        z = ByteN4.z;
+        w = ByteN4.w;
+        return *this;
+    }
+    XMBYTEN4& operator= (uint32_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 // 4D Vector; 8 bit signed integer components
@@ -749,8 +1006,19 @@ struct XMBYTE4
     XMBYTE4(float _x, float _y, float _z, float _w);
     explicit XMBYTE4(_In_reads_(4) const float *pArray);
 
-    XMBYTE4& operator= (const XMBYTE4& Byte4) { x = Byte4.x; y = Byte4.y; z = Byte4.z; w = Byte4.w; return *this; }
-    XMBYTE4& operator= (uint32_t Packed) { v = Packed; return *this; }
+    XMBYTE4& operator= (const XMBYTE4& Byte4)
+    {
+        x = Byte4.x;
+        y = Byte4.y;
+        z = Byte4.z;
+        w = Byte4.w;
+        return *this;
+    }
+    XMBYTE4& operator= (uint32_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 // 4D Vector; 8 bit unsigned normalized integer components
@@ -775,8 +1043,19 @@ struct XMUBYTEN4
     XMUBYTEN4(float _x, float _y, float _z, float _w);
     explicit XMUBYTEN4(_In_reads_(4) const float *pArray);
 
-    XMUBYTEN4& operator= (const XMUBYTEN4& UByteN4) { x = UByteN4.x; y = UByteN4.y; z = UByteN4.z; w = UByteN4.w; return *this; }
-    XMUBYTEN4& operator= (uint32_t Packed) { v = Packed; return *this; }
+    XMUBYTEN4& operator= (const XMUBYTEN4& UByteN4)
+    {
+        x = UByteN4.x;
+        y = UByteN4.y;
+        z = UByteN4.z;
+        w = UByteN4.w;
+        return *this;
+    }
+    XMUBYTEN4& operator= (uint32_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 // 4D Vector; 8 bit unsigned integer components
@@ -801,8 +1080,19 @@ struct XMUBYTE4
     XMUBYTE4(float _x, float _y, float _z, float _w);
     explicit XMUBYTE4(_In_reads_(4) const float *pArray);
 
-    XMUBYTE4& operator= (const XMUBYTE4& UByte4) { x = UByte4.x; y = UByte4.y; z = UByte4.z; w = UByte4.w; return *this; }
-    XMUBYTE4& operator= (uint32_t Packed) { v = Packed; return *this; }
+    XMUBYTE4& operator= (const XMUBYTE4& UByte4)
+    {
+        x = UByte4.x;
+        y = UByte4.y;
+        z = UByte4.z;
+        w = UByte4.w;
+        return *this;
+    }
+    XMUBYTE4& operator= (uint32_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 //------------------------------------------------------------------------------
@@ -828,10 +1118,21 @@ struct XMUNIBBLE4
     XMUNIBBLE4(float _x, float _y, float _z, float _w);
     explicit XMUNIBBLE4(_In_reads_(4) const float *pArray);
 
-    operator uint16_t () const { return v; }
+    operator uint16_t () const
+    {
+        return v;
+    }
 
-    XMUNIBBLE4& operator= (const XMUNIBBLE4& UNibble4) { v = UNibble4.v; return *this; }
-    XMUNIBBLE4& operator= (uint16_t Packed) { v = Packed; return *this; }
+    XMUNIBBLE4& operator= (const XMUNIBBLE4& UNibble4)
+    {
+        v = UNibble4.v;
+        return *this;
+    }
+    XMUNIBBLE4& operator= (uint16_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 //------------------------------------------------------------------------------
@@ -857,10 +1158,21 @@ struct XMU555
     XMU555(float _x, float _y, float _z, bool _w);
     XMU555(_In_reads_(3) const float *pArray, _In_ bool _w);
 
-    operator uint16_t () const { return v; }
+    operator uint16_t () const
+    {
+        return v;
+    }
 
-    XMU555& operator= (const XMU555& U555) { v = U555.v; return *this; }
-    XMU555& operator= (uint16_t Packed) { v = Packed; return *this; }
+    XMU555& operator= (const XMU555& U555)
+    {
+        v = U555.v;
+        return *this;
+    }
+    XMU555& operator= (uint16_t Packed)
+    {
+        v = Packed;
+        return *this;
+    }
 };
 
 #pragma warning(pop)
@@ -874,14 +1186,14 @@ struct XMU555
 
 float           XMConvertHalfToFloat(HALF Value);
 float*          XMConvertHalfToFloatStream(_Out_writes_bytes_(sizeof(float)+OutputStride*(HalfCount-1)) float* pOutputStream,
-                                           _In_ size_t OutputStride,
-                                           _In_reads_bytes_(sizeof(HALF)+InputStride*(HalfCount-1)) const HALF* pInputStream,
-                                           _In_ size_t InputStride, _In_ size_t HalfCount);
+        _In_ size_t OutputStride,
+        _In_reads_bytes_(sizeof(HALF)+InputStride*(HalfCount-1)) const HALF* pInputStream,
+        _In_ size_t InputStride, _In_ size_t HalfCount);
 HALF            XMConvertFloatToHalf(float Value);
 HALF*           XMConvertFloatToHalfStream(_Out_writes_bytes_(sizeof(HALF)+OutputStride*(FloatCount-1)) HALF* pOutputStream,
-                                           _In_ size_t OutputStride,
-                                           _In_reads_bytes_(sizeof(float)+InputStride*(FloatCount-1)) const float* pInputStream,
-                                           _In_ size_t InputStride, _In_ size_t FloatCount);
+        _In_ size_t OutputStride,
+        _In_reads_bytes_(sizeof(float)+InputStride*(FloatCount-1)) const float* pInputStream,
+        _In_ size_t InputStride, _In_ size_t FloatCount);
 
 /****************************************************************************
  *

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: ScreenGrab.h
 //
 // Function for capturing a 2D texture and saving it to a file (aka a 'screenshot'
@@ -35,16 +35,16 @@
 
 namespace DirectX
 {
-    HRESULT __cdecl SaveDDSTextureToFile(
-        _In_ ID3D11DeviceContext* pContext,
-        _In_ ID3D11Resource* pSource,
-        _In_z_ const wchar_t* fileName);
+HRESULT __cdecl SaveDDSTextureToFile(
+    _In_ ID3D11DeviceContext* pContext,
+    _In_ ID3D11Resource* pSource,
+    _In_z_ const wchar_t* fileName);
 
-    HRESULT __cdecl SaveWICTextureToFile(
-        _In_ ID3D11DeviceContext* pContext,
-        _In_ ID3D11Resource* pSource,
-        _In_ REFGUID guidContainerFormat,
-        _In_z_ const wchar_t* fileName,
-        _In_opt_ const GUID* targetFormat = nullptr,
-        _In_opt_ std::function<void __cdecl(IPropertyBag2*)> setCustomProps = nullptr);
+HRESULT __cdecl SaveWICTextureToFile(
+    _In_ ID3D11DeviceContext* pContext,
+    _In_ ID3D11Resource* pSource,
+    _In_ REFGUID guidContainerFormat,
+    _In_z_ const wchar_t* fileName,
+    _In_opt_ const GUID* targetFormat = nullptr,
+    _In_opt_ std::function<void __cdecl(IPropertyBag2*)> setCustomProps = nullptr);
 }

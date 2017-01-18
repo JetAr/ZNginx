@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXMeshVBWriter.cpp
-//  
+//
 // DirectX Mesh Geometry Library - Vertex Buffer Writer
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -21,40 +21,40 @@ using namespace DirectX::PackedVector;
 
 namespace
 {
-    const size_t c_MaxSlot = 32;
-    const size_t c_MaxStride = 2048;
+const size_t c_MaxSlot = 32;
+const size_t c_MaxStride = 2048;
 
-    enum INPUT_CLASSIFICATION
-    {
-        PER_VERTEX_DATA = 0,
-        PER_INSTANCE_DATA = 1
-    };
+enum INPUT_CLASSIFICATION
+{
+    PER_VERTEX_DATA = 0,
+    PER_INSTANCE_DATA = 1
+};
 
-    struct InputElementDesc
-    {
-        const char*             SemanticName;
-        unsigned int            SemanticIndex;
-        DXGI_FORMAT             Format;
-        unsigned int            InputSlot;
-        unsigned int            AlignedByteOffset;
-        INPUT_CLASSIFICATION    InputSlotClass;
-        unsigned int            InstanceDataStepRate;
-    };
+struct InputElementDesc
+{
+    const char*             SemanticName;
+    unsigned int            SemanticIndex;
+    DXGI_FORMAT             Format;
+    unsigned int            InputSlot;
+    unsigned int            AlignedByteOffset;
+    INPUT_CLASSIFICATION    InputSlotClass;
+    unsigned int            InstanceDataStepRate;
+};
 
 #if defined(__d3d11_h__) || defined(__d3d11_x_h__)
-    static_assert(sizeof(InputElementDesc) == sizeof(D3D11_INPUT_ELEMENT_DESC), "D3D11 mismatch");
-    static_assert(PER_VERTEX_DATA == D3D11_INPUT_PER_VERTEX_DATA, "D3D11 mismatch");
-    static_assert(PER_INSTANCE_DATA == D3D11_INPUT_PER_INSTANCE_DATA, "D3D11 mismatch");
-    static_assert(c_MaxSlot == D3D11_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT, "D3D11 mismatch");
-    static_assert(c_MaxStride == D3D11_REQ_MULTI_ELEMENT_STRUCTURE_SIZE_IN_BYTES, "D3D11 mismatch");
+static_assert(sizeof(InputElementDesc) == sizeof(D3D11_INPUT_ELEMENT_DESC), "D3D11 mismatch");
+static_assert(PER_VERTEX_DATA == D3D11_INPUT_PER_VERTEX_DATA, "D3D11 mismatch");
+static_assert(PER_INSTANCE_DATA == D3D11_INPUT_PER_INSTANCE_DATA, "D3D11 mismatch");
+static_assert(c_MaxSlot == D3D11_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT, "D3D11 mismatch");
+static_assert(c_MaxStride == D3D11_REQ_MULTI_ELEMENT_STRUCTURE_SIZE_IN_BYTES, "D3D11 mismatch");
 #endif
 
 #if defined(__d3d12_h__) || defined(__d3d12_x_h__)
-    static_assert(sizeof(InputElementDesc) == sizeof(D3D12_INPUT_ELEMENT_DESC), "D3D12 mismatch");
-    static_assert(PER_VERTEX_DATA == D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, "D3D12 mismatch");
-    static_assert(PER_INSTANCE_DATA == D3D12_INPUT_CLASSIFICATION_PER_INSTANCE_DATA, "D3D12 mismatch");
-    static_assert(c_MaxSlot == D3D12_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT, "D3D12 mismatch");
-    static_assert(c_MaxStride == D3D12_REQ_MULTI_ELEMENT_STRUCTURE_SIZE_IN_BYTES, "D3D12 mismatch");
+static_assert(sizeof(InputElementDesc) == sizeof(D3D12_INPUT_ELEMENT_DESC), "D3D12 mismatch");
+static_assert(PER_VERTEX_DATA == D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, "D3D12 mismatch");
+static_assert(PER_INSTANCE_DATA == D3D12_INPUT_CLASSIFICATION_PER_INSTANCE_DATA, "D3D12 mismatch");
+static_assert(c_MaxSlot == D3D12_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT, "D3D12 mismatch");
+static_assert(c_MaxStride == D3D12_REQ_MULTI_ELEMENT_STRUCTURE_SIZE_IN_BYTES, "D3D12 mismatch");
 #endif
 }
 
@@ -254,7 +254,7 @@ HRESULT VBWriter::Impl::Write( const XMVECTOR* buffer, const char* semanticName,
         return E_INVALIDARG;
 
     auto range = mSemantics.equal_range( semanticName );
-    
+
     auto it = range.first;
     for( ; it != range.second; ++it )
     {
@@ -305,7 +305,7 @@ HRESULT VBWriter::Impl::Write( const XMVECTOR* buffer, const char* semanticName,
         STORE_VERTS( XMHALF4, XMStoreHalf4 )
 
     case DXGI_FORMAT_R16G16B16A16_UNORM:
-        STORE_VERTS_X2( XMUSHORTN4, XMStoreUShortN4, x2bias ) 
+        STORE_VERTS_X2( XMUSHORTN4, XMStoreUShortN4, x2bias )
 
     case DXGI_FORMAT_R16G16B16A16_UINT:
         STORE_VERTS( XMUSHORT4, XMStoreUShort4 )
@@ -329,16 +329,16 @@ HRESULT VBWriter::Impl::Write( const XMVECTOR* buffer, const char* semanticName,
         for (size_t icount = 0; icount < count; ++icount)
         {
             if ((ptr + sizeof(XMUDECN4)) > eptr)
-                return E_UNEXPECTED; 
-            XMVECTOR v = *buffer++; 
+                return E_UNEXPECTED;
+            XMVECTOR v = *buffer++;
             if (x2bias)
             {
-                XMVECTOR v2 = XMVectorClamp(v, g_XMNegativeOne, g_XMOne); 
-                v2 = XMVectorMultiplyAdd(v2, g_XMOneHalf, g_XMOneHalf); 
+                XMVECTOR v2 = XMVectorClamp(v, g_XMNegativeOne, g_XMOne);
+                v2 = XMVectorMultiplyAdd(v2, g_XMOneHalf, g_XMOneHalf);
                 v = XMVectorSelect(v, v2, g_XMSelect1110);
             }
             XMStoreUDecN4(reinterpret_cast<XMUDECN4*>(ptr), v);
-            ptr += stride; 
+            ptr += stride;
         }
         break;
 
@@ -536,46 +536,46 @@ HRESULT VBWriter::Impl::Write( const XMVECTOR* buffer, const char* semanticName,
         break;
 
     case DXGI_FORMAT_B5G6R5_UNORM:
+    {
+        static const XMVECTORF32 s_Scale = { 31.f, 63.f, 31.f, 1.f };
+        for( size_t icount = 0; icount < count; ++icount )
         {
-            static const XMVECTORF32 s_Scale = { 31.f, 63.f, 31.f, 1.f };
-            for( size_t icount = 0; icount < count; ++icount )
+            if ( ( ptr + sizeof(XMU565) ) > eptr )
+                return E_UNEXPECTED;
+            XMVECTOR v = XMVectorSwizzle<2, 1, 0, 3>( *buffer++  );
+            if (x2bias)
             {
-                if ( ( ptr + sizeof(XMU565) ) > eptr )
-                    return E_UNEXPECTED;
-                XMVECTOR v = XMVectorSwizzle<2, 1, 0, 3>( *buffer++  );
-                if (x2bias)
-                {
-                    v = XMVectorClamp(v, g_XMNegativeOne, g_XMOne); 
-                    v = XMVectorMultiplyAdd(v, g_XMOneHalf, g_XMOneHalf);
-                }
-                v = XMVectorMultiply( v, s_Scale );
-                XMStoreU565( reinterpret_cast<XMU565*>(ptr), v );
-                ptr += stride;
+                v = XMVectorClamp(v, g_XMNegativeOne, g_XMOne);
+                v = XMVectorMultiplyAdd(v, g_XMOneHalf, g_XMOneHalf);
             }
+            v = XMVectorMultiply( v, s_Scale );
+            XMStoreU565( reinterpret_cast<XMU565*>(ptr), v );
+            ptr += stride;
         }
-        break;
+    }
+    break;
 
     case DXGI_FORMAT_B5G5R5A1_UNORM:
+    {
+        static const XMVECTORF32 s_Scale = { 31.f, 31.f, 31.f, 1.f };
+        for( size_t icount = 0; icount < count; ++icount )
         {
-            static const XMVECTORF32 s_Scale = { 31.f, 31.f, 31.f, 1.f };
-            for( size_t icount = 0; icount < count; ++icount )
+            if ( ( ptr + sizeof(XMU555) ) > eptr )
+                return E_UNEXPECTED;
+            XMVECTOR v = XMVectorSwizzle<2, 1, 0, 3>( *buffer++  );
+            if (x2bias)
             {
-                if ( ( ptr + sizeof(XMU555) ) > eptr )
-                    return E_UNEXPECTED;
-                XMVECTOR v = XMVectorSwizzle<2, 1, 0, 3>( *buffer++  );
-                if (x2bias)
-                {
-                    XMVECTOR v2 = XMVectorClamp(v, g_XMNegativeOne, g_XMOne);
-                    v2 = XMVectorMultiplyAdd(v2, g_XMOneHalf, g_XMOneHalf);
-                    v = XMVectorSelect(v, v2, g_XMSelect1110);
-                }
-                v = XMVectorMultiply(v, s_Scale);
-                XMStoreU555( reinterpret_cast<XMU555*>(ptr), v );
-                reinterpret_cast<XMU555*>(ptr)->w = ( XMVectorGetW( v ) > 0.5f ) ? 1 : 0;
-                ptr += stride;
+                XMVECTOR v2 = XMVectorClamp(v, g_XMNegativeOne, g_XMOne);
+                v2 = XMVectorMultiplyAdd(v2, g_XMOneHalf, g_XMOneHalf);
+                v = XMVectorSelect(v, v2, g_XMSelect1110);
             }
+            v = XMVectorMultiply(v, s_Scale);
+            XMStoreU555( reinterpret_cast<XMU555*>(ptr), v );
+            reinterpret_cast<XMU555*>(ptr)->w = ( XMVectorGetW( v ) > 0.5f ) ? 1 : 0;
+            ptr += stride;
         }
-        break;
+    }
+    break;
 
     case DXGI_FORMAT_B8G8R8A8_UNORM:
         for( size_t icount = 0; icount < count; ++icount )
@@ -611,24 +611,24 @@ HRESULT VBWriter::Impl::Write( const XMVECTOR* buffer, const char* semanticName,
         break;
 
     case DXGI_FORMAT_B4G4R4A4_UNORM:
+    {
+        static const XMVECTORF32 s_Scale = { 15.f, 15.f, 15.f, 15.f };
+        for( size_t icount = 0; icount < count; ++icount )
         {
-            static const XMVECTORF32 s_Scale = { 15.f, 15.f, 15.f, 15.f };
-            for( size_t icount = 0; icount < count; ++icount )
+            if ( ( ptr + sizeof(XMUNIBBLE4) ) > eptr )
+                return E_UNEXPECTED;
+            XMVECTOR v = XMVectorSwizzle<2, 1, 0, 3>( *buffer++  );
+            if (x2bias)
             {
-                if ( ( ptr + sizeof(XMUNIBBLE4) ) > eptr )
-                    return E_UNEXPECTED;
-                XMVECTOR v = XMVectorSwizzle<2, 1, 0, 3>( *buffer++  );
-                if (x2bias)
-                {
-                    v = XMVectorClamp(v, g_XMNegativeOne, g_XMOne);
-                    v = XMVectorMultiplyAdd(v, g_XMOneHalf, g_XMOneHalf);
-                }
-                v = XMVectorMultiply(v, s_Scale);
-                XMStoreUNibble4( reinterpret_cast<XMUNIBBLE4*>(ptr), v );
-                ptr += stride;
+                v = XMVectorClamp(v, g_XMNegativeOne, g_XMOne);
+                v = XMVectorMultiplyAdd(v, g_XMOneHalf, g_XMOneHalf);
             }
+            v = XMVectorMultiply(v, s_Scale);
+            XMStoreUNibble4( reinterpret_cast<XMUNIBBLE4*>(ptr), v );
+            ptr += stride;
         }
-        break;
+    }
+    break;
 
     case XBOX_DXGI_FORMAT_R10G10B10_SNORM_A2_UNORM:
         // Xbox One specific format
@@ -648,14 +648,14 @@ HRESULT VBWriter::Impl::Write( const XMVECTOR* buffer, const char* semanticName,
 
 // Public constructor.
 VBWriter::VBWriter()
-  : pImpl( new Impl() )
+    : pImpl( new Impl() )
 {
-}   
+}
 
 
 // Move constructor.
 VBWriter::VBWriter(VBWriter&& moveFrom)
-  : pImpl(std::move(moveFrom.pImpl))
+    : pImpl(std::move(moveFrom.pImpl))
 {
 }
 

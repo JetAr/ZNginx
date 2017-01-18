@@ -1,7 +1,7 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DXUTSettingsDlg.cpp
 //
-// Dialog for selection of device settings 
+// Dialog for selection of device settings
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
 // ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
@@ -143,10 +143,10 @@ void CD3DSettingsDlg::CreateControls()
     m_Dialog.AddComboBox( DXUTSETTINGSDLG_DEVICE_TYPE, 200, 110, 400, 23 );
 
     // DXUTSETTINGSDLG_WINDOWED, DXUTSETTINGSDLG_FULLSCREEN
-    m_Dialog.AddRadioButton( DXUTSETTINGSDLG_WINDOWED, DXUTSETTINGSDLG_WINDOWED_GROUP, L"Windowed", 
-                          360, 157, 100, 16 );
+    m_Dialog.AddRadioButton( DXUTSETTINGSDLG_WINDOWED, DXUTSETTINGSDLG_WINDOWED_GROUP, L"Windowed",
+                             360, 157, 100, 16 );
     m_Dialog.AddRadioButton( DXUTSETTINGSDLG_FULLSCREEN, DXUTSETTINGSDLG_WINDOWED_GROUP, L"Full Screen",
-                          220, 157, 100, 16 );
+                             220, 157, 100, 16 );
 
     // DXUTSETTINGSDLG_RES_SHOW_ALL
     m_Dialog.AddCheckBox( DXUTSETTINGSDLG_RESOLUTION_SHOW_ALL, L"Show All Aspect Ratios", 420, 200, 200, 23, false );
@@ -208,14 +208,14 @@ void CD3DSettingsDlg::CreateControls()
         // Title
         CDXUTStatic* pStatic = nullptr;
         if ( SUCCEEDED(m_RevertModeDialog.AddStatic( DXUTSETTINGSDLG_STATIC, L"Do you want to keep these display settings?", 10, 5,
-                                      640, 50, false, &pStatic ) ) )
+                       640, 50, false, &pStatic ) ) )
             pElement = pStatic->GetElement( 0 );
         pElement->iFont = 1;
         pElement->dwTextFormat = DT_TOP | DT_LEFT;
 
         // Timeout static text control
         if ( SUCCEEDED(m_RevertModeDialog.AddStatic( DXUTSETTINGSDLG_STATIC_MODE_CHANGE_TIMEOUT, L"", 10, 90, 640, 30,
-                                      false, &pStatic ) ) )
+                       false, &pStatic ) ) )
             pElement = pStatic->GetElement( 0 );
         pElement->iFont = 0;
         pElement->dwTextFormat = DT_TOP | DT_LEFT;
@@ -245,7 +245,7 @@ HRESULT CD3DSettingsDlg::Refresh()
     SetWindowed( FALSE != g_DeviceSettings.d3d11.sd.Windowed );
     auto pOutputInfo = GetCurrentD3D11OutputInfo();
     AddD3D11AdapterOutput( pOutputInfo->Desc.DeviceName, g_DeviceSettings.d3d11.Output );
-            
+
     AddD3D11Resolution( g_DeviceSettings.d3d11.sd.BufferDesc.Width,
                         g_DeviceSettings.d3d11.sd.BufferDesc.Height );
     AddD3D11RefreshRate( g_DeviceSettings.d3d11.sd.BufferDesc.RefreshRate );
@@ -254,8 +254,8 @@ HRESULT CD3DSettingsDlg::Refresh()
     AddD3D11MultisampleQuality( g_DeviceSettings.d3d11.sd.SampleDesc.Quality );
 
     auto pBestDeviceSettingsCombo = pD3DEnum->GetDeviceSettingsCombo(
-                g_DeviceSettings.d3d11.AdapterOrdinal, g_DeviceSettings.d3d11.sd.BufferDesc.Format,
-                ( g_DeviceSettings.d3d11.sd.Windowed != 0 ) );
+                                        g_DeviceSettings.d3d11.AdapterOrdinal, g_DeviceSettings.d3d11.sd.BufferDesc.Format,
+                                        ( g_DeviceSettings.d3d11.sd.Windowed != 0 ) );
 
     if( !pBestDeviceSettingsCombo )
         return DXUT_ERR_MSGBOX( L"GetDeviceSettingsCombo", E_INVALIDARG );
@@ -273,14 +273,14 @@ HRESULT CD3DSettingsDlg::Refresh()
 
     for (int fli = 0; fli < TOTAL_FEATURE_LEVELS; fli++)
     {
-        if (m_Levels[fli] >= g_DeviceSettings.MinimumFeatureLevel 
-            && m_Levels[fli] <= clampFL)
+        if (m_Levels[fli] >= g_DeviceSettings.MinimumFeatureLevel
+                && m_Levels[fli] <= clampFL)
         {
             AddD3D11FeatureLevel( m_Levels[fli] );
         }
-    } 
+    }
     pFeatureLevelBox->SetSelectedByData( ULongToPtr( g_DeviceSettings.d3d11.DeviceFeatureLevel ) );
-          
+
     // Get the adapters list from CD3D11Enumeration object
     auto pAdapterInfoList = pD3DEnum->GetAdapterInfoList();
 
@@ -435,7 +435,7 @@ HRESULT CD3DSettingsDlg::OnD3D11CreateDevice( _In_ ID3D11Device* pd3dDevice )
     if( !pd3dDevice )
         return DXUT_ERR_MSGBOX( L"CD3DSettingsDlg::OnCreatedDevice", E_INVALIDARG );
 
-    // Create the fonts/textures 
+    // Create the fonts/textures
     m_Dialog.SetCallback( StaticOnEvent, ( void* )this );
     m_RevertModeDialog.SetCallback( StaticOnEvent, ( void* )this );
 
@@ -478,7 +478,7 @@ void CD3DSettingsDlg::OnD3D11DestroyDevice()
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
 void WINAPI CD3DSettingsDlg::StaticOnEvent( UINT nEvent, int nControlID,
-                                            CDXUTControl* pControl, void* pUserData )
+        CDXUTControl* pControl, void* pUserData )
 {
     auto pD3DSettings = reinterpret_cast<CD3DSettingsDlg*>( pUserData );
     if( pD3DSettings )
@@ -520,126 +520,140 @@ void CD3DSettingsDlg::OnEvent( UINT nEvent, int nControlID, CDXUTControl* pContr
 
     switch( nControlID )
     {
-        case DXUTSETTINGSDLG_ADAPTER:
-            OnAdapterChanged(); break;
-        case DXUTSETTINGSDLG_DEVICE_TYPE:
-            OnDeviceTypeChanged(); break;
-        case DXUTSETTINGSDLG_WINDOWED:
-            OnWindowedFullScreenChanged(); break;
-        case DXUTSETTINGSDLG_FULLSCREEN:
-            OnWindowedFullScreenChanged(); break;
-        case DXUTSETTINGSDLG_RESOLUTION_SHOW_ALL:
-            OnBackBufferFormatChanged();   break;
-        case DXUTSETTINGSDLG_D3D11_RESOLUTION:
-            OnD3D11ResolutionChanged(); break;
-        case DXUTSETTINGSDLG_D3D11_FEATURE_LEVEL:
-            OnFeatureLevelChanged(); break;
-        case DXUTSETTINGSDLG_D3D11_ADAPTER_OUTPUT:
-            OnAdapterOutputChanged(); break;
-        case DXUTSETTINGSDLG_D3D11_REFRESH_RATE:
-            OnRefreshRateChanged(); break;
-        case DXUTSETTINGSDLG_D3D11_BACK_BUFFER_FORMAT:
-            OnBackBufferFormatChanged(); break;
-        case DXUTSETTINGSDLG_D3D11_MULTISAMPLE_COUNT:
-            OnMultisampleTypeChanged(); break;
-        case DXUTSETTINGSDLG_D3D11_MULTISAMPLE_QUALITY:
-            OnMultisampleQualityChanged(); break;
-        case DXUTSETTINGSDLG_D3D11_PRESENT_INTERVAL:
-            OnPresentIntervalChanged(); break;
-        case DXUTSETTINGSDLG_D3D11_DEBUG_DEVICE:
-            OnDebugDeviceChanged(); break;
+    case DXUTSETTINGSDLG_ADAPTER:
+        OnAdapterChanged();
+        break;
+    case DXUTSETTINGSDLG_DEVICE_TYPE:
+        OnDeviceTypeChanged();
+        break;
+    case DXUTSETTINGSDLG_WINDOWED:
+        OnWindowedFullScreenChanged();
+        break;
+    case DXUTSETTINGSDLG_FULLSCREEN:
+        OnWindowedFullScreenChanged();
+        break;
+    case DXUTSETTINGSDLG_RESOLUTION_SHOW_ALL:
+        OnBackBufferFormatChanged();
+        break;
+    case DXUTSETTINGSDLG_D3D11_RESOLUTION:
+        OnD3D11ResolutionChanged();
+        break;
+    case DXUTSETTINGSDLG_D3D11_FEATURE_LEVEL:
+        OnFeatureLevelChanged();
+        break;
+    case DXUTSETTINGSDLG_D3D11_ADAPTER_OUTPUT:
+        OnAdapterOutputChanged();
+        break;
+    case DXUTSETTINGSDLG_D3D11_REFRESH_RATE:
+        OnRefreshRateChanged();
+        break;
+    case DXUTSETTINGSDLG_D3D11_BACK_BUFFER_FORMAT:
+        OnBackBufferFormatChanged();
+        break;
+    case DXUTSETTINGSDLG_D3D11_MULTISAMPLE_COUNT:
+        OnMultisampleTypeChanged();
+        break;
+    case DXUTSETTINGSDLG_D3D11_MULTISAMPLE_QUALITY:
+        OnMultisampleQualityChanged();
+        break;
+    case DXUTSETTINGSDLG_D3D11_PRESENT_INTERVAL:
+        OnPresentIntervalChanged();
+        break;
+    case DXUTSETTINGSDLG_D3D11_DEBUG_DEVICE:
+        OnDebugDeviceChanged();
+        break;
 
-        case DXUTSETTINGSDLG_OK:
+    case DXUTSETTINGSDLG_OK:
+    {
+        bool bFullScreenModeChange = false;
+        auto currentSettings = DXUTGetDeviceSettings();
+        g_DeviceSettings.MinimumFeatureLevel = currentSettings.MinimumFeatureLevel;
+        if( g_DeviceSettings.d3d11.sd.Windowed )
         {
-            bool bFullScreenModeChange = false;
-            auto currentSettings = DXUTGetDeviceSettings();
-            g_DeviceSettings.MinimumFeatureLevel = currentSettings.MinimumFeatureLevel;
-            if( g_DeviceSettings.d3d11.sd.Windowed )
-            {
-                g_DeviceSettings.d3d11.sd.BufferDesc.RefreshRate.Denominator =
+            g_DeviceSettings.d3d11.sd.BufferDesc.RefreshRate.Denominator =
                 g_DeviceSettings.d3d11.sd.BufferDesc.RefreshRate.Numerator = 0;
 
-                RECT rcClient;
-                if( DXUTIsWindowed() )
-                    GetClientRect( DXUTGetHWND(), &rcClient );
-                else
-                    rcClient = DXUTGetWindowClientRectAtModeChange();
-                DWORD dwWindowWidth = rcClient.right - rcClient.left;
-                DWORD dwWindowHeight = rcClient.bottom - rcClient.top;
-
-                g_DeviceSettings.d3d11.sd.BufferDesc.Width = dwWindowWidth;
-                g_DeviceSettings.d3d11.sd.BufferDesc.Height = dwWindowHeight;
-            }
+            RECT rcClient;
+            if( DXUTIsWindowed() )
+                GetClientRect( DXUTGetHWND(), &rcClient );
             else
-            {
-                // Check for fullscreen mode change
-                bFullScreenModeChange = g_DeviceSettings.d3d11.sd.BufferDesc.Width !=
-                    currentSettings.d3d11.sd.BufferDesc.Width ||
-                    g_DeviceSettings.d3d11.sd.BufferDesc.Height != currentSettings.d3d11.sd.BufferDesc.Height ||
-                    g_DeviceSettings.d3d11.sd.BufferDesc.RefreshRate.Denominator !=
-                    currentSettings.d3d11.sd.BufferDesc.RefreshRate.Denominator ||
-                    g_DeviceSettings.d3d11.sd.BufferDesc.RefreshRate.Numerator !=
-                    currentSettings.d3d11.sd.BufferDesc.RefreshRate.Numerator;
-            }
+                rcClient = DXUTGetWindowClientRectAtModeChange();
+            DWORD dwWindowWidth = rcClient.right - rcClient.left;
+            DWORD dwWindowHeight = rcClient.bottom - rcClient.top;
 
-            if( bFullScreenModeChange )
-            {
-                // set appropriate global device settings to that of the current device
-                // settings.  These will get set to the user-defined settings once the
-                // user accepts the mode change
-                DXUTDeviceSettings tSettings = g_DeviceSettings;
-                    g_DeviceSettings.d3d11.sd.BufferDesc.Width = 
-                        currentSettings.d3d11.sd.BufferDesc.Width;
-                    g_DeviceSettings.d3d11.sd.BufferDesc.Height = 
-                        currentSettings.d3d11.sd.BufferDesc.Height;
-                    g_DeviceSettings.d3d11.sd.BufferDesc.RefreshRate.Denominator =
-                        currentSettings.d3d11.sd.BufferDesc.RefreshRate.Denominator;
-                    g_DeviceSettings.d3d11.sd.BufferDesc.RefreshRate.Numerator =
-                        currentSettings.d3d11.sd.BufferDesc.RefreshRate.Numerator;
-                    g_DeviceSettings.d3d11.sd.Windowed = currentSettings.d3d11.sd.Windowed;
-
-                // apply the user-defined settings
-                DXUTCreateDeviceFromSettings( &tSettings );
-                // create the mode change timeout dialog
-                m_pActiveDialog = &m_RevertModeDialog;
-                m_nRevertModeTimeout = 15;
-                UpdateModeChangeTimeoutText( m_nRevertModeTimeout );
-                // activate a timer for 1-second updates
-                DXUTSetTimer( StaticOnModeChangeTimer, 1.0f, &m_nIDEvent, ( void* )this );
-            }
-            else
-            {
-                DXUTCreateDeviceFromSettings( &g_DeviceSettings );
-                SetActive( false );
-            }
-            break;
+            g_DeviceSettings.d3d11.sd.BufferDesc.Width = dwWindowWidth;
+            g_DeviceSettings.d3d11.sd.BufferDesc.Height = dwWindowHeight;
+        }
+        else
+        {
+            // Check for fullscreen mode change
+            bFullScreenModeChange = g_DeviceSettings.d3d11.sd.BufferDesc.Width !=
+                                    currentSettings.d3d11.sd.BufferDesc.Width ||
+                                    g_DeviceSettings.d3d11.sd.BufferDesc.Height != currentSettings.d3d11.sd.BufferDesc.Height ||
+                                    g_DeviceSettings.d3d11.sd.BufferDesc.RefreshRate.Denominator !=
+                                    currentSettings.d3d11.sd.BufferDesc.RefreshRate.Denominator ||
+                                    g_DeviceSettings.d3d11.sd.BufferDesc.RefreshRate.Numerator !=
+                                    currentSettings.d3d11.sd.BufferDesc.RefreshRate.Numerator;
         }
 
-        case DXUTSETTINGSDLG_CANCEL:
+        if( bFullScreenModeChange )
         {
-            SetActive( false );
-            break;
-        }
+            // set appropriate global device settings to that of the current device
+            // settings.  These will get set to the user-defined settings once the
+            // user accepts the mode change
+            DXUTDeviceSettings tSettings = g_DeviceSettings;
+            g_DeviceSettings.d3d11.sd.BufferDesc.Width =
+                currentSettings.d3d11.sd.BufferDesc.Width;
+            g_DeviceSettings.d3d11.sd.BufferDesc.Height =
+                currentSettings.d3d11.sd.BufferDesc.Height;
+            g_DeviceSettings.d3d11.sd.BufferDesc.RefreshRate.Denominator =
+                currentSettings.d3d11.sd.BufferDesc.RefreshRate.Denominator;
+            g_DeviceSettings.d3d11.sd.BufferDesc.RefreshRate.Numerator =
+                currentSettings.d3d11.sd.BufferDesc.RefreshRate.Numerator;
+            g_DeviceSettings.d3d11.sd.Windowed = currentSettings.d3d11.sd.Windowed;
 
-        case DXUTSETTINGSDLG_MODE_CHANGE_ACCEPT:
-        {
-            DXUTKillTimer( m_nIDEvent );
-            g_DeviceSettings = DXUTGetDeviceSettings();
-            m_pActiveDialog = &m_Dialog;
-            SetActive( false );
-            break;
+            // apply the user-defined settings
+            DXUTCreateDeviceFromSettings( &tSettings );
+            // create the mode change timeout dialog
+            m_pActiveDialog = &m_RevertModeDialog;
+            m_nRevertModeTimeout = 15;
+            UpdateModeChangeTimeoutText( m_nRevertModeTimeout );
+            // activate a timer for 1-second updates
+            DXUTSetTimer( StaticOnModeChangeTimer, 1.0f, &m_nIDEvent, ( void* )this );
         }
-
-        case DXUTSETTINGSDLG_MODE_CHANGE_REVERT:
+        else
         {
-            DXUTKillTimer( m_nIDEvent );
-            m_pActiveDialog = &m_Dialog;
-            m_nIDEvent = 0;
-            m_nRevertModeTimeout = 0;
             DXUTCreateDeviceFromSettings( &g_DeviceSettings );
-            Refresh();
-            break;
+            SetActive( false );
         }
+        break;
+    }
+
+    case DXUTSETTINGSDLG_CANCEL:
+    {
+        SetActive( false );
+        break;
+    }
+
+    case DXUTSETTINGSDLG_MODE_CHANGE_ACCEPT:
+    {
+        DXUTKillTimer( m_nIDEvent );
+        g_DeviceSettings = DXUTGetDeviceSettings();
+        m_pActiveDialog = &m_Dialog;
+        SetActive( false );
+        break;
+    }
+
+    case DXUTSETTINGSDLG_MODE_CHANGE_REVERT:
+    {
+        DXUTKillTimer( m_nIDEvent );
+        m_pActiveDialog = &m_Dialog;
+        m_nIDEvent = 0;
+        m_nRevertModeTimeout = 0;
+        DXUTCreateDeviceFromSettings( &g_DeviceSettings );
+        Refresh();
+        break;
+    }
     }
 }
 
@@ -674,8 +688,8 @@ CD3D11EnumDeviceSettingsCombo* CD3DSettingsDlg::GetCurrentD3D11DeviceSettingsCom
 {
     auto pD3DEnum = DXUTGetD3D11Enumeration();
     return pD3DEnum->GetDeviceSettingsCombo( g_DeviceSettings.d3d11.AdapterOrdinal,
-                                             g_DeviceSettings.d3d11.sd.BufferDesc.Format,
-                                             ( g_DeviceSettings.d3d11.sd.Windowed == TRUE ) );
+            g_DeviceSettings.d3d11.sd.BufferDesc.Format,
+            ( g_DeviceSettings.d3d11.sd.Windowed == TRUE ) );
 }
 
 HRESULT CD3DSettingsDlg::OnD3D11ResolutionChanged ()
@@ -763,7 +777,7 @@ HRESULT CD3DSettingsDlg::OnFeatureLevelChanged ()
     hr = OnAdapterChanged();
     if( FAILED( hr ) )
         return hr;
-    
+
     return hr;
 }
 
@@ -821,8 +835,8 @@ HRESULT CD3DSettingsDlg::OnDeviceTypeChanged()
     SetWindowed( g_DeviceSettings.d3d11.sd.Windowed != 0 );
 
     auto pBestDeviceSettingsCombo = DXUTGetD3D11Enumeration()->GetDeviceSettingsCombo(
-        g_DeviceSettings.d3d11.AdapterOrdinal, g_DeviceSettings.d3d11.sd.BufferDesc.Format,
-        ( g_DeviceSettings.d3d11.sd.Windowed != 0 ) );
+                                        g_DeviceSettings.d3d11.AdapterOrdinal, g_DeviceSettings.d3d11.sd.BufferDesc.Format,
+                                        ( g_DeviceSettings.d3d11.sd.Windowed != 0 ) );
 
     if( !pBestDeviceSettingsCombo )
         return DXUT_ERR_MSGBOX( L"GetDeviceSettingsCombo", E_INVALIDARG );
@@ -836,21 +850,21 @@ HRESULT CD3DSettingsDlg::OnDeviceTypeChanged()
         clampFL = pBestDeviceSettingsCombo->pDeviceInfo->MaxLevel;
 
     if ( g_DeviceSettings.d3d11.DeviceFeatureLevel > clampFL
-         || clampFL > pBestDeviceSettingsCombo->pDeviceInfo->MaxLevel )
+            || clampFL > pBestDeviceSettingsCombo->pDeviceInfo->MaxLevel )
     {
         g_DeviceSettings.d3d11.DeviceFeatureLevel = std::min<D3D_FEATURE_LEVEL>( g_DeviceSettings.d3d11.DeviceFeatureLevel,
-                                                                                 clampFL );
-                
+                clampFL );
+
         CDXUTComboBox *pFeatureLevelBox = m_Dialog.GetComboBox( DXUTSETTINGSDLG_D3D11_FEATURE_LEVEL );
         pFeatureLevelBox->RemoveAllItems();
         for (int fli = 0; fli < TOTAL_FEATURE_LEVELS; fli++)
         {
-            if (m_Levels[fli] >= g_DeviceSettings.MinimumFeatureLevel 
-                && m_Levels[fli] <= clampFL)
+            if (m_Levels[fli] >= g_DeviceSettings.MinimumFeatureLevel
+                    && m_Levels[fli] <= clampFL)
             {
                 AddD3D11FeatureLevel( m_Levels[fli] );
             }
-        } 
+        }
         pFeatureLevelBox->SetSelectedByData( ULongToPtr( g_DeviceSettings.d3d11.DeviceFeatureLevel ) );
 
         hr = OnFeatureLevelChanged();
@@ -928,7 +942,7 @@ HRESULT CD3DSettingsDlg::OnAdapterOutputChanged()
     {
         DXGI_MODE_DESC mode;
         hr = DXUTGetD3D11AdapterDisplayMode( g_DeviceSettings.d3d11.AdapterOrdinal,
-                                                g_DeviceSettings.d3d11.Output, &mode );
+                                             g_DeviceSettings.d3d11.Output, &mode );
         if( FAILED( hr ) )
             return DXTRACE_ERR( L"GetD3D11AdapterDisplayMode", hr );
 
@@ -947,7 +961,7 @@ HRESULT CD3DSettingsDlg::OnAdapterOutputChanged()
         }
 
         g_DeviceSettings.d3d11.sd.BufferDesc.RefreshRate.Numerator =
-        g_DeviceSettings.d3d11.sd.BufferDesc.RefreshRate.Denominator = 0;
+            g_DeviceSettings.d3d11.sd.BufferDesc.RefreshRate.Denominator = 0;
     }
 
     auto pAdapterInfo = GetCurrentD3D11AdapterInfo();
@@ -1019,8 +1033,8 @@ HRESULT CD3DSettingsDlg::OnBackBufferFormatChanged()
         auto pDeviceCombo = pAdapterInfo->deviceSettingsComboList[ idc ];
 
         if( pDeviceCombo->Windowed == ( g_DeviceSettings.d3d11.sd.Windowed == TRUE ) &&
-            pDeviceCombo->BackBufferFormat == backBufferFormat &&
-            pDeviceCombo->DeviceType == g_DeviceSettings.d3d11.DriverType )
+                pDeviceCombo->BackBufferFormat == backBufferFormat &&
+                pDeviceCombo->DeviceType == g_DeviceSettings.d3d11.DriverType )
         {
             auto pMultisampleCountCombo = m_Dialog.GetComboBox( DXUTSETTINGSDLG_D3D11_MULTISAMPLE_COUNT );
             pMultisampleCountCombo->RemoveAllItems();
@@ -1101,7 +1115,7 @@ HRESULT CD3DSettingsDlg::OnMultisampleTypeChanged()
 //-------------------------------------------------------------------------------------
 HRESULT CD3DSettingsDlg::OnMultisampleQualityChanged()
 {
-            g_DeviceSettings.d3d11.sd.SampleDesc.Quality = GetSelectedD3D11MultisampleQuality();
+    g_DeviceSettings.d3d11.sd.SampleDesc.Quality = GetSelectedD3D11MultisampleQuality();
 
     return S_OK;
 }
@@ -1110,7 +1124,7 @@ HRESULT CD3DSettingsDlg::OnMultisampleQualityChanged()
 //-------------------------------------------------------------------------------------
 HRESULT CD3DSettingsDlg::OnPresentIntervalChanged()
 {
-            g_DeviceSettings.d3d11.SyncInterval = GetSelectedD3D11PresentInterval();
+    g_DeviceSettings.d3d11.SyncInterval = GetSelectedD3D11PresentInterval();
 
     return S_OK;
 }
@@ -1231,61 +1245,61 @@ void CD3DSettingsDlg::AddD3D11FeatureLevel( _In_ D3D_FEATURE_LEVEL fl)
     auto pComboBox = m_Dialog.GetComboBox( DXUTSETTINGSDLG_D3D11_FEATURE_LEVEL );
     switch( fl )
     {
-    case D3D_FEATURE_LEVEL_9_1: 
-        {
-            if( !pComboBox->ContainsItem( L"D3D_FEATURE_LEVEL_9_1" ) )
-                pComboBox->AddItem( L"D3D_FEATURE_LEVEL_9_1", ULongToPtr( D3D_FEATURE_LEVEL_9_1 ) ); 
-        }
-        break;
-    case D3D_FEATURE_LEVEL_9_2: 
-        {
-            if( !pComboBox->ContainsItem( L"D3D_FEATURE_LEVEL_9_2" ) )
-                pComboBox->AddItem( L"D3D_FEATURE_LEVEL_9_2", ULongToPtr( D3D_FEATURE_LEVEL_9_2 ) ); 
-        }
-        break;
-    case D3D_FEATURE_LEVEL_9_3: 
-        {
-            if( !pComboBox->ContainsItem( L"D3D_FEATURE_LEVEL_9_3" ) )
-                pComboBox->AddItem( L"D3D_FEATURE_LEVEL_9_3", ULongToPtr( D3D_FEATURE_LEVEL_9_3 ) ); 
-        }
-        break;
-    case D3D_FEATURE_LEVEL_10_0: 
-        {
-            if( !pComboBox->ContainsItem( L"D3D_FEATURE_LEVEL_10_0" ) )
-                pComboBox->AddItem( L"D3D_FEATURE_LEVEL_10_0", ULongToPtr( D3D_FEATURE_LEVEL_10_0 ) ); 
-        }
-        break;
-    case D3D_FEATURE_LEVEL_10_1: 
-        {
-            if( !pComboBox->ContainsItem( L"D3D_FEATURE_LEVEL_10_1" ) )
-                pComboBox->AddItem( L"D3D_FEATURE_LEVEL_10_1", ULongToPtr( D3D_FEATURE_LEVEL_10_1 ) ); 
-        }
-        break;
-    case D3D_FEATURE_LEVEL_11_0: 
-        {
-            if( !pComboBox->ContainsItem( L"D3D_FEATURE_LEVEL_11_0" ) )
-                pComboBox->AddItem( L"D3D_FEATURE_LEVEL_11_0", ULongToPtr( D3D_FEATURE_LEVEL_11_0 ) ); 
-        }
-        break;
-    case D3D_FEATURE_LEVEL_11_1: 
-        {
-            if( !pComboBox->ContainsItem( L"D3D_FEATURE_LEVEL_11_1" ) )
-                pComboBox->AddItem( L"D3D_FEATURE_LEVEL_11_1", ULongToPtr( D3D_FEATURE_LEVEL_11_1 ) ); 
-        }
-        break;
+    case D3D_FEATURE_LEVEL_9_1:
+    {
+        if( !pComboBox->ContainsItem( L"D3D_FEATURE_LEVEL_9_1" ) )
+            pComboBox->AddItem( L"D3D_FEATURE_LEVEL_9_1", ULongToPtr( D3D_FEATURE_LEVEL_9_1 ) );
+    }
+    break;
+    case D3D_FEATURE_LEVEL_9_2:
+    {
+        if( !pComboBox->ContainsItem( L"D3D_FEATURE_LEVEL_9_2" ) )
+            pComboBox->AddItem( L"D3D_FEATURE_LEVEL_9_2", ULongToPtr( D3D_FEATURE_LEVEL_9_2 ) );
+    }
+    break;
+    case D3D_FEATURE_LEVEL_9_3:
+    {
+        if( !pComboBox->ContainsItem( L"D3D_FEATURE_LEVEL_9_3" ) )
+            pComboBox->AddItem( L"D3D_FEATURE_LEVEL_9_3", ULongToPtr( D3D_FEATURE_LEVEL_9_3 ) );
+    }
+    break;
+    case D3D_FEATURE_LEVEL_10_0:
+    {
+        if( !pComboBox->ContainsItem( L"D3D_FEATURE_LEVEL_10_0" ) )
+            pComboBox->AddItem( L"D3D_FEATURE_LEVEL_10_0", ULongToPtr( D3D_FEATURE_LEVEL_10_0 ) );
+    }
+    break;
+    case D3D_FEATURE_LEVEL_10_1:
+    {
+        if( !pComboBox->ContainsItem( L"D3D_FEATURE_LEVEL_10_1" ) )
+            pComboBox->AddItem( L"D3D_FEATURE_LEVEL_10_1", ULongToPtr( D3D_FEATURE_LEVEL_10_1 ) );
+    }
+    break;
+    case D3D_FEATURE_LEVEL_11_0:
+    {
+        if( !pComboBox->ContainsItem( L"D3D_FEATURE_LEVEL_11_0" ) )
+            pComboBox->AddItem( L"D3D_FEATURE_LEVEL_11_0", ULongToPtr( D3D_FEATURE_LEVEL_11_0 ) );
+    }
+    break;
+    case D3D_FEATURE_LEVEL_11_1:
+    {
+        if( !pComboBox->ContainsItem( L"D3D_FEATURE_LEVEL_11_1" ) )
+            pComboBox->AddItem( L"D3D_FEATURE_LEVEL_11_1", ULongToPtr( D3D_FEATURE_LEVEL_11_1 ) );
+    }
+    break;
 #ifdef USE_DIRECT3D11_3
-        case D3D_FEATURE_LEVEL_12_0:
-        {
-            if (!pComboBox->ContainsItem(L"D3D_FEATURE_LEVEL_12_0"))
-                pComboBox->AddItem(L"D3D_FEATURE_LEVEL_12_0", ULongToPtr(D3D_FEATURE_LEVEL_12_0));
-        }
-        break;
-        case D3D_FEATURE_LEVEL_12_1:
-        {
-            if (!pComboBox->ContainsItem(L"D3D_FEATURE_LEVEL_12_1"))
-                pComboBox->AddItem(L"D3D_FEATURE_LEVEL_12_1", ULongToPtr(D3D_FEATURE_LEVEL_12_1));
-        }
-        break;
+    case D3D_FEATURE_LEVEL_12_0:
+    {
+        if (!pComboBox->ContainsItem(L"D3D_FEATURE_LEVEL_12_0"))
+            pComboBox->AddItem(L"D3D_FEATURE_LEVEL_12_0", ULongToPtr(D3D_FEATURE_LEVEL_12_0));
+    }
+    break;
+    case D3D_FEATURE_LEVEL_12_1:
+    {
+        if (!pComboBox->ContainsItem(L"D3D_FEATURE_LEVEL_12_1"))
+            pComboBox->AddItem(L"D3D_FEATURE_LEVEL_12_1", ULongToPtr(D3D_FEATURE_LEVEL_12_1));
+    }
+    break;
 #endif
     }
 
@@ -1571,16 +1585,16 @@ const WCHAR* DXUTDeviceTypeToString( _In_ D3D_DRIVER_TYPE devType )
 {
     switch( devType )
     {
-        case D3D_DRIVER_TYPE_HARDWARE:
-            return L"D3D_DRIVER_TYPE_HARDWARE";
-        case D3D_DRIVER_TYPE_REFERENCE:
-            return L"D3D_DRIVER_TYPE_REFERENCE";
-        case D3D_DRIVER_TYPE_NULL:
-            return L"D3D_DRIVER_TYPE_NULL";
-        case D3D_DRIVER_TYPE_WARP:
-            return L"D3D_DRIVER_TYPE_WARP";
-        default:
-            return L"Unknown devType";
+    case D3D_DRIVER_TYPE_HARDWARE:
+        return L"D3D_DRIVER_TYPE_HARDWARE";
+    case D3D_DRIVER_TYPE_REFERENCE:
+        return L"D3D_DRIVER_TYPE_REFERENCE";
+    case D3D_DRIVER_TYPE_NULL:
+        return L"D3D_DRIVER_TYPE_NULL";
+    case D3D_DRIVER_TYPE_WARP:
+        return L"D3D_DRIVER_TYPE_WARP";
+    default:
+        return L"Unknown devType";
     }
 }
 

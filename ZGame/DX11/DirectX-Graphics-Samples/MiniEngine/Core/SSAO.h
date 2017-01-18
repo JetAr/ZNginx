@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
 // THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
@@ -8,22 +8,25 @@
 //
 // Developed by Minigraph
 //
-// Author:  James Stanard 
+// Author:  James Stanard
 //
 
 #pragma once
 
-namespace Math { class Camera;  }
+namespace Math
+{
+class Camera;
+}
 
 namespace SSAO
 {
-	void Initialize( void );
-	void Shutdown( void );
-	void Render(GraphicsContext& Context, const float* ProjMat, float NearClipDist, float FarClipDist  );
-	void Render(GraphicsContext& Context, const Math::Camera& camera );
+void Initialize( void );
+void Shutdown( void );
+void Render(GraphicsContext& Context, const float* ProjMat, float NearClipDist, float FarClipDist  );
+void Render(GraphicsContext& Context, const Math::Camera& camera );
 
-	extern BoolVar Enable;
-	extern BoolVar DebugDraw;
-	extern BoolVar AsyncCompute;
-	extern BoolVar ComputeLinearZ;
+extern BoolVar Enable;
+extern BoolVar DebugDraw;
+extern BoolVar AsyncCompute;
+extern BoolVar ComputeLinearZ;
 }

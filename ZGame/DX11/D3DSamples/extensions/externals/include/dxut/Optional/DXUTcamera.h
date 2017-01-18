@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: Camera.h
 //
 // Helper functions for Direct3D programming.
@@ -13,7 +13,7 @@
 class CD3DArcBall
 {
 public:
-                                    CD3DArcBall();
+    CD3DArcBall();
 
     // Functions to change behavior
     void                            Reset();
@@ -23,18 +23,21 @@ public:
     }
     void                            SetWindow( INT nWidth, INT nHeight, FLOAT fRadius = 0.9f )
     {
-        m_nWidth = nWidth; m_nHeight = nHeight; m_fRadius = fRadius;
+        m_nWidth = nWidth;
+        m_nHeight = nHeight;
+        m_fRadius = fRadius;
         m_vCenter = D3DXVECTOR2( m_nWidth / 2.0f, m_nHeight / 2.0f );
     }
     void                            SetOffset( INT nX, INT nY )
     {
-        m_Offset.x = nX; m_Offset.y = nY;
+        m_Offset.x = nX;
+        m_Offset.y = nY;
     }
 
     // Call these from client and use GetRotationMatrix() to read new rotation matrix
     void                            OnBegin( int nX, int nY );  // start the rotation (pass current mouse position)
     void                            OnMove( int nX, int nY );   // continue the rotation (pass current mouse position)
-    void                            OnEnd();                    // end the rotation 
+    void                            OnEnd();                    // end the rotation
 
     // Or call this to automatically handle left, middle, right buttons
     LRESULT                         HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
@@ -76,7 +79,7 @@ protected:
     POINT m_Offset;   // window offset, or upper-left corner of window
     INT m_nWidth;   // arc ball's window width
     INT m_nHeight;  // arc ball's window height
-    D3DXVECTOR2 m_vCenter;  // center of arc ball 
+    D3DXVECTOR2 m_vCenter;  // center of arc ball
     FLOAT m_fRadius;  // arc ball's radius in screen coords
     FLOAT m_fRadiusTranslation; // arc ball's radius for translating the target
 
@@ -120,13 +123,13 @@ enum D3DUtil_CameraKeys
 
 //--------------------------------------------------------------------------------------
 // Simple base camera class that moves and rotates.  The base class
-//       records mouse and keyboard input for use by a derived class, and 
+//       records mouse and keyboard input for use by a derived class, and
 //       keeps common state.
 //--------------------------------------------------------------------------------------
 class CBaseCamera
 {
 public:
-                                CBaseCamera();
+    CBaseCamera();
 
     // Call these from client and use Get*Matrix() to read new matrices
     virtual LRESULT             HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
@@ -148,7 +151,8 @@ public:
     }
     void                        SetDrag( bool bMovementDrag, FLOAT fTotalDragTimeToZero = 0.25f )
     {
-        m_bMovementDrag = bMovementDrag; m_fTotalDragTimeToZero = fTotalDragTimeToZero;
+        m_bMovementDrag = bMovementDrag;
+        m_fTotalDragTimeToZero = fTotalDragTimeToZero;
     }
     void                        SetEnableYAxisMovement( bool bEnableYAxisMovement )
     {
@@ -159,14 +163,16 @@ public:
         m_bEnablePositionMovement = bEnablePositionMovement;
     }
     void                        SetClipToBoundary( bool bClipToBoundary, D3DXVECTOR3* pvMinBoundary,
-                                                   D3DXVECTOR3* pvMaxBoundary )
+            D3DXVECTOR3* pvMaxBoundary )
     {
-        m_bClipToBoundary = bClipToBoundary; if( pvMinBoundary ) m_vMinBoundary = *pvMinBoundary;
+        m_bClipToBoundary = bClipToBoundary;
+        if( pvMinBoundary ) m_vMinBoundary = *pvMinBoundary;
         if( pvMaxBoundary ) m_vMaxBoundary = *pvMaxBoundary;
     }
     void                        SetScalers( FLOAT fRotationScaler = 0.01f, FLOAT fMoveScaler = 5.0f )
     {
-        m_fRotationScaler = fRotationScaler; m_fMoveScaler = fMoveScaler;
+        m_fRotationScaler = fRotationScaler;
+        m_fMoveScaler = fMoveScaler;
     }
     void                        SetNumberOfFramesToSmoothMouseData( int nFrames )
     {
@@ -238,7 +244,7 @@ protected:
     void                        GetInput( bool bGetKeyboardInput, bool bGetMouseInput, bool bGetGamepadInput,
                                           bool bResetCursorAfterMove );
 
-    D3DXMATRIX m_mView;              // View matrix 
+    D3DXMATRIX m_mView;              // View matrix
     D3DXMATRIX m_mProj;              // Projection matrix
 
     DXUT_GAMEPAD                m_GamePad[DXUT_MAX_CONTROLLERS];  // XInput controller state
@@ -250,11 +256,11 @@ protected:
     BYTE                        m_aKeys[CAM_MAX_KEYS];  // State of input - KEY_WAS_DOWN_MASK|KEY_IS_DOWN_MASK
     D3DXVECTOR3 m_vKeyboardDirection;   // Direction vector of keyboard input
     POINT m_ptLastMousePosition;  // Last absolute position of mouse cursor
-    bool m_bMouseLButtonDown;    // True if left button is down 
-    bool m_bMouseMButtonDown;    // True if middle button is down 
-    bool m_bMouseRButtonDown;    // True if right button is down 
+    bool m_bMouseLButtonDown;    // True if left button is down
+    bool m_bMouseMButtonDown;    // True if middle button is down
+    bool m_bMouseRButtonDown;    // True if right button is down
     int m_nCurrentButtonMask;   // mask of which buttons are down
-    int m_nMouseWheelDelta;     // Amount of middle wheel scroll (+/-) 
+    int m_nMouseWheelDelta;     // Amount of middle wheel scroll (+/-)
     D3DXVECTOR2 m_vMouseDelta;          // Mouse relative delta smoothed over a few frames
     float m_fFramesToSmoothMouseData; // Number of frames to smooth mouse data over
 
@@ -282,27 +288,27 @@ protected:
     float m_fMoveScaler;          // Scaler for movement
 
     bool m_bInvertPitch;         // Invert the pitch axis
-    bool m_bEnablePositionMovement; // If true, then the user can translate the camera/model 
+    bool m_bEnablePositionMovement; // If true, then the user can translate the camera/model
     bool m_bEnableYAxisMovement; // If true, then camera can move in the y-axis
 
     bool m_bClipToBoundary;      // If true, then the camera will be clipped to the boundary
     D3DXVECTOR3 m_vMinBoundary;         // Min point in clip boundary
     D3DXVECTOR3 m_vMaxBoundary;         // Max point in clip boundary
 
-    bool m_bResetCursorAfterMove;// If true, the class will reset the cursor position so that the cursor always has space to move 
+    bool m_bResetCursorAfterMove;// If true, the class will reset the cursor position so that the cursor always has space to move
 };
 
 
 //--------------------------------------------------------------------------------------
 // Simple first person camera class that moves and rotates.
-//       It allows yaw and pitch but not roll.  It uses WM_KEYDOWN and 
-//       GetCursorPos() to respond to keyboard and mouse input and updates the 
-//       view matrix based on input.  
+//       It allows yaw and pitch but not roll.  It uses WM_KEYDOWN and
+//       GetCursorPos() to respond to keyboard and mouse input and updates the
+//       view matrix based on input.
 //--------------------------------------------------------------------------------------
 class CFirstPersonCamera : public CBaseCamera
 {
 public:
-                    CFirstPersonCamera();
+    CFirstPersonCamera();
 
     // Call these from client and use Get*Matrix() to read new matrices
     virtual void    FrameMove( FLOAT fElapsedTime );
@@ -347,7 +353,7 @@ protected:
 class CModelViewerCamera : public CBaseCamera
 {
 public:
-                    CModelViewerCamera();
+    CModelViewerCamera();
 
     // Call these from client and use Get*Matrix() to read new matrices
     virtual LRESULT HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
@@ -375,7 +381,9 @@ public:
     }
     void            SetRadius( float fDefaultRadius=5.0f, float fMinRadius=1.0f, float fMaxRadius=FLT_MAX )
     {
-        m_fDefaultRadius = m_fRadius = fDefaultRadius; m_fMinRadius = fMinRadius; m_fMaxRadius = fMaxRadius;
+        m_fDefaultRadius = m_fRadius = fDefaultRadius;
+        m_fMinRadius = fMinRadius;
+        m_fMaxRadius = fMaxRadius;
         m_bDragSinceLastUpdate = true;
     }
     void            SetModelCenter( D3DXVECTOR3 vModelCenter )
@@ -388,11 +396,13 @@ public:
     }
     void            SetViewQuat( D3DXQUATERNION q )
     {
-        m_ViewArcBall.SetQuatNow( q ); m_bDragSinceLastUpdate = true;
+        m_ViewArcBall.SetQuatNow( q );
+        m_bDragSinceLastUpdate = true;
     }
     void            SetWorldQuat( D3DXQUATERNION q )
     {
-        m_WorldArcBall.SetQuatNow( q ); m_bDragSinceLastUpdate = true;
+        m_WorldArcBall.SetQuatNow( q );
+        m_bDragSinceLastUpdate = true;
     }
 
     // Functions to get state
@@ -402,14 +412,15 @@ public:
     }
     void            SetWorldMatrix( D3DXMATRIX& mWorld )
     {
-        m_mWorld = mWorld; m_bDragSinceLastUpdate = true;
+        m_mWorld = mWorld;
+        m_bDragSinceLastUpdate = true;
     }
 
 protected:
     CD3DArcBall m_WorldArcBall;
     CD3DArcBall m_ViewArcBall;
     D3DXVECTOR3 m_vModelCenter;
-    D3DXMATRIX m_mModelLastRot;        // Last arcball rotation matrix for model 
+    D3DXMATRIX m_mModelLastRot;        // Last arcball rotation matrix for model
     D3DXMATRIX m_mModelRot;            // Rotation matrix of model
     D3DXMATRIX m_mWorld;               // World matrix of model
 
@@ -419,8 +430,8 @@ protected:
 
     bool m_bAttachCameraToModel;
     bool m_bLimitPitch;
-    float m_fRadius;              // Distance from the camera to model 
-    float m_fDefaultRadius;       // Distance from the camera to model 
+    float m_fRadius;              // Distance from the camera to model
+    float m_fDefaultRadius;       // Distance from the camera to model
     float m_fMinRadius;           // Min radius
     float m_fMaxRadius;           // Max radius
     bool m_bDragSinceLastUpdate; // True if mouse drag has happened since last time FrameMove is called.
@@ -430,13 +441,13 @@ protected:
 };
 
 //--------------------------------------------------------------------------------------
-// Manages the mesh, direction, mouse events of a directional arrow that 
-// rotates around a radius controlled by an arcball 
+// Manages the mesh, direction, mouse events of a directional arrow that
+// rotates around a radius controlled by an arcball
 //--------------------------------------------------------------------------------------
 class CDXUTDirectionWidget
 {
 public:
-                            CDXUTDirectionWidget();
+    CDXUTDirectionWidget();
 
     static HRESULT WINAPI   StaticOnD3D9CreateDevice( IDirect3DDevice9* pd3dDevice );
     HRESULT                 OnD3D9ResetDevice( const D3DSURFACE_DESC* pBackBufferSurfaceDesc );
@@ -491,7 +502,7 @@ protected:
     static D3DXHANDLE s_hWorldViewProjection;
     static D3DXHANDLE s_hWorld;
 
-    // D3D10 objects 
+    // D3D10 objects
     //static ID3D10Device* s_pd3d10Device;
     //static ID3D10Effect* s_pD3D10Effect;
     //TODO: add some sort of d3d10 mesh object here

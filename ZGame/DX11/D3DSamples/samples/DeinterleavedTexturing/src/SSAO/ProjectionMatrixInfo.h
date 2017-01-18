@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeinterleavedTexturing\src\SSAO/ProjectionMatrixInfo.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -53,9 +53,18 @@ public:
     ProjectionMatrixInfo(const GFSDK_SSAO_InputDepthData *pDepthData);
     static bool IsValid(const GFSDK_SSAO_InputDepthData *pDepthData);
 
-    float GetZNear() const { return m_ZNear; }
-    float GetZFar() const { return m_ZFar; }
-    float GetTanHalfFovy() const { return m_TanHalfFovy; }
+    float GetZNear() const
+    {
+        return m_ZNear;
+    }
+    float GetZFar() const
+    {
+        return m_ZFar;
+    }
+    float GetTanHalfFovy() const
+    {
+        return m_TanHalfFovy;
+    }
 
 private:
     float m_ZNear;

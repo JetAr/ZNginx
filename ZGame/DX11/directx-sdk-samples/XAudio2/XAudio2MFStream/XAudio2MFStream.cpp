@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: XAudio2MFStream.cpp
 //
 // Streaming from a media file, using Media Foundation to decompress the data
@@ -39,9 +39,9 @@
 #include <C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\comdecl.h>
 #include <C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\xaudio2.h>
 
-#define MF_SDK_VERSION 0x0001  
-#define MF_API_VERSION 0x0070 
-#define MF_VERSION (MF_SDK_VERSION << 16 | MF_API_VERSION)  
+#define MF_SDK_VERSION 0x0001
+#define MF_API_VERSION 0x0070
+#define MF_VERSION (MF_SDK_VERSION << 16 | MF_API_VERSION)
 #include <initguid.h>
 #include <mfidl.h>
 #include <mfapi.h>
@@ -234,9 +234,9 @@ int main()
 #endif
 
     UINT32 flags = 0;
- #if (_WIN32_WINNT < 0x0602 /*_WIN32_WINNT_WIN8*/) && defined(_DEBUG)
+#if (_WIN32_WINNT < 0x0602 /*_WIN32_WINNT_WIN8*/) && defined(_DEBUG)
     flags |= XAUDIO2_DEBUG_ENGINE;
- #endif
+#endif
     ComPtr<IXAudio2> pXAudio2;
     hr = XAudio2Create( pXAudio2.GetAddressOf(), flags );
     if( FAILED( hr ) )
@@ -250,9 +250,9 @@ int main()
     // To see the trace output, you need to view ETW logs for this application:
     //    Go to Control Panel, Administrative Tools, Event Viewer.
     //    View->Show Analytic and Debug Logs.
-    //    Applications and Services Logs / Microsoft / Windows / XAudio2. 
-    //    Right click on Microsoft Windows XAudio2 debug logging, Properties, then Enable Logging, and hit OK 
-    XAUDIO2_DEBUG_CONFIGURATION debug ={0};
+    //    Applications and Services Logs / Microsoft / Windows / XAudio2.
+    //    Right click on Microsoft Windows XAudio2 debug logging, Properties, then Enable Logging, and hit OK
+    XAUDIO2_DEBUG_CONFIGURATION debug = {0};
     debug.TraceMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS;
     debug.BreakMask = XAUDIO2_LOG_ERRORS;
     pXAudio2->SetDebugConfiguration( &debug, 0 );
@@ -338,7 +338,7 @@ int main()
 
     hr = S_OK;
 
-    size_t bufferSize[MAX_BUFFER_COUNT]={0};
+    size_t bufferSize[MAX_BUFFER_COUNT]= {0};
     std::unique_ptr<uint8_t[]> buffers[MAX_BUFFER_COUNT];
 
     for(;;)
@@ -366,7 +366,7 @@ int main()
             readerContext.Restart();
 
             // Restart loop
-            PROPVARIANT var={0};
+            PROPVARIANT var= {0};
             var.vt = VT_I8;
 
             hr = reader->SetCurrentPosition( GUID_NULL, var );

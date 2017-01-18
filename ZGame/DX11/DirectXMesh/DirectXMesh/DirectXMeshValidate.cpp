@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXMeshValidate.cpp
-//  
+//
 // DirectX Mesh Geometry Library - Mesh validation
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -92,14 +92,14 @@ HRESULT ValidateIndices( _In_reads_(nFaces*3) const index_t* indices, _In_ size_
         index_t i1 = indices[ face*3 + 1 ];
         index_t i2 = indices[ face*3 + 2 ];
         if ( i0 == index_t(-1)
-             || i1 == index_t(-1)
-             || i2 == index_t(-1) )
+                || i1 == index_t(-1)
+                || i2 == index_t(-1) )
         {
             if ( flags & VALIDATE_UNUSED )
             {
                 if ( i0 != i1
-                     || i0 != i2
-                     || i1 != i2 )
+                        || i0 != i2
+                        || i1 != i2 )
                 {
                     if ( !msgs )
                         return E_FAIL;
@@ -137,8 +137,8 @@ HRESULT ValidateIndices( _In_reads_(nFaces*3) const index_t* indices, _In_ size_
 
         // Check for degenerate triangles
         if ( i0 == i1
-             || i0 == i2
-             || i1 == i2 )
+                || i0 == i2
+                || i1 == i2 )
         {
             if ( flags & VALIDATE_DEGENERATE )
             {
@@ -213,8 +213,8 @@ HRESULT ValidateIndices( _In_reads_(nFaces*3) const index_t* indices, _In_ size_
             uint32_t j2 = adjacency[ face*3 + 2 ];
 
             if ( ( j0 == j1 && j0 != UNUSED32 )
-                 || ( j0 == j2 && j0 != UNUSED32 )
-                 || ( j1 == j2 && j1 != UNUSED32 ) )
+                    || ( j0 == j2 && j0 != UNUSED32 )
+                    || ( j1 == j2 && j1 != UNUSED32 ) )
             {
                 if ( !msgs )
                     return E_FAIL;
@@ -231,7 +231,7 @@ HRESULT ValidateIndices( _In_reads_(nFaces*3) const index_t* indices, _In_ size_
 
                 wchar_t buff[ 256 ];
                 swprintf_s( buff, L"A neighbor triangle (%u) was found more than once on triangle %Iu\n"
-                                  L"\t(likley problem is that two triangles share same points with opposite direction)\n", bad, face );
+                            L"\t(likley problem is that two triangles share same points with opposite direction)\n", bad, face );
                 *msgs += buff;
             }
         }
@@ -253,7 +253,7 @@ HRESULT ValidateNoBowties( _In_reads_(nFaces*3) const index_t* indices, _In_ siz
     {
         if ( msgs )
             *msgs += L"Missing adjacency information required to check for BOWTIES\n";
-            
+
         return E_INVALIDARG;
     }
 
@@ -283,8 +283,8 @@ HRESULT ValidateNoBowties( _In_reads_(nFaces*3) const index_t* indices, _In_ siz
         index_t i2 = indices[ face*3 + 2 ];
 
         if ( i0 == i1
-             || i0 == i2
-             || i1 == i2 )
+                || i0 == i2
+                || i1 == i2 )
         {
             // ignore degenerate faces
             faceSeen[ face * 3 ] = true;

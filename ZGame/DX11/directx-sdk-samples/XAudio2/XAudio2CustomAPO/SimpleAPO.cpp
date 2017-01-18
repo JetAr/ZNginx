@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // SimpleAPO.cpp
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -13,7 +13,7 @@
 // Desc: Constructor
 //--------------------------------------------------------------------------------------
 CSimpleAPO::CSimpleAPO()
-: CSampleXAPOBase<CSimpleAPO, SimpleAPOParams>()
+    : CSampleXAPOBase<CSimpleAPO, SimpleAPOParams>()
 {
 }
 

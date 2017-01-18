@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DXUTgui.h
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -20,7 +20,7 @@
 #endif
 
 //--------------------------------------------------------------------------------------
-// Defines and macros 
+// Defines and macros
 //--------------------------------------------------------------------------------------
 #define EVENT_BUTTON_CLICKED                0x0101
 #define EVENT_COMBOBOX_SELECTION_CHANGED    0x0201
@@ -59,7 +59,7 @@ struct DXUTElementHolder;
 struct DXUTTextureNode;
 struct DXUTFontNode;
 typedef void ( CALLBACK*PCALLBACKDXUTGUIEVENT )( _In_ UINT nEvent, _In_ int nControlID, _In_ CDXUTControl* pControl,
-                                                 _In_opt_ void* pUserContext );
+        _In_opt_ void* pUserContext );
 
 
 //--------------------------------------------------------------------------------------
@@ -114,9 +114,9 @@ public:
 
     void Refresh();
 
-    UINT iTexture;          // Index of the texture for this Element 
+    UINT iTexture;          // Index of the texture for this Element
     UINT iFont;             // Index of the font for this Element
-    DWORD dwTextFormat;     // The format argument to DrawText 
+    DWORD dwTextFormat;     // The format argument to DrawText
 
     RECT rcTexture;         // Bounding rect of this element on the composite texture
 
@@ -230,16 +230,43 @@ public:
                       _In_ bool bCenter = false  );
 
     // Attributes
-    bool GetVisible() const { return m_bVisible; }
-    void SetVisible( _In_ bool bVisible ) { m_bVisible = bVisible; }
-    bool GetMinimized() const { return m_bMinimized; }
-    void SetMinimized( _In_ bool bMinimized ) {m_bMinimized = bMinimized; }
-    void SetBackgroundColors( _In_ DWORD colorAllCorners ) { SetBackgroundColors( colorAllCorners, colorAllCorners, colorAllCorners, colorAllCorners ); }
+    bool GetVisible() const
+    {
+        return m_bVisible;
+    }
+    void SetVisible( _In_ bool bVisible )
+    {
+        m_bVisible = bVisible;
+    }
+    bool GetMinimized() const
+    {
+        return m_bMinimized;
+    }
+    void SetMinimized( _In_ bool bMinimized )
+    {
+        m_bMinimized = bMinimized;
+    }
+    void SetBackgroundColors( _In_ DWORD colorAllCorners )
+    {
+        SetBackgroundColors( colorAllCorners, colorAllCorners, colorAllCorners, colorAllCorners );
+    }
     void SetBackgroundColors( _In_ DWORD colorTopLeft, _In_ DWORD colorTopRight, _In_ DWORD colorBottomLeft, _In_ DWORD colorBottomRight );
-    void EnableCaption( _In_ bool bEnable ) { m_bCaption = bEnable; }
-    int GetCaptionHeight() const { return m_nCaptionHeight; }
-    void SetCaptionHeight( _In_ int nHeight ) { m_nCaptionHeight = nHeight; }
-    void SetCaptionText( _In_ const WCHAR* pwszText ) { wcscpy_s( m_wszCaption, sizeof( m_wszCaption ) / sizeof( m_wszCaption[0] ), pwszText ); }
+    void EnableCaption( _In_ bool bEnable )
+    {
+        m_bCaption = bEnable;
+    }
+    int GetCaptionHeight() const
+    {
+        return m_nCaptionHeight;
+    }
+    void SetCaptionHeight( _In_ int nHeight )
+    {
+        m_nCaptionHeight = nHeight;
+    }
+    void SetCaptionText( _In_ const WCHAR* pwszText )
+    {
+        wcscpy_s( m_wszCaption, sizeof( m_wszCaption ) / sizeof( m_wszCaption[0] ), pwszText );
+    }
     void GetLocation( _Out_ POINT& Pt ) const
     {
         Pt.x = m_x;
@@ -255,10 +282,19 @@ public:
         m_width = width;
         m_height = height;
     }
-    int GetWidth() const { return m_width; }
-    int GetHeight() const { return m_height; }
+    int GetWidth() const
+    {
+        return m_width;
+    }
+    int GetHeight() const
+    {
+        return m_height;
+    }
 
-    static void WINAPI SetRefreshTime( _In_ float fTime ) { s_fTimeRefresh = fTime; }
+    static void WINAPI SetRefreshTime( _In_ float fTime )
+    {
+        s_fTimeRefresh = fTime;
+    }
 
     static CDXUTControl* WINAPI GetNextControl( _In_ CDXUTControl* pControl );
     static CDXUTControl* WINAPI GetPrevControl( _In_ CDXUTControl* pControl );
@@ -268,10 +304,22 @@ public:
 
     // Sets the callback used to notify the app of control events
     void SetCallback( _In_ PCALLBACKDXUTGUIEVENT pCallback, _In_opt_ void* pUserContext = nullptr );
-    void EnableNonUserEvents( _In_ bool bEnable ) { m_bNonUserEvents = bEnable; }
-    void EnableKeyboardInput( _In_ bool bEnable ) { m_bKeyboardInput = bEnable; }
-    void EnableMouseInput( _In_ bool bEnable ) { m_bMouseInput = bEnable; }
-    bool IsKeyboardInputEnabled() const { return m_bKeyboardInput; }
+    void EnableNonUserEvents( _In_ bool bEnable )
+    {
+        m_bNonUserEvents = bEnable;
+    }
+    void EnableKeyboardInput( _In_ bool bEnable )
+    {
+        m_bKeyboardInput = bEnable;
+    }
+    void EnableMouseInput( _In_ bool bEnable )
+    {
+        m_bMouseInput = bEnable;
+    }
+    bool IsKeyboardInputEnabled() const
+    {
+        return m_bKeyboardInput;
+    }
 
     // Device state notification
     void Refresh();
@@ -286,7 +334,10 @@ public:
     HRESULT SetTexture( _In_ UINT index, _In_z_ LPCWSTR strResourceName, _In_ HMODULE hResourceModule );
     DXUTTextureNode* GetTexture( _In_ UINT index ) const;
 
-    CDXUTDialogResourceManager* GetManager() const { return m_pManager; }
+    CDXUTDialogResourceManager* GetManager() const
+    {
+        return m_pManager;
+    }
 
     static void WINAPI  ClearFocus();
     void FocusDefaultControl();
@@ -405,11 +456,23 @@ public:
     void BeginSprites11( );
     void EndSprites11( _In_ ID3D11Device* pd3dDevice, _In_ ID3D11DeviceContext* pd3dImmediateContext );
 
-    ID3D11Device* GetD3D11Device() const { return m_pd3d11Device; }
-    ID3D11DeviceContext* GetD3D11DeviceContext() const { return m_pd3d11DeviceContext; }
+    ID3D11Device* GetD3D11Device() const
+    {
+        return m_pd3d11Device;
+    }
+    ID3D11DeviceContext* GetD3D11DeviceContext() const
+    {
+        return m_pd3d11DeviceContext;
+    }
 
-    DXUTFontNode* GetFontNode( _In_ size_t iIndex ) const { return m_FontCache[ iIndex ]; }
-    DXUTTextureNode* GetTextureNode( _In_ size_t iIndex ) const { return m_TextureCache[ iIndex ]; }
+    DXUTFontNode* GetFontNode( _In_ size_t iIndex ) const
+    {
+        return m_FontCache[ iIndex ];
+    }
+    DXUTTextureNode* GetTextureNode( _In_ size_t iIndex ) const
+    {
+        return m_TextureCache[ iIndex ];
+    }
 
     int AddFont( _In_z_ LPCWSTR strFaceName, _In_ LONG height, _In_ LONG weight );
     int AddTexture( _In_z_ LPCWSTR strFilename );
@@ -475,9 +538,15 @@ public:
     CDXUTControl( _In_opt_ CDXUTDialog* pDialog = nullptr );
     virtual ~CDXUTControl();
 
-    virtual HRESULT OnInit() { return S_OK; }
+    virtual HRESULT OnInit()
+    {
+        return S_OK;
+    }
     virtual void Refresh();
-    virtual void Render( _In_ float fElapsedTime ) { UNREFERENCED_PARAMETER(fElapsedTime); }
+    virtual void Render( _In_ float fElapsedTime )
+    {
+        UNREFERENCED_PARAMETER(fElapsedTime);
+    }
 
     // Windows message handler
     virtual bool MsgProc( _In_ UINT uMsg, _In_ WPARAM wParam, _In_ LPARAM lParam )
@@ -504,24 +573,63 @@ public:
         return false;
     }
 
-    virtual bool CanHaveFocus() { return false; }
-    virtual void OnFocusIn() { m_bHasFocus = true; }
-    virtual void OnFocusOut() { m_bHasFocus = false; }
-    virtual void OnMouseEnter() { m_bMouseOver = true; }
-    virtual void OnMouseLeave() { m_bMouseOver = false; }
+    virtual bool CanHaveFocus()
+    {
+        return false;
+    }
+    virtual void OnFocusIn()
+    {
+        m_bHasFocus = true;
+    }
+    virtual void OnFocusOut()
+    {
+        m_bHasFocus = false;
+    }
+    virtual void OnMouseEnter()
+    {
+        m_bMouseOver = true;
+    }
+    virtual void OnMouseLeave()
+    {
+        m_bMouseOver = false;
+    }
     virtual void OnHotkey() { }
 
-    virtual bool ContainsPoint( _In_ const POINT& pt ) { return PtInRect( &m_rcBoundingBox, pt ) != 0; }
+    virtual bool ContainsPoint( _In_ const POINT& pt )
+    {
+        return PtInRect( &m_rcBoundingBox, pt ) != 0;
+    }
 
-    virtual void SetEnabled( _In_ bool bEnabled ) { m_bEnabled = bEnabled; }
-    virtual bool GetEnabled() const { return m_bEnabled; }
-    virtual void SetVisible( _In_ bool bVisible ) { m_bVisible = bVisible; }
-    virtual bool GetVisible() const { return m_bVisible; }
+    virtual void SetEnabled( _In_ bool bEnabled )
+    {
+        m_bEnabled = bEnabled;
+    }
+    virtual bool GetEnabled() const
+    {
+        return m_bEnabled;
+    }
+    virtual void SetVisible( _In_ bool bVisible )
+    {
+        m_bVisible = bVisible;
+    }
+    virtual bool GetVisible() const
+    {
+        return m_bVisible;
+    }
 
-    UINT GetType() const { return m_Type; }
+    UINT GetType() const
+    {
+        return m_Type;
+    }
 
-    int GetID() const { return m_ID; }
-    void SetID( _In_ int ID ) { m_ID = ID; }
+    int GetID() const
+    {
+        return m_ID;
+    }
+    void SetID( _In_ int ID )
+    {
+        m_ID = ID;
+    }
 
     void SetLocation( _In_ int x, _In_ int y )
     {
@@ -536,14 +644,29 @@ public:
         UpdateRects();
     }
 
-    void SetHotkey( _In_ UINT nHotkey ) { m_nHotkey = nHotkey; }
-    UINT GetHotkey() const { return m_nHotkey; }
+    void SetHotkey( _In_ UINT nHotkey )
+    {
+        m_nHotkey = nHotkey;
+    }
+    UINT GetHotkey() const
+    {
+        return m_nHotkey;
+    }
 
-    void SetUserData( _In_opt_ void* pUserData ) { m_pUserData = pUserData; }
-    void* GetUserData() const { return m_pUserData; }
+    void SetUserData( _In_opt_ void* pUserData )
+    {
+        m_pUserData = pUserData;
+    }
+    void* GetUserData() const
+    {
+        return m_pUserData;
+    }
 
     virtual void SetTextColor( _In_ DWORD Color );
-    CDXUTElement* GetElement( _In_ UINT iElement ) const { return m_Elements[ iElement ]; }
+    CDXUTElement* GetElement( _In_ UINT iElement ) const
+    {
+        return m_Elements[ iElement ];
+    }
     HRESULT SetElement( _In_ UINT iElement, _In_ CDXUTElement* pElement );
 
     bool m_bVisible;                // Shown/hidden flag
@@ -565,7 +688,7 @@ protected:
     virtual void UpdateRects();
 
     int m_ID;                 // ID number
-    DXUT_CONTROL_TYPE m_Type;  // Control type, set once in constructor  
+    DXUT_CONTROL_TYPE m_Type;  // Control type, set once in constructor
     UINT m_nHotkey;            // Virtual key code for this control's hotkey
     void* m_pUserData;         // Data associated with this control that is set by user.
 
@@ -603,11 +726,14 @@ public:
     }
 
     HRESULT GetTextCopy( _Out_writes_(bufferCount) LPWSTR strDest, _In_ UINT bufferCount ) const;
-    LPCWSTR GetText() const { return m_strText; }
+    LPCWSTR GetText() const
+    {
+        return m_strText;
+    }
     HRESULT SetText( _In_z_ LPCWSTR strText );
 
 protected:
-    WCHAR m_strText[MAX_PATH];      // Window text  
+    WCHAR m_strText[MAX_PATH];      // Window text
 };
 
 
@@ -664,8 +790,14 @@ public:
 
     virtual void Render( _In_ float fElapsedTime ) override;
 
-    bool GetChecked() const { return m_bChecked; }
-    void SetChecked( _In_ bool bChecked ) { SetCheckedInternal( bChecked, false ); }
+    bool GetChecked() const
+    {
+        return m_bChecked;
+    }
+    void SetChecked( _In_ bool bChecked )
+    {
+        SetCheckedInternal( bChecked, false );
+    }
 
 protected:
     virtual void SetCheckedInternal( _In_ bool bChecked, _In_ bool bFromInput );
@@ -692,9 +824,18 @@ public:
         SetCheckedInternal( true, true, true );
     }
 
-    void SetChecked( _In_ bool bChecked, _In_ bool bClearGroup=true ) { SetCheckedInternal( bChecked, bClearGroup, false ); }
-    void SetButtonGroup( _In_ UINT nButtonGroup ) { m_nButtonGroup = nButtonGroup; }
-    UINT GetButtonGroup() const { return m_nButtonGroup; }
+    void SetChecked( _In_ bool bChecked, _In_ bool bClearGroup=true )
+    {
+        SetCheckedInternal( bChecked, bClearGroup, false );
+    }
+    void SetButtonGroup( _In_ UINT nButtonGroup )
+    {
+        m_nButtonGroup = nButtonGroup;
+    }
+    UINT GetButtonGroup() const
+    {
+        return m_nButtonGroup;
+    }
 
 protected:
     virtual void SetCheckedInternal( _In_ bool bChecked, _In_ bool bClearGroup, _In_ bool bFromInput );
@@ -719,14 +860,20 @@ public:
     virtual void UpdateRects() override;
 
     void SetTrackRange( _In_ int nStart, _In_ int nEnd );
-    int GetTrackPos() const { return m_nPosition; }
+    int GetTrackPos() const
+    {
+        return m_nPosition;
+    }
     void SetTrackPos( _In_ int nPosition )
     {
         m_nPosition = nPosition;
         Cap();
         UpdateThumbRect();
     }
-    int GetPageSize() const { return m_nPageSize; }
+    int GetPageSize() const
+    {
+        return m_nPageSize;
+    }
     void SetPageSize( _In_ int nPageSize )
     {
         m_nPageSize = nPageSize;
@@ -805,10 +952,22 @@ public:
     virtual void Render( _In_ float fElapsedTime ) override;
     virtual void UpdateRects() override;
 
-    DWORD GetStyle() const { return m_dwStyle; }
-    size_t GetSize() const { return m_Items.size(); }
-    void SetStyle( _In_ DWORD dwStyle ) { m_dwStyle = dwStyle; }
-    int GetScrollBarWidth() const{ return m_nSBWidth; }
+    DWORD GetStyle() const
+    {
+        return m_dwStyle;
+    }
+    size_t GetSize() const
+    {
+        return m_Items.size();
+    }
+    void SetStyle( _In_ DWORD dwStyle )
+    {
+        m_dwStyle = dwStyle;
+    }
+    int GetScrollBarWidth() const
+    {
+        return m_nSBWidth;
+    }
     void SetScrollBarWidth( _In_ int nWidth )
     {
         m_nSBWidth = nWidth;
@@ -903,19 +1062,31 @@ public:
         m_nDropHeight = nHeight;
         UpdateRects();
     }
-    int     GetScrollBarWidth() const { return m_nSBWidth; }
+    int     GetScrollBarWidth() const
+    {
+        return m_nSBWidth;
+    }
     void    SetScrollBarWidth( _In_ int nWidth )
     {
         m_nSBWidth = nWidth;
         UpdateRects();
     }
 
-    int GetSelectedIndex() const { return m_iSelected; }
+    int GetSelectedIndex() const
+    {
+        return m_iSelected;
+    }
     void* GetSelectedData() const;
     DXUTComboBoxItem* GetSelectedItem() const;
 
-    UINT GetNumItems() { return static_cast<UINT>( m_Items.size() ); }
-    DXUTComboBoxItem* GetItem( _In_ UINT index ) { return m_Items[ index ]; }
+    UINT GetNumItems()
+    {
+        return static_cast<UINT>( m_Items.size() );
+    }
+    DXUTComboBoxItem* GetItem( _In_ UINT index )
+    {
+        return m_Items[ index ];
+    }
 
     HRESULT SetSelectedByIndex( _In_ UINT index );
     HRESULT SetSelectedByText( _In_z_ const WCHAR* strText );
@@ -959,8 +1130,14 @@ public:
 
     virtual void Render( _In_ float fElapsedTime ) override;
 
-    void SetValue( int nValue ) { SetValueInternal( nValue, false ); }
-    int GetValue() const { return m_nValue; }
+    void SetValue( int nValue )
+    {
+        SetValueInternal( nValue, false );
+    }
+    int GetValue() const
+    {
+        return m_nValue;
+    }
 
     void GetRange( _Out_ int& nMin, _Out_ int& nMax ) const
     {
@@ -996,9 +1173,15 @@ public:
     CUniBuffer( _In_ int nInitialSize = 1 );
     ~CUniBuffer();
 
-    size_t GetBufferSize() const { return m_nBufferSize; }
+    size_t GetBufferSize() const
+    {
+        return m_nBufferSize;
+    }
     bool SetBufferSize( _In_ int nSize );
-    int GetTextSize() const { return (int)wcslen( m_pwszBuffer ); }
+    int GetTextSize() const
+    {
+        return (int)wcslen( m_pwszBuffer );
+    }
     const WCHAR* GetBuffer() const
     {
         return m_pwszBuffer;
@@ -1008,18 +1191,24 @@ public:
         return m_pwszBuffer[n];
     }
     WCHAR& operator[]( _In_ int n );
-    DXUTFontNode* GetFontNode() const { return m_pFontNode; }
-    void SetFontNode( _In_opt_ DXUTFontNode* pFontNode ) { m_pFontNode = pFontNode; }
+    DXUTFontNode* GetFontNode() const
+    {
+        return m_pFontNode;
+    }
+    void SetFontNode( _In_opt_ DXUTFontNode* pFontNode )
+    {
+        m_pFontNode = pFontNode;
+    }
     void Clear();
 
     bool InsertChar( _In_ int nIndex, _In_ WCHAR wChar );
-        // Inserts the char at specified index. If nIndex == -1, insert to the end.
+    // Inserts the char at specified index. If nIndex == -1, insert to the end.
 
     bool RemoveChar( _In_ int nIndex );
-        // Removes the char at specified index. If nIndex == -1, remove the last char.
+    // Removes the char at specified index. If nIndex == -1, remove the last char.
 
     bool InsertString( _In_ int nIndex, _In_z_ const WCHAR* pStr, _In_ int nCount = -1 );
-        // Inserts the first nCount characters of the string pStr at specified index.  If nCount == -1, the entire string is inserted. If nIndex == -1, insert to the end.
+    // Inserts the first nCount characters of the string pStr at specified index.  If nCount == -1, the entire string is inserted. If nIndex == -1, insert to the end.
 
     bool SetText( _In_z_ LPCWSTR wszText );
 
@@ -1063,15 +1252,33 @@ public:
     virtual void OnFocusIn() override;
 
     void    SetText( _In_z_ LPCWSTR wszText, _In_ bool bSelected = false );
-    LPCWSTR GetText() const { return m_Buffer.GetBuffer(); }
-    size_t  GetTextLength() const { return m_Buffer.GetTextSize(); }  // Returns text length in chars excluding nul.
+    LPCWSTR GetText() const
+    {
+        return m_Buffer.GetBuffer();
+    }
+    size_t  GetTextLength() const
+    {
+        return m_Buffer.GetTextSize();    // Returns text length in chars excluding nul.
+    }
     HRESULT GetTextCopy(  _Out_writes_(bufferCount) LPWSTR strDest, _In_ UINT bufferCount ) const;
     void    ClearText();
 
-    virtual void SetTextColor( _In_ DWORD Color ) override { m_TextColor = Color; }  // Text color
-    void SetSelectedTextColor( _In_ DWORD Color ) { m_SelTextColor = Color; }  // Selected text color
-    void SetSelectedBackColor( _In_ DWORD Color ) { m_SelBkColor = Color; }  // Selected background color
-    void SetCaretColor( _In_ DWORD Color ) { m_CaretColor = Color; }  // Caret color
+    virtual void SetTextColor( _In_ DWORD Color ) override
+    {
+        m_TextColor = Color;    // Text color
+    }
+    void SetSelectedTextColor( _In_ DWORD Color )
+    {
+        m_SelTextColor = Color;    // Selected text color
+    }
+    void SetSelectedBackColor( _In_ DWORD Color )
+    {
+        m_SelBkColor = Color;    // Selected background color
+    }
+    void SetCaretColor( _In_ DWORD Color )
+    {
+        m_CaretColor = Color;    // Caret color
+    }
     void SetBorderWidth( _In_ int nBorder )
     {
         m_nBorder = nBorder;

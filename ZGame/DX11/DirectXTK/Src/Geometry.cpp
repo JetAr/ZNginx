@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: Geometry.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -19,52 +19,52 @@ using namespace DirectX;
 
 namespace
 {
-    const float SQRT2 = 1.41421356237309504880f;
-    const float SQRT3 = 1.73205080756887729352f;
-    const float SQRT6 = 2.44948974278317809820f;
+const float SQRT2 = 1.41421356237309504880f;
+const float SQRT3 = 1.73205080756887729352f;
+const float SQRT6 = 2.44948974278317809820f;
 
-    inline void CheckIndexOverflow(size_t value)
+inline void CheckIndexOverflow(size_t value)
+{
+    // Use >=, not > comparison, because some D3D level 9_x hardware does not support 0xFFFF index values.
+    if (value >= USHRT_MAX)
+        throw std::exception("Index value out of range: cannot tesselate primitive so finely");
+}
+
+
+// Collection types used when generating the geometry.
+inline void index_push_back(IndexCollection& indices, size_t value)
+{
+    CheckIndexOverflow(value);
+    indices.push_back((uint16_t)value);
+}
+
+
+// Helper for flipping winding of geometric primitives for LH vs. RH coords
+inline void ReverseWinding(IndexCollection& indices, VertexCollection& vertices)
+{
+    assert((indices.size() % 3) == 0);
+    for (auto it = indices.begin(); it != indices.end(); it += 3)
     {
-        // Use >=, not > comparison, because some D3D level 9_x hardware does not support 0xFFFF index values.
-        if (value >= USHRT_MAX)
-            throw std::exception("Index value out of range: cannot tesselate primitive so finely");
+        std::swap(*it, *(it + 2));
     }
 
-
-    // Collection types used when generating the geometry.
-    inline void index_push_back(IndexCollection& indices, size_t value)
+    for (auto it = vertices.begin(); it != vertices.end(); ++it)
     {
-        CheckIndexOverflow(value);
-        indices.push_back((uint16_t)value);
+        it->textureCoordinate.x = (1.f - it->textureCoordinate.x);
     }
+}
 
 
-    // Helper for flipping winding of geometric primitives for LH vs. RH coords
-    inline void ReverseWinding(IndexCollection& indices, VertexCollection& vertices)
+// Helper for inverting normals of geometric primitives for 'inside' vs. 'outside' viewing
+inline void InvertNormals(VertexCollection& vertices)
+{
+    for (auto it = vertices.begin(); it != vertices.end(); ++it)
     {
-        assert((indices.size() % 3) == 0);
-        for (auto it = indices.begin(); it != indices.end(); it += 3)
-        {
-            std::swap(*it, *(it + 2));
-        }
-
-        for (auto it = vertices.begin(); it != vertices.end(); ++it)
-        {
-            it->textureCoordinate.x = (1.f - it->textureCoordinate.x);
-        }
+        it->normal.x = -it->normal.x;
+        it->normal.y = -it->normal.y;
+        it->normal.z = -it->normal.z;
     }
-
-
-    // Helper for inverting normals of geometric primitives for 'inside' vs. 'outside' viewing
-    inline void InvertNormals(VertexCollection& vertices)
-    {
-        for (auto it = vertices.begin(); it != vertices.end(); ++it)
-        {
-            it->normal.x = -it->normal.x;
-            it->normal.y = -it->normal.y;
-            it->normal.z = -it->normal.z;
-        }
-    }
+}
 }
 
 
@@ -352,7 +352,7 @@ void DirectX::ComputeGeoSphere(VertexCollection& vertices, IndexCollection& indi
             //       v12
             const uint16_t indicesToAdd[] =
             {
-                 iv0, iv01, iv20, // a
+                iv0, iv01, iv20, // a
                 iv20, iv12,  iv2, // b
                 iv20, iv01, iv12, // c
                 iv01,  iv1, iv12, // d
@@ -391,7 +391,7 @@ void DirectX::ComputeGeoSphere(VertexCollection& vertices, IndexCollection& indi
     // occurs across that triangle. Eg. when the left hand side of the triangle has a U coordinate of 0.98 and the
     // right hand side has a U coordinate of 0.0. The intent is that such a triangle should render with a U of 0.98 to
     // 1.0, not 0.98 to 0.0. If we don't do this fixup, there will be a visible seam across one side of the sphere.
-    // 
+    //
     // Luckily this is relatively easy to fix. There is a straight edge which runs down the prime meridian of the
     // completed sphere. If you imagine the vertices along that edge, they circumscribe a semicircular arc starting at
     // y=1 and ending at y=-1, and sweeping across the range of z=0 to z=1. x stays zero. It's along this edge that we
@@ -401,9 +401,9 @@ void DirectX::ComputeGeoSphere(VertexCollection& vertices, IndexCollection& indi
     {
         // This vertex is on the prime meridian if position.x and texcoord.u are both zero (allowing for small epsilon).
         bool isOnPrimeMeridian = XMVector2NearEqual(
-            XMVectorSet(vertices[i].position.x, vertices[i].textureCoordinate.x, 0.0f, 0.0f),
-            XMVectorZero(),
-            XMVectorSplatEpsilon());
+                                     XMVectorSet(vertices[i].position.x, vertices[i].textureCoordinate.x, 0.0f, 0.0f),
+                                     XMVectorZero(),
+                                     XMVectorSplatEpsilon());
 
         if (isOnPrimeMeridian)
         {
@@ -451,7 +451,7 @@ void DirectX::ComputeGeoSphere(VertexCollection& vertices, IndexCollection& indi
                 // check the other two vertices to see if we might need to fix this triangle
 
                 if (abs(v0.textureCoordinate.x - v1.textureCoordinate.x) > 0.5f ||
-                    abs(v0.textureCoordinate.x - v2.textureCoordinate.x) > 0.5f)
+                        abs(v0.textureCoordinate.x - v2.textureCoordinate.x) > 0.5f)
                 {
                     // yep; replace the specified index to point to the new, corrected vertex
                     *triIndex0 = static_cast<uint16_t>(newIndex);
@@ -538,72 +538,72 @@ void DirectX::ComputeGeoSphere(VertexCollection& vertices, IndexCollection& indi
 //--------------------------------------------------------------------------------------
 namespace
 {
-    // Helper computes a point on a unit circle, aligned to the x/z plane and centered on the origin.
-    inline XMVECTOR GetCircleVector(size_t i, size_t tessellation)
+// Helper computes a point on a unit circle, aligned to the x/z plane and centered on the origin.
+inline XMVECTOR GetCircleVector(size_t i, size_t tessellation)
+{
+    float angle = i * XM_2PI / tessellation;
+    float dx, dz;
+
+    XMScalarSinCos(&dx, &dz, angle);
+
+    XMVECTORF32 v = { dx, 0, dz, 0 };
+    return v;
+}
+
+inline XMVECTOR GetCircleTangent(size_t i, size_t tessellation)
+{
+    float angle = (i * XM_2PI / tessellation) + XM_PIDIV2;
+    float dx, dz;
+
+    XMScalarSinCos(&dx, &dz, angle);
+
+    XMVECTORF32 v = { dx, 0, dz, 0 };
+    return v;
+}
+
+
+// Helper creates a triangle fan to close the end of a cylinder / cone
+void CreateCylinderCap(VertexCollection& vertices, IndexCollection& indices, size_t tessellation, float height, float radius, bool isTop)
+{
+    // Create cap indices.
+    for (size_t i = 0; i < tessellation - 2; i++)
     {
-        float angle = i * XM_2PI / tessellation;
-        float dx, dz;
+        size_t i1 = (i + 1) % tessellation;
+        size_t i2 = (i + 2) % tessellation;
 
-        XMScalarSinCos(&dx, &dz, angle);
-
-        XMVECTORF32 v = { dx, 0, dz, 0 };
-        return v;
-    }
-
-    inline XMVECTOR GetCircleTangent(size_t i, size_t tessellation)
-    {
-        float angle = (i * XM_2PI / tessellation) + XM_PIDIV2;
-        float dx, dz;
-
-        XMScalarSinCos(&dx, &dz, angle);
-
-        XMVECTORF32 v = { dx, 0, dz, 0 };
-        return v;
-    }
-
-
-    // Helper creates a triangle fan to close the end of a cylinder / cone
-    void CreateCylinderCap(VertexCollection& vertices, IndexCollection& indices, size_t tessellation, float height, float radius, bool isTop)
-    {
-        // Create cap indices.
-        for (size_t i = 0; i < tessellation - 2; i++)
+        if (isTop)
         {
-            size_t i1 = (i + 1) % tessellation;
-            size_t i2 = (i + 2) % tessellation;
-
-            if (isTop)
-            {
-                std::swap(i1, i2);
-            }
-
-            size_t vbase = vertices.size();
-            index_push_back(indices, vbase);
-            index_push_back(indices, vbase + i1);
-            index_push_back(indices, vbase + i2);
+            std::swap(i1, i2);
         }
 
-        // Which end of the cylinder is this?
-        XMVECTOR normal = g_XMIdentityR1;
-        XMVECTOR textureScale = g_XMNegativeOneHalf;
-
-        if (!isTop)
-        {
-            normal = -normal;
-            textureScale *= g_XMNegateX;
-        }
-
-        // Create cap vertices.
-        for (size_t i = 0; i < tessellation; i++)
-        {
-            XMVECTOR circleVector = GetCircleVector(i, tessellation);
-
-            XMVECTOR position = (circleVector * radius) + (normal * height);
-
-            XMVECTOR textureCoordinate = XMVectorMultiplyAdd(XMVectorSwizzle<0, 2, 3, 3>(circleVector), textureScale, g_XMOneHalf);
-
-            vertices.push_back(VertexPositionNormalTexture(position, normal, textureCoordinate));
-        }
+        size_t vbase = vertices.size();
+        index_push_back(indices, vbase);
+        index_push_back(indices, vbase + i1);
+        index_push_back(indices, vbase + i2);
     }
+
+    // Which end of the cylinder is this?
+    XMVECTOR normal = g_XMIdentityR1;
+    XMVECTOR textureScale = g_XMNegativeOneHalf;
+
+    if (!isTop)
+    {
+        normal = -normal;
+        textureScale *= g_XMNegateX;
+    }
+
+    // Create cap vertices.
+    for (size_t i = 0; i < tessellation; i++)
+    {
+        XMVECTOR circleVector = GetCircleVector(i, tessellation);
+
+        XMVECTOR position = (circleVector * radius) + (normal * height);
+
+        XMVECTOR textureCoordinate = XMVectorMultiplyAdd(XMVectorSwizzle<0, 2, 3, 3>(circleVector), textureScale, g_XMOneHalf);
+
+        vertices.push_back(VertexPositionNormalTexture(position, normal, textureCoordinate));
+    }
+}
 }
 
 void DirectX::ComputeCylinder(VertexCollection& vertices, IndexCollection& indices, float height, float diameter, size_t tessellation, bool rhcoords)
@@ -799,7 +799,7 @@ void DirectX::ComputeTetrahedron(VertexCollection& vertices, IndexCollection& in
         uint32_t v2 = faces[j + 2];
 
         XMVECTOR normal = XMVector3Cross(verts[v1].v - verts[v0].v,
-            verts[v2].v - verts[v0].v);
+                                         verts[v2].v - verts[v0].v);
         normal = XMVector3Normalize(normal);
 
         size_t base = vertices.size();
@@ -864,7 +864,7 @@ void DirectX::ComputeOctahedron(VertexCollection& vertices, IndexCollection& ind
         uint32_t v2 = faces[j + 2];
 
         XMVECTOR normal = XMVector3Cross(verts[v1].v - verts[v0].v,
-            verts[v2].v - verts[v0].v);
+                                         verts[v2].v - verts[v0].v);
         normal = XMVector3Normalize(normal);
 
         size_t base = vertices.size();
@@ -979,7 +979,7 @@ void DirectX::ComputeDodecahedron(VertexCollection& vertices, IndexCollection& i
         uint32_t v4 = faces[j + 4];
 
         XMVECTOR normal = XMVector3Cross(verts[v1].v - verts[v0].v,
-            verts[v2].v - verts[v0].v);
+                                         verts[v2].v - verts[v0].v);
         normal = XMVector3Normalize(normal);
 
         size_t base = vertices.size();
@@ -1080,7 +1080,7 @@ void DirectX::ComputeIcosahedron(VertexCollection& vertices, IndexCollection& in
         uint32_t v2 = faces[j + 2];
 
         XMVECTOR normal = XMVector3Cross(verts[v1].v - verts[v0].v,
-            verts[v2].v - verts[v0].v);
+                                         verts[v2].v - verts[v0].v);
         normal = XMVector3Normalize(normal);
 
         size_t base = vertices.size();
@@ -1117,33 +1117,33 @@ namespace
 {
 #include "TeapotData.inc"
 
-    // Tessellates the specified bezier patch.
-    void XM_CALLCONV TessellatePatch(VertexCollection& vertices, IndexCollection& indices, TeapotPatch const& patch, size_t tessellation, FXMVECTOR scale, bool isMirrored)
+// Tessellates the specified bezier patch.
+void XM_CALLCONV TessellatePatch(VertexCollection& vertices, IndexCollection& indices, TeapotPatch const& patch, size_t tessellation, FXMVECTOR scale, bool isMirrored)
+{
+    // Look up the 16 control points for this patch.
+    XMVECTOR controlPoints[16];
+
+    for (int i = 0; i < 16; i++)
     {
-        // Look up the 16 control points for this patch.
-        XMVECTOR controlPoints[16];
-
-        for (int i = 0; i < 16; i++)
-        {
-            controlPoints[i] = TeapotControlPoints[patch.indices[i]] * scale;
-        }
-
-        // Create the index data.
-        size_t vbase = vertices.size();
-        Bezier::CreatePatchIndices(tessellation, isMirrored, [&](size_t index)
-        {
-            index_push_back(indices, vbase + index);
-        });
-
-        // Create the vertex data.
-        Bezier::CreatePatchVertices(controlPoints, tessellation, isMirrored, [&](FXMVECTOR position, FXMVECTOR normal, FXMVECTOR textureCoordinate)
-        {
-            vertices.push_back(VertexPositionNormalTexture(position, normal, textureCoordinate));
-        });
+        controlPoints[i] = TeapotControlPoints[patch.indices[i]] * scale;
     }
+
+    // Create the index data.
+    size_t vbase = vertices.size();
+    Bezier::CreatePatchIndices(tessellation, isMirrored, [&](size_t index)
+    {
+        index_push_back(indices, vbase + index);
+    });
+
+    // Create the vertex data.
+    Bezier::CreatePatchVertices(controlPoints, tessellation, isMirrored, [&](FXMVECTOR position, FXMVECTOR normal, FXMVECTOR textureCoordinate)
+    {
+        vertices.push_back(VertexPositionNormalTexture(position, normal, textureCoordinate));
+    });
+}
 }
 
-        
+
 // Creates a teapot primitive.
 void DirectX::ComputeTeapot(VertexCollection& vertices, IndexCollection& indices, float size, size_t tessellation, bool rhcoords)
 {

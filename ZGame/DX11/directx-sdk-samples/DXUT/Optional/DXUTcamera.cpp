@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DXUTcamera.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -59,9 +59,9 @@ void CD3DArcBall::OnBegin( _In_ int nX, _In_ int nY )
     // Only enter the drag state if the click falls
     // inside the click rectangle.
     if( nX >= m_Offset.x &&
-        nX < m_Offset.x + m_nWidth &&
-        nY >= m_Offset.y &&
-        nY < m_Offset.y + m_nHeight )
+            nX < m_Offset.x + m_nWidth &&
+            nY >= m_Offset.y &&
+            nY < m_Offset.y + m_nHeight )
     {
         m_bDrag = true;
         m_qDown = m_qNow;
@@ -76,7 +76,7 @@ void CD3DArcBall::OnMove( _In_ int nX, _In_ int nY )
 {
     if( m_bDrag )
     {
-        XMVECTOR curr = ScreenToVector( ( float )nX, ( float )nY ); 
+        XMVECTOR curr = ScreenToVector( ( float )nX, ( float )nY );
         XMStoreFloat3( &m_vCurrentPt, curr );
 
         XMVECTOR down = XMLoadFloat3( &m_vDownPt );
@@ -105,71 +105,71 @@ LRESULT CD3DArcBall::HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 
     switch( uMsg )
     {
-        case WM_LBUTTONDOWN:
-        case WM_LBUTTONDBLCLK:
-            SetCapture( hWnd );
-            OnBegin( iMouseX, iMouseY );
-            return TRUE;
+    case WM_LBUTTONDOWN:
+    case WM_LBUTTONDBLCLK:
+        SetCapture( hWnd );
+        OnBegin( iMouseX, iMouseY );
+        return TRUE;
 
-        case WM_LBUTTONUP:
+    case WM_LBUTTONUP:
+        ReleaseCapture();
+        OnEnd();
+        return TRUE;
+    case WM_CAPTURECHANGED:
+        if( ( HWND )lParam != hWnd )
+        {
             ReleaseCapture();
             OnEnd();
-            return TRUE;
-        case WM_CAPTURECHANGED:
-            if( ( HWND )lParam != hWnd )
-            {
-                ReleaseCapture();
-                OnEnd();
-            }
-            return TRUE;
+        }
+        return TRUE;
 
-        case WM_RBUTTONDOWN:
-        case WM_RBUTTONDBLCLK:
-        case WM_MBUTTONDOWN:
-        case WM_MBUTTONDBLCLK:
-            SetCapture( hWnd );
-            // Store off the position of the cursor when the button is pressed
+    case WM_RBUTTONDOWN:
+    case WM_RBUTTONDBLCLK:
+    case WM_MBUTTONDOWN:
+    case WM_MBUTTONDBLCLK:
+        SetCapture( hWnd );
+        // Store off the position of the cursor when the button is pressed
+        m_ptLastMouse.x = iMouseX;
+        m_ptLastMouse.y = iMouseY;
+        return TRUE;
+
+    case WM_RBUTTONUP:
+    case WM_MBUTTONUP:
+        ReleaseCapture();
+        return TRUE;
+
+    case WM_MOUSEMOVE:
+        if( MK_LBUTTON & wParam )
+        {
+            OnMove( iMouseX, iMouseY );
+        }
+        else if( ( MK_RBUTTON & wParam ) || ( MK_MBUTTON & wParam ) )
+        {
+            // Normalize based on size of window and bounding sphere radius
+            float fDeltaX = ( m_ptLastMouse.x - iMouseX ) * m_fRadiusTranslation / m_nWidth;
+            float fDeltaY = ( m_ptLastMouse.y - iMouseY ) * m_fRadiusTranslation / m_nHeight;
+
+            XMMATRIX mTranslationDelta;
+            XMMATRIX mTranslation = XMLoadFloat4x4( &m_mTranslation );
+            if( wParam & MK_RBUTTON )
+            {
+                mTranslationDelta = XMMatrixTranslation( -2 * fDeltaX, 2 * fDeltaY, 0.0f );
+                mTranslation = XMMatrixMultiply( mTranslation, mTranslationDelta );
+            }
+            else  // wParam & MK_MBUTTON
+            {
+                mTranslationDelta = XMMatrixTranslation( 0.0f, 0.0f, 5 * fDeltaY );
+                mTranslation = XMMatrixMultiply( mTranslation, mTranslationDelta );
+            }
+
+            XMStoreFloat4x4( &m_mTranslationDelta, mTranslationDelta );
+            XMStoreFloat4x4( &m_mTranslation, mTranslation );
+
+            // Store mouse coordinate
             m_ptLastMouse.x = iMouseX;
             m_ptLastMouse.y = iMouseY;
-            return TRUE;
-
-        case WM_RBUTTONUP:
-        case WM_MBUTTONUP:
-            ReleaseCapture();
-            return TRUE;
-
-        case WM_MOUSEMOVE:
-            if( MK_LBUTTON & wParam )
-            {
-                OnMove( iMouseX, iMouseY );
-            }
-            else if( ( MK_RBUTTON & wParam ) || ( MK_MBUTTON & wParam ) )
-            {
-                // Normalize based on size of window and bounding sphere radius
-                float fDeltaX = ( m_ptLastMouse.x - iMouseX ) * m_fRadiusTranslation / m_nWidth;
-                float fDeltaY = ( m_ptLastMouse.y - iMouseY ) * m_fRadiusTranslation / m_nHeight;
-
-                XMMATRIX mTranslationDelta;
-                XMMATRIX mTranslation = XMLoadFloat4x4( &m_mTranslation );
-                if( wParam & MK_RBUTTON )
-                {
-                    mTranslationDelta = XMMatrixTranslation( -2 * fDeltaX, 2 * fDeltaY, 0.0f );
-                    mTranslation = XMMatrixMultiply( mTranslation, mTranslationDelta );
-                }
-                else  // wParam & MK_MBUTTON
-                {
-                    mTranslationDelta = XMMatrixTranslation( 0.0f, 0.0f, 5 * fDeltaY );
-                    mTranslation = XMMatrixMultiply( mTranslation, mTranslationDelta );
-                }
-
-                XMStoreFloat4x4( &m_mTranslationDelta, mTranslationDelta );
-                XMStoreFloat4x4( &m_mTranslation, mTranslation );
-
-                // Store mouse coordinate
-                m_ptLastMouse.x = iMouseX;
-                m_ptLastMouse.y = iMouseY;
-            }
-            return TRUE;
+        }
+        return TRUE;
     }
 
     return FALSE;
@@ -214,7 +214,7 @@ CBaseCamera::CBaseCamera() :
     SetProjParams( XM_PI / 4, 1.0f, 1.0f, 1000.0f );
 
     GetCursorPos( &m_ptLastMousePosition );
-    
+
     SetRect( &m_rcDrag, LONG_MIN, LONG_MIN, LONG_MAX, LONG_MAX );
     m_vVelocity = XMFLOAT3( 0, 0, 0 );
     m_vVelocityDrag = XMFLOAT3( 0, 0, 0 );
@@ -245,7 +245,7 @@ void CBaseCamera::SetViewParams( FXMVECTOR vEyePt, FXMVECTOR vLookatPt )
 
     XMMATRIX mInvView = XMMatrixInverse( nullptr, mView );
 
-    // The axis basis vectors and camera position are stored inside the 
+    // The axis basis vectors and camera position are stored inside the
     // position matrix in the 4 rows of the camera's world matrix.
     // To figure out the yaw/pitch of the camera, we just need the Z basis vector
     XMFLOAT3 zBasis;
@@ -285,123 +285,129 @@ LRESULT CBaseCamera::HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 
     switch( uMsg )
     {
-        case WM_KEYDOWN:
+    case WM_KEYDOWN:
+    {
+        // Map this key to a D3DUtil_CameraKeys enum and update the
+        // state of m_aKeys[] by adding the KEY_WAS_DOWN_MASK|KEY_IS_DOWN_MASK mask
+        // only if the key is not down
+        D3DUtil_CameraKeys mappedKey = MapKey( ( UINT )wParam );
+        if( mappedKey != CAM_UNKNOWN )
         {
-            // Map this key to a D3DUtil_CameraKeys enum and update the
-            // state of m_aKeys[] by adding the KEY_WAS_DOWN_MASK|KEY_IS_DOWN_MASK mask
-            // only if the key is not down
-            D3DUtil_CameraKeys mappedKey = MapKey( ( UINT )wParam );
-            if( mappedKey != CAM_UNKNOWN )
+            _Analysis_assume_( mappedKey < CAM_MAX_KEYS );
+            if( FALSE == IsKeyDown( m_aKeys[mappedKey] ) )
             {
-                _Analysis_assume_( mappedKey < CAM_MAX_KEYS );
-                if( FALSE == IsKeyDown( m_aKeys[mappedKey] ) )
-                {
-                    m_aKeys[ mappedKey ] = KEY_WAS_DOWN_MASK | KEY_IS_DOWN_MASK;
-                    ++m_cKeysDown;
-                }
+                m_aKeys[ mappedKey ] = KEY_WAS_DOWN_MASK | KEY_IS_DOWN_MASK;
+                ++m_cKeysDown;
             }
-            break;
+        }
+        break;
+    }
+
+    case WM_KEYUP:
+    {
+        // Map this key to a D3DUtil_CameraKeys enum and update the
+        // state of m_aKeys[] by removing the KEY_IS_DOWN_MASK mask.
+        D3DUtil_CameraKeys mappedKey = MapKey( ( UINT )wParam );
+        if( mappedKey != CAM_UNKNOWN && ( DWORD )mappedKey < 8 )
+        {
+            m_aKeys[ mappedKey ] &= ~KEY_IS_DOWN_MASK;
+            --m_cKeysDown;
+        }
+        break;
+    }
+
+    case WM_RBUTTONDOWN:
+    case WM_MBUTTONDOWN:
+    case WM_LBUTTONDOWN:
+    case WM_RBUTTONDBLCLK:
+    case WM_MBUTTONDBLCLK:
+    case WM_LBUTTONDBLCLK:
+    {
+        // Compute the drag rectangle in screen coord.
+        POINT ptCursor =
+        {
+            ( short )LOWORD( lParam ), ( short )HIWORD( lParam )
+        };
+
+        // Update member var state
+        if( ( uMsg == WM_LBUTTONDOWN || uMsg == WM_LBUTTONDBLCLK ) && PtInRect( &m_rcDrag, ptCursor ) )
+        {
+            m_bMouseLButtonDown = true;
+            m_nCurrentButtonMask |= MOUSE_LEFT_BUTTON;
+        }
+        if( ( uMsg == WM_MBUTTONDOWN || uMsg == WM_MBUTTONDBLCLK ) && PtInRect( &m_rcDrag, ptCursor ) )
+        {
+            m_bMouseMButtonDown = true;
+            m_nCurrentButtonMask |= MOUSE_MIDDLE_BUTTON;
+        }
+        if( ( uMsg == WM_RBUTTONDOWN || uMsg == WM_RBUTTONDBLCLK ) && PtInRect( &m_rcDrag, ptCursor ) )
+        {
+            m_bMouseRButtonDown = true;
+            m_nCurrentButtonMask |= MOUSE_RIGHT_BUTTON;
         }
 
-        case WM_KEYUP:
+        // Capture the mouse, so if the mouse button is
+        // released outside the window, we'll get the WM_LBUTTONUP message
+        SetCapture( hWnd );
+        GetCursorPos( &m_ptLastMousePosition );
+        return TRUE;
+    }
+
+    case WM_RBUTTONUP:
+    case WM_MBUTTONUP:
+    case WM_LBUTTONUP:
+    {
+        // Update member var state
+        if( uMsg == WM_LBUTTONUP )
         {
-            // Map this key to a D3DUtil_CameraKeys enum and update the
-            // state of m_aKeys[] by removing the KEY_IS_DOWN_MASK mask.
-            D3DUtil_CameraKeys mappedKey = MapKey( ( UINT )wParam );
-            if( mappedKey != CAM_UNKNOWN && ( DWORD )mappedKey < 8 )
-            {
-                m_aKeys[ mappedKey ] &= ~KEY_IS_DOWN_MASK;
-                --m_cKeysDown;
-            }
-            break;
+            m_bMouseLButtonDown = false;
+            m_nCurrentButtonMask &= ~MOUSE_LEFT_BUTTON;
+        }
+        if( uMsg == WM_MBUTTONUP )
+        {
+            m_bMouseMButtonDown = false;
+            m_nCurrentButtonMask &= ~MOUSE_MIDDLE_BUTTON;
+        }
+        if( uMsg == WM_RBUTTONUP )
+        {
+            m_bMouseRButtonDown = false;
+            m_nCurrentButtonMask &= ~MOUSE_RIGHT_BUTTON;
         }
 
-        case WM_RBUTTONDOWN:
-        case WM_MBUTTONDOWN:
-        case WM_LBUTTONDOWN:
-        case WM_RBUTTONDBLCLK:
-        case WM_MBUTTONDBLCLK:
-        case WM_LBUTTONDBLCLK:
-            {
-                // Compute the drag rectangle in screen coord.
-                POINT ptCursor =
-                {
-                    ( short )LOWORD( lParam ), ( short )HIWORD( lParam )
-                };
-
-                // Update member var state
-                if( ( uMsg == WM_LBUTTONDOWN || uMsg == WM_LBUTTONDBLCLK ) && PtInRect( &m_rcDrag, ptCursor ) )
-                {
-                    m_bMouseLButtonDown = true; m_nCurrentButtonMask |= MOUSE_LEFT_BUTTON;
-                }
-                if( ( uMsg == WM_MBUTTONDOWN || uMsg == WM_MBUTTONDBLCLK ) && PtInRect( &m_rcDrag, ptCursor ) )
-                {
-                    m_bMouseMButtonDown = true; m_nCurrentButtonMask |= MOUSE_MIDDLE_BUTTON;
-                }
-                if( ( uMsg == WM_RBUTTONDOWN || uMsg == WM_RBUTTONDBLCLK ) && PtInRect( &m_rcDrag, ptCursor ) )
-                {
-                    m_bMouseRButtonDown = true; m_nCurrentButtonMask |= MOUSE_RIGHT_BUTTON;
-                }
-
-                // Capture the mouse, so if the mouse button is 
-                // released outside the window, we'll get the WM_LBUTTONUP message
-                SetCapture( hWnd );
-                GetCursorPos( &m_ptLastMousePosition );
-                return TRUE;
-            }
-
-        case WM_RBUTTONUP:
-        case WM_MBUTTONUP:
-        case WM_LBUTTONUP:
-            {
-                // Update member var state
-                if( uMsg == WM_LBUTTONUP )
-                {
-                    m_bMouseLButtonDown = false; m_nCurrentButtonMask &= ~MOUSE_LEFT_BUTTON;
-                }
-                if( uMsg == WM_MBUTTONUP )
-                {
-                    m_bMouseMButtonDown = false; m_nCurrentButtonMask &= ~MOUSE_MIDDLE_BUTTON;
-                }
-                if( uMsg == WM_RBUTTONUP )
-                {
-                    m_bMouseRButtonDown = false; m_nCurrentButtonMask &= ~MOUSE_RIGHT_BUTTON;
-                }
-
-                // Release the capture if no mouse buttons down
-                if( !m_bMouseLButtonDown &&
-                    !m_bMouseRButtonDown &&
-                    !m_bMouseMButtonDown )
-                {
-                    ReleaseCapture();
-                }
-                break;
-            }
-
-        case WM_CAPTURECHANGED:
+        // Release the capture if no mouse buttons down
+        if( !m_bMouseLButtonDown &&
+                !m_bMouseRButtonDown &&
+                !m_bMouseMButtonDown )
         {
-            if( ( HWND )lParam != hWnd )
-            {
-                if( ( m_nCurrentButtonMask & MOUSE_LEFT_BUTTON ) ||
+            ReleaseCapture();
+        }
+        break;
+    }
+
+    case WM_CAPTURECHANGED:
+    {
+        if( ( HWND )lParam != hWnd )
+        {
+            if( ( m_nCurrentButtonMask & MOUSE_LEFT_BUTTON ) ||
                     ( m_nCurrentButtonMask & MOUSE_MIDDLE_BUTTON ) ||
                     ( m_nCurrentButtonMask & MOUSE_RIGHT_BUTTON ) )
-                {
-                    m_bMouseLButtonDown = false;
-                    m_bMouseMButtonDown = false;
-                    m_bMouseRButtonDown = false;
-                    m_nCurrentButtonMask &= ~MOUSE_LEFT_BUTTON;
-                    m_nCurrentButtonMask &= ~MOUSE_MIDDLE_BUTTON;
-                    m_nCurrentButtonMask &= ~MOUSE_RIGHT_BUTTON;
-                    ReleaseCapture();
-                }
+            {
+                m_bMouseLButtonDown = false;
+                m_bMouseMButtonDown = false;
+                m_bMouseRButtonDown = false;
+                m_nCurrentButtonMask &= ~MOUSE_LEFT_BUTTON;
+                m_nCurrentButtonMask &= ~MOUSE_MIDDLE_BUTTON;
+                m_nCurrentButtonMask &= ~MOUSE_RIGHT_BUTTON;
+                ReleaseCapture();
             }
-            break;
         }
+        break;
+    }
 
-        case WM_MOUSEWHEEL:
-            // Update member var state
-            m_nMouseWheelDelta += ( short )HIWORD( wParam );
-            break;
+    case WM_MOUSEWHEEL:
+        // Update member var state
+        m_nMouseWheelDelta += ( short )HIWORD( wParam );
+        break;
     }
 
     return FALSE;
@@ -452,9 +458,9 @@ void CBaseCamera::GetInput( bool bGetKeyboardInput, bool bGetMouseInput, bool bG
 
             // Mark time if the controller is in a non-zero state
             if( m_GamePad[iUserIndex].wButtons ||
-                m_GamePad[iUserIndex].sThumbLX || m_GamePad[iUserIndex].sThumbLY ||
-                m_GamePad[iUserIndex].sThumbRX || m_GamePad[iUserIndex].sThumbRY ||
-                m_GamePad[iUserIndex].bLeftTrigger || m_GamePad[iUserIndex].bRightTrigger )
+                    m_GamePad[iUserIndex].sThumbLX || m_GamePad[iUserIndex].sThumbLY ||
+                    m_GamePad[iUserIndex].sThumbRX || m_GamePad[iUserIndex].sThumbRY ||
+                    m_GamePad[iUserIndex].bLeftTrigger || m_GamePad[iUserIndex].bRightTrigger )
             {
                 m_GamePadLastActive[iUserIndex] = DXUTGetTime();
             }
@@ -506,10 +512,10 @@ void CBaseCamera::UpdateMouseDelta()
 
     if( m_bResetCursorAfterMove && DXUTIsActive() )
     {
-        // Set position of camera to center of desktop, 
+        // Set position of camera to center of desktop,
         // so it always has room to move.  This is very useful
-        // if the cursor is hidden.  If this isn't done and cursor is hidden, 
-        // then invisible cursor will hit the edge of the screen 
+        // if the cursor is hidden.  If this isn't done and cursor is hidden,
+        // then invisible cursor will hit the edge of the screen
         // and the user can't tell what happened
         POINT ptCenter;
 
@@ -523,7 +529,7 @@ void CBaseCamera::UpdateMouseDelta()
         m_ptLastMousePosition = ptCenter;
     }
 
-    // Smooth the relative mouse data over a few frames so it isn't 
+    // Smooth the relative mouse data over a few frames so it isn't
     // jerky when moving slowly at low frame rates.
     float fPercentOfNew = 1.0f / m_fFramesToSmoothMouseData;
     float fPercentOfOld = 1.0f - fPercentOfNew;
@@ -546,12 +552,12 @@ void CBaseCamera::UpdateVelocity( _In_ float fElapsedTime )
     XMVECTOR vRotVelocity = vMouseDelta * m_fRotationScaler + vGamePadRightThumb * 0.02f;
 
     XMStoreFloat2( &m_vRotVelocity, vRotVelocity );
-    
+
     XMVECTOR vKeyboardDirection = XMLoadFloat3( &m_vKeyboardDirection );
     XMVECTOR vGamePadLeftThumb = XMLoadFloat3( &m_vGamePadLeftThumb );
     XMVECTOR vAccel = vKeyboardDirection + vGamePadLeftThumb;
 
-    // Normalize vector so if moving 2 dirs (left & forward), 
+    // Normalize vector so if moving 2 dirs (left & forward),
     // the camera doesn't move faster than if moving in 1 dir
     vAccel = XMVector3Normalize( vAccel );
 
@@ -564,13 +570,13 @@ void CBaseCamera::UpdateVelocity( _In_ float fElapsedTime )
         if( XMVectorGetX( XMVector3LengthSq( vAccel ) ) > 0 )
         {
             // If so, then this means the user has pressed a movement key
-            // so change the velocity immediately to acceleration 
+            // so change the velocity immediately to acceleration
             // upon keyboard input.  This isn't normal physics
             // but it will give a quick response to keyboard input
             XMStoreFloat3( &m_vVelocity, vAccel );
 
             m_fDragTimer = m_fTotalDragTimeToZero;
-            
+
             XMStoreFloat3( &m_vVelocityDrag, vAccel / m_fDragTimer );
         }
         else
@@ -608,53 +614,53 @@ void CBaseCamera::UpdateVelocity( _In_ float fElapsedTime )
 //--------------------------------------------------------------------------------------
 D3DUtil_CameraKeys CBaseCamera::MapKey( _In_ UINT nKey )
 {
-    // This could be upgraded to a method that's user-definable but for 
+    // This could be upgraded to a method that's user-definable but for
     // simplicity, we'll use a hardcoded mapping.
     switch( nKey )
     {
-        case VK_CONTROL:
-            return CAM_CONTROLDOWN;
-        case VK_LEFT:
-            return CAM_STRAFE_LEFT;
-        case VK_RIGHT:
-            return CAM_STRAFE_RIGHT;
-        case VK_UP:
-            return CAM_MOVE_FORWARD;
-        case VK_DOWN:
-            return CAM_MOVE_BACKWARD;
-        case VK_PRIOR:
-            return CAM_MOVE_UP;        // pgup
-        case VK_NEXT:
-            return CAM_MOVE_DOWN;      // pgdn
+    case VK_CONTROL:
+        return CAM_CONTROLDOWN;
+    case VK_LEFT:
+        return CAM_STRAFE_LEFT;
+    case VK_RIGHT:
+        return CAM_STRAFE_RIGHT;
+    case VK_UP:
+        return CAM_MOVE_FORWARD;
+    case VK_DOWN:
+        return CAM_MOVE_BACKWARD;
+    case VK_PRIOR:
+        return CAM_MOVE_UP;        // pgup
+    case VK_NEXT:
+        return CAM_MOVE_DOWN;      // pgdn
 
-        case 'A':
-            return CAM_STRAFE_LEFT;
-        case 'D':
-            return CAM_STRAFE_RIGHT;
-        case 'W':
-            return CAM_MOVE_FORWARD;
-        case 'S':
-            return CAM_MOVE_BACKWARD;
-        case 'Q':
-            return CAM_MOVE_DOWN;
-        case 'E':
-            return CAM_MOVE_UP;
+    case 'A':
+        return CAM_STRAFE_LEFT;
+    case 'D':
+        return CAM_STRAFE_RIGHT;
+    case 'W':
+        return CAM_MOVE_FORWARD;
+    case 'S':
+        return CAM_MOVE_BACKWARD;
+    case 'Q':
+        return CAM_MOVE_DOWN;
+    case 'E':
+        return CAM_MOVE_UP;
 
-        case VK_NUMPAD4:
-            return CAM_STRAFE_LEFT;
-        case VK_NUMPAD6:
-            return CAM_STRAFE_RIGHT;
-        case VK_NUMPAD8:
-            return CAM_MOVE_FORWARD;
-        case VK_NUMPAD2:
-            return CAM_MOVE_BACKWARD;
-        case VK_NUMPAD9:
-            return CAM_MOVE_UP;
-        case VK_NUMPAD3:
-            return CAM_MOVE_DOWN;
+    case VK_NUMPAD4:
+        return CAM_STRAFE_LEFT;
+    case VK_NUMPAD6:
+        return CAM_STRAFE_RIGHT;
+    case VK_NUMPAD8:
+        return CAM_MOVE_FORWARD;
+    case VK_NUMPAD2:
+        return CAM_MOVE_BACKWARD;
+    case VK_NUMPAD9:
+        return CAM_MOVE_UP;
+    case VK_NUMPAD3:
+        return CAM_MOVE_DOWN;
 
-        case VK_HOME:
-            return CAM_RESET;
+    case VK_HOME:
+        return CAM_RESET;
     }
 
     return CAM_UNKNOWN;
@@ -716,11 +722,11 @@ void CFirstPersonCamera::FrameMove( _In_ float fElapsedTime )
     XMVECTOR vVelocity = XMLoadFloat3( &m_vVelocity );
     XMVECTOR vPosDelta = vVelocity * fElapsedTime;
 
-    // If rotating the camera 
+    // If rotating the camera
     if( ( m_nActiveButtonMask & m_nCurrentButtonMask )
-        || m_bRotateWithoutButtonDown
-        || m_vGamePadRightThumb.x != 0
-        || m_vGamePadRightThumb.z != 0 )
+            || m_bRotateWithoutButtonDown
+            || m_vGamePadRightThumb.x != 0
+            || m_vGamePadRightThumb.z != 0 )
     {
         // Update the pitch & yaw angle based on mouse movement
         float fYawDelta = m_vRotVelocity.x;
@@ -745,7 +751,7 @@ void CFirstPersonCamera::FrameMove( _In_ float fElapsedTime )
     XMVECTOR vWorldUp = XMVector3TransformCoord( g_XMIdentityR1, mCameraRot );
     XMVECTOR vWorldAhead = XMVector3TransformCoord( g_XMIdentityR2, mCameraRot );
 
-    // Transform the position delta by the camera's rotation 
+    // Transform the position delta by the camera's rotation
     if( !m_bEnableYAxisMovement )
     {
         // If restricting Y movement, do not include pitch
@@ -754,7 +760,7 @@ void CFirstPersonCamera::FrameMove( _In_ float fElapsedTime )
     }
     XMVECTOR vPosDeltaWorld = XMVector3TransformCoord( vPosDelta, mCameraRot );
 
-    // Move the eye position 
+    // Move the eye position
     XMVECTOR vEye = XMLoadFloat3( &m_vEye );
     vEye += vPosDeltaWorld;
     if( m_bClipToBoundary )
@@ -781,8 +787,8 @@ _Use_decl_annotations_
 void CFirstPersonCamera::SetRotateButtons( bool bLeft, bool bMiddle, bool bRight, bool bRotateWithoutButtonDown )
 {
     m_nActiveButtonMask = ( bLeft ? MOUSE_LEFT_BUTTON : 0 ) |
-        ( bMiddle ? MOUSE_MIDDLE_BUTTON : 0 ) |
-        ( bRight ? MOUSE_RIGHT_BUTTON : 0 );
+                          ( bMiddle ? MOUSE_MIDDLE_BUTTON : 0 ) |
+                          ( bRight ? MOUSE_RIGHT_BUTTON : 0 );
     m_bRotateWithoutButtonDown = bRotateWithoutButtonDown;
 }
 
@@ -817,7 +823,7 @@ CModelViewerCamera::CModelViewerCamera() :
 
 
 //--------------------------------------------------------------------------------------
-// Update the view matrix & the model's world matrix based 
+// Update the view matrix & the model's world matrix based
 //       on user input & elapsed time
 //--------------------------------------------------------------------------------------
 void CModelViewerCamera::FrameMove( _In_ float fElapsedTime )
@@ -832,9 +838,9 @@ void CModelViewerCamera::FrameMove( _In_ float fElapsedTime )
 
     m_bDragSinceLastUpdate = false;
 
-    //// If no mouse button is held down, 
+    //// If no mouse button is held down,
     //// Get the mouse movement (if any) if the mouse button are down
-    //if( m_nCurrentButtonMask != 0 ) 
+    //if( m_nCurrentButtonMask != 0 )
     //    UpdateMouseDelta( fElapsedTime );
 
     GetInput( m_bEnablePositionMovement, m_nCurrentButtonMask != 0, true );
@@ -859,10 +865,10 @@ void CModelViewerCamera::FrameMove( _In_ float fElapsedTime )
     XMVECTOR vWorldUp = XMVector3TransformCoord( g_XMIdentityR1, mCameraRot );
     XMVECTOR vWorldAhead = XMVector3TransformCoord( g_XMIdentityR2, mCameraRot );
 
-    // Transform the position delta by the camera's rotation 
+    // Transform the position delta by the camera's rotation
     XMVECTOR vPosDeltaWorld = XMVector3TransformCoord( vPosDelta, mCameraRot );
 
-    // Move the lookAt position 
+    // Move the lookAt position
     XMVECTOR vLookAt = XMLoadFloat3( &m_vLookAt );
     vLookAt += vPosDeltaWorld;
     if( m_bClipToBoundary )
@@ -901,7 +907,7 @@ void CModelViewerCamera::FrameMove( _In_ float fElapsedTime )
     XMStoreFloat4x4( &m_mModelLastRot, mModelRot0 );
     XMStoreFloat4x4( &m_mCameraRotLast, mCameraRot );
 
-    // Since we're accumulating delta rotations, we need to orthonormalize 
+    // Since we're accumulating delta rotations, we need to orthonormalize
     // the matrix to prevent eventual matrix skew
     XMVECTOR xBasis = XMVector3Normalize( mModelRot.r[0] );
     XMVECTOR yBasis = XMVector3Cross( mModelRot.r[2], xBasis );
@@ -914,7 +920,7 @@ void CModelViewerCamera::FrameMove( _In_ float fElapsedTime )
 
     // Translate the rotation matrix to the same position as the lookAt position
     mModelRot.r[3] = XMVectorSelect( mModelRot.r[3], vLookAt, g_XMSelect1110 );
-    
+
     XMStoreFloat4x4( &m_mModelRot, mModelRot );
 
     // Translate world matrix so its at the center of the model
@@ -987,8 +993,8 @@ LRESULT CModelViewerCamera::HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam,
     CBaseCamera::HandleMessages( hWnd, uMsg, wParam, lParam );
 
     if( ( ( uMsg == WM_LBUTTONDOWN || uMsg == WM_LBUTTONDBLCLK ) && m_nRotateModelButtonMask & MOUSE_LEFT_BUTTON ) ||
-        ( ( uMsg == WM_MBUTTONDOWN || uMsg == WM_MBUTTONDBLCLK ) && m_nRotateModelButtonMask & MOUSE_MIDDLE_BUTTON ) ||
-        ( ( uMsg == WM_RBUTTONDOWN || uMsg == WM_RBUTTONDBLCLK ) && m_nRotateModelButtonMask & MOUSE_RIGHT_BUTTON ) )
+            ( ( uMsg == WM_MBUTTONDOWN || uMsg == WM_MBUTTONDBLCLK ) && m_nRotateModelButtonMask & MOUSE_MIDDLE_BUTTON ) ||
+            ( ( uMsg == WM_RBUTTONDOWN || uMsg == WM_RBUTTONDBLCLK ) && m_nRotateModelButtonMask & MOUSE_RIGHT_BUTTON ) )
     {
         int iMouseX = ( short )LOWORD( lParam );
         int iMouseY = ( short )HIWORD( lParam );
@@ -996,9 +1002,9 @@ LRESULT CModelViewerCamera::HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam,
     }
 
     if( ( ( uMsg == WM_LBUTTONDOWN || uMsg == WM_LBUTTONDBLCLK ) && m_nRotateCameraButtonMask & MOUSE_LEFT_BUTTON ) ||
-        ( ( uMsg == WM_MBUTTONDOWN || uMsg == WM_MBUTTONDBLCLK ) &&
-          m_nRotateCameraButtonMask & MOUSE_MIDDLE_BUTTON ) ||
-        ( ( uMsg == WM_RBUTTONDOWN || uMsg == WM_RBUTTONDBLCLK ) && m_nRotateCameraButtonMask & MOUSE_RIGHT_BUTTON ) )
+            ( ( uMsg == WM_MBUTTONDOWN || uMsg == WM_MBUTTONDBLCLK ) &&
+              m_nRotateCameraButtonMask & MOUSE_MIDDLE_BUTTON ) ||
+            ( ( uMsg == WM_RBUTTONDOWN || uMsg == WM_RBUTTONDBLCLK ) && m_nRotateCameraButtonMask & MOUSE_RIGHT_BUTTON ) )
     {
         int iMouseX = ( short )LOWORD( lParam );
         int iMouseY = ( short )HIWORD( lParam );
@@ -1014,15 +1020,15 @@ LRESULT CModelViewerCamera::HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam,
     }
 
     if( ( uMsg == WM_LBUTTONUP && m_nRotateModelButtonMask & MOUSE_LEFT_BUTTON ) ||
-        ( uMsg == WM_MBUTTONUP && m_nRotateModelButtonMask & MOUSE_MIDDLE_BUTTON ) ||
-        ( uMsg == WM_RBUTTONUP && m_nRotateModelButtonMask & MOUSE_RIGHT_BUTTON ) )
+            ( uMsg == WM_MBUTTONUP && m_nRotateModelButtonMask & MOUSE_MIDDLE_BUTTON ) ||
+            ( uMsg == WM_RBUTTONUP && m_nRotateModelButtonMask & MOUSE_RIGHT_BUTTON ) )
     {
         m_WorldArcBall.OnEnd();
     }
 
     if( ( uMsg == WM_LBUTTONUP && m_nRotateCameraButtonMask & MOUSE_LEFT_BUTTON ) ||
-        ( uMsg == WM_MBUTTONUP && m_nRotateCameraButtonMask & MOUSE_MIDDLE_BUTTON ) ||
-        ( uMsg == WM_RBUTTONUP && m_nRotateCameraButtonMask & MOUSE_RIGHT_BUTTON ) )
+            ( uMsg == WM_MBUTTONUP && m_nRotateCameraButtonMask & MOUSE_MIDDLE_BUTTON ) ||
+            ( uMsg == WM_RBUTTONUP && m_nRotateCameraButtonMask & MOUSE_RIGHT_BUTTON ) )
     {
         m_ViewArcBall.OnEnd();
     }
@@ -1032,15 +1038,15 @@ LRESULT CModelViewerCamera::HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam,
         if( ( HWND )lParam != hWnd )
         {
             if( ( m_nRotateModelButtonMask & MOUSE_LEFT_BUTTON ) ||
-                ( m_nRotateModelButtonMask & MOUSE_MIDDLE_BUTTON ) ||
-                ( m_nRotateModelButtonMask & MOUSE_RIGHT_BUTTON ) )
+                    ( m_nRotateModelButtonMask & MOUSE_MIDDLE_BUTTON ) ||
+                    ( m_nRotateModelButtonMask & MOUSE_RIGHT_BUTTON ) )
             {
                 m_WorldArcBall.OnEnd();
             }
 
             if( ( m_nRotateCameraButtonMask & MOUSE_LEFT_BUTTON ) ||
-                ( m_nRotateCameraButtonMask & MOUSE_MIDDLE_BUTTON ) ||
-                ( m_nRotateCameraButtonMask & MOUSE_RIGHT_BUTTON ) )
+                    ( m_nRotateCameraButtonMask & MOUSE_MIDDLE_BUTTON ) ||
+                    ( m_nRotateCameraButtonMask & MOUSE_RIGHT_BUTTON ) )
             {
                 m_ViewArcBall.OnEnd();
             }
@@ -1048,16 +1054,16 @@ LRESULT CModelViewerCamera::HandleMessages( HWND hWnd, UINT uMsg, WPARAM wParam,
     }
 
     if( uMsg == WM_LBUTTONDOWN ||
-        uMsg == WM_LBUTTONDBLCLK ||
-        uMsg == WM_MBUTTONDOWN ||
-        uMsg == WM_MBUTTONDBLCLK ||
-        uMsg == WM_RBUTTONDOWN ||
-        uMsg == WM_RBUTTONDBLCLK ||
-        uMsg == WM_LBUTTONUP ||
-        uMsg == WM_MBUTTONUP ||
-        uMsg == WM_RBUTTONUP ||
-        uMsg == WM_MOUSEWHEEL ||
-        uMsg == WM_MOUSEMOVE )
+            uMsg == WM_LBUTTONDBLCLK ||
+            uMsg == WM_MBUTTONDOWN ||
+            uMsg == WM_MBUTTONDBLCLK ||
+            uMsg == WM_RBUTTONDOWN ||
+            uMsg == WM_RBUTTONDBLCLK ||
+            uMsg == WM_LBUTTONUP ||
+            uMsg == WM_MBUTTONUP ||
+            uMsg == WM_RBUTTONUP ||
+            uMsg == WM_MOUSEWHEEL ||
+            uMsg == WM_MOUSEMOVE )
     {
         m_bDragSinceLastUpdate = true;
     }
@@ -1088,70 +1094,70 @@ CDXUTDirectionWidget::CDXUTDirectionWidget() :
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
 LRESULT CDXUTDirectionWidget::HandleMessages( HWND hWnd, UINT uMsg,
-                                              WPARAM wParam, LPARAM lParam )
+        WPARAM wParam, LPARAM lParam )
 {
     UNREFERENCED_PARAMETER(wParam);
 
     switch( uMsg )
     {
-        case WM_LBUTTONDOWN:
-        case WM_MBUTTONDOWN:
-        case WM_RBUTTONDOWN:
-            {
-                if( ( ( m_nRotateMask & MOUSE_LEFT_BUTTON ) != 0 && uMsg == WM_LBUTTONDOWN ) ||
-                    ( ( m_nRotateMask & MOUSE_MIDDLE_BUTTON ) != 0 && uMsg == WM_MBUTTONDOWN ) ||
-                    ( ( m_nRotateMask & MOUSE_RIGHT_BUTTON ) != 0 && uMsg == WM_RBUTTONDOWN ) )
-                {
-                    int iMouseX = ( int )( short )LOWORD( lParam );
-                    int iMouseY = ( int )( short )HIWORD( lParam );
-                    m_ArcBall.OnBegin( iMouseX, iMouseY );
-                    SetCapture( hWnd );
-                }
-                return TRUE;
-            }
-
-        case WM_MOUSEMOVE:
+    case WM_LBUTTONDOWN:
+    case WM_MBUTTONDOWN:
+    case WM_RBUTTONDOWN:
+    {
+        if( ( ( m_nRotateMask & MOUSE_LEFT_BUTTON ) != 0 && uMsg == WM_LBUTTONDOWN ) ||
+                ( ( m_nRotateMask & MOUSE_MIDDLE_BUTTON ) != 0 && uMsg == WM_MBUTTONDOWN ) ||
+                ( ( m_nRotateMask & MOUSE_RIGHT_BUTTON ) != 0 && uMsg == WM_RBUTTONDOWN ) )
         {
-            if( m_ArcBall.IsBeingDragged() )
-            {
-                int iMouseX = ( int )( short )LOWORD( lParam );
-                int iMouseY = ( int )( short )HIWORD( lParam );
-                m_ArcBall.OnMove( iMouseX, iMouseY );
-                UpdateLightDir();
-            }
-            return TRUE;
+            int iMouseX = ( int )( short )LOWORD( lParam );
+            int iMouseY = ( int )( short )HIWORD( lParam );
+            m_ArcBall.OnBegin( iMouseX, iMouseY );
+            SetCapture( hWnd );
+        }
+        return TRUE;
+    }
+
+    case WM_MOUSEMOVE:
+    {
+        if( m_ArcBall.IsBeingDragged() )
+        {
+            int iMouseX = ( int )( short )LOWORD( lParam );
+            int iMouseY = ( int )( short )HIWORD( lParam );
+            m_ArcBall.OnMove( iMouseX, iMouseY );
+            UpdateLightDir();
+        }
+        return TRUE;
+    }
+
+    case WM_LBUTTONUP:
+    case WM_MBUTTONUP:
+    case WM_RBUTTONUP:
+    {
+        if( ( ( m_nRotateMask & MOUSE_LEFT_BUTTON ) != 0 && uMsg == WM_LBUTTONUP ) ||
+                ( ( m_nRotateMask & MOUSE_MIDDLE_BUTTON ) != 0 && uMsg == WM_MBUTTONUP ) ||
+                ( ( m_nRotateMask & MOUSE_RIGHT_BUTTON ) != 0 && uMsg == WM_RBUTTONUP ) )
+        {
+            m_ArcBall.OnEnd();
+            ReleaseCapture();
         }
 
-        case WM_LBUTTONUP:
-        case WM_MBUTTONUP:
-        case WM_RBUTTONUP:
-            {
-                if( ( ( m_nRotateMask & MOUSE_LEFT_BUTTON ) != 0 && uMsg == WM_LBUTTONUP ) ||
-                    ( ( m_nRotateMask & MOUSE_MIDDLE_BUTTON ) != 0 && uMsg == WM_MBUTTONUP ) ||
-                    ( ( m_nRotateMask & MOUSE_RIGHT_BUTTON ) != 0 && uMsg == WM_RBUTTONUP ) )
-                {
-                    m_ArcBall.OnEnd();
-                    ReleaseCapture();
-                }
+        UpdateLightDir();
+        return TRUE;
+    }
 
-                UpdateLightDir();
-                return TRUE;
-            }
-
-        case WM_CAPTURECHANGED:
+    case WM_CAPTURECHANGED:
+    {
+        if( ( HWND )lParam != hWnd )
         {
-            if( ( HWND )lParam != hWnd )
-            {
-                if( ( m_nRotateMask & MOUSE_LEFT_BUTTON ) ||
+            if( ( m_nRotateMask & MOUSE_LEFT_BUTTON ) ||
                     ( m_nRotateMask & MOUSE_MIDDLE_BUTTON ) ||
                     ( m_nRotateMask & MOUSE_RIGHT_BUTTON ) )
-                {
-                    m_ArcBall.OnEnd();
-                    ReleaseCapture();
-                }
+            {
+                m_ArcBall.OnEnd();
+                ReleaseCapture();
             }
-            return TRUE;
         }
+        return TRUE;
+    }
     }
 
     return 0;
@@ -1177,7 +1183,7 @@ HRESULT CDXUTDirectionWidget::UpdateLightDir()
     XMMATRIX mRot = XMLoadFloat4x4( &m_mRot );
     mRot *= mView * mLastRotInv * mRot0 * mInvView;
 
-    // Since we're accumulating delta rotations, we need to orthonormalize 
+    // Since we're accumulating delta rotations, we need to orthonormalize
     // the matrix to prevent eventual matrix skew
     XMVECTOR xBasis = XMVector3Normalize( mRot.r[0] );
     XMVECTOR yBasis = XMVector3Cross( mRot.r[2], xBasis );
@@ -1205,7 +1211,7 @@ HRESULT CDXUTDirectionWidget::OnRender( FXMVECTOR color, CXMMATRIX mView, CXMMAT
     UNREFERENCED_PARAMETER(mView);
     UNREFERENCED_PARAMETER(mProj);
     UNREFERENCED_PARAMETER(vEyePt);
-    // TODO - 
+    // TODO -
     return S_OK;
 }
 

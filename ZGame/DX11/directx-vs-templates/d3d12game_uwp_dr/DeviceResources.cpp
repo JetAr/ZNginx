@@ -12,51 +12,55 @@ using Microsoft::WRL::ComPtr;
 // Constants used to calculate screen rotations
 namespace ScreenRotation
 {
-    // 0-degree Z-rotation
-    static const XMFLOAT4X4 Rotation0(
-        1.0f, 0.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 1.0f
-        );
+// 0-degree Z-rotation
+static const XMFLOAT4X4 Rotation0(
+    1.0f, 0.0f, 0.0f, 0.0f,
+    0.0f, 1.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 1.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 1.0f
+);
 
-    // 90-degree Z-rotation
-    static const XMFLOAT4X4 Rotation90(
-        0.0f, 1.0f, 0.0f, 0.0f,
-        -1.0f, 0.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 1.0f
-        );
+// 90-degree Z-rotation
+static const XMFLOAT4X4 Rotation90(
+    0.0f, 1.0f, 0.0f, 0.0f,
+    -1.0f, 0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 1.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 1.0f
+);
 
-    // 180-degree Z-rotation
-    static const XMFLOAT4X4 Rotation180(
-        -1.0f, 0.0f, 0.0f, 0.0f,
-        0.0f, -1.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 1.0f
-        );
+// 180-degree Z-rotation
+static const XMFLOAT4X4 Rotation180(
+    -1.0f, 0.0f, 0.0f, 0.0f,
+    0.0f, -1.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 1.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 1.0f
+);
 
-    // 270-degree Z-rotation
-    static const XMFLOAT4X4 Rotation270(
-        0.0f, -1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 1.0f
-        );
+// 270-degree Z-rotation
+static const XMFLOAT4X4 Rotation270(
+    0.0f, -1.0f, 0.0f, 0.0f,
+    1.0f, 0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 1.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 1.0f
+);
 };
 
 namespace
 {
-    inline DXGI_FORMAT NoSRGB(DXGI_FORMAT fmt)
+inline DXGI_FORMAT NoSRGB(DXGI_FORMAT fmt)
+{
+    switch (fmt)
     {
-        switch (fmt)
-        {
-        case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:   return DXGI_FORMAT_R8G8B8A8_UNORM;
-        case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:   return DXGI_FORMAT_B8G8R8A8_UNORM;
-        case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:   return DXGI_FORMAT_B8G8R8X8_UNORM;
-        default:                                return fmt;
-        }
+    case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
+        return DXGI_FORMAT_R8G8B8A8_UNORM;
+    case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
+        return DXGI_FORMAT_B8G8R8A8_UNORM;
+    case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:
+        return DXGI_FORMAT_B8G8R8X8_UNORM;
+    default:
+        return fmt;
     }
+}
 };
 
 // Constructor for DeviceResources.
@@ -96,7 +100,7 @@ DX::DeviceResources::~DeviceResources()
 }
 
 // Configures the Direct3D device, and stores handles to it and the device context.
-void DX::DeviceResources::CreateDeviceResources() 
+void DX::DeviceResources::CreateDeviceResources()
 {
 #if defined(_DEBUG)
     // Enable the debug layer (only available if the Graphics Tools feature-on-demand is enabled).
@@ -127,17 +131,17 @@ void DX::DeviceResources::CreateDeviceResources()
     if (!debugDXGI)
 #endif
 
-    DX::ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
+        DX::ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
 
     ComPtr<IDXGIAdapter1> adapter;
     GetAdapter(adapter.GetAddressOf());
 
     // Create the DX12 API device object.
     DX::ThrowIfFailed(D3D12CreateDevice(
-        adapter.Get(),
-        m_d3dMinFeatureLevel,
-        IID_PPV_ARGS(m_d3dDevice.ReleaseAndGetAddressOf())
-        ));
+                          adapter.Get(),
+                          m_d3dMinFeatureLevel,
+                          IID_PPV_ARGS(m_d3dDevice.ReleaseAndGetAddressOf())
+                      ));
 
 #ifndef NDEBUG
     // Configure debug device (if active).
@@ -231,7 +235,7 @@ void DX::DeviceResources::CreateDeviceResources()
 }
 
 // These resources need to be recreated every time the window size is changed.
-void DX::DeviceResources::CreateWindowSizeDependentResources() 
+void DX::DeviceResources::CreateWindowSizeDependentResources()
 {
     if (!m_window)
     {
@@ -258,12 +262,12 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
     {
         // If the swap chain already exists, resize it.
         HRESULT hr = m_swapChain->ResizeBuffers(
-            m_backBufferCount,
-            backBufferWidth,
-            backBufferHeight,
-            backBufferFormat,
-            0
-            );
+                         m_backBufferCount,
+                         backBufferWidth,
+                         backBufferHeight,
+                         backBufferFormat,
+                         0
+                     );
 
         if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
         {
@@ -275,7 +279,7 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
             // If the device was removed for any reason, a new device and swap chain will need to be created.
             HandleDeviceLost();
 
-            // Everything is set up now. Do not continue execution of this method. HandleDeviceLost will reenter this method 
+            // Everything is set up now. Do not continue execution of this method. HandleDeviceLost will reenter this method
             // and correctly set up the new device.
             return;
         }
@@ -302,12 +306,12 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
         // Create a swap chain for the window.
         ComPtr<IDXGISwapChain1> swapChain;
         DX::ThrowIfFailed(m_dxgiFactory->CreateSwapChainForCoreWindow(
-            m_commandQueue.Get(),
-            m_window,
-            &swapChainDesc,
-            nullptr,
-            swapChain.GetAddressOf()
-            ));
+                              m_commandQueue.Get(),
+                              m_window,
+                              &swapChainDesc,
+                              nullptr,
+                              swapChain.GetAddressOf()
+                          ));
 
         DX::ThrowIfFailed(swapChain.As(&m_swapChain));
     }
@@ -364,12 +368,12 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
         CD3DX12_HEAP_PROPERTIES depthHeapProperties(D3D12_HEAP_TYPE_DEFAULT);
 
         D3D12_RESOURCE_DESC depthStencilDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-            m_depthBufferFormat,
-            backBufferWidth,
-            backBufferHeight,
-            1, // This depth stencil view has only one texture.
-            1  // Use a single mipmap level.
-            );
+                m_depthBufferFormat,
+                backBufferWidth,
+                backBufferHeight,
+                1, // This depth stencil view has only one texture.
+                1  // Use a single mipmap level.
+                                               );
         depthStencilDesc.Flags |= D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
 
         D3D12_CLEAR_VALUE depthOptimizedClearValue = {};
@@ -378,13 +382,13 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
         depthOptimizedClearValue.DepthStencil.Stencil = 0;
 
         DX::ThrowIfFailed(m_d3dDevice->CreateCommittedResource(
-            &depthHeapProperties,
-            D3D12_HEAP_FLAG_NONE,
-            &depthStencilDesc,
-            D3D12_RESOURCE_STATE_DEPTH_WRITE,
-            &depthOptimizedClearValue,
-            IID_PPV_ARGS(m_depthStencil.ReleaseAndGetAddressOf())
-            ));
+                              &depthHeapProperties,
+                              D3D12_HEAP_FLAG_NONE,
+                              &depthStencilDesc,
+                              D3D12_RESOURCE_STATE_DEPTH_WRITE,
+                              &depthOptimizedClearValue,
+                              IID_PPV_ARGS(m_depthStencil.ReleaseAndGetAddressOf())
+                          ));
 
         m_depthStencil->SetName(L"Depth stencil");
 
@@ -427,10 +431,10 @@ bool DX::DeviceResources::WindowSizeChanged(int width, int height, DXGI_MODE_ROT
     newRc.right = width;
     newRc.bottom = height;
     if (newRc.left == m_outputSize.left
-        && newRc.top == m_outputSize.top
-        && newRc.right == m_outputSize.right
-        && newRc.bottom == m_outputSize.bottom
-        && rotation == m_rotation)
+            && newRc.top == m_outputSize.top
+            && newRc.right == m_outputSize.right
+            && newRc.bottom == m_outputSize.bottom
+            && rotation == m_rotation)
     {
         return false;
     }
@@ -470,8 +474,8 @@ void DX::DeviceResources::ValidateDevice()
     // a new D3D device must be created.
 
     if (previousDesc.AdapterLuid.LowPart != currentDesc.AdapterLuid.LowPart
-        || previousDesc.AdapterLuid.HighPart != currentDesc.AdapterLuid.HighPart
-        || FAILED(m_d3dDevice->GetDeviceRemovedReason()))
+            || previousDesc.AdapterLuid.HighPart != currentDesc.AdapterLuid.HighPart
+            || FAILED(m_d3dDevice->GetDeviceRemovedReason()))
     {
 #ifdef _DEBUG
         OutputDebugStringA("Device Lost on ValidateDevice\n");

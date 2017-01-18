@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DXUT.h
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -31,7 +31,7 @@
 #define _WIN32_WINNT   0x0600
 #endif
 
-// #define DXUT_AUTOLIB to automatically include the libs needed for DXUT 
+// #define DXUT_AUTOLIB to automatically include the libs needed for DXUT
 #ifdef DXUT_AUTOLIB
 #pragma comment( lib, "dxerr.lib" )
 #pragma comment( lib, "dxguid.lib" )
@@ -50,8 +50,8 @@
 
 #pragma warning( disable : 4100 ) // disable unreference formal parameter warnings for /W4 builds
 
-// Enable extra D3D debugging in debug builds if using the debug DirectX runtime.  
-// This makes D3D objects work well in the debugger watch window, but slows down 
+// Enable extra D3D debugging in debug builds if using the debug DirectX runtime.
+// This makes D3D objects work well in the debugger watch window, but slows down
 // performance slightly.
 #if defined(DEBUG) || defined(_DEBUG)
 #ifndef D3D_DEBUG_INFO
@@ -92,7 +92,7 @@
 // XInput includes
 #include <xinput.h>
 
-// HRESULT translation for Direct3D and other APIs 
+// HRESULT translation for Direct3D and other APIs
 #include <dxerr.h>
 
 
@@ -180,7 +180,7 @@ struct DXUTDeviceSettings
 #define DXUTERR_NODIRECT3D11            MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x090)
 
 //--------------------------------------------------------------------------------------
-// Callback registration 
+// Callback registration
 //--------------------------------------------------------------------------------------
 
 // General callbacks
@@ -238,15 +238,15 @@ void WINAPI DXUTSetCallbackD3D11DeviceDestroyed( LPDXUTCALLBACKD3D11DEVICEDESTRO
 //--------------------------------------------------------------------------------------
 // Initialization
 //--------------------------------------------------------------------------------------
-HRESULT WINAPI DXUTInit( bool bParseCommandLine = true, 
-                         bool bShowMsgBoxOnError = true, 
+HRESULT WINAPI DXUTInit( bool bParseCommandLine = true,
+                         bool bShowMsgBoxOnError = true,
                          __in_opt WCHAR* strExtraCommandLineParams = NULL,
                          bool bThreadSafeDXUT = false );
 
 // Choose either DXUTCreateWindow or DXUTSetWindow.  If using DXUTSetWindow, consider using DXUTStaticWndProc
-HRESULT WINAPI DXUTCreateWindow( const WCHAR* strWindowTitle = L"Direct3D Window", 
-                          HINSTANCE hInstance = NULL, HICON hIcon = NULL, HMENU hMenu = NULL,
-                          int x = CW_USEDEFAULT, int y = CW_USEDEFAULT );
+HRESULT WINAPI DXUTCreateWindow( const WCHAR* strWindowTitle = L"Direct3D Window",
+                                 HINSTANCE hInstance = NULL, HICON hIcon = NULL, HMENU hMenu = NULL,
+                                 int x = CW_USEDEFAULT, int y = CW_USEDEFAULT );
 HRESULT WINAPI DXUTSetWindow( HWND hWndFocus, HWND hWndDeviceFullScreen, HWND hWndDeviceWindowed, bool bHandleMessages = true );
 LRESULT CALLBACK DXUTStaticWndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 
@@ -257,7 +257,7 @@ HRESULT WINAPI DXUTCreateDeviceFromSettings( DXUTDeviceSettings* pDeviceSettings
 HRESULT WINAPI DXUTSetD3D9Device( IDirect3DDevice9* pd3dDevice );
 HRESULT WINAPI DXUTSetD3D11Device( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain );
 
-// Choose either DXUTMainLoop or implement your own main loop 
+// Choose either DXUTMainLoop or implement your own main loop
 HRESULT WINAPI DXUTMainLoop( HACCEL hAccel = NULL );
 
 // If not using DXUTMainLoop consider using DXUTRender3DEnvironment
@@ -265,7 +265,7 @@ void WINAPI DXUTRender3DEnvironment();
 
 
 //--------------------------------------------------------------------------------------
-// Common Tasks 
+// Common Tasks
 //--------------------------------------------------------------------------------------
 HRESULT WINAPI DXUTToggleFullScreen();
 HRESULT WINAPI DXUTToggleREF();
@@ -286,7 +286,7 @@ void    WINAPI DXUTSetIsInGammaCorrectMode( bool bGammaCorrect );
 BOOL    WINAPI DXUTGetMSAASwapChainCreated();
 
 //--------------------------------------------------------------------------------------
-// State Retrieval  
+// State Retrieval
 //--------------------------------------------------------------------------------------
 
 // Direct3D 9
@@ -316,7 +316,7 @@ bool                     WINAPI DXUTIsAppRenderingWithD3D11();
 
 
 // General
-DXUTDeviceSettings WINAPI DXUTGetDeviceSettings(); 
+DXUTDeviceSettings WINAPI DXUTGetDeviceSettings();
 HINSTANCE WINAPI DXUTGetHINSTANCE();
 HWND      WINAPI DXUTGetHWND();
 HWND      WINAPI DXUTGetHWNDFocus();
@@ -347,7 +347,7 @@ bool      WINAPI DXUTIsKeyDown( BYTE vKey ); // Pass a virtual-key code, ex. VK_
 bool      WINAPI DXUTWasKeyPressed( BYTE vKey );  // Like DXUTIsKeyDown() but return true only if the key was just pressed
 bool      WINAPI DXUTIsMouseButtonDown( BYTE vButton ); // Pass a virtual-key code: VK_LBUTTON, VK_RBUTTON, VK_MBUTTON, VK_XBUTTON1, VK_XBUTTON2
 HRESULT   WINAPI DXUTCreateState(); // Optional method to create DXUT's memory.  If its not called by the application it will be automatically called when needed
-void      WINAPI DXUTDestroyState(); // Optional method to destroy DXUT's memory.  If its not called by the application it will be automatically called after the application exits WinMain 
+void      WINAPI DXUTDestroyState(); // Optional method to destroy DXUT's memory.  If its not called by the application it will be automatically called after the application exits WinMain
 
 //--------------------------------------------------------------------------------------
 // DXUT core layer includes

@@ -1,11 +1,11 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXSH.cpp -- C++ Spherical Harmonics Math Library
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
 // ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
 // THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
 // PARTICULAR PURPOSE.
-//  
+//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // http://go.microsoft.com/fwlink/p/?LinkId=262885
@@ -20,948 +20,953 @@ using namespace DirectX;
 
 namespace
 {
-    #pragma prefast(disable:246, "generated code by maple (nested const variable definitions)")
+#pragma prefast(disable:246, "generated code by maple (nested const variable definitions)")
 
-    static const float fExtraNormFac[XM_SH_MAXORDER] = { 2.0f*sqrtf(XM_PI), 2.0f/3.0f*sqrtf(3.0f*XM_PI), 2.0f/5.0f*sqrtf(5.0f*XM_PI), 2.0f/7.0f*sqrtf(7.0f*XM_PI), 2.0f/3.0f*sqrtf(XM_PI), 2.0f/11.0f*sqrtf(11.0f*XM_PI) };
+static const float fExtraNormFac[XM_SH_MAXORDER] = { 2.0f*sqrtf(XM_PI), 2.0f/3.0f*sqrtf(3.0f*XM_PI), 2.0f/5.0f*sqrtf(5.0f*XM_PI), 2.0f/7.0f*sqrtf(7.0f*XM_PI), 2.0f/3.0f*sqrtf(XM_PI), 2.0f/11.0f*sqrtf(11.0f*XM_PI) };
 
-    // computes the integral of a constant function over a solid angular
-    // extent.  No error checking - only used internaly.  This function
-    // only returns the Yl0 coefficients, since the rest are zero for
-    // circularly symmetric functions.
-    static const float ComputeCapInt_t1 = sqrtf(0.3141593E1f);
-    static const float ComputeCapInt_t5 = sqrtf(3.0f);
-    static const float ComputeCapInt_t11 = sqrtf(5.0f);
-    static const float ComputeCapInt_t18 = sqrtf(7.0f);
-    static const float ComputeCapInt_t32 = sqrtf(11.0f);
+// computes the integral of a constant function over a solid angular
+// extent.  No error checking - only used internaly.  This function
+// only returns the Yl0 coefficients, since the rest are zero for
+// circularly symmetric functions.
+static const float ComputeCapInt_t1 = sqrtf(0.3141593E1f);
+static const float ComputeCapInt_t5 = sqrtf(3.0f);
+static const float ComputeCapInt_t11 = sqrtf(5.0f);
+static const float ComputeCapInt_t18 = sqrtf(7.0f);
+static const float ComputeCapInt_t32 = sqrtf(11.0f);
 
-    static inline void ComputeCapInt(const size_t order, float angle, float *pR)
+static inline void ComputeCapInt(const size_t order, float angle, float *pR)
+{
+    const float t2 = cosf(angle);
+    const float t3 = ComputeCapInt_t1*t2;
+    const float t7 = sinf(angle);
+    const float t8 = t7*t7;
+
+
+    pR[0] = -t3+ComputeCapInt_t1;
+    pR[1] = ComputeCapInt_t5*ComputeCapInt_t1*t8/2.0f;
+
+    if (order > 2)
     {
-        const float t2 = cosf(angle);
-        const float t3 = ComputeCapInt_t1*t2;
-        const float t7 = sinf(angle);
-        const float t8 = t7*t7;
+        const float t13 = t2*t2;
 
-
-        pR[0] = -t3+ComputeCapInt_t1;
-        pR[1] = ComputeCapInt_t5*ComputeCapInt_t1*t8/2.0f;
-
-        if (order > 2)
+        pR[2] = -ComputeCapInt_t11*ComputeCapInt_t1*t2*(t13-1.0f)/2.0f;
+        if (order > 3)
         {
-            const float t13 = t2*t2;
+            const float t19 = ComputeCapInt_t18*ComputeCapInt_t1;
+            const float t20 = t13*t13;
 
-            pR[2] = -ComputeCapInt_t11*ComputeCapInt_t1*t2*(t13-1.0f)/2.0f;
-            if (order > 3)
+            pR[3] = -5.0f/8.0f*t19*t20+3.0f/4.0f*t19*t13-t19/8.0f;
+            if (order > 4)
             {
-                const float t19 = ComputeCapInt_t18*ComputeCapInt_t1;
-                const float t20 = t13*t13;
 
-                pR[3] = -5.0f/8.0f*t19*t20+3.0f/4.0f*t19*t13-t19/8.0f;
-                if (order > 4)
+
+                pR[4] = -3.0f/8.0f*t3*(7.0f*t20-10.0f*t13+3.0f);
+                if (order > 5)
                 {
-
-
-                    pR[4] = -3.0f/8.0f*t3*(7.0f*t20-10.0f*t13+3.0f);
-                    if (order > 5)
-                    {
-                        const float t33 = ComputeCapInt_t32*ComputeCapInt_t1;
-                        pR[5] = -21.0f/16.0f*t33*t20*t13+35.0f/16.0f*t33*t20-15.0f/16.0f*t33*t13+t33/16.0f;
-                    }
+                    const float t33 = ComputeCapInt_t32*ComputeCapInt_t1;
+                    pR[5] = -21.0f/16.0f*t33*t20*t13+35.0f/16.0f*t33*t20-15.0f/16.0f*t33*t13+t33/16.0f;
                 }
             }
         }
     }
+}
 
-    // input pF only consists of Yl0 values, normalizes coefficients for directional
-    // lights.
-    static inline float CosWtInt(const size_t order)
+// input pF only consists of Yl0 values, normalizes coefficients for directional
+// lights.
+static inline float CosWtInt(const size_t order)
+{
+    const float fCW0 = 0.25f;
+    const float fCW1 = 0.5f;
+    const float fCW2 = 5.0f/16.0f;
+    //const float fCW3 = 0.0f;
+    const float fCW4 = -3.0f/32.0f;
+    //const float fCW5 = 0.0f;
+
+    // order has to be at least linear...
+
+    float fRet = fCW0 + fCW1;
+
+    if (order > 2) fRet += fCW2;
+    if (order > 4) fRet += fCW4;
+
+    // odd degrees >= 3 evaluate to zero integrated against cosine...
+
+    return fRet;
+}
+
+static const float SHEvalHemisphereLight_fSqrtPi = sqrtf(XM_PI);
+static const float SHEvalHemisphereLight_fSqrtPi3 = sqrtf(XM_PI/3.0f);
+
+typedef float REAL;
+#define CONSTANT(x) (x ## f)
+
+// routine generated programmatically for evaluating SH basis for degree 1
+// inputs (x,y,z) are a point on the sphere (i.e., must be unit length)
+// output is vector b with SH basis evaluated at (x,y,z).
+//
+inline static void sh_eval_basis_1(REAL x,REAL y,REAL z,REAL b[4])
+{
+    /* m=0 */
+
+    // l=0
+    const REAL p_0_0 = CONSTANT(0.282094791773878140);
+    b[  0] = p_0_0; // l=0,m=0
+    // l=1
+    const REAL p_1_0 = CONSTANT(0.488602511902919920)*z;
+    b[  2] = p_1_0; // l=1,m=0
+
+
+    /* m=1 */
+
+    const REAL s1 = y;
+    const REAL c1 = x;
+
+    // l=1
+    const REAL p_1_1 = CONSTANT(-0.488602511902919920);
+    b[  1] = p_1_1*s1; // l=1,m=-1
+    b[  3] = p_1_1*c1; // l=1,m=+1
+}
+
+// routine generated programmatically for evaluating SH basis for degree 2
+// inputs (x,y,z) are a point on the sphere (i.e., must be unit length)
+// output is vector b with SH basis evaluated at (x,y,z).
+//
+inline static void sh_eval_basis_2(REAL x,REAL y,REAL z,REAL b[9])
+{
+    const REAL z2 = z*z;
+
+
+    /* m=0 */
+
+    // l=0
+    const REAL p_0_0 = CONSTANT(0.282094791773878140);
+    b[  0] = p_0_0; // l=0,m=0
+    // l=1
+    const REAL p_1_0 = CONSTANT(0.488602511902919920)*z;
+    b[  2] = p_1_0; // l=1,m=0
+    // l=2
+    const REAL p_2_0 = CONSTANT(0.946174695757560080)*z2 + CONSTANT(-0.315391565252520050);
+    b[  6] = p_2_0; // l=2,m=0
+
+
+    /* m=1 */
+
+    const REAL s1 = y;
+    const REAL c1 = x;
+
+    // l=1
+    const REAL p_1_1 = CONSTANT(-0.488602511902919920);
+    b[  1] = p_1_1*s1; // l=1,m=-1
+    b[  3] = p_1_1*c1; // l=1,m=+1
+    // l=2
+    const REAL p_2_1 = CONSTANT(-1.092548430592079200)*z;
+    b[  5] = p_2_1*s1; // l=2,m=-1
+    b[  7] = p_2_1*c1; // l=2,m=+1
+
+
+    /* m=2 */
+
+    const REAL s2 = x*s1 + y*c1;
+    const REAL c2 = x*c1 - y*s1;
+
+    // l=2
+    const REAL p_2_2 = CONSTANT(0.546274215296039590);
+    b[  4] = p_2_2*s2; // l=2,m=-2
+    b[  8] = p_2_2*c2; // l=2,m=+2
+}
+
+// routine generated programmatically for evaluating SH basis for degree 3
+// inputs (x,y,z) are a point on the sphere (i.e., must be unit length)
+// output is vector b with SH basis evaluated at (x,y,z).
+//
+static void sh_eval_basis_3(REAL x,REAL y,REAL z,REAL b[16])
+{
+    const REAL z2 = z*z;
+
+
+    /* m=0 */
+
+    // l=0
+    const REAL p_0_0 = CONSTANT(0.282094791773878140);
+    b[  0] = p_0_0; // l=0,m=0
+    // l=1
+    const REAL p_1_0 = CONSTANT(0.488602511902919920)*z;
+    b[  2] = p_1_0; // l=1,m=0
+    // l=2
+    const REAL p_2_0 = CONSTANT(0.946174695757560080)*z2 + CONSTANT(-0.315391565252520050);
+    b[  6] = p_2_0; // l=2,m=0
+    // l=3
+    const REAL p_3_0 = z*(CONSTANT(1.865881662950577000)*z2 + CONSTANT(-1.119528997770346200));
+    b[ 12] = p_3_0; // l=3,m=0
+
+
+    /* m=1 */
+
+    const REAL s1 = y;
+    const REAL c1 = x;
+
+    // l=1
+    const REAL p_1_1 = CONSTANT(-0.488602511902919920);
+    b[  1] = p_1_1*s1; // l=1,m=-1
+    b[  3] = p_1_1*c1; // l=1,m=+1
+    // l=2
+    const REAL p_2_1 = CONSTANT(-1.092548430592079200)*z;
+    b[  5] = p_2_1*s1; // l=2,m=-1
+    b[  7] = p_2_1*c1; // l=2,m=+1
+    // l=3
+    const REAL p_3_1 = CONSTANT(-2.285228997322328800)*z2 + CONSTANT(0.457045799464465770);
+    b[ 11] = p_3_1*s1; // l=3,m=-1
+    b[ 13] = p_3_1*c1; // l=3,m=+1
+
+
+    /* m=2 */
+
+    const REAL s2 = x*s1 + y*c1;
+    const REAL c2 = x*c1 - y*s1;
+
+    // l=2
+    const REAL p_2_2 = CONSTANT(0.546274215296039590);
+    b[  4] = p_2_2*s2; // l=2,m=-2
+    b[  8] = p_2_2*c2; // l=2,m=+2
+    // l=3
+    const REAL p_3_2 = CONSTANT(1.445305721320277100)*z;
+    b[ 10] = p_3_2*s2; // l=3,m=-2
+    b[ 14] = p_3_2*c2; // l=3,m=+2
+
+
+    /* m=3 */
+
+    const REAL s3 = x*s2 + y*c2;
+    const REAL c3 = x*c2 - y*s2;
+
+    // l=3
+    const REAL p_3_3 = CONSTANT(-0.590043589926643520);
+    b[  9] = p_3_3*s3; // l=3,m=-3
+    b[ 15] = p_3_3*c3; // l=3,m=+3
+}
+
+// routine generated programmatically for evaluating SH basis for degree 4
+// inputs (x,y,z) are a point on the sphere (i.e., must be unit length)
+// output is vector b with SH basis evaluated at (x,y,z).
+//
+static void sh_eval_basis_4(REAL x,REAL y,REAL z,REAL b[25])
+{
+    const REAL z2 = z*z;
+
+
+    /* m=0 */
+
+    // l=0
+    const REAL p_0_0 = CONSTANT(0.282094791773878140);
+    b[  0] = p_0_0; // l=0,m=0
+    // l=1
+    const REAL p_1_0 = CONSTANT(0.488602511902919920)*z;
+    b[  2] = p_1_0; // l=1,m=0
+    // l=2
+    const REAL p_2_0 = CONSTANT(0.946174695757560080)*z2 + CONSTANT(-0.315391565252520050);
+    b[  6] = p_2_0; // l=2,m=0
+    // l=3
+    const REAL p_3_0 = z*(CONSTANT(1.865881662950577000)*z2 + CONSTANT(-1.119528997770346200));
+    b[ 12] = p_3_0; // l=3,m=0
+    // l=4
+    const REAL p_4_0 = CONSTANT(1.984313483298443000)*z*p_3_0 + CONSTANT(-1.006230589874905300)*p_2_0;
+    b[ 20] = p_4_0; // l=4,m=0
+
+
+    /* m=1 */
+
+    const REAL s1 = y;
+    const REAL c1 = x;
+
+    // l=1
+    const REAL p_1_1 = CONSTANT(-0.488602511902919920);
+    b[  1] = p_1_1*s1; // l=1,m=-1
+    b[  3] = p_1_1*c1; // l=1,m=+1
+    // l=2
+    const REAL p_2_1 = CONSTANT(-1.092548430592079200)*z;
+    b[  5] = p_2_1*s1; // l=2,m=-1
+    b[  7] = p_2_1*c1; // l=2,m=+1
+    // l=3
+    const REAL p_3_1 = CONSTANT(-2.285228997322328800)*z2 + CONSTANT(0.457045799464465770);
+    b[ 11] = p_3_1*s1; // l=3,m=-1
+    b[ 13] = p_3_1*c1; // l=3,m=+1
+    // l=4
+    const REAL p_4_1 = z*(CONSTANT(-4.683325804901024000)*z2 + CONSTANT(2.007139630671867200));
+    b[ 19] = p_4_1*s1; // l=4,m=-1
+    b[ 21] = p_4_1*c1; // l=4,m=+1
+
+
+    /* m=2 */
+
+    const REAL s2 = x*s1 + y*c1;
+    const REAL c2 = x*c1 - y*s1;
+
+    // l=2
+    const REAL p_2_2 = CONSTANT(0.546274215296039590);
+    b[  4] = p_2_2*s2; // l=2,m=-2
+    b[  8] = p_2_2*c2; // l=2,m=+2
+    // l=3
+    const REAL p_3_2 = CONSTANT(1.445305721320277100)*z;
+    b[ 10] = p_3_2*s2; // l=3,m=-2
+    b[ 14] = p_3_2*c2; // l=3,m=+2
+    // l=4
+    const REAL p_4_2 = CONSTANT(3.311611435151459800)*z2 + CONSTANT(-0.473087347878779980);
+    b[ 18] = p_4_2*s2; // l=4,m=-2
+    b[ 22] = p_4_2*c2; // l=4,m=+2
+
+
+    /* m=3 */
+
+    const REAL s3 = x*s2 + y*c2;
+    const REAL c3 = x*c2 - y*s2;
+
+    // l=3
+    const REAL p_3_3 = CONSTANT(-0.590043589926643520);
+    b[  9] = p_3_3*s3; // l=3,m=-3
+    b[ 15] = p_3_3*c3; // l=3,m=+3
+    // l=4
+    const REAL p_4_3 = CONSTANT(-1.770130769779930200)*z;
+    b[ 17] = p_4_3*s3; // l=4,m=-3
+    b[ 23] = p_4_3*c3; // l=4,m=+3
+
+
+    /* m=4 */
+
+    const REAL s4 = x*s3 + y*c3;
+    const REAL c4 = x*c3 - y*s3;
+
+    // l=4
+    const REAL p_4_4 = CONSTANT(0.625835735449176030);
+    b[ 16] = p_4_4*s4; // l=4,m=-4
+    b[ 24] = p_4_4*c4; // l=4,m=+4
+}
+
+// routine generated programmatically for evaluating SH basis for degree 5
+// inputs (x,y,z) are a point on the sphere (i.e., must be unit length)
+// output is vector b with SH basis evaluated at (x,y,z).
+//
+static void sh_eval_basis_5(REAL x,REAL y,REAL z,REAL b[36])
+{
+    const REAL z2 = z*z;
+
+
+    /* m=0 */
+
+    // l=0
+    const REAL p_0_0 = CONSTANT(0.282094791773878140);
+    b[  0] = p_0_0; // l=0,m=0
+    // l=1
+    const REAL p_1_0 = CONSTANT(0.488602511902919920)*z;
+    b[  2] = p_1_0; // l=1,m=0
+    // l=2
+    const REAL p_2_0 = CONSTANT(0.946174695757560080)*z2 + CONSTANT(-0.315391565252520050);
+    b[  6] = p_2_0; // l=2,m=0
+    // l=3
+    const REAL p_3_0 = z*(CONSTANT(1.865881662950577000)*z2 + CONSTANT(-1.119528997770346200));
+    b[ 12] = p_3_0; // l=3,m=0
+    // l=4
+    const REAL p_4_0 = CONSTANT(1.984313483298443000)*z*p_3_0 + CONSTANT(-1.006230589874905300)*p_2_0;
+    b[ 20] = p_4_0; // l=4,m=0
+    // l=5
+    const REAL p_5_0 = CONSTANT(1.989974874213239700)*z*p_4_0 + CONSTANT(-1.002853072844814000)*p_3_0;
+    b[ 30] = p_5_0; // l=5,m=0
+
+
+    /* m=1 */
+
+    const REAL s1 = y;
+    const REAL c1 = x;
+
+    // l=1
+    const REAL p_1_1 = CONSTANT(-0.488602511902919920);
+    b[  1] = p_1_1*s1; // l=1,m=-1
+    b[  3] = p_1_1*c1; // l=1,m=+1
+    // l=2
+    const REAL p_2_1 = CONSTANT(-1.092548430592079200)*z;
+    b[  5] = p_2_1*s1; // l=2,m=-1
+    b[  7] = p_2_1*c1; // l=2,m=+1
+    // l=3
+    const REAL p_3_1 = CONSTANT(-2.285228997322328800)*z2 + CONSTANT(0.457045799464465770);
+    b[ 11] = p_3_1*s1; // l=3,m=-1
+    b[ 13] = p_3_1*c1; // l=3,m=+1
+    // l=4
+    const REAL p_4_1 = z*(CONSTANT(-4.683325804901024000)*z2 + CONSTANT(2.007139630671867200));
+    b[ 19] = p_4_1*s1; // l=4,m=-1
+    b[ 21] = p_4_1*c1; // l=4,m=+1
+    // l=5
+    const REAL p_5_1 = CONSTANT(2.031009601158990200)*z*p_4_1 + CONSTANT(-0.991031208965114650)*p_3_1;
+    b[ 29] = p_5_1*s1; // l=5,m=-1
+    b[ 31] = p_5_1*c1; // l=5,m=+1
+
+
+    /* m=2 */
+
+    const REAL s2 = x*s1 + y*c1;
+    const REAL c2 = x*c1 - y*s1;
+
+    // l=2
+    const REAL p_2_2 = CONSTANT(0.546274215296039590);
+    b[  4] = p_2_2*s2; // l=2,m=-2
+    b[  8] = p_2_2*c2; // l=2,m=+2
+    // l=3
+    const REAL p_3_2 = CONSTANT(1.445305721320277100)*z;
+    b[ 10] = p_3_2*s2; // l=3,m=-2
+    b[ 14] = p_3_2*c2; // l=3,m=+2
+    // l=4
+    const REAL p_4_2 = CONSTANT(3.311611435151459800)*z2 + CONSTANT(-0.473087347878779980);
+    b[ 18] = p_4_2*s2; // l=4,m=-2
+    b[ 22] = p_4_2*c2; // l=4,m=+2
+    // l=5
+    const REAL p_5_2 = z*(CONSTANT(7.190305177459987500)*z2 + CONSTANT(-2.396768392486662100));
+    b[ 28] = p_5_2*s2; // l=5,m=-2
+    b[ 32] = p_5_2*c2; // l=5,m=+2
+
+
+    /* m=3 */
+
+    const REAL s3 = x*s2 + y*c2;
+    const REAL c3 = x*c2 - y*s2;
+
+    // l=3
+    const REAL p_3_3 = CONSTANT(-0.590043589926643520);
+    b[  9] = p_3_3*s3; // l=3,m=-3
+    b[ 15] = p_3_3*c3; // l=3,m=+3
+    // l=4
+    const REAL p_4_3 = CONSTANT(-1.770130769779930200)*z;
+    b[ 17] = p_4_3*s3; // l=4,m=-3
+    b[ 23] = p_4_3*c3; // l=4,m=+3
+    // l=5
+    const REAL p_5_3 = CONSTANT(-4.403144694917253700)*z2 + CONSTANT(0.489238299435250430);
+    b[ 27] = p_5_3*s3; // l=5,m=-3
+    b[ 33] = p_5_3*c3; // l=5,m=+3
+
+
+    /* m=4 */
+
+    const REAL s4 = x*s3 + y*c3;
+    const REAL c4 = x*c3 - y*s3;
+
+    // l=4
+    const REAL p_4_4 = CONSTANT(0.625835735449176030);
+    b[ 16] = p_4_4*s4; // l=4,m=-4
+    b[ 24] = p_4_4*c4; // l=4,m=+4
+    // l=5
+    const REAL p_5_4 = CONSTANT(2.075662314881041100)*z;
+    b[ 26] = p_5_4*s4; // l=5,m=-4
+    b[ 34] = p_5_4*c4; // l=5,m=+4
+
+
+    /* m=5 */
+
+    const REAL s5 = x*s4 + y*c4;
+    const REAL c5 = x*c4 - y*s4;
+
+    // l=5
+    const REAL p_5_5 = CONSTANT(-0.656382056840170150);
+    b[ 25] = p_5_5*s5; // l=5,m=-5
+    b[ 35] = p_5_5*c5; // l=5,m=+5
+}
+
+static const REAL M_PIjs = (REAL) (4.0*atan(1.0));
+static const REAL maxang = (REAL) (M_PIjs/2);
+static const int NSH0 = 1;
+static const int NSH1 = 4;
+static const int NSH2 = 9;
+static const int NSH3 = 16;
+static const int NSH4 = 25;
+static const int NSH5 = 36;
+static const int NSH6 = 49;
+static const int NSH7 = 64;
+static const int NSH8 = 81;
+static const int NSH9 = 100;
+static const int NL0 = 1;
+static const int NL1 = 3;
+static const int NL2 = 5;
+static const int NL3 = 7;
+static const int NL4 = 9;
+static const int NL5 = 11;
+static const int NL6 = 13;
+static const int NL7 = 15;
+static const int NL8 = 17;
+static const int NL9 = 19;
+
+static inline void rot(REAL ct,REAL st,REAL x,REAL y,REAL &xout,REAL &yout)
+{
+    xout = x*ct - y*st;
+    yout = y*ct + x*st;
+}
+
+static inline void rot_inv(REAL ct,REAL st,REAL x,REAL y,REAL &xout,REAL &yout)
+{
+    xout = x*ct + y*st;
+    yout = y*ct - x*st;
+}
+
+static inline void rot_1(REAL ct,REAL st,REAL ctm[1],REAL stm[1])
+{
+    ctm[0] = ct;
+    stm[0] = st;
+}
+
+static inline void rot_2(REAL ct,REAL st,REAL ctm[2],REAL stm[2])
+{
+    REAL ct2 = CONSTANT(2.0)*ct;
+    ctm[0] = ct;
+    stm[0] = st;
+    ctm[1] = ct2*ct-CONSTANT(1.0);
+    stm[1] = ct2*st;
+}
+
+static inline void rot_3(REAL ct,REAL st,REAL ctm[3],REAL stm[3])
+{
+    REAL ct2 = CONSTANT(2.0)*ct;
+    ctm[0] = ct;
+    stm[0] = st;
+    ctm[1] = ct2*ct-CONSTANT(1.0);
+    stm[1] = ct2*st;
+    ctm[2] = ct2*ctm[1] - ct;
+    stm[2] = ct2*stm[1] - st;
+}
+
+static inline void rot_4(REAL ct,REAL st,REAL ctm[4],REAL stm[4])
+{
+    REAL ct2 = CONSTANT(2.0)*ct;
+    ctm[0] = ct;
+    stm[0] = st;
+    ctm[1] = ct2*ct-CONSTANT(1.0);
+    stm[1] = ct2*st;
+    ctm[2] = ct2*ctm[1] - ct;
+    stm[2] = ct2*stm[1] - st;
+    ctm[3] = ct2*ctm[2] - ctm[1];
+    stm[3] = ct2*stm[2] - stm[1];
+}
+
+static inline void rot_5(REAL ct,REAL st,REAL ctm[5],REAL stm[5])
+{
+    REAL ct2 = CONSTANT(2.0)*ct;
+    ctm[0] = ct;
+    stm[0] = st;
+    ctm[1] = ct2*ct-CONSTANT(1.0);
+    stm[1] = ct2*st;
+    ctm[2] = ct2*ctm[1] - ct;
+    stm[2] = ct2*stm[1] - st;
+    ctm[3] = ct2*ctm[2] - ctm[1];
+    stm[3] = ct2*stm[2] - stm[1];
+    ctm[4] = ct2*ctm[3] - ctm[2];
+    stm[4] = ct2*stm[3] - stm[2];
+}
+
+static inline void sh_rotz_1(REAL ctm[1],REAL stm[1],REAL y[NL1],REAL yr[NL1])
+{
+    yr[1] = y[1];
+    rot_inv(ctm[0],stm[0],y[0],y[2],yr[0],yr[2]);
+}
+
+static inline void sh_rotz_2(REAL ctm[2],REAL stm[2],REAL y[NL2],REAL yr[NL2])
+{
+    yr[2] = y[2];
+    rot_inv(ctm[0],stm[0],y[1],y[3],yr[1],yr[3]);
+    rot_inv(ctm[1],stm[1],y[0],y[4],yr[0],yr[4]);
+}
+
+static inline void sh_rotz_3(REAL ctm[3],REAL stm[3],REAL y[NL3],REAL yr[NL3])
+{
+    yr[3] = y[3];
+    rot_inv(ctm[0],stm[0],y[2],y[4],yr[2],yr[4]);
+    rot_inv(ctm[1],stm[1],y[1],y[5],yr[1],yr[5]);
+    rot_inv(ctm[2],stm[2],y[0],y[6],yr[0],yr[6]);
+}
+
+static inline void sh_rotz_4(REAL ctm[4],REAL stm[4],REAL y[NL4],REAL yr[NL4])
+{
+    yr[4] = y[4];
+    rot_inv(ctm[0],stm[0],y[3],y[5],yr[3],yr[5]);
+    rot_inv(ctm[1],stm[1],y[2],y[6],yr[2],yr[6]);
+    rot_inv(ctm[2],stm[2],y[1],y[7],yr[1],yr[7]);
+    rot_inv(ctm[3],stm[3],y[0],y[8],yr[0],yr[8]);
+}
+
+static inline void sh_rotz_5(REAL ctm[5],REAL stm[5],REAL y[NL5],REAL yr[NL5])
+{
+    yr[5] = y[5];
+    rot_inv(ctm[0],stm[0],y[4],y[6],yr[4],yr[6]);
+    rot_inv(ctm[1],stm[1],y[3],y[7],yr[3],yr[7]);
+    rot_inv(ctm[2],stm[2],y[2],y[8],yr[2],yr[8]);
+    rot_inv(ctm[3],stm[3],y[1],y[9],yr[1],yr[9]);
+    rot_inv(ctm[4],stm[4],y[0],y[10],yr[0],yr[10]);
+}
+
+// rotation code generated programmatically by rotatex (2000x4000 samples, eps=1e-008)
+
+static REAL fx_1_001 = (REAL) ( sqrt(1.0)/1.0); // 1
+static REAL fx_1_002 = (REAL) (-sqrt(1.0)/1.0); // -1.00000030843
+
+static inline void sh_rotx90_1(REAL y[],REAL yr[])
+{
+    yr[  0] =  fx_1_001*y[  1];
+    yr[  1] =  fx_1_002*y[  0];
+    yr[  2] =  fx_1_001*y[  2];
+};
+
+static inline void sh_rotx90_inv_1(REAL y[],REAL yr[])
+{
+    yr[  0] =  fx_1_002*y[  1];
+    yr[  1] =  fx_1_001*y[  0];
+    yr[  2] =  fx_1_001*y[  2];
+}
+
+static REAL fx_2_001 = (REAL) ( sqrt(4.0)/2.0); // 1
+static REAL fx_2_002 = (REAL) (-sqrt(4.0)/2.0); // -1
+static REAL fx_2_003 = (REAL) (-sqrt(1.0)/2.0); // -0.500000257021
+static REAL fx_2_004 = (REAL) (-sqrt(3.0)/2.0); // -0.866025848959
+static REAL fx_2_005 = (REAL) ( sqrt(1.0)/2.0); // 0.5
+
+static inline void sh_rotx90_2(REAL y[],REAL yr[])
+{
+    yr[  0] =  fx_2_001*y[  3];
+    yr[  1] =  fx_2_002*y[  1];
+    yr[  2] =  fx_2_003*y[  2]+fx_2_004*y[  4];
+    yr[  3] =  fx_2_002*y[  0];
+    yr[  4] =  fx_2_004*y[  2]+fx_2_005*y[  4];
+};
+
+static inline void sh_rotx90_inv_2(REAL y[],REAL yr[])
+{
+    yr[  0] =  fx_2_002*y[  3];
+    yr[  1] =  fx_2_002*y[  1];
+    yr[  2] =  fx_2_003*y[  2]+fx_2_004*y[  4];
+    yr[  3] =  fx_2_001*y[  0];
+    yr[  4] =  fx_2_004*y[  2]+fx_2_005*y[  4];
+}
+
+static REAL fx_3_001 = (REAL) (-sqrt(10.0)/4.0); // -0.790569415042
+static REAL fx_3_002 = (REAL) ( sqrt(6.0)/4.0); // 0.612372435696
+static REAL fx_3_003 = (REAL) (-sqrt(16.0)/4.0); // -1
+static REAL fx_3_004 = (REAL) (-sqrt(6.0)/4.0); // -0.612372435695
+static REAL fx_3_005 = (REAL) (-sqrt(1.0)/4.0); // -0.25
+static REAL fx_3_006 = (REAL) (-sqrt(15.0)/4.0); // -0.968245836551
+static REAL fx_3_007 = (REAL) ( sqrt(1.0)/4.0); // 0.25
+static REAL fx_3_008 = (REAL) ( sqrt(10.0)/4.0); // 0.790569983984
+
+static inline void sh_rotx90_3(REAL y[],REAL yr[])
+{
+    yr[  0] =  fx_3_001*y[  3]+fx_3_002*y[  5];
+    yr[  1] =  fx_3_003*y[  1];
+    yr[  2] =  fx_3_004*y[  3]+fx_3_001*y[  5];
+    yr[  3] =  fx_3_008*y[  0]+fx_3_002*y[  2];
+    yr[  4] =  fx_3_005*y[  4]+fx_3_006*y[  6];
+    yr[  5] =  fx_3_004*y[  0]-fx_3_001*y[  2];
+    yr[  6] =  fx_3_006*y[  4]+fx_3_007*y[  6];
+};
+
+static inline void sh_rotx90_inv_3(REAL y[],REAL yr[])
+{
+    yr[  0] =  fx_3_008*y[  3]+fx_3_004*y[  5];
+    yr[  1] =  fx_3_003*y[  1];
+    yr[  2] =  fx_3_002*y[  3]-fx_3_001*y[  5];
+    yr[  3] =  fx_3_001*y[  0]+fx_3_004*y[  2];
+    yr[  4] =  fx_3_005*y[  4]+fx_3_006*y[  6];
+    yr[  5] =  fx_3_002*y[  0]+fx_3_001*y[  2];
+    yr[  6] =  fx_3_006*y[  4]+fx_3_007*y[  6];
+}
+
+static REAL fx_4_001 = (REAL) (-sqrt(56.0)/8.0); // -0.935414346694
+static REAL fx_4_002 = (REAL) ( sqrt(8.0)/8.0); // 0.353553390593
+static REAL fx_4_003 = (REAL) (-sqrt(36.0)/8.0); // -0.75
+static REAL fx_4_004 = (REAL) ( sqrt(28.0)/8.0); // 0.661437827766
+static REAL fx_4_005 = (REAL) (-sqrt(8.0)/8.0); // -0.353553390593
+static REAL fx_4_006 = (REAL) ( sqrt(36.0)/8.0); // 0.749999999999
+static REAL fx_4_007 = (REAL) ( sqrt(9.0)/8.0); // 0.37500034698
+static REAL fx_4_008 = (REAL) ( sqrt(20.0)/8.0); // 0.559017511622
+static REAL fx_4_009 = (REAL) ( sqrt(35.0)/8.0); // 0.739510657141
+static REAL fx_4_010 = (REAL) ( sqrt(16.0)/8.0); // 0.5
+static REAL fx_4_011 = (REAL) (-sqrt(28.0)/8.0); // -0.661437827766
+static REAL fx_4_012 = (REAL) ( sqrt(1.0)/8.0); // 0.125
+static REAL fx_4_013 = (REAL) ( sqrt(56.0)/8.0); // 0.935414346692
+
+static inline void sh_rotx90_4(REAL y[],REAL yr[])
+{
+    yr[  0] =  fx_4_001*y[  5]+fx_4_002*y[  7];
+    yr[  1] =  fx_4_003*y[  1]+fx_4_004*y[  3];
+    yr[  2] =  fx_4_005*y[  5]+fx_4_001*y[  7];
+    yr[  3] =  fx_4_004*y[  1]+fx_4_006*y[  3];
+    yr[  4] =  fx_4_007*y[  4]+fx_4_008*y[  6]+fx_4_009*y[  8];
+    yr[  5] =  fx_4_013*y[  0]+fx_4_002*y[  2];
+    yr[  6] =  fx_4_008*y[  4]+fx_4_010*y[  6]+fx_4_011*y[  8];
+    yr[  7] =  fx_4_005*y[  0]-fx_4_001*y[  2];
+    yr[  8] =  fx_4_009*y[  4]+fx_4_011*y[  6]+fx_4_012*y[  8];
+};
+
+static inline void sh_rotx90_inv_4(REAL y[],REAL yr[])
+{
+    yr[  0] =  fx_4_013*y[  5]+fx_4_005*y[  7];
+    yr[  1] =  fx_4_003*y[  1]+fx_4_004*y[  3];
+    yr[  2] =  fx_4_002*y[  5]-fx_4_001*y[  7];
+    yr[  3] =  fx_4_004*y[  1]+fx_4_006*y[  3];
+    yr[  4] =  fx_4_007*y[  4]+fx_4_008*y[  6]+fx_4_009*y[  8];
+    yr[  5] =  fx_4_001*y[  0]+fx_4_005*y[  2];
+    yr[  6] =  fx_4_008*y[  4]+fx_4_010*y[  6]+fx_4_011*y[  8];
+    yr[  7] =  fx_4_002*y[  0]+fx_4_001*y[  2];
+    yr[  8] =  fx_4_009*y[  4]+fx_4_011*y[  6]+fx_4_012*y[  8];
+}
+
+static REAL fx_5_001 = (REAL) ( sqrt(126.0)/16.0); // 0.70156076002
+static REAL fx_5_002 = (REAL) (-sqrt(120.0)/16.0); // -0.684653196882
+static REAL fx_5_003 = (REAL) ( sqrt(10.0)/16.0); // 0.197642353761
+static REAL fx_5_004 = (REAL) (-sqrt(64.0)/16.0); // -0.5
+static REAL fx_5_005 = (REAL) ( sqrt(192.0)/16.0); // 0.866025403784
+static REAL fx_5_006 = (REAL) ( sqrt(70.0)/16.0); // 0.522912516584
+static REAL fx_5_007 = (REAL) ( sqrt(24.0)/16.0); // 0.306186217848
+static REAL fx_5_008 = (REAL) (-sqrt(162.0)/16.0); // -0.795495128835
+static REAL fx_5_009 = (REAL) ( sqrt(64.0)/16.0); // 0.5
+static REAL fx_5_010 = (REAL) ( sqrt(60.0)/16.0); // 0.484122918274
+static REAL fx_5_011 = (REAL) ( sqrt(112.0)/16.0); // 0.661437827763
+static REAL fx_5_012 = (REAL) ( sqrt(84.0)/16.0); // 0.572821961867
+static REAL fx_5_013 = (REAL) ( sqrt(4.0)/16.0); // 0.125
+static REAL fx_5_014 = (REAL) ( sqrt(42.0)/16.0); // 0.405046293649
+static REAL fx_5_015 = (REAL) ( sqrt(210.0)/16.0); // 0.905711046633
+static REAL fx_5_016 = (REAL) ( sqrt(169.0)/16.0); // 0.8125
+static REAL fx_5_017 = (REAL) (-sqrt(45.0)/16.0); // -0.419262745781
+static REAL fx_5_018 = (REAL) ( sqrt(1.0)/16.0); // 0.0625
+static REAL fx_5_019 = (REAL) (-sqrt(126.0)/16.0); // -0.701561553415
+static REAL fx_5_020 = (REAL) ( sqrt(120.0)/16.0); // 0.684653196881
+static REAL fx_5_021 = (REAL) (-sqrt(10.0)/16.0); // -0.197642353761
+static REAL fx_5_022 = (REAL) (-sqrt(70.0)/16.0); // -0.522913107945
+static REAL fx_5_023 = (REAL) (-sqrt(60.0)/16.0); // -0.48412346577
+
+static inline void sh_rotx90_5(REAL y[],REAL yr[])
+{
+    yr[  0] =  fx_5_001*y[  5]+fx_5_002*y[  7]+fx_5_003*y[  9];
+    yr[  1] =  fx_5_004*y[  1]+fx_5_005*y[  3];
+    yr[  2] =  fx_5_006*y[  5]+fx_5_007*y[  7]+fx_5_008*y[  9];
+    yr[  3] =  fx_5_005*y[  1]+fx_5_009*y[  3];
+    yr[  4] =  fx_5_010*y[  5]+fx_5_011*y[  7]+fx_5_012*y[  9];
+    yr[  5] =  fx_5_019*y[  0]+fx_5_022*y[  2]+fx_5_023*y[  4];
+    yr[  6] =  fx_5_013*y[  6]+fx_5_014*y[  8]+fx_5_015*y[ 10];
+    yr[  7] =  fx_5_020*y[  0]-fx_5_007*y[  2]-fx_5_011*y[  4];
+    yr[  8] =  fx_5_014*y[  6]+fx_5_016*y[  8]+fx_5_017*y[ 10];
+    yr[  9] =  fx_5_021*y[  0]-fx_5_008*y[  2]-fx_5_012*y[  4];
+    yr[ 10] =  fx_5_015*y[  6]+fx_5_017*y[  8]+fx_5_018*y[ 10];
+};
+
+static inline void sh_rotx90_inv_5(REAL y[],REAL yr[])
+{
+    yr[  0] =  fx_5_019*y[  5]+fx_5_020*y[  7]+fx_5_021*y[  9];
+    yr[  1] =  fx_5_004*y[  1]+fx_5_005*y[  3];
+    yr[  2] =  fx_5_022*y[  5]-fx_5_007*y[  7]-fx_5_008*y[  9];
+    yr[  3] =  fx_5_005*y[  1]+fx_5_009*y[  3];
+    yr[  4] =  fx_5_023*y[  5]-fx_5_011*y[  7]-fx_5_012*y[  9];
+    yr[  5] =  fx_5_001*y[  0]+fx_5_006*y[  2]+fx_5_010*y[  4];
+    yr[  6] =  fx_5_013*y[  6]+fx_5_014*y[  8]+fx_5_015*y[ 10];
+    yr[  7] =  fx_5_002*y[  0]+fx_5_007*y[  2]+fx_5_011*y[  4];
+    yr[  8] =  fx_5_014*y[  6]+fx_5_016*y[  8]+fx_5_017*y[ 10];
+    yr[  9] =  fx_5_003*y[  0]+fx_5_008*y[  2]+fx_5_012*y[  4];
+    yr[ 10] =  fx_5_015*y[  6]+fx_5_017*y[  8]+fx_5_018*y[ 10];
+}
+
+static inline void sh_rot_1(REAL m[3*3],REAL y[NL1],REAL yr[NL1])
+{
+    REAL yr0 = m[4]*y[0] - m[5]*y[1] + m[3]*y[2];
+    REAL yr1 = m[8]*y[1] - m[7]*y[0] - m[6]*y[2];
+    REAL yr2 = m[1]*y[0] - m[2]*y[1] + m[0]*y[2];
+
+    yr[0] = yr0;
+    yr[1] = yr1;
+    yr[2] = yr2;
+}
+
+static inline void sh_roty_1(REAL ctm[1],REAL stm[1],REAL y[NL1],REAL yr[NL1])
+{
+    yr[0] = y[0];
+    rot_inv(ctm[0],stm[0],y[1],y[2],yr[1],yr[2]);
+}
+
+static inline void sh_roty_2(REAL ctm[2],REAL stm[2],REAL y[NL2],REAL yr[NL2])
+{
+    REAL ytmp[NL2];
+    sh_rotx90_2(y,yr);
+    sh_rotz_2(ctm,stm,yr,ytmp);
+    sh_rotx90_inv_2(ytmp,yr);
+}
+
+static inline void sh_roty_3(REAL ctm[3],REAL stm[3],REAL y[NL3],REAL yr[NL3])
+{
+    REAL ytmp[NL3];
+    sh_rotx90_3(y,yr);
+    sh_rotz_3(ctm,stm,yr,ytmp);
+    sh_rotx90_inv_3(ytmp,yr);
+}
+
+static inline void sh_roty_4(REAL ctm[4],REAL stm[4],REAL y[NL4],REAL yr[NL4])
+{
+    REAL ytmp[NL4];
+    sh_rotx90_4(y,yr);
+    sh_rotz_4(ctm,stm,yr,ytmp);
+    sh_rotx90_inv_4(ytmp,yr);
+}
+
+static inline void sh_roty_5(REAL ctm[5],REAL stm[5],REAL y[NL5],REAL yr[NL5])
+{
+    REAL ytmp[NL5];
+    sh_rotx90_5(y,yr);
+    sh_rotz_5(ctm,stm,yr,ytmp);
+    sh_rotx90_inv_5(ytmp,yr);
+}
+
+#define ROT_TOL CONSTANT(1e-4)
+
+/*
+Finds cosine,sine pairs for zyz rotation (i.e. rotation R_z2 R_y R_z1 v).
+The rotation is one which maps mx to (1,0,0) and mz to (0,0,1).
+*/
+static inline void zyz(REAL m[3*3],REAL &zc1,REAL &zs1,REAL &yc,REAL &ys,REAL &zc2,REAL &zs2)
+{
+    REAL cz = m[8];
+
+    // rotate so that (cx,cy,0) aligns to (1,0,0)
+    REAL cxylen = (REAL) sqrtf(1.0f - cz*cz);
+    if (cxylen >= ROT_TOL)
     {
-        const float fCW0 = 0.25f;
-        const float fCW1 = 0.5f;
-        const float fCW2 = 5.0f/16.0f;
-        //const float fCW3 = 0.0f;
-        const float fCW4 = -3.0f/32.0f;
-        //const float fCW5 = 0.0f;
-
-        // order has to be at least linear...
-
-        float fRet = fCW0 + fCW1;
-
-        if (order > 2) fRet += fCW2;
-        if (order > 4) fRet += fCW4;
-
-        // odd degrees >= 3 evaluate to zero integrated against cosine...
-
-        return fRet;
+        // if above is a NaN, will do the correct thing
+        yc = cz;
+        ys = cxylen;
+        REAL len67inv = 1.0f/sqrtf(m[6]*m[6] + m[7]*m[7]);
+        zc1 = -m[6]*len67inv;
+        zs1 =  m[7]*len67inv;
+        REAL len25inv = 1.0f/sqrtf(m[2]*m[2] + m[5]*m[5]);
+        zc2 = m[2]*len25inv;
+        zs2 = m[5]*len25inv;
     }
-
-    static const float SHEvalHemisphereLight_fSqrtPi = sqrtf(XM_PI);
-    static const float SHEvalHemisphereLight_fSqrtPi3 = sqrtf(XM_PI/3.0f);
-
-    typedef float REAL;
-    #define CONSTANT(x) (x ## f)
-
-    // routine generated programmatically for evaluating SH basis for degree 1
-    // inputs (x,y,z) are a point on the sphere (i.e., must be unit length)
-    // output is vector b with SH basis evaluated at (x,y,z).
-    //
-    inline static void sh_eval_basis_1(REAL x,REAL y,REAL z,REAL b[4])
+    else      // m[6],m[7],m[8] already aligned to (0,0,1)
     {
-        /* m=0 */
-
-        // l=0
-        const REAL p_0_0 = CONSTANT(0.282094791773878140);
-        b[  0] = p_0_0; // l=0,m=0
-        // l=1
-        const REAL p_1_0 = CONSTANT(0.488602511902919920)*z;
-        b[  2] = p_1_0; // l=1,m=0
-
-
-        /* m=1 */
-
-        const REAL s1 = y;
-        const REAL c1 = x;
-
-        // l=1
-        const REAL p_1_1 = CONSTANT(-0.488602511902919920);
-        b[  1] = p_1_1*s1; // l=1,m=-1
-        b[  3] = p_1_1*c1; // l=1,m=+1
+        zc1 = 1.0;
+        zs1 = 0.0;        // identity
+        yc = cz;
+        ys = 0.0;           // identity
+        zc2 = m[0]*cz;
+        zs2 = -m[1];  // align x axis (mx[0],mx[1],0) to (1,0,0)
     }
+}
 
-    // routine generated programmatically for evaluating SH basis for degree 2
-    // inputs (x,y,z) are a point on the sphere (i.e., must be unit length)
-    // output is vector b with SH basis evaluated at (x,y,z).
-    //
-    inline static void sh_eval_basis_2(REAL x,REAL y,REAL z,REAL b[9])
+static inline void sh_rotzyz_2(REAL zc1m[2],REAL zs1m[2],REAL ycm[2],REAL ysm[2],REAL zc2m[2],REAL zs2m[2],REAL y[NL2],REAL yr[NL2])
+{
+    REAL ytmp[NL2];
+    sh_rotz_2(zc1m,zs1m,y,yr);
+    sh_roty_2(ycm,ysm,yr,ytmp);
+    sh_rotz_2(zc2m,zs2m,ytmp,yr);
+}
+
+static inline void sh_rotzyz_3(REAL zc1m[3],REAL zs1m[3],REAL ycm[3],REAL ysm[3],REAL zc2m[3],REAL zs2m[3],REAL y[NL3],REAL yr[NL3])
+{
+    REAL ytmp[NL3];
+    sh_rotz_3(zc1m,zs1m,y,yr);
+    sh_roty_3(ycm,ysm,yr,ytmp);
+    sh_rotz_3(zc2m,zs2m,ytmp,yr);
+}
+
+static inline void sh_rotzyz_4(REAL zc1m[4],REAL zs1m[4],REAL ycm[4],REAL ysm[4],REAL zc2m[4],REAL zs2m[4],REAL y[NL4],REAL yr[NL4])
+{
+    REAL ytmp[NL4];
+    sh_rotz_4(zc1m,zs1m,y,yr);
+    sh_roty_4(ycm,ysm,yr,ytmp);
+    sh_rotz_4(zc2m,zs2m,ytmp,yr);
+}
+
+static inline void sh_rotzyz_5(REAL zc1m[5],REAL zs1m[5],REAL ycm[5],REAL ysm[5],REAL zc2m[5],REAL zs2m[5],REAL y[NL5],REAL yr[NL5])
+{
+    REAL ytmp[NL5];
+    sh_rotz_5(zc1m,zs1m,y,yr);
+    sh_roty_5(ycm,ysm,yr,ytmp);
+    sh_rotz_5(zc2m,zs2m,ytmp,yr);
+}
+
+static inline void sh3_rot(REAL m[3*3],REAL zc1,REAL zs1,REAL yc,REAL ys,REAL zc2,REAL zs2,REAL y[NSH3],REAL yr[NSH3])
+{
+    REAL zc1m[3],zs1m[3];
+    rot_3(zc1,zs1,zc1m,zs1m);
+    REAL ycm[3],ysm[3];
+    rot_3(yc,ys,ycm,ysm);
+    REAL zc2m[3],zs2m[3];
+    rot_3(zc2,zs2,zc2m,zs2m);
+
+    yr[0] = y[0];
+    sh_rot_1(m,y+NSH0,yr+NSH0);
+    sh_rotzyz_2(zc1m,zs1m,ycm,ysm,zc2m,zs2m,y+NSH1,yr+NSH1);
+    sh_rotzyz_3(zc1m,zs1m,ycm,ysm,zc2m,zs2m,y+NSH2,yr+NSH2);
+}
+
+static inline void sh4_rot(REAL m[3*3],REAL zc1,REAL zs1,REAL yc,REAL ys,REAL zc2,REAL zs2,REAL y[NSH4],REAL yr[NSH4])
+{
+    REAL zc1m[4],zs1m[4];
+    rot_4(zc1,zs1,zc1m,zs1m);
+    REAL ycm[4],ysm[4];
+    rot_4(yc,ys,ycm,ysm);
+    REAL zc2m[4],zs2m[4];
+    rot_4(zc2,zs2,zc2m,zs2m);
+
+    yr[0] = y[0];
+    sh_rot_1(m,y+NSH0,yr+NSH0);
+    sh_rotzyz_2(zc1m,zs1m,ycm,ysm,zc2m,zs2m,y+NSH1,yr+NSH1);
+    sh_rotzyz_3(zc1m,zs1m,ycm,ysm,zc2m,zs2m,y+NSH2,yr+NSH2);
+    sh_rotzyz_4(zc1m,zs1m,ycm,ysm,zc2m,zs2m,y+NSH3,yr+NSH3);
+}
+
+static inline void sh5_rot(REAL m[3*3],REAL zc1,REAL zs1,REAL yc,REAL ys,REAL zc2,REAL zs2,REAL y[NSH5],REAL yr[NSH5])
+{
+    REAL zc1m[5],zs1m[5];
+    rot_5(zc1,zs1,zc1m,zs1m);
+    REAL ycm[5],ysm[5];
+    rot_5(yc,ys,ycm,ysm);
+    REAL zc2m[5],zs2m[5];
+    rot_5(zc2,zs2,zc2m,zs2m);
+
+    yr[0] = y[0];
+    sh_rot_1(m,y+NSH0,yr+NSH0);
+    sh_rotzyz_2(zc1m,zs1m,ycm,ysm,zc2m,zs2m,y+NSH1,yr+NSH1);
+    sh_rotzyz_3(zc1m,zs1m,ycm,ysm,zc2m,zs2m,y+NSH2,yr+NSH2);
+    sh_rotzyz_4(zc1m,zs1m,ycm,ysm,zc2m,zs2m,y+NSH3,yr+NSH3);
+    sh_rotzyz_5(zc1m,zs1m,ycm,ysm,zc2m,zs2m,y+NSH4,yr+NSH4);
+}
+
+inline void sh1_rot(REAL m[3*3],REAL y[NSH1],REAL yr[NSH1])
+{
+    yr[0] = y[0];
+    sh_rot_1(m,y+NSH0,yr+NSH0);
+}
+
+inline void sh3_rot(REAL m[3*3],REAL y[NSH3],REAL yr[NSH3])
+{
+    REAL zc1,zs1,yc,ys,zc2,zs2;
+    zyz(m,zc1,zs1,yc,ys,zc2,zs2);
+    sh3_rot(m,zc1,zs1,yc,ys,zc2,zs2,y,yr);
+}
+
+inline void sh4_rot(REAL m[3*3],REAL y[NSH4],REAL yr[NSH4])
+{
+    REAL zc1,zs1,yc,ys,zc2,zs2;
+    zyz(m,zc1,zs1,yc,ys,zc2,zs2);
+    sh4_rot(m,zc1,zs1,yc,ys,zc2,zs2,y,yr);
+}
+
+inline void sh5_rot(REAL m[3*3],REAL y[NSH5],REAL yr[NSH5])
+{
+    REAL zc1,zs1,yc,ys,zc2,zs2;
+    zyz(m,zc1,zs1,yc,ys,zc2,zs2);
+    sh5_rot(m,zc1,zs1,yc,ys,zc2,zs2,y,yr);
+}
+
+// simple matrix vector multiply for a square matrix (only used by ZRotation)
+static inline void SimpMatMul(size_t dim, const float *matrix, const float *input, float *result)
+{
+    for(size_t iR=0; iR < dim; ++iR)
     {
-        const REAL z2 = z*z;
-
-
-        /* m=0 */
-
-        // l=0
-        const REAL p_0_0 = CONSTANT(0.282094791773878140);
-        b[  0] = p_0_0; // l=0,m=0
-        // l=1
-        const REAL p_1_0 = CONSTANT(0.488602511902919920)*z;
-        b[  2] = p_1_0; // l=1,m=0
-        // l=2
-        const REAL p_2_0 = CONSTANT(0.946174695757560080)*z2 + CONSTANT(-0.315391565252520050);
-        b[  6] = p_2_0; // l=2,m=0
-
-
-        /* m=1 */
-
-        const REAL s1 = y;
-        const REAL c1 = x;
-
-        // l=1
-        const REAL p_1_1 = CONSTANT(-0.488602511902919920);
-        b[  1] = p_1_1*s1; // l=1,m=-1
-        b[  3] = p_1_1*c1; // l=1,m=+1
-        // l=2
-        const REAL p_2_1 = CONSTANT(-1.092548430592079200)*z;
-        b[  5] = p_2_1*s1; // l=2,m=-1
-        b[  7] = p_2_1*c1; // l=2,m=+1
-
-
-        /* m=2 */
-
-        const REAL s2 = x*s1 + y*c1;
-        const REAL c2 = x*c1 - y*s1;
-
-        // l=2
-        const REAL p_2_2 = CONSTANT(0.546274215296039590);
-        b[  4] = p_2_2*s2; // l=2,m=-2
-        b[  8] = p_2_2*c2; // l=2,m=+2
-    }
-
-    // routine generated programmatically for evaluating SH basis for degree 3
-    // inputs (x,y,z) are a point on the sphere (i.e., must be unit length)
-    // output is vector b with SH basis evaluated at (x,y,z).
-    //
-    static void sh_eval_basis_3(REAL x,REAL y,REAL z,REAL b[16])
-    {
-        const REAL z2 = z*z;
-
-
-        /* m=0 */
-
-        // l=0
-        const REAL p_0_0 = CONSTANT(0.282094791773878140);
-        b[  0] = p_0_0; // l=0,m=0
-        // l=1
-        const REAL p_1_0 = CONSTANT(0.488602511902919920)*z;
-        b[  2] = p_1_0; // l=1,m=0
-        // l=2
-        const REAL p_2_0 = CONSTANT(0.946174695757560080)*z2 + CONSTANT(-0.315391565252520050);
-        b[  6] = p_2_0; // l=2,m=0
-        // l=3
-        const REAL p_3_0 = z*(CONSTANT(1.865881662950577000)*z2 + CONSTANT(-1.119528997770346200));
-        b[ 12] = p_3_0; // l=3,m=0
-
-
-        /* m=1 */
-
-        const REAL s1 = y;
-        const REAL c1 = x;
-
-        // l=1
-        const REAL p_1_1 = CONSTANT(-0.488602511902919920);
-        b[  1] = p_1_1*s1; // l=1,m=-1
-        b[  3] = p_1_1*c1; // l=1,m=+1
-        // l=2
-        const REAL p_2_1 = CONSTANT(-1.092548430592079200)*z;
-        b[  5] = p_2_1*s1; // l=2,m=-1
-        b[  7] = p_2_1*c1; // l=2,m=+1
-        // l=3
-        const REAL p_3_1 = CONSTANT(-2.285228997322328800)*z2 + CONSTANT(0.457045799464465770);
-        b[ 11] = p_3_1*s1; // l=3,m=-1
-        b[ 13] = p_3_1*c1; // l=3,m=+1
-
-
-        /* m=2 */
-
-        const REAL s2 = x*s1 + y*c1;
-        const REAL c2 = x*c1 - y*s1;
-
-        // l=2
-        const REAL p_2_2 = CONSTANT(0.546274215296039590);
-        b[  4] = p_2_2*s2; // l=2,m=-2
-        b[  8] = p_2_2*c2; // l=2,m=+2
-        // l=3
-        const REAL p_3_2 = CONSTANT(1.445305721320277100)*z;
-        b[ 10] = p_3_2*s2; // l=3,m=-2
-        b[ 14] = p_3_2*c2; // l=3,m=+2
-
-
-        /* m=3 */
-
-        const REAL s3 = x*s2 + y*c2;
-        const REAL c3 = x*c2 - y*s2;
-
-        // l=3
-        const REAL p_3_3 = CONSTANT(-0.590043589926643520);
-        b[  9] = p_3_3*s3; // l=3,m=-3
-        b[ 15] = p_3_3*c3; // l=3,m=+3
-    }
-
-    // routine generated programmatically for evaluating SH basis for degree 4
-    // inputs (x,y,z) are a point on the sphere (i.e., must be unit length)
-    // output is vector b with SH basis evaluated at (x,y,z).
-    //
-    static void sh_eval_basis_4(REAL x,REAL y,REAL z,REAL b[25])
-    {
-        const REAL z2 = z*z;
-
-
-        /* m=0 */
-
-        // l=0
-        const REAL p_0_0 = CONSTANT(0.282094791773878140);
-        b[  0] = p_0_0; // l=0,m=0
-        // l=1
-        const REAL p_1_0 = CONSTANT(0.488602511902919920)*z;
-        b[  2] = p_1_0; // l=1,m=0
-        // l=2
-        const REAL p_2_0 = CONSTANT(0.946174695757560080)*z2 + CONSTANT(-0.315391565252520050);
-        b[  6] = p_2_0; // l=2,m=0
-        // l=3
-        const REAL p_3_0 = z*(CONSTANT(1.865881662950577000)*z2 + CONSTANT(-1.119528997770346200));
-        b[ 12] = p_3_0; // l=3,m=0
-        // l=4
-        const REAL p_4_0 = CONSTANT(1.984313483298443000)*z*p_3_0 + CONSTANT(-1.006230589874905300)*p_2_0;
-        b[ 20] = p_4_0; // l=4,m=0
-
-
-        /* m=1 */
-
-        const REAL s1 = y;
-        const REAL c1 = x;
-
-        // l=1
-        const REAL p_1_1 = CONSTANT(-0.488602511902919920);
-        b[  1] = p_1_1*s1; // l=1,m=-1
-        b[  3] = p_1_1*c1; // l=1,m=+1
-        // l=2
-        const REAL p_2_1 = CONSTANT(-1.092548430592079200)*z;
-        b[  5] = p_2_1*s1; // l=2,m=-1
-        b[  7] = p_2_1*c1; // l=2,m=+1
-        // l=3
-        const REAL p_3_1 = CONSTANT(-2.285228997322328800)*z2 + CONSTANT(0.457045799464465770);
-        b[ 11] = p_3_1*s1; // l=3,m=-1
-        b[ 13] = p_3_1*c1; // l=3,m=+1
-        // l=4
-        const REAL p_4_1 = z*(CONSTANT(-4.683325804901024000)*z2 + CONSTANT(2.007139630671867200));
-        b[ 19] = p_4_1*s1; // l=4,m=-1
-        b[ 21] = p_4_1*c1; // l=4,m=+1
-
-
-        /* m=2 */
-
-        const REAL s2 = x*s1 + y*c1;
-        const REAL c2 = x*c1 - y*s1;
-
-        // l=2
-        const REAL p_2_2 = CONSTANT(0.546274215296039590);
-        b[  4] = p_2_2*s2; // l=2,m=-2
-        b[  8] = p_2_2*c2; // l=2,m=+2
-        // l=3
-        const REAL p_3_2 = CONSTANT(1.445305721320277100)*z;
-        b[ 10] = p_3_2*s2; // l=3,m=-2
-        b[ 14] = p_3_2*c2; // l=3,m=+2
-        // l=4
-        const REAL p_4_2 = CONSTANT(3.311611435151459800)*z2 + CONSTANT(-0.473087347878779980);
-        b[ 18] = p_4_2*s2; // l=4,m=-2
-        b[ 22] = p_4_2*c2; // l=4,m=+2
-
-
-        /* m=3 */
-
-        const REAL s3 = x*s2 + y*c2;
-        const REAL c3 = x*c2 - y*s2;
-
-        // l=3
-        const REAL p_3_3 = CONSTANT(-0.590043589926643520);
-        b[  9] = p_3_3*s3; // l=3,m=-3
-        b[ 15] = p_3_3*c3; // l=3,m=+3
-        // l=4
-        const REAL p_4_3 = CONSTANT(-1.770130769779930200)*z;
-        b[ 17] = p_4_3*s3; // l=4,m=-3
-        b[ 23] = p_4_3*c3; // l=4,m=+3
-
-
-        /* m=4 */
-
-        const REAL s4 = x*s3 + y*c3;
-        const REAL c4 = x*c3 - y*s3;
-
-        // l=4
-        const REAL p_4_4 = CONSTANT(0.625835735449176030);
-        b[ 16] = p_4_4*s4; // l=4,m=-4
-        b[ 24] = p_4_4*c4; // l=4,m=+4
-    }
-
-    // routine generated programmatically for evaluating SH basis for degree 5
-    // inputs (x,y,z) are a point on the sphere (i.e., must be unit length)
-    // output is vector b with SH basis evaluated at (x,y,z).
-    //
-    static void sh_eval_basis_5(REAL x,REAL y,REAL z,REAL b[36])
-    {
-        const REAL z2 = z*z;
-
-
-        /* m=0 */
-
-        // l=0
-        const REAL p_0_0 = CONSTANT(0.282094791773878140);
-        b[  0] = p_0_0; // l=0,m=0
-        // l=1
-        const REAL p_1_0 = CONSTANT(0.488602511902919920)*z;
-        b[  2] = p_1_0; // l=1,m=0
-        // l=2
-        const REAL p_2_0 = CONSTANT(0.946174695757560080)*z2 + CONSTANT(-0.315391565252520050);
-        b[  6] = p_2_0; // l=2,m=0
-        // l=3
-        const REAL p_3_0 = z*(CONSTANT(1.865881662950577000)*z2 + CONSTANT(-1.119528997770346200));
-        b[ 12] = p_3_0; // l=3,m=0
-        // l=4
-        const REAL p_4_0 = CONSTANT(1.984313483298443000)*z*p_3_0 + CONSTANT(-1.006230589874905300)*p_2_0;
-        b[ 20] = p_4_0; // l=4,m=0
-        // l=5
-        const REAL p_5_0 = CONSTANT(1.989974874213239700)*z*p_4_0 + CONSTANT(-1.002853072844814000)*p_3_0;
-        b[ 30] = p_5_0; // l=5,m=0
-
-
-        /* m=1 */
-
-        const REAL s1 = y;
-        const REAL c1 = x;
-
-        // l=1
-        const REAL p_1_1 = CONSTANT(-0.488602511902919920);
-        b[  1] = p_1_1*s1; // l=1,m=-1
-        b[  3] = p_1_1*c1; // l=1,m=+1
-        // l=2
-        const REAL p_2_1 = CONSTANT(-1.092548430592079200)*z;
-        b[  5] = p_2_1*s1; // l=2,m=-1
-        b[  7] = p_2_1*c1; // l=2,m=+1
-        // l=3
-        const REAL p_3_1 = CONSTANT(-2.285228997322328800)*z2 + CONSTANT(0.457045799464465770);
-        b[ 11] = p_3_1*s1; // l=3,m=-1
-        b[ 13] = p_3_1*c1; // l=3,m=+1
-        // l=4
-        const REAL p_4_1 = z*(CONSTANT(-4.683325804901024000)*z2 + CONSTANT(2.007139630671867200));
-        b[ 19] = p_4_1*s1; // l=4,m=-1
-        b[ 21] = p_4_1*c1; // l=4,m=+1
-        // l=5
-        const REAL p_5_1 = CONSTANT(2.031009601158990200)*z*p_4_1 + CONSTANT(-0.991031208965114650)*p_3_1;
-        b[ 29] = p_5_1*s1; // l=5,m=-1
-        b[ 31] = p_5_1*c1; // l=5,m=+1
-
-
-        /* m=2 */
-
-        const REAL s2 = x*s1 + y*c1;
-        const REAL c2 = x*c1 - y*s1;
-
-        // l=2
-        const REAL p_2_2 = CONSTANT(0.546274215296039590);
-        b[  4] = p_2_2*s2; // l=2,m=-2
-        b[  8] = p_2_2*c2; // l=2,m=+2
-        // l=3
-        const REAL p_3_2 = CONSTANT(1.445305721320277100)*z;
-        b[ 10] = p_3_2*s2; // l=3,m=-2
-        b[ 14] = p_3_2*c2; // l=3,m=+2
-        // l=4
-        const REAL p_4_2 = CONSTANT(3.311611435151459800)*z2 + CONSTANT(-0.473087347878779980);
-        b[ 18] = p_4_2*s2; // l=4,m=-2
-        b[ 22] = p_4_2*c2; // l=4,m=+2
-        // l=5
-        const REAL p_5_2 = z*(CONSTANT(7.190305177459987500)*z2 + CONSTANT(-2.396768392486662100));
-        b[ 28] = p_5_2*s2; // l=5,m=-2
-        b[ 32] = p_5_2*c2; // l=5,m=+2
-
-
-        /* m=3 */
-
-        const REAL s3 = x*s2 + y*c2;
-        const REAL c3 = x*c2 - y*s2;
-
-        // l=3
-        const REAL p_3_3 = CONSTANT(-0.590043589926643520);
-        b[  9] = p_3_3*s3; // l=3,m=-3
-        b[ 15] = p_3_3*c3; // l=3,m=+3
-        // l=4
-        const REAL p_4_3 = CONSTANT(-1.770130769779930200)*z;
-        b[ 17] = p_4_3*s3; // l=4,m=-3
-        b[ 23] = p_4_3*c3; // l=4,m=+3
-        // l=5
-        const REAL p_5_3 = CONSTANT(-4.403144694917253700)*z2 + CONSTANT(0.489238299435250430);
-        b[ 27] = p_5_3*s3; // l=5,m=-3
-        b[ 33] = p_5_3*c3; // l=5,m=+3
-
-
-        /* m=4 */
-
-        const REAL s4 = x*s3 + y*c3;
-        const REAL c4 = x*c3 - y*s3;
-
-        // l=4
-        const REAL p_4_4 = CONSTANT(0.625835735449176030);
-        b[ 16] = p_4_4*s4; // l=4,m=-4
-        b[ 24] = p_4_4*c4; // l=4,m=+4
-        // l=5
-        const REAL p_5_4 = CONSTANT(2.075662314881041100)*z;
-        b[ 26] = p_5_4*s4; // l=5,m=-4
-        b[ 34] = p_5_4*c4; // l=5,m=+4
-
-
-        /* m=5 */
-
-        const REAL s5 = x*s4 + y*c4;
-        const REAL c5 = x*c4 - y*s4;
-
-        // l=5
-        const REAL p_5_5 = CONSTANT(-0.656382056840170150);
-        b[ 25] = p_5_5*s5; // l=5,m=-5
-        b[ 35] = p_5_5*c5; // l=5,m=+5
-    }
-
-    static const REAL M_PIjs = (REAL) (4.0*atan(1.0));
-    static const REAL maxang = (REAL) (M_PIjs/2);
-    static const int NSH0 = 1;
-    static const int NSH1 = 4;
-    static const int NSH2 = 9;
-    static const int NSH3 = 16;
-    static const int NSH4 = 25;
-    static const int NSH5 = 36;
-    static const int NSH6 = 49;
-    static const int NSH7 = 64;
-    static const int NSH8 = 81;
-    static const int NSH9 = 100;
-    static const int NL0 = 1;
-    static const int NL1 = 3;
-    static const int NL2 = 5;
-    static const int NL3 = 7;
-    static const int NL4 = 9;
-    static const int NL5 = 11;
-    static const int NL6 = 13;
-    static const int NL7 = 15;
-    static const int NL8 = 17;
-    static const int NL9 = 19;
-
-    static inline void rot(REAL ct,REAL st,REAL x,REAL y,REAL &xout,REAL &yout)
-    {
-        xout = x*ct - y*st;
-        yout = y*ct + x*st;
-    }
-
-    static inline void rot_inv(REAL ct,REAL st,REAL x,REAL y,REAL &xout,REAL &yout)
-    {
-        xout = x*ct + y*st;
-        yout = y*ct - x*st;
-    }
-
-    static inline void rot_1(REAL ct,REAL st,REAL ctm[1],REAL stm[1])
-    {
-        ctm[0] = ct;
-        stm[0] = st;
-    }
-
-    static inline void rot_2(REAL ct,REAL st,REAL ctm[2],REAL stm[2])
-    {
-        REAL ct2 = CONSTANT(2.0)*ct;
-        ctm[0] = ct;         
-        stm[0] = st;
-        ctm[1] = ct2*ct-CONSTANT(1.0); 
-        stm[1] = ct2*st;
-    }
-
-    static inline void rot_3(REAL ct,REAL st,REAL ctm[3],REAL stm[3])
-    {
-        REAL ct2 = CONSTANT(2.0)*ct;
-        ctm[0] = ct;         
-        stm[0] = st;
-        ctm[1] = ct2*ct-CONSTANT(1.0); 
-        stm[1] = ct2*st;
-        ctm[2] = ct2*ctm[1] - ct;
-        stm[2] = ct2*stm[1] - st;
-    }
-
-    static inline void rot_4(REAL ct,REAL st,REAL ctm[4],REAL stm[4])
-    {
-        REAL ct2 = CONSTANT(2.0)*ct;
-        ctm[0] = ct;         
-        stm[0] = st;
-        ctm[1] = ct2*ct-CONSTANT(1.0); 
-        stm[1] = ct2*st;
-        ctm[2] = ct2*ctm[1] - ct;
-        stm[2] = ct2*stm[1] - st;
-        ctm[3] = ct2*ctm[2] - ctm[1];
-        stm[3] = ct2*stm[2] - stm[1];
-    }
-
-    static inline void rot_5(REAL ct,REAL st,REAL ctm[5],REAL stm[5])
-    {
-        REAL ct2 = CONSTANT(2.0)*ct;
-        ctm[0] = ct;         
-        stm[0] = st;
-        ctm[1] = ct2*ct-CONSTANT(1.0); 
-        stm[1] = ct2*st;
-        ctm[2] = ct2*ctm[1] - ct;
-        stm[2] = ct2*stm[1] - st;
-        ctm[3] = ct2*ctm[2] - ctm[1];
-        stm[3] = ct2*stm[2] - stm[1];
-        ctm[4] = ct2*ctm[3] - ctm[2];
-        stm[4] = ct2*stm[3] - stm[2];
-    }
-
-    static inline void sh_rotz_1(REAL ctm[1],REAL stm[1],REAL y[NL1],REAL yr[NL1])
-    {
-        yr[1] = y[1];
-        rot_inv(ctm[0],stm[0],y[0],y[2],yr[0],yr[2]);
-    }
-
-    static inline void sh_rotz_2(REAL ctm[2],REAL stm[2],REAL y[NL2],REAL yr[NL2])
-    {
-        yr[2] = y[2];
-        rot_inv(ctm[0],stm[0],y[1],y[3],yr[1],yr[3]);
-        rot_inv(ctm[1],stm[1],y[0],y[4],yr[0],yr[4]);
-    }
-
-    static inline void sh_rotz_3(REAL ctm[3],REAL stm[3],REAL y[NL3],REAL yr[NL3])
-    {
-        yr[3] = y[3];
-        rot_inv(ctm[0],stm[0],y[2],y[4],yr[2],yr[4]);
-        rot_inv(ctm[1],stm[1],y[1],y[5],yr[1],yr[5]);
-        rot_inv(ctm[2],stm[2],y[0],y[6],yr[0],yr[6]);
-    }
-
-    static inline void sh_rotz_4(REAL ctm[4],REAL stm[4],REAL y[NL4],REAL yr[NL4])
-    {
-        yr[4] = y[4];
-        rot_inv(ctm[0],stm[0],y[3],y[5],yr[3],yr[5]);
-        rot_inv(ctm[1],stm[1],y[2],y[6],yr[2],yr[6]);
-        rot_inv(ctm[2],stm[2],y[1],y[7],yr[1],yr[7]);
-        rot_inv(ctm[3],stm[3],y[0],y[8],yr[0],yr[8]);
-    }
-
-    static inline void sh_rotz_5(REAL ctm[5],REAL stm[5],REAL y[NL5],REAL yr[NL5])
-    {
-        yr[5] = y[5];
-        rot_inv(ctm[0],stm[0],y[4],y[6],yr[4],yr[6]);
-        rot_inv(ctm[1],stm[1],y[3],y[7],yr[3],yr[7]);
-        rot_inv(ctm[2],stm[2],y[2],y[8],yr[2],yr[8]);
-        rot_inv(ctm[3],stm[3],y[1],y[9],yr[1],yr[9]);
-        rot_inv(ctm[4],stm[4],y[0],y[10],yr[0],yr[10]);
-    }
-
-    // rotation code generated programmatically by rotatex (2000x4000 samples, eps=1e-008)
-
-    static REAL fx_1_001 = (REAL) ( sqrt(1.0)/1.0); // 1
-    static REAL fx_1_002 = (REAL) (-sqrt(1.0)/1.0); // -1.00000030843
-
-    static inline void sh_rotx90_1(REAL y[],REAL yr[])
-    {
-        yr[  0] =  fx_1_001*y[  1];
-        yr[  1] =  fx_1_002*y[  0];
-        yr[  2] =  fx_1_001*y[  2];
-    };
-
-    static inline void sh_rotx90_inv_1(REAL y[],REAL yr[])
-    {
-        yr[  0] =  fx_1_002*y[  1];
-        yr[  1] =  fx_1_001*y[  0];
-        yr[  2] =  fx_1_001*y[  2];
-    }
-
-    static REAL fx_2_001 = (REAL) ( sqrt(4.0)/2.0); // 1
-    static REAL fx_2_002 = (REAL) (-sqrt(4.0)/2.0); // -1
-    static REAL fx_2_003 = (REAL) (-sqrt(1.0)/2.0); // -0.500000257021
-    static REAL fx_2_004 = (REAL) (-sqrt(3.0)/2.0); // -0.866025848959
-    static REAL fx_2_005 = (REAL) ( sqrt(1.0)/2.0); // 0.5
-
-    static inline void sh_rotx90_2(REAL y[],REAL yr[])
-    {
-        yr[  0] =  fx_2_001*y[  3];
-        yr[  1] =  fx_2_002*y[  1];
-        yr[  2] =  fx_2_003*y[  2]+fx_2_004*y[  4];
-        yr[  3] =  fx_2_002*y[  0];
-        yr[  4] =  fx_2_004*y[  2]+fx_2_005*y[  4];
-    };
-
-    static inline void sh_rotx90_inv_2(REAL y[],REAL yr[])
-    {
-        yr[  0] =  fx_2_002*y[  3];
-        yr[  1] =  fx_2_002*y[  1];
-        yr[  2] =  fx_2_003*y[  2]+fx_2_004*y[  4];
-        yr[  3] =  fx_2_001*y[  0];
-        yr[  4] =  fx_2_004*y[  2]+fx_2_005*y[  4];
-    }
-
-    static REAL fx_3_001 = (REAL) (-sqrt(10.0)/4.0); // -0.790569415042
-    static REAL fx_3_002 = (REAL) ( sqrt(6.0)/4.0); // 0.612372435696
-    static REAL fx_3_003 = (REAL) (-sqrt(16.0)/4.0); // -1
-    static REAL fx_3_004 = (REAL) (-sqrt(6.0)/4.0); // -0.612372435695
-    static REAL fx_3_005 = (REAL) (-sqrt(1.0)/4.0); // -0.25
-    static REAL fx_3_006 = (REAL) (-sqrt(15.0)/4.0); // -0.968245836551
-    static REAL fx_3_007 = (REAL) ( sqrt(1.0)/4.0); // 0.25
-    static REAL fx_3_008 = (REAL) ( sqrt(10.0)/4.0); // 0.790569983984
-
-    static inline void sh_rotx90_3(REAL y[],REAL yr[])
-    {
-        yr[  0] =  fx_3_001*y[  3]+fx_3_002*y[  5];
-        yr[  1] =  fx_3_003*y[  1];
-        yr[  2] =  fx_3_004*y[  3]+fx_3_001*y[  5];
-        yr[  3] =  fx_3_008*y[  0]+fx_3_002*y[  2];
-        yr[  4] =  fx_3_005*y[  4]+fx_3_006*y[  6];
-        yr[  5] =  fx_3_004*y[  0]-fx_3_001*y[  2];
-        yr[  6] =  fx_3_006*y[  4]+fx_3_007*y[  6];
-    };
-
-    static inline void sh_rotx90_inv_3(REAL y[],REAL yr[])
-    {
-        yr[  0] =  fx_3_008*y[  3]+fx_3_004*y[  5];
-        yr[  1] =  fx_3_003*y[  1];
-        yr[  2] =  fx_3_002*y[  3]-fx_3_001*y[  5];
-        yr[  3] =  fx_3_001*y[  0]+fx_3_004*y[  2];
-        yr[  4] =  fx_3_005*y[  4]+fx_3_006*y[  6];
-        yr[  5] =  fx_3_002*y[  0]+fx_3_001*y[  2];
-        yr[  6] =  fx_3_006*y[  4]+fx_3_007*y[  6];
-    }
-
-    static REAL fx_4_001 = (REAL) (-sqrt(56.0)/8.0); // -0.935414346694
-    static REAL fx_4_002 = (REAL) ( sqrt(8.0)/8.0); // 0.353553390593
-    static REAL fx_4_003 = (REAL) (-sqrt(36.0)/8.0); // -0.75
-    static REAL fx_4_004 = (REAL) ( sqrt(28.0)/8.0); // 0.661437827766
-    static REAL fx_4_005 = (REAL) (-sqrt(8.0)/8.0); // -0.353553390593
-    static REAL fx_4_006 = (REAL) ( sqrt(36.0)/8.0); // 0.749999999999
-    static REAL fx_4_007 = (REAL) ( sqrt(9.0)/8.0); // 0.37500034698
-    static REAL fx_4_008 = (REAL) ( sqrt(20.0)/8.0); // 0.559017511622
-    static REAL fx_4_009 = (REAL) ( sqrt(35.0)/8.0); // 0.739510657141
-    static REAL fx_4_010 = (REAL) ( sqrt(16.0)/8.0); // 0.5
-    static REAL fx_4_011 = (REAL) (-sqrt(28.0)/8.0); // -0.661437827766
-    static REAL fx_4_012 = (REAL) ( sqrt(1.0)/8.0); // 0.125
-    static REAL fx_4_013 = (REAL) ( sqrt(56.0)/8.0); // 0.935414346692
-
-    static inline void sh_rotx90_4(REAL y[],REAL yr[])
-    {
-        yr[  0] =  fx_4_001*y[  5]+fx_4_002*y[  7];
-        yr[  1] =  fx_4_003*y[  1]+fx_4_004*y[  3];
-        yr[  2] =  fx_4_005*y[  5]+fx_4_001*y[  7];
-        yr[  3] =  fx_4_004*y[  1]+fx_4_006*y[  3];
-        yr[  4] =  fx_4_007*y[  4]+fx_4_008*y[  6]+fx_4_009*y[  8];
-        yr[  5] =  fx_4_013*y[  0]+fx_4_002*y[  2];
-        yr[  6] =  fx_4_008*y[  4]+fx_4_010*y[  6]+fx_4_011*y[  8];
-        yr[  7] =  fx_4_005*y[  0]-fx_4_001*y[  2];
-        yr[  8] =  fx_4_009*y[  4]+fx_4_011*y[  6]+fx_4_012*y[  8];
-    };
-
-    static inline void sh_rotx90_inv_4(REAL y[],REAL yr[])
-    {
-        yr[  0] =  fx_4_013*y[  5]+fx_4_005*y[  7];
-        yr[  1] =  fx_4_003*y[  1]+fx_4_004*y[  3];
-        yr[  2] =  fx_4_002*y[  5]-fx_4_001*y[  7];
-        yr[  3] =  fx_4_004*y[  1]+fx_4_006*y[  3];
-        yr[  4] =  fx_4_007*y[  4]+fx_4_008*y[  6]+fx_4_009*y[  8];
-        yr[  5] =  fx_4_001*y[  0]+fx_4_005*y[  2];
-        yr[  6] =  fx_4_008*y[  4]+fx_4_010*y[  6]+fx_4_011*y[  8];
-        yr[  7] =  fx_4_002*y[  0]+fx_4_001*y[  2];
-        yr[  8] =  fx_4_009*y[  4]+fx_4_011*y[  6]+fx_4_012*y[  8];
-    }
-
-    static REAL fx_5_001 = (REAL) ( sqrt(126.0)/16.0); // 0.70156076002
-    static REAL fx_5_002 = (REAL) (-sqrt(120.0)/16.0); // -0.684653196882
-    static REAL fx_5_003 = (REAL) ( sqrt(10.0)/16.0); // 0.197642353761
-    static REAL fx_5_004 = (REAL) (-sqrt(64.0)/16.0); // -0.5
-    static REAL fx_5_005 = (REAL) ( sqrt(192.0)/16.0); // 0.866025403784
-    static REAL fx_5_006 = (REAL) ( sqrt(70.0)/16.0); // 0.522912516584
-    static REAL fx_5_007 = (REAL) ( sqrt(24.0)/16.0); // 0.306186217848
-    static REAL fx_5_008 = (REAL) (-sqrt(162.0)/16.0); // -0.795495128835
-    static REAL fx_5_009 = (REAL) ( sqrt(64.0)/16.0); // 0.5
-    static REAL fx_5_010 = (REAL) ( sqrt(60.0)/16.0); // 0.484122918274
-    static REAL fx_5_011 = (REAL) ( sqrt(112.0)/16.0); // 0.661437827763
-    static REAL fx_5_012 = (REAL) ( sqrt(84.0)/16.0); // 0.572821961867
-    static REAL fx_5_013 = (REAL) ( sqrt(4.0)/16.0); // 0.125
-    static REAL fx_5_014 = (REAL) ( sqrt(42.0)/16.0); // 0.405046293649
-    static REAL fx_5_015 = (REAL) ( sqrt(210.0)/16.0); // 0.905711046633
-    static REAL fx_5_016 = (REAL) ( sqrt(169.0)/16.0); // 0.8125
-    static REAL fx_5_017 = (REAL) (-sqrt(45.0)/16.0); // -0.419262745781
-    static REAL fx_5_018 = (REAL) ( sqrt(1.0)/16.0); // 0.0625
-    static REAL fx_5_019 = (REAL) (-sqrt(126.0)/16.0); // -0.701561553415
-    static REAL fx_5_020 = (REAL) ( sqrt(120.0)/16.0); // 0.684653196881
-    static REAL fx_5_021 = (REAL) (-sqrt(10.0)/16.0); // -0.197642353761
-    static REAL fx_5_022 = (REAL) (-sqrt(70.0)/16.0); // -0.522913107945
-    static REAL fx_5_023 = (REAL) (-sqrt(60.0)/16.0); // -0.48412346577
-
-    static inline void sh_rotx90_5(REAL y[],REAL yr[])
-    {
-        yr[  0] =  fx_5_001*y[  5]+fx_5_002*y[  7]+fx_5_003*y[  9];
-        yr[  1] =  fx_5_004*y[  1]+fx_5_005*y[  3];
-        yr[  2] =  fx_5_006*y[  5]+fx_5_007*y[  7]+fx_5_008*y[  9];
-        yr[  3] =  fx_5_005*y[  1]+fx_5_009*y[  3];
-        yr[  4] =  fx_5_010*y[  5]+fx_5_011*y[  7]+fx_5_012*y[  9];
-        yr[  5] =  fx_5_019*y[  0]+fx_5_022*y[  2]+fx_5_023*y[  4];
-        yr[  6] =  fx_5_013*y[  6]+fx_5_014*y[  8]+fx_5_015*y[ 10];
-        yr[  7] =  fx_5_020*y[  0]-fx_5_007*y[  2]-fx_5_011*y[  4];
-        yr[  8] =  fx_5_014*y[  6]+fx_5_016*y[  8]+fx_5_017*y[ 10];
-        yr[  9] =  fx_5_021*y[  0]-fx_5_008*y[  2]-fx_5_012*y[  4];
-        yr[ 10] =  fx_5_015*y[  6]+fx_5_017*y[  8]+fx_5_018*y[ 10];
-    };
-
-    static inline void sh_rotx90_inv_5(REAL y[],REAL yr[])
-    {
-        yr[  0] =  fx_5_019*y[  5]+fx_5_020*y[  7]+fx_5_021*y[  9];
-        yr[  1] =  fx_5_004*y[  1]+fx_5_005*y[  3];
-        yr[  2] =  fx_5_022*y[  5]-fx_5_007*y[  7]-fx_5_008*y[  9];
-        yr[  3] =  fx_5_005*y[  1]+fx_5_009*y[  3];
-        yr[  4] =  fx_5_023*y[  5]-fx_5_011*y[  7]-fx_5_012*y[  9];
-        yr[  5] =  fx_5_001*y[  0]+fx_5_006*y[  2]+fx_5_010*y[  4];
-        yr[  6] =  fx_5_013*y[  6]+fx_5_014*y[  8]+fx_5_015*y[ 10];
-        yr[  7] =  fx_5_002*y[  0]+fx_5_007*y[  2]+fx_5_011*y[  4];
-        yr[  8] =  fx_5_014*y[  6]+fx_5_016*y[  8]+fx_5_017*y[ 10];
-        yr[  9] =  fx_5_003*y[  0]+fx_5_008*y[  2]+fx_5_012*y[  4];
-        yr[ 10] =  fx_5_015*y[  6]+fx_5_017*y[  8]+fx_5_018*y[ 10];
-    }
-
-    static inline void sh_rot_1(REAL m[3*3],REAL y[NL1],REAL yr[NL1])
-    {
-        REAL yr0 = m[4]*y[0] - m[5]*y[1] + m[3]*y[2];
-        REAL yr1 = m[8]*y[1] - m[7]*y[0] - m[6]*y[2];
-        REAL yr2 = m[1]*y[0] - m[2]*y[1] + m[0]*y[2];
-
-        yr[0] = yr0;
-        yr[1] = yr1;
-        yr[2] = yr2;
-    }
-
-    static inline void sh_roty_1(REAL ctm[1],REAL stm[1],REAL y[NL1],REAL yr[NL1])
-    {
-        yr[0] = y[0];
-        rot_inv(ctm[0],stm[0],y[1],y[2],yr[1],yr[2]);
-    }
-
-    static inline void sh_roty_2(REAL ctm[2],REAL stm[2],REAL y[NL2],REAL yr[NL2])
-    {
-        REAL ytmp[NL2];
-        sh_rotx90_2(y,yr);
-        sh_rotz_2(ctm,stm,yr,ytmp);
-        sh_rotx90_inv_2(ytmp,yr);
-    }
-
-    static inline void sh_roty_3(REAL ctm[3],REAL stm[3],REAL y[NL3],REAL yr[NL3])
-    {
-        REAL ytmp[NL3];
-        sh_rotx90_3(y,yr);
-        sh_rotz_3(ctm,stm,yr,ytmp);
-        sh_rotx90_inv_3(ytmp,yr);
-    }
-
-    static inline void sh_roty_4(REAL ctm[4],REAL stm[4],REAL y[NL4],REAL yr[NL4])
-    {
-        REAL ytmp[NL4];
-        sh_rotx90_4(y,yr);
-        sh_rotz_4(ctm,stm,yr,ytmp);
-        sh_rotx90_inv_4(ytmp,yr);
-    }
-
-    static inline void sh_roty_5(REAL ctm[5],REAL stm[5],REAL y[NL5],REAL yr[NL5])
-    {
-        REAL ytmp[NL5];
-        sh_rotx90_5(y,yr);
-        sh_rotz_5(ctm,stm,yr,ytmp);
-        sh_rotx90_inv_5(ytmp,yr);
-    } 
-
-    #define ROT_TOL CONSTANT(1e-4)
-
-    /*
-    Finds cosine,sine pairs for zyz rotation (i.e. rotation R_z2 R_y R_z1 v).
-    The rotation is one which maps mx to (1,0,0) and mz to (0,0,1).
-    */
-    static inline void zyz(REAL m[3*3],REAL &zc1,REAL &zs1,REAL &yc,REAL &ys,REAL &zc2,REAL &zs2)
-    {
-        REAL cz = m[8];
-
-        // rotate so that (cx,cy,0) aligns to (1,0,0)
-        REAL cxylen = (REAL) sqrtf(1.0f - cz*cz);
-        if (cxylen >= ROT_TOL)
+        result[iR + 0] = matrix[iR*dim + 0] * input[0];
+        for(size_t iC=1; iC < dim; ++iC)
         {
-            // if above is a NaN, will do the correct thing
-            yc = cz;
-            ys = cxylen;
-            REAL len67inv = 1.0f/sqrtf(m[6]*m[6] + m[7]*m[7]);
-            zc1 = -m[6]*len67inv;
-            zs1 =  m[7]*len67inv;
-            REAL len25inv = 1.0f/sqrtf(m[2]*m[2] + m[5]*m[5]);
-            zc2 = m[2]*len25inv;
-            zs2 = m[5]*len25inv; 
-        } else {  // m[6],m[7],m[8] already aligned to (0,0,1)
-            zc1 = 1.0; zs1 = 0.0;        // identity
-            yc = cz; ys = 0.0;           // identity
-            zc2 = m[0]*cz; zs2 = -m[1];  // align x axis (mx[0],mx[1],0) to (1,0,0)
+            result[iR] += matrix[iR*dim+ iC] * input[iC];
         }
     }
-
-    static inline void sh_rotzyz_2(REAL zc1m[2],REAL zs1m[2],REAL ycm[2],REAL ysm[2],REAL zc2m[2],REAL zs2m[2],REAL y[NL2],REAL yr[NL2])
-    {
-        REAL ytmp[NL2];
-        sh_rotz_2(zc1m,zs1m,y,yr);
-        sh_roty_2(ycm,ysm,yr,ytmp);
-        sh_rotz_2(zc2m,zs2m,ytmp,yr);
-    }
-
-    static inline void sh_rotzyz_3(REAL zc1m[3],REAL zs1m[3],REAL ycm[3],REAL ysm[3],REAL zc2m[3],REAL zs2m[3],REAL y[NL3],REAL yr[NL3])
-    {
-        REAL ytmp[NL3];
-        sh_rotz_3(zc1m,zs1m,y,yr);
-        sh_roty_3(ycm,ysm,yr,ytmp);
-        sh_rotz_3(zc2m,zs2m,ytmp,yr);
-    }
-
-    static inline void sh_rotzyz_4(REAL zc1m[4],REAL zs1m[4],REAL ycm[4],REAL ysm[4],REAL zc2m[4],REAL zs2m[4],REAL y[NL4],REAL yr[NL4])
-    {
-        REAL ytmp[NL4];
-        sh_rotz_4(zc1m,zs1m,y,yr);
-        sh_roty_4(ycm,ysm,yr,ytmp);
-        sh_rotz_4(zc2m,zs2m,ytmp,yr);
-    }
-
-    static inline void sh_rotzyz_5(REAL zc1m[5],REAL zs1m[5],REAL ycm[5],REAL ysm[5],REAL zc2m[5],REAL zs2m[5],REAL y[NL5],REAL yr[NL5])
-    {
-        REAL ytmp[NL5];
-        sh_rotz_5(zc1m,zs1m,y,yr);
-        sh_roty_5(ycm,ysm,yr,ytmp);
-        sh_rotz_5(zc2m,zs2m,ytmp,yr);
-    }
-
-    static inline void sh3_rot(REAL m[3*3],REAL zc1,REAL zs1,REAL yc,REAL ys,REAL zc2,REAL zs2,REAL y[NSH3],REAL yr[NSH3])
-    {
-        REAL zc1m[3],zs1m[3];
-        rot_3(zc1,zs1,zc1m,zs1m);
-        REAL ycm[3],ysm[3];
-        rot_3(yc,ys,ycm,ysm);
-        REAL zc2m[3],zs2m[3];
-        rot_3(zc2,zs2,zc2m,zs2m);
-
-        yr[0] = y[0];
-        sh_rot_1(m,y+NSH0,yr+NSH0);
-        sh_rotzyz_2(zc1m,zs1m,ycm,ysm,zc2m,zs2m,y+NSH1,yr+NSH1);
-        sh_rotzyz_3(zc1m,zs1m,ycm,ysm,zc2m,zs2m,y+NSH2,yr+NSH2);
-    }
-
-    static inline void sh4_rot(REAL m[3*3],REAL zc1,REAL zs1,REAL yc,REAL ys,REAL zc2,REAL zs2,REAL y[NSH4],REAL yr[NSH4])
-    {
-        REAL zc1m[4],zs1m[4];
-        rot_4(zc1,zs1,zc1m,zs1m);
-        REAL ycm[4],ysm[4];
-        rot_4(yc,ys,ycm,ysm);
-        REAL zc2m[4],zs2m[4];
-        rot_4(zc2,zs2,zc2m,zs2m);
-
-        yr[0] = y[0];
-        sh_rot_1(m,y+NSH0,yr+NSH0);
-        sh_rotzyz_2(zc1m,zs1m,ycm,ysm,zc2m,zs2m,y+NSH1,yr+NSH1);
-        sh_rotzyz_3(zc1m,zs1m,ycm,ysm,zc2m,zs2m,y+NSH2,yr+NSH2);
-        sh_rotzyz_4(zc1m,zs1m,ycm,ysm,zc2m,zs2m,y+NSH3,yr+NSH3);
-    }
-
-    static inline void sh5_rot(REAL m[3*3],REAL zc1,REAL zs1,REAL yc,REAL ys,REAL zc2,REAL zs2,REAL y[NSH5],REAL yr[NSH5])
-    {
-        REAL zc1m[5],zs1m[5];
-        rot_5(zc1,zs1,zc1m,zs1m);
-        REAL ycm[5],ysm[5];
-        rot_5(yc,ys,ycm,ysm);
-        REAL zc2m[5],zs2m[5];
-        rot_5(zc2,zs2,zc2m,zs2m);
-
-        yr[0] = y[0];
-        sh_rot_1(m,y+NSH0,yr+NSH0);
-        sh_rotzyz_2(zc1m,zs1m,ycm,ysm,zc2m,zs2m,y+NSH1,yr+NSH1);
-        sh_rotzyz_3(zc1m,zs1m,ycm,ysm,zc2m,zs2m,y+NSH2,yr+NSH2);
-        sh_rotzyz_4(zc1m,zs1m,ycm,ysm,zc2m,zs2m,y+NSH3,yr+NSH3);
-        sh_rotzyz_5(zc1m,zs1m,ycm,ysm,zc2m,zs2m,y+NSH4,yr+NSH4);
-    }
-
-    inline void sh1_rot(REAL m[3*3],REAL y[NSH1],REAL yr[NSH1])
-    {
-        yr[0] = y[0];
-        sh_rot_1(m,y+NSH0,yr+NSH0);
-    }
-
-    inline void sh3_rot(REAL m[3*3],REAL y[NSH3],REAL yr[NSH3])
-    {
-        REAL zc1,zs1,yc,ys,zc2,zs2;
-        zyz(m,zc1,zs1,yc,ys,zc2,zs2);
-        sh3_rot(m,zc1,zs1,yc,ys,zc2,zs2,y,yr);
-    }
-
-    inline void sh4_rot(REAL m[3*3],REAL y[NSH4],REAL yr[NSH4])
-    {
-        REAL zc1,zs1,yc,ys,zc2,zs2;
-        zyz(m,zc1,zs1,yc,ys,zc2,zs2);
-        sh4_rot(m,zc1,zs1,yc,ys,zc2,zs2,y,yr);
-    }
-
-    inline void sh5_rot(REAL m[3*3],REAL y[NSH5],REAL yr[NSH5])
-    {
-        REAL zc1,zs1,yc,ys,zc2,zs2;
-        zyz(m,zc1,zs1,yc,ys,zc2,zs2);
-        sh5_rot(m,zc1,zs1,yc,ys,zc2,zs2,y,yr);
-    }
-
-    // simple matrix vector multiply for a square matrix (only used by ZRotation)
-    static inline void SimpMatMul(size_t dim, const float *matrix, const float *input, float *result)
-    {
-        for(size_t iR=0; iR < dim; ++iR)
-        {
-            result[iR + 0] = matrix[iR*dim + 0] * input[0];
-            for(size_t iC=1; iC < dim; ++iC)
-            {
-                result[iR] += matrix[iR*dim+ iC] * input[iC]; 
-            }
-        }
-    }
+}
 
 }; // anonymous namespace
 
@@ -1056,82 +1061,82 @@ float* XM_CALLCONV XMSHRotate( _Out_writes_(order*order) float *result,
     switch (order)
     {
     case 2:
-            {
-                // do linear by hand...
+    {
+        // do linear by hand...
 
-                result[1] = r11*input[1] - r12*input[2] + r10*input[3];
-                result[2] = -r21*input[1] + r22*input[2] - r20*input[3];
-                result[3] = r01*input[1] -r02*input[2] + r00*input[3];
-            }
-            break;
+        result[1] = r11*input[1] - r12*input[2] + r10*input[3];
+        result[2] = -r21*input[1] + r22*input[2] - r20*input[3];
+        result[3] = r01*input[1] -r02*input[2] + r00*input[3];
+    }
+    break;
 
     case 3:
+    {
+        float R[25];
+        // do linear by hand...
+
+        result[1] = r11*input[1] - r12*input[2] + r10*input[3];
+        result[2] = -r21*input[1] + r22*input[2] - r20*input[3];
+        result[3] = r01*input[1] -r02*input[2] + r00*input[3];
+
+        // direct code for quadratics is faster than ZYZ reccurence relations
+
+        const float t41 = r01 * r00;
+        const float t43 = r11 * r10;
+        const float t48 = r11 * r12;
+        const float t50 = r01 * r02;
+        const float t55 = r02 * r02;
+        const float t57 = r22 * r22;
+        const float t58 = r12 * r12;
+        const float t61 = r00 * r02;
+        const float t63 = r10 * r12;
+        const float t68 = r10 * r10;
+        const float t70 = r01 * r01;
+        const float t72 = r11 * r11;
+        const float t74 = r00 * r00;
+        const float t76 = r21 * r21;
+        const float t78 = r20 * r20;
+
+        const float v173 = 0.1732050808e1f;
+        const float v577 = 0.5773502693e0f;
+        const float v115 = 0.1154700539e1f;
+        const float v288 = 0.2886751347e0f;
+        const float v866 = 0.8660254040e0f;
+
+        R[0] = r11 * r00 + r01 * r10;
+        R[1] = - r01 * r12 -  r11 * r02;
+        R[2] =  v173 * r02 * r12;
+        R[3] = - r10 * r02 -  r00 * r12;
+        R[4] = r00 * r10 -  r01 * r11;
+        R[5] = - r11 * r20 -  r21 * r10;
+        R[6] = r11 * r22 + r21 * r12;
+        R[7] = -v173 * r22 * r12;
+        R[8] = r20 * r12 + r10 * r22;
+        R[9] = - r10 * r20 + r11 * r21;
+        R[10] = - v577* (t41 + t43) + v115 * r21 * r20;
+        R[11] = v577* (t48 +  t50) - v115 * r21 * r22;
+        R[12] = -0.5000000000e0f * (t55 + t58) + t57;
+        R[13] = v577 * (t61 +  t63) - v115 * r20 * r22;
+        R[14] =  v288 * (t70 - t68 +  t72 -  t74) - v577 * (t76 - t78);
+        R[15] = - r01 * r20 -  r21 * r00;
+        R[16] = r01 * r22 + r21 * r02;
+        R[17] = -v173 * r22 * r02;
+        R[18] = r00 * r22 + r20 * r02;
+        R[19] = - r00 * r20 + r01 * r21;
+        R[20] = t41 -  t43;
+        R[21] = - t50 + t48;
+        R[22] =  v866 * (t55 - t58);
+        R[23] = t63 -  t61;
+        R[24] = 0.5000000000e0f *( t74 -  t68 -  t70 +  t72);
+
+        // blow the matrix multiply out by hand, looping is ineficient on a P4...
+        for(unsigned int iR=0; iR<5; iR++)
         {
-            float R[25];
-            // do linear by hand...
-
-            result[1] = r11*input[1] - r12*input[2] + r10*input[3];
-            result[2] = -r21*input[1] + r22*input[2] - r20*input[3];
-            result[3] = r01*input[1] -r02*input[2] + r00*input[3];
-
-            // direct code for quadratics is faster than ZYZ reccurence relations
-
-            const float t41 = r01 * r00;
-            const float t43 = r11 * r10;
-            const float t48 = r11 * r12;
-            const float t50 = r01 * r02;
-            const float t55 = r02 * r02;
-            const float t57 = r22 * r22;
-            const float t58 = r12 * r12;
-            const float t61 = r00 * r02;
-            const float t63 = r10 * r12;
-            const float t68 = r10 * r10;
-            const float t70 = r01 * r01;
-            const float t72 = r11 * r11;
-            const float t74 = r00 * r00;
-            const float t76 = r21 * r21;
-            const float t78 = r20 * r20;
-
-            const float v173 = 0.1732050808e1f;
-            const float v577 = 0.5773502693e0f;
-            const float v115 = 0.1154700539e1f;
-            const float v288 = 0.2886751347e0f;
-            const float v866 = 0.8660254040e0f;
-
-            R[0] = r11 * r00 + r01 * r10;
-            R[1] = - r01 * r12 -  r11 * r02;
-            R[2] =  v173 * r02 * r12;
-            R[3] = - r10 * r02 -  r00 * r12;
-            R[4] = r00 * r10 -  r01 * r11;
-            R[5] = - r11 * r20 -  r21 * r10;
-            R[6] = r11 * r22 + r21 * r12;
-            R[7] = -v173 * r22 * r12;
-            R[8] = r20 * r12 + r10 * r22;
-            R[9] = - r10 * r20 + r11 * r21;
-            R[10] = - v577* (t41 + t43) + v115 * r21 * r20;
-            R[11] = v577* (t48 +  t50) - v115 * r21 * r22;
-            R[12] = -0.5000000000e0f * (t55 + t58) + t57;
-            R[13] = v577 * (t61 +  t63) - v115 * r20 * r22;
-            R[14] =  v288 * (t70 - t68 +  t72 -  t74) - v577 * (t76 - t78);
-            R[15] = - r01 * r20 -  r21 * r00;
-            R[16] = r01 * r22 + r21 * r02;
-            R[17] = -v173 * r22 * r02;
-            R[18] = r00 * r22 + r20 * r02;
-            R[19] = - r00 * r20 + r01 * r21;
-            R[20] = t41 -  t43;
-            R[21] = - t50 + t48;
-            R[22] =  v866 * (t55 - t58);
-            R[23] = t63 -  t61;
-            R[24] = 0.5000000000e0f *( t74 -  t68 -  t70 +  t72);
-
-            // blow the matrix multiply out by hand, looping is ineficient on a P4...
-            for(unsigned int iR=0; iR<5;iR++)
-            {
-                const unsigned int uBase = iR*5;
-                result[4 + iR] = R[uBase + 0]*input[4] + R[uBase + 1]*input[5] + R[uBase + 2]*input[6] + R[uBase + 3]*input[7] + R[uBase + 4]*input[8];
-            }
+            const unsigned int uBase = iR*5;
+            result[4 + iR] = R[uBase + 0]*input[4] + R[uBase + 1]*input[5] + R[uBase + 2]*input[6] + R[uBase + 3]*input[7] + R[uBase + 4]*input[8];
         }
-        break;
+    }
+    break;
 
     case 4:
         sh3_rot(mRot,const_cast<float *>(input),result);
@@ -1197,7 +1202,7 @@ float* XMSHRotateZ( _Out_writes_(order*order) float *result,
 
     if (order > 2)
     {
-        for(int j=0;j<5*5;j++) R[j] = 0.0f;
+        for(int j=0; j<5*5; j++) R[j] = 0.0f;
         const float t1 = sa;
         const float t2 = t1*t1;
         const float t3 = ca;
@@ -1217,7 +1222,7 @@ float* XMSHRotateZ( _Out_writes_(order*order) float *result,
         SimpMatMul(5,R,input+4,result+4); // un-roll matrix/vector multiply
         if (order > 3)
         {
-            for(int j=0;j<7*7;j++) R[j] = 0.0f;
+            for(int j=0; j<7*7; j++) R[j] = 0.0f;
             const float t1 = ca;
             const float t2 = t1*t1;
             const float t4 = sa;
@@ -1242,7 +1247,7 @@ float* XMSHRotateZ( _Out_writes_(order*order) float *result,
             SimpMatMul(7,R,input+9,result+9);
             if (order > 4)
             {
-                for(int j=0;j<=9*9;j++) R[j] = 0.0f;
+                for(int j=0; j<=9*9; j++) R[j] = 0.0f;
                 const float t1 = ca;
                 const float t2 = t1*t1;
                 const float t3 = t2*t2;
@@ -1278,7 +1283,7 @@ float* XMSHRotateZ( _Out_writes_(order*order) float *result,
                 SimpMatMul(9,R,input+16,result+16);
                 if (order > 5)
                 {
-                    for(int j=0;j<11*11;j++) R[j] = 0.0f;
+                    for(int j=0; j<11*11; j++) R[j] = 0.0f;
                     const float t1 = ca;
                     const float t2 = sa;
                     const float t3 = t2*t2;
@@ -1401,10 +1406,10 @@ float XMSHDot( _In_ size_t order, _In_reads_(order*order) const float *inputA, _
 // Computes the product of two functions represented using SH (f and g), where:
 // result[i] = int(y_i(s) * f(s) * g(s)), where y_i(s) is the ith SH basis
 // function, f(s) and g(s) are SH functions (sum_i(y_i(s)*c_i)).  The order O
-// determines the lengths of the arrays, where there should always be O^2 
+// determines the lengths of the arrays, where there should always be O^2
 // coefficients.  In general the product of two SH functions of order O generates
 // and SH function of order 2*O - 1, but we truncate the result.  This means
-// that the product commutes (f*g == g*f) but doesn't associate 
+// that the product commutes (f*g == g*f) but doesn't associate
 // (f*(g*h) != (f*g)*h.
 //-------------------------------------------------------------------------------------
 float* XMSHMultiply( _Out_writes_(order*order) float *result,
@@ -1416,7 +1421,7 @@ float* XMSHMultiply( _Out_writes_(order*order) float *result,
     {
     case 2:
         return XMSHMultiply2( result, inputF, inputG );
-        
+
     case 3:
         return XMSHMultiply3( result, inputF, inputG );
 
@@ -4433,7 +4438,7 @@ float* XMSHMultiply6( _Out_writes_(36) float *y,
 
 
 //-------------------------------------------------------------------------------------
-// Evaluates a directional light and returns spectral SH data.  The output 
+// Evaluates a directional light and returns spectral SH data.  The output
 // vector is computed so that if the intensity of R/G/B is unit the resulting
 // exit radiance of a point directly under the light on a diffuse object with
 // an albedo of 1 would be 1.0.  This will compute 3 spectral samples, resultR
@@ -4442,11 +4447,11 @@ float* XMSHMultiply6( _Out_writes_(36) float *y,
 // http://msdn.microsoft.com/en-us/library/windows/desktop/bb204988.aspx
 //-------------------------------------------------------------------------------------
 bool XM_CALLCONV XMSHEvalDirectionalLight( _In_ size_t order,
-                                           _In_ FXMVECTOR dir,
-                                           _In_ FXMVECTOR color,
-                                           _Out_writes_(order*order) float *resultR,
-                                           _Out_writes_opt_(order*order) float *resultG,
-                                           _Out_writes_opt_(order*order) float *resultB )
+        _In_ FXMVECTOR dir,
+        _In_ FXMVECTOR color,
+        _Out_writes_(order*order) float *resultR,
+        _Out_writes_opt_(order*order) float *resultG,
+        _Out_writes_opt_(order*order) float *resultB )
 {
     if ( !resultR )
         return false;
@@ -4498,21 +4503,21 @@ bool XM_CALLCONV XMSHEvalDirectionalLight( _In_ size_t order,
 
 
 //------------------------------------------------------------------------------------
-// Evaluates a spherical light and returns spectral SH data.  There is no 
+// Evaluates a spherical light and returns spectral SH data.  There is no
 // normalization of the intensity of the light like there is for directional
-// lights, care has to be taken when specifiying the intensities.  This will 
-// compute 3 spectral samples, resultR has to be specified, while resultG and 
+// lights, care has to be taken when specifiying the intensities.  This will
+// compute 3 spectral samples, resultR has to be specified, while resultG and
 // resultB are optional.
 //
 // http://msdn.microsoft.com/en-us/library/windows/desktop/bb205451.aspx
 //-------------------------------------------------------------------------------------
 bool XM_CALLCONV XMSHEvalSphericalLight( _In_ size_t order,
-                                         _In_ FXMVECTOR pos,
-                                         _In_ float radius,
-                                         _In_ FXMVECTOR color,
-                                         _Out_writes_(order*order) float *resultR,
-                                         _Out_writes_opt_(order*order) float *resultG,
-                                         _Out_writes_opt_(order*order) float *resultB )
+        _In_ FXMVECTOR pos,
+        _In_ float radius,
+        _In_ FXMVECTOR color,
+        _Out_writes_(order*order) float *resultR,
+        _Out_writes_opt_(order*order) float *resultG,
+        _Out_writes_opt_(order*order) float *resultB )
 {
     if ( !resultR )
         return false;
@@ -4534,7 +4539,7 @@ bool XM_CALLCONV XMSHEvalSphericalLight( _In_ size_t order,
 
     //
     // Sphere at distance fDist, the cone angle is determined by looking at the
-    // right triangle with one side (the hypotenuse) beind the vector from the 
+    // right triangle with one side (the hypotenuse) beind the vector from the
     // origin to the center of the sphere, another side is from the origin to
     // a point on the sphere whose normal is perpendicular to the given side (this
     // is one of the points on the cone that is defined by the projection of the sphere
@@ -4549,7 +4554,7 @@ bool XM_CALLCONV XMSHEvalSphericalLight( _In_ size_t order,
     // no default normalization is done for this case, have to be careful how
     // you represent the coefficients...
 
-    const float fNewNorm = 1.0f;///(fSinConeAngle*fSinConeAngle); 
+    const float fNewNorm = 1.0f;///(fSinConeAngle*fSinConeAngle);
 
     ComputeCapInt(order,fConeAngle,fTmpL0);
 
@@ -4707,7 +4712,7 @@ bool XM_CALLCONV XMSHEvalConeLight( _In_ size_t order,
             const size_t cNumCoefs = 2*i + 1;
             const size_t cStart = i*i;
             const float fValUse = fTmpL0[i]*clr.x*fNewNorm*fExtraNormFac[i];
-            for( size_t j=0; j<cNumCoefs; ++j) 
+            for( size_t j=0; j<cNumCoefs; ++j)
                 resultR[cStart + j] = fTmpDir[cStart+j]*fValUse;
         }
 
@@ -4748,18 +4753,18 @@ bool XM_CALLCONV XMSHEvalConeLight( _In_ size_t order,
 // is normalized so that a point on a perfectly diffuse surface with no
 // shadowing and a normal pointed in the direction pDir would result in exit
 // radiance with a value of 1 if the top color was white and the bottom color
-// was black.  This is a very simple model where topColor represents the intensity 
+// was black.  This is a very simple model where topColor represents the intensity
 // of the "sky" and bottomColor represents the intensity of the "ground".
 //
 // http://msdn.microsoft.com/en-us/library/windows/desktop/bb204989.aspx
 //-------------------------------------------------------------------------------------
 bool XM_CALLCONV XMSHEvalHemisphereLight( _In_ size_t order,
-                                          _In_ FXMVECTOR dir,
-                                          _In_ FXMVECTOR topColor,
-                                          _In_ FXMVECTOR bottomColor,
-                                          _Out_writes_(order*order) float *resultR,
-                                          _Out_writes_opt_(order*order) float *resultG,
-                                          _Out_writes_opt_(order*order) float *resultB )
+        _In_ FXMVECTOR dir,
+        _In_ FXMVECTOR topColor,
+        _In_ FXMVECTOR bottomColor,
+        _Out_writes_(order*order) float *resultR,
+        _Out_writes_opt_(order*order) float *resultG,
+        _Out_writes_opt_(order*order) float *resultB )
 {
     if ( !resultR )
         return false;
@@ -4794,7 +4799,7 @@ bool XM_CALLCONV XMSHEvalHemisphereLight( _In_ size_t order,
 
     fTmpL0[0] = fAvrg*2.0f*SHEvalHemisphereLight_fSqrtPi;
     fTmpL0[1] = (fA - fAvrg)*2.0f*SHEvalHemisphereLight_fSqrtPi3;
-    
+
     size_t i = 0;
     for( ; i<2; ++i)
     {
@@ -4829,7 +4834,7 @@ bool XM_CALLCONV XMSHEvalHemisphereLight( _In_ size_t order,
             for( size_t j=0; j<cNumCoefs; ++j) resultG[cStart + j] = fTmpDir[cStart+j]*fValUse;
         }
 
-        for( ;i<order; ++i)
+        for( ; i<order; ++i)
         {
             const size_t cNumCoefs = 2*i + 1;
             const size_t cStart = i*i;

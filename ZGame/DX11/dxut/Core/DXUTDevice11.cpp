@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DXUTDevice11.cpp
 //
 // Enumerates D3D adapters, devices, modes, etc.
@@ -42,8 +42,14 @@ void WINAPI DXUTDestroyD3D11Enumeration()
 class DXUTMemoryHelperD3D11Enum
 {
 public:
-DXUTMemoryHelperD3D11Enum() { DXUTCreateD3D11Enumeration(); }
-~DXUTMemoryHelperD3D11Enum() { DXUTDestroyD3D11Enumeration(); }
+    DXUTMemoryHelperD3D11Enum()
+    {
+        DXUTCreateD3D11Enumeration();
+    }
+    ~DXUTMemoryHelperD3D11Enum()
+    {
+        DXUTDestroyD3D11Enumeration();
+    }
 };
 
 
@@ -90,15 +96,15 @@ CD3D11Enumeration::~CD3D11Enumeration()
 
 
 //--------------------------------------------------------------------------------------
-// Enumerate for each adapter all of the supported display modes, 
-// device types, adapter formats, back buffer formats, window/full screen support, 
+// Enumerate for each adapter all of the supported display modes,
+// device types, adapter formats, back buffer formats, window/full screen support,
 // depth stencil formats, multisampling types/qualities, and presentations intervals.
 //
 // For each combination of device type (HAL/REF), adapter format, back buffer format, and
 // IsWindowed it will call the app's ConfirmDevice callback.  This allows the app
-// to reject or allow that combination based on its caps/etc.  It also allows the 
-// app to change the BehaviorFlags.  The BehaviorFlags defaults non-pure HWVP 
-// if supported otherwise it will default to SWVP, however the app can change this 
+// to reject or allow that combination based on its caps/etc.  It also allows the
+// app to change the BehaviorFlags.  The BehaviorFlags defaults non-pure HWVP
+// if supported otherwise it will default to SWVP, however the app can change this
 // through the ConfirmDevice callback.
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
@@ -210,7 +216,7 @@ HRESULT CD3D11Enumeration::Enumerate( LPDXUTCALLBACKISD3D11DEVICEACCEPTABLE IsD3
         {
             auto pAdapterInfo2 = m_AdapterInfoList[ j ];
             if( wcsncmp( pAdapterInfo1->AdapterDesc.Description,
-                pAdapterInfo2->AdapterDesc.Description, DXGI_MAX_DEVICE_IDENTIFIER_STRING ) == 0 )
+                         pAdapterInfo2->AdapterDesc.Description, DXGI_MAX_DEVICE_IDENTIFIER_STRING ) == 0 )
             {
                 bUniqueDesc = false;
                 break;
@@ -350,7 +356,7 @@ HRESULT CD3D11Enumeration::EnumerateDisplayModes( _In_ CD3D11EnumOutputInfo* pOu
     {
         DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,     //This is DXUT's preferred mode
 
-        DXGI_FORMAT_R8G8B8A8_UNORM,			
+        DXGI_FORMAT_R8G8B8A8_UNORM,
         DXGI_FORMAT_R16G16B16A16_FLOAT,
         DXGI_FORMAT_R10G10B10A2_UNORM
     };
@@ -381,9 +387,9 @@ HRESULT CD3D11Enumeration::EnumerateDisplayModes( _In_ CD3D11EnumOutputInfo* pOu
             return E_OUTOFMEMORY;
 
         hr = pOutputInfo->m_pOutput->GetDisplayModeList( allowedAdapterFormatArray[f],
-                                                         DXGI_ENUM_MODES_SCALING,
-                                                         &NumModes,
-                                                         pDesc );
+                DXGI_ENUM_MODES_SCALING,
+                &NumModes,
+                pDesc );
         if( DXGI_ERROR_NOT_FOUND == hr )
         {
             SAFE_DELETE_ARRAY( pDesc );
@@ -417,9 +423,9 @@ HRESULT CD3D11Enumeration::EnumerateDisplayModes( _In_ CD3D11EnumOutputInfo* pOu
             // Slow path.  There were more than 512 modes.
             SAFE_DELETE_ARRAY( pDesc );
             hr = pOutputInfo->m_pOutput->GetDisplayModeList( allowedAdapterFormatArray[f],
-                                                             DXGI_ENUM_MODES_SCALING,
-                                                             &NumModes,
-                                                             nullptr );
+                    DXGI_ENUM_MODES_SCALING,
+                    &NumModes,
+                    nullptr );
             if( FAILED( hr ) )
             {
                 NumModes = 0;
@@ -432,9 +438,9 @@ HRESULT CD3D11Enumeration::EnumerateDisplayModes( _In_ CD3D11EnumOutputInfo* pOu
                 return E_OUTOFMEMORY;
 
             hr = pOutputInfo->m_pOutput->GetDisplayModeList( allowedAdapterFormatArray[f],
-                                                             DXGI_ENUM_MODES_SCALING,
-                                                             &NumModes,
-                                                             pDesc );
+                    DXGI_ENUM_MODES_SCALING,
+                    &NumModes,
+                    pDesc );
             if( FAILED( hr ) )
             {
                 SAFE_DELETE_ARRAY( pDesc );
@@ -449,7 +455,7 @@ HRESULT CD3D11Enumeration::EnumerateDisplayModes( _In_ CD3D11EnumOutputInfo* pOu
             // No R8G8B8A8_UNORM_SRGB modes!
             // Abort the fast-path if we're on it
             allowedAdapterFormatArrayCount = sizeof( allowedAdapterFormatArray ) / sizeof
-                ( allowedAdapterFormatArray[0] );
+                                             ( allowedAdapterFormatArray[0] );
             SAFE_DELETE_ARRAY( pDesc );
             continue;
         }
@@ -565,19 +571,19 @@ HRESULT CD3D11Enumeration::EnumerateDevices( _In_ CD3D11EnumAdapterInfo* pAdapte
         {
             delete pDeviceInfo;
             SAFE_RELEASE( pd3dDevice );
-            SAFE_RELEASE( pd3dDeviceContext );        
+            SAFE_RELEASE( pd3dDeviceContext );
             continue;
         }
-        
+
         if (m_forceFL == 0 || m_forceFL == pDeviceInfo->MaxLevel)
-        { 
+        {
             pDeviceInfo->SelectedLevel = pDeviceInfo->MaxLevel;
         }
         else if (m_forceFL > pDeviceInfo->MaxLevel)
         {
             delete pDeviceInfo;
             SAFE_RELEASE( pd3dDevice );
-            SAFE_RELEASE( pd3dDeviceContext );        
+            SAFE_RELEASE( pd3dDeviceContext );
             continue;
         }
         else
@@ -618,8 +624,8 @@ HRESULT CD3D11Enumeration::EnumerateDevices( _In_ CD3D11EnumAdapterInfo* pAdapte
         if ( FAILED(hr) )
             memset( &ho, 0, sizeof(ho) );
 
-        pDeviceInfo->ComputeShaders_Plus_RawAndStructuredBuffers_Via_Shader_4_x = ho.ComputeShaders_Plus_RawAndStructuredBuffers_Via_Shader_4_x; 
-        SAFE_RELEASE( pd3dDeviceContext );             
+        pDeviceInfo->ComputeShaders_Plus_RawAndStructuredBuffers_Via_Shader_4_x = ho.ComputeShaders_Plus_RawAndStructuredBuffers_Via_Shader_4_x;
+        SAFE_RELEASE( pd3dDeviceContext );
         SAFE_RELEASE( pd3dDevice );
         pAdapterInfo->deviceInfoList.push_back( pDeviceInfo );
     }
@@ -640,7 +646,7 @@ HRESULT CD3D11Enumeration::EnumerateDeviceCombosNoAdapter( _In_ CD3D11EnumAdapte
         {
             DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,   //This is DXUT's preferred mode
 
-            DXGI_FORMAT_R8G8B8A8_UNORM,		
+            DXGI_FORMAT_R8G8B8A8_UNORM,
             DXGI_FORMAT_R16G16B16A16_FLOAT,
             DXGI_FORMAT_R10G10B10A2_UNORM
         };
@@ -662,9 +668,9 @@ HRESULT CD3D11Enumeration::EnumerateDeviceCombosNoAdapter( _In_ CD3D11EnumAdapte
             // is acceptable to the app.
             if( m_IsD3D11DeviceAcceptableFunc )
             {
-                if( !m_IsD3D11DeviceAcceptableFunc( pAdapterInfo, 
+                if( !m_IsD3D11DeviceAcceptableFunc( pAdapterInfo,
                                                     0,
-                                                    *dit, 
+                                                    *dit,
                                                     BufferFormat,
                                                     TRUE,
                                                     m_pIsD3D11DeviceAcceptableFuncUserContext ) )
@@ -672,7 +678,7 @@ HRESULT CD3D11Enumeration::EnumerateDeviceCombosNoAdapter( _In_ CD3D11EnumAdapte
             }
 
             // At this point, we have an adapter/device/backbufferformat/iswindowed
-            // DeviceCombo that is supported by the system. We still 
+            // DeviceCombo that is supported by the system. We still
             // need to find one or more suitable depth/stencil buffer format,
             // multisample type, and present interval.
             CD3D11EnumDeviceSettingsCombo* pDeviceCombo = new (std::nothrow) CD3D11EnumDeviceSettingsCombo;
@@ -717,7 +723,7 @@ HRESULT CD3D11Enumeration::EnumerateDeviceCombos( CD3D11EnumAdapterInfo* pAdapte
             {
                 DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,   //This is DXUT's preferred mode
 
-                DXGI_FORMAT_R8G8B8A8_UNORM,		
+                DXGI_FORMAT_R8G8B8A8_UNORM,
                 DXGI_FORMAT_R16G16B16A16_FLOAT,
                 DXGI_FORMAT_R10G10B10A2_UNORM
             };
@@ -760,7 +766,7 @@ HRESULT CD3D11Enumeration::EnumerateDeviceCombos( CD3D11EnumAdapterInfo* pAdapte
                     }
 
                     // At this point, we have an adapter/device/backbufferformat/iswindowed
-                    // DeviceCombo that is supported by the system. We still 
+                    // DeviceCombo that is supported by the system. We still
                     // need to find one or more suitable depth/stencil buffer format,
                     // multisample type, and present interval.
                     auto pDeviceCombo = new (std::nothrow) CD3D11EnumDeviceSettingsCombo;
@@ -827,22 +833,22 @@ void CD3D11Enumeration::BuildMultiSampleQualityList( DXGI_FORMAT fmt, CD3D11Enum
     ID3D11Device* pd3dDevice = nullptr;
     ID3D11DeviceContext* pd3dDeviceContext = nullptr;
     IDXGIAdapter* pAdapter = nullptr;
-    
+
     D3D_FEATURE_LEVEL *FeatureLevels = &(pDeviceCombo->pDeviceInfo->SelectedLevel);
     D3D_FEATURE_LEVEL returnedFeatureLevel;
 
     UINT NumFeatureLevels = 1;
 
-    HRESULT hr = DXUT_Dynamic_D3D11CreateDevice( pAdapter, 
-                                                pDeviceCombo->DeviceType,
-                                                ( HMODULE )0,
-                                                0,
-                                                FeatureLevels,
-                                                NumFeatureLevels,
-                                                D3D11_SDK_VERSION,
-                                                &pd3dDevice,
-                                                &returnedFeatureLevel,
-                                                &pd3dDeviceContext )  ;
+    HRESULT hr = DXUT_Dynamic_D3D11CreateDevice( pAdapter,
+                 pDeviceCombo->DeviceType,
+                 ( HMODULE )0,
+                 0,
+                 FeatureLevels,
+                 NumFeatureLevels,
+                 D3D11_SDK_VERSION,
+                 &pd3dDevice,
+                 &returnedFeatureLevel,
+                 &pd3dDeviceContext )  ;
 
     if( FAILED( hr))  return;
 
@@ -853,12 +859,13 @@ void CD3D11Enumeration::BuildMultiSampleQualityList( DXGI_FORMAT fmt, CD3D11Enum
         UINT Quality;
         if( SUCCEEDED( pd3dDevice->CheckMultisampleQualityLevels( fmt, i, &Quality ) ) && Quality > 0 )
         {
-            //From D3D10 docs: When multisampling a texture, the number of quality levels available for an adapter is dependent on the texture 
-            //format used and the number of samples requested. The maximum sample count is defined by 
-            //D3D10_MAX_MULTISAMPLE_SAMPLE_COUNT in d3d10.h. If the returned value of pNumQualityLevels is 0, 
+            //From D3D10 docs: When multisampling a texture, the number of quality levels available for an adapter is dependent on the texture
+            //format used and the number of samples requested. The maximum sample count is defined by
+            //D3D10_MAX_MULTISAMPLE_SAMPLE_COUNT in d3d10.h. If the returned value of pNumQualityLevels is 0,
             //the format and sample count combination is not supported for the installed adapter.
 
-            if (Quality != 0) {
+            if (Quality != 0)
+            {
                 pDeviceCombo->multiSampleCountList.push_back( i );
                 pDeviceCombo->multiSampleQualityList.push_back( Quality );
             }
@@ -872,8 +879,8 @@ void CD3D11Enumeration::BuildMultiSampleQualityList( DXGI_FORMAT fmt, CD3D11Enum
 
 
 //--------------------------------------------------------------------------------------
-// Call GetAdapterInfoList() after Enumerate() to get a STL vector of 
-//       CD3D11EnumAdapterInfo* 
+// Call GetAdapterInfoList() after Enumerate() to get a STL vector of
+//       CD3D11EnumAdapterInfo*
 //--------------------------------------------------------------------------------------
 std::vector <CD3D11EnumAdapterInfo*>* CD3D11Enumeration::GetAdapterInfoList()
 {
@@ -929,7 +936,7 @@ CD3D11EnumOutputInfo* CD3D11Enumeration::GetOutputInfo( UINT AdapterOrdinal, UIN
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
 CD3D11EnumDeviceSettingsCombo* CD3D11Enumeration::GetDeviceSettingsCombo( UINT AdapterOrdinal,
-                                                                          DXGI_FORMAT BackBufferFormat, BOOL Windowed ) const
+        DXGI_FORMAT BackBufferFormat, BOOL Windowed ) const
 {
     auto pAdapterInfo = GetAdapterInfo( AdapterOrdinal );
     if( pAdapterInfo )
@@ -938,7 +945,7 @@ CD3D11EnumDeviceSettingsCombo* CD3D11Enumeration::GetDeviceSettingsCombo( UINT A
         {
             auto pDeviceSettingsCombo = pAdapterInfo->deviceSettingsComboList[ iDeviceCombo ];
             if( pDeviceSettingsCombo->BackBufferFormat == BackBufferFormat &&
-                pDeviceSettingsCombo->Windowed == Windowed )
+                    pDeviceSettingsCombo->Windowed == Windowed )
                 return pDeviceSettingsCombo;
         }
     }
@@ -995,58 +1002,58 @@ UINT WINAPI DXUTGetDXGIColorChannelBits( DXGI_FORMAT fmt )
 {
     switch( fmt )
     {
-        case DXGI_FORMAT_R32G32B32A32_TYPELESS:
-        case DXGI_FORMAT_R32G32B32A32_FLOAT:
-        case DXGI_FORMAT_R32G32B32A32_UINT:
-        case DXGI_FORMAT_R32G32B32A32_SINT:
-        case DXGI_FORMAT_R32G32B32_TYPELESS:
-        case DXGI_FORMAT_R32G32B32_FLOAT:
-        case DXGI_FORMAT_R32G32B32_UINT:
-        case DXGI_FORMAT_R32G32B32_SINT:
-            return 32;
+    case DXGI_FORMAT_R32G32B32A32_TYPELESS:
+    case DXGI_FORMAT_R32G32B32A32_FLOAT:
+    case DXGI_FORMAT_R32G32B32A32_UINT:
+    case DXGI_FORMAT_R32G32B32A32_SINT:
+    case DXGI_FORMAT_R32G32B32_TYPELESS:
+    case DXGI_FORMAT_R32G32B32_FLOAT:
+    case DXGI_FORMAT_R32G32B32_UINT:
+    case DXGI_FORMAT_R32G32B32_SINT:
+        return 32;
 
-        case DXGI_FORMAT_R16G16B16A16_TYPELESS:
-        case DXGI_FORMAT_R16G16B16A16_FLOAT:
-        case DXGI_FORMAT_R16G16B16A16_UNORM:
-        case DXGI_FORMAT_R16G16B16A16_UINT:
-        case DXGI_FORMAT_R16G16B16A16_SNORM:
-        case DXGI_FORMAT_R16G16B16A16_SINT:
-            return 16;
+    case DXGI_FORMAT_R16G16B16A16_TYPELESS:
+    case DXGI_FORMAT_R16G16B16A16_FLOAT:
+    case DXGI_FORMAT_R16G16B16A16_UNORM:
+    case DXGI_FORMAT_R16G16B16A16_UINT:
+    case DXGI_FORMAT_R16G16B16A16_SNORM:
+    case DXGI_FORMAT_R16G16B16A16_SINT:
+        return 16;
 
-        case DXGI_FORMAT_R10G10B10A2_TYPELESS:
-        case DXGI_FORMAT_R10G10B10A2_UNORM:
-        case DXGI_FORMAT_R10G10B10A2_UINT:
-        case DXGI_FORMAT_R10G10B10_XR_BIAS_A2_UNORM:
-            return 10;
+    case DXGI_FORMAT_R10G10B10A2_TYPELESS:
+    case DXGI_FORMAT_R10G10B10A2_UNORM:
+    case DXGI_FORMAT_R10G10B10A2_UINT:
+    case DXGI_FORMAT_R10G10B10_XR_BIAS_A2_UNORM:
+        return 10;
 
-        case DXGI_FORMAT_R8G8B8A8_TYPELESS:
-        case DXGI_FORMAT_R8G8B8A8_UNORM:
-        case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
-        case DXGI_FORMAT_R8G8B8A8_UINT:
-        case DXGI_FORMAT_R8G8B8A8_SNORM:
-        case DXGI_FORMAT_R8G8B8A8_SINT:
-        case DXGI_FORMAT_B8G8R8A8_UNORM:
-        case DXGI_FORMAT_B8G8R8X8_UNORM:
-        case DXGI_FORMAT_B8G8R8A8_TYPELESS:
-        case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
-        case DXGI_FORMAT_B8G8R8X8_TYPELESS:
-        case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:
-            return 8;
+    case DXGI_FORMAT_R8G8B8A8_TYPELESS:
+    case DXGI_FORMAT_R8G8B8A8_UNORM:
+    case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
+    case DXGI_FORMAT_R8G8B8A8_UINT:
+    case DXGI_FORMAT_R8G8B8A8_SNORM:
+    case DXGI_FORMAT_R8G8B8A8_SINT:
+    case DXGI_FORMAT_B8G8R8A8_UNORM:
+    case DXGI_FORMAT_B8G8R8X8_UNORM:
+    case DXGI_FORMAT_B8G8R8A8_TYPELESS:
+    case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
+    case DXGI_FORMAT_B8G8R8X8_TYPELESS:
+    case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:
+        return 8;
 
-        case DXGI_FORMAT_B5G6R5_UNORM:
-        case DXGI_FORMAT_B5G5R5A1_UNORM:
-            return 5;
+    case DXGI_FORMAT_B5G6R5_UNORM:
+    case DXGI_FORMAT_B5G5R5A1_UNORM:
+        return 5;
 
-        case DXGI_FORMAT_B4G4R4A4_UNORM:
-            return 4;
+    case DXGI_FORMAT_B4G4R4A4_UNORM:
+        return 4;
 
-        default:
-            return 0;
+    default:
+        return 0;
     }
 }
 
 //--------------------------------------------------------------------------------------
-// Returns a ranking number that describes how closely this device 
+// Returns a ranking number that describes how closely this device
 // combo matches the optimal combo based on the match options and the optimal device settings
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
@@ -1054,7 +1061,7 @@ float DXUTRankD3D11DeviceCombo( CD3D11EnumDeviceSettingsCombo* pDeviceSettingsCo
                                 DXUTD3D11DeviceSettings* pOptimalDeviceSettings,
                                 int &bestModeIndex,
                                 int &bestMSAAIndex
-                                )
+                              )
 {
     float fCurRanking = 0.0f;
 
@@ -1086,11 +1093,12 @@ float DXUTRankD3D11DeviceCombo( CD3D11EnumDeviceSettingsCombo* pDeviceSettingsCo
     //---------------------
     if( pDeviceSettingsCombo->DeviceType == pOptimalDeviceSettings->DriverType )
         fCurRanking += fDeviceTypeWeight;
-    else if (pDeviceSettingsCombo->DeviceType == D3D_DRIVER_TYPE_WARP && pOptimalDeviceSettings->DriverType == D3D_DRIVER_TYPE_HARDWARE) {
+    else if (pDeviceSettingsCombo->DeviceType == D3D_DRIVER_TYPE_WARP && pOptimalDeviceSettings->DriverType == D3D_DRIVER_TYPE_HARDWARE)
+    {
         fCurRanking += fWARPOverRefWeight;
     }
 
-    // Slightly prefer HAL 
+    // Slightly prefer HAL
     if( pDeviceSettingsCombo->DeviceType == D3D_DRIVER_TYPE_HARDWARE )
         fCurRanking += 0.1f;
 
@@ -1111,8 +1119,8 @@ float DXUTRankD3D11DeviceCombo( CD3D11EnumDeviceSettingsCombo* pDeviceSettingsCo
         float best = FLT_MAX;
 
         if ( !pDeviceSettingsCombo->Windowed
-             && !pOptimalDeviceSettings->sd.Windowed
-             && ( pOptimalDeviceSettings->sd.BufferDesc.RefreshRate.Numerator > 0 || pOptimalDeviceSettings->sd.BufferDesc.RefreshRate.Denominator > 0 ) )
+                && !pOptimalDeviceSettings->sd.Windowed
+                && ( pOptimalDeviceSettings->sd.BufferDesc.RefreshRate.Numerator > 0 || pOptimalDeviceSettings->sd.BufferDesc.RefreshRate.Denominator > 0 ) )
         {
             // Match both Resolution & Refresh Rate
             for( size_t idm = 0; idm < pDeviceSettingsCombo->pOutputInfo->displayModeList.size() && !bResolutionFound; idm++ )
@@ -1123,8 +1131,8 @@ float DXUTRankD3D11DeviceCombo( CD3D11EnumDeviceSettingsCombo* pDeviceSettingsCo
                                           ( float( pOptimalDeviceSettings->sd.BufferDesc.RefreshRate.Numerator ) / float( pOptimalDeviceSettings->sd.BufferDesc.RefreshRate.Denominator ) ) );
 
                 if( displayMode.Width == pOptimalDeviceSettings->sd.BufferDesc.Width
-                    && displayMode.Height == pOptimalDeviceSettings->sd.BufferDesc.Height
-                    && ( refreshDiff < 0.1f ) )
+                        && displayMode.Height == pOptimalDeviceSettings->sd.BufferDesc.Height
+                        && ( refreshDiff < 0.1f ) )
                 {
                     bResolutionFound = true;
                     bestModeIndex = static_cast<int>( idm );
@@ -1132,7 +1140,7 @@ float DXUTRankD3D11DeviceCombo( CD3D11EnumDeviceSettingsCombo* pDeviceSettingsCo
                 }
 
                 float current = refreshDiff
-                                + fabs( float( displayMode.Width ) - float ( pOptimalDeviceSettings->sd.BufferDesc.Width ) ) 
+                                + fabs( float( displayMode.Width ) - float ( pOptimalDeviceSettings->sd.BufferDesc.Width ) )
                                 + fabs( float( displayMode.Height ) - float ( pOptimalDeviceSettings->sd.BufferDesc.Height ) );
 
                 if( current < best )
@@ -1150,14 +1158,14 @@ float DXUTRankD3D11DeviceCombo( CD3D11EnumDeviceSettingsCombo* pDeviceSettingsCo
                 auto displayMode = pDeviceSettingsCombo->pOutputInfo->displayModeList[ idm ];
 
                 if( displayMode.Width == pOptimalDeviceSettings->sd.BufferDesc.Width
-                    && displayMode.Height == pOptimalDeviceSettings->sd.BufferDesc.Height )
+                        && displayMode.Height == pOptimalDeviceSettings->sd.BufferDesc.Height )
                 {
                     bResolutionFound = true;
                     bestModeIndex = static_cast<int>( idm );
                     break;
                 }
 
-                float current = fabs( float( displayMode.Width ) - float ( pOptimalDeviceSettings->sd.BufferDesc.Width ) ) 
+                float current = fabs( float( displayMode.Width ) - float ( pOptimalDeviceSettings->sd.BufferDesc.Width ) )
                                 + fabs( float( displayMode.Height ) - float ( pOptimalDeviceSettings->sd.BufferDesc.Height ) );
 
                 if( current < best )
@@ -1183,7 +1191,7 @@ float DXUTRankD3D11DeviceCombo( CD3D11EnumDeviceSettingsCombo* pDeviceSettingsCo
     {
         int nBitDepthDelta = abs( ( long )DXUTGetDXGIColorChannelBits( pDeviceSettingsCombo->BackBufferFormat ) -
                                   ( long )DXUTGetDXGIColorChannelBits(
-                                  pOptimalDeviceSettings->sd.BufferDesc.Format ) );
+                                      pOptimalDeviceSettings->sd.BufferDesc.Format ) );
         float fScale = std::max<float>( 0.9f - ( float )nBitDepthDelta * 0.2f, 0.0f );
         fCurRanking += fScale * fBackBufferFormatWeight;
     }
@@ -1218,7 +1226,7 @@ float DXUTRankD3D11DeviceCombo( CD3D11EnumDeviceSettingsCombo* pDeviceSettingsCo
     // No caps for swap effects
 
     //---------------------
-    // Depth stencil 
+    // Depth stencil
     //---------------------
     // No caps for swap effects
 
@@ -1237,7 +1245,7 @@ float DXUTRankD3D11DeviceCombo( CD3D11EnumDeviceSettingsCombo* pDeviceSettingsCo
 
 
 //--------------------------------------------------------------------------------------
-// Returns the DXGI_MODE_DESC struct for a given adapter and output 
+// Returns the DXGI_MODE_DESC struct for a given adapter and output
 //--------------------------------------------------------------------------------------
 #pragma warning ( suppress : 6101 )
 _Use_decl_annotations_

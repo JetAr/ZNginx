@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: Texassemble.cpp
 //
 // DirectX Texture assembler for cube maps, volume maps, and arrays
@@ -224,7 +224,7 @@ const SValue g_pFilters [] =
     { nullptr,                      TEX_FILTER_DEFAULT                              }
 };
 
-#define CODEC_DDS 0xFFFF0001 
+#define CODEC_DDS 0xFFFF0001
 #define CODEC_TGA 0xFFFF0002
 #define CODEC_HDR 0xFFFF0005
 #define CODEC_EXR 0xFFFF0006
@@ -255,248 +255,258 @@ const SValue g_pExtFileTypes [] =
 
 namespace
 {
-    inline HANDLE safe_handle(HANDLE h) { return (h == INVALID_HANDLE_VALUE) ? 0 : h; }
+inline HANDLE safe_handle(HANDLE h)
+{
+    return (h == INVALID_HANDLE_VALUE) ? 0 : h;
+}
 
-    struct find_closer { void operator()(HANDLE h) { assert(h != INVALID_HANDLE_VALUE); if (h) FindClose(h); } };
+struct find_closer
+{
+    void operator()(HANDLE h)
+    {
+        assert(h != INVALID_HANDLE_VALUE);
+        if (h) FindClose(h);
+    }
+};
 
-    typedef public std::unique_ptr<void, find_closer> ScopedFindHandle;
+typedef public std::unique_ptr<void, find_closer> ScopedFindHandle;
 
 #pragma prefast(disable : 26018, "Only used with static internal arrays")
 
-    DWORD LookupByName(const wchar_t *pName, const SValue *pArray)
+DWORD LookupByName(const wchar_t *pName, const SValue *pArray)
+{
+    while (pArray->pName)
     {
-        while (pArray->pName)
-        {
-            if (!_wcsicmp(pName, pArray->pName))
-                return pArray->dwValue;
+        if (!_wcsicmp(pName, pArray->pName))
+            return pArray->dwValue;
 
-            pArray++;
-        }
-
-        return 0;
+        pArray++;
     }
 
+    return 0;
+}
 
-    const wchar_t* LookupByValue(DWORD pValue, const SValue *pArray)
+
+const wchar_t* LookupByValue(DWORD pValue, const SValue *pArray)
+{
+    while (pArray->pName)
     {
-        while (pArray->pName)
-        {
-            if (pValue == pArray->dwValue)
-                return pArray->pName;
+        if (pValue == pArray->dwValue)
+            return pArray->pName;
 
-            pArray++;
-        }
-
-        return L"";
+        pArray++;
     }
 
+    return L"";
+}
 
-    void SearchForFiles(const wchar_t* path, std::list<SConversion>& files, bool recursive)
+
+void SearchForFiles(const wchar_t* path, std::list<SConversion>& files, bool recursive)
+{
+    // Process files
+    WIN32_FIND_DATA findData = {};
+    ScopedFindHandle hFile(safe_handle(FindFirstFileExW(path,
+                                       FindExInfoBasic, &findData,
+                                       FindExSearchNameMatch, nullptr,
+                                       FIND_FIRST_EX_LARGE_FETCH)));
+    if (hFile)
     {
-        // Process files
-        WIN32_FIND_DATA findData = {};
-        ScopedFindHandle hFile(safe_handle(FindFirstFileExW(path,
-            FindExInfoBasic, &findData,
-            FindExSearchNameMatch, nullptr,
-            FIND_FIRST_EX_LARGE_FETCH)));
-        if (hFile)
+        for (;;)
         {
-            for (;;)
-            {
-                if (!(findData.dwFileAttributes & (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_DIRECTORY)))
-                {
-                    wchar_t drive[_MAX_DRIVE] = {};
-                    wchar_t dir[_MAX_DIR] = {};
-                    _wsplitpath_s(path, drive, _MAX_DRIVE, dir, _MAX_DIR, nullptr, 0, nullptr, 0);
-
-                    SConversion conv;
-                    _wmakepath_s(conv.szSrc, drive, dir, findData.cFileName, nullptr);
-                    files.push_back(conv);
-                }
-
-                if (!FindNextFile(hFile.get(), &findData))
-                    break;
-            }
-        }
-
-        // Process directories
-        if (recursive)
-        {
-            wchar_t searchDir[MAX_PATH] = {};
+            if (!(findData.dwFileAttributes & (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_DIRECTORY)))
             {
                 wchar_t drive[_MAX_DRIVE] = {};
                 wchar_t dir[_MAX_DIR] = {};
                 _wsplitpath_s(path, drive, _MAX_DRIVE, dir, _MAX_DIR, nullptr, 0, nullptr, 0);
-                _wmakepath_s(searchDir, drive, dir, L"*", nullptr);
+
+                SConversion conv;
+                _wmakepath_s(conv.szSrc, drive, dir, findData.cFileName, nullptr);
+                files.push_back(conv);
             }
 
-            hFile.reset(safe_handle(FindFirstFileExW(searchDir,
-                FindExInfoBasic, &findData,
-                FindExSearchLimitToDirectories, nullptr,
-                FIND_FIRST_EX_LARGE_FETCH)));
-            if (!hFile)
-                return;
-
-            for (;;)
-            {
-                if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-                {
-                    if (findData.cFileName[0] != L'.')
-                    {
-                        wchar_t subdir[MAX_PATH] = {};
-
-                        {
-                            wchar_t drive[_MAX_DRIVE] = {};
-                            wchar_t dir[_MAX_DIR] = {};
-                            wchar_t fname[_MAX_FNAME] = {};
-                            wchar_t ext[_MAX_FNAME] = {};
-                            _wsplitpath_s(path, drive, dir, fname, ext);
-                            wcscat_s(dir, findData.cFileName);
-                            _wmakepath_s(subdir, drive, dir, fname, ext);
-                        }
-
-                        SearchForFiles(subdir, files, recursive);
-                    }
-                }
-
-                if (!FindNextFile(hFile.get(), &findData))
-                    break;
-            }
-        }
-    }
-
-
-    void PrintFormat(DXGI_FORMAT Format)
-    {
-        for (const SValue *pFormat = g_pFormats; pFormat->pName; pFormat++)
-        {
-            if ((DXGI_FORMAT)pFormat->dwValue == Format)
-            {
-                wprintf(pFormat->pName);
+            if (!FindNextFile(hFile.get(), &findData))
                 break;
-            }
         }
     }
 
-
-    void PrintInfo(const TexMetadata& info)
+    // Process directories
+    if (recursive)
     {
-        wprintf(L" (%Iux%Iu", info.width, info.height);
-
-        if (TEX_DIMENSION_TEXTURE3D == info.dimension)
-            wprintf(L"x%Iu", info.depth);
-
-        if (info.mipLevels > 1)
-            wprintf(L",%Iu", info.mipLevels);
-
-        if (info.arraySize > 1)
-            wprintf(L",%Iu", info.arraySize);
-
-        wprintf(L" ");
-        PrintFormat(info.format);
-
-        switch (info.dimension)
+        wchar_t searchDir[MAX_PATH] = {};
         {
-        case TEX_DIMENSION_TEXTURE1D:
-            wprintf((info.arraySize > 1) ? L" 1DArray" : L" 1D");
-            break;
-
-        case TEX_DIMENSION_TEXTURE2D:
-            if (info.IsCubemap())
-            {
-                wprintf((info.arraySize > 6) ? L" CubeArray" : L" Cube");
-            }
-            else
-            {
-                wprintf((info.arraySize > 1) ? L" 2DArray" : L" 2D");
-            }
-            break;
-
-        case TEX_DIMENSION_TEXTURE3D:
-            wprintf(L" 3D");
-            break;
+            wchar_t drive[_MAX_DRIVE] = {};
+            wchar_t dir[_MAX_DIR] = {};
+            _wsplitpath_s(path, drive, _MAX_DRIVE, dir, _MAX_DIR, nullptr, 0, nullptr, 0);
+            _wmakepath_s(searchDir, drive, dir, L"*", nullptr);
         }
 
-        switch (info.GetAlphaMode())
+        hFile.reset(safe_handle(FindFirstFileExW(searchDir,
+                                FindExInfoBasic, &findData,
+                                FindExSearchLimitToDirectories, nullptr,
+                                FIND_FIRST_EX_LARGE_FETCH)));
+        if (!hFile)
+            return;
+
+        for (;;)
         {
-        case TEX_ALPHA_MODE_OPAQUE:
-            wprintf(L" \x0e0:Opaque");
-            break;
-        case TEX_ALPHA_MODE_PREMULTIPLIED:
-            wprintf(L" \x0e0:PM");
-            break;
-        case TEX_ALPHA_MODE_STRAIGHT:
-            wprintf(L" \x0e0:NonPM");
+            if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+            {
+                if (findData.cFileName[0] != L'.')
+                {
+                    wchar_t subdir[MAX_PATH] = {};
+
+                    {
+                        wchar_t drive[_MAX_DRIVE] = {};
+                        wchar_t dir[_MAX_DIR] = {};
+                        wchar_t fname[_MAX_FNAME] = {};
+                        wchar_t ext[_MAX_FNAME] = {};
+                        _wsplitpath_s(path, drive, dir, fname, ext);
+                        wcscat_s(dir, findData.cFileName);
+                        _wmakepath_s(subdir, drive, dir, fname, ext);
+                    }
+
+                    SearchForFiles(subdir, files, recursive);
+                }
+            }
+
+            if (!FindNextFile(hFile.get(), &findData))
+                break;
+        }
+    }
+}
+
+
+void PrintFormat(DXGI_FORMAT Format)
+{
+    for (const SValue *pFormat = g_pFormats; pFormat->pName; pFormat++)
+    {
+        if ((DXGI_FORMAT)pFormat->dwValue == Format)
+        {
+            wprintf(pFormat->pName);
             break;
         }
+    }
+}
 
-        wprintf(L")");
+
+void PrintInfo(const TexMetadata& info)
+{
+    wprintf(L" (%Iux%Iu", info.width, info.height);
+
+    if (TEX_DIMENSION_TEXTURE3D == info.dimension)
+        wprintf(L"x%Iu", info.depth);
+
+    if (info.mipLevels > 1)
+        wprintf(L",%Iu", info.mipLevels);
+
+    if (info.arraySize > 1)
+        wprintf(L",%Iu", info.arraySize);
+
+    wprintf(L" ");
+    PrintFormat(info.format);
+
+    switch (info.dimension)
+    {
+    case TEX_DIMENSION_TEXTURE1D:
+        wprintf((info.arraySize > 1) ? L" 1DArray" : L" 1D");
+        break;
+
+    case TEX_DIMENSION_TEXTURE2D:
+        if (info.IsCubemap())
+        {
+            wprintf((info.arraySize > 6) ? L" CubeArray" : L" Cube");
+        }
+        else
+        {
+            wprintf((info.arraySize > 1) ? L" 2DArray" : L" 2D");
+        }
+        break;
+
+    case TEX_DIMENSION_TEXTURE3D:
+        wprintf(L" 3D");
+        break;
     }
 
-
-    void PrintList(size_t cch, const SValue *pValue)
+    switch (info.GetAlphaMode())
     {
-        while (pValue->pName)
-        {
-            size_t cchName = wcslen(pValue->pName);
-
-            if (cch + cchName + 2 >= 80)
-            {
-                wprintf(L"\n      ");
-                cch = 6;
-            }
-
-            wprintf(L"%ls ", pValue->pName);
-            cch += cchName + 2;
-            pValue++;
-        }
-
-        wprintf(L"\n");
+    case TEX_ALPHA_MODE_OPAQUE:
+        wprintf(L" \x0e0:Opaque");
+        break;
+    case TEX_ALPHA_MODE_PREMULTIPLIED:
+        wprintf(L" \x0e0:PM");
+        break;
+    case TEX_ALPHA_MODE_STRAIGHT:
+        wprintf(L" \x0e0:NonPM");
+        break;
     }
 
+    wprintf(L")");
+}
 
-    void PrintLogo()
+
+void PrintList(size_t cch, const SValue *pValue)
+{
+    while (pValue->pName)
     {
-        wprintf(L"Microsoft (R) DirectX Texture Assembler (DirectXTex version)\n");
-        wprintf(L"Copyright (C) Microsoft Corp. All rights reserved.\n");
+        size_t cchName = wcslen(pValue->pName);
+
+        if (cch + cchName + 2 >= 80)
+        {
+            wprintf(L"\n      ");
+            cch = 6;
+        }
+
+        wprintf(L"%ls ", pValue->pName);
+        cch += cchName + 2;
+        pValue++;
+    }
+
+    wprintf(L"\n");
+}
+
+
+void PrintLogo()
+{
+    wprintf(L"Microsoft (R) DirectX Texture Assembler (DirectXTex version)\n");
+    wprintf(L"Copyright (C) Microsoft Corp. All rights reserved.\n");
 #ifdef _DEBUG
-        wprintf(L"*** Debug build ***\n");
+    wprintf(L"*** Debug build ***\n");
 #endif
-        wprintf(L"\n");
-    }
+    wprintf(L"\n");
+}
 
 
-    void PrintUsage()
-    {
-        PrintLogo();
+void PrintUsage()
+{
+    PrintLogo();
 
-        wprintf(L"Usage: texassemble <command> <options> <files>\n\n");
-        wprintf(L"   cube                create cubemap\n");
-        wprintf(L"   volume              create volume map\n");
-        wprintf(L"   array               create texture array\n");
-        wprintf(L"   cubearray           create cubemap array\n");
-        wprintf(L"   h-cross or v-cross  create a cross image from a cubemap\n");
-        wprintf(L"   h-strip or v-strip  create a strip image from a cubemap\n\n");
-        wprintf(L"   -r                  wildcard filename search is recursive\n");
-        wprintf(L"   -w <n>              width\n");
-        wprintf(L"   -h <n>              height\n");
-        wprintf(L"   -f <format>         format\n");
-        wprintf(L"   -if <filter>        image filtering\n");
-        wprintf(L"   -srgb{i|o}          sRGB {input, output}\n");
-        wprintf(L"   -o <filename>       output filename\n");
-        wprintf(L"   -y                  overwrite existing output file (if any)\n");
-        wprintf(L"   -sepalpha           resize alpha channel separately from color channels\n");
-        wprintf(L"   -wrap, -mirror      texture addressing mode (wrap, mirror, or clamp)\n");
-        wprintf(L"   -alpha              convert premultiplied alpha to straight alpha\n");
-        wprintf(L"   -dx10               Force use of 'DX10' extended header\n");
-        wprintf(L"   -nologo             suppress copyright message\n");
+    wprintf(L"Usage: texassemble <command> <options> <files>\n\n");
+    wprintf(L"   cube                create cubemap\n");
+    wprintf(L"   volume              create volume map\n");
+    wprintf(L"   array               create texture array\n");
+    wprintf(L"   cubearray           create cubemap array\n");
+    wprintf(L"   h-cross or v-cross  create a cross image from a cubemap\n");
+    wprintf(L"   h-strip or v-strip  create a strip image from a cubemap\n\n");
+    wprintf(L"   -r                  wildcard filename search is recursive\n");
+    wprintf(L"   -w <n>              width\n");
+    wprintf(L"   -h <n>              height\n");
+    wprintf(L"   -f <format>         format\n");
+    wprintf(L"   -if <filter>        image filtering\n");
+    wprintf(L"   -srgb{i|o}          sRGB {input, output}\n");
+    wprintf(L"   -o <filename>       output filename\n");
+    wprintf(L"   -y                  overwrite existing output file (if any)\n");
+    wprintf(L"   -sepalpha           resize alpha channel separately from color channels\n");
+    wprintf(L"   -wrap, -mirror      texture addressing mode (wrap, mirror, or clamp)\n");
+    wprintf(L"   -alpha              convert premultiplied alpha to straight alpha\n");
+    wprintf(L"   -dx10               Force use of 'DX10' extended header\n");
+    wprintf(L"   -nologo             suppress copyright message\n");
 
-        wprintf(L"\n   <format>: ");
-        PrintList(13, g_pFormats);
+    wprintf(L"\n   <format>: ");
+    PrintList(13, g_pFormats);
 
-        wprintf(L"\n   <filter>: ");
-        PrintList(13, g_pFilters);
-    }
+    wprintf(L"\n   <filter>: ");
+    PrintList(13, g_pFilters);
+}
 }
 
 
@@ -833,8 +843,8 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
                 }
 
                 if (info.mipLevels > 1
-                    || info.IsVolumemap()
-                    || info.IsCubemap())
+                        || info.IsVolumemap()
+                        || info.IsCubemap())
                 {
                     wprintf(L"\nERROR: Can't assemble complex surfaces\n");
                     return 1;
@@ -968,8 +978,8 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
 
         // --- Undo Premultiplied Alpha (if requested) ---------------------------------
         if ((dwOptions & (1 << OPT_DEMUL_ALPHA))
-            && HasAlpha(info.format)
-            && info.format != DXGI_FORMAT_A8_UNORM)
+                && HasAlpha(info.format)
+                && info.format != DXGI_FORMAT_A8_UNORM)
         {
             if (info.GetAlphaMode() == TEX_ALPHA_MODE_STRAIGHT)
             {
@@ -1070,7 +1080,7 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
             }
 
             hr = Convert(image->GetImages(), image->GetImageCount(), image->GetMetadata(), format,
-                dwFilter | dwFilterOpts | dwSRGB, TEX_THRESHOLD_DEFAULT, *timage.get());
+                         dwFilter | dwFilterOpts | dwSRGB, TEX_THRESHOLD_DEFAULT, *timage.get());
             if (FAILED(hr))
             {
                 wprintf(L" FAILED [convert] (%x)\n", hr);
@@ -1351,8 +1361,8 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
         }
 
         hr = SaveToDDSFile(result.GetImages(), result.GetImageCount(), result.GetMetadata(),
-            (dwOptions & (1 << OPT_USE_DX10)) ? (DDS_FLAGS_FORCE_DX10_EXT | DDS_FLAGS_FORCE_DX10_EXT_MISC2) : DDS_FLAGS_NONE,
-            szOutputFile);
+                           (dwOptions & (1 << OPT_USE_DX10)) ? (DDS_FLAGS_FORCE_DX10_EXT | DDS_FLAGS_FORCE_DX10_EXT_MISC2) : DDS_FLAGS_NONE,
+                           szOutputFile);
         if (FAILED(hr))
         {
             wprintf(L"\nFAILED (%x)\n", hr);

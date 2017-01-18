@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeferredContexts11\src\utility/ShaderPermutations.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -45,7 +45,8 @@ public:
 
     ShaderPermutations()
     {
-        for (size_t i=0; i<m_shaderVariations; i++) {
+        for (size_t i=0; i<m_shaderVariations; i++)
+        {
             m_pVertexLayoutVTFStream[i] = NULL;
             m_pVertexShaderVTF[i] = NULL;
             m_pVertexShaderNoVTF[i] = NULL;

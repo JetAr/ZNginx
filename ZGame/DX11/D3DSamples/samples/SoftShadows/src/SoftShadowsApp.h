@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        SoftShadows\src/SoftShadowsApp.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -50,7 +50,7 @@ public:
     virtual void onFrameMove(double time, float elapsedTime) override;
     virtual LRESULT onWindowsMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam, bool *stopProcessing) override;
     virtual void onKeyboardMessage(UINT nChar, bool keyDown, bool altDown) override;
-    
+
     virtual HRESULT onCreateDevice(
         ID3D11Device *device,
         const DXGI_SURFACE_DESC *backBufferSurfaceDesc) override;
@@ -75,11 +75,11 @@ private:
     static void CALLBACK onSampleGuiEvent(UINT eventId, int controlId, CDXUTControl *control, void *userContext);
 
     CDXUTDialogResourceManager m_dialogResourceManager; // manager for shared resources of dialogs
-    
+
     CD3DSettingsDlg             m_d3dSettingsDlg;        // Device settings dialog
-    CDXUTDialog                 m_hud;                   // manages the 3D   
+    CDXUTDialog                 m_hud;                   // manages the 3D
     CDXUTDialog                 m_sampleUI;              // dialog for sample specific controls
-    
+
     CDXUTSDKMesh                m_knightMesh;
     CDXUTSDKMesh                m_podiumMesh;
 

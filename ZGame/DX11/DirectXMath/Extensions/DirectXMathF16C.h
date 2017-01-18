@@ -1,11 +1,11 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXMathF16C.h -- F16C/CVT16 extensions for SIMD C++ Math library
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
 // ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
 // THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
 // PARTICULAR PURPOSE.
-//  
+//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // http://go.microsoft.com/fwlink/?LinkID=615560
@@ -83,10 +83,10 @@ inline PackedVector::HALF XMConvertFloatToHalf( float Value )
 
 inline float* XMConvertHalfToFloatStream
 (
-    _Out_writes_bytes_(sizeof(float)+OutputStride*(HalfCount-1)) float* pOutputStream, 
-     _In_ size_t      OutputStride, 
-    _In_reads_bytes_(2+InputStride*(HalfCount-1)) const PackedVector::HALF* pInputStream, 
-    _In_ size_t      InputStride, 
+    _Out_writes_bytes_(sizeof(float)+OutputStride*(HalfCount-1)) float* pOutputStream,
+    _In_ size_t      OutputStride,
+    _In_reads_bytes_(2+InputStride*(HalfCount-1)) const PackedVector::HALF* pInputStream,
+    _In_ size_t      InputStride,
     _In_ size_t      HalfCount
 )
 {
@@ -116,7 +116,7 @@ inline float* XMConvertHalfToFloatStream
                         __m128 FV = _mm_cvtph_ps( HV );
 
                         _mm_stream_ps( reinterpret_cast<float*>(pFloat), FV );
-                        pFloat += OutputStride*4; 
+                        pFloat += OutputStride*4;
                         i += 4;
                     }
                 }
@@ -131,7 +131,7 @@ inline float* XMConvertHalfToFloatStream
                         __m128 FV = _mm_cvtph_ps( HV );
 
                         _mm_storeu_ps( reinterpret_cast<float*>(pFloat), FV );
-                        pFloat += OutputStride*4; 
+                        pFloat += OutputStride*4;
                         i += 4;
                     }
                 }
@@ -147,13 +147,13 @@ inline float* XMConvertHalfToFloatStream
                     __m128 FV = _mm_cvtph_ps( HV );
 
                     _mm_store_ss( reinterpret_cast<float*>(pFloat), FV );
-                    pFloat += OutputStride; 
+                    pFloat += OutputStride;
                     *reinterpret_cast<int*>(pFloat) = _mm_extract_ps( FV, 1 );
-                    pFloat += OutputStride; 
+                    pFloat += OutputStride;
                     *reinterpret_cast<int*>(pFloat) = _mm_extract_ps( FV, 2 );
-                    pFloat += OutputStride; 
+                    pFloat += OutputStride;
                     *reinterpret_cast<int*>(pFloat) = _mm_extract_ps( FV, 3 );
-                    pFloat += OutputStride; 
+                    pFloat += OutputStride;
                     i += 4;
                 }
             }
@@ -182,7 +182,7 @@ inline float* XMConvertHalfToFloatStream
                     __m128 FV = _mm_cvtph_ps( HV );
 
                     _mm_stream_ps( reinterpret_cast<float*>(pFloat ), FV );
-                    pFloat += OutputStride*4; 
+                    pFloat += OutputStride*4;
                     i += 4;
                 }
             }
@@ -208,7 +208,7 @@ inline float* XMConvertHalfToFloatStream
                     __m128 FV = _mm_cvtph_ps( HV );
 
                     _mm_storeu_ps( reinterpret_cast<float*>(pFloat ), FV );
-                    pFloat += OutputStride*4; 
+                    pFloat += OutputStride*4;
                     i += 4;
                 }
             }
@@ -219,7 +219,7 @@ inline float* XMConvertHalfToFloatStream
     {
         *reinterpret_cast<float*>(pFloat) = XMConvertHalfToFloat(reinterpret_cast<const HALF*>(pHalf)[0]);
         pHalf += InputStride;
-        pFloat += OutputStride; 
+        pFloat += OutputStride;
     }
 
     return pOutputStream;
@@ -228,10 +228,10 @@ inline float* XMConvertHalfToFloatStream
 
 inline PackedVector::HALF* XMConvertFloatToHalfStream
 (
-    _Out_writes_bytes_(2+OutputStride*(FloatCount-1)) PackedVector::HALF* pOutputStream, 
-    _In_ size_t       OutputStride, 
-    _In_reads_bytes_(sizeof(float)+InputStride*(FloatCount-1)) const float* pInputStream, 
-    _In_ size_t       InputStride, 
+    _Out_writes_bytes_(2+OutputStride*(FloatCount-1)) PackedVector::HALF* pOutputStream,
+    _In_ size_t       OutputStride,
+    _In_reads_bytes_(sizeof(float)+InputStride*(FloatCount-1)) const float* pInputStream,
+    _In_ size_t       InputStride,
     _In_ size_t       FloatCount
 )
 {
@@ -360,7 +360,7 @@ inline PackedVector::HALF* XMConvertFloatToHalfStream
     for (; i < FloatCount; ++i)
     {
         *reinterpret_cast<HALF*>(pHalf) = XMConvertFloatToHalf(reinterpret_cast<const float*>(pFloat)[0]);
-        pFloat += InputStride; 
+        pFloat += InputStride;
         pHalf += OutputStride;
     }
 

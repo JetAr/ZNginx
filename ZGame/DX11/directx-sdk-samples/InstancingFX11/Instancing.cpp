@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: Instancing.cpp
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -155,7 +155,7 @@ ID3DX11EffectTechnique*              g_pRenderGrass = nullptr;
 #define IDC_TOGGLEWARP             11
 
 //--------------------------------------------------------------------------------------
-// Forward declarations 
+// Forward declarations
 //--------------------------------------------------------------------------------------
 bool CALLBACK ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* pUserContext );
 void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext );
@@ -169,7 +169,7 @@ bool CALLBACK IsD3D11DeviceAcceptable( const CD3D11EnumAdapterInfo *AdapterInfo,
 HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc,
                                       void* pUserContext );
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                          const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext );
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext );
 void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime,
@@ -190,7 +190,7 @@ HRESULT CreateRandomTreeMatrices();
 
 
 //--------------------------------------------------------------------------------------
-// Entry point to the program. Initializes everything and goes into a message processing 
+// Entry point to the program. Initializes everything and goes into a message processing
 // loop. Idle time is used to render the scene.
 //--------------------------------------------------------------------------------------
 int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow )
@@ -228,7 +228,7 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 
 //--------------------------------------------------------------------------------------
-// Initialize the app 
+// Initialize the app
 //--------------------------------------------------------------------------------------
 void InitApp()
 {
@@ -237,7 +237,8 @@ void InitApp()
     g_SampleUI.Init( &g_DialogResourceManager );
     g_SampleUI.SetCallback( OnGUIEvent );
 
-    g_HUD.SetCallback( OnGUIEvent ); int iY = 10;
+    g_HUD.SetCallback( OnGUIEvent );
+    int iY = 10;
     g_HUD.AddButton( IDC_TOGGLEFULLSCREEN, L"Toggle full screen", 0, iY, 170, 23 );
     g_HUD.AddButton( IDC_CHANGEDEVICE, L"Change device (F2)", 0, iY += 26, 170, 23, VK_F2 );
     g_HUD.AddButton( IDC_TOGGLEREF, L"Toggle REF (F3)", 0, iY += 26, 170, 23, VK_F3 );
@@ -275,7 +276,7 @@ bool CALLBACK ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* p
 //--------------------------------------------------------------------------------------
 void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext )
 {
-    // Update the camera's position based on user input 
+    // Update the camera's position based on user input
     g_Camera.FrameMove( fElapsedTime );
 }
 
@@ -330,41 +331,45 @@ void CALLBACK OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, v
 
     switch( nControlID )
     {
-        case IDC_TOGGLEFULLSCREEN:
-            DXUTToggleFullScreen(); break;
-        case IDC_TOGGLEREF:
-            DXUTToggleREF(); break;
-        case IDC_CHANGEDEVICE:
-            g_D3DSettingsDlg.SetActive( !g_D3DSettingsDlg.IsActive() ); break;
-        case IDC_TOGGLEWARP:
-            DXUTToggleWARP(); break;
-        case IDC_NUMTREES:
-        {
-            g_iNumTreesToDraw = g_HUD.GetSlider( IDC_NUMTREES )->GetValue();
+    case IDC_TOGGLEFULLSCREEN:
+        DXUTToggleFullScreen();
+        break;
+    case IDC_TOGGLEREF:
+        DXUTToggleREF();
+        break;
+    case IDC_CHANGEDEVICE:
+        g_D3DSettingsDlg.SetActive( !g_D3DSettingsDlg.IsActive() );
+        break;
+    case IDC_TOGGLEWARP:
+        DXUTToggleWARP();
+        break;
+    case IDC_NUMTREES:
+    {
+        g_iNumTreesToDraw = g_HUD.GetSlider( IDC_NUMTREES )->GetValue();
 
-            swprintf_s( str, MAX_PATH, L"Trees: %d", g_iNumTreesToDraw );
-            g_HUD.GetStatic( IDC_NUMTREES_STATIC )->SetText( str );
+        swprintf_s( str, MAX_PATH, L"Trees: %d", g_iNumTreesToDraw );
+        g_HUD.GetStatic( IDC_NUMTREES_STATIC )->SetText( str );
 
-            UpdateLeafVertexLayout( DXUTGetD3D11Device() );
-            break;
-        }
-        case IDC_GRASSCOVERAGE:
-        {
-            g_iGrassCoverage = g_HUD.GetSlider( IDC_GRASSCOVERAGE )->GetValue();
+        UpdateLeafVertexLayout( DXUTGetD3D11Device() );
+        break;
+    }
+    case IDC_GRASSCOVERAGE:
+    {
+        g_iGrassCoverage = g_HUD.GetSlider( IDC_GRASSCOVERAGE )->GetValue();
 
-            swprintf_s( str, MAX_PATH, L"Grass Coverage: %d", g_iGrassCoverage );
-            g_HUD.GetStatic( IDC_GRASSCOVERAGE_STATIC )->SetText( str );
-            break;
-        }
-        case IDC_GRASSMESSINESS:
-        {
-            g_fGrassMessiness = g_HUD.GetSlider( IDC_GRASSMESSINESS )->GetValue() / ( float )25.0;
-            g_pGrassMessiness->SetFloat( g_fGrassMessiness );
+        swprintf_s( str, MAX_PATH, L"Grass Coverage: %d", g_iGrassCoverage );
+        g_HUD.GetStatic( IDC_GRASSCOVERAGE_STATIC )->SetText( str );
+        break;
+    }
+    case IDC_GRASSMESSINESS:
+    {
+        g_fGrassMessiness = g_HUD.GetSlider( IDC_GRASSMESSINESS )->GetValue() / ( float )25.0;
+        g_pGrassMessiness->SetFloat( g_fGrassMessiness );
 
-            swprintf_s( str, MAX_PATH, L"Grass Messiness: %f", g_fGrassMessiness );
-            g_HUD.GetStatic( IDC_GRASSMESSINESS_STATIC )->SetText( str );
-            break;
-        }
+        swprintf_s( str, MAX_PATH, L"Grass Messiness: %f", g_fGrassMessiness );
+        g_HUD.GetStatic( IDC_GRASSMESSINESS_STATIC )->SetText( str );
+        break;
+    }
     }
 }
 
@@ -410,8 +415,8 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG
     // Set the D3DCOMPILE_DEBUG flag to embed debug information in the shaders.
-    // Setting this flag improves the shader debugging experience, but still allows 
-    // the shaders to be optimized and to run exactly the way they will run in 
+    // Setting this flag improves the shader debugging experience, but still allows
+    // the shaders to be optimized and to run exactly the way they will run in
     // the release configuration of this program.
     dwShaderFlags |= D3DCOMPILE_DEBUG;
 
@@ -435,7 +440,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     SAFE_RELEASE( pEffectBuffer );
     if ( FAILED(hr) )
         return hr;
-    
+
 #endif
 
     // Obtain the technique handles
@@ -477,7 +482,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     V_RETURN( pPass->GetDesc( &PassDesc ) );
 
     V_RETURN( pd3dDevice->CreateInputLayout( instlayout, iNumElements, PassDesc.pIAInputSignature,
-                                             PassDesc.IAInputSignatureSize, &g_pInstVertexLayout ) );
+              PassDesc.IAInputSignatureSize, &g_pInstVertexLayout ) );
 
     g_iNumTreeInstances = MAX_TREE_INSTANCES;
     g_pTreeInstanceList = g_treeInstanceMatrices;
@@ -497,7 +502,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     pPass = g_pRenderSkybox->GetPassByIndex( 0 );
     V_RETURN( pPass->GetDesc( &PassDesc ) );
     V_RETURN( pd3dDevice->CreateInputLayout( scenelayout, iNumElements, PassDesc.pIAInputSignature,
-                                             PassDesc.IAInputSignatureSize, &g_pSkyVertexLayout ) );
+              PassDesc.IAInputSignatureSize, &g_pSkyVertexLayout ) );
 
     // Load meshes
     V_RETURN( g_MeshSkybox.Create( pd3dDevice, L"CloudBox\\skysphere.sdkmesh" ) );
@@ -543,7 +548,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 // Create any D3D resources that depend on the back buffer
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                          const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
     HRESULT hr = S_OK;
 
@@ -594,7 +599,7 @@ HRESULT RenderSceneGeometry( ID3D11DeviceContext* pd3dImmediateContext, CXMMATRI
     D3DX11_TECHNIQUE_DESC techDesc;
     HRESULT hr;
     V_RETURN( g_pRenderSkybox->GetDesc(&techDesc) );
-    
+
     for( UINT p = 0; p < techDesc.Passes; ++p )
     {
         for( UINT subset = 0; subset < g_MeshSkybox.GetNumSubsets( 0 ); ++subset )
@@ -647,7 +652,7 @@ HRESULT RenderSceneGeometry( ID3D11DeviceContext* pd3dImmediateContext, CXMMATRI
 
             pTechnique->GetPassByIndex( p )->Apply( 0, pd3dImmediateContext );
             pd3dImmediateContext->DrawIndexedInstanced( ( UINT )pSubset->IndexCount, g_iNumTreesToDraw,
-                                              0, ( UINT )pSubset->VertexStart, 0 );
+                    0, ( UINT )pSubset->VertexStart, 0 );
         }
     }
 
@@ -676,7 +681,7 @@ HRESULT RenderSceneGeometry( ID3D11DeviceContext* pd3dImmediateContext, CXMMATRI
 
             pTechnique->GetPassByIndex( p )->Apply( 0, pd3dImmediateContext );
             pd3dImmediateContext->DrawIndexedInstanced( ( UINT )pSubset->IndexCount, g_iNumTreesToDraw,
-                                              0, ( UINT )pSubset->VertexStart, 0 );
+                    0, ( UINT )pSubset->VertexStart, 0 );
         }
     }
 
@@ -781,7 +786,7 @@ void RenderGrass( ID3D11DeviceContext* pd3dImmediateContext, CXMMATRIX mView, CX
 
             pTechnique->GetPassByIndex( p )->Apply( 0, pd3dImmediateContext );
             pd3dImmediateContext->DrawIndexedInstanced( ( UINT )pSubset->IndexCount, g_iNumTreesToDraw,
-                                              0, ( UINT )pSubset->VertexStart, 0 );
+                    0, ( UINT )pSubset->VertexStart, 0 );
         }
     }
 }
@@ -806,7 +811,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
     XMMATRIX mProj = g_Camera.GetProjMatrix();
     XMMATRIX mView = g_Camera.GetViewMatrix();
 
-    RenderSceneGeometry( pd3dImmediateContext, mView, mProj ); // Render the scene with texture    
+    RenderSceneGeometry( pd3dImmediateContext, mView, mProj ); // Render the scene with texture
     RenderInstancedQuads( pd3dImmediateContext, mView, mProj ); // Render the instanced leaves for each tree
     RenderGrass( pd3dImmediateContext, mView, mProj ); // Render grass
 
@@ -856,10 +861,10 @@ void UpdateLeafVertexLayout( ID3D11Device* pd3dDevice )
     D3D11_INPUT_ELEMENT_DESC layout[ _countof(s_leaflayout) ];
     memcpy_s( layout, sizeof(layout), s_leaflayout, sizeof(s_leaflayout) );
     layout[2].InstanceDataStepRate =
-    layout[3].InstanceDataStepRate =
-    layout[4].InstanceDataStepRate =
-    layout[5].InstanceDataStepRate =
-    layout[6].InstanceDataStepRate = g_iNumTreesToDraw;
+        layout[3].InstanceDataStepRate =
+            layout[4].InstanceDataStepRate =
+                layout[5].InstanceDataStepRate =
+                    layout[6].InstanceDataStepRate = g_iNumTreesToDraw;
 
     D3DX11_PASS_DESC PassDesc;
     HRESULT hr;
@@ -869,7 +874,7 @@ void UpdateLeafVertexLayout( ID3D11Device* pd3dDevice )
 }
 
 //--------------------------------------------------------------------------------------
-// Release resources created in OnD3D11ResizedSwapChain 
+// Release resources created in OnD3D11ResizedSwapChain
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 {
@@ -878,7 +883,7 @@ void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 
 
 //--------------------------------------------------------------------------------------
-// Release resources created in OnD3D11CreateDevice 
+// Release resources created in OnD3D11CreateDevice
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
 {
@@ -924,7 +929,7 @@ HRESULT CreateQuadMesh( ID3D11Device* pd3dDevice, QUAD_MESH* pMesh, float fWidth
 
     /********************************
       leaves are quads anchored on the branch
-      
+
       |---------|
       |D       C|
       |         |
@@ -932,7 +937,7 @@ HRESULT CreateQuadMesh( ID3D11Device* pd3dDevice, QUAD_MESH* pMesh, float fWidth
       |A       B|
       |---------|
       O<-----branch
-      
+
      ********************************/
     fWidth /= 2.0f;
     QUAD_VERTEX quadVertices[] =
@@ -1133,11 +1138,11 @@ HRESULT LoadTextureArray( ID3D11Device* pd3dDevice, LPCTSTR* szTextureNames, int
                 if(mr.pData)
                 {
                     pd3dImmediateContext->UpdateSubresource( ( *ppTex2D ),
-                                                   D3D11CalcSubresource( iMip, i, desc.MipLevels ),
-                                                   nullptr,
-                                                   mr.pData,
-                                                   mr.RowPitch,
-                                                   0 );
+                            D3D11CalcSubresource( iMip, i, desc.MipLevels ),
+                            nullptr,
+                            mr.pData,
+                            mr.RowPitch,
+                            0 );
                 }
 
                 pd3dImmediateContext->Unmap( pTemp, iMip );
@@ -1237,7 +1242,9 @@ HRESULT CreateRandomTreeMatrices()
         pos.x *= -1;
         pos.z *= -1;
 
-        pos.x *= fScale; pos.y *= fScale; pos.z *= fScale;
+        pos.x *= fScale;
+        pos.y *= fScale;
+        pos.z *= fScale;
 
         float fRot = RPercent() * XM_PI;
 

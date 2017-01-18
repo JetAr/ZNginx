@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: BC6HBC7EncoderCS.cpp
 //
 // The main file of the Compute Shader Accelerated BC6H BC7 Encoder
@@ -25,13 +25,13 @@ ID3D11Texture2D*            g_pSourceTexture = nullptr;
 CGPUBC6HEncoder             g_GPUBC6HEncoder;
 CGPUBC7Encoder              g_GPUBC7Encoder;
 
-struct CommandLineOptions 
+struct CommandLineOptions
 {
     enum Mode
     {
         MODE_ENCODE_BC6HS,
         MODE_ENCODE_BC6HU,
-        MODE_ENCODE_BC7,        
+        MODE_ENCODE_BC7,
         MODE_NOT_SET
     } mode;
 
@@ -70,7 +70,7 @@ struct SValue
     DWORD dwValue;
 };
 
-SValue g_pFilters[] = 
+SValue g_pFilters[] =
 {
     { L"POINT",         TEX_FILTER_POINT                                },
     { L"LINEAR",        TEX_FILTER_LINEAR                               },
@@ -90,9 +90,9 @@ void PrintList(SValue* pValue)
 {
     while ( pValue->pName )
     {
-        wprintf( L"\t/%s\n", pValue->pName );        
+        wprintf( L"\t/%s\n", pValue->pName );
         pValue++;
-    }    
+    }
 }
 
 //--------------------------------------------------------------------------------------
@@ -133,7 +133,7 @@ HRESULT Encode( WCHAR* strSrcFilename, ID3D11Texture2D* pSourceTexture, DXGI_FOR
 
     INT pos = (INT)fname.rfind( '.' );
     if ( g_CommandLineOptions.mode == CommandLineOptions::MODE_ENCODE_BC6HS ||
-         g_CommandLineOptions.mode == CommandLineOptions::MODE_ENCODE_BC6HU )
+            g_CommandLineOptions.mode == CommandLineOptions::MODE_ENCODE_BC6HU )
     {
         fname.insert( pos, L"_BC6" );
     }
@@ -154,9 +154,9 @@ HRESULT Encode( WCHAR* strSrcFilename, ID3D11Texture2D* pSourceTexture, DXGI_FOR
 // Cleanup before exit
 //--------------------------------------------------------------------------------------
 void Cleanup()
-{    
+{
     g_GPUBC6HEncoder.Cleanup();
-    g_GPUBC7Encoder.Cleanup();    
+    g_GPUBC7Encoder.Cleanup();
     SAFE_RELEASE( g_pSourceTexture );
     SAFE_RELEASE( g_pContext );
     SAFE_RELEASE( g_pDevice );
@@ -166,12 +166,12 @@ void Cleanup()
 // Simple helper to test whether a string can be interpreted as a float
 //--------------------------------------------------------------------------------------
 #include <sstream>
-bool isFloat( std::wstring myString ) 
+bool isFloat( std::wstring myString )
 {
     std::wistringstream  iss(myString);
     float f;
-    iss >> std::noskipws >> f;    
-    return iss.eof() && !iss.fail(); 
+    iss >> std::noskipws >> f;
+    return iss.eof() && !iss.fail();
 }
 
 //--------------------------------------------------------------------------------------
@@ -189,45 +189,53 @@ BOOL ParseCommandLine( int argc, WCHAR* argv[] )
             {
                 return FALSE;
             }
-        } else if ( wcscmp( argv[i], L"/bc6hu" ) == 0 )
+        }
+        else if ( wcscmp( argv[i], L"/bc6hu" ) == 0 )
         {
             if ( !g_CommandLineOptions.SetMode( CommandLineOptions::MODE_ENCODE_BC6HU ) )
             {
                 return FALSE;
             }
-        } else if ( wcscmp( argv[i], L"/bc7" ) == 0 )
+        }
+        else if ( wcscmp( argv[i], L"/bc7" ) == 0 )
         {
             if ( !g_CommandLineOptions.SetMode( CommandLineOptions::MODE_ENCODE_BC7 ) )
             {
                 return FALSE;
             }
-        } else if ( wcscmp( argv[i], L"/nomips" ) == 0 )
+        }
+        else if ( wcscmp( argv[i], L"/nomips" ) == 0 )
         {
             g_CommandLineOptions.bNoMips = TRUE;
-        } else if ( wcscmp( argv[i], L"/srgb" ) == 0 )
+        }
+        else if ( wcscmp( argv[i], L"/srgb" ) == 0 )
         {
             g_CommandLineOptions.bSRGB = TRUE;
-        } else if ( wcscmp( argv[i], L"/aw" ) == 0 )
+        }
+        else if ( wcscmp( argv[i], L"/aw" ) == 0 )
         {
             if ( isFloat( argv[i+1] ) )
             {
                 g_CommandLineOptions.fBC7AlphaWeight = static_cast<float>( _wtof( argv[i+1] ) );
                 i += 1; // skip the next cmd line parameter
-            } else
+            }
+            else
             {
                 return FALSE;
             }
-        } else if
-            ( argv[i][0] == L'/' )
+        }
+        else if
+        ( argv[i][0] == L'/' )
         {
             if ( (dw = LookupByName( argv[i] + 1, g_pFilters )) != 0 )
             {
                 g_CommandLineOptions.dwFilter = dw;
-            } else
+            }
+            else
             {
                 wprintf( L"Unknown option %s\n", argv[i] );
                 return FALSE;
-            }                        
+            }
         }
     }
 
@@ -245,11 +253,11 @@ BOOL ParseCommandLine( int argc, WCHAR* argv[] )
 int __cdecl wmain(int argc, WCHAR* argv[])
 {
     int nReturn = 0;
-    
+
     printf( "Microsoft (R) Direct3D11 DirectCompute Accelerated BC6H BC7 Encoder\n\n" );
 
     if ( argc < 3 )
-    {                
+    {
         printf( "Usage: BC6HBC7EncoderCS.exe (options) (filter) Filename0 Filename1 Filename2...\n\n" );
 
         printf( "\tWhere (options) can be the following:\n\n" );
@@ -296,7 +304,7 @@ int __cdecl wmain(int argc, WCHAR* argv[])
     }
     printf( "done\n" );
 
-    // Check for Compute Shader 4.x support    
+    // Check for Compute Shader 4.x support
     {
         printf( "Checking CS4x capability..." );
         D3D11_FEATURE_DATA_D3D10_X_HARDWARE_OPTIONS hwopts;
@@ -310,7 +318,7 @@ int __cdecl wmain(int argc, WCHAR* argv[])
         }
 
         // CS4x capability found, initialize our CS accelerated encoders
-        printf( "Using CS Accelerated Encoder\n" );        
+        printf( "Using CS Accelerated Encoder\n" );
         if ( FAILED( g_GPUBC7Encoder.Initialize( g_pDevice, g_pContext ) ) )
         {
             nReturn = 1;
@@ -338,13 +346,13 @@ int __cdecl wmain(int argc, WCHAR* argv[])
         {
             wprintf( L"\nFile not found: %s\n", argv[i] );
             continue;
-        } 
+        }
 
         wprintf( L"\nProcessing source texture %s...\n", argv[i] );
 
         DXGI_FORMAT fmtLoadAs = DXGI_FORMAT_UNKNOWN;
         if ( g_CommandLineOptions.mode == CommandLineOptions::MODE_ENCODE_BC6HS ||
-             g_CommandLineOptions.mode == CommandLineOptions::MODE_ENCODE_BC6HU )
+                g_CommandLineOptions.mode == CommandLineOptions::MODE_ENCODE_BC6HU )
         {
             fmtLoadAs = DXGI_FORMAT_R32G32B32A32_FLOAT;
         }
@@ -352,7 +360,7 @@ int __cdecl wmain(int argc, WCHAR* argv[])
         {
             fmtLoadAs = DXGI_FORMAT_R8G8B8A8_UNORM;
         }
-                
+
         SAFE_RELEASE( g_pSourceTexture );
         if ( FAILED( LoadTextureFromFile( g_pDevice, argv[i], fmtLoadAs, g_CommandLineOptions.bNoMips, g_CommandLineOptions.dwFilter, &g_pSourceTexture ) ) )
         {
@@ -365,39 +373,41 @@ int __cdecl wmain(int argc, WCHAR* argv[])
             // Encode to BC7
             if ( g_CommandLineOptions.bSRGB )
             {
-                if ( FAILED( Encode( argv[i], g_pSourceTexture, DXGI_FORMAT_BC7_UNORM_SRGB, &g_GPUBC7Encoder ) ) )  
+                if ( FAILED( Encode( argv[i], g_pSourceTexture, DXGI_FORMAT_BC7_UNORM_SRGB, &g_GPUBC7Encoder ) ) )
                 {
                     printf("\nFailed BC7 SRGB encoding %S\n", argv[i] );
                     nReturn = 1;
-                    continue; 
+                    continue;
                 }
-            } 
+            }
             else
             {
-                if ( FAILED( Encode( argv[i], g_pSourceTexture, DXGI_FORMAT_BC7_UNORM, &g_GPUBC7Encoder ) ) )  
+                if ( FAILED( Encode( argv[i], g_pSourceTexture, DXGI_FORMAT_BC7_UNORM, &g_GPUBC7Encoder ) ) )
                 {
                     printf("\nFailed BC7 encoding %S\n", argv[i] );
                     nReturn = 1;
-                    continue; 
+                    continue;
                 }
             }
-        } else if ( g_CommandLineOptions.mode == CommandLineOptions::MODE_ENCODE_BC6HU )
+        }
+        else if ( g_CommandLineOptions.mode == CommandLineOptions::MODE_ENCODE_BC6HU )
         {
             // Encode to BC6HU
             if ( FAILED( Encode( argv[i], g_pSourceTexture, DXGI_FORMAT_BC6H_UF16, &g_GPUBC6HEncoder ) ) )
             {
                 printf("\nFailed BC6HU encoding %S\n", argv[i] );
                 nReturn = 1;
-                continue; 
+                continue;
             }
-        } else if ( g_CommandLineOptions.mode == CommandLineOptions::MODE_ENCODE_BC6HS )
+        }
+        else if ( g_CommandLineOptions.mode == CommandLineOptions::MODE_ENCODE_BC6HS )
         {
             // Encode to BC6HS
             if ( FAILED( Encode( argv[i], g_pSourceTexture, DXGI_FORMAT_BC6H_SF16, &g_GPUBC6HEncoder ) ) )
             {
                 printf("\nFailed BC6HS encoding %S\n", argv[i] );
                 nReturn = 1;
-                continue; 
+                continue;
             }
         }
     }

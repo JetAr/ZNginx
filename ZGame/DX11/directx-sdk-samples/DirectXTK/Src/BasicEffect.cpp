@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: BasicEffect.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -23,7 +23,7 @@ struct BasicEffectConstants
     XMVECTOR diffuseColor;
     XMVECTOR emissiveColor;
     XMVECTOR specularColorAndPower;
-    
+
     XMVECTOR lightDirection[IEffectLights::MaxDirectionalLights];
     XMVECTOR lightDiffuseColor[IEffectLights::MaxDirectionalLights];
     XMVECTOR lightSpecularColor[IEffectLights::MaxDirectionalLights];
@@ -76,109 +76,109 @@ public:
 namespace
 {
 #if defined(_XBOX_ONE) && defined(_TITLE)
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasic.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicNoFog.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVc.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVcNoFog.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicTx.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicTxNoFog.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicTxVc.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicTxVcNoFog.inc"
-    
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVertexLighting.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVertexLightingVc.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVertexLightingTx.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVertexLightingTxVc.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasic.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicNoFog.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVc.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVcNoFog.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicTx.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicTxNoFog.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicTxVc.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicTxVcNoFog.inc"
 
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicOneLight.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicOneLightVc.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicOneLightTx.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicOneLightTxVc.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVertexLighting.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVertexLightingVc.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVertexLightingTx.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVertexLightingTxVc.inc"
 
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicPixelLighting.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicPixelLightingVc.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicPixelLightingTx.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicPixelLightingTxVc.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicOneLight.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicOneLightVc.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicOneLightTx.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicOneLightTxVc.inc"
 
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVertexLightingBn.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVertexLightingVcBn.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVertexLightingTxBn.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVertexLightingTxVcBn.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicPixelLighting.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicPixelLightingVc.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicPixelLightingTx.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicPixelLightingTxVc.inc"
 
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicOneLightBn.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicOneLightVcBn.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicOneLightTxBn.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicOneLightTxVcBn.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVertexLightingBn.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVertexLightingVcBn.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVertexLightingTxBn.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicVertexLightingTxVcBn.inc"
 
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicPixelLightingBn.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicPixelLightingVcBn.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicPixelLightingTxBn.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_VSBasicPixelLightingTxVcBn.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicOneLightBn.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicOneLightVcBn.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicOneLightTxBn.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicOneLightTxVcBn.inc"
 
-    #include "Shaders/Compiled/XboxOneBasicEffect_PSBasic.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_PSBasicNoFog.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_PSBasicTx.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_PSBasicTxNoFog.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicPixelLightingBn.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicPixelLightingVcBn.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicPixelLightingTxBn.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_VSBasicPixelLightingTxVcBn.inc"
 
-    #include "Shaders/Compiled/XboxOneBasicEffect_PSBasicVertexLighting.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_PSBasicVertexLightingNoFog.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_PSBasicVertexLightingTx.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_PSBasicVertexLightingTxNoFog.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_PSBasic.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_PSBasicNoFog.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_PSBasicTx.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_PSBasicTxNoFog.inc"
 
-    #include "Shaders/Compiled/XboxOneBasicEffect_PSBasicPixelLighting.inc"
-    #include "Shaders/Compiled/XboxOneBasicEffect_PSBasicPixelLightingTx.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_PSBasicVertexLighting.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_PSBasicVertexLightingNoFog.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_PSBasicVertexLightingTx.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_PSBasicVertexLightingTxNoFog.inc"
+
+#include "Shaders/Compiled/XboxOneBasicEffect_PSBasicPixelLighting.inc"
+#include "Shaders/Compiled/XboxOneBasicEffect_PSBasicPixelLightingTx.inc"
 #else
-    #include "Shaders/Compiled/BasicEffect_VSBasic.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicNoFog.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicVc.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicVcNoFog.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicTx.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicTxNoFog.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicTxVc.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicTxVcNoFog.inc"
-    
-    #include "Shaders/Compiled/BasicEffect_VSBasicVertexLighting.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicVertexLightingVc.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicVertexLightingTx.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicVertexLightingTxVc.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasic.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicNoFog.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicVc.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicVcNoFog.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicTx.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicTxNoFog.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicTxVc.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicTxVcNoFog.inc"
 
-    #include "Shaders/Compiled/BasicEffect_VSBasicOneLight.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicOneLightVc.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicOneLightTx.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicOneLightTxVc.inc"
-    
-    #include "Shaders/Compiled/BasicEffect_VSBasicPixelLighting.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicPixelLightingVc.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicPixelLightingTx.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicPixelLightingTxVc.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicVertexLighting.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicVertexLightingVc.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicVertexLightingTx.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicVertexLightingTxVc.inc"
 
-    #include "Shaders/Compiled/BasicEffect_VSBasicVertexLightingBn.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicVertexLightingVcBn.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicVertexLightingTxBn.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicVertexLightingTxVcBn.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicOneLight.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicOneLightVc.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicOneLightTx.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicOneLightTxVc.inc"
 
-    #include "Shaders/Compiled/BasicEffect_VSBasicOneLightBn.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicOneLightVcBn.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicOneLightTxBn.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicOneLightTxVcBn.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicPixelLighting.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicPixelLightingVc.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicPixelLightingTx.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicPixelLightingTxVc.inc"
 
-    #include "Shaders/Compiled/BasicEffect_VSBasicPixelLightingBn.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicPixelLightingVcBn.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicPixelLightingTxBn.inc"
-    #include "Shaders/Compiled/BasicEffect_VSBasicPixelLightingTxVcBn.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicVertexLightingBn.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicVertexLightingVcBn.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicVertexLightingTxBn.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicVertexLightingTxVcBn.inc"
 
-    #include "Shaders/Compiled/BasicEffect_PSBasic.inc"
-    #include "Shaders/Compiled/BasicEffect_PSBasicNoFog.inc"
-    #include "Shaders/Compiled/BasicEffect_PSBasicTx.inc"
-    #include "Shaders/Compiled/BasicEffect_PSBasicTxNoFog.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicOneLightBn.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicOneLightVcBn.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicOneLightTxBn.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicOneLightTxVcBn.inc"
 
-    #include "Shaders/Compiled/BasicEffect_PSBasicVertexLighting.inc"
-    #include "Shaders/Compiled/BasicEffect_PSBasicVertexLightingNoFog.inc"
-    #include "Shaders/Compiled/BasicEffect_PSBasicVertexLightingTx.inc"
-    #include "Shaders/Compiled/BasicEffect_PSBasicVertexLightingTxNoFog.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicPixelLightingBn.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicPixelLightingVcBn.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicPixelLightingTxBn.inc"
+#include "Shaders/Compiled/BasicEffect_VSBasicPixelLightingTxVcBn.inc"
 
-    #include "Shaders/Compiled/BasicEffect_PSBasicPixelLighting.inc"
-    #include "Shaders/Compiled/BasicEffect_PSBasicPixelLightingTx.inc"
+#include "Shaders/Compiled/BasicEffect_PSBasic.inc"
+#include "Shaders/Compiled/BasicEffect_PSBasicNoFog.inc"
+#include "Shaders/Compiled/BasicEffect_PSBasicTx.inc"
+#include "Shaders/Compiled/BasicEffect_PSBasicTxNoFog.inc"
+
+#include "Shaders/Compiled/BasicEffect_PSBasicVertexLighting.inc"
+#include "Shaders/Compiled/BasicEffect_PSBasicVertexLightingNoFog.inc"
+#include "Shaders/Compiled/BasicEffect_PSBasicVertexLightingTx.inc"
+#include "Shaders/Compiled/BasicEffect_PSBasicVertexLightingTxNoFog.inc"
+
+#include "Shaders/Compiled/BasicEffect_PSBasicPixelLighting.inc"
+#include "Shaders/Compiled/BasicEffect_PSBasicPixelLightingTx.inc"
 #endif
 }
 
@@ -213,12 +213,12 @@ const ShaderBytecode EffectBase<BasicEffectTraits>::VertexShaderBytecode[] =
     { BasicEffect_VSBasicVertexLightingVcBn,   sizeof(BasicEffect_VSBasicVertexLightingVcBn)   },
     { BasicEffect_VSBasicVertexLightingTxBn,   sizeof(BasicEffect_VSBasicVertexLightingTxBn)   },
     { BasicEffect_VSBasicVertexLightingTxVcBn, sizeof(BasicEffect_VSBasicVertexLightingTxVcBn) },
-    
+
     { BasicEffect_VSBasicOneLightBn,           sizeof(BasicEffect_VSBasicOneLightBn)           },
     { BasicEffect_VSBasicOneLightVcBn,         sizeof(BasicEffect_VSBasicOneLightVcBn)         },
     { BasicEffect_VSBasicOneLightTxBn,         sizeof(BasicEffect_VSBasicOneLightTxBn)         },
     { BasicEffect_VSBasicOneLightTxVcBn,       sizeof(BasicEffect_VSBasicOneLightTxVcBn)       },
-    
+
     { BasicEffect_VSBasicPixelLightingBn,      sizeof(BasicEffect_VSBasicPixelLightingBn)      },
     { BasicEffect_VSBasicPixelLightingVcBn,    sizeof(BasicEffect_VSBasicPixelLightingVcBn)    },
     { BasicEffect_VSBasicPixelLightingTxBn,    sizeof(BasicEffect_VSBasicPixelLightingTxBn)    },
@@ -236,7 +236,7 @@ const int EffectBase<BasicEffectTraits>::VertexShaderIndices[] =
     5,      // texture, no fog
     6,      // texture + vertex color
     7,      // texture + vertex color, no fog
-    
+
     8,      // vertex lighting
     8,      // vertex lighting, no fog
     9,      // vertex lighting + vertex color
@@ -245,7 +245,7 @@ const int EffectBase<BasicEffectTraits>::VertexShaderIndices[] =
     10,     // vertex lighting + texture, no fog
     11,     // vertex lighting + texture + vertex color
     11,     // vertex lighting + texture + vertex color, no fog
-    
+
     12,     // one light
     12,     // one light, no fog
     13,     // one light + vertex color
@@ -254,7 +254,7 @@ const int EffectBase<BasicEffectTraits>::VertexShaderIndices[] =
     14,     // one light + texture, no fog
     15,     // one light + texture + vertex color
     15,     // one light + texture + vertex color, no fog
-    
+
     16,     // pixel lighting
     16,     // pixel lighting, no fog
     17,     // pixel lighting + vertex color
@@ -320,7 +320,7 @@ const int EffectBase<BasicEffectTraits>::PixelShaderIndices[] =
     3,      // texture, no fog
     2,      // texture + vertex color
     3,      // texture + vertex color, no fog
-    
+
     4,      // vertex lighting
     5,      // vertex lighting, no fog
     4,      // vertex lighting + vertex color
@@ -329,7 +329,7 @@ const int EffectBase<BasicEffectTraits>::PixelShaderIndices[] =
     7,      // vertex lighting + texture, no fog
     6,      // vertex lighting + texture + vertex color
     7,      // vertex lighting + texture + vertex color, no fog
-    
+
     4,      // one light
     5,      // one light, no fog
     4,      // one light + vertex color
@@ -338,7 +338,7 @@ const int EffectBase<BasicEffectTraits>::PixelShaderIndices[] =
     7,      // one light + texture, no fog
     6,      // one light + texture + vertex color
     7,      // one light + texture + vertex color, no fog
-    
+
     8,      // pixel lighting
     8,      // pixel lighting, no fog
     8,      // pixel lighting + vertex color
@@ -384,11 +384,11 @@ SharedResourcePool<ID3D11Device*, EffectBase<BasicEffectTraits>::DeviceResources
 // Constructor.
 BasicEffect::Impl::Impl(_In_ ID3D11Device* device)
     : EffectBase(device),
-    lightingEnabled(false),
-    preferPerPixelLighting(false),
-    vertexColorEnabled(false),
-    textureEnabled(false),
-    biasedVertexNormals(false)
+      lightingEnabled(false),
+      preferPerPixelLighting(false),
+      vertexColorEnabled(false),
+      textureEnabled(false),
+      biasedVertexNormals(false)
 {
     static_assert(_countof(EffectBase<BasicEffectTraits>::VertexShaderIndices) == BasicEffectTraits::ShaderPermutationCount, "array/max mismatch");
     static_assert(_countof(EffectBase<BasicEffectTraits>::VertexShaderBytecode) == BasicEffectTraits::VertexShaderCount, "array/max mismatch");
@@ -475,14 +475,14 @@ void BasicEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
 
 // Public constructor.
 BasicEffect::BasicEffect(_In_ ID3D11Device* device)
-  : pImpl(new Impl(device))
+    : pImpl(new Impl(device))
 {
 }
 
 
 // Move constructor.
 BasicEffect::BasicEffect(BasicEffect&& moveFrom)
-  : pImpl(std::move(moveFrom.pImpl))
+    : pImpl(std::move(moveFrom.pImpl))
 {
 }
 
@@ -589,7 +589,7 @@ void BasicEffect::DisableSpecular()
     // Set specular color to black, power to 1
     // Note: Don't use a power of 0 or the shader will generate strange highlights on non-specular materials
 
-    pImpl->constants.specularColorAndPower = g_XMIdentityR3; 
+    pImpl->constants.specularColorAndPower = g_XMIdentityR3;
 
     pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBuffer;
 }

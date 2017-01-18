@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: SOParser.h
 //
 // Direct3D 11 Effects Stream Out Decl Parser
@@ -20,7 +20,7 @@
 
 namespace D3DX11Effects
 {
-    
+
 //////////////////////////////////////////////////////////////////////////
 // CSOParser
 //////////////////////////////////////////////////////////////////////////
@@ -202,7 +202,7 @@ lExit:
 
         assert( pSemantic );
 
-        pSemantic = strchr( pSemantic, '.' ); 
+        pSemantic = strchr( pSemantic, '.' );
 
         if( pSemantic == nullptr )
         {
@@ -249,7 +249,7 @@ lExit:
         _Analysis_assume_( ppSemantic && *ppSemantic );
 
         HRESULT hr = S_OK;
-        LPSTR pColon = strchr( *ppSemantic, ':' ); 
+        LPSTR pColon = strchr( *ppSemantic, ':' );
 
         if( pColon == nullptr )
             return S_OK;
@@ -257,7 +257,7 @@ lExit:
         if( pColon == *ppSemantic )
         {
             strcpy_s( m_pError, MAX_ERROR_SIZE,
-                           "ID3D11Effect::ParseSODecl - Invalid output slot" );
+                      "ID3D11Effect::ParseSODecl - Invalid output slot" );
             VH( E_FAIL );
         }
 
@@ -266,7 +266,7 @@ lExit:
         if( outputSlot < 0 || outputSlot > 255 )
         {
             strcpy_s( m_pError, MAX_ERROR_SIZE,
-                           "ID3D11Effect::ParseSODecl - Invalid output slot" );
+                      "ID3D11Effect::ParseSODecl - Invalid output slot" );
             VH( E_FAIL );
         }
         m_newEntry.OutputSlot = (uint8_t)outputSlot;
@@ -306,7 +306,7 @@ lExit:
         {
             m_newEntry.SemanticIndex = atoi( pSemantic + uLen );
             pSemantic[uLen] = '\0';
-        } 
+        }
         else
         {
             m_newEntry.SemanticIndex = 0;

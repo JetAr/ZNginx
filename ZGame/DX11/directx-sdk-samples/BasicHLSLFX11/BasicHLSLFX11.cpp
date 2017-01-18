@@ -1,8 +1,8 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: BasicHLSLFX11.cpp
 //
-// This sample shows a simple example of the Microsoft Direct3D 11's High-Level 
-// Shader Language (HLSL) using the Effect interface. 
+// This sample shows a simple example of the Microsoft Direct3D 11's High-Level
+// Shader Language (HLSL) using the Effect interface.
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //--------------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ CDXUTDialogResourceManager          g_DialogResourceManager; // manager for shar
 CModelViewerCamera                  g_Camera;               // A model viewing camera
 CDXUTDirectionWidget                g_LightControl[MAX_LIGHTS];
 CD3DSettingsDlg                     g_D3DSettingsDlg;       // Device settings dialog
-CDXUTDialog                         g_HUD;                  // manages the 3D   
+CDXUTDialog                         g_HUD;                  // manages the 3D
 CDXUTDialog                         g_SampleUI;             // dialog for sample specific controls
 XMMATRIX                            g_mCenterMesh;
 float                               g_fLightScale;
@@ -71,7 +71,7 @@ ID3DX11EffectScalarVariable*        g_pnNumLights = nullptr;
 #define IDC_TOGGLEWARP          11
 
 //--------------------------------------------------------------------------------------
-// Forward declarations 
+// Forward declarations
 //--------------------------------------------------------------------------------------
 bool CALLBACK ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* pUserContext );
 void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext );
@@ -85,7 +85,7 @@ bool CALLBACK IsD3D11DeviceAcceptable( const CD3D11EnumAdapterInfo *AdapterInfo,
 HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc,
                                       void* pUserContext );
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                          const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext );
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext );
 void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime,
@@ -96,7 +96,7 @@ void RenderText();
 
 
 //--------------------------------------------------------------------------------------
-// Entry point to the program. Initializes everything and goes into a message processing 
+// Entry point to the program. Initializes everything and goes into a message processing
 // loop. Idle time is used to render the scene.
 //--------------------------------------------------------------------------------------
 int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow )
@@ -106,7 +106,7 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
 
-    // DXUT will create and use the best device 
+    // DXUT will create and use the best device
     // that is available on the system depending on which D3D callbacks are set below
 
     // Set DXUT callbacks
@@ -134,14 +134,14 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 
 //--------------------------------------------------------------------------------------
-// Initialize the app 
+// Initialize the app
 //--------------------------------------------------------------------------------------
 void InitApp()
 {
     for( int i = 0; i < MAX_LIGHTS; i++ )
     {
         g_LightControl[i].SetLightDirection( XMFLOAT3( sinf( XM_PI * 2 * i / MAX_LIGHTS - XM_PI / 6 ),
-                                                       0, -cosf( XM_PI * 2 * i / MAX_LIGHTS - XM_PI / 6 ) ) );
+                                             0, -cosf( XM_PI * 2 * i / MAX_LIGHTS - XM_PI / 6 ) ) );
     }
 
     g_nActiveLight = 0;
@@ -153,13 +153,15 @@ void InitApp()
     g_HUD.Init( &g_DialogResourceManager );
     g_SampleUI.Init( &g_DialogResourceManager );
 
-    g_HUD.SetCallback( OnGUIEvent ); int iY = 10;
+    g_HUD.SetCallback( OnGUIEvent );
+    int iY = 10;
     g_HUD.AddButton( IDC_TOGGLEFULLSCREEN, L"Toggle full screen", 0, iY, 170, 23 );
     g_HUD.AddButton( IDC_CHANGEDEVICE, L"Change device (F2)", 0, iY += 26, 170, 23, VK_F2 );
     g_HUD.AddButton( IDC_TOGGLEREF, L"Toggle REF (F3)", 0, iY += 26, 170, 23, VK_F3 );
     g_HUD.AddButton( IDC_TOGGLEWARP, L"Toggle WARP (F4)", 0, iY += 26, 170, 23, VK_F4 );
 
-    g_SampleUI.SetCallback( OnGUIEvent ); iY = 10;
+    g_SampleUI.SetCallback( OnGUIEvent );
+    iY = 10;
 
     WCHAR sz[100];
     iY += 24;
@@ -191,7 +193,7 @@ bool CALLBACK ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* p
 //--------------------------------------------------------------------------------------
 void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext )
 {
-    // Update the camera's position based on user input 
+    // Update the camera's position based on user input
     g_Camera.FrameMove( fElapsedTime );
 }
 
@@ -279,8 +281,9 @@ void CALLBACK OnKeyboard( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserC
     {
         switch( nChar )
         {
-            case VK_F1:
-                g_bShowHelp = !g_bShowHelp; break;
+        case VK_F1:
+            g_bShowHelp = !g_bShowHelp;
+            break;
         }
     }
 }
@@ -293,41 +296,45 @@ void CALLBACK OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, v
 {
     switch( nControlID )
     {
-        case IDC_TOGGLEFULLSCREEN:
-            DXUTToggleFullScreen(); break;
-        case IDC_TOGGLEREF:
-            DXUTToggleREF(); break;
-        case IDC_CHANGEDEVICE:
-            g_D3DSettingsDlg.SetActive( !g_D3DSettingsDlg.IsActive() ); break;
-        case IDC_TOGGLEWARP:
-            DXUTToggleWARP(); break;
-        case IDC_ACTIVE_LIGHT:
-            if( !g_LightControl[g_nActiveLight].IsBeingDragged() )
-            {
-                g_nActiveLight++;
-                g_nActiveLight %= g_nNumActiveLights;
-            }
-            break;
+    case IDC_TOGGLEFULLSCREEN:
+        DXUTToggleFullScreen();
+        break;
+    case IDC_TOGGLEREF:
+        DXUTToggleREF();
+        break;
+    case IDC_CHANGEDEVICE:
+        g_D3DSettingsDlg.SetActive( !g_D3DSettingsDlg.IsActive() );
+        break;
+    case IDC_TOGGLEWARP:
+        DXUTToggleWARP();
+        break;
+    case IDC_ACTIVE_LIGHT:
+        if( !g_LightControl[g_nActiveLight].IsBeingDragged() )
+        {
+            g_nActiveLight++;
+            g_nActiveLight %= g_nNumActiveLights;
+        }
+        break;
 
-        case IDC_NUM_LIGHTS:
-            if( !g_LightControl[g_nActiveLight].IsBeingDragged() )
-            {
-                WCHAR sz[100];
-                swprintf_s( sz, 100, L"# Lights: %d", g_SampleUI.GetSlider( IDC_NUM_LIGHTS )->GetValue() );
-                g_SampleUI.GetStatic( IDC_NUM_LIGHTS_STATIC )->SetText( sz );
-
-                g_nNumActiveLights = g_SampleUI.GetSlider( IDC_NUM_LIGHTS )->GetValue();
-                g_nActiveLight %= g_nNumActiveLights;
-            }
-            break;
-
-        case IDC_LIGHT_SCALE:
-            g_fLightScale = ( float )( g_SampleUI.GetSlider( IDC_LIGHT_SCALE )->GetValue() * 0.10f );
-
+    case IDC_NUM_LIGHTS:
+        if( !g_LightControl[g_nActiveLight].IsBeingDragged() )
+        {
             WCHAR sz[100];
-            swprintf_s( sz, 100, L"Light scale: %0.2f", g_fLightScale );
-            g_SampleUI.GetStatic( IDC_LIGHT_SCALE_STATIC )->SetText( sz );
-            break;
+            swprintf_s( sz, 100, L"# Lights: %d", g_SampleUI.GetSlider( IDC_NUM_LIGHTS )->GetValue() );
+            g_SampleUI.GetStatic( IDC_NUM_LIGHTS_STATIC )->SetText( sz );
+
+            g_nNumActiveLights = g_SampleUI.GetSlider( IDC_NUM_LIGHTS )->GetValue();
+            g_nActiveLight %= g_nNumActiveLights;
+        }
+        break;
+
+    case IDC_LIGHT_SCALE:
+        g_fLightScale = ( float )( g_SampleUI.GetSlider( IDC_LIGHT_SCALE )->GetValue() * 0.10f );
+
+        WCHAR sz[100];
+        swprintf_s( sz, 100, L"Light scale: %0.2f", g_fLightScale );
+        g_SampleUI.GetStatic( IDC_LIGHT_SCALE_STATIC )->SetText( sz );
+        break;
     }
 
 }
@@ -377,8 +384,8 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG
     // Set the D3DCOMPILE_DEBUG flag to embed debug information in the shaders.
-    // Setting this flag improves the shader debugging experience, but still allows 
-    // the shaders to be optimized and to run exactly the way they will run in 
+    // Setting this flag improves the shader debugging experience, but still allows
+    // the shaders to be optimized and to run exactly the way they will run in
     // the release configuration of this program.
     dwShaderFlags |= D3DCOMPILE_DEBUG;
 
@@ -441,7 +448,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     D3DX11_PASS_DESC PassDesc;
     V_RETURN( g_pTechRenderSceneWithTexture1Light->GetPassByIndex( 0 )->GetDesc( &PassDesc ) );
     V_RETURN( pd3dDevice->CreateInputLayout( layout, 3, PassDesc.pIAInputSignature,
-                                             PassDesc.IAInputSignatureSize, &g_pVertexLayout ) );
+              PassDesc.IAInputSignatureSize, &g_pVertexLayout ) );
 
     // Load the mesh
     V_RETURN( g_Mesh11.Create( pd3dDevice, L"tiny\\tiny.sdkmesh" ) );
@@ -465,7 +472,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 // Create any D3D11 resources that depend on the back buffer
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                          const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
     HRESULT hr;
 
@@ -514,7 +521,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
     XMMATRIX mView = g_Camera.GetViewMatrix();
 
     XMMATRIX mWorldViewProjection = mWorld * mView * mProj;
-    
+
     // Render the light arrow so the user can visually see the light dir
     XMFLOAT3 vLightDir[MAX_LIGHTS];
     XMFLOAT4 vLightDiffuse[MAX_LIGHTS];
@@ -543,18 +550,18 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
     ID3DX11EffectTechnique* pRenderTechnique;
     switch( g_nNumActiveLights )
     {
-        case 1:
-            pRenderTechnique = g_pTechRenderSceneWithTexture1Light;
-            break;
-        case 2:
-            pRenderTechnique = g_pTechRenderSceneWithTexture2Light;
-            break;
-        case 3:
-            pRenderTechnique = g_pTechRenderSceneWithTexture3Light;
-            break;
-        default:
-            pRenderTechnique = g_pTechRenderSceneWithTexture1Light;
-            break;
+    case 1:
+        pRenderTechnique = g_pTechRenderSceneWithTexture1Light;
+        break;
+    case 2:
+        pRenderTechnique = g_pTechRenderSceneWithTexture2Light;
+        break;
+    case 3:
+        pRenderTechnique = g_pTechRenderSceneWithTexture3Light;
+        break;
+    default:
+        pRenderTechnique = g_pTechRenderSceneWithTexture1Light;
+        break;
     }
 
     //Get the mesh
@@ -600,7 +607,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11ResizedSwapChain 
+// Release D3D11 resources created in OnD3D11ResizedSwapChain
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 {
@@ -609,7 +616,7 @@ void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11CreateDevice 
+// Release D3D11 resources created in OnD3D11CreateDevice
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
 {
@@ -619,7 +626,7 @@ void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
     SAFE_DELETE( g_pTxtHelper );
 
     SAFE_RELEASE( g_pEffect );
-    
+
     SAFE_RELEASE( g_pVertexLayout );
     g_Mesh11.Destroy();
 

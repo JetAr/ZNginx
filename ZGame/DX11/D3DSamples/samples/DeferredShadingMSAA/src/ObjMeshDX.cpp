@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeferredShadingMSAA\src/ObjMeshDX.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -41,15 +41,15 @@ using namespace std;
 // Define the input layout
 const D3D11_INPUT_ELEMENT_DESC ObjMeshDX::layout_Position_Normal_Texture[] =
 {
-	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
 
 //--------------------------------------------------------------------------------------
 ObjMeshDX::ObjMeshDX()
-	: m_pCBMesh(nullptr)
-	, m_pCBSubMesh(nullptr)
+    : m_pCBMesh(nullptr)
+    , m_pCBSubMesh(nullptr)
 {
 }
 
@@ -71,7 +71,7 @@ void ObjMeshDX::Destroy()
         if(pMaterial->pTextureRSV)
         {
             ID3D11Resource* pRes = NULL;
-            
+
             pMaterial->pTextureRSV->GetResource(&pRes);
             SAFE_RELEASE(pRes);
             SAFE_RELEASE(pRes);   // do this twice, because GetResource adds a ref
@@ -85,9 +85,9 @@ void ObjMeshDX::Destroy()
     m_Materials.clear();
     m_Vertices.clear();
     m_Indices.clear();
-	
-	SAFE_RELEASE(m_pCBMesh);
-	SAFE_RELEASE(m_pCBSubMesh);
+
+    SAFE_RELEASE(m_pCBMesh);
+    SAFE_RELEASE(m_pCBSubMesh);
 }
 
 
@@ -100,73 +100,73 @@ HRESULT ObjMeshDX::Create(ID3D11Device* pDevice, const WCHAR* strFilename)
     V_RETURN(LoadGeometryFromOBJ(strFilename));
 
     // Load material textures
-	for(UINT32 iMaterial = 0; iMaterial < m_Materials.size(); ++iMaterial)
+    for(UINT32 iMaterial = 0; iMaterial < m_Materials.size(); ++iMaterial)
     {
         Material *pMaterial = m_Materials[iMaterial];
         if(pMaterial->strTexture[0])
-		{
-			D3DX11_IMAGE_LOAD_INFO loadInfo;
-			D3DX11_IMAGE_INFO srcInfo;
-			D3DX11GetImageInfoFromFile(pMaterial->strTexture, NULL, &srcInfo, NULL);
+        {
+            D3DX11_IMAGE_LOAD_INFO loadInfo;
+            D3DX11_IMAGE_INFO srcInfo;
+            D3DX11GetImageInfoFromFile(pMaterial->strTexture, NULL, &srcInfo, NULL);
 
-			loadInfo.pSrcInfo = &srcInfo;
-			loadInfo.Format = srcInfo.Format;
-			loadInfo.MipLevels = 0;
-			D3DX11CreateShaderResourceViewFromFile(pDevice, pMaterial->strTexture, &loadInfo, NULL, &pMaterial->pTextureRSV, NULL);
-		}
+            loadInfo.pSrcInfo = &srcInfo;
+            loadInfo.Format = srcInfo.Format;
+            loadInfo.MipLevels = 0;
+            D3DX11CreateShaderResourceViewFromFile(pDevice, pMaterial->strTexture, &loadInfo, NULL, &pMaterial->pTextureRSV, NULL);
+        }
     }
 
-	// Create D3D Buffers
-	{
-		D3D11_BUFFER_DESC bd;
-		ZeroMemory(&bd, sizeof(bd));
-		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.ByteWidth = sizeof(MeshVertex) * UINT(m_Vertices.size());
-		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		bd.CPUAccessFlags = 0;
-		D3D11_SUBRESOURCE_DATA InitData;
-		ZeroMemory(&InitData, sizeof(InitData));
-		InitData.pSysMem = m_Vertices.data();
-		V_RETURN(pDevice->CreateBuffer(&bd, &InitData, &m_pVertexBuffer));
-	}
-	
-	{
-		D3D11_BUFFER_DESC bd;
-		ZeroMemory(&bd, sizeof(bd));
-		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.ByteWidth = sizeof(DWORD) * UINT(m_Indices.size());
-		bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		bd.CPUAccessFlags = 0;
-		bd.MiscFlags = 0;
-		D3D11_SUBRESOURCE_DATA InitData;
-		ZeroMemory(&InitData, sizeof(InitData));
-		InitData.pSysMem = m_Indices.data();
-		V_RETURN(pDevice->CreateBuffer(&bd, &InitData, &m_pIndexBuffer));
-	}
-	
+    // Create D3D Buffers
+    {
+        D3D11_BUFFER_DESC bd;
+        ZeroMemory(&bd, sizeof(bd));
+        bd.Usage = D3D11_USAGE_DEFAULT;
+        bd.ByteWidth = sizeof(MeshVertex) * UINT(m_Vertices.size());
+        bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+        bd.CPUAccessFlags = 0;
+        D3D11_SUBRESOURCE_DATA InitData;
+        ZeroMemory(&InitData, sizeof(InitData));
+        InitData.pSysMem = m_Vertices.data();
+        V_RETURN(pDevice->CreateBuffer(&bd, &InitData, &m_pVertexBuffer));
+    }
+
+    {
+        D3D11_BUFFER_DESC bd;
+        ZeroMemory(&bd, sizeof(bd));
+        bd.Usage = D3D11_USAGE_DEFAULT;
+        bd.ByteWidth = sizeof(DWORD) * UINT(m_Indices.size());
+        bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+        bd.CPUAccessFlags = 0;
+        bd.MiscFlags = 0;
+        D3D11_SUBRESOURCE_DATA InitData;
+        ZeroMemory(&InitData, sizeof(InitData));
+        InitData.pSysMem = m_Indices.data();
+        V_RETURN(pDevice->CreateBuffer(&bd, &InitData, &m_pIndexBuffer));
+    }
+
     // Create the constant buffers
-	{
-		D3D11_BUFFER_DESC bd;
-		ZeroMemory(&bd, sizeof(bd));
-		bd.Usage = D3D11_USAGE_DYNAMIC;
-		bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		bd.MiscFlags = 0;
-		bd.StructureByteStride = 0;
-		bd.ByteWidth = sizeof(MeshConstants);
-		V_RETURN(pDevice->CreateBuffer(&bd, NULL, &m_pCBMesh));
-	}
-	{
-		D3D11_BUFFER_DESC bd;
-		ZeroMemory(&bd, sizeof(bd));
-		bd.Usage = D3D11_USAGE_DYNAMIC;
-		bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		bd.MiscFlags = 0;
-		bd.StructureByteStride = 0;
-		bd.ByteWidth = sizeof(SubMeshConstants);
-		V_RETURN(pDevice->CreateBuffer(&bd, NULL, &m_pCBSubMesh));
-	}
+    {
+        D3D11_BUFFER_DESC bd;
+        ZeroMemory(&bd, sizeof(bd));
+        bd.Usage = D3D11_USAGE_DYNAMIC;
+        bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+        bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+        bd.MiscFlags = 0;
+        bd.StructureByteStride = 0;
+        bd.ByteWidth = sizeof(MeshConstants);
+        V_RETURN(pDevice->CreateBuffer(&bd, NULL, &m_pCBMesh));
+    }
+    {
+        D3D11_BUFFER_DESC bd;
+        ZeroMemory(&bd, sizeof(bd));
+        bd.Usage = D3D11_USAGE_DYNAMIC;
+        bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+        bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+        bd.MiscFlags = 0;
+        bd.StructureByteStride = 0;
+        bd.ByteWidth = sizeof(SubMeshConstants);
+        V_RETURN(pDevice->CreateBuffer(&bd, NULL, &m_pCBSubMesh));
+    }
 
     return S_OK;
 }
@@ -176,47 +176,47 @@ void ObjMeshDX::Draw(ID3D11DeviceContext* pDeviceContext, const D3DXMATRIX& worl
 {
     // Set primitive topology
     pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	// Set vertex buffer
+    // Set vertex buffer
     UINT stride = sizeof(MeshVertex);
     UINT offset = 0;
-	pDeviceContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
-	// Set index buffer
-	pDeviceContext->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
-	
-	// Set constant buffer for mesh
-	D3D11_MAPPED_SUBRESOURCE MappedResource;
-	pDeviceContext->Map(m_pCBMesh, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedResource);
-	MeshConstants* pVSPerObject = (MeshConstants*)MappedResource.pData;
-	D3DXMatrixTranspose(&pVSPerObject->LocalToProjected4x4, &WVP);
-	D3DXMatrixTranspose(&pVSPerObject->LocalToWorld4x4, &worldMatrix);
-	D3DXMatrixTranspose(&pVSPerObject->WorldToView4x4, &viewMatrix);
-	pDeviceContext->Unmap(m_pCBMesh, 0);
-		
-	pDeviceContext->VSSetConstantBuffers(0, 1, &m_pCBMesh);
-	pDeviceContext->PSSetConstantBuffers(0, 1, &m_pCBMesh);
+    pDeviceContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
+    // Set index buffer
+    pDeviceContext->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
-	for(auto i = 0; i < m_iNumSubsets; i++)
-	{
-		// Set constant buffer for sub-mesh
-		D3D11_MAPPED_SUBRESOURCE MappedResource;
-		pDeviceContext->Map(m_pCBSubMesh, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedResource);
-		SubMeshConstants* pVSPerObject = (SubMeshConstants*)MappedResource.pData;
-		pVSPerObject->Diffuse = m_Materials[m_SubsetMtlIdx[i]]->vDiffuse;
-		pVSPerObject->Textured = m_Materials[m_SubsetMtlIdx[i]]->pTextureRSV != nullptr;
-		pDeviceContext->Unmap(m_pCBSubMesh, 0);
-		if(diffuseTexSlot >= 0 && m_Materials[m_SubsetMtlIdx[i]]->pTextureRSV)
-		{
-			pDeviceContext->PSSetShaderResources(diffuseTexSlot, 1, &m_Materials[m_SubsetMtlIdx[i]]->pTextureRSV);
-		}
+    // Set constant buffer for mesh
+    D3D11_MAPPED_SUBRESOURCE MappedResource;
+    pDeviceContext->Map(m_pCBMesh, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedResource);
+    MeshConstants* pVSPerObject = (MeshConstants*)MappedResource.pData;
+    D3DXMatrixTranspose(&pVSPerObject->LocalToProjected4x4, &WVP);
+    D3DXMatrixTranspose(&pVSPerObject->LocalToWorld4x4, &worldMatrix);
+    D3DXMatrixTranspose(&pVSPerObject->WorldToView4x4, &viewMatrix);
+    pDeviceContext->Unmap(m_pCBMesh, 0);
 
-		pDeviceContext->VSSetConstantBuffers(1, 1, &m_pCBSubMesh);
-		pDeviceContext->PSSetConstantBuffers(1, 1, &m_pCBSubMesh);
+    pDeviceContext->VSSetConstantBuffers(0, 1, &m_pCBMesh);
+    pDeviceContext->PSSetConstantBuffers(0, 1, &m_pCBMesh);
 
-		// Render
-		auto startIdx = m_SubsetStartIdx[i];
-		auto count = m_SubsetStartIdx[i + 1] - m_SubsetStartIdx[i];
-		pDeviceContext->DrawIndexed(count, startIdx, 0);
-	}
+    for(auto i = 0; i < m_iNumSubsets; i++)
+    {
+        // Set constant buffer for sub-mesh
+        D3D11_MAPPED_SUBRESOURCE MappedResource;
+        pDeviceContext->Map(m_pCBSubMesh, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedResource);
+        SubMeshConstants* pVSPerObject = (SubMeshConstants*)MappedResource.pData;
+        pVSPerObject->Diffuse = m_Materials[m_SubsetMtlIdx[i]]->vDiffuse;
+        pVSPerObject->Textured = m_Materials[m_SubsetMtlIdx[i]]->pTextureRSV != nullptr;
+        pDeviceContext->Unmap(m_pCBSubMesh, 0);
+        if(diffuseTexSlot >= 0 && m_Materials[m_SubsetMtlIdx[i]]->pTextureRSV)
+        {
+            pDeviceContext->PSSetShaderResources(diffuseTexSlot, 1, &m_Materials[m_SubsetMtlIdx[i]]->pTextureRSV);
+        }
+
+        pDeviceContext->VSSetConstantBuffers(1, 1, &m_pCBSubMesh);
+        pDeviceContext->PSSetConstantBuffers(1, 1, &m_pCBSubMesh);
+
+        // Render
+        auto startIdx = m_SubsetStartIdx[i];
+        auto count = m_SubsetStartIdx[i + 1] - m_SubsetStartIdx[i];
+        pDeviceContext->DrawIndexed(count, startIdx, 0);
+    }
 }
 
 //--------------------------------------------------------------------------------------
@@ -230,7 +230,7 @@ HRESULT ObjMeshDX::LoadGeometryFromOBJ(const WCHAR* strFileName)
     std::vector<D3DXVECTOR3> Positions;
     std::vector<D3DXVECTOR2> TexCoords;
     std::vector<D3DXVECTOR3> Normals;
-	int iSmoothingGroup = 0;
+    int iSmoothingGroup = 0;
 
     // The first subset uses the default material
     Material* pMaterial = new Material();
@@ -240,19 +240,19 @@ HRESULT ObjMeshDX::LoadGeometryFromOBJ(const WCHAR* strFileName)
     InitMaterial(pMaterial);
     wcscpy_s(pMaterial->strName, MAX_PATH - 1, L"default");
     m_Materials.push_back(pMaterial);
-	
-	m_iNumSubsets = 0;
+
+    m_iNumSubsets = 0;
     auto dwCurSubset = 0;
 
     // File input
     WCHAR strCommand[256] = {0};
     wifstream InFile(strFileName);
     if(!InFile)
-		return E_FAIL;
-	
-	D3DXVECTOR3 vMin = D3DXVECTOR3(FLT_MAX, FLT_MAX, FLT_MAX);
-	D3DXVECTOR3 vMax = D3DXVECTOR3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
-	for(; ;)
+        return E_FAIL;
+
+    D3DXVECTOR3 vMin = D3DXVECTOR3(FLT_MAX, FLT_MAX, FLT_MAX);
+    D3DXVECTOR3 vMax = D3DXVECTOR3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+    for(; ;)
     {
         InFile >> strCommand;
         if(!InFile)
@@ -268,19 +268,19 @@ HRESULT ObjMeshDX::LoadGeometryFromOBJ(const WCHAR* strFileName)
             float x, y, z;
             InFile >> x >> y >> z;
             Positions.push_back(D3DXVECTOR3(x, y, z));
-			
-			if(x > vMax.x)
-				vMax.x = x;
-			if(y > vMax.y)
-				vMax.y = y;
-			if(z > vMax.z)
-				vMax.z = z;
-			if(x < vMin.x)
-				vMin.x = x;
-			if(y < vMin.y)
-				vMin.y = y;
-			if(z < vMin.z)
-				vMin.z = z;
+
+            if(x > vMax.x)
+                vMax.x = x;
+            if(y > vMax.y)
+                vMax.y = y;
+            if(z > vMax.z)
+                vMax.z = z;
+            if(x < vMin.x)
+                vMin.x = x;
+            if(y < vMin.y)
+                vMin.y = y;
+            if(z < vMin.z)
+                vMin.z = z;
         }
         else if(0 == wcscmp(strCommand, L"vt"))
         {
@@ -301,11 +301,11 @@ HRESULT ObjMeshDX::LoadGeometryFromOBJ(const WCHAR* strFileName)
             // Face
             UINT iPosition = 0, iTexCoord, iNormal;
             MeshVertex vertex;
-			MeshFace Face, quadFace;
+            MeshFace Face, quadFace;
 
-			auto ReadNextVertex = [&]() -> DWORD
-			{
-				ZeroMemory(&vertex, sizeof(MeshVertex));
+            auto ReadNextVertex = [&]() -> DWORD
+            {
+                ZeroMemory(&vertex, sizeof(MeshVertex));
 
                 // OBJ format uses 1-based arrays
                 InFile >> iPosition;
@@ -332,59 +332,59 @@ HRESULT ObjMeshDX::LoadGeometryFromOBJ(const WCHAR* strFileName)
                     }
                 }
 
-				DWORD index = AddVertex(iPosition, &vertex);
-				return index;
-			};
+                DWORD index = AddVertex(iPosition, &vertex);
+                return index;
+            };
 
-			UINT iFace;
+            UINT iFace;
             for(iFace = 0; iFace < 3; iFace++)
             {
-				auto index = ReadNextVertex();
-				m_Indices.push_back(index);
-				Face.aiIndices[iFace] = index;
+                auto index = ReadNextVertex();
+                m_Indices.push_back(index);
+                Face.aiIndices[iFace] = index;
             }
 
-			Face.iSmoothingGroup = iSmoothingGroup;
-			m_Faces.push_back(Face);
-			
-			bool bQuad = false;
-			while((InFile.peek() < '0' || InFile.peek() > '9') && InFile.peek() != '\n')
-			{
-				InFile.ignore();
-			}
-			if(InFile.peek() >= '0' && InFile.peek() <= '9')
-				bQuad = true;
-			else
-				bQuad = false;
+            Face.iSmoothingGroup = iSmoothingGroup;
+            m_Faces.push_back(Face);
 
-			if(bQuad)
-			{
-				auto index = ReadNextVertex();
+            bool bQuad = false;
+            while((InFile.peek() < '0' || InFile.peek() > '9') && InFile.peek() != '\n')
+            {
+                InFile.ignore();
+            }
+            if(InFile.peek() >= '0' && InFile.peek() <= '9')
+                bQuad = true;
+            else
+                bQuad = false;
 
-				// Triangularize quad
-				{
-					quadFace.aiIndices[0] = index;
-					quadFace.aiIndices[1] = Face.aiIndices[0];
-					quadFace.aiIndices[2] = Face.aiIndices[2];
+            if(bQuad)
+            {
+                auto index = ReadNextVertex();
 
-					m_Indices.push_back(quadFace.aiIndices[0]);
-					m_Indices.push_back(quadFace.aiIndices[1]);
-					m_Indices.push_back(quadFace.aiIndices[2]);
-				}
+                // Triangularize quad
+                {
+                    quadFace.aiIndices[0] = index;
+                    quadFace.aiIndices[1] = Face.aiIndices[0];
+                    quadFace.aiIndices[2] = Face.aiIndices[2];
 
-				quadFace.iSmoothingGroup = iSmoothingGroup;
-				m_Faces.push_back(quadFace);
-			}
+                    m_Indices.push_back(quadFace.aiIndices[0]);
+                    m_Indices.push_back(quadFace.aiIndices[1]);
+                    m_Indices.push_back(quadFace.aiIndices[2]);
+                }
+
+                quadFace.iSmoothingGroup = iSmoothingGroup;
+                m_Faces.push_back(quadFace);
+            }
         }
-		else if(0 == wcscmp(strCommand, L"s")) // Handle smoothing group for normal computation
-		{
-			InFile.ignore();
+        else if(0 == wcscmp(strCommand, L"s")) // Handle smoothing group for normal computation
+        {
+            InFile.ignore();
 
-			if(InFile.peek() >= '0' && InFile.peek() <= '9')
-				InFile >> iSmoothingGroup;
-			else
-				iSmoothingGroup = 0;
-		}
+            if(InFile.peek() >= '0' && InFile.peek() <= '9')
+                InFile >> iSmoothingGroup;
+            else
+                iSmoothingGroup = 0;
+        }
         else if(0 == wcscmp(strCommand, L"mtllib"))
         {
             // Material library
@@ -396,13 +396,13 @@ HRESULT ObjMeshDX::LoadGeometryFromOBJ(const WCHAR* strFileName)
             WCHAR strName[MAX_PATH] = {0};
             InFile >> strName;
 
-			bool bFound = false;
-			for(UINT32 iMaterial = 0; iMaterial < m_Materials.size(); iMaterial++)
-			{
-				Material* pCurMaterial = m_Materials[iMaterial];
-				if(0 == wcscmp(pCurMaterial->strName, strName))
-				{
-					bFound = true;
+            bool bFound = false;
+            for(UINT32 iMaterial = 0; iMaterial < m_Materials.size(); iMaterial++)
+            {
+                Material* pCurMaterial = m_Materials[iMaterial];
+                if(0 == wcscmp(pCurMaterial->strName, strName))
+                {
+                    bFound = true;
                     dwCurSubset = iMaterial;
                     break;
                 }
@@ -422,9 +422,9 @@ HRESULT ObjMeshDX::LoadGeometryFromOBJ(const WCHAR* strFileName)
                 m_Materials.push_back(pMaterial);
             }
 
-			m_SubsetStartIdx.push_back(DWORD(m_Indices.size()));
-			m_SubsetMtlIdx.push_back(dwCurSubset);
-			m_iNumSubsets++;
+            m_SubsetStartIdx.push_back(DWORD(m_Indices.size()));
+            m_SubsetMtlIdx.push_back(dwCurSubset);
+            m_iNumSubsets++;
         }
         else
         {
@@ -434,34 +434,34 @@ HRESULT ObjMeshDX::LoadGeometryFromOBJ(const WCHAR* strFileName)
         InFile.ignore(1000, '\n');
     }
 
-	// Correct subsets index
-	if(m_iNumSubsets == 0)
-	{
-		m_SubsetStartIdx.push_back(0);
-		m_iNumSubsets = 1;
-		m_SubsetMtlIdx.push_back(0);
-	}
+    // Correct subsets index
+    if(m_iNumSubsets == 0)
+    {
+        m_SubsetStartIdx.push_back(0);
+        m_iNumSubsets = 1;
+        m_SubsetMtlIdx.push_back(0);
+    }
 
-	m_SubsetStartIdx.push_back(DWORD(m_Indices.size()));
-	
-	ComputeVertexNormals();
+    m_SubsetStartIdx.push_back(DWORD(m_Indices.size()));
+
+    ComputeVertexNormals();
 
     // Cleanup
     InFile.close();
     DeleteCache();
 
-	D3DXVECTOR3 vMid = 0.5f * (vMax + vMin);
-	for(UINT32 i = 0; i < m_Vertices.size(); i++)
-		m_Vertices[i].position -= vMid;
+    D3DXVECTOR3 vMid = 0.5f * (vMax + vMin);
+    for(UINT32 i = 0; i < m_Vertices.size(); i++)
+        m_Vertices[i].position -= vMid;
 
 
     // If an associated material file was found, read that in as well.
     if(strMaterialFilename[0])
     {
-		auto idx = wcsrchr(strFileName, L'/') - strFileName + 1;
-		WCHAR strMtlPath[MAX_PATH] = {0};
-		wcsncpy(strMtlPath, strFileName, idx);
-		wcscat_s(strMtlPath, MAX_PATH, strMaterialFilename);
+        auto idx = wcsrchr(strFileName, L'/') - strFileName + 1;
+        WCHAR strMtlPath[MAX_PATH] = {0};
+        wcsncpy(strMtlPath, strFileName, idx);
+        wcscat_s(strMtlPath, MAX_PATH, strMaterialFilename);
         V_RETURN(LoadMaterialsFromMTL(strMtlPath));
     }
 
@@ -471,81 +471,81 @@ HRESULT ObjMeshDX::LoadGeometryFromOBJ(const WCHAR* strFileName)
 //--------------------------------------------------------------------------------------
 void ObjMeshDX::ComputeVertexNormals()
 {
-	// First compute per face normals
-	vector<D3DXVECTOR3> vFaceNormals;
-	vFaceNormals.resize(m_Faces.size());
-	for(UINT32 i = 0; i < m_Faces.size(); i++)
-	{
-		const D3DXVECTOR3& pt1 = GetVertexAt(m_Faces[i].aiIndices[0]).position;
-		const D3DXVECTOR3& pt2 = GetVertexAt(m_Faces[i].aiIndices[1]).position;
-		const D3DXVECTOR3& pt3 = GetVertexAt(m_Faces[i].aiIndices[2]).position;
+    // First compute per face normals
+    vector<D3DXVECTOR3> vFaceNormals;
+    vFaceNormals.resize(m_Faces.size());
+    for(UINT32 i = 0; i < m_Faces.size(); i++)
+    {
+        const D3DXVECTOR3& pt1 = GetVertexAt(m_Faces[i].aiIndices[0]).position;
+        const D3DXVECTOR3& pt2 = GetVertexAt(m_Faces[i].aiIndices[1]).position;
+        const D3DXVECTOR3& pt3 = GetVertexAt(m_Faces[i].aiIndices[2]).position;
 
-		D3DXVECTOR3 vEdge1 = pt2 - pt1;
-		D3DXVECTOR3 vEdge2 = pt3 - pt1;
+        D3DXVECTOR3 vEdge1 = pt2 - pt1;
+        D3DXVECTOR3 vEdge2 = pt3 - pt1;
 
-		D3DXVECTOR3 vNormal;
-		D3DXVec3Cross(&vNormal, &vEdge1, &vEdge2);
-		D3DXVec3Normalize(&vNormal, &vNormal);
-		vFaceNormals[i] = vNormal;
-	}
+        D3DXVECTOR3 vNormal;
+        D3DXVec3Cross(&vNormal, &vEdge1, &vEdge2);
+        D3DXVec3Normalize(&vNormal, &vNormal);
+        vFaceNormals[i] = vNormal;
+    }
 
-	struct VertexFace
-	{
-		int iCount;
-		vector<int> List;
-		VertexFace()
-			: iCount(0) {}
-	};
-	vector<VertexFace> VertexFaceList;
-	VertexFaceList.resize(m_Vertices.size());
-	for(UINT32 i = 0; i < m_Faces.size(); i++)
-	{
-		for(auto j = 0; j < 3; j++)
-		{
-			VertexFaceList[m_Faces[i].aiIndices[j]].iCount++;
-			VertexFaceList[m_Faces[i].aiIndices[j]].List.push_back(i);
-		}
-	}
+    struct VertexFace
+    {
+        int iCount;
+        vector<int> List;
+        VertexFace()
+            : iCount(0) {}
+    };
+    vector<VertexFace> VertexFaceList;
+    VertexFaceList.resize(m_Vertices.size());
+    for(UINT32 i = 0; i < m_Faces.size(); i++)
+    {
+        for(auto j = 0; j < 3; j++)
+        {
+            VertexFaceList[m_Faces[i].aiIndices[j]].iCount++;
+            VertexFaceList[m_Faces[i].aiIndices[j]].List.push_back(i);
+        }
+    }
 
 
-	// Compute per vertex normals with smoothing group
-	for(UINT32 i = 0; i < m_Faces.size(); i++)
-	{
-		const MeshFace& face = m_Faces[i];
-		for(auto j = 0; j < 3; j++)
-		{
-			int iFaceCount = 0;
-			D3DXVECTOR3 vNormal = D3DXVECTOR3(0, 0, 0);
-			for(auto k = 0; k < VertexFaceList[m_Faces[i].aiIndices[j]].iCount; k++)
-			{
-				int iFaceIdx = VertexFaceList[m_Faces[i].aiIndices[j]].List[k];
-				if(face.iSmoothingGroup & m_Faces[iFaceIdx].iSmoothingGroup)
-				{
-					vNormal += vFaceNormals[iFaceIdx];
-					iFaceCount++;
-				}
-			}
+    // Compute per vertex normals with smoothing group
+    for(UINT32 i = 0; i < m_Faces.size(); i++)
+    {
+        const MeshFace& face = m_Faces[i];
+        for(auto j = 0; j < 3; j++)
+        {
+            int iFaceCount = 0;
+            D3DXVECTOR3 vNormal = D3DXVECTOR3(0, 0, 0);
+            for(auto k = 0; k < VertexFaceList[m_Faces[i].aiIndices[j]].iCount; k++)
+            {
+                int iFaceIdx = VertexFaceList[m_Faces[i].aiIndices[j]].List[k];
+                if(face.iSmoothingGroup & m_Faces[iFaceIdx].iSmoothingGroup)
+                {
+                    vNormal += vFaceNormals[iFaceIdx];
+                    iFaceCount++;
+                }
+            }
 
-			if(iFaceCount > 0)
-				vNormal /= float(iFaceCount);
-			else
-				vNormal = vFaceNormals[i];
-			D3DXVec3Normalize(&vNormal, &vNormal);
+            if(iFaceCount > 0)
+                vNormal /= float(iFaceCount);
+            else
+                vNormal = vFaceNormals[i];
+            D3DXVec3Normalize(&vNormal, &vNormal);
 
-			MeshVertex& vert = m_Vertices[face.aiIndices[j]];
-			if(vert.normal == D3DXVECTOR3(0, 0, 0))
-				vert.normal = vNormal;
-			else if(vert.normal != vNormal)
-			{
-				MeshVertex newVertex = vert;
-				newVertex.normal = vNormal;
+            MeshVertex& vert = m_Vertices[face.aiIndices[j]];
+            if(vert.normal == D3DXVECTOR3(0, 0, 0))
+                vert.normal = vNormal;
+            else if(vert.normal != vNormal)
+            {
+                MeshVertex newVertex = vert;
+                newVertex.normal = vNormal;
 
-				auto idx = AddVertex(m_Faces[i].aiIndices[j], &newVertex);
-				//m_Faces[i].aiIndices[j] = idx;
-				m_Indices[3 * i + j] = idx;
-			}
-		}
-	}
+                auto idx = AddVertex(m_Faces[i].aiIndices[j], &newVertex);
+                //m_Faces[i].aiIndices[j] = idx;
+                m_Indices[3 * i + j] = idx;
+            }
+        }
+    }
 }
 
 //--------------------------------------------------------------------------------------
@@ -645,7 +645,7 @@ void ObjMeshDX::DeleteCache()
 //--------------------------------------------------------------------------------------
 HRESULT ObjMeshDX::LoadMaterialsFromMTL(const WCHAR* strFileName)
 {
-	// File input
+    // File input
     WCHAR strCommand[256] = {0};
     wifstream InFile(strFileName);
     if(!InFile)
@@ -707,7 +707,7 @@ HRESULT ObjMeshDX::LoadMaterialsFromMTL(const WCHAR* strFileName)
             pMaterial->vSpecular = D3DXVECTOR3(r, g, b);
         }
         else if(0 == wcscmp(strCommand, L"d") ||
-                 0 == wcscmp(strCommand, L"Tr"))
+                0 == wcscmp(strCommand, L"Tr"))
         {
             // Alpha
             InFile >> pMaterial->fAlpha;
@@ -728,13 +728,13 @@ HRESULT ObjMeshDX::LoadMaterialsFromMTL(const WCHAR* strFileName)
         }
         else if(0 == wcscmp(strCommand, L"map_Kd"))
         {
-			// Texture
-			WCHAR strTexName[MAX_PATH] = {0};
-			InFile >> strTexName;
+            // Texture
+            WCHAR strTexName[MAX_PATH] = {0};
+            InFile >> strTexName;
 
-			auto idx = wcsrchr(strFileName, L'/') - strFileName + 1;
-			wcsncpy(pMaterial->strTexture, strFileName, idx);
-			wcscat_s(pMaterial->strTexture, MAX_PATH, strTexName);
+            auto idx = wcsrchr(strFileName, L'/') - strFileName + 1;
+            wcsncpy(pMaterial->strTexture, strFileName, idx);
+            wcscat_s(pMaterial->strTexture, MAX_PATH, strTexName);
         }
 
         else

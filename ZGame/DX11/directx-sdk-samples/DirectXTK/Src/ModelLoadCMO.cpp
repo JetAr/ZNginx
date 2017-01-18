@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: ModelLoadCMO.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -34,130 +34,130 @@ using Microsoft::WRL::ComPtr;
 
 namespace VSD3DStarter
 {
-    // .CMO files
+// .CMO files
 
-    // UINT - Mesh count
-    // { [Mesh count]
-    //      UINT - Length of name
-    //      wchar_t[] - Name of mesh (if length > 0)
-    //      UINT - Material count
-    //      { [Material count]
-    //          UINT - Length of material name
-    //          wchar_t[] - Name of material (if length > 0)
-    //          Material structure
-    //          UINT - Length of pixel shader name
-    //          wchar_t[] - Name of pixel shader (if length > 0)
-    //          { [8]
-    //              UINT - Length of texture name
-    //              wchar_t[] - Name of texture (if length > 0)
-    //          }
-    //      }
-    //      BYTE - 1 if there is skeletal animation data present
-    //      UINT - SubMesh count
-    //      { [SubMesh count]
-    //          SubMesh structure
-    //      }
-    //      UINT - IB Count
-    //      { [IB Count]
-    //          UINT - Number of USHORTs in IB
-    //          USHORT[] - Array of indices
-    //      }
-    //      UINT - VB Count
-    //      { [VB Count]
-    //          UINT - Number of verts in VB
-    //          Vertex[] - Array of vertices
-    //      }
-    //      UINT - Skinning VB Count
-    //      { [Skinning VB Count]
-    //          UINT - Number of verts in Skinning VB
-    //          SkinningVertex[] - Array of skinning verts
-    //      }
-    //      MeshExtents structure
-    //      [If skeleton animation data is not present, file ends here]
-    //      UINT - Bone count
-    //      { [Bone count]
-    //          UINT - Length of bone name
-    //          wchar_t[] - Bone name (if length > 0)
-    //          Bone structure
-    //      }
-    //      UINT - Animation clip count
-    //      { [Animation clip count]
-    //          UINT - Length of clip name
-    //          wchar_t[] - Clip name (if length > 0)
-    //          float - Start time
-    //          float - End time
-    //          UINT - Keyframe count
-    //          { [Keyframe count]
-    //              Keyframe structure
-    //          }
-    //      }
-    // }
+// UINT - Mesh count
+// { [Mesh count]
+//      UINT - Length of name
+//      wchar_t[] - Name of mesh (if length > 0)
+//      UINT - Material count
+//      { [Material count]
+//          UINT - Length of material name
+//          wchar_t[] - Name of material (if length > 0)
+//          Material structure
+//          UINT - Length of pixel shader name
+//          wchar_t[] - Name of pixel shader (if length > 0)
+//          { [8]
+//              UINT - Length of texture name
+//              wchar_t[] - Name of texture (if length > 0)
+//          }
+//      }
+//      BYTE - 1 if there is skeletal animation data present
+//      UINT - SubMesh count
+//      { [SubMesh count]
+//          SubMesh structure
+//      }
+//      UINT - IB Count
+//      { [IB Count]
+//          UINT - Number of USHORTs in IB
+//          USHORT[] - Array of indices
+//      }
+//      UINT - VB Count
+//      { [VB Count]
+//          UINT - Number of verts in VB
+//          Vertex[] - Array of vertices
+//      }
+//      UINT - Skinning VB Count
+//      { [Skinning VB Count]
+//          UINT - Number of verts in Skinning VB
+//          SkinningVertex[] - Array of skinning verts
+//      }
+//      MeshExtents structure
+//      [If skeleton animation data is not present, file ends here]
+//      UINT - Bone count
+//      { [Bone count]
+//          UINT - Length of bone name
+//          wchar_t[] - Bone name (if length > 0)
+//          Bone structure
+//      }
+//      UINT - Animation clip count
+//      { [Animation clip count]
+//          UINT - Length of clip name
+//          wchar_t[] - Clip name (if length > 0)
+//          float - Start time
+//          float - End time
+//          UINT - Keyframe count
+//          { [Keyframe count]
+//              Keyframe structure
+//          }
+//      }
+// }
 
-    #pragma pack(push,1)
+#pragma pack(push,1)
 
-    struct Material
-    {
-        DirectX::XMFLOAT4   Ambient;
-        DirectX::XMFLOAT4   Diffuse;
-        DirectX::XMFLOAT4   Specular;
-        float               SpecularPower;
-        DirectX::XMFLOAT4   Emissive;
-        DirectX::XMFLOAT4X4 UVTransform;
-    };
+struct Material
+{
+    DirectX::XMFLOAT4   Ambient;
+    DirectX::XMFLOAT4   Diffuse;
+    DirectX::XMFLOAT4   Specular;
+    float               SpecularPower;
+    DirectX::XMFLOAT4   Emissive;
+    DirectX::XMFLOAT4X4 UVTransform;
+};
 
-    const uint32_t MAX_TEXTURE = 8;
+const uint32_t MAX_TEXTURE = 8;
 
-    struct SubMesh
-    {
-        UINT MaterialIndex;
-        UINT IndexBufferIndex;
-        UINT VertexBufferIndex;
-        UINT StartIndex;
-        UINT PrimCount;
-    };
+struct SubMesh
+{
+    UINT MaterialIndex;
+    UINT IndexBufferIndex;
+    UINT VertexBufferIndex;
+    UINT StartIndex;
+    UINT PrimCount;
+};
 
-    const uint32_t NUM_BONE_INFLUENCES = 4;
+const uint32_t NUM_BONE_INFLUENCES = 4;
 
-    static_assert( sizeof(VertexPositionNormalTangentColorTexture) == 52, "mismatch with CMO vertex type" );
+static_assert( sizeof(VertexPositionNormalTangentColorTexture) == 52, "mismatch with CMO vertex type" );
 
-    struct SkinningVertex
-    {
-        UINT boneIndex[NUM_BONE_INFLUENCES];
-        float boneWeight[NUM_BONE_INFLUENCES];
-    };
+struct SkinningVertex
+{
+    UINT boneIndex[NUM_BONE_INFLUENCES];
+    float boneWeight[NUM_BONE_INFLUENCES];
+};
 
-    struct MeshExtents
-    {
-        float CenterX, CenterY, CenterZ;
-        float Radius;
+struct MeshExtents
+{
+    float CenterX, CenterY, CenterZ;
+    float Radius;
 
-        float MinX, MinY, MinZ;
-        float MaxX, MaxY, MaxZ;
-    };
+    float MinX, MinY, MinZ;
+    float MaxX, MaxY, MaxZ;
+};
 
-    struct Bone
-    {
-        INT ParentIndex;
-        DirectX::XMFLOAT4X4 InvBindPos;
-        DirectX::XMFLOAT4X4 BindPos;
-        DirectX::XMFLOAT4X4 LocalTransform;
-    };
-    
-    struct Clip
-    {
-        float StartTime;
-        float EndTime;
-        UINT  keys;
-    };
+struct Bone
+{
+    INT ParentIndex;
+    DirectX::XMFLOAT4X4 InvBindPos;
+    DirectX::XMFLOAT4X4 BindPos;
+    DirectX::XMFLOAT4X4 LocalTransform;
+};
 
-    struct Keyframe
-    {
-        UINT BoneIndex;
-        float Time;
-        DirectX::XMFLOAT4X4 Transform;
-    };
+struct Clip
+{
+    float StartTime;
+    float EndTime;
+    UINT  keys;
+};
 
-    #pragma pack(pop)
+struct Keyframe
+{
+    UINT BoneIndex;
+    float Time;
+    DirectX::XMFLOAT4X4 Transform;
+};
+
+#pragma pack(pop)
 
 }; // namespace
 
@@ -224,10 +224,10 @@ static BOOL CALLBACK InitializeDecl( PINIT_ONCE initOnce, PVOID Parameter, PVOID
     UNREFERENCED_PARAMETER( lpContext );
 
     g_vbdecl = std::make_shared<std::vector<D3D11_INPUT_ELEMENT_DESC>>( VertexPositionNormalTangentColorTexture::InputElements,
-           VertexPositionNormalTangentColorTexture::InputElements + VertexPositionNormalTangentColorTexture::InputElementCount );
+               VertexPositionNormalTangentColorTexture::InputElements + VertexPositionNormalTangentColorTexture::InputElementCount );
 
     g_vbdeclSkinning = std::make_shared<std::vector<D3D11_INPUT_ELEMENT_DESC>>( VertexPositionNormalTangentColorTextureSkinning::InputElements,
-           VertexPositionNormalTangentColorTextureSkinning::InputElements + VertexPositionNormalTangentColorTextureSkinning::InputElementCount );
+                       VertexPositionNormalTangentColorTextureSkinning::InputElements + VertexPositionNormalTangentColorTextureSkinning::InputElementCount );
     return TRUE;
 }
 
@@ -241,7 +241,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, c
 {
     if ( !InitOnceExecuteOnce( &g_InitOnce, InitializeDecl, nullptr, nullptr ) )
         throw std::exception("One-time initialization failed");
-    
+
     if ( !d3dDevice || !meshData )
         throw std::exception("Device and meshData cannot be null");
 
@@ -419,9 +419,9 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, c
 
             ThrowIfFailed(
                 d3dDevice->CreateBuffer( &desc, &initData, &ibs[j] )
-                );
+            );
 
-            SetDebugObjectName( ibs[j].Get(), "ModelCMO" ); 
+            SetDebugObjectName( ibs[j].Get(), "ModelCMO" );
         }
 
         assert( ibData.size() == *nIBs );
@@ -494,7 +494,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, c
 
                 if ( vbData[ j ].nVerts != *nVerts )
                     throw std::exception("Mismatched number of verts for skin VBs");
-    
+
                 size_t vbBytes = sizeof(VSD3DStarter::SkinningVertex) * (*(nVerts));
 
                 auto verts = reinterpret_cast<const VSD3DStarter::SkinningVertex*>( meshData + usedSize );
@@ -547,14 +547,14 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, c
                 usedSize += sizeof(wchar_t)*(*nName);
                 if ( dataSize < usedSize )
                     throw std::exception("End of file");
-                
+
                 // TODO - What to do with bone name?
                 boneName;
 
                 // Bone settings
                 auto bones = reinterpret_cast<const VSD3DStarter::Bone*>( meshData + usedSize );
                 usedSize += sizeof(VSD3DStarter::Bone);
-                if ( dataSize < usedSize )  
+                if ( dataSize < usedSize )
                     throw std::exception("End of file");
 
                 // TODO - What to do with bone data?
@@ -580,7 +580,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, c
                 usedSize += sizeof(wchar_t)*(*nName);
                 if ( dataSize < usedSize )
                     throw std::exception("End of file");
-                
+
                 // TODO - What to do with clip name?
                 clipName;
 
@@ -594,7 +594,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, c
 
                 auto keys = reinterpret_cast<const VSD3DStarter::Keyframe*>( meshData + usedSize );
                 usedSize += sizeof(VSD3DStarter::Keyframe) * clip->keys;
-                if ( dataSize < usedSize )  
+                if ( dataSize < usedSize )
                     throw std::exception("End of file");
 
                 // TODO - What to do with keys and clip->StartTime, clip->EndTime?
@@ -612,7 +612,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, c
         vbs.resize( *nVBs );
 
         const size_t stride = enableSkinning ? sizeof(VertexPositionNormalTangentColorTextureSkinning)
-                                             : sizeof(VertexPositionNormalTangentColorTexture);
+                              : sizeof(VertexPositionNormalTangentColorTexture);
 
         for( UINT j = 0; j < *nVBs; ++j )
         {
@@ -624,7 +624,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, c
             desc.Usage = D3D11_USAGE_DEFAULT;
             desc.ByteWidth = static_cast<UINT>( bytes );
             desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-            
+
             if ( fxFactoryDGSL && !enableSkinning )
             {
                 // Can use CMO vertex data directly
@@ -633,7 +633,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, c
 
                 ThrowIfFailed(
                     d3dDevice->CreateBuffer( &desc, &initData, &vbs[j] )
-                    );
+                );
             }
             else
             {
@@ -682,8 +682,8 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, c
                             continue;
 
                         if ( (sm.IndexBufferIndex >= *nIBs)
-                             || (sm.MaterialIndex >= *nMats) )
-                             throw std::exception("Invalid submesh found\n");
+                                || (sm.MaterialIndex >= *nMats) )
+                            throw std::exception("Invalid submesh found\n");
 
                         XMMATRIX uvTransform = XMLoadFloat4x4( &materials[ sm.MaterialIndex ].pMaterial->UVTransform );
 
@@ -717,9 +717,9 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, c
                                 XMMATRIX uv2 = XMLoadFloat4x4( &materials[ visited[v] ].pMaterial->UVTransform );
 
                                 if ( XMVector4NotEqual( uvTransform.r[0], uv2.r[0] )
-                                     || XMVector4NotEqual( uvTransform.r[1], uv2.r[1] )
-                                     || XMVector4NotEqual( uvTransform.r[2], uv2.r[2] )
-                                     || XMVector4NotEqual( uvTransform.r[3], uv2.r[3] ) )
+                                        || XMVector4NotEqual( uvTransform.r[1], uv2.r[1] )
+                                        || XMVector4NotEqual( uvTransform.r[2], uv2.r[2] )
+                                        || XMVector4NotEqual( uvTransform.r[3], uv2.r[3] ) )
                                 {
                                     DebugTrace( "WARNING: %ls - mismatched UV transforms for the same vertex; texture coordinates may not be correct\n", mesh->name.c_str() );
                                 }
@@ -735,14 +735,14 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, c
 
                 ThrowIfFailed(
                     d3dDevice->CreateBuffer( &desc, &initData, &vbs[j] )
-                    );
+                );
             }
 
-            SetDebugObjectName( vbs[j].Get(), "ModelCMO" ); 
+            SetDebugObjectName( vbs[j].Get(), "ModelCMO" );
         }
 
         assert( vbs.size() == *nVBs );
-        
+
         // Create Effects
         for( UINT j = 0; j < *nMats; ++j )
         {
@@ -764,7 +764,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, c
                 info.specularTexture = m.texture[1].empty() ? nullptr : m.texture[1].c_str();
                 info.normalTexture = m.texture[2].empty() ? nullptr : m.texture[2].c_str();
                 info.pixelShader = m.pixelShader.c_str();
-                
+
                 const int offset = DGSLEffectFactory::DGSLEffectInfo::BaseTextureOffset;
                 for( int i = 0; i < (DGSLEffect::MaxTextures - offset); ++i )
                 {
@@ -802,9 +802,9 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO( ID3D11Device* d3dDevice, c
             auto& sm = subMesh[j];
 
             if ( (sm.IndexBufferIndex >= *nIBs)
-                 || (sm.VertexBufferIndex >= *nVBs)
-                 || (sm.MaterialIndex >= *nMats) )
-                 throw std::exception("Invalid submesh found\n");
+                    || (sm.VertexBufferIndex >= *nVBs)
+                    || (sm.MaterialIndex >= *nMats) )
+                throw std::exception("Invalid submesh found\n");
 
             auto& mat = materials[ sm.MaterialIndex ];
 

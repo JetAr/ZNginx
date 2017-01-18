@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: MultiDeviceContextDXUTMesh.cpp
 //
 // Extended implementation of DXUT Mesh for M/T rendering
@@ -10,8 +10,8 @@
 
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
-HRESULT CMultiDeviceContextDXUTMesh::Create( ID3D11Device* pDev11, LPCWSTR szFileName, 
-                                             MDC_SDKMESH_CALLBACKS11* pCallbacks )
+HRESULT CMultiDeviceContextDXUTMesh::Create( ID3D11Device* pDev11, LPCWSTR szFileName,
+        MDC_SDKMESH_CALLBACKS11* pCallbacks )
 {
     if ( pCallbacks )
     {
@@ -33,29 +33,29 @@ HRESULT CMultiDeviceContextDXUTMesh::Create( ID3D11Device* pDev11, LPCWSTR szFil
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
 void CMultiDeviceContextDXUTMesh::RenderMesh( UINT iMesh,
-                                            bool bAdjacent,
-                                            ID3D11DeviceContext* pd3dDeviceContext,
-                                            UINT iDiffuseSlot,
-                                            UINT iNormalSlot,
-                                            UINT iSpecularSlot )
+        bool bAdjacent,
+        ID3D11DeviceContext* pd3dDeviceContext,
+        UINT iDiffuseSlot,
+        UINT iNormalSlot,
+        UINT iSpecularSlot )
 {
     CDXUTSDKMesh::RenderMesh( iMesh,
-        bAdjacent,
-        pd3dDeviceContext,
-        iDiffuseSlot,
-        iNormalSlot,
-        iSpecularSlot );
+                              bAdjacent,
+                              pd3dDeviceContext,
+                              iDiffuseSlot,
+                              iNormalSlot,
+                              iSpecularSlot );
 }
 
 
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
 void CMultiDeviceContextDXUTMesh::RenderFrame( UINT iFrame,
-                                              bool bAdjacent,
-                                              ID3D11DeviceContext* pd3dDeviceContext,
-                                              UINT iDiffuseSlot,
-                                              UINT iNormalSlot,
-                                              UINT iSpecularSlot )
+        bool bAdjacent,
+        ID3D11DeviceContext* pd3dDeviceContext,
+        UINT iDiffuseSlot,
+        UINT iNormalSlot,
+        UINT iSpecularSlot )
 {
     if( !m_pStaticMeshData || !m_pFrameArray )
         return;
@@ -65,41 +65,41 @@ void CMultiDeviceContextDXUTMesh::RenderFrame( UINT iFrame,
         if ( !m_pRenderMeshCallback )
         {
             RenderMesh( m_pFrameArray[iFrame].Mesh,
-                bAdjacent,
-                pd3dDeviceContext,
-                iDiffuseSlot,
-                iNormalSlot,
-                iSpecularSlot );
+                        bAdjacent,
+                        pd3dDeviceContext,
+                        iDiffuseSlot,
+                        iNormalSlot,
+                        iSpecularSlot );
         }
         else
         {
-            m_pRenderMeshCallback( this, 
-                m_pFrameArray[iFrame].Mesh,
-                bAdjacent,
-                pd3dDeviceContext,
-                iDiffuseSlot,
-                iNormalSlot,
-                iSpecularSlot );
+            m_pRenderMeshCallback( this,
+                                   m_pFrameArray[iFrame].Mesh,
+                                   bAdjacent,
+                                   pd3dDeviceContext,
+                                   iDiffuseSlot,
+                                   iNormalSlot,
+                                   iSpecularSlot );
         }
     }
 
     // Render our children
     if( m_pFrameArray[iFrame].ChildFrame != INVALID_FRAME )
-        RenderFrame( m_pFrameArray[iFrame].ChildFrame, bAdjacent, pd3dDeviceContext, iDiffuseSlot, 
-        iNormalSlot, iSpecularSlot );
+        RenderFrame( m_pFrameArray[iFrame].ChildFrame, bAdjacent, pd3dDeviceContext, iDiffuseSlot,
+                     iNormalSlot, iSpecularSlot );
 
     // Render our siblings
     if( m_pFrameArray[iFrame].SiblingFrame != INVALID_FRAME )
-        RenderFrame( m_pFrameArray[iFrame].SiblingFrame, bAdjacent, pd3dDeviceContext, iDiffuseSlot, 
-        iNormalSlot, iSpecularSlot );
+        RenderFrame( m_pFrameArray[iFrame].SiblingFrame, bAdjacent, pd3dDeviceContext, iDiffuseSlot,
+                     iNormalSlot, iSpecularSlot );
 }
 
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
 void CMultiDeviceContextDXUTMesh::Render( ID3D11DeviceContext* pd3dDeviceContext,
-                                         UINT iDiffuseSlot,
-                                         UINT iNormalSlot,
-                                         UINT iSpecularSlot )
+        UINT iDiffuseSlot,
+        UINT iNormalSlot,
+        UINT iSpecularSlot )
 {
     RenderFrame( 0, false, pd3dDeviceContext, iDiffuseSlot, iNormalSlot, iSpecularSlot );
 }

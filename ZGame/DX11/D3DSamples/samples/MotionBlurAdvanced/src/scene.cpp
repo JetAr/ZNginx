@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        MotionBlurAdvanced\src/scene.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -54,7 +54,8 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-namespace {
+namespace
+{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -62,7 +63,8 @@ namespace {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-} namespace Scene {
+} namespace Scene
+{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -72,29 +74,29 @@ HRESULT load_texture(ID3D11Device * device, const wchar_t * filename, ID3D11Shad
 
 {
 
-	ID3D11Resource* new_texture;
+    ID3D11Resource* new_texture;
 
-	D3DX11_IMAGE_LOAD_INFO image_info;
+    D3DX11_IMAGE_LOAD_INFO image_info;
 
-	image_info.Format = DXGI_FORMAT_R8G8B8A8_TYPELESS;
+    image_info.Format = DXGI_FORMAT_R8G8B8A8_TYPELESS;
 
-	HRESULT hr = D3DX11CreateTextureFromFile(device, filename, &image_info, NULL, &new_texture, NULL);
+    HRESULT hr = D3DX11CreateTextureFromFile(device, filename, &image_info, NULL, &new_texture, NULL);
 
 
 
-	D3D11_SHADER_RESOURCE_VIEW_DESC srv_desc;
+    D3D11_SHADER_RESOURCE_VIEW_DESC srv_desc;
 
-	ZeroMemory(&srv_desc, sizeof(srv_desc));
+    ZeroMemory(&srv_desc, sizeof(srv_desc));
 
-	srv_desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+    srv_desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 
-	srv_desc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+    srv_desc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 
-	srv_desc.Texture2D.MipLevels = 1;
+    srv_desc.Texture2D.MipLevels = 1;
 
-	srv_desc.Texture2D.MostDetailedMip = 0;
+    srv_desc.Texture2D.MostDetailedMip = 0;
 
-	hr = device->CreateShaderResourceView(new_texture, &srv_desc, out_srv);
+    hr = device->CreateShaderResourceView(new_texture, &srv_desc, out_srv);
 
 
 
@@ -114,7 +116,7 @@ HRESULT load_model(ID3D11Device * device, const char * filename, std::vector <Re
 
     unsigned int asset_import_flags =   aiProcess_JoinIdenticalVertices |
 
-                                        aiProcess_PreTransformVertices | 
+                                        aiProcess_PreTransformVertices |
 
                                         aiProcess_RemoveRedundantMaterials |
 
@@ -132,7 +134,7 @@ HRESULT load_model(ID3D11Device * device, const char * filename, std::vector <Re
 
     unsigned int asset_import_flags =   aiProcess_MakeLeftHanded |
 
-                                        aiProcess_PreTransformVertices | 
+                                        aiProcess_PreTransformVertices |
 
                                         aiProcess_RemoveRedundantMaterials |
 
@@ -158,7 +160,7 @@ HRESULT load_model(ID3D11Device * device, const char * filename, std::vector <Re
 
     std::string file_path = filename;
 
-    
+
 
     int split_pos1 = (int) file_path.rfind('\\');
 
@@ -190,7 +192,7 @@ HRESULT load_model(ID3D11Device * device, const char * filename, std::vector <Re
 
         aiMesh * mesh = model->mMeshes[mesh_idx];
 
-        aiMaterial * material = model->mMaterials[mesh->mMaterialIndex];            
+        aiMaterial * material = model->mMaterials[mesh->mMaterialIndex];
 
         out_objects.push_back(new RenderObject(device, file_path, mesh, material));
 
@@ -238,7 +240,8 @@ RenderObject::RenderObject(ID3D11Device * device, const std::string &file_path, 
 
 
 
-    D3D11_BUFFER_DESC ib_desc = {
+    D3D11_BUFFER_DESC ib_desc =
+    {
 
         idx_buffer_size,            // Byte Width
 
@@ -256,7 +259,8 @@ RenderObject::RenderObject(ID3D11Device * device, const std::string &file_path, 
 
 
 
-    D3D11_SUBRESOURCE_DATA ib_data = {
+    D3D11_SUBRESOURCE_DATA ib_data =
+    {
 
         (void *) source_indices,    // Source Data
 
@@ -334,7 +338,8 @@ RenderObject::RenderObject(ID3D11Device * device, const std::string &file_path, 
 
         this->vtx_offsets[buffer_idx] = 0;
 
-        D3D11_BUFFER_DESC vb_desc = {
+        D3D11_BUFFER_DESC vb_desc =
+        {
 
             buffer_size,                // Byte Width
 
@@ -352,7 +357,8 @@ RenderObject::RenderObject(ID3D11Device * device, const std::string &file_path, 
 
 
 
-        D3D11_SUBRESOURCE_DATA vb_data = {
+        D3D11_SUBRESOURCE_DATA vb_data =
+        {
 
             source_data[buffer_idx],    // Source Data
 

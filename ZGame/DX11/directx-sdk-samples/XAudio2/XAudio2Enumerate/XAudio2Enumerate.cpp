@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: XAudio2Enumerate.cpp
 //
 // Demonstrates enumerating audio devices and creating a XAudio2 mastering voice for them
@@ -88,9 +88,9 @@ int main()
     // To see the trace output, you need to view ETW logs for this application:
     //    Go to Control Panel, Administrative Tools, Event Viewer.
     //    View->Show Analytic and Debug Logs.
-    //    Applications and Services Logs / Microsoft / Windows / XAudio2. 
-    //    Right click on Microsoft Windows XAudio2 debug logging, Properties, then Enable Logging, and hit OK 
-    XAUDIO2_DEBUG_CONFIGURATION debug ={0};
+    //    Applications and Services Logs / Microsoft / Windows / XAudio2.
+    //    Right click on Microsoft Windows XAudio2 debug logging, Properties, then Enable Logging, and hit OK
+    XAUDIO2_DEBUG_CONFIGURATION debug = {0};
     debug.TraceMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS;
     debug.BreakMask = XAUDIO2_LOG_ERRORS;
     pXAudio2->SetDebugConfiguration( &debug, 0 );
@@ -140,13 +140,13 @@ int main()
 
 #if (_WIN32_WINNT >= 0x0602 /*_WIN32_WINNT_WIN8*/)
     if( FAILED( hr = pXAudio2->CreateMasteringVoice( &pMasteringVoice,
-                                                     XAUDIO2_DEFAULT_CHANNELS, XAUDIO2_DEFAULT_SAMPLERATE, 0,
-                                                     list[ devindex ].deviceId.c_str() ) ) )
+                     XAUDIO2_DEFAULT_CHANNELS, XAUDIO2_DEFAULT_SAMPLERATE, 0,
+                     list[ devindex ].deviceId.c_str() ) ) )
 #else
     if( FAILED( hr = pXAudio2->CreateMasteringVoice( &pMasteringVoice,
-                                                     XAUDIO2_DEFAULT_CHANNELS,
-                                                     XAUDIO2_DEFAULT_SAMPLERATE, 0,
-                                                     devindex ) ) )
+                     XAUDIO2_DEFAULT_CHANNELS,
+                     XAUDIO2_DEFAULT_SAMPLERATE, 0,
+                     devindex ) ) )
 #endif
     {
         wprintf( L"Failed creating mastering voice: %#X\n", hr );
@@ -192,7 +192,7 @@ HRESULT EnumerateAudio( _In_ IXAudio2* pXaudio2, _Inout_ std::vector<AudioDevice
     using Windows::Devices::Enumeration::DeviceClass;
     using Windows::Devices::Enumeration::DeviceInformation;
     using Windows::Devices::Enumeration::DeviceInformationCollection;
- 
+
     auto operation = DeviceInformation::FindAllAsync(DeviceClass::AudioRender);
 
     auto task = create_task( operation );
@@ -202,7 +202,7 @@ HRESULT EnumerateAudio( _In_ IXAudio2* pXaudio2, _Inout_ std::vector<AudioDevice
         for( unsigned i=0; i < devices->Size; ++i )
         {
             using Windows::Devices::Enumeration::DeviceInformation;
- 
+
             DeviceInformation^ d = devices->GetAt(i);
 
             AudioDevice device;
@@ -213,7 +213,7 @@ HRESULT EnumerateAudio( _In_ IXAudio2* pXaudio2, _Inout_ std::vector<AudioDevice
     });
 
     task.wait();
- 
+
     if ( list.empty() )
         return S_FALSE;
 
@@ -241,7 +241,7 @@ HRESULT EnumerateAudio( _In_ IXAudio2* pXaudio2, _Inout_ std::vector<AudioDevice
         return HRESULT_FROM_WIN32( GetLastError() );
 
     auto callback = Callback<IAsyncOperationCompletedHandler<DeviceInformationCollection*>>(
-        [&findCompleted,list]( IAsyncOperation<DeviceInformationCollection*>* aDevices, AsyncStatus status ) -> HRESULT
+                        [&findCompleted,list]( IAsyncOperation<DeviceInformationCollection*>* aDevices, AsyncStatus status ) -> HRESULT
     {
         SetEvent( findCompleted.Get() );
         return S_OK;
@@ -288,7 +288,7 @@ HRESULT EnumerateAudio( _In_ IXAudio2* pXaudio2, _Inout_ std::vector<AudioDevice
 
     return S_OK;
 
-#endif 
+#endif
 
 #else // _WIN32_WINNT < _WIN32_WINNT_WIN8
 

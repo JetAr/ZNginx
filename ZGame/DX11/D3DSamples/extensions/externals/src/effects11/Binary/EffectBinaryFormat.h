@@ -1,10 +1,10 @@
-//////////////////////////////////////////////////////////////////////////////
+﻿//////////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) Microsoft Corporation.  All Rights Reserved.
 //
 //  File:       Effect.h
 //  Content:    D3DX11 Effects Binary Format
-//              This is the binary file interface shared between the Effects 
+//              This is the binary file interface shared between the Effects
 //              compiler and runtime.
 //
 //////////////////////////////////////////////////////////////////////////////
@@ -29,7 +29,7 @@ struct EVersionTag
 };
 
 // versions must be listed in ascending order
-static CONST EVersionTag g_EffectVersions[] = 
+static CONST EVersionTag g_EffectVersions[] =
 {
     { "fx_4_0", D3D10_FXL_VERSION(4,0),   0xFEFF1001 },
     { "fx_4_1", D3D10_FXL_VERSION(4,1),   0xFEFF1011 },
@@ -70,7 +70,7 @@ enum ELhsType
 
     ELHS_GeometryShaderSO,          // When setting SO assignments, GeometryShaderSO precedes the actual GeometryShader assn
 
-    ELHS_ComputeShaderBlock,   
+    ELHS_ComputeShaderBlock,
     ELHS_HullShaderBlock,
     ELHS_DomainShaderBlock,
 
@@ -234,7 +234,7 @@ D3DX11INLINE BOOL IsSamplerHelper(EVarType InVarType,
 }
 
 D3DX11INLINE BOOL IsStateBlockObjectHelper(EVarType InVarType,
-                                           EObjectType InObjType)
+        EObjectType InObjType)
 {
     return (InVarType == EVT_Object) && ((InObjType == EOT_Blend) || (InObjType == EOT_DepthStencil) || (InObjType == EOT_Rasterizer) || IsSamplerHelper(InVarType, InObjType));
 }
@@ -266,55 +266,55 @@ D3DX11INLINE BOOL IsShader5Helper(EVarType InVarType,
 }
 
 D3DX11INLINE BOOL IsInterfaceHelper(EVarType InVarType,
-                                         EObjectType InObjType)
+                                    EObjectType InObjType)
 {
     return (InVarType == EVT_Interface);
 }
 
 D3DX11INLINE BOOL IsShaderResourceHelper(EVarType InVarType,
-                                         EObjectType InObjType)
+        EObjectType InObjType)
 {
     return (InVarType == EVT_Object) && ((InObjType == EOT_Texture) ||
-                                         (InObjType == EOT_Texture1D) || 
+                                         (InObjType == EOT_Texture1D) ||
                                          (InObjType == EOT_Texture1DArray) ||
-                                         (InObjType == EOT_Texture2D) || 
+                                         (InObjType == EOT_Texture2D) ||
                                          (InObjType == EOT_Texture2DArray) ||
-                                         (InObjType == EOT_Texture2DMS) || 
+                                         (InObjType == EOT_Texture2DMS) ||
                                          (InObjType == EOT_Texture2DMSArray) ||
-                                         (InObjType == EOT_Texture3D) || 
+                                         (InObjType == EOT_Texture3D) ||
                                          (InObjType == EOT_TextureCube) ||
-                                         (InObjType == EOT_TextureCubeArray) || 
+                                         (InObjType == EOT_TextureCubeArray) ||
                                          (InObjType == EOT_Buffer) ||
                                          (InObjType == EOT_StructuredBuffer) ||
                                          (InObjType == EOT_ByteAddressBuffer));
 }
 
 D3DX11INLINE BOOL IsUnorderedAccessViewHelper(EVarType InVarType,
-                                              EObjectType InObjType)
+        EObjectType InObjType)
 {
     return (InVarType == EVT_Object) &&
-        ((InObjType == EOT_RWTexture1D) ||
-         (InObjType == EOT_RWTexture1DArray) ||
-         (InObjType == EOT_RWTexture2D) ||
-         (InObjType == EOT_RWTexture2DArray) ||
-         (InObjType == EOT_RWTexture3D) ||
-         (InObjType == EOT_RWBuffer) ||
-         (InObjType == EOT_RWByteAddressBuffer) ||
-         (InObjType == EOT_RWStructuredBuffer) ||
-         (InObjType == EOT_RWStructuredBufferAlloc) ||
-         (InObjType == EOT_RWStructuredBufferConsume) ||
-         (InObjType == EOT_AppendStructuredBuffer) ||
-         (InObjType == EOT_ConsumeStructuredBuffer));
+           ((InObjType == EOT_RWTexture1D) ||
+            (InObjType == EOT_RWTexture1DArray) ||
+            (InObjType == EOT_RWTexture2D) ||
+            (InObjType == EOT_RWTexture2DArray) ||
+            (InObjType == EOT_RWTexture3D) ||
+            (InObjType == EOT_RWBuffer) ||
+            (InObjType == EOT_RWByteAddressBuffer) ||
+            (InObjType == EOT_RWStructuredBuffer) ||
+            (InObjType == EOT_RWStructuredBufferAlloc) ||
+            (InObjType == EOT_RWStructuredBufferConsume) ||
+            (InObjType == EOT_AppendStructuredBuffer) ||
+            (InObjType == EOT_ConsumeStructuredBuffer));
 }
 
 D3DX11INLINE BOOL IsRenderTargetViewHelper(EVarType InVarType,
-                                           EObjectType InObjType)
+        EObjectType InObjType)
 {
     return (InVarType == EVT_Object) && (InObjType == EOT_RenderTargetView);
 }
 
 D3DX11INLINE BOOL IsDepthStencilViewHelper(EVarType InVarType,
-                                           EObjectType InObjType)
+        EObjectType InObjType)
 {
     return (InVarType == EVT_Object) && (InObjType == EOT_DepthStencilView);
 }
@@ -381,11 +381,11 @@ struct SBinaryHeader
     };
 
     UINT        Tag;    // should be equal to c_EffectFileTag
-                        // this is used to identify ASCII vs Binary files
+    // this is used to identify ASCII vs Binary files
 
     SVarCounts  Effect;
     SVarCounts  Pool;
-    
+
     UINT        cTechniques;
     UINT        cbUnstructured;
 
@@ -431,7 +431,7 @@ struct SBinaryConstantBuffer
     UINT                Flags;
     UINT                cVariables;           // # of variables inside this buffer
     UINT                ExplicitBindPoint;    // Defined if the effect file specifies a bind point using the register keyword
-                                              // otherwise, -1
+    // otherwise, -1
 };
 
 struct SBinaryAnnotation
@@ -479,11 +479,11 @@ struct SBinaryObjectVariable
 
     // Initializer data:
     //
-    // The type structure pointed to by oType gives you Elements, 
+    // The type structure pointed to by oType gives you Elements,
     // VarType (must be EVT_Object), and ObjectType
     //
     // For ObjectType == EOT_Blend, EOT_DepthStencil, EOT_Rasterizer, EOT_Sampler
-    // struct 
+    // struct
     // {
     //   UINT  cAssignments;
     //   SBinaryAssignment Assignments[cAssignments];
@@ -523,11 +523,11 @@ struct SBinaryType
     UINT        oTypeName;      // Offset to friendly type name ("float4", "VS_OUTPUT")
     EVarType    VarType;        // Numeric, Object, or Struct
     UINT        Elements;       // # of array elements (0 for non-arrays)
-    UINT        TotalSize;      // Size in bytes; not necessarily Stride * Elements for arrays 
-                                // because of possible gap left in final register
+    UINT        TotalSize;      // Size in bytes; not necessarily Stride * Elements for arrays
+    // because of possible gap left in final register
     UINT        Stride;         // If an array, this is the spacing between elements.
-                                // For unpacked arrays, always divisible by 16-bytes (1 register).
-                                // No support for packed arrays    
+    // For unpacked arrays, always divisible by 16-bytes (1 register).
+    // No support for packed arrays
     UINT        PackedSize;     // Size, in bytes, of this data typed when fully packed
 
     struct SBinaryMember
@@ -541,7 +541,7 @@ struct SBinaryType
     // the data that follows depends on the VarType:
     // Numeric: SType::SNumericType
     // Object:  EObjectType
-    // Struct:  
+    // Struct:
     //   struct
     //   {
     //        UINT              cMembers;
@@ -632,7 +632,7 @@ struct SBinaryAssignment
     };
 
     struct SIndexedObjectExpression
-    {   
+    {
         UINT  oArrayName;
         UINT  oCode;
     };

@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeferredShadingMSAA\src/ObjMeshDX.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -48,8 +48,8 @@ struct MeshVertex
 
 struct MeshFace
 {
-	int aiIndices[3];
-	int iSmoothingGroup;
+    int aiIndices[3];
+    int iSmoothingGroup;
 };
 
 // Used for a hashtable vertex cache when creating the mesh from a .obj file
@@ -77,84 +77,90 @@ struct Material
     WCHAR   strTexture[MAX_PATH];
     ID3D11ShaderResourceView* pTextureRSV;
 
-	Material()
-		: pTextureRSV(nullptr)
-	{
-		ZeroMemory(strTexture, MAX_PATH * sizeof(WCHAR));
-	}
+    Material()
+        : pTextureRSV(nullptr)
+    {
+        ZeroMemory(strTexture, MAX_PATH * sizeof(WCHAR));
+    }
 };
 
 
 class ObjMeshDX
 {
 public:
-	ObjMeshDX();
-	~ObjMeshDX();
+    ObjMeshDX();
+    ~ObjMeshDX();
 
     HRESULT Create(ID3D11Device* pd3dDevice, const WCHAR* strFilename);
     void    Destroy();
 
     size_t GetNumMaterials() const
     {
-		return m_Materials.size();
+        return m_Materials.size();
     }
     Material* GetMaterial(UINT iMaterial)
     {
-		return m_Materials[iMaterial];
+        return m_Materials[iMaterial];
     }
-	size_t GetNumSubsets() const
-	{
-		return m_SubsetStartIdx.size();
-	}
-	
-	struct MeshConstants
-	{
-		D3DXMATRIX	LocalToProjected4x4;
-		D3DXMATRIX	LocalToWorld4x4;
-		D3DXMATRIX	WorldToView4x4;
-	};
+    size_t GetNumSubsets() const
+    {
+        return m_SubsetStartIdx.size();
+    }
 
-	struct SubMeshConstants
-	{
-		D3DXVECTOR3	Diffuse;
-		int			Textured;
-	};
+    struct MeshConstants
+    {
+        D3DXMATRIX	LocalToProjected4x4;
+        D3DXMATRIX	LocalToWorld4x4;
+        D3DXMATRIX	WorldToView4x4;
+    };
+
+    struct SubMeshConstants
+    {
+        D3DXVECTOR3	Diffuse;
+        int			Textured;
+    };
 
 public:
-	void Draw(ID3D11DeviceContext* pDeviceContext, const D3DXMATRIX& worldMatrix, const D3DXMATRIX& viewMatrix, const D3DXMATRIX& WVP, const int diffuseTexSlot = -1) const;
+    void Draw(ID3D11DeviceContext* pDeviceContext, const D3DXMATRIX& worldMatrix, const D3DXMATRIX& viewMatrix, const D3DXMATRIX& WVP, const int diffuseTexSlot = -1) const;
 
 private:
     HRESULT LoadGeometryFromOBJ(const WCHAR* strFilename);
     HRESULT LoadMaterialsFromMTL(const WCHAR* strFileName);
-	void	ComputeVertexNormals();
+    void	ComputeVertexNormals();
     void    InitMaterial(Material* pMaterial);
 
     DWORD   AddVertex(UINT hash, MeshVertex* pVertex);
     void    DeleteCache();
 
-	
-	inline const DWORD* GetIndexAt(int iNum) const { return m_Indices.data() + 3 * iNum; }
-	inline const MeshVertex& GetVertexAt(int iIndex) const { return m_Vertices[iIndex]; }
+
+    inline const DWORD* GetIndexAt(int iNum) const
+    {
+        return m_Indices.data() + 3 * iNum;
+    }
+    inline const MeshVertex& GetVertexAt(int iIndex) const
+    {
+        return m_Vertices[iIndex];
+    }
 
     std::vector<CacheEntry*> m_VertexCache;   // Hashtable cache for locating duplicate vertices
     std::vector<MeshVertex> m_Vertices;      // Filled and copied to the vertex buffer
     std::vector<DWORD> m_Indices;       // Filled and copied to the index buffer
-	std::vector<MeshFace> m_Faces;
-	std::vector<DWORD> m_SubsetStartIdx;  // Holds starting index of each subset
-	std::vector<DWORD> m_SubsetMtlIdx;  // Holds the material index of each subset
+    std::vector<MeshFace> m_Faces;
+    std::vector<DWORD> m_SubsetStartIdx;  // Holds starting index of each subset
+    std::vector<DWORD> m_SubsetMtlIdx;  // Holds the material index of each subset
     std::vector<Material*> m_Materials;     // Holds material properties per subset
-	int m_iNumSubsets;
+    int m_iNumSubsets;
 
-	// D3D Buffers
-	ID3D11Buffer* m_pVertexBuffer;
-	ID3D11Buffer* m_pIndexBuffer;
-	ID3D11Buffer* m_pCBMesh;
-	ID3D11Buffer* m_pCBSubMesh;
+    // D3D Buffers
+    ID3D11Buffer* m_pVertexBuffer;
+    ID3D11Buffer* m_pIndexBuffer;
+    ID3D11Buffer* m_pCBMesh;
+    ID3D11Buffer* m_pCBSubMesh;
 
 
 public:
-	static const UINT numElements_layout_Position_Normal_Texture = 3;
-	static const D3D11_INPUT_ELEMENT_DESC layout_Position_Normal_Texture[];
+    static const UINT numElements_layout_Position_Normal_Texture = 3;
+    static const D3D11_INPUT_ELEMENT_DESC layout_Position_Normal_Texture[];
 };
 
 #endif // _MESHLOADER_H_

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: Model.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -21,7 +21,7 @@
 
 using namespace DirectX;
 
-#ifndef _CPPRTTI 
+#ifndef _CPPRTTI
 #error Model requires RTTI
 #endif
 
@@ -95,9 +95,9 @@ void ModelMeshPart::CreateInputLayout(ID3D11Device* d3dDevice, IEffect* ieffect,
 
     ThrowIfFailed(
         d3dDevice->CreateInputLayout(vbDecl->data(),
-            static_cast<UINT>(vbDecl->size()),
-            shaderByteCode, byteCodeLength,
-            iinputLayout)
+                                     static_cast<UINT>(vbDecl->size()),
+                                     shaderByteCode, byteCodeLength,
+                                     iinputLayout)
     );
 
     _Analysis_assume_(*iinputLayout != 0);
@@ -123,9 +123,9 @@ void ModelMeshPart::ModifyEffect(ID3D11Device* d3dDevice, std::shared_ptr<IEffec
 
     ThrowIfFailed(
         d3dDevice->CreateInputLayout(vbDecl->data(),
-            static_cast<UINT>(vbDecl->size()),
-            shaderByteCode, byteCodeLength,
-            &inputLayout)
+                                     static_cast<UINT>(vbDecl->size()),
+                                     shaderByteCode, byteCodeLength,
+                                     &inputLayout)
     );
 }
 

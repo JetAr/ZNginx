@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: GraphicsMemory.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -22,11 +22,11 @@ using Microsoft::WRL::ComPtr;
 
 namespace
 {
-    template <typename T> __forceinline T AlignUp(T value, size_t alignment)
-    {
-        assert(((alignment - 1) & alignment) == 0);
-        return static_cast<T>( (static_cast<size_t>(value) + alignment - 1) & ~(alignment - 1) );
-    }
+template <typename T> __forceinline T AlignUp(T value, size_t alignment)
+{
+    assert(((alignment - 1) & alignment) == 0);
+    return static_cast<T>( (static_cast<size_t>(value) + alignment - 1) & ~(alignment - 1) );
+}
 }
 
 
@@ -137,7 +137,10 @@ public:
     {
         MemoryFrame() : mCurOffset(0), mFence(0) {}
 
-        ~MemoryFrame() { Clear(); }
+        ~MemoryFrame()
+        {
+            Clear();
+        }
 
         UINT mCurOffset;
 
@@ -215,7 +218,7 @@ public:
 
     ComPtr<ID3D11DeviceX> mDevice;
     ComPtr<ID3D11DeviceContextX> mDeviceContext;
-    
+
     static GraphicsMemory::Impl* s_graphicsMemory;
 };
 

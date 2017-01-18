@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------------
 // File: Scene.h
 //
 // Desc: Holds a description for a simple scene usend in the Order Independent
@@ -21,7 +21,7 @@ protected:
     struct VS_CB
     {
         DirectX::XMFLOAT4X4 mWorldViewProj;
-    };    
+    };
 
     ID3D11VertexShader* m_pVertexShader;
     ID3D11InputLayout*  m_pVertexLayout;

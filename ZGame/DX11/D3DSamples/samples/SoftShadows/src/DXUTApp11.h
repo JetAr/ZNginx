@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        SoftShadows\src/DXUTApp11.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -42,26 +42,41 @@ public:
 
     int run();
 
-    virtual bool modifyDeviceSettings(DXUTDeviceSettings *pDeviceSettings) { return true; }
+    virtual bool modifyDeviceSettings(DXUTDeviceSettings *pDeviceSettings)
+    {
+        return true;
+    }
     virtual void onFrameMove(double time, float elapsedTime) {}
-    virtual LRESULT onWindowsMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam, bool *stopProcessing) { return 0; }
+    virtual LRESULT onWindowsMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam, bool *stopProcessing)
+    {
+        return 0;
+    }
     virtual void onKeyboardMessage(UINT nChar, bool keyDown, bool altDown) {}
-    
+
     virtual bool isDeviceAcceptable(
         const CD3D11EnumAdapterInfo *adapterInfo,
         UINT output,
         const CD3D11EnumDeviceInfo *deviceInfo,
         DXGI_FORMAT backBufferFormat,
-        bool windowed) { return true; }
+        bool windowed)
+    {
+        return true;
+    }
 
     virtual HRESULT onCreateDevice(
         ID3D11Device *device,
-        const DXGI_SURFACE_DESC *backBufferSurfaceDesc) { return S_OK; }
+        const DXGI_SURFACE_DESC *backBufferSurfaceDesc)
+    {
+        return S_OK;
+    }
 
     virtual HRESULT onResizedSwapChain(
         ID3D11Device *device,
         IDXGISwapChain *swapChain,
-        const DXGI_SURFACE_DESC *backBufferSurfaceDesc) { return S_OK; }
+        const DXGI_SURFACE_DESC *backBufferSurfaceDesc)
+    {
+        return S_OK;
+    }
 
     virtual void onReleasingSwapChain() {}
     virtual void onDestroyDevice() {}
@@ -73,14 +88,14 @@ private:
     static void CALLBACK onFrameMove(double time, float elapsedTime, void *userContext);
     static LRESULT CALLBACK onWindowsMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bool *stopProcessing, void *userContext);
     static void CALLBACK onKeyboardMessage(UINT nChar, bool keyDown, bool altDown, void *userContext);
-    
+
     static bool CALLBACK isDeviceAcceptable(
         const CD3D11EnumAdapterInfo *adapterInfo,
         UINT output,
         const CD3D11EnumDeviceInfo *deviceInfo,
-       DXGI_FORMAT backBufferFormat,
-       bool windowed,
-       void *userContext);
+        DXGI_FORMAT backBufferFormat,
+        bool windowed,
+        void *userContext);
 
     static HRESULT CALLBACK onCreateDevice(
         ID3D11Device *device,

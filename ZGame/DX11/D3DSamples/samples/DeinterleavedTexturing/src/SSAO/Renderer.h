@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeinterleavedTexturing\src\SSAO/Renderer.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -72,12 +72,12 @@ private:
     GFSDK::SSAO::Shaders::EnableBlurPermutation GetEnableBlurPermutation()
     {
         return (m_Options.Blur.Enable) ? GFSDK::SSAO::Shaders::PERMUTATION_ENABLE_BLUR_1 :
-                                         GFSDK::SSAO::Shaders::PERMUTATION_ENABLE_BLUR_0;
+               GFSDK::SSAO::Shaders::PERMUTATION_ENABLE_BLUR_0;
     }
     GFSDK::SSAO::Shaders::EnableRandPermutation GetEnableRandPermutation()
     {
         return (m_Options.RandomizeSamples) ? GFSDK::SSAO::Shaders::PERMUTATION_USE_RANDOM_TEXTURE_1:
-                                              GFSDK::SSAO::Shaders::PERMUTATION_USE_RANDOM_TEXTURE_0;
+               GFSDK::SSAO::Shaders::PERMUTATION_USE_RANDOM_TEXTURE_0;
     }
 
     void SetMSAASampleIndex(ID3D11DeviceContext* pDeviceContext, UINT MSAASampleIndex)
@@ -101,7 +101,7 @@ private:
     ID3D11BlendState* GetOutputBlendState()
     {
         return (m_Options.Output.BlendMode == GFSDK_SSAO_OVERWRITE_RGB) ? m_States.GetBlendStateDisabledPreserveAlpha() :
-                                                                          m_States.GetBlendStateMultiplyPreserveAlpha();
+               m_States.GetBlendStateMultiplyPreserveAlpha();
     }
     const FLOAT* GetOutputBlendFactor()
     {

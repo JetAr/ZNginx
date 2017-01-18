@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: ModelLoadSDKMESH.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -28,291 +28,354 @@ using Microsoft::WRL::ComPtr;
 
 namespace
 {
-    enum
+enum
+{
+    PER_VERTEX_COLOR        = 0x1,
+    SKINNING                = 0x2,
+    DUAL_TEXTURE            = 0x4,
+    NORMAL_MAPS             = 0x8,
+    BIASED_VERTEX_NORMALS   = 0x10,
+};
+
+struct MaterialRecordSDKMESH
+{
+    std::shared_ptr<IEffect> effect;
+    bool alpha;
+};
+
+void LoadMaterial(const DXUT::SDKMESH_MATERIAL& mh,
+                  unsigned int flags,
+                  IEffectFactory& fxFactory,
+                  MaterialRecordSDKMESH& m)
+{
+    wchar_t matName[DXUT::MAX_MATERIAL_NAME];
+    MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, mh.Name, -1, matName, DXUT::MAX_MATERIAL_NAME);
+
+    wchar_t diffuseName[DXUT::MAX_TEXTURE_NAME];
+    MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, mh.DiffuseTexture, -1, diffuseName, DXUT::MAX_TEXTURE_NAME);
+
+    wchar_t specularName[DXUT::MAX_TEXTURE_NAME];
+    MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, mh.SpecularTexture, -1, specularName, DXUT::MAX_TEXTURE_NAME);
+
+    wchar_t normalName[DXUT::MAX_TEXTURE_NAME];
+    MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, mh.NormalTexture, -1, normalName, DXUT::MAX_TEXTURE_NAME);
+
+    if (flags & DUAL_TEXTURE && !mh.SpecularTexture[0])
     {
-        PER_VERTEX_COLOR        = 0x1,
-        SKINNING                = 0x2,
-        DUAL_TEXTURE            = 0x4,
-        NORMAL_MAPS             = 0x8,
-        BIASED_VERTEX_NORMALS   = 0x10,
-    };
-
-    struct MaterialRecordSDKMESH
-    {
-        std::shared_ptr<IEffect> effect;
-        bool alpha;
-    };
-
-    void LoadMaterial(const DXUT::SDKMESH_MATERIAL& mh,
-        unsigned int flags,
-        IEffectFactory& fxFactory,
-        MaterialRecordSDKMESH& m)
-    {
-        wchar_t matName[DXUT::MAX_MATERIAL_NAME];
-        MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, mh.Name, -1, matName, DXUT::MAX_MATERIAL_NAME);
-
-        wchar_t diffuseName[DXUT::MAX_TEXTURE_NAME];
-        MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, mh.DiffuseTexture, -1, diffuseName, DXUT::MAX_TEXTURE_NAME);
-
-        wchar_t specularName[DXUT::MAX_TEXTURE_NAME];
-        MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, mh.SpecularTexture, -1, specularName, DXUT::MAX_TEXTURE_NAME);
-
-        wchar_t normalName[DXUT::MAX_TEXTURE_NAME];
-        MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, mh.NormalTexture, -1, normalName, DXUT::MAX_TEXTURE_NAME);
-
-        if (flags & DUAL_TEXTURE && !mh.SpecularTexture[0])
-        {
-            DebugTrace("WARNING: Material '%s' has multiple texture coords but not multiple textures\n", mh.Name);
-            flags &= ~DUAL_TEXTURE;
-        }
-
-        if (flags & NORMAL_MAPS)
-        {
-            if (!mh.NormalTexture[0])
-            {
-                flags &= ~NORMAL_MAPS;
-                *normalName = 0;
-            }
-        }
-        else if (mh.NormalTexture[0])
-        {
-            DebugTrace("WARNING: Material '%s' has a normal map, but vertex buffer is missing tangents\n", mh.Name);
-            *normalName = 0;
-        }
-
-        EffectFactory::EffectInfo info;
-        info.name = matName;
-        info.perVertexColor = (flags & PER_VERTEX_COLOR) != 0;
-        info.enableSkinning = (flags & SKINNING) != 0;
-        info.enableDualTexture = (flags & DUAL_TEXTURE) != 0;
-        info.enableNormalMaps = (flags & NORMAL_MAPS) != 0;
-        info.biasedVertexNormals = (flags & BIASED_VERTEX_NORMALS) != 0;
-        info.ambientColor = XMFLOAT3(mh.Ambient.x, mh.Ambient.y, mh.Ambient.z);
-        info.diffuseColor = XMFLOAT3(mh.Diffuse.x, mh.Diffuse.y, mh.Diffuse.z);
-        info.emissiveColor = XMFLOAT3(mh.Emissive.x, mh.Emissive.y, mh.Emissive.z);
-
-        if (mh.Diffuse.w != 1.f && mh.Diffuse.w != 0.f)
-        {
-            info.alpha = mh.Diffuse.w;
-        }
-        else
-            info.alpha = 1.f;
-
-        if (mh.Power)
-        {
-            info.specularPower = mh.Power;
-            info.specularColor = XMFLOAT3(mh.Specular.x, mh.Specular.y, mh.Specular.z);
-        }
-
-        info.diffuseTexture = diffuseName;
-        info.specularTexture = specularName;
-        info.normalTexture = normalName;
-
-        m.effect = fxFactory.CreateEffect(info, nullptr);
-        m.alpha = (info.alpha < 1.f);
+        DebugTrace("WARNING: Material '%s' has multiple texture coords but not multiple textures\n", mh.Name);
+        flags &= ~DUAL_TEXTURE;
     }
 
-
-    //--------------------------------------------------------------------------------------
-    // Direct3D 9 Vertex Declaration to Direct3D 11 Input Layout mapping
-
-    unsigned int GetInputLayoutDesc(
-        _In_reads_(32) const DXUT::D3DVERTEXELEMENT9 decl[],
-        std::vector<D3D11_INPUT_ELEMENT_DESC>& inputDesc)
+    if (flags & NORMAL_MAPS)
     {
-        static const D3D11_INPUT_ELEMENT_DESC s_elements[] =
+        if (!mh.NormalTexture[0])
         {
-            { "SV_Position",  0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "NORMAL",       0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "COLOR",        0, DXGI_FORMAT_B8G8R8A8_UNORM,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "TANGENT",      0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "BINORMAL",     0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "TEXCOORD",     0, DXGI_FORMAT_R32G32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "BLENDINDICES", 0, DXGI_FORMAT_R8G8B8A8_UINT,   0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "BLENDWEIGHT",  0, DXGI_FORMAT_R8G8B8A8_UNORM,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        };
+            flags &= ~NORMAL_MAPS;
+            *normalName = 0;
+        }
+    }
+    else if (mh.NormalTexture[0])
+    {
+        DebugTrace("WARNING: Material '%s' has a normal map, but vertex buffer is missing tangents\n", mh.Name);
+        *normalName = 0;
+    }
 
-        using namespace DXUT;
+    EffectFactory::EffectInfo info;
+    info.name = matName;
+    info.perVertexColor = (flags & PER_VERTEX_COLOR) != 0;
+    info.enableSkinning = (flags & SKINNING) != 0;
+    info.enableDualTexture = (flags & DUAL_TEXTURE) != 0;
+    info.enableNormalMaps = (flags & NORMAL_MAPS) != 0;
+    info.biasedVertexNormals = (flags & BIASED_VERTEX_NORMALS) != 0;
+    info.ambientColor = XMFLOAT3(mh.Ambient.x, mh.Ambient.y, mh.Ambient.z);
+    info.diffuseColor = XMFLOAT3(mh.Diffuse.x, mh.Diffuse.y, mh.Diffuse.z);
+    info.emissiveColor = XMFLOAT3(mh.Emissive.x, mh.Emissive.y, mh.Emissive.z);
 
-        uint32_t offset = 0;
-        uint32_t texcoords = 0;
-        unsigned int flags = 0;
+    if (mh.Diffuse.w != 1.f && mh.Diffuse.w != 0.f)
+    {
+        info.alpha = mh.Diffuse.w;
+    }
+    else
+        info.alpha = 1.f;
 
-        bool posfound = false;
+    if (mh.Power)
+    {
+        info.specularPower = mh.Power;
+        info.specularColor = XMFLOAT3(mh.Specular.x, mh.Specular.y, mh.Specular.z);
+    }
 
-        for (uint32_t index = 0; index < DXUT::MAX_VERTEX_ELEMENTS; ++index)
+    info.diffuseTexture = diffuseName;
+    info.specularTexture = specularName;
+    info.normalTexture = normalName;
+
+    m.effect = fxFactory.CreateEffect(info, nullptr);
+    m.alpha = (info.alpha < 1.f);
+}
+
+
+//--------------------------------------------------------------------------------------
+// Direct3D 9 Vertex Declaration to Direct3D 11 Input Layout mapping
+
+unsigned int GetInputLayoutDesc(
+    _In_reads_(32) const DXUT::D3DVERTEXELEMENT9 decl[],
+    std::vector<D3D11_INPUT_ELEMENT_DESC>& inputDesc)
+{
+    static const D3D11_INPUT_ELEMENT_DESC s_elements[] =
+    {
+        { "SV_Position",  0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "NORMAL",       0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "COLOR",        0, DXGI_FORMAT_B8G8R8A8_UNORM,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TANGENT",      0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "BINORMAL",     0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXCOORD",     0, DXGI_FORMAT_R32G32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "BLENDINDICES", 0, DXGI_FORMAT_R8G8B8A8_UINT,   0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "BLENDWEIGHT",  0, DXGI_FORMAT_R8G8B8A8_UNORM,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    };
+
+    using namespace DXUT;
+
+    uint32_t offset = 0;
+    uint32_t texcoords = 0;
+    unsigned int flags = 0;
+
+    bool posfound = false;
+
+    for (uint32_t index = 0; index < DXUT::MAX_VERTEX_ELEMENTS; ++index)
+    {
+        if (decl[index].Usage == 0xFF)
+            break;
+
+        if (decl[index].Type == D3DDECLTYPE_UNUSED)
+            break;
+
+        if (decl[index].Offset != offset)
+            break;
+
+        if (decl[index].Usage == D3DDECLUSAGE_POSITION)
         {
-            if (decl[index].Usage == 0xFF)
-                break;
-
-            if (decl[index].Type == D3DDECLTYPE_UNUSED)
-                break;
-
-            if (decl[index].Offset != offset)
-                break;
-
-            if (decl[index].Usage == D3DDECLUSAGE_POSITION)
+            if (decl[index].Type == D3DDECLTYPE_FLOAT3)
             {
-                if (decl[index].Type == D3DDECLTYPE_FLOAT3)
-                {
-                    inputDesc.push_back(s_elements[0]);
-                    offset += 12;
-                    posfound = true;
-                }
-                else
-                    break;
-            }
-            else if (decl[index].Usage == D3DDECLUSAGE_NORMAL
-                || decl[index].Usage == D3DDECLUSAGE_TANGENT
-                || decl[index].Usage == D3DDECLUSAGE_BINORMAL)
-            {
-                size_t base = 1;
-                if (decl[index].Usage == D3DDECLUSAGE_TANGENT)
-                    base = 3;
-                else if (decl[index].Usage == D3DDECLUSAGE_BINORMAL)
-                    base = 4;
-
-                D3D11_INPUT_ELEMENT_DESC desc = s_elements[base];
-
-                bool unk = false;
-                switch (decl[index].Type)
-                {
-                case D3DDECLTYPE_FLOAT3:                 assert(desc.Format == DXGI_FORMAT_R32G32B32_FLOAT); offset += 12; break;
-                case D3DDECLTYPE_UBYTE4N:                desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; flags |= BIASED_VERTEX_NORMALS; offset += 4; break;
-                case D3DDECLTYPE_SHORT4N:                desc.Format = DXGI_FORMAT_R16G16B16A16_SNORM; offset += 8; break;
-                case D3DDECLTYPE_FLOAT16_4:              desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT; offset += 8; break;
-                case D3DDECLTYPE_DXGI_R10G10B10A2_UNORM: desc.Format = DXGI_FORMAT_R10G10B10A2_UNORM; flags |= BIASED_VERTEX_NORMALS; offset += 4; break;
-                case D3DDECLTYPE_DXGI_R11G11B10_FLOAT:   desc.Format = DXGI_FORMAT_R11G11B10_FLOAT; flags |= BIASED_VERTEX_NORMALS; offset += 4; break;
-                case D3DDECLTYPE_DXGI_R8G8B8A8_SNORM:    desc.Format = DXGI_FORMAT_R8G8B8A8_SNORM; offset += 4; break;
-
-#if defined(_XBOX_ONE) && defined(_TITLE)
-                case (32 + DXGI_FORMAT_R10G10B10_SNORM_A2_UNORM): desc.Format = DXGI_FORMAT_R10G10B10_SNORM_A2_UNORM; offset += 4; break;
-#endif
-
-                default:
-                    unk = true;
-                    break;
-                }
-
-                if (unk)
-                    break;
-
-                if (decl[index].Usage == D3DDECLUSAGE_TANGENT)
-                {
-                    flags |= NORMAL_MAPS;
-                }
-
-                inputDesc.push_back(desc);
-            }
-            else if (decl[index].Usage == D3DDECLUSAGE_COLOR)
-            {
-                D3D11_INPUT_ELEMENT_DESC desc = s_elements[2];
-
-                bool unk = false;
-                switch (decl[index].Type)
-                {
-                case D3DDECLTYPE_FLOAT4:                 desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; offset += 16; break;
-                case D3DDECLTYPE_D3DCOLOR:               assert(desc.Format == DXGI_FORMAT_B8G8R8A8_UNORM); offset += 4; break;
-                case D3DDECLTYPE_UBYTE4N:                desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; offset += 4; break;
-                case D3DDECLTYPE_FLOAT16_4:              desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT; offset += 8; break;
-                case D3DDECLTYPE_DXGI_R10G10B10A2_UNORM: desc.Format = DXGI_FORMAT_R10G10B10A2_UNORM; offset += 4; break;
-                case D3DDECLTYPE_DXGI_R11G11B10_FLOAT:   desc.Format = DXGI_FORMAT_R11G11B10_FLOAT; offset += 4; break;
-
-                default:
-                    unk = true;
-                    break;
-                }
-
-                if (unk)
-                    break;
-
-                flags |= PER_VERTEX_COLOR;
-
-                inputDesc.push_back(desc);
-            }
-            else if (decl[index].Usage == D3DDECLUSAGE_TEXCOORD)
-            {
-                D3D11_INPUT_ELEMENT_DESC desc = s_elements[5];
-                desc.SemanticIndex = decl[index].UsageIndex;
-
-                bool unk = false;
-                switch (decl[index].Type)
-                {
-                case D3DDECLTYPE_FLOAT1:    desc.Format = DXGI_FORMAT_R32_FLOAT; offset += 4; break;
-                case D3DDECLTYPE_FLOAT2:    assert(desc.Format == DXGI_FORMAT_R32G32_FLOAT); offset += 8; break;
-                case D3DDECLTYPE_FLOAT3:    desc.Format = DXGI_FORMAT_R32G32B32_FLOAT; offset += 12; break;
-                case D3DDECLTYPE_FLOAT4:    desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; offset += 16; break;
-                case D3DDECLTYPE_FLOAT16_2: desc.Format = DXGI_FORMAT_R16G16_FLOAT; offset += 4; break;
-                case D3DDECLTYPE_FLOAT16_4: desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT; offset += 8; break;
-
-                default:
-                    unk = true;
-                    break;
-                }
-
-                if (unk)
-                    break;
-
-                ++texcoords;
-
-                inputDesc.push_back(desc);
-            }
-            else if (decl[index].Usage == D3DDECLUSAGE_BLENDINDICES)
-            {
-                if (decl[index].Type == D3DDECLTYPE_UBYTE4)
-                {
-                    flags |= SKINNING;
-                    inputDesc.push_back(s_elements[6]);
-                    offset += 4;
-                }
-                else
-                    break;
-            }
-            else if (decl[index].Usage == D3DDECLUSAGE_BLENDWEIGHT)
-            {
-                if (decl[index].Type == D3DDECLTYPE_UBYTE4N)
-                {
-                    flags |= SKINNING;
-                    inputDesc.push_back(s_elements[7]);
-                    offset += 4;
-                }
-                else
-                    break;
+                inputDesc.push_back(s_elements[0]);
+                offset += 12;
+                posfound = true;
             }
             else
                 break;
         }
-
-        if (!posfound)
-            throw std::exception("SV_Position is required");
-
-        if (texcoords == 2)
+        else if (decl[index].Usage == D3DDECLUSAGE_NORMAL
+                 || decl[index].Usage == D3DDECLUSAGE_TANGENT
+                 || decl[index].Usage == D3DDECLUSAGE_BINORMAL)
         {
-            flags |= DUAL_TEXTURE;
+            size_t base = 1;
+            if (decl[index].Usage == D3DDECLUSAGE_TANGENT)
+                base = 3;
+            else if (decl[index].Usage == D3DDECLUSAGE_BINORMAL)
+                base = 4;
+
+            D3D11_INPUT_ELEMENT_DESC desc = s_elements[base];
+
+            bool unk = false;
+            switch (decl[index].Type)
+            {
+            case D3DDECLTYPE_FLOAT3:
+                assert(desc.Format == DXGI_FORMAT_R32G32B32_FLOAT);
+                offset += 12;
+                break;
+            case D3DDECLTYPE_UBYTE4N:
+                desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+                flags |= BIASED_VERTEX_NORMALS;
+                offset += 4;
+                break;
+            case D3DDECLTYPE_SHORT4N:
+                desc.Format = DXGI_FORMAT_R16G16B16A16_SNORM;
+                offset += 8;
+                break;
+            case D3DDECLTYPE_FLOAT16_4:
+                desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+                offset += 8;
+                break;
+            case D3DDECLTYPE_DXGI_R10G10B10A2_UNORM:
+                desc.Format = DXGI_FORMAT_R10G10B10A2_UNORM;
+                flags |= BIASED_VERTEX_NORMALS;
+                offset += 4;
+                break;
+            case D3DDECLTYPE_DXGI_R11G11B10_FLOAT:
+                desc.Format = DXGI_FORMAT_R11G11B10_FLOAT;
+                flags |= BIASED_VERTEX_NORMALS;
+                offset += 4;
+                break;
+            case D3DDECLTYPE_DXGI_R8G8B8A8_SNORM:
+                desc.Format = DXGI_FORMAT_R8G8B8A8_SNORM;
+                offset += 4;
+                break;
+
+#if defined(_XBOX_ONE) && defined(_TITLE)
+            case (32 + DXGI_FORMAT_R10G10B10_SNORM_A2_UNORM):
+                desc.Format = DXGI_FORMAT_R10G10B10_SNORM_A2_UNORM;
+                offset += 4;
+                break;
+#endif
+
+            default:
+                unk = true;
+                break;
+            }
+
+            if (unk)
+                break;
+
+            if (decl[index].Usage == D3DDECLUSAGE_TANGENT)
+            {
+                flags |= NORMAL_MAPS;
+            }
+
+            inputDesc.push_back(desc);
         }
+        else if (decl[index].Usage == D3DDECLUSAGE_COLOR)
+        {
+            D3D11_INPUT_ELEMENT_DESC desc = s_elements[2];
 
-        return flags;
+            bool unk = false;
+            switch (decl[index].Type)
+            {
+            case D3DDECLTYPE_FLOAT4:
+                desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+                offset += 16;
+                break;
+            case D3DDECLTYPE_D3DCOLOR:
+                assert(desc.Format == DXGI_FORMAT_B8G8R8A8_UNORM);
+                offset += 4;
+                break;
+            case D3DDECLTYPE_UBYTE4N:
+                desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+                offset += 4;
+                break;
+            case D3DDECLTYPE_FLOAT16_4:
+                desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+                offset += 8;
+                break;
+            case D3DDECLTYPE_DXGI_R10G10B10A2_UNORM:
+                desc.Format = DXGI_FORMAT_R10G10B10A2_UNORM;
+                offset += 4;
+                break;
+            case D3DDECLTYPE_DXGI_R11G11B10_FLOAT:
+                desc.Format = DXGI_FORMAT_R11G11B10_FLOAT;
+                offset += 4;
+                break;
+
+            default:
+                unk = true;
+                break;
+            }
+
+            if (unk)
+                break;
+
+            flags |= PER_VERTEX_COLOR;
+
+            inputDesc.push_back(desc);
+        }
+        else if (decl[index].Usage == D3DDECLUSAGE_TEXCOORD)
+        {
+            D3D11_INPUT_ELEMENT_DESC desc = s_elements[5];
+            desc.SemanticIndex = decl[index].UsageIndex;
+
+            bool unk = false;
+            switch (decl[index].Type)
+            {
+            case D3DDECLTYPE_FLOAT1:
+                desc.Format = DXGI_FORMAT_R32_FLOAT;
+                offset += 4;
+                break;
+            case D3DDECLTYPE_FLOAT2:
+                assert(desc.Format == DXGI_FORMAT_R32G32_FLOAT);
+                offset += 8;
+                break;
+            case D3DDECLTYPE_FLOAT3:
+                desc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
+                offset += 12;
+                break;
+            case D3DDECLTYPE_FLOAT4:
+                desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+                offset += 16;
+                break;
+            case D3DDECLTYPE_FLOAT16_2:
+                desc.Format = DXGI_FORMAT_R16G16_FLOAT;
+                offset += 4;
+                break;
+            case D3DDECLTYPE_FLOAT16_4:
+                desc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+                offset += 8;
+                break;
+
+            default:
+                unk = true;
+                break;
+            }
+
+            if (unk)
+                break;
+
+            ++texcoords;
+
+            inputDesc.push_back(desc);
+        }
+        else if (decl[index].Usage == D3DDECLUSAGE_BLENDINDICES)
+        {
+            if (decl[index].Type == D3DDECLTYPE_UBYTE4)
+            {
+                flags |= SKINNING;
+                inputDesc.push_back(s_elements[6]);
+                offset += 4;
+            }
+            else
+                break;
+        }
+        else if (decl[index].Usage == D3DDECLUSAGE_BLENDWEIGHT)
+        {
+            if (decl[index].Type == D3DDECLTYPE_UBYTE4N)
+            {
+                flags |= SKINNING;
+                inputDesc.push_back(s_elements[7]);
+                offset += 4;
+            }
+            else
+                break;
+        }
+        else
+            break;
     }
 
-    // Helper for creating a D3D input layout.
-    void CreateInputLayout(_In_ ID3D11Device* device, _In_ IEffect* effect, std::vector<D3D11_INPUT_ELEMENT_DESC>& inputDesc, _Out_ ID3D11InputLayout** pInputLayout)
+    if (!posfound)
+        throw std::exception("SV_Position is required");
+
+    if (texcoords == 2)
     {
-        void const* shaderByteCode;
-        size_t byteCodeLength;
-
-        effect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
-
-        ThrowIfFailed(
-            device->CreateInputLayout(inputDesc.data(),
-                static_cast<UINT>(inputDesc.size()),
-                shaderByteCode, byteCodeLength,
-                pInputLayout)
-        );
-
-        _Analysis_assume_(*pInputLayout != 0);
-
-        SetDebugObjectName(*pInputLayout, "ModelSDKMESH");
+        flags |= DUAL_TEXTURE;
     }
+
+    return flags;
+}
+
+// Helper for creating a D3D input layout.
+void CreateInputLayout(_In_ ID3D11Device* device, _In_ IEffect* effect, std::vector<D3D11_INPUT_ELEMENT_DESC>& inputDesc, _Out_ ID3D11InputLayout** pInputLayout)
+{
+    void const* shaderByteCode;
+    size_t byteCodeLength;
+
+    effect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
+
+    ThrowIfFailed(
+        device->CreateInputLayout(inputDesc.data(),
+                                  static_cast<UINT>(inputDesc.size()),
+                                  shaderByteCode, byteCodeLength,
+                                  pInputLayout)
+    );
+
+    _Analysis_assume_(*pInputLayout != 0);
+
+    SetDebugObjectName(*pInputLayout, "ModelSDKMESH");
+}
 }
 
 
@@ -342,7 +405,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromSDKMESH( ID3D11Device* d3dDevic
 
     if( header->Version != DXUT::SDKMESH_FILE_VERSION )
         throw std::exception("Not a supported SDKMESH version");
-                          
+
     if ( header->IsBigEndian )
         throw std::exception("Loading BigEndian SDKMESH files not supported");
 
@@ -363,41 +426,41 @@ std::unique_ptr<Model> DirectX::Model::CreateFromSDKMESH( ID3D11Device* d3dDevic
 
     // Sub-headers
     if ( dataSize < header->VertexStreamHeadersOffset
-         || ( dataSize < (header->VertexStreamHeadersOffset + header->NumVertexBuffers * sizeof(DXUT::SDKMESH_VERTEX_BUFFER_HEADER) ) ) )
+            || ( dataSize < (header->VertexStreamHeadersOffset + header->NumVertexBuffers * sizeof(DXUT::SDKMESH_VERTEX_BUFFER_HEADER) ) ) )
         throw std::exception("End of file");
     auto vbArray = reinterpret_cast<const DXUT::SDKMESH_VERTEX_BUFFER_HEADER*>( meshData + header->VertexStreamHeadersOffset );
-    
+
     if ( dataSize < header->IndexStreamHeadersOffset
-         || ( dataSize < (header->IndexStreamHeadersOffset + header->NumIndexBuffers * sizeof(DXUT::SDKMESH_INDEX_BUFFER_HEADER) ) ) )
+            || ( dataSize < (header->IndexStreamHeadersOffset + header->NumIndexBuffers * sizeof(DXUT::SDKMESH_INDEX_BUFFER_HEADER) ) ) )
         throw std::exception("End of file");
     auto ibArray = reinterpret_cast<const DXUT::SDKMESH_INDEX_BUFFER_HEADER*>( meshData + header->IndexStreamHeadersOffset );
 
     if ( dataSize < header->MeshDataOffset
-         || ( dataSize < (header->MeshDataOffset + header->NumMeshes * sizeof(DXUT::SDKMESH_MESH) ) ) )
+            || ( dataSize < (header->MeshDataOffset + header->NumMeshes * sizeof(DXUT::SDKMESH_MESH) ) ) )
         throw std::exception("End of file");
     auto meshArray = reinterpret_cast<const DXUT::SDKMESH_MESH*>( meshData + header->MeshDataOffset );
 
     if ( dataSize < header->SubsetDataOffset
-         || ( dataSize < (header->SubsetDataOffset + header->NumTotalSubsets * sizeof(DXUT::SDKMESH_SUBSET) ) ) )
+            || ( dataSize < (header->SubsetDataOffset + header->NumTotalSubsets * sizeof(DXUT::SDKMESH_SUBSET) ) ) )
         throw std::exception("End of file");
     auto subsetArray = reinterpret_cast<const DXUT::SDKMESH_SUBSET*>( meshData + header->SubsetDataOffset );
 
     if ( dataSize < header->FrameDataOffset
-         || (dataSize < (header->FrameDataOffset + header->NumFrames * sizeof(DXUT::SDKMESH_FRAME) ) ) )
+            || (dataSize < (header->FrameDataOffset + header->NumFrames * sizeof(DXUT::SDKMESH_FRAME) ) ) )
         throw std::exception("End of file");
     // TODO - auto frameArray = reinterpret_cast<const DXUT::SDKMESH_FRAME*>( meshData + header->FrameDataOffset );
 
     if ( dataSize < header->MaterialDataOffset
-         || (dataSize < (header->MaterialDataOffset + header->NumMaterials * sizeof(DXUT::SDKMESH_MATERIAL) ) ) )
+            || (dataSize < (header->MaterialDataOffset + header->NumMaterials * sizeof(DXUT::SDKMESH_MATERIAL) ) ) )
         throw std::exception("End of file");
     auto materialArray = reinterpret_cast<const DXUT::SDKMESH_MATERIAL*>( meshData + header->MaterialDataOffset );
 
     // Buffer data
     uint64_t bufferDataOffset = header->HeaderSize + header->NonBufferDataSize;
     if ( ( dataSize < bufferDataOffset )
-         || ( dataSize < bufferDataOffset + header->BufferDataSize ) )
+            || ( dataSize < bufferDataOffset + header->BufferDataSize ) )
         throw std::exception("End of file");
-    const uint8_t* bufferData = meshData + bufferDataOffset; 
+    const uint8_t* bufferData = meshData + bufferDataOffset;
 
     // Create vertex buffers
     std::vector<ComPtr<ID3D11Buffer>> vbs;
@@ -414,7 +477,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromSDKMESH( ID3D11Device* d3dDevic
         auto& vh = vbArray[j];
 
         if ( dataSize < vh.DataOffset
-             || ( dataSize < vh.DataOffset + vh.SizeBytes ) )
+                || ( dataSize < vh.DataOffset + vh.SizeBytes ) )
             throw std::exception("End of file");
 
         vbDecls[j] = std::make_shared<std::vector<D3D11_INPUT_ELEMENT_DESC>>();
@@ -443,21 +506,21 @@ std::unique_ptr<Model> DirectX::Model::CreateFromSDKMESH( ID3D11Device* d3dDevic
 
         ThrowIfFailed(
             d3dDevice->CreateBuffer( &desc, &initData, &vbs[j] )
-            );
+        );
 
-        SetDebugObjectName( vbs[j].Get(), "ModelSDKMESH" ); 
+        SetDebugObjectName( vbs[j].Get(), "ModelSDKMESH" );
     }
 
     // Create index buffers
     std::vector<ComPtr<ID3D11Buffer>> ibs;
     ibs.resize( header->NumIndexBuffers );
-    
+
     for( UINT j=0; j < header->NumIndexBuffers; ++j )
     {
         auto& ih = ibArray[j];
 
         if ( dataSize < ih.DataOffset
-             || ( dataSize < ih.DataOffset + ih.SizeBytes ) )
+                || ( dataSize < ih.DataOffset + ih.SizeBytes ) )
             throw std::exception("End of file");
 
         if ( ih.IndexType != DXUT::IT_16BIT && ih.IndexType != DXUT::IT_32BIT )
@@ -475,9 +538,9 @@ std::unique_ptr<Model> DirectX::Model::CreateFromSDKMESH( ID3D11Device* d3dDevic
 
         ThrowIfFailed(
             d3dDevice->CreateBuffer( &desc, &initData, &ibs[j] )
-            );
+        );
 
-        SetDebugObjectName( ibs[j].Get(), "ModelSDKMESH" ); 
+        SetDebugObjectName( ibs[j].Get(), "ModelSDKMESH" );
     }
 
     // Create meshes
@@ -492,15 +555,15 @@ std::unique_ptr<Model> DirectX::Model::CreateFromSDKMESH( ID3D11Device* d3dDevic
         auto& mh = meshArray[ meshIndex ];
 
         if ( !mh.NumSubsets
-             || !mh.NumVertexBuffers
-             || mh.IndexBuffer >= header->NumIndexBuffers
-             || mh.VertexBuffers[0] >= header->NumVertexBuffers )
+                || !mh.NumVertexBuffers
+                || mh.IndexBuffer >= header->NumIndexBuffers
+                || mh.VertexBuffers[0] >= header->NumVertexBuffers )
             throw std::exception("Invalid mesh found");
 
         // mh.NumVertexBuffers is sometimes not what you'd expect, so we skip validating it
 
         if ( dataSize < mh.SubsetOffset
-             || (dataSize < mh.SubsetOffset + mh.NumSubsets*sizeof(UINT) ) )
+                || (dataSize < mh.SubsetOffset + mh.NumSubsets*sizeof(UINT) ) )
             throw std::exception("End of file");
 
         auto subsets = reinterpret_cast<const UINT*>( meshData + mh.SubsetOffset );
@@ -508,7 +571,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromSDKMESH( ID3D11Device* d3dDevic
         if ( mh.NumFrameInfluences > 0 )
         {
             if ( dataSize < mh.FrameInfluenceOffset
-                 || (dataSize < mh.FrameInfluenceOffset + mh.NumFrameInfluences*sizeof(UINT) ) )
+                    || (dataSize < mh.FrameInfluenceOffset + mh.NumFrameInfluences*sizeof(UINT) ) )
                 throw std::exception("End of file");
 
             // TODO - auto influences = reinterpret_cast<const UINT*>( meshData + mh.FrameInfluenceOffset );
@@ -525,7 +588,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromSDKMESH( ID3D11Device* d3dDevic
         mesh->boundingBox.Center = mh.BoundingBoxCenter;
         mesh->boundingBox.Extents = mh.BoundingBoxExtents;
         BoundingSphere::CreateFromBoundingBox( mesh->boundingSphere, mesh->boundingBox );
-       
+
         // Create subsets
         mesh->meshParts.reserve( mh.NumSubsets );
         for( UINT j = 0; j < mh.NumSubsets; ++j )
@@ -539,15 +602,33 @@ std::unique_ptr<Model> DirectX::Model::CreateFromSDKMESH( ID3D11Device* d3dDevic
             D3D11_PRIMITIVE_TOPOLOGY primType;
             switch( subset.PrimitiveType )
             {
-            case DXUT::PT_TRIANGLE_LIST:        primType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;       break;
-            case DXUT::PT_TRIANGLE_STRIP:       primType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;      break;
-            case DXUT::PT_LINE_LIST:            primType = D3D11_PRIMITIVE_TOPOLOGY_LINELIST;           break;
-            case DXUT::PT_LINE_STRIP:           primType = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP;          break;
-            case DXUT::PT_POINT_LIST:           primType = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;          break;
-            case DXUT::PT_TRIANGLE_LIST_ADJ:    primType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST_ADJ;   break;
-            case DXUT::PT_TRIANGLE_STRIP_ADJ:   primType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP_ADJ;  break;
-            case DXUT::PT_LINE_LIST_ADJ:        primType = D3D11_PRIMITIVE_TOPOLOGY_LINELIST_ADJ;       break;
-            case DXUT::PT_LINE_STRIP_ADJ:       primType = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP_ADJ;      break;
+            case DXUT::PT_TRIANGLE_LIST:
+                primType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+                break;
+            case DXUT::PT_TRIANGLE_STRIP:
+                primType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
+                break;
+            case DXUT::PT_LINE_LIST:
+                primType = D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
+                break;
+            case DXUT::PT_LINE_STRIP:
+                primType = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP;
+                break;
+            case DXUT::PT_POINT_LIST:
+                primType = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
+                break;
+            case DXUT::PT_TRIANGLE_LIST_ADJ:
+                primType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST_ADJ;
+                break;
+            case DXUT::PT_TRIANGLE_STRIP_ADJ:
+                primType = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP_ADJ;
+                break;
+            case DXUT::PT_LINE_LIST_ADJ:
+                primType = D3D11_PRIMITIVE_TOPOLOGY_LINELIST_ADJ;
+                break;
+            case DXUT::PT_LINE_STRIP_ADJ:
+                primType = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP_ADJ;
+                break;
 
             case DXUT::PT_QUAD_PATCH_LIST:
             case DXUT::PT_TRIANGLE_PATCH_LIST:
@@ -583,7 +664,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromSDKMESH( ID3D11Device* d3dDevic
             part->vertexOffset = static_cast<uint32_t>( subset.VertexStart );
             part->vertexStride = static_cast<uint32_t>( vbArray[ mh.VertexBuffers[0] ].StrideBytes );
             part->indexFormat = ( ibArray[ mh.IndexBuffer ].IndexType == DXUT::IT_32BIT ) ? DXGI_FORMAT_R32_UINT : DXGI_FORMAT_R16_UINT;
-            part->primitiveType = primType; 
+            part->primitiveType = primType;
             part->inputLayout = il;
             part->indexBuffer = ibs[ mh.IndexBuffer ];
             part->vertexBuffer = vbs[ mh.VertexBuffers[0] ];

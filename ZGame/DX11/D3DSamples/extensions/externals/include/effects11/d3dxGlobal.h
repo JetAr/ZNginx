@@ -1,4 +1,4 @@
-//////////////////////////////////////////////////////////////////////////////
+﻿//////////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) Microsoft Corporation.  All Rights Reserved.
 //
@@ -28,7 +28,7 @@ using namespace D3DX11Debug;
 #if FXDEBUG
 #define __BREAK_ON_FAIL       { __debugbreak(); }
 #else
-#define __BREAK_ON_FAIL 
+#define __BREAK_ON_FAIL
 #endif
 
 #define VA(x, action) { hr = (x); if (FAILED(hr)) { action; __BREAK_ON_FAIL;                     return hr;  } }
@@ -261,7 +261,7 @@ public:
         HRESULT hr = S_OK;
         Clear();
         VN( m_pData = NEW BYTE[vOther.m_MaxSize * sizeof(T)] );
-        
+
         m_CurSize = vOther.m_CurSize;
         m_MaxSize = vOther.m_MaxSize;
         m_hLastError = vOther.m_hLastError;
@@ -306,10 +306,10 @@ lExit:
     void Empty()
     {
         UINT i;
-        
+
         // manually invoke destructor on all elements
         for (i = 0; i < m_CurSize; ++ i)
-        {   
+        {
             ((T*)m_pData + i)->~T();
         }
         m_CurSize = 0;
@@ -377,7 +377,7 @@ lExit:
     HRESULT Insert(const T& var, UINT index)
     {
         D3DXASSERT(index < m_CurSize);
-        
+
         if (FAILED(Grow()))
             return m_hLastError;
 
@@ -391,7 +391,7 @@ lExit:
     HRESULT InsertRange(const T *pVar, UINT index, UINT count)
     {
         D3DXASSERT(index < m_CurSize);
-        
+
         if (m_CurSize + count < m_CurSize)
         {
             m_hLastError = E_OUTOFMEMORY;
@@ -447,7 +447,7 @@ lExit:
         UINT i;
 
         for (i = 0; i < m_CurSize; ++ i)
-        {   
+        {
             if (((T*)m_pData + i) == pEntry)
                 return i;
         }
@@ -713,7 +713,7 @@ static UINT ComputeHash(BYTE *pb, UINT cbToHash)
         c += pdw[2];
 
         HASH_MIX(a,b,c);
-        pb += 12; 
+        pb += 12;
         cbLeft -= 12;
     }
 
@@ -721,18 +721,29 @@ static UINT ComputeHash(BYTE *pb, UINT cbToHash)
 
     switch(cbLeft) // all the case statements fall through
     {
-    case 11: c+=((UINT) pb[10] << 24);
-    case 10: c+=((UINT) pb[9]  << 16);
-    case 9 : c+=((UINT) pb[8]  <<  8);
-        // the first byte of c is reserved for the length
-    case 8 : b+=((UINT) pb[7]  << 24);
-    case 7 : b+=((UINT) pb[6]  << 16);
-    case 6 : b+=((UINT) pb[5]  <<  8);
-    case 5 : b+=pb[4];
-    case 4 : a+=((UINT) pb[3]  << 24);
-    case 3 : a+=((UINT) pb[2]  << 16);
-    case 2 : a+=((UINT) pb[1]  <<  8);
-    case 1 : a+=pb[0];
+    case 11:
+        c+=((UINT) pb[10] << 24);
+    case 10:
+        c+=((UINT) pb[9]  << 16);
+    case 9 :
+        c+=((UINT) pb[8]  <<  8);
+    // the first byte of c is reserved for the length
+    case 8 :
+        b+=((UINT) pb[7]  << 24);
+    case 7 :
+        b+=((UINT) pb[6]  << 16);
+    case 6 :
+        b+=((UINT) pb[5]  <<  8);
+    case 5 :
+        b+=pb[4];
+    case 4 :
+        a+=((UINT) pb[3]  << 24);
+    case 3 :
+        a+=((UINT) pb[2]  << 16);
+    case 2 :
+        a+=((UINT) pb[1]  <<  8);
+    case 1 :
+        a+=pb[0];
     }
 
     HASH_MIX(a,b,c);
@@ -765,7 +776,7 @@ static UINT ComputeHashLower(BYTE *pb, UINT cbToHash)
         c += pdw[2];
 
         HASH_MIX(a,b,c);
-        pb += 12; 
+        pb += 12;
         cbLeft -= 12;
     }
 
@@ -777,18 +788,29 @@ static UINT ComputeHashLower(BYTE *pb, UINT cbToHash)
 
     switch(cbLeft) // all the case statements fall through
     {
-    case 11: c+=((UINT) pbT[10] << 24);
-    case 10: c+=((UINT) pbT[9]  << 16);
-    case 9 : c+=((UINT) pbT[8]  <<  8);
-        // the first byte of c is reserved for the length
-    case 8 : b+=((UINT) pbT[7]  << 24);
-    case 7 : b+=((UINT) pbT[6]  << 16);
-    case 6 : b+=((UINT) pbT[5]  <<  8);
-    case 5 : b+=pbT[4];
-    case 4 : a+=((UINT) pbT[3]  << 24);
-    case 3 : a+=((UINT) pbT[2]  << 16);
-    case 2 : a+=((UINT) pbT[1]  <<  8);
-    case 1 : a+=pbT[0];
+    case 11:
+        c+=((UINT) pbT[10] << 24);
+    case 10:
+        c+=((UINT) pbT[9]  << 16);
+    case 9 :
+        c+=((UINT) pbT[8]  <<  8);
+    // the first byte of c is reserved for the length
+    case 8 :
+        b+=((UINT) pbT[7]  << 24);
+    case 7 :
+        b+=((UINT) pbT[6]  << 16);
+    case 6 :
+        b+=((UINT) pbT[5]  <<  8);
+    case 5 :
+        b+=pbT[4];
+    case 4 :
+        a+=((UINT) pbT[3]  << 24);
+    case 3 :
+        a+=((UINT) pbT[2]  << 16);
+    case 2 :
+        a+=((UINT) pbT[1]  <<  8);
+    case 1 :
+        a+=pbT[0];
     }
 
     HASH_MIX(a,b,c);
@@ -808,7 +830,7 @@ static UINT ComputeHash(LPCSTR pString)
 // 4) each is roughly in between two powers of 2;
 //    (2^n hash table sizes are VERY BAD; they effectively truncate your
 //     precision down to the n least significant bits of the hash)
-static const UINT c_PrimeSizes[] = 
+static const UINT c_PrimeSizes[] =
 {
     11,
     23,
@@ -923,7 +945,7 @@ public:
             // seize this hash entry, migrate it to the new table
             SHashEntry *pNewEntry;
             VN( pNewEntry = NEW SHashEntry );
-            
+
             pNewEntry->pNext = rgpNewHashEntries[index];
             pNewEntry->Data = iter.pHashEntry->Data;
             pNewEntry->Hash = iter.pHashEntry->Hash;
@@ -995,7 +1017,7 @@ public:
 
         return DesiredSize;
     }
-    
+
     // O(n) function
     // Grows to the next suitable size (based off of the prime number table)
     // DesiredSize is merely a suggestion
@@ -1016,17 +1038,17 @@ public:
         actualSize = GetNextHashTableSize(DesiredSize);
 
         if (ProvidedArray &&
-            ProvidedArraySize >= actualSize)
+                ProvidedArraySize >= actualSize)
         {
             rgpNewHashEntries = reinterpret_cast<SHashEntry**>(ProvidedArray);
         }
         else
         {
             OwnProvidedArray = true;
-            
+
             VN( rgpNewHashEntries = NEW SHashEntry*[actualSize] );
         }
-        
+
         ZeroMemory(rgpNewHashEntries, sizeof(SHashEntry*) * actualSize);
 
         // Expensive operation: rebuild the hash table
@@ -1080,7 +1102,7 @@ lExit:
             DPF(0, "Uninitialized hash table!");
             return;
         }
-        
+
         UINT i;
         float variance = 0.0f;
         float mean = (float)m_NumEntries / (float)m_NumHashSlots;
@@ -1096,7 +1118,7 @@ lExit:
             while (NULL != pCurrentEntry)
             {
                 SHashEntry *pCurrentEntry2 = m_rgpHashEntries[i];
-                
+
                 // check other hash entries in this slot for hash collisions or duplications
                 while (pCurrentEntry2 != pCurrentEntry)
                 {
@@ -1123,7 +1145,7 @@ lExit:
             {
                 ++ unusedSlots;
             }
-            
+
             // mean must be greater than 0 at this point
             variance += (float)entries * (float)entries / mean;
         }

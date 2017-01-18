@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // MonitorAPO.cpp
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -12,7 +12,7 @@
 // Desc: Constructor
 //--------------------------------------------------------------------------------------
 CMonitorAPO::CMonitorAPO()
-: CSampleXAPOBase<CMonitorAPO, MonitorAPOParams>()
+    : CSampleXAPOBase<CMonitorAPO, MonitorAPOParams>()
 {
 }
 

@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------------
 // File: FirewallInstall.cpp
 //
 // Desc: Sample code that calls FirewallInstallHelper sample dll and displays the results.

@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXMeshAdjacency.cpp
-//  
+//
 // DirectX Mesh Geometry Library - Adjacency computation
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -129,7 +129,7 @@ void MakeXHeap( _Out_writes_(nVerts) uint32_t *index, _In_reads_(nVerts) const X
 //-------------------------------------------------------------------------------------
 template<class index_t>
 HRESULT GeneratePointReps( _In_reads_(nFaces*3) const index_t* indices, size_t nFaces,
-                           _In_reads_(nVerts) const XMFLOAT3* positions, size_t nVerts, 
+                           _In_reads_(nVerts) const XMFLOAT3* positions, size_t nVerts,
                            float epsilon,
                            _Out_writes_(nVerts) uint32_t* pointRep )
 {
@@ -184,8 +184,8 @@ HRESULT GeneratePointReps( _In_reads_(nFaces*3) const index_t* indices, size_t n
             for( auto current = hashTable[ hashKey ]; current != 0; current = current->next )
             {
                 if ( current->v.x == positions[ vert ].x
-                     && current->v.y == positions[ vert ].y
-                     && current->v.z == positions[ vert ].z )
+                        && current->v.y == positions[ vert ].y
+                        && current->v.z == positions[ vert ].z )
                 {
                     uint32_t head = vertexToCorner[ vert ];
 
@@ -286,7 +286,7 @@ HRESULT GeneratePointReps( _In_reads_(nFaces*3) const index_t* indices, size_t n
                         XMVECTOR inner = XMLoadFloat3( &positions[ curIndex ] );
 
                         XMVECTOR diff = XMVector3LengthSq( inner - outer );
-             
+
                         if ( XMVector2Less( diff, vepsilon ) )
                         {
                             uint32_t headvc = vertexToCorner[ tailIndex ];
@@ -332,7 +332,7 @@ HRESULT GeneratePointReps( _In_reads_(nFaces*3) const index_t* indices, size_t n
 //-------------------------------------------------------------------------------------
 template<class index_t>
 HRESULT _ConvertPointRepsToAdjacency( _In_reads_(nFaces*3) const index_t* indices, size_t nFaces,
-                                      _In_reads_(nVerts) const XMFLOAT3* positions, size_t nVerts, 
+                                      _In_reads_(nVerts) const XMFLOAT3* positions, size_t nVerts,
                                       _In_reads_(nVerts) const uint32_t* pointRep,
                                       _Out_writes_(nFaces*3) uint32_t* adjacency )
 {
@@ -358,13 +358,13 @@ HRESULT _ConvertPointRepsToAdjacency( _In_reads_(nFaces*3) const index_t* indice
         index_t i2 = indices[ face*3 + 2 ];
 
         if ( i0 == index_t(-1)
-             || i1 == index_t(-1)
-             || i2 == index_t(-1) )
+                || i1 == index_t(-1)
+                || i2 == index_t(-1) )
             continue;
 
         if ( i0 >= nVerts
-             || i1 >= nVerts
-             || i2 >= nVerts )
+                || i1 >= nVerts
+                || i2 >= nVerts )
             return E_UNEXPECTED;
 
         uint32_t v1 = pointRep[ i0 ];
@@ -410,8 +410,8 @@ HRESULT _ConvertPointRepsToAdjacency( _In_reads_(nFaces*3) const index_t* indice
 
         // filter out unused triangles
         if ( i0 == index_t(-1)
-             || i1 == index_t(-1)
-             || i2 == index_t(-1) )
+                || i1 == index_t(-1)
+                || i2 == index_t(-1) )
             continue;
 
         assert( i0 < nVerts );
@@ -681,7 +681,7 @@ HRESULT GenerateAdjacencyAndPointReps( const uint32_t* indices, size_t nFaces,
 
     if ( ( uint64_t(nFaces) * 3 ) >= UINT32_MAX )
         return HRESULT_FROM_WIN32( ERROR_ARITHMETIC_OVERFLOW );
-    
+
     std::unique_ptr<uint32_t[]> temp;
     if ( !pointRep )
     {
@@ -706,7 +706,7 @@ HRESULT GenerateAdjacencyAndPointReps( const uint32_t* indices, size_t nFaces,
 //-------------------------------------------------------------------------------------
 _Use_decl_annotations_
 HRESULT ConvertPointRepsToAdjacency( const uint16_t* indices, size_t nFaces,
-                                     const XMFLOAT3* positions, size_t nVerts, 
+                                     const XMFLOAT3* positions, size_t nVerts,
                                      const uint32_t* pointRep,
                                      uint32_t* adjacency )
 {
@@ -739,7 +739,7 @@ HRESULT ConvertPointRepsToAdjacency( const uint16_t* indices, size_t nFaces,
 
 _Use_decl_annotations_
 HRESULT ConvertPointRepsToAdjacency( const uint32_t* indices, size_t nFaces,
-                                     const XMFLOAT3* positions, size_t nVerts, 
+                                     const XMFLOAT3* positions, size_t nVerts,
                                      const uint32_t* pointRep,
                                      uint32_t* adjacency )
 {

@@ -1,4 +1,4 @@
-//*********************************************************
+﻿//*********************************************************
 //
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
@@ -73,7 +73,10 @@ struct CD3DX12_AFFINITY_RESOURCE_BARRIER : public D3DX12_AFFINITY_RESOURCE_BARRI
         barrier.UAV.pResource = pResource;
         return result;
     }
-    operator const D3DX12_AFFINITY_RESOURCE_BARRIER&() const { return *this; }
+    operator const D3DX12_AFFINITY_RESOURCE_BARRIER&() const
+    {
+        return *this;
+    }
 };
 
 //------------------------------------------------------------------------------------------------
@@ -84,7 +87,10 @@ struct CD3DX12_AFFINITY_TEXTURE_COPY_LOCATION : public D3DX12_AFFINITY_TEXTURE_C
     explicit CD3DX12_AFFINITY_TEXTURE_COPY_LOCATION(const D3DX12_AFFINITY_TEXTURE_COPY_LOCATION &o) :
         D3DX12_AFFINITY_TEXTURE_COPY_LOCATION(o)
     {}
-    CD3DX12_AFFINITY_TEXTURE_COPY_LOCATION(CD3DX12AffinityResource* pRes) { pResource = pRes; }
+    CD3DX12_AFFINITY_TEXTURE_COPY_LOCATION(CD3DX12AffinityResource* pRes)
+    {
+        pResource = pRes;
+    }
     CD3DX12_AFFINITY_TEXTURE_COPY_LOCATION(CD3DX12AffinityResource* pRes, D3D12_PLACED_SUBRESOURCE_FOOTPRINT const& Footprint)
     {
         pResource = pRes;
@@ -103,7 +109,7 @@ struct CD3DX12_AFFINITY_TEXTURE_COPY_LOCATION : public D3DX12_AFFINITY_TEXTURE_C
 inline UINT8 D3D12GetFormatPlaneCount(
     _In_ CD3DX12AffinityDevice* pDevice,
     DXGI_FORMAT Format
-    )
+)
 {
     D3D12_FEATURE_DATA_FORMAT_INFO formatInfo = { Format };
     if (FAILED(pDevice->CheckFeatureSupport(D3D12_FEATURE_FORMAT_INFO, &formatInfo, sizeof(formatInfo), 0)))
@@ -151,7 +157,7 @@ struct CD3DX12_AFFINITY_RESOURCE_DESC : public D3D12_RESOURCE_DESC
         D3D12_RESOURCE_FLAGS flags = D3D12_RESOURCE_FLAG_NONE)
     {
         return CD3DX12_AFFINITY_RESOURCE_DESC(D3D12_RESOURCE_DIMENSION_BUFFER, resAllocInfo.Alignment, resAllocInfo.SizeInBytes,
-            1, 1, 1, DXGI_FORMAT_UNKNOWN, 1, 0, D3D12_TEXTURE_LAYOUT_ROW_MAJOR, flags);
+                                              1, 1, 1, DXGI_FORMAT_UNKNOWN, 1, 0, D3D12_TEXTURE_LAYOUT_ROW_MAJOR, flags);
     }
     static inline CD3DX12_AFFINITY_RESOURCE_DESC Buffer(
         UINT64 width,
@@ -159,7 +165,7 @@ struct CD3DX12_AFFINITY_RESOURCE_DESC : public D3D12_RESOURCE_DESC
         UINT64 alignment = 0)
     {
         return CD3DX12_AFFINITY_RESOURCE_DESC(D3D12_RESOURCE_DIMENSION_BUFFER, alignment, width, 1, 1, 1,
-            DXGI_FORMAT_UNKNOWN, 1, 0, D3D12_TEXTURE_LAYOUT_ROW_MAJOR, flags);
+                                              DXGI_FORMAT_UNKNOWN, 1, 0, D3D12_TEXTURE_LAYOUT_ROW_MAJOR, flags);
     }
     static inline CD3DX12_AFFINITY_RESOURCE_DESC Tex1D(
         DXGI_FORMAT format,
@@ -171,7 +177,7 @@ struct CD3DX12_AFFINITY_RESOURCE_DESC : public D3D12_RESOURCE_DESC
         UINT64 alignment = 0)
     {
         return CD3DX12_AFFINITY_RESOURCE_DESC(D3D12_RESOURCE_DIMENSION_TEXTURE1D, alignment, width, 1, arraySize,
-            mipLevels, format, 1, 0, layout, flags);
+                                              mipLevels, format, 1, 0, layout, flags);
     }
     static inline CD3DX12_AFFINITY_RESOURCE_DESC Tex2D(
         DXGI_FORMAT format,
@@ -186,7 +192,7 @@ struct CD3DX12_AFFINITY_RESOURCE_DESC : public D3D12_RESOURCE_DESC
         UINT64 alignment = 0)
     {
         return CD3DX12_AFFINITY_RESOURCE_DESC(D3D12_RESOURCE_DIMENSION_TEXTURE2D, alignment, width, height, arraySize,
-            mipLevels, format, sampleCount, sampleQuality, layout, flags);
+                                              mipLevels, format, sampleCount, sampleQuality, layout, flags);
     }
     static inline CD3DX12_AFFINITY_RESOURCE_DESC Tex3D(
         DXGI_FORMAT format,
@@ -199,7 +205,7 @@ struct CD3DX12_AFFINITY_RESOURCE_DESC : public D3D12_RESOURCE_DESC
         UINT64 alignment = 0)
     {
         return CD3DX12_AFFINITY_RESOURCE_DESC(D3D12_RESOURCE_DIMENSION_TEXTURE3D, alignment, width, height, depth,
-            mipLevels, format, 1, 0, layout, flags);
+                                              mipLevels, format, 1, 0, layout, flags);
     }
     inline UINT16 Depth() const
     {
@@ -221,21 +227,24 @@ struct CD3DX12_AFFINITY_RESOURCE_DESC : public D3D12_RESOURCE_DESC
     {
         return D3D12CalcSubresource(MipSlice, ArraySlice, PlaneSlice, MipLevels, ArraySize());
     }
-    operator const D3D12_RESOURCE_DESC&() const { return *this; }
+    operator const D3D12_RESOURCE_DESC&() const
+    {
+        return *this;
+    }
 };
 inline bool operator==(const CD3DX12_AFFINITY_RESOURCE_DESC& l, const CD3DX12_AFFINITY_RESOURCE_DESC& r)
 {
     return l.Dimension == r.Dimension &&
-        l.Alignment == r.Alignment &&
-        l.Width == r.Width &&
-        l.Height == r.Height &&
-        l.DepthOrArraySize == r.DepthOrArraySize &&
-        l.MipLevels == r.MipLevels &&
-        l.Format == r.Format &&
-        l.SampleDesc.Count == r.SampleDesc.Count &&
-        l.SampleDesc.Quality == r.SampleDesc.Quality &&
-        l.Layout == r.Layout &&
-        l.Flags == r.Flags;
+           l.Alignment == r.Alignment &&
+           l.Width == r.Width &&
+           l.Height == r.Height &&
+           l.DepthOrArraySize == r.DepthOrArraySize &&
+           l.MipLevels == r.MipLevels &&
+           l.Format == r.Format &&
+           l.SampleDesc.Count == r.SampleDesc.Count &&
+           l.SampleDesc.Quality == r.SampleDesc.Quality &&
+           l.Layout == r.Layout &&
+           l.Flags == r.Flags;
 }
 inline bool operator!=(const CD3DX12_AFFINITY_RESOURCE_DESC& l, const CD3DX12_AFFINITY_RESOURCE_DESC& r)
 {
@@ -277,10 +286,10 @@ inline UINT64 UpdateSubresources(
     D3D12_RESOURCE_DESC IntermediateDesc = pIntermediate->GetDesc(/* DeviceIndex */ 0);
     D3D12_RESOURCE_DESC DestinationDesc = pDestinationResource->GetDesc(/* DeviceIndex */ 0);
     if (IntermediateDesc.Dimension != D3D12_RESOURCE_DIMENSION_BUFFER ||
-        IntermediateDesc.Width < RequiredSize + pLayouts[0].Offset ||
-        RequiredSize >(SIZE_T) - 1 ||
-        (DestinationDesc.Dimension == D3D12_RESOURCE_DIMENSION_BUFFER &&
-            (FirstSubresource != 0 || NumSubresources != 1)))
+            IntermediateDesc.Width < RequiredSize + pLayouts[0].Offset ||
+            RequiredSize >(SIZE_T) - 1 ||
+            (DestinationDesc.Dimension == D3D12_RESOURCE_DIMENSION_BUFFER &&
+             (FirstSubresource != 0 || NumSubresources != 1)))
     {
         return 0;
     }

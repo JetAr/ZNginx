@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: FirewallInstallHelper.h
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -12,9 +12,9 @@
 // UNICODE/ANSI define mappings
 //--------------------------------------------------------------------------------------
 #ifdef UNICODE
-    #define AddApplicationToExceptionList AddApplicationToExceptionListW
-    #define RemoveApplicationFromExceptionList RemoveApplicationFromExceptionListW
-    #define CanLaunchMultiplayerGame CanLaunchMultiplayerGameW
+#define AddApplicationToExceptionList AddApplicationToExceptionListW
+#define RemoveApplicationFromExceptionList RemoveApplicationFromExceptionListW
+#define CanLaunchMultiplayerGame CanLaunchMultiplayerGameW
 #else
 #define AddApplicationToExceptionList AddApplicationToExceptionListA
 #define RemoveApplicationFromExceptionList RemoveApplicationFromExceptionListA
@@ -41,19 +41,19 @@ BOOL WINAPI CanLaunchMultiplayerGameW( WCHAR* strGameExeFullPath );
 BOOL WINAPI CanLaunchMultiplayerGameA( CHAR* strGameExeFullPath );
 
 //--------------------------------------------------------------------------------------
-// For use during an MSI custom action install. 
-// This sets up the CustomActionData properties for the deferred custom actions. 
+// For use during an MSI custom action install.
+// This sets up the CustomActionData properties for the deferred custom actions.
 //--------------------------------------------------------------------------------------
 UINT WINAPI SetMSIFirewallProperties( MSIHANDLE hModule );
 
 //--------------------------------------------------------------------------------------
-// For use during an MSI custom action install. 
+// For use during an MSI custom action install.
 // This adds the game to the Game Explorer
 //--------------------------------------------------------------------------------------
 UINT WINAPI AddToExceptionListUsingMSI( MSIHANDLE hModule );
 
 //--------------------------------------------------------------------------------------
-// For use during an MSI custom action install. 
+// For use during an MSI custom action install.
 // This adds the game to the Game Explorer
 //--------------------------------------------------------------------------------------
 UINT WINAPI RemoveFromExceptionListUsingMSI( MSIHANDLE hModule );

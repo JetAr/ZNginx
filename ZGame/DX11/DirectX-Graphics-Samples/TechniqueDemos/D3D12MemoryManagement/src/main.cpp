@@ -1,4 +1,4 @@
-//*********************************************************
+﻿//*********************************************************
 //
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
@@ -13,10 +13,10 @@
 
 int __cdecl main(int argc, LPCSTR argv[])
 {
-	{
-		D3D12MemoryManagement App;
-		App.LoadConfig(argc, argv);
-		App.Run();
-	}
-	CoUninitialize();
+    {
+        D3D12MemoryManagement App;
+        App.LoadConfig(argc, argv);
+        App.Run();
+    }
+    CoUninitialize();
 }

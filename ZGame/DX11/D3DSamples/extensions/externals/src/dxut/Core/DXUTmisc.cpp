@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DXUTMisc.cpp
 //
 // Shortcut macros and functions for using DX objects
@@ -118,11 +118,11 @@ void CDXUTTimer::GetTimeValues( double* pfTime, double* pfAbsoluteTime, float* p
     m_llLastElapsedTime = qwTime.QuadPart;
 
     // Clamp the timer to non-negative values to ensure the timer is accurate.
-    // fElapsedTime can be outside this range if processor goes into a 
-    // power save mode or we somehow get shuffled to another processor.  
-    // However, the main thread should call SetThreadAffinityMask to ensure that 
-    // we don't get shuffled to another processor.  Other worker threads should NOT call 
-    // SetThreadAffinityMask, but use a shared copy of the timer data gathered from 
+    // fElapsedTime can be outside this range if processor goes into a
+    // power save mode or we somehow get shuffled to another processor.
+    // However, the main thread should call SetThreadAffinityMask to ensure that
+    // we don't get shuffled to another processor.  Other worker threads should NOT call
+    // SetThreadAffinityMask, but use a shared copy of the timer data gathered from
     // the main thread.
     if( fElapsedTime < 0.0f )
         fElapsedTime = 0.0f;
@@ -169,7 +169,7 @@ bool CDXUTTimer::IsStopped()
 }
 
 //--------------------------------------------------------------------------------------
-// Limit the current thread to one processor (the current one). This ensures that timing code 
+// Limit the current thread to one processor (the current one). This ensures that timing code
 // runs on only one processor, and will not suffer any ill effects from power management.
 // See "Game Timing and Multicore Processors" for more details
 //--------------------------------------------------------------------------------------
@@ -182,7 +182,7 @@ void CDXUTTimer::LimitThreadAffinityToCurrentProc()
     DWORD_PTR dwSystemAffinityMask = 0;
 
     if( GetProcessAffinityMask( hCurrentProcess, &dwProcessAffinityMask, &dwSystemAffinityMask ) != 0 &&
-        dwProcessAffinityMask )
+            dwProcessAffinityMask )
     {
         // Find the lowest processor that our process is allows to run against
         DWORD_PTR dwAffinityMask = ( dwProcessAffinityMask & ( ( ~dwProcessAffinityMask ) + 1 ) );
@@ -209,120 +209,177 @@ LPCWSTR WINAPI DXUTD3DFormatToString( D3DFORMAT format, bool bWithPrefix )
     WCHAR* pstr = NULL;
     switch( format )
     {
-        case D3DFMT_UNKNOWN:
-            pstr = L"D3DFMT_UNKNOWN"; break;
-        case D3DFMT_R8G8B8:
-            pstr = L"D3DFMT_R8G8B8"; break;
-        case D3DFMT_A8R8G8B8:
-            pstr = L"D3DFMT_A8R8G8B8"; break;
-        case D3DFMT_X8R8G8B8:
-            pstr = L"D3DFMT_X8R8G8B8"; break;
-        case D3DFMT_R5G6B5:
-            pstr = L"D3DFMT_R5G6B5"; break;
-        case D3DFMT_X1R5G5B5:
-            pstr = L"D3DFMT_X1R5G5B5"; break;
-        case D3DFMT_A1R5G5B5:
-            pstr = L"D3DFMT_A1R5G5B5"; break;
-        case D3DFMT_A4R4G4B4:
-            pstr = L"D3DFMT_A4R4G4B4"; break;
-        case D3DFMT_R3G3B2:
-            pstr = L"D3DFMT_R3G3B2"; break;
-        case D3DFMT_A8:
-            pstr = L"D3DFMT_A8"; break;
-        case D3DFMT_A8R3G3B2:
-            pstr = L"D3DFMT_A8R3G3B2"; break;
-        case D3DFMT_X4R4G4B4:
-            pstr = L"D3DFMT_X4R4G4B4"; break;
-        case D3DFMT_A2B10G10R10:
-            pstr = L"D3DFMT_A2B10G10R10"; break;
-        case D3DFMT_A8B8G8R8:
-            pstr = L"D3DFMT_A8B8G8R8"; break;
-        case D3DFMT_X8B8G8R8:
-            pstr = L"D3DFMT_X8B8G8R8"; break;
-        case D3DFMT_G16R16:
-            pstr = L"D3DFMT_G16R16"; break;
-        case D3DFMT_A2R10G10B10:
-            pstr = L"D3DFMT_A2R10G10B10"; break;
-        case D3DFMT_A16B16G16R16:
-            pstr = L"D3DFMT_A16B16G16R16"; break;
-        case D3DFMT_A8P8:
-            pstr = L"D3DFMT_A8P8"; break;
-        case D3DFMT_P8:
-            pstr = L"D3DFMT_P8"; break;
-        case D3DFMT_L8:
-            pstr = L"D3DFMT_L8"; break;
-        case D3DFMT_A8L8:
-            pstr = L"D3DFMT_A8L8"; break;
-        case D3DFMT_A4L4:
-            pstr = L"D3DFMT_A4L4"; break;
-        case D3DFMT_V8U8:
-            pstr = L"D3DFMT_V8U8"; break;
-        case D3DFMT_L6V5U5:
-            pstr = L"D3DFMT_L6V5U5"; break;
-        case D3DFMT_X8L8V8U8:
-            pstr = L"D3DFMT_X8L8V8U8"; break;
-        case D3DFMT_Q8W8V8U8:
-            pstr = L"D3DFMT_Q8W8V8U8"; break;
-        case D3DFMT_V16U16:
-            pstr = L"D3DFMT_V16U16"; break;
-        case D3DFMT_A2W10V10U10:
-            pstr = L"D3DFMT_A2W10V10U10"; break;
-        case D3DFMT_UYVY:
-            pstr = L"D3DFMT_UYVY"; break;
-        case D3DFMT_YUY2:
-            pstr = L"D3DFMT_YUY2"; break;
-        case D3DFMT_DXT1:
-            pstr = L"D3DFMT_DXT1"; break;
-        case D3DFMT_DXT2:
-            pstr = L"D3DFMT_DXT2"; break;
-        case D3DFMT_DXT3:
-            pstr = L"D3DFMT_DXT3"; break;
-        case D3DFMT_DXT4:
-            pstr = L"D3DFMT_DXT4"; break;
-        case D3DFMT_DXT5:
-            pstr = L"D3DFMT_DXT5"; break;
-        case D3DFMT_D16_LOCKABLE:
-            pstr = L"D3DFMT_D16_LOCKABLE"; break;
-        case D3DFMT_D32:
-            pstr = L"D3DFMT_D32"; break;
-        case D3DFMT_D15S1:
-            pstr = L"D3DFMT_D15S1"; break;
-        case D3DFMT_D24S8:
-            pstr = L"D3DFMT_D24S8"; break;
-        case D3DFMT_D24X8:
-            pstr = L"D3DFMT_D24X8"; break;
-        case D3DFMT_D24X4S4:
-            pstr = L"D3DFMT_D24X4S4"; break;
-        case D3DFMT_D16:
-            pstr = L"D3DFMT_D16"; break;
-        case D3DFMT_L16:
-            pstr = L"D3DFMT_L16"; break;
-        case D3DFMT_VERTEXDATA:
-            pstr = L"D3DFMT_VERTEXDATA"; break;
-        case D3DFMT_INDEX16:
-            pstr = L"D3DFMT_INDEX16"; break;
-        case D3DFMT_INDEX32:
-            pstr = L"D3DFMT_INDEX32"; break;
-        case D3DFMT_Q16W16V16U16:
-            pstr = L"D3DFMT_Q16W16V16U16"; break;
-        case D3DFMT_MULTI2_ARGB8:
-            pstr = L"D3DFMT_MULTI2_ARGB8"; break;
-        case D3DFMT_R16F:
-            pstr = L"D3DFMT_R16F"; break;
-        case D3DFMT_G16R16F:
-            pstr = L"D3DFMT_G16R16F"; break;
-        case D3DFMT_A16B16G16R16F:
-            pstr = L"D3DFMT_A16B16G16R16F"; break;
-        case D3DFMT_R32F:
-            pstr = L"D3DFMT_R32F"; break;
-        case D3DFMT_G32R32F:
-            pstr = L"D3DFMT_G32R32F"; break;
-        case D3DFMT_A32B32G32R32F:
-            pstr = L"D3DFMT_A32B32G32R32F"; break;
-        case D3DFMT_CxV8U8:
-            pstr = L"D3DFMT_CxV8U8"; break;
-        default:
-            pstr = L"Unknown format"; break;
+    case D3DFMT_UNKNOWN:
+        pstr = L"D3DFMT_UNKNOWN";
+        break;
+    case D3DFMT_R8G8B8:
+        pstr = L"D3DFMT_R8G8B8";
+        break;
+    case D3DFMT_A8R8G8B8:
+        pstr = L"D3DFMT_A8R8G8B8";
+        break;
+    case D3DFMT_X8R8G8B8:
+        pstr = L"D3DFMT_X8R8G8B8";
+        break;
+    case D3DFMT_R5G6B5:
+        pstr = L"D3DFMT_R5G6B5";
+        break;
+    case D3DFMT_X1R5G5B5:
+        pstr = L"D3DFMT_X1R5G5B5";
+        break;
+    case D3DFMT_A1R5G5B5:
+        pstr = L"D3DFMT_A1R5G5B5";
+        break;
+    case D3DFMT_A4R4G4B4:
+        pstr = L"D3DFMT_A4R4G4B4";
+        break;
+    case D3DFMT_R3G3B2:
+        pstr = L"D3DFMT_R3G3B2";
+        break;
+    case D3DFMT_A8:
+        pstr = L"D3DFMT_A8";
+        break;
+    case D3DFMT_A8R3G3B2:
+        pstr = L"D3DFMT_A8R3G3B2";
+        break;
+    case D3DFMT_X4R4G4B4:
+        pstr = L"D3DFMT_X4R4G4B4";
+        break;
+    case D3DFMT_A2B10G10R10:
+        pstr = L"D3DFMT_A2B10G10R10";
+        break;
+    case D3DFMT_A8B8G8R8:
+        pstr = L"D3DFMT_A8B8G8R8";
+        break;
+    case D3DFMT_X8B8G8R8:
+        pstr = L"D3DFMT_X8B8G8R8";
+        break;
+    case D3DFMT_G16R16:
+        pstr = L"D3DFMT_G16R16";
+        break;
+    case D3DFMT_A2R10G10B10:
+        pstr = L"D3DFMT_A2R10G10B10";
+        break;
+    case D3DFMT_A16B16G16R16:
+        pstr = L"D3DFMT_A16B16G16R16";
+        break;
+    case D3DFMT_A8P8:
+        pstr = L"D3DFMT_A8P8";
+        break;
+    case D3DFMT_P8:
+        pstr = L"D3DFMT_P8";
+        break;
+    case D3DFMT_L8:
+        pstr = L"D3DFMT_L8";
+        break;
+    case D3DFMT_A8L8:
+        pstr = L"D3DFMT_A8L8";
+        break;
+    case D3DFMT_A4L4:
+        pstr = L"D3DFMT_A4L4";
+        break;
+    case D3DFMT_V8U8:
+        pstr = L"D3DFMT_V8U8";
+        break;
+    case D3DFMT_L6V5U5:
+        pstr = L"D3DFMT_L6V5U5";
+        break;
+    case D3DFMT_X8L8V8U8:
+        pstr = L"D3DFMT_X8L8V8U8";
+        break;
+    case D3DFMT_Q8W8V8U8:
+        pstr = L"D3DFMT_Q8W8V8U8";
+        break;
+    case D3DFMT_V16U16:
+        pstr = L"D3DFMT_V16U16";
+        break;
+    case D3DFMT_A2W10V10U10:
+        pstr = L"D3DFMT_A2W10V10U10";
+        break;
+    case D3DFMT_UYVY:
+        pstr = L"D3DFMT_UYVY";
+        break;
+    case D3DFMT_YUY2:
+        pstr = L"D3DFMT_YUY2";
+        break;
+    case D3DFMT_DXT1:
+        pstr = L"D3DFMT_DXT1";
+        break;
+    case D3DFMT_DXT2:
+        pstr = L"D3DFMT_DXT2";
+        break;
+    case D3DFMT_DXT3:
+        pstr = L"D3DFMT_DXT3";
+        break;
+    case D3DFMT_DXT4:
+        pstr = L"D3DFMT_DXT4";
+        break;
+    case D3DFMT_DXT5:
+        pstr = L"D3DFMT_DXT5";
+        break;
+    case D3DFMT_D16_LOCKABLE:
+        pstr = L"D3DFMT_D16_LOCKABLE";
+        break;
+    case D3DFMT_D32:
+        pstr = L"D3DFMT_D32";
+        break;
+    case D3DFMT_D15S1:
+        pstr = L"D3DFMT_D15S1";
+        break;
+    case D3DFMT_D24S8:
+        pstr = L"D3DFMT_D24S8";
+        break;
+    case D3DFMT_D24X8:
+        pstr = L"D3DFMT_D24X8";
+        break;
+    case D3DFMT_D24X4S4:
+        pstr = L"D3DFMT_D24X4S4";
+        break;
+    case D3DFMT_D16:
+        pstr = L"D3DFMT_D16";
+        break;
+    case D3DFMT_L16:
+        pstr = L"D3DFMT_L16";
+        break;
+    case D3DFMT_VERTEXDATA:
+        pstr = L"D3DFMT_VERTEXDATA";
+        break;
+    case D3DFMT_INDEX16:
+        pstr = L"D3DFMT_INDEX16";
+        break;
+    case D3DFMT_INDEX32:
+        pstr = L"D3DFMT_INDEX32";
+        break;
+    case D3DFMT_Q16W16V16U16:
+        pstr = L"D3DFMT_Q16W16V16U16";
+        break;
+    case D3DFMT_MULTI2_ARGB8:
+        pstr = L"D3DFMT_MULTI2_ARGB8";
+        break;
+    case D3DFMT_R16F:
+        pstr = L"D3DFMT_R16F";
+        break;
+    case D3DFMT_G16R16F:
+        pstr = L"D3DFMT_G16R16F";
+        break;
+    case D3DFMT_A16B16G16R16F:
+        pstr = L"D3DFMT_A16B16G16R16F";
+        break;
+    case D3DFMT_R32F:
+        pstr = L"D3DFMT_R32F";
+        break;
+    case D3DFMT_G32R32F:
+        pstr = L"D3DFMT_G32R32F";
+        break;
+    case D3DFMT_A32B32G32R32F:
+        pstr = L"D3DFMT_A32B32G32R32F";
+        break;
+    case D3DFMT_CxV8U8:
+        pstr = L"D3DFMT_CxV8U8";
+        break;
+    default:
+        pstr = L"Unknown format";
+        break;
     }
     if( bWithPrefix || wcsstr( pstr, L"D3DFMT_" ) == NULL )
         return pstr;
@@ -339,182 +396,270 @@ LPCWSTR WINAPI DXUTDXGIFormatToString( DXGI_FORMAT format, bool bWithPrefix )
     WCHAR* pstr = NULL;
     switch( format )
     {
-        case DXGI_FORMAT_R32G32B32A32_TYPELESS:
-            pstr = L"DXGI_FORMAT_R32G32B32A32_TYPELESS"; break;
-        case DXGI_FORMAT_R32G32B32A32_FLOAT:
-            pstr = L"DXGI_FORMAT_R32G32B32A32_FLOAT"; break;
-        case DXGI_FORMAT_R32G32B32A32_UINT:
-            pstr = L"DXGI_FORMAT_R32G32B32A32_UINT"; break;
-        case DXGI_FORMAT_R32G32B32A32_SINT:
-            pstr = L"DXGI_FORMAT_R32G32B32A32_SINT"; break;
-        case DXGI_FORMAT_R32G32B32_TYPELESS:
-            pstr = L"DXGI_FORMAT_R32G32B32_TYPELESS"; break;
-        case DXGI_FORMAT_R32G32B32_FLOAT:
-            pstr = L"DXGI_FORMAT_R32G32B32_FLOAT"; break;
-        case DXGI_FORMAT_R32G32B32_UINT:
-            pstr = L"DXGI_FORMAT_R32G32B32_UINT"; break;
-        case DXGI_FORMAT_R32G32B32_SINT:
-            pstr = L"DXGI_FORMAT_R32G32B32_SINT"; break;
-        case DXGI_FORMAT_R16G16B16A16_TYPELESS:
-            pstr = L"DXGI_FORMAT_R16G16B16A16_TYPELESS"; break;
-        case DXGI_FORMAT_R16G16B16A16_FLOAT:
-            pstr = L"DXGI_FORMAT_R16G16B16A16_FLOAT"; break;
-        case DXGI_FORMAT_R16G16B16A16_UNORM:
-            pstr = L"DXGI_FORMAT_R16G16B16A16_UNORM"; break;
-        case DXGI_FORMAT_R16G16B16A16_UINT:
-            pstr = L"DXGI_FORMAT_R16G16B16A16_UINT"; break;
-        case DXGI_FORMAT_R16G16B16A16_SNORM:
-            pstr = L"DXGI_FORMAT_R16G16B16A16_SNORM"; break;
-        case DXGI_FORMAT_R16G16B16A16_SINT:
-            pstr = L"DXGI_FORMAT_R16G16B16A16_SINT"; break;
-        case DXGI_FORMAT_R32G32_TYPELESS:
-            pstr = L"DXGI_FORMAT_R32G32_TYPELESS"; break;
-        case DXGI_FORMAT_R32G32_FLOAT:
-            pstr = L"DXGI_FORMAT_R32G32_FLOAT"; break;
-        case DXGI_FORMAT_R32G32_UINT:
-            pstr = L"DXGI_FORMAT_R32G32_UINT"; break;
-        case DXGI_FORMAT_R32G32_SINT:
-            pstr = L"DXGI_FORMAT_R32G32_SINT"; break;
-        case DXGI_FORMAT_R32G8X24_TYPELESS:
-            pstr = L"DXGI_FORMAT_R32G8X24_TYPELESS"; break;
-        case DXGI_FORMAT_D32_FLOAT_S8X24_UINT:
-            pstr = L"DXGI_FORMAT_D32_FLOAT_S8X24_UINT"; break;
-        case DXGI_FORMAT_R32_FLOAT_X8X24_TYPELESS:
-            pstr = L"DXGI_FORMAT_R32_FLOAT_X8X24_TYPELESS"; break;
-        case DXGI_FORMAT_X32_TYPELESS_G8X24_UINT:
-            pstr = L"DXGI_FORMAT_X32_TYPELESS_G8X24_UINT"; break;
-        case DXGI_FORMAT_R10G10B10A2_TYPELESS:
-            pstr = L"DXGI_FORMAT_R10G10B10A2_TYPELESS"; break;
-        case DXGI_FORMAT_R10G10B10A2_UNORM:
-            pstr = L"DXGI_FORMAT_R10G10B10A2_UNORM"; break;
-        case DXGI_FORMAT_R10G10B10A2_UINT:
-            pstr = L"DXGI_FORMAT_R10G10B10A2_UINT"; break;
-        case DXGI_FORMAT_R11G11B10_FLOAT:
-            pstr = L"DXGI_FORMAT_R11G11B10_FLOAT"; break;
-        case DXGI_FORMAT_R8G8B8A8_TYPELESS:
-            pstr = L"DXGI_FORMAT_R8G8B8A8_TYPELESS"; break;
-        case DXGI_FORMAT_R8G8B8A8_UNORM:
-            pstr = L"DXGI_FORMAT_R8G8B8A8_UNORM"; break;
-        case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
-            pstr = L"DXGI_FORMAT_R8G8B8A8_UNORM_SRGB"; break;
-        case DXGI_FORMAT_R8G8B8A8_UINT:
-            pstr = L"DXGI_FORMAT_R8G8B8A8_UINT"; break;
-        case DXGI_FORMAT_R8G8B8A8_SNORM:
-            pstr = L"DXGI_FORMAT_R8G8B8A8_SNORM"; break;
-        case DXGI_FORMAT_R8G8B8A8_SINT:
-            pstr = L"DXGI_FORMAT_R8G8B8A8_SINT"; break;
-        case DXGI_FORMAT_R16G16_TYPELESS:
-            pstr = L"DXGI_FORMAT_R16G16_TYPELESS"; break;
-        case DXGI_FORMAT_R16G16_FLOAT:
-            pstr = L"DXGI_FORMAT_R16G16_FLOAT"; break;
-        case DXGI_FORMAT_R16G16_UNORM:
-            pstr = L"DXGI_FORMAT_R16G16_UNORM"; break;
-        case DXGI_FORMAT_R16G16_UINT:
-            pstr = L"DXGI_FORMAT_R16G16_UINT"; break;
-        case DXGI_FORMAT_R16G16_SNORM:
-            pstr = L"DXGI_FORMAT_R16G16_SNORM"; break;
-        case DXGI_FORMAT_R16G16_SINT:
-            pstr = L"DXGI_FORMAT_R16G16_SINT"; break;
-        case DXGI_FORMAT_R32_TYPELESS:
-            pstr = L"DXGI_FORMAT_R32_TYPELESS"; break;
-        case DXGI_FORMAT_D32_FLOAT:
-            pstr = L"DXGI_FORMAT_D32_FLOAT"; break;
-        case DXGI_FORMAT_R32_FLOAT:
-            pstr = L"DXGI_FORMAT_R32_FLOAT"; break;
-        case DXGI_FORMAT_R32_UINT:
-            pstr = L"DXGI_FORMAT_R32_UINT"; break;
-        case DXGI_FORMAT_R32_SINT:
-            pstr = L"DXGI_FORMAT_R32_SINT"; break;
-        case DXGI_FORMAT_R24G8_TYPELESS:
-            pstr = L"DXGI_FORMAT_R24G8_TYPELESS"; break;
-        case DXGI_FORMAT_D24_UNORM_S8_UINT:
-            pstr = L"DXGI_FORMAT_D24_UNORM_S8_UINT"; break;
-        case DXGI_FORMAT_R24_UNORM_X8_TYPELESS:
-            pstr = L"DXGI_FORMAT_R24_UNORM_X8_TYPELESS"; break;
-        case DXGI_FORMAT_X24_TYPELESS_G8_UINT:
-            pstr = L"DXGI_FORMAT_X24_TYPELESS_G8_UINT"; break;
-        case DXGI_FORMAT_R8G8_TYPELESS:
-            pstr = L"DXGI_FORMAT_R8G8_TYPELESS"; break;
-        case DXGI_FORMAT_R8G8_UNORM:
-            pstr = L"DXGI_FORMAT_R8G8_UNORM"; break;
-        case DXGI_FORMAT_R8G8_UINT:
-            pstr = L"DXGI_FORMAT_R8G8_UINT"; break;
-        case DXGI_FORMAT_R8G8_SNORM:
-            pstr = L"DXGI_FORMAT_R8G8_SNORM"; break;
-        case DXGI_FORMAT_R8G8_SINT:
-            pstr = L"DXGI_FORMAT_R8G8_SINT"; break;
-        case DXGI_FORMAT_R16_TYPELESS:
-            pstr = L"DXGI_FORMAT_R16_TYPELESS"; break;
-        case DXGI_FORMAT_R16_FLOAT:
-            pstr = L"DXGI_FORMAT_R16_FLOAT"; break;
-        case DXGI_FORMAT_D16_UNORM:
-            pstr = L"DXGI_FORMAT_D16_UNORM"; break;
-        case DXGI_FORMAT_R16_UNORM:
-            pstr = L"DXGI_FORMAT_R16_UNORM"; break;
-        case DXGI_FORMAT_R16_UINT:
-            pstr = L"DXGI_FORMAT_R16_UINT"; break;
-        case DXGI_FORMAT_R16_SNORM:
-            pstr = L"DXGI_FORMAT_R16_SNORM"; break;
-        case DXGI_FORMAT_R16_SINT:
-            pstr = L"DXGI_FORMAT_R16_SINT"; break;
-        case DXGI_FORMAT_R8_TYPELESS:
-            pstr = L"DXGI_FORMAT_R8_TYPELESS"; break;
-        case DXGI_FORMAT_R8_UNORM:
-            pstr = L"DXGI_FORMAT_R8_UNORM"; break;
-        case DXGI_FORMAT_R8_UINT:
-            pstr = L"DXGI_FORMAT_R8_UINT"; break;
-        case DXGI_FORMAT_R8_SNORM:
-            pstr = L"DXGI_FORMAT_R8_SNORM"; break;
-        case DXGI_FORMAT_R8_SINT:
-            pstr = L"DXGI_FORMAT_R8_SINT"; break;
-        case DXGI_FORMAT_A8_UNORM:
-            pstr = L"DXGI_FORMAT_A8_UNORM"; break;
-        case DXGI_FORMAT_R1_UNORM:
-            pstr = L"DXGI_FORMAT_R1_UNORM"; break;
-        case DXGI_FORMAT_R9G9B9E5_SHAREDEXP:
-            pstr = L"DXGI_FORMAT_R9G9B9E5_SHAREDEXP"; break;
-        case DXGI_FORMAT_R8G8_B8G8_UNORM:
-            pstr = L"DXGI_FORMAT_R8G8_B8G8_UNORM"; break;
-        case DXGI_FORMAT_G8R8_G8B8_UNORM:
-            pstr = L"DXGI_FORMAT_G8R8_G8B8_UNORM"; break;
-        case DXGI_FORMAT_BC1_TYPELESS:
-            pstr = L"DXGI_FORMAT_BC1_TYPELESS"; break;
-        case DXGI_FORMAT_BC1_UNORM:
-            pstr = L"DXGI_FORMAT_BC1_UNORM"; break;
-        case DXGI_FORMAT_BC1_UNORM_SRGB:
-            pstr = L"DXGI_FORMAT_BC1_UNORM_SRGB"; break;
-        case DXGI_FORMAT_BC2_TYPELESS:
-            pstr = L"DXGI_FORMAT_BC2_TYPELESS"; break;
-        case DXGI_FORMAT_BC2_UNORM:
-            pstr = L"DXGI_FORMAT_BC2_UNORM"; break;
-        case DXGI_FORMAT_BC2_UNORM_SRGB:
-            pstr = L"DXGI_FORMAT_BC2_UNORM_SRGB"; break;
-        case DXGI_FORMAT_BC3_TYPELESS:
-            pstr = L"DXGI_FORMAT_BC3_TYPELESS"; break;
-        case DXGI_FORMAT_BC3_UNORM:
-            pstr = L"DXGI_FORMAT_BC3_UNORM"; break;
-        case DXGI_FORMAT_BC3_UNORM_SRGB:
-            pstr = L"DXGI_FORMAT_BC3_UNORM_SRGB"; break;
-        case DXGI_FORMAT_BC4_TYPELESS:
-            pstr = L"DXGI_FORMAT_BC4_TYPELESS"; break;
-        case DXGI_FORMAT_BC4_UNORM:
-            pstr = L"DXGI_FORMAT_BC4_UNORM"; break;
-        case DXGI_FORMAT_BC4_SNORM:
-            pstr = L"DXGI_FORMAT_BC4_SNORM"; break;
-        case DXGI_FORMAT_BC5_TYPELESS:
-            pstr = L"DXGI_FORMAT_BC5_TYPELESS"; break;
-        case DXGI_FORMAT_BC5_UNORM:
-            pstr = L"DXGI_FORMAT_BC5_UNORM"; break;
-        case DXGI_FORMAT_BC5_SNORM:
-            pstr = L"DXGI_FORMAT_BC5_SNORM"; break;
-        case DXGI_FORMAT_B5G6R5_UNORM:
-            pstr = L"DXGI_FORMAT_B5G6R5_UNORM"; break;
-        case DXGI_FORMAT_B5G5R5A1_UNORM:
-            pstr = L"DXGI_FORMAT_B5G5R5A1_UNORM"; break;
-        case DXGI_FORMAT_B8G8R8A8_UNORM:
-            pstr = L"DXGI_FORMAT_B8G8R8A8_UNORM"; break;
-        default:
-            pstr = L"Unknown format"; break;
+    case DXGI_FORMAT_R32G32B32A32_TYPELESS:
+        pstr = L"DXGI_FORMAT_R32G32B32A32_TYPELESS";
+        break;
+    case DXGI_FORMAT_R32G32B32A32_FLOAT:
+        pstr = L"DXGI_FORMAT_R32G32B32A32_FLOAT";
+        break;
+    case DXGI_FORMAT_R32G32B32A32_UINT:
+        pstr = L"DXGI_FORMAT_R32G32B32A32_UINT";
+        break;
+    case DXGI_FORMAT_R32G32B32A32_SINT:
+        pstr = L"DXGI_FORMAT_R32G32B32A32_SINT";
+        break;
+    case DXGI_FORMAT_R32G32B32_TYPELESS:
+        pstr = L"DXGI_FORMAT_R32G32B32_TYPELESS";
+        break;
+    case DXGI_FORMAT_R32G32B32_FLOAT:
+        pstr = L"DXGI_FORMAT_R32G32B32_FLOAT";
+        break;
+    case DXGI_FORMAT_R32G32B32_UINT:
+        pstr = L"DXGI_FORMAT_R32G32B32_UINT";
+        break;
+    case DXGI_FORMAT_R32G32B32_SINT:
+        pstr = L"DXGI_FORMAT_R32G32B32_SINT";
+        break;
+    case DXGI_FORMAT_R16G16B16A16_TYPELESS:
+        pstr = L"DXGI_FORMAT_R16G16B16A16_TYPELESS";
+        break;
+    case DXGI_FORMAT_R16G16B16A16_FLOAT:
+        pstr = L"DXGI_FORMAT_R16G16B16A16_FLOAT";
+        break;
+    case DXGI_FORMAT_R16G16B16A16_UNORM:
+        pstr = L"DXGI_FORMAT_R16G16B16A16_UNORM";
+        break;
+    case DXGI_FORMAT_R16G16B16A16_UINT:
+        pstr = L"DXGI_FORMAT_R16G16B16A16_UINT";
+        break;
+    case DXGI_FORMAT_R16G16B16A16_SNORM:
+        pstr = L"DXGI_FORMAT_R16G16B16A16_SNORM";
+        break;
+    case DXGI_FORMAT_R16G16B16A16_SINT:
+        pstr = L"DXGI_FORMAT_R16G16B16A16_SINT";
+        break;
+    case DXGI_FORMAT_R32G32_TYPELESS:
+        pstr = L"DXGI_FORMAT_R32G32_TYPELESS";
+        break;
+    case DXGI_FORMAT_R32G32_FLOAT:
+        pstr = L"DXGI_FORMAT_R32G32_FLOAT";
+        break;
+    case DXGI_FORMAT_R32G32_UINT:
+        pstr = L"DXGI_FORMAT_R32G32_UINT";
+        break;
+    case DXGI_FORMAT_R32G32_SINT:
+        pstr = L"DXGI_FORMAT_R32G32_SINT";
+        break;
+    case DXGI_FORMAT_R32G8X24_TYPELESS:
+        pstr = L"DXGI_FORMAT_R32G8X24_TYPELESS";
+        break;
+    case DXGI_FORMAT_D32_FLOAT_S8X24_UINT:
+        pstr = L"DXGI_FORMAT_D32_FLOAT_S8X24_UINT";
+        break;
+    case DXGI_FORMAT_R32_FLOAT_X8X24_TYPELESS:
+        pstr = L"DXGI_FORMAT_R32_FLOAT_X8X24_TYPELESS";
+        break;
+    case DXGI_FORMAT_X32_TYPELESS_G8X24_UINT:
+        pstr = L"DXGI_FORMAT_X32_TYPELESS_G8X24_UINT";
+        break;
+    case DXGI_FORMAT_R10G10B10A2_TYPELESS:
+        pstr = L"DXGI_FORMAT_R10G10B10A2_TYPELESS";
+        break;
+    case DXGI_FORMAT_R10G10B10A2_UNORM:
+        pstr = L"DXGI_FORMAT_R10G10B10A2_UNORM";
+        break;
+    case DXGI_FORMAT_R10G10B10A2_UINT:
+        pstr = L"DXGI_FORMAT_R10G10B10A2_UINT";
+        break;
+    case DXGI_FORMAT_R11G11B10_FLOAT:
+        pstr = L"DXGI_FORMAT_R11G11B10_FLOAT";
+        break;
+    case DXGI_FORMAT_R8G8B8A8_TYPELESS:
+        pstr = L"DXGI_FORMAT_R8G8B8A8_TYPELESS";
+        break;
+    case DXGI_FORMAT_R8G8B8A8_UNORM:
+        pstr = L"DXGI_FORMAT_R8G8B8A8_UNORM";
+        break;
+    case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
+        pstr = L"DXGI_FORMAT_R8G8B8A8_UNORM_SRGB";
+        break;
+    case DXGI_FORMAT_R8G8B8A8_UINT:
+        pstr = L"DXGI_FORMAT_R8G8B8A8_UINT";
+        break;
+    case DXGI_FORMAT_R8G8B8A8_SNORM:
+        pstr = L"DXGI_FORMAT_R8G8B8A8_SNORM";
+        break;
+    case DXGI_FORMAT_R8G8B8A8_SINT:
+        pstr = L"DXGI_FORMAT_R8G8B8A8_SINT";
+        break;
+    case DXGI_FORMAT_R16G16_TYPELESS:
+        pstr = L"DXGI_FORMAT_R16G16_TYPELESS";
+        break;
+    case DXGI_FORMAT_R16G16_FLOAT:
+        pstr = L"DXGI_FORMAT_R16G16_FLOAT";
+        break;
+    case DXGI_FORMAT_R16G16_UNORM:
+        pstr = L"DXGI_FORMAT_R16G16_UNORM";
+        break;
+    case DXGI_FORMAT_R16G16_UINT:
+        pstr = L"DXGI_FORMAT_R16G16_UINT";
+        break;
+    case DXGI_FORMAT_R16G16_SNORM:
+        pstr = L"DXGI_FORMAT_R16G16_SNORM";
+        break;
+    case DXGI_FORMAT_R16G16_SINT:
+        pstr = L"DXGI_FORMAT_R16G16_SINT";
+        break;
+    case DXGI_FORMAT_R32_TYPELESS:
+        pstr = L"DXGI_FORMAT_R32_TYPELESS";
+        break;
+    case DXGI_FORMAT_D32_FLOAT:
+        pstr = L"DXGI_FORMAT_D32_FLOAT";
+        break;
+    case DXGI_FORMAT_R32_FLOAT:
+        pstr = L"DXGI_FORMAT_R32_FLOAT";
+        break;
+    case DXGI_FORMAT_R32_UINT:
+        pstr = L"DXGI_FORMAT_R32_UINT";
+        break;
+    case DXGI_FORMAT_R32_SINT:
+        pstr = L"DXGI_FORMAT_R32_SINT";
+        break;
+    case DXGI_FORMAT_R24G8_TYPELESS:
+        pstr = L"DXGI_FORMAT_R24G8_TYPELESS";
+        break;
+    case DXGI_FORMAT_D24_UNORM_S8_UINT:
+        pstr = L"DXGI_FORMAT_D24_UNORM_S8_UINT";
+        break;
+    case DXGI_FORMAT_R24_UNORM_X8_TYPELESS:
+        pstr = L"DXGI_FORMAT_R24_UNORM_X8_TYPELESS";
+        break;
+    case DXGI_FORMAT_X24_TYPELESS_G8_UINT:
+        pstr = L"DXGI_FORMAT_X24_TYPELESS_G8_UINT";
+        break;
+    case DXGI_FORMAT_R8G8_TYPELESS:
+        pstr = L"DXGI_FORMAT_R8G8_TYPELESS";
+        break;
+    case DXGI_FORMAT_R8G8_UNORM:
+        pstr = L"DXGI_FORMAT_R8G8_UNORM";
+        break;
+    case DXGI_FORMAT_R8G8_UINT:
+        pstr = L"DXGI_FORMAT_R8G8_UINT";
+        break;
+    case DXGI_FORMAT_R8G8_SNORM:
+        pstr = L"DXGI_FORMAT_R8G8_SNORM";
+        break;
+    case DXGI_FORMAT_R8G8_SINT:
+        pstr = L"DXGI_FORMAT_R8G8_SINT";
+        break;
+    case DXGI_FORMAT_R16_TYPELESS:
+        pstr = L"DXGI_FORMAT_R16_TYPELESS";
+        break;
+    case DXGI_FORMAT_R16_FLOAT:
+        pstr = L"DXGI_FORMAT_R16_FLOAT";
+        break;
+    case DXGI_FORMAT_D16_UNORM:
+        pstr = L"DXGI_FORMAT_D16_UNORM";
+        break;
+    case DXGI_FORMAT_R16_UNORM:
+        pstr = L"DXGI_FORMAT_R16_UNORM";
+        break;
+    case DXGI_FORMAT_R16_UINT:
+        pstr = L"DXGI_FORMAT_R16_UINT";
+        break;
+    case DXGI_FORMAT_R16_SNORM:
+        pstr = L"DXGI_FORMAT_R16_SNORM";
+        break;
+    case DXGI_FORMAT_R16_SINT:
+        pstr = L"DXGI_FORMAT_R16_SINT";
+        break;
+    case DXGI_FORMAT_R8_TYPELESS:
+        pstr = L"DXGI_FORMAT_R8_TYPELESS";
+        break;
+    case DXGI_FORMAT_R8_UNORM:
+        pstr = L"DXGI_FORMAT_R8_UNORM";
+        break;
+    case DXGI_FORMAT_R8_UINT:
+        pstr = L"DXGI_FORMAT_R8_UINT";
+        break;
+    case DXGI_FORMAT_R8_SNORM:
+        pstr = L"DXGI_FORMAT_R8_SNORM";
+        break;
+    case DXGI_FORMAT_R8_SINT:
+        pstr = L"DXGI_FORMAT_R8_SINT";
+        break;
+    case DXGI_FORMAT_A8_UNORM:
+        pstr = L"DXGI_FORMAT_A8_UNORM";
+        break;
+    case DXGI_FORMAT_R1_UNORM:
+        pstr = L"DXGI_FORMAT_R1_UNORM";
+        break;
+    case DXGI_FORMAT_R9G9B9E5_SHAREDEXP:
+        pstr = L"DXGI_FORMAT_R9G9B9E5_SHAREDEXP";
+        break;
+    case DXGI_FORMAT_R8G8_B8G8_UNORM:
+        pstr = L"DXGI_FORMAT_R8G8_B8G8_UNORM";
+        break;
+    case DXGI_FORMAT_G8R8_G8B8_UNORM:
+        pstr = L"DXGI_FORMAT_G8R8_G8B8_UNORM";
+        break;
+    case DXGI_FORMAT_BC1_TYPELESS:
+        pstr = L"DXGI_FORMAT_BC1_TYPELESS";
+        break;
+    case DXGI_FORMAT_BC1_UNORM:
+        pstr = L"DXGI_FORMAT_BC1_UNORM";
+        break;
+    case DXGI_FORMAT_BC1_UNORM_SRGB:
+        pstr = L"DXGI_FORMAT_BC1_UNORM_SRGB";
+        break;
+    case DXGI_FORMAT_BC2_TYPELESS:
+        pstr = L"DXGI_FORMAT_BC2_TYPELESS";
+        break;
+    case DXGI_FORMAT_BC2_UNORM:
+        pstr = L"DXGI_FORMAT_BC2_UNORM";
+        break;
+    case DXGI_FORMAT_BC2_UNORM_SRGB:
+        pstr = L"DXGI_FORMAT_BC2_UNORM_SRGB";
+        break;
+    case DXGI_FORMAT_BC3_TYPELESS:
+        pstr = L"DXGI_FORMAT_BC3_TYPELESS";
+        break;
+    case DXGI_FORMAT_BC3_UNORM:
+        pstr = L"DXGI_FORMAT_BC3_UNORM";
+        break;
+    case DXGI_FORMAT_BC3_UNORM_SRGB:
+        pstr = L"DXGI_FORMAT_BC3_UNORM_SRGB";
+        break;
+    case DXGI_FORMAT_BC4_TYPELESS:
+        pstr = L"DXGI_FORMAT_BC4_TYPELESS";
+        break;
+    case DXGI_FORMAT_BC4_UNORM:
+        pstr = L"DXGI_FORMAT_BC4_UNORM";
+        break;
+    case DXGI_FORMAT_BC4_SNORM:
+        pstr = L"DXGI_FORMAT_BC4_SNORM";
+        break;
+    case DXGI_FORMAT_BC5_TYPELESS:
+        pstr = L"DXGI_FORMAT_BC5_TYPELESS";
+        break;
+    case DXGI_FORMAT_BC5_UNORM:
+        pstr = L"DXGI_FORMAT_BC5_UNORM";
+        break;
+    case DXGI_FORMAT_BC5_SNORM:
+        pstr = L"DXGI_FORMAT_BC5_SNORM";
+        break;
+    case DXGI_FORMAT_B5G6R5_UNORM:
+        pstr = L"DXGI_FORMAT_B5G6R5_UNORM";
+        break;
+    case DXGI_FORMAT_B5G5R5A1_UNORM:
+        pstr = L"DXGI_FORMAT_B5G5R5A1_UNORM";
+        break;
+    case DXGI_FORMAT_B8G8R8A8_UNORM:
+        pstr = L"DXGI_FORMAT_B8G8R8A8_UNORM";
+        break;
+    default:
+        pstr = L"Unknown format";
+        break;
     }
     if( bWithPrefix || wcsstr( pstr, L"DXGI_FORMAT_" ) == NULL )
         return pstr;
@@ -719,15 +864,15 @@ HRESULT WINAPI DXUT_Dynamic_CreateDXGIFactory1( REFIID rInterface, void** ppOut 
 
 
 HRESULT WINAPI DXUT_Dynamic_D3D11CreateDevice( IDXGIAdapter* pAdapter,
-                                               D3D_DRIVER_TYPE DriverType,
-                                               HMODULE Software,
-                                               UINT32 Flags,
-                                               D3D_FEATURE_LEVEL* pFeatureLevels,
-                                               UINT FeatureLevels,
-                                               UINT32 SDKVersion,
-                                               ID3D11Device** ppDevice,
-                                               D3D_FEATURE_LEVEL* pFeatureLevel,
-                                               ID3D11DeviceContext** ppImmediateContext )
+        D3D_DRIVER_TYPE DriverType,
+        HMODULE Software,
+        UINT32 Flags,
+        D3D_FEATURE_LEVEL* pFeatureLevels,
+        UINT FeatureLevels,
+        UINT32 SDKVersion,
+        ID3D11Device** ppDevice,
+        D3D_FEATURE_LEVEL* pFeatureLevel,
+        ID3D11DeviceContext** ppImmediateContext )
 {
     if( DXUT_EnsureD3D11APIs() && s_DynamicD3D11CreateDevice != NULL )
         return s_DynamicD3D11CreateDevice( pAdapter, DriverType, Software, Flags, pFeatureLevels, FeatureLevels,
@@ -737,7 +882,7 @@ HRESULT WINAPI DXUT_Dynamic_D3D11CreateDevice( IDXGIAdapter* pAdapter,
 }
 
 //--------------------------------------------------------------------------------------
-// Trace a string description of a decl 
+// Trace a string description of a decl
 //--------------------------------------------------------------------------------------
 void WINAPI DXUTTraceDecl( D3DVERTEXELEMENT9 decl[MAX_FVF_DECL_SIZE] )
 {
@@ -980,8 +1125,8 @@ WCHAR* WINAPI DXUTTraceWindowsMessage( UINT uMsg )
         TRACE_ID(WM_PENWINFIRST);
         TRACE_ID(WM_PENWINLAST);
         TRACE_ID(WM_APP);
-        default:
-            return L"Unknown";
+    default:
+        return L"Unknown";
     }
 }
 
@@ -991,44 +1136,44 @@ WCHAR* WINAPI DXUTTraceD3DDECLTYPEtoString( BYTE t )
 {
     switch( t )
     {
-        case D3DDECLTYPE_FLOAT1:
-            return L"D3DDECLTYPE_FLOAT1";
-        case D3DDECLTYPE_FLOAT2:
-            return L"D3DDECLTYPE_FLOAT2";
-        case D3DDECLTYPE_FLOAT3:
-            return L"D3DDECLTYPE_FLOAT3";
-        case D3DDECLTYPE_FLOAT4:
-            return L"D3DDECLTYPE_FLOAT4";
-        case D3DDECLTYPE_D3DCOLOR:
-            return L"D3DDECLTYPE_D3DCOLOR";
-        case D3DDECLTYPE_UBYTE4:
-            return L"D3DDECLTYPE_UBYTE4";
-        case D3DDECLTYPE_SHORT2:
-            return L"D3DDECLTYPE_SHORT2";
-        case D3DDECLTYPE_SHORT4:
-            return L"D3DDECLTYPE_SHORT4";
-        case D3DDECLTYPE_UBYTE4N:
-            return L"D3DDECLTYPE_UBYTE4N";
-        case D3DDECLTYPE_SHORT2N:
-            return L"D3DDECLTYPE_SHORT2N";
-        case D3DDECLTYPE_SHORT4N:
-            return L"D3DDECLTYPE_SHORT4N";
-        case D3DDECLTYPE_USHORT2N:
-            return L"D3DDECLTYPE_USHORT2N";
-        case D3DDECLTYPE_USHORT4N:
-            return L"D3DDECLTYPE_USHORT4N";
-        case D3DDECLTYPE_UDEC3:
-            return L"D3DDECLTYPE_UDEC3";
-        case D3DDECLTYPE_DEC3N:
-            return L"D3DDECLTYPE_DEC3N";
-        case D3DDECLTYPE_FLOAT16_2:
-            return L"D3DDECLTYPE_FLOAT16_2";
-        case D3DDECLTYPE_FLOAT16_4:
-            return L"D3DDECLTYPE_FLOAT16_4";
-        case D3DDECLTYPE_UNUSED:
-            return L"D3DDECLTYPE_UNUSED";
-        default:
-            return L"D3DDECLTYPE Unknown";
+    case D3DDECLTYPE_FLOAT1:
+        return L"D3DDECLTYPE_FLOAT1";
+    case D3DDECLTYPE_FLOAT2:
+        return L"D3DDECLTYPE_FLOAT2";
+    case D3DDECLTYPE_FLOAT3:
+        return L"D3DDECLTYPE_FLOAT3";
+    case D3DDECLTYPE_FLOAT4:
+        return L"D3DDECLTYPE_FLOAT4";
+    case D3DDECLTYPE_D3DCOLOR:
+        return L"D3DDECLTYPE_D3DCOLOR";
+    case D3DDECLTYPE_UBYTE4:
+        return L"D3DDECLTYPE_UBYTE4";
+    case D3DDECLTYPE_SHORT2:
+        return L"D3DDECLTYPE_SHORT2";
+    case D3DDECLTYPE_SHORT4:
+        return L"D3DDECLTYPE_SHORT4";
+    case D3DDECLTYPE_UBYTE4N:
+        return L"D3DDECLTYPE_UBYTE4N";
+    case D3DDECLTYPE_SHORT2N:
+        return L"D3DDECLTYPE_SHORT2N";
+    case D3DDECLTYPE_SHORT4N:
+        return L"D3DDECLTYPE_SHORT4N";
+    case D3DDECLTYPE_USHORT2N:
+        return L"D3DDECLTYPE_USHORT2N";
+    case D3DDECLTYPE_USHORT4N:
+        return L"D3DDECLTYPE_USHORT4N";
+    case D3DDECLTYPE_UDEC3:
+        return L"D3DDECLTYPE_UDEC3";
+    case D3DDECLTYPE_DEC3N:
+        return L"D3DDECLTYPE_DEC3N";
+    case D3DDECLTYPE_FLOAT16_2:
+        return L"D3DDECLTYPE_FLOAT16_2";
+    case D3DDECLTYPE_FLOAT16_4:
+        return L"D3DDECLTYPE_FLOAT16_4";
+    case D3DDECLTYPE_UNUSED:
+        return L"D3DDECLTYPE_UNUSED";
+    default:
+        return L"D3DDECLTYPE Unknown";
     }
 }
 
@@ -1036,22 +1181,22 @@ WCHAR* WINAPI DXUTTraceD3DDECLMETHODtoString( BYTE m )
 {
     switch( m )
     {
-        case D3DDECLMETHOD_DEFAULT:
-            return L"D3DDECLMETHOD_DEFAULT";
-        case D3DDECLMETHOD_PARTIALU:
-            return L"D3DDECLMETHOD_PARTIALU";
-        case D3DDECLMETHOD_PARTIALV:
-            return L"D3DDECLMETHOD_PARTIALV";
-        case D3DDECLMETHOD_CROSSUV:
-            return L"D3DDECLMETHOD_CROSSUV";
-        case D3DDECLMETHOD_UV:
-            return L"D3DDECLMETHOD_UV";
-        case D3DDECLMETHOD_LOOKUP:
-            return L"D3DDECLMETHOD_LOOKUP";
-        case D3DDECLMETHOD_LOOKUPPRESAMPLED:
-            return L"D3DDECLMETHOD_LOOKUPPRESAMPLED";
-        default:
-            return L"D3DDECLMETHOD Unknown";
+    case D3DDECLMETHOD_DEFAULT:
+        return L"D3DDECLMETHOD_DEFAULT";
+    case D3DDECLMETHOD_PARTIALU:
+        return L"D3DDECLMETHOD_PARTIALU";
+    case D3DDECLMETHOD_PARTIALV:
+        return L"D3DDECLMETHOD_PARTIALV";
+    case D3DDECLMETHOD_CROSSUV:
+        return L"D3DDECLMETHOD_CROSSUV";
+    case D3DDECLMETHOD_UV:
+        return L"D3DDECLMETHOD_UV";
+    case D3DDECLMETHOD_LOOKUP:
+        return L"D3DDECLMETHOD_LOOKUP";
+    case D3DDECLMETHOD_LOOKUPPRESAMPLED:
+        return L"D3DDECLMETHOD_LOOKUPPRESAMPLED";
+    default:
+        return L"D3DDECLMETHOD Unknown";
     }
 }
 
@@ -1059,36 +1204,36 @@ WCHAR* WINAPI DXUTTraceD3DDECLUSAGEtoString( BYTE u )
 {
     switch( u )
     {
-        case D3DDECLUSAGE_POSITION:
-            return L"D3DDECLUSAGE_POSITION";
-        case D3DDECLUSAGE_BLENDWEIGHT:
-            return L"D3DDECLUSAGE_BLENDWEIGHT";
-        case D3DDECLUSAGE_BLENDINDICES:
-            return L"D3DDECLUSAGE_BLENDINDICES";
-        case D3DDECLUSAGE_NORMAL:
-            return L"D3DDECLUSAGE_NORMAL";
-        case D3DDECLUSAGE_PSIZE:
-            return L"D3DDECLUSAGE_PSIZE";
-        case D3DDECLUSAGE_TEXCOORD:
-            return L"D3DDECLUSAGE_TEXCOORD";
-        case D3DDECLUSAGE_TANGENT:
-            return L"D3DDECLUSAGE_TANGENT";
-        case D3DDECLUSAGE_BINORMAL:
-            return L"D3DDECLUSAGE_BINORMAL";
-        case D3DDECLUSAGE_TESSFACTOR:
-            return L"D3DDECLUSAGE_TESSFACTOR";
-        case D3DDECLUSAGE_POSITIONT:
-            return L"D3DDECLUSAGE_POSITIONT";
-        case D3DDECLUSAGE_COLOR:
-            return L"D3DDECLUSAGE_COLOR";
-        case D3DDECLUSAGE_FOG:
-            return L"D3DDECLUSAGE_FOG";
-        case D3DDECLUSAGE_DEPTH:
-            return L"D3DDECLUSAGE_DEPTH";
-        case D3DDECLUSAGE_SAMPLE:
-            return L"D3DDECLUSAGE_SAMPLE";
-        default:
-            return L"D3DDECLUSAGE Unknown";
+    case D3DDECLUSAGE_POSITION:
+        return L"D3DDECLUSAGE_POSITION";
+    case D3DDECLUSAGE_BLENDWEIGHT:
+        return L"D3DDECLUSAGE_BLENDWEIGHT";
+    case D3DDECLUSAGE_BLENDINDICES:
+        return L"D3DDECLUSAGE_BLENDINDICES";
+    case D3DDECLUSAGE_NORMAL:
+        return L"D3DDECLUSAGE_NORMAL";
+    case D3DDECLUSAGE_PSIZE:
+        return L"D3DDECLUSAGE_PSIZE";
+    case D3DDECLUSAGE_TEXCOORD:
+        return L"D3DDECLUSAGE_TEXCOORD";
+    case D3DDECLUSAGE_TANGENT:
+        return L"D3DDECLUSAGE_TANGENT";
+    case D3DDECLUSAGE_BINORMAL:
+        return L"D3DDECLUSAGE_BINORMAL";
+    case D3DDECLUSAGE_TESSFACTOR:
+        return L"D3DDECLUSAGE_TESSFACTOR";
+    case D3DDECLUSAGE_POSITIONT:
+        return L"D3DDECLUSAGE_POSITIONT";
+    case D3DDECLUSAGE_COLOR:
+        return L"D3DDECLUSAGE_COLOR";
+    case D3DDECLUSAGE_FOG:
+        return L"D3DDECLUSAGE_FOG";
+    case D3DDECLUSAGE_DEPTH:
+        return L"D3DDECLUSAGE_DEPTH";
+    case D3DDECLUSAGE_SAMPLE:
+        return L"D3DDECLUSAGE_SAMPLE";
+    default:
+        return L"D3DDECLUSAGE Unknown";
     }
 }
 
@@ -1114,11 +1259,13 @@ BOOL WINAPI DXUTGetMonitorInfo( HMONITOR hMonitor, LPMONITORINFO lpMonitorInfo )
             OSVERSIONINFOA osvi =
             {
                 0
-            }; osvi.dwOSVersionInfoSize = sizeof( osvi ); GetVersionExA( ( OSVERSIONINFOA* )&osvi );
+            };
+            osvi.dwOSVersionInfoSize = sizeof( osvi );
+            GetVersionExA( ( OSVERSIONINFOA* )&osvi );
             bool bNT = ( VER_PLATFORM_WIN32_NT == osvi.dwPlatformId );
             s_pFnGetMonitorInfo = ( LPGETMONITORINFO )( bNT ? GetProcAddress( hUser32,
-                                                                              "GetMonitorInfoW" ) :
-                                                        GetProcAddress( hUser32, "GetMonitorInfoA" ) );
+                                  "GetMonitorInfoW" ) :
+                                  GetProcAddress( hUser32, "GetMonitorInfoA" ) );
         }
     }
 
@@ -1127,7 +1274,7 @@ BOOL WINAPI DXUTGetMonitorInfo( HMONITOR hMonitor, LPMONITORINFO lpMonitorInfo )
 
     RECT rcWork;
     if( ( hMonitor == DXUT_PRIMARY_MONITOR ) && lpMonitorInfo && ( lpMonitorInfo->cbSize >= sizeof( MONITORINFO ) ) &&
-        SystemParametersInfoA( SPI_GETWORKAREA, 0, &rcWork, 0 ) )
+            SystemParametersInfoA( SPI_GETWORKAREA, 0, &rcWork, 0 ) )
     {
         lpMonitorInfo->rcMonitor.left = 0;
         lpMonitorInfo->rcMonitor.top = 0;
@@ -1150,7 +1297,7 @@ HMONITOR WINAPI DXUTMonitorFromWindow( HWND hWnd, DWORD dwFlags )
         s_bInited = true;
         HMODULE hUser32 = GetModuleHandle( L"USER32" );
         if( hUser32 ) s_pFnGetMonitorFromWindow = ( LPMONITORFROMWINDOW )GetProcAddress( hUser32,
-                                                                                         "MonitorFromWindow" );
+                    "MonitorFromWindow" );
     }
 
     if( s_pFnGetMonitorFromWindow )
@@ -1179,8 +1326,8 @@ HMONITOR WINAPI DXUTMonitorFromRect( LPCRECT lprcScreenCoords, DWORD dwFlags )
 
 
 //--------------------------------------------------------------------------------------
-// Get the desktop resolution of an adapter. This isn't the same as the current resolution 
-// from GetAdapterDisplayMode since the device might be fullscreen 
+// Get the desktop resolution of an adapter. This isn't the same as the current resolution
+// from GetAdapterDisplayMode since the device might be fullscreen
 //--------------------------------------------------------------------------------------
 void WINAPI DXUTGetDesktopResolution( UINT AdapterOrdinal, UINT* pWidth, UINT* pHeight )
 {
@@ -1221,7 +1368,7 @@ void WINAPI DXUTGetDesktopResolution( UINT AdapterOrdinal, UINT* pWidth, UINT* p
 
 
 //--------------------------------------------------------------------------------------
-// Display error msg box to help debug 
+// Display error msg box to help debug
 //--------------------------------------------------------------------------------------
 HRESULT WINAPI DXUTTrace( const CHAR* strFile, DWORD dwLine, HRESULT hr,
                           const WCHAR* strMsg, bool bPopMsgBox )
@@ -1266,23 +1413,27 @@ void WINAPI DXUTConvertDeviceSettings11to9( DXUTD3D11DeviceSettings* pIn, DXUTD3
         pOut->pp.FullScreen_RefreshRateInHz = 60;
     else
         pOut->pp.FullScreen_RefreshRateInHz = pIn->sd.BufferDesc.RefreshRate.Numerator /
-            pIn->sd.BufferDesc.RefreshRate.Denominator;
+                                              pIn->sd.BufferDesc.RefreshRate.Denominator;
 
     switch( pIn->SyncInterval )
     {
-        case 0:
-            pOut->pp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE; break;
-        case 2:
-            pOut->pp.PresentationInterval = D3DPRESENT_INTERVAL_TWO; break;
-        case 3:
-            pOut->pp.PresentationInterval = D3DPRESENT_INTERVAL_THREE; break;
-        case 4:
-            pOut->pp.PresentationInterval = D3DPRESENT_INTERVAL_FOUR; break;
+    case 0:
+        pOut->pp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+        break;
+    case 2:
+        pOut->pp.PresentationInterval = D3DPRESENT_INTERVAL_TWO;
+        break;
+    case 3:
+        pOut->pp.PresentationInterval = D3DPRESENT_INTERVAL_THREE;
+        break;
+    case 4:
+        pOut->pp.PresentationInterval = D3DPRESENT_INTERVAL_FOUR;
+        break;
 
-        case 1:
-        default:
-            pOut->pp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
-            break;
+    case 1:
+    default:
+        pOut->pp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
+        break;
     }
 }
 
@@ -1331,21 +1482,26 @@ void WINAPI DXUTConvertDeviceSettings9to11( DXUTD3D9DeviceSettings* pIn, DXUTD3D
 
     switch( pIn->pp.PresentationInterval )
     {
-        case D3DPRESENT_INTERVAL_IMMEDIATE:
-            pOut->SyncInterval = 0; break;
-        case D3DPRESENT_INTERVAL_ONE:
-            pOut->SyncInterval = 1; break;
-        case D3DPRESENT_INTERVAL_TWO:
-            pOut->SyncInterval = 2; break;
-        case D3DPRESENT_INTERVAL_THREE:
-            pOut->SyncInterval = 3; break;
-        case D3DPRESENT_INTERVAL_FOUR:
-            pOut->SyncInterval = 4; break;
+    case D3DPRESENT_INTERVAL_IMMEDIATE:
+        pOut->SyncInterval = 0;
+        break;
+    case D3DPRESENT_INTERVAL_ONE:
+        pOut->SyncInterval = 1;
+        break;
+    case D3DPRESENT_INTERVAL_TWO:
+        pOut->SyncInterval = 2;
+        break;
+    case D3DPRESENT_INTERVAL_THREE:
+        pOut->SyncInterval = 3;
+        break;
+    case D3DPRESENT_INTERVAL_FOUR:
+        pOut->SyncInterval = 4;
+        break;
 
-        case D3DPRESENT_INTERVAL_DEFAULT:
-        default:
-            pOut->SyncInterval = 1;
-            break;
+    case D3DPRESENT_INTERVAL_DEFAULT:
+    default:
+        pOut->SyncInterval = 1;
+        break;
     }
 
     pOut->PresentFlags = 0;
@@ -1357,50 +1513,50 @@ DXGI_FORMAT WINAPI ConvertFormatD3D9ToDXGI( D3DFORMAT fmt )
 {
     switch( fmt )
     {
-        case D3DFMT_UNKNOWN:
-            return DXGI_FORMAT_UNKNOWN;
-        case D3DFMT_R8G8B8:
-        case D3DFMT_A8R8G8B8:
-        case D3DFMT_X8R8G8B8:
-            return DXGI_FORMAT_R8G8B8A8_UNORM;
-        case D3DFMT_R5G6B5:
-            return DXGI_FORMAT_B5G6R5_UNORM;
-        case D3DFMT_X1R5G5B5:
-        case D3DFMT_A1R5G5B5:
-            return DXGI_FORMAT_B5G5R5A1_UNORM;
-        case D3DFMT_A4R4G4B4:
-            return DXGI_FORMAT_R8G8B8A8_UNORM;
-        case D3DFMT_R3G3B2:
-            return DXGI_FORMAT_R8G8B8A8_UNORM;
-        case D3DFMT_A8:
-            return DXGI_FORMAT_A8_UNORM;
-        case D3DFMT_A8R3G3B2:
-            return DXGI_FORMAT_R8G8B8A8_UNORM;
-        case D3DFMT_X4R4G4B4:
-            return DXGI_FORMAT_R8G8B8A8_UNORM;
-        case D3DFMT_A2B10G10R10:
-            return DXGI_FORMAT_R10G10B10A2_UNORM;
-        case D3DFMT_A8B8G8R8:
-        case D3DFMT_X8B8G8R8:
-            return DXGI_FORMAT_B8G8R8A8_UNORM;
-        case D3DFMT_G16R16:
-            return DXGI_FORMAT_R16G16_UNORM;
-        case D3DFMT_A2R10G10B10:
-            return DXGI_FORMAT_R10G10B10A2_UNORM;
-        case D3DFMT_A16B16G16R16:
-            return DXGI_FORMAT_R16G16B16A16_UNORM;
-        case D3DFMT_R16F:
-            return DXGI_FORMAT_R16_FLOAT;
-        case D3DFMT_G16R16F:
-            return DXGI_FORMAT_R16G16_FLOAT;
-        case D3DFMT_A16B16G16R16F:
-            return DXGI_FORMAT_R16G16B16A16_FLOAT;
-        case D3DFMT_R32F:
-            return DXGI_FORMAT_R32_FLOAT;
-        case D3DFMT_G32R32F:
-            return DXGI_FORMAT_R32G32_FLOAT;
-        case D3DFMT_A32B32G32R32F:
-            return DXGI_FORMAT_R32G32B32A32_FLOAT;
+    case D3DFMT_UNKNOWN:
+        return DXGI_FORMAT_UNKNOWN;
+    case D3DFMT_R8G8B8:
+    case D3DFMT_A8R8G8B8:
+    case D3DFMT_X8R8G8B8:
+        return DXGI_FORMAT_R8G8B8A8_UNORM;
+    case D3DFMT_R5G6B5:
+        return DXGI_FORMAT_B5G6R5_UNORM;
+    case D3DFMT_X1R5G5B5:
+    case D3DFMT_A1R5G5B5:
+        return DXGI_FORMAT_B5G5R5A1_UNORM;
+    case D3DFMT_A4R4G4B4:
+        return DXGI_FORMAT_R8G8B8A8_UNORM;
+    case D3DFMT_R3G3B2:
+        return DXGI_FORMAT_R8G8B8A8_UNORM;
+    case D3DFMT_A8:
+        return DXGI_FORMAT_A8_UNORM;
+    case D3DFMT_A8R3G3B2:
+        return DXGI_FORMAT_R8G8B8A8_UNORM;
+    case D3DFMT_X4R4G4B4:
+        return DXGI_FORMAT_R8G8B8A8_UNORM;
+    case D3DFMT_A2B10G10R10:
+        return DXGI_FORMAT_R10G10B10A2_UNORM;
+    case D3DFMT_A8B8G8R8:
+    case D3DFMT_X8B8G8R8:
+        return DXGI_FORMAT_B8G8R8A8_UNORM;
+    case D3DFMT_G16R16:
+        return DXGI_FORMAT_R16G16_UNORM;
+    case D3DFMT_A2R10G10B10:
+        return DXGI_FORMAT_R10G10B10A2_UNORM;
+    case D3DFMT_A16B16G16R16:
+        return DXGI_FORMAT_R16G16B16A16_UNORM;
+    case D3DFMT_R16F:
+        return DXGI_FORMAT_R16_FLOAT;
+    case D3DFMT_G16R16F:
+        return DXGI_FORMAT_R16G16_FLOAT;
+    case D3DFMT_A16B16G16R16F:
+        return DXGI_FORMAT_R16G16B16A16_FLOAT;
+    case D3DFMT_R32F:
+        return DXGI_FORMAT_R32_FLOAT;
+    case D3DFMT_G32R32F:
+        return DXGI_FORMAT_R32G32_FLOAT;
+    case D3DFMT_A32B32G32R32F:
+        return DXGI_FORMAT_R32G32B32A32_FLOAT;
     }
     return DXGI_FORMAT_UNKNOWN;
 }
@@ -1410,36 +1566,36 @@ D3DFORMAT WINAPI ConvertFormatDXGIToD3D9( DXGI_FORMAT fmt )
 {
     switch( fmt )
     {
-        case DXGI_FORMAT_UNKNOWN:
-            return D3DFMT_UNKNOWN;
-        case DXGI_FORMAT_R8G8B8A8_UNORM:
-            return D3DFMT_A8R8G8B8;
-        case DXGI_FORMAT_B5G6R5_UNORM:
-            return D3DFMT_R5G6B5;
-        case DXGI_FORMAT_B5G5R5A1_UNORM:
-            return D3DFMT_A1R5G5B5;
-        case DXGI_FORMAT_A8_UNORM:
-            return D3DFMT_A8;
-        case DXGI_FORMAT_R10G10B10A2_UNORM:
-            return D3DFMT_A2B10G10R10;
-        case DXGI_FORMAT_B8G8R8A8_UNORM:
-            return D3DFMT_A8B8G8R8;
-        case DXGI_FORMAT_R16G16_UNORM:
-            return D3DFMT_G16R16;
-        case DXGI_FORMAT_R16G16B16A16_UNORM:
-            return D3DFMT_A16B16G16R16;
-        case DXGI_FORMAT_R16_FLOAT:
-            return D3DFMT_R16F;
-        case DXGI_FORMAT_R16G16_FLOAT:
-            return D3DFMT_G16R16F;
-        case DXGI_FORMAT_R16G16B16A16_FLOAT:
-            return D3DFMT_A16B16G16R16F;
-        case DXGI_FORMAT_R32_FLOAT:
-            return D3DFMT_R32F;
-        case DXGI_FORMAT_R32G32_FLOAT:
-            return D3DFMT_G32R32F;
-        case DXGI_FORMAT_R32G32B32A32_FLOAT:
-            return D3DFMT_A32B32G32R32F;
+    case DXGI_FORMAT_UNKNOWN:
+        return D3DFMT_UNKNOWN;
+    case DXGI_FORMAT_R8G8B8A8_UNORM:
+        return D3DFMT_A8R8G8B8;
+    case DXGI_FORMAT_B5G6R5_UNORM:
+        return D3DFMT_R5G6B5;
+    case DXGI_FORMAT_B5G5R5A1_UNORM:
+        return D3DFMT_A1R5G5B5;
+    case DXGI_FORMAT_A8_UNORM:
+        return D3DFMT_A8;
+    case DXGI_FORMAT_R10G10B10A2_UNORM:
+        return D3DFMT_A2B10G10R10;
+    case DXGI_FORMAT_B8G8R8A8_UNORM:
+        return D3DFMT_A8B8G8R8;
+    case DXGI_FORMAT_R16G16_UNORM:
+        return D3DFMT_G16R16;
+    case DXGI_FORMAT_R16G16B16A16_UNORM:
+        return D3DFMT_A16B16G16R16;
+    case DXGI_FORMAT_R16_FLOAT:
+        return D3DFMT_R16F;
+    case DXGI_FORMAT_R16G16_FLOAT:
+        return D3DFMT_G16R16F;
+    case DXGI_FORMAT_R16G16B16A16_FLOAT:
+        return D3DFMT_A16B16G16R16F;
+    case DXGI_FORMAT_R32_FLOAT:
+        return D3DFMT_R32F;
+    case DXGI_FORMAT_R32G32_FLOAT:
+        return D3DFMT_G32R32F;
+    case DXGI_FORMAT_R32G32B32A32_FLOAT:
+        return D3DFMT_A32B32G32R32F;
     }
     return D3DFMT_UNKNOWN;
 }
@@ -1488,7 +1644,7 @@ bool DXUTReLaunchMediaCenter()
     if( GetFileAttributes( szExpandedPath ) == 0xFFFFFFFF )
         return false;
 
-    // Launch ehshell.exe 
+    // Launch ehshell.exe
     INT_PTR result = ( INT_PTR )ShellExecute( NULL, TEXT( "open" ), szExpandedPath, NULL, NULL, SW_SHOWNORMAL );
     return ( result > 32 );
 }
@@ -1496,7 +1652,7 @@ bool DXUTReLaunchMediaCenter()
 typedef DWORD ( WINAPI* LPXINPUTGETSTATE )( DWORD dwUserIndex, XINPUT_STATE* pState );
 typedef DWORD ( WINAPI* LPXINPUTSETSTATE )( DWORD dwUserIndex, XINPUT_VIBRATION* pVibration );
 typedef DWORD ( WINAPI* LPXINPUTGETCAPABILITIES )( DWORD dwUserIndex, DWORD dwFlags,
-                                                   XINPUT_CAPABILITIES* pCapabilities );
+        XINPUT_CAPABILITIES* pCapabilities );
 typedef void ( WINAPI* LPXINPUTENABLE )( BOOL bEnable );
 
 //--------------------------------------------------------------------------------------
@@ -1552,33 +1708,33 @@ HRESULT DXUTGetGamepadState( DWORD dwPort, DXUT_GAMEPAD* pGamePad, bool bThumbst
     {
         // Apply deadzone to each axis independantly to slightly snap to up/down/left/right
         if( pGamePad->sThumbLX < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
-            pGamePad->sThumbLX > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE )
+                pGamePad->sThumbLX > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE )
             pGamePad->sThumbLX = 0;
         if( pGamePad->sThumbLY < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
-            pGamePad->sThumbLY > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE )
+                pGamePad->sThumbLY > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE )
             pGamePad->sThumbLY = 0;
         if( pGamePad->sThumbRX < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
-            pGamePad->sThumbRX > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE )
+                pGamePad->sThumbRX > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE )
             pGamePad->sThumbRX = 0;
         if( pGamePad->sThumbRY < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
-            pGamePad->sThumbRY > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE )
+                pGamePad->sThumbRY > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE )
             pGamePad->sThumbRY = 0;
     }
     else if( bThumbstickDeadZone )
     {
         // Apply deadzone if centered
         if( ( pGamePad->sThumbLX < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
-              pGamePad->sThumbLX > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ) &&
-            ( pGamePad->sThumbLY < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
-              pGamePad->sThumbLY > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ) )
+                pGamePad->sThumbLX > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ) &&
+                ( pGamePad->sThumbLY < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
+                  pGamePad->sThumbLY > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ) )
         {
             pGamePad->sThumbLX = 0;
             pGamePad->sThumbLY = 0;
         }
         if( ( pGamePad->sThumbRX < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
-              pGamePad->sThumbRX > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ) &&
-            ( pGamePad->sThumbRY < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
-              pGamePad->sThumbRY > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ) )
+                pGamePad->sThumbRX > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ) &&
+                ( pGamePad->sThumbRY < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
+                  pGamePad->sThumbRY > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ) )
         {
             pGamePad->sThumbRX = 0;
             pGamePad->sThumbRY = 0;
@@ -1591,7 +1747,7 @@ HRESULT DXUTGetGamepadState( DWORD dwPort, DXUT_GAMEPAD* pGamePad, bool bThumbst
     pGamePad->fThumbRX = pGamePad->sThumbRX / 32767.0f;
     pGamePad->fThumbRY = pGamePad->sThumbRY / 32767.0f;
 
-    // Get the boolean buttons that have been pressed since the last call. 
+    // Get the boolean buttons that have been pressed since the last call.
     // Each button is represented by one bit.
     pGamePad->wPressedButtons = ( pGamePad->wLastButtons ^ pGamePad->wButtons ) & pGamePad->wButtons;
     pGamePad->wLastButtons = pGamePad->wButtons;
@@ -1611,7 +1767,7 @@ HRESULT DXUTGetGamepadState( DWORD dwPort, DXUT_GAMEPAD* pGamePad, bool bThumbst
 
 
 //--------------------------------------------------------------------------------------
-// Don't pause the game or deactive the window without first stopping rumble otherwise 
+// Don't pause the game or deactive the window without first stopping rumble otherwise
 // the controller will continue to rumble
 //--------------------------------------------------------------------------------------
 void DXUTEnableXInput( bool bEnable )
@@ -1630,7 +1786,7 @@ void DXUTEnableXInput( bool bEnable )
 
 
 //--------------------------------------------------------------------------------------
-// Don't pause the game or deactive the window without first stopping rumble otherwise 
+// Don't pause the game or deactive the window without first stopping rumble otherwise
 // the controller will continue to rumble
 //--------------------------------------------------------------------------------------
 HRESULT DXUTStopRumbleOnAllControllers()
@@ -1664,22 +1820,22 @@ DXGI_FORMAT MAKE_SRGB( DXGI_FORMAT format )
 
     switch( format )
     {
-        case DXGI_FORMAT_R8G8B8A8_TYPELESS:
-        case DXGI_FORMAT_R8G8B8A8_UNORM:
-        case DXGI_FORMAT_R8G8B8A8_UINT:
-        case DXGI_FORMAT_R8G8B8A8_SNORM:
-        case DXGI_FORMAT_R8G8B8A8_SINT:
-            return DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+    case DXGI_FORMAT_R8G8B8A8_TYPELESS:
+    case DXGI_FORMAT_R8G8B8A8_UNORM:
+    case DXGI_FORMAT_R8G8B8A8_UINT:
+    case DXGI_FORMAT_R8G8B8A8_SNORM:
+    case DXGI_FORMAT_R8G8B8A8_SINT:
+        return DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 
-        case DXGI_FORMAT_BC1_TYPELESS:
-        case DXGI_FORMAT_BC1_UNORM:
-            return DXGI_FORMAT_BC1_UNORM_SRGB;
-        case DXGI_FORMAT_BC2_TYPELESS:
-        case DXGI_FORMAT_BC2_UNORM:
-            return DXGI_FORMAT_BC2_UNORM_SRGB;
-        case DXGI_FORMAT_BC3_TYPELESS:
-        case DXGI_FORMAT_BC3_UNORM:
-            return DXGI_FORMAT_BC3_UNORM_SRGB;
+    case DXGI_FORMAT_BC1_TYPELESS:
+    case DXGI_FORMAT_BC1_UNORM:
+        return DXGI_FORMAT_BC1_UNORM_SRGB;
+    case DXGI_FORMAT_BC2_TYPELESS:
+    case DXGI_FORMAT_BC2_UNORM:
+        return DXGI_FORMAT_BC2_UNORM_SRGB;
+    case DXGI_FORMAT_BC3_TYPELESS:
+    case DXGI_FORMAT_BC3_UNORM:
+        return DXGI_FORMAT_BC3_UNORM_SRGB;
 
     };
 
@@ -1694,22 +1850,22 @@ DXGI_FORMAT MAKE_TYPELESS( DXGI_FORMAT format )
 
     switch( format )
     {
-        case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
-        case DXGI_FORMAT_R8G8B8A8_UNORM:
-        case DXGI_FORMAT_R8G8B8A8_UINT:
-        case DXGI_FORMAT_R8G8B8A8_SNORM:
-        case DXGI_FORMAT_R8G8B8A8_SINT:
-            return DXGI_FORMAT_R8G8B8A8_TYPELESS;
+    case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
+    case DXGI_FORMAT_R8G8B8A8_UNORM:
+    case DXGI_FORMAT_R8G8B8A8_UINT:
+    case DXGI_FORMAT_R8G8B8A8_SNORM:
+    case DXGI_FORMAT_R8G8B8A8_SINT:
+        return DXGI_FORMAT_R8G8B8A8_TYPELESS;
 
-        case DXGI_FORMAT_BC1_UNORM_SRGB:
-        case DXGI_FORMAT_BC1_UNORM:
-            return DXGI_FORMAT_BC1_TYPELESS;
-        case DXGI_FORMAT_BC2_UNORM_SRGB:
-        case DXGI_FORMAT_BC2_UNORM:
-            return DXGI_FORMAT_BC2_TYPELESS;
-        case DXGI_FORMAT_BC3_UNORM_SRGB:
-        case DXGI_FORMAT_BC3_UNORM:
-            return DXGI_FORMAT_BC3_TYPELESS;
+    case DXGI_FORMAT_BC1_UNORM_SRGB:
+    case DXGI_FORMAT_BC1_UNORM:
+        return DXGI_FORMAT_BC1_TYPELESS;
+    case DXGI_FORMAT_BC2_UNORM_SRGB:
+    case DXGI_FORMAT_BC2_UNORM:
+        return DXGI_FORMAT_BC2_TYPELESS;
+    case DXGI_FORMAT_BC3_UNORM_SRGB:
+    case DXGI_FORMAT_BC3_UNORM:
+        return DXGI_FORMAT_BC3_TYPELESS;
     };
 
     return format;
@@ -1732,26 +1888,28 @@ HRESULT DXUTSnapD3D9Screenshot( LPCTSTR szFileName )
 
 
 
-//-------------------------------------------------------------------------------------- 
+//--------------------------------------------------------------------------------------
 HRESULT DXUTSnapD3D11Screenshot( LPCTSTR szFileName, D3DX11_IMAGE_FILE_FORMAT iff )
 {
     IDXGISwapChain *pSwap = DXUTGetDXGISwapChain();
 
     if (!pSwap)
         return E_FAIL;
-    
+
     ID3D11Texture2D* pBackBuffer;
     HRESULT hr = pSwap->GetBuffer( 0, __uuidof( *pBackBuffer ), ( LPVOID* )&pBackBuffer );
     if (hr != S_OK)
         return hr;
 
     ID3D11DeviceContext *dc  = DXUTGetD3D11DeviceContext();
-    if (!dc) {
+    if (!dc)
+    {
         SAFE_RELEASE(pBackBuffer);
         return E_FAIL;
     }
     ID3D11Device *pDevice = DXUTGetD3D11Device();
-    if (!dc) {
+    if (!dc)
+    {
         SAFE_RELEASE(pBackBuffer);
         return E_FAIL;
     }
@@ -1762,7 +1920,8 @@ HRESULT DXUTSnapD3D11Screenshot( LPCTSTR szFileName, D3DX11_IMAGE_FILE_FORMAT if
     pBackBuffer->GetType(&dim);
     // special case msaa textures
     ID3D11Texture2D *pCompatableTexture = pBackBuffer;
-    if ( dsc.SampleDesc.Count > 1) {
+    if ( dsc.SampleDesc.Count > 1)
+    {
         D3D11_TEXTURE2D_DESC dsc_new = dsc;
         dsc_new.SampleDesc.Count = 1;
         dsc_new.SampleDesc.Quality = 0;
@@ -1780,8 +1939,8 @@ HRESULT DXUTSnapD3D11Screenshot( LPCTSTR szFileName, D3DX11_IMAGE_FILE_FORMAT if
         pCompatableTexture->GetDesc(&dsc);
     }
 
-    hr = D3DX11SaveTextureToFileW(dc, pCompatableTexture, iff, szFileName); 
-        
+    hr = D3DX11SaveTextureToFileW(dc, pCompatableTexture, iff, szFileName);
+
     SAFE_RELEASE(pBackBuffer);
     SAFE_RELEASE(pCompatableTexture);
 

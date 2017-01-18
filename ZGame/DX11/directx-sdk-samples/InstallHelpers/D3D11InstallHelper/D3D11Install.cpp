@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------------
 // File: D3D11Install.cpp
 //
 // Desc: Windows code that calls D3D11InstallHelper sample DLL and displays
@@ -231,7 +231,7 @@ int PASCAL WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
         {
             LocDialogBox( IDD_SPDLG, InfoDialogProc );
             return 0;
-        } 
+        }
         else
         {
             return 2;
@@ -266,10 +266,10 @@ int PASCAL WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
             prg.hEvent2 = CreateEvent( NULL, FALSE, FALSE, NULL );
             prg.hThread = (HANDLE)_beginthreadex( NULL, 0, ProgressThread, &prg, 0, NULL );
         }
-    
+
         // Perform update
         UINT updateResult;
-        
+
         DWORD dwFlags = 0;
 
         if ( settings.bQuiet || settings.bPassive || settings.bMinimal )
@@ -310,7 +310,7 @@ int PASCAL WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
             }
             return 2;
         }
-    
+
         switch( updateResult )
         {
         case D3D11IH_RESULT_SUCCESS:
@@ -323,7 +323,7 @@ int PASCAL WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
                 MessageBox( NULL, msg, g_appName, MB_OK | MB_ICONINFORMATION );
             }
             return 0;
-    
+
         case D3D11IH_RESULT_SUCCESS_REBOOT:
             DEBUG_MSG( L"D3D11Install: ERROR - DoUpdateForDirect3D11 returned D3D11IH_RESULT_SUCCESS_REBOOT\n" )
 
@@ -335,7 +335,7 @@ int PASCAL WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
             }
             // Return require reboot
             return 1;
-    
+
         case D3D11IH_RESULT_NOT_SUPPORTED:
             DEBUG_MSG( L"D3D11Install: ERROR - DoUpdateForDirect3D11 returned D3D11IH_RESULT_NOT_SUPPORTED\n" )
 
@@ -347,7 +347,7 @@ int PASCAL WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
                 MessageBox( NULL, msg, g_appName, MB_OK | MB_ICONINFORMATION );
             }
             return 0;
-    
+
         case D3D11IH_RESULT_UPDATE_NOT_FOUND:
             DEBUG_MSG( L"D3D11Install: ERROR - DoUpdateForDirect3D11 returned D3D11IH_RESULT_UPDATE_NOT_FOUND\n" )
 
@@ -356,7 +356,7 @@ int PASCAL WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
                 LocDialogBox( IDD_NOTFOUNDDLG, InfoDialogProc );
             }
             return 2;
-    
+
         case D3D11IH_RESULT_UPDATE_DOWNLOAD_FAILED:
             DEBUG_MSG( L"D3D11Install: ERROR - DoUpdateForDirect3D11 returned D3D11IH_RESULT_UPDATE_DOWNLOAD_FAILED\n" )
 
@@ -365,7 +365,7 @@ int PASCAL WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
                 LocDialogBox( IDD_DLFAILDLG, InfoDialogProc );
             }
             return 2;
-    
+
         case D3D11IH_RESULT_UPDATE_INSTALL_FAILED:
             DEBUG_MSG( L"D3D11Install: ERROR - DoUpdateForDirect3D11 returned D3D11IH_RESULT_UPDATE_INSTALL_FAILED\n" )
 
@@ -374,7 +374,7 @@ int PASCAL WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
                 LocDialogBox( IDD_INSTALLFAILDLG, InfoDialogProc );
             }
             return 2;
-    
+
         case D3D11IH_RESULT_WU_SERVICE_ERROR:
             DEBUG_MSG( L"D3D11Install: ERROR - DoUpdateForDirect3D11 returned D3D11IH_RESULT_WU_SERVICE_ERROR\n" )
 
@@ -391,7 +391,7 @@ int PASCAL WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
                 return 2;
             }
             break;
-    
+
         default:
             DEBUG_MSG( L"D3D11Install: ERROR - DoUpdateForDirect3D11 returned unknown result\n" )
 
@@ -478,10 +478,10 @@ bool ParseCommandLine( SETTINGS* pSettings )
 
                     if ( FindResourceEx( g_hInstance, RT_DIALOG, MAKEINTRESOURCE( IDD_UPDATEDLG ), langId ) )
                     {
-                       g_langId = langId;
+                        g_langId = langId;
 
-                       // Reload our application name
-                       LocLoadString( IDS_APPNAME, g_appName, 64 );
+                        // Reload our application name
+                        LocLoadString( IDS_APPNAME, g_appName, 64 );
                     }
                     else if ( !pSettings->bQuiet && !pSettings->bPassive && !pSettings->bMinimal )
                     {
@@ -570,7 +570,7 @@ unsigned int __stdcall ProgressThread( void* pArg )
         HANDLE obj[2] = { prg->hEvent1, prg->hEvent2 };
 
         DWORD wait = WaitForMultipleObjects( 2, obj, FALSE, 100 );
-       
+
         if ( wait == WAIT_OBJECT_0 )
         {
             // Event 1 means we just began a new phase
@@ -580,45 +580,45 @@ unsigned int __stdcall ProgressThread( void* pArg )
                 break;
 
             case D3D11IH_PROGRESS_SEARCHING:
-                {
-                    WCHAR msg[ MSG_SIZE ];
-                    LocLoadString( IDS_SEARCHING, msg, MSG_SIZE );
-                    SetWindowText( prg->hStatus, msg );
-        
-                    // Since we know this update code will only be run on Windows Vista
-                    // we know that the OS has support for the MARQUEE Progress Bar style
-                    SetWindowLong( prg->hProgress, GWL_STYLE, GetWindowLong( prg->hProgress, GWL_STYLE ) | PBS_MARQUEE );
+            {
+                WCHAR msg[ MSG_SIZE ];
+                LocLoadString( IDS_SEARCHING, msg, MSG_SIZE );
+                SetWindowText( prg->hStatus, msg );
 
-                    SendMessage( prg->hProgress, PBM_SETMARQUEE, (WPARAM)TRUE, 0 );
-                    InvalidateRect( prg->hWnd, NULL, FALSE );
-                }
-                break;
+                // Since we know this update code will only be run on Windows Vista
+                // we know that the OS has support for the MARQUEE Progress Bar style
+                SetWindowLong( prg->hProgress, GWL_STYLE, GetWindowLong( prg->hProgress, GWL_STYLE ) | PBS_MARQUEE );
+
+                SendMessage( prg->hProgress, PBM_SETMARQUEE, (WPARAM)TRUE, 0 );
+                InvalidateRect( prg->hWnd, NULL, FALSE );
+            }
+            break;
 
             case D3D11IH_PROGRESS_DOWNLOADING:
-                {
-                    WCHAR msg[ MSG_SIZE ];
-                    LocLoadString( IDS_DOWNLOADING, msg, MSG_SIZE );
-                    SetWindowText( prg->hStatus, msg );
+            {
+                WCHAR msg[ MSG_SIZE ];
+                LocLoadString( IDS_DOWNLOADING, msg, MSG_SIZE );
+                SetWindowText( prg->hStatus, msg );
 
-                    SetWindowLong( prg->hProgress, GWL_STYLE, GetWindowLong( prg->hProgress, GWL_STYLE ) & ~PBS_MARQUEE );
+                SetWindowLong( prg->hProgress, GWL_STYLE, GetWindowLong( prg->hProgress, GWL_STYLE ) & ~PBS_MARQUEE );
 
-                    SendMessage( prg->hProgress, PBM_SETPOS, 0, 0 );
-                    InvalidateRect( prg->hWnd, NULL, FALSE );
-                }
-                break;
+                SendMessage( prg->hProgress, PBM_SETPOS, 0, 0 );
+                InvalidateRect( prg->hWnd, NULL, FALSE );
+            }
+            break;
 
             case D3D11IH_PROGRESS_INSTALLING:
-                {
-                    WCHAR msg[ MSG_SIZE ];
-                    LocLoadString( IDS_INSTALLING, msg, MSG_SIZE );
-                    SetWindowText( prg->hStatus, msg );
+            {
+                WCHAR msg[ MSG_SIZE ];
+                LocLoadString( IDS_INSTALLING, msg, MSG_SIZE );
+                SetWindowText( prg->hStatus, msg );
 
-                    SetWindowLong( prg->hProgress, GWL_STYLE, GetWindowLong( prg->hProgress, GWL_STYLE ) & ~PBS_MARQUEE );
+                SetWindowLong( prg->hProgress, GWL_STYLE, GetWindowLong( prg->hProgress, GWL_STYLE ) & ~PBS_MARQUEE );
 
-                    SendMessage( prg->hProgress, PBM_SETPOS, 0, 0 );
-                    InvalidateRect( prg->hWnd, NULL, FALSE );
-                }
-                break;
+                SendMessage( prg->hProgress, PBM_SETPOS, 0, 0 );
+                InvalidateRect( prg->hWnd, NULL, FALSE );
+            }
+            break;
 
             case D3D11IH_PROGRESS_END:
                 return 0;
@@ -709,21 +709,21 @@ static INT_PTR CALLBACK InfoDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPA
     switch( uMsg )
     {
     case WM_INITDIALOG:
-        {
-            RECT rect;
-            GetWindowRect( GetDesktopWindow(), &rect );
+    {
+        RECT rect;
+        GetWindowRect( GetDesktopWindow(), &rect );
 
-            RECT drect;
-            GetWindowRect( hwnd, &drect );
+        RECT drect;
+        GetWindowRect( hwnd, &drect );
 
-            SetWindowPos( hwnd, NULL,
-                          (rect.left + rect.right) / 2 - ( drect.right - drect.left) / 2,
-                          (rect.top + rect.bottom) / 2 - ( drect.bottom - drect.top) / 2,
-                          0, 0, SWP_NOSIZE );
+        SetWindowPos( hwnd, NULL,
+                      (rect.left + rect.right) / 2 - ( drect.right - drect.left) / 2,
+                      (rect.top + rect.bottom) / 2 - ( drect.bottom - drect.top) / 2,
+                      0, 0, SWP_NOSIZE );
 
-            SetWindowText( hwnd, g_appName );
-        }
-        return TRUE;
+        SetWindowText( hwnd, g_appName );
+    }
+    return TRUE;
 
     case WM_COMMAND:
         switch (LOWORD(wParam))
@@ -743,18 +743,18 @@ static INT_PTR CALLBACK InfoDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPA
         {
         case NM_CLICK:
         case NM_RETURN:
+        {
+            PNMLINK pNMLink = (PNMLINK)lParam;
+            LITEM item = pNMLink->item;
+            HWND hLink1 = GetDlgItem( hwnd, IDC_SYSLINK1 );
+            HWND hLink2 = GetDlgItem( hwnd, IDC_SYSLINK2 );
+            HWND hFrom = ((LPNMHDR)lParam)->hwndFrom;
+            if  ( hFrom == hLink1 || hFrom == hLink2 )
             {
-                PNMLINK pNMLink = (PNMLINK)lParam;
-                LITEM item = pNMLink->item;
-                HWND hLink1 = GetDlgItem( hwnd, IDC_SYSLINK1 );
-                HWND hLink2 = GetDlgItem( hwnd, IDC_SYSLINK2 );
-                HWND hFrom = ((LPNMHDR)lParam)->hwndFrom;
-                if  ( hFrom == hLink1 || hFrom == hLink2 )
-                {
-                    ShellExecute(NULL, L"open", item.szUrl, NULL, NULL, SW_SHOW);
-                }
-                break;
+                ShellExecute(NULL, L"open", item.szUrl, NULL, NULL, SW_SHOW);
             }
+            break;
+        }
         }
         return TRUE;
     }
@@ -769,21 +769,21 @@ static INT_PTR CALLBACK ProgressDialogProc( HWND hwnd, UINT uMsg, WPARAM wParam,
     switch( uMsg )
     {
     case WM_INITDIALOG:
-        {
-            RECT rect;
-            GetWindowRect( GetDesktopWindow(), &rect );
+    {
+        RECT rect;
+        GetWindowRect( GetDesktopWindow(), &rect );
 
-            RECT drect;
-            GetWindowRect( hwnd, &drect );
+        RECT drect;
+        GetWindowRect( hwnd, &drect );
 
-            SetWindowPos( hwnd, NULL,
-                          (rect.left + rect.right) / 2 - ( drect.right - drect.left) / 2,
-                          (rect.top + rect.bottom) / 2 - ( drect.bottom - drect.top) / 2,
-                          0, 0, SWP_NOSIZE );
+        SetWindowPos( hwnd, NULL,
+                      (rect.left + rect.right) / 2 - ( drect.right - drect.left) / 2,
+                      (rect.top + rect.bottom) / 2 - ( drect.bottom - drect.top) / 2,
+                      0, 0, SWP_NOSIZE );
 
-            SetWindowText( hwnd, g_appName );
-        }
-        return TRUE;
+        SetWindowText( hwnd, g_appName );
+    }
+    return TRUE;
     }
 
     return FALSE;

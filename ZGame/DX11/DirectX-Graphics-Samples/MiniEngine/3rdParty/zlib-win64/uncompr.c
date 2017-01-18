@@ -1,4 +1,4 @@
-/* uncompr.c -- decompress a memory buffer
+﻿/* uncompr.c -- decompress a memory buffer
  * Copyright (C) 1995-2003, 2010 Jean-loup Gailly.
  * For conditions of distribution and use, see copyright notice in zlib.h
  */
@@ -22,10 +22,10 @@
    buffer, or Z_DATA_ERROR if the input data was corrupted.
 */
 int ZEXPORT uncompress (dest, destLen, source, sourceLen)
-    Bytef *dest;
-    uLongf *destLen;
-    const Bytef *source;
-    uLong sourceLen;
+Bytef *dest;
+uLongf *destLen;
+const Bytef *source;
+uLong sourceLen;
 {
     z_stream stream;
     int err;
@@ -46,7 +46,8 @@ int ZEXPORT uncompress (dest, destLen, source, sourceLen)
     if (err != Z_OK) return err;
 
     err = inflate(&stream, Z_FINISH);
-    if (err != Z_STREAM_END) {
+    if (err != Z_STREAM_END)
+    {
         inflateEnd(&stream);
         if (err == Z_NEED_DICT || (err == Z_BUF_ERROR && stream.avail_in == 0))
             return Z_DATA_ERROR;

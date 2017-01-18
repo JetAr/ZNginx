@@ -1,4 +1,4 @@
-//*********************************************************
+﻿//*********************************************************
 //
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
@@ -41,7 +41,7 @@ HRESULT STDMETHODCALLTYPE CDXGIAffinitySwapChain::Present(
     {
     case EAffinitySwapChainMode::MultiWindow:
     {
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -119,7 +119,7 @@ HRESULT STDMETHODCALLTYPE CDXGIAffinitySwapChain::GetBuffer(
     UINT AffinityMask)
 {
     UINT IndicesCount = 0;
-    
+
     std::vector<ID3D12Resource*> Resources;
     Resources.resize(GetNodeCount(), nullptr);
     UINT EffectiveAffinityMask = (AffinityMask == 0) ? GetNodeMask() : AffinityMask & GetNodeMask();
@@ -128,7 +128,7 @@ HRESULT STDMETHODCALLTYPE CDXGIAffinitySwapChain::GetBuffer(
     {
     case EAffinitySwapChainMode::MultiWindow:
     {
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -167,7 +167,7 @@ HRESULT STDMETHODCALLTYPE CDXGIAffinitySwapChain::GetBuffer(
     }
     case EAffinitySwapChainMode::SingleWindow:
     {
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -208,7 +208,7 @@ HRESULT STDMETHODCALLTYPE CDXGIAffinitySwapChain::SetFullscreenState(
     UINT EffectiveAffinityMask = (AffinityMask == 0) ? GetNodeMask() : AffinityMask & GetNodeMask();
     if (mMode == EAffinitySwapChainMode::MultiWindow)
     {
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -310,7 +310,7 @@ HRESULT STDMETHODCALLTYPE CDXGIAffinitySwapChain::ResizeBuffers(
     {
     case EAffinitySwapChainMode::MultiWindow:
     {
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -406,7 +406,7 @@ HRESULT STDMETHODCALLTYPE CDXGIAffinitySwapChain::ResizeTarget(
     UINT EffectiveAffinityMask = (AffinityMask == 0) ? GetNodeMask() : AffinityMask & GetNodeMask();
     if (mMode == EAffinitySwapChainMode::MultiWindow)
     {
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -539,7 +539,7 @@ HRESULT CDXGIAffinitySwapChain::SetBackgroundColor(const DXGI_RGBA* pColor, UINT
     UINT EffectiveAffinityMask = (AffinityMask == 0) ? GetNodeMask() : AffinityMask & GetNodeMask();
     if (mMode == EAffinitySwapChainMode::MultiWindow)
     {
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -581,7 +581,7 @@ HRESULT CDXGIAffinitySwapChain::SetRotation(DXGI_MODE_ROTATION Rotation, UINT Af
     UINT EffectiveAffinityMask = (AffinityMask == 0) ? GetNodeMask() : AffinityMask & GetNodeMask();
     if (mMode == EAffinitySwapChainMode::MultiWindow)
     {
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -625,7 +625,7 @@ HRESULT STDMETHODCALLTYPE CDXGIAffinitySwapChain::SetSourceSize(
     UINT EffectiveAffinityMask = (AffinityMask == 0) ? GetNodeMask() : AffinityMask & GetNodeMask();
     if (mMode == EAffinitySwapChainMode::MultiWindow)
     {
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -672,7 +672,7 @@ HRESULT STDMETHODCALLTYPE CDXGIAffinitySwapChain::SetMaximumFrameLatency(
     UINT EffectiveAffinityMask = (AffinityMask == 0) ? GetNodeMask() : AffinityMask & GetNodeMask();
     if (mMode == EAffinitySwapChainMode::MultiWindow)
     {
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -727,7 +727,7 @@ HRESULT CDXGIAffinitySwapChain::SetMatrixTransform(
     UINT EffectiveAffinityMask = (AffinityMask == 0) ? GetNodeMask() : AffinityMask & GetNodeMask();
     if (mMode == EAffinitySwapChainMode::MultiWindow)
     {
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -791,7 +791,7 @@ HRESULT STDMETHODCALLTYPE CDXGIAffinitySwapChain::SetColorSpace1(
     UINT EffectiveAffinityMask = (AffinityMask == 0) ? GetNodeMask() : AffinityMask & GetNodeMask();
     if (mMode == EAffinitySwapChainMode::MultiWindow)
     {
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -900,17 +900,17 @@ HRESULT CDXGIAffinitySwapChain::CreateDummyRenderTargetsAndCrossAdapterCopyBuffe
         ID3D12Heap* CrossAdapterCopyBufferHeap = nullptr;
 
         CD3DX12_RESOURCE_DESC const ResourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-            Format,
-            Width,
-            Height,
-            1, 1,
-            1, 0,
-            D3D12_RESOURCE_FLAG_ALLOW_CROSS_ADAPTER,
-            D3D12_TEXTURE_LAYOUT_ROW_MAJOR);
+                    Format,
+                    Width,
+                    Height,
+                    1, 1,
+                    1, 0,
+                    D3D12_RESOURCE_FLAG_ALLOW_CROSS_ADAPTER,
+                    D3D12_TEXTURE_LAYOUT_ROW_MAJOR);
 
         D3D12_RESOURCE_ALLOCATION_INFO const AllocationInfo = DeviceContext.mDevice->GetResourceAllocationInfo(
-            0,
-            1, &ResourceDesc);
+                    0,
+                    1, &ResourceDesc);
         CD3DX12_HEAP_DESC heapDesc(AllocationInfo.SizeInBytes, D3D12_HEAP_TYPE_DEFAULT, 0, D3D12_HEAP_FLAG_SHARED | D3D12_HEAP_FLAG_SHARED_CROSS_ADAPTER);
         if (AffinityDevice->GetAffinityMode() == EAffinityMode::LDA)
         {

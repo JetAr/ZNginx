@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        ComputeFilter\src/scene.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -41,7 +41,8 @@
 #include <DirectXTex.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-namespace {
+namespace
+{
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 HRESULT load_texture(ID3D11Device * device, const wchar_t * filename, ID3D11ShaderResourceView ** out_srv)
@@ -63,7 +64,8 @@ HRESULT load_texture(ID3D11Device * device, const wchar_t * filename, ID3D11Shad
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-} namespace Scene {
+} namespace Scene
+{
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 HRESULT load_model(ID3D11Device * device, const char * filename, std::vector <RenderObject *> &out_objects)
@@ -71,17 +73,17 @@ HRESULT load_model(ID3D11Device * device, const char * filename, std::vector <Re
     Assimp::Importer asset_importer;
 #if 0
     unsigned int asset_import_flags =    aiProcess_JoinIdenticalVertices |
-                                        aiProcess_PreTransformVertices | 
-                                        aiProcess_RemoveRedundantMaterials |
-                                        aiProcess_GenUVCoords |
-                                        aiProcess_TransformUVCoords |
-                                        aiProcess_FlipUVs |
-                                        aiProcess_OptimizeMeshes |
-                                        aiProcess_ImproveCacheLocality;
+                                         aiProcess_PreTransformVertices |
+                                         aiProcess_RemoveRedundantMaterials |
+                                         aiProcess_GenUVCoords |
+                                         aiProcess_TransformUVCoords |
+                                         aiProcess_FlipUVs |
+                                         aiProcess_OptimizeMeshes |
+                                         aiProcess_ImproveCacheLocality;
 #else
-    unsigned int asset_import_flags =    aiProcess_PreTransformVertices | 
-                                        aiProcess_RemoveRedundantMaterials |
-                                        aiProcess_FlipUVs;
+    unsigned int asset_import_flags =    aiProcess_PreTransformVertices |
+                                         aiProcess_RemoveRedundantMaterials |
+                                         aiProcess_FlipUVs;
 #endif
 
     printf("Loading assets from: \"%s\", this may take a little time...\n", filename);
@@ -94,7 +96,7 @@ HRESULT load_model(ID3D11Device * device, const char * filename, std::vector <Re
     }
 
     std::string file_path = filename;
-    
+
     int split_pos1 = (int) file_path.rfind('\\');
     int split_pos2 = (int) file_path.rfind('/');
     int split_pos = max(split_pos1, split_pos2);
@@ -111,7 +113,7 @@ HRESULT load_model(ID3D11Device * device, const char * filename, std::vector <Re
     for (UINT mesh_idx=0; mesh_idx < model->mNumMeshes; mesh_idx++)
     {
         aiMesh * mesh = model->mMeshes[mesh_idx];
-        aiMaterial * material = model->mMaterials[mesh->mMaterialIndex];            
+        aiMaterial * material = model->mMaterials[mesh->mMaterialIndex];
         out_objects.push_back(new RenderObject(device, file_path, mesh, material));
     }
 
@@ -138,7 +140,8 @@ RenderObject::RenderObject(ID3D11Device * device, const std::string &file_path, 
         source_indices[3*face_idx+2] = face->mIndices[2];
     }
 
-    D3D11_BUFFER_DESC ib_desc = {
+    D3D11_BUFFER_DESC ib_desc =
+    {
         idx_buffer_size,            // Byte Width
         D3D11_USAGE_DEFAULT,        // Usage
         D3D11_BIND_INDEX_BUFFER,    // Bind Flags
@@ -147,7 +150,8 @@ RenderObject::RenderObject(ID3D11Device * device, const std::string &file_path, 
         0,                            // Structure Byte Stride
     };
 
-    D3D11_SUBRESOURCE_DATA ib_data = {
+    D3D11_SUBRESOURCE_DATA ib_data =
+    {
         (void *) source_indices,    // Source Data
         0,                            // Line Pitch
         0                            // Slice Pitch
@@ -186,7 +190,8 @@ RenderObject::RenderObject(ID3D11Device * device, const std::string &file_path, 
         UINT buffer_size = element_size * this->vtx_count;
         this->vtx_strides[buffer_idx] = source_strides[buffer_idx];
         this->vtx_offsets[buffer_idx] = 0;
-        D3D11_BUFFER_DESC vb_desc = {
+        D3D11_BUFFER_DESC vb_desc =
+        {
             buffer_size,                // Byte Width
             D3D11_USAGE_DEFAULT,        // Usage
             D3D11_BIND_VERTEX_BUFFER,    // Bind Flags
@@ -195,7 +200,8 @@ RenderObject::RenderObject(ID3D11Device * device, const std::string &file_path, 
             0,                            // Structure Byte Stride
         };
 
-        D3D11_SUBRESOURCE_DATA vb_data = {
+        D3D11_SUBRESOURCE_DATA vb_data =
+        {
             source_data[buffer_idx],    // Source Data
             0,                            // Line Pitch
             0                            // Slice Pitch

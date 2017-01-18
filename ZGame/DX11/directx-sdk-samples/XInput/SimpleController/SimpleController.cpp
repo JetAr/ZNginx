@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------------
 // File: SimpleController.cpp
 //
 // Simple read of XInput gamepad controller state
@@ -54,7 +54,7 @@ bool    g_bDeadZoneOn = true;
 
 //-----------------------------------------------------------------------------
 // Name: WinMain()
-// Desc: Entry point for the application.  Since we use a simple dialog for 
+// Desc: Entry point for the application.  Since we use a simple dialog for
 //       user interaction we don't need to pump messages.
 //-----------------------------------------------------------------------------
 int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int )
@@ -106,7 +106,7 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPWSTR, 
         }
     }
 
-    // Clean up 
+    // Clean up
     UnregisterClass( L"XInputSample", nullptr );
 
     CoUninitialize();
@@ -148,20 +148,20 @@ void RenderFrame()
 
             if( g_bDeadZoneOn )
             {
-                // Zero value if thumbsticks are within the dead zone 
+                // Zero value if thumbsticks are within the dead zone
                 if( ( g_Controllers[i].state.Gamepad.sThumbLX < INPUT_DEADZONE &&
-                      g_Controllers[i].state.Gamepad.sThumbLX > -INPUT_DEADZONE ) &&
-                    ( g_Controllers[i].state.Gamepad.sThumbLY < INPUT_DEADZONE &&
-                      g_Controllers[i].state.Gamepad.sThumbLY > -INPUT_DEADZONE ) )
+                        g_Controllers[i].state.Gamepad.sThumbLX > -INPUT_DEADZONE ) &&
+                        ( g_Controllers[i].state.Gamepad.sThumbLY < INPUT_DEADZONE &&
+                          g_Controllers[i].state.Gamepad.sThumbLY > -INPUT_DEADZONE ) )
                 {
                     g_Controllers[i].state.Gamepad.sThumbLX = 0;
                     g_Controllers[i].state.Gamepad.sThumbLY = 0;
                 }
 
                 if( ( g_Controllers[i].state.Gamepad.sThumbRX < INPUT_DEADZONE &&
-                      g_Controllers[i].state.Gamepad.sThumbRX > -INPUT_DEADZONE ) &&
-                    ( g_Controllers[i].state.Gamepad.sThumbRY < INPUT_DEADZONE &&
-                      g_Controllers[i].state.Gamepad.sThumbRY > -INPUT_DEADZONE ) )
+                        g_Controllers[i].state.Gamepad.sThumbRX > -INPUT_DEADZONE ) &&
+                        ( g_Controllers[i].state.Gamepad.sThumbRY < INPUT_DEADZONE &&
+                          g_Controllers[i].state.Gamepad.sThumbRY > -INPUT_DEADZONE ) )
                 {
                     g_Controllers[i].state.Gamepad.sThumbRX = 0;
                     g_Controllers[i].state.Gamepad.sThumbRY = 0;
@@ -169,32 +169,32 @@ void RenderFrame()
             }
 
             swprintf_s( sz[i], 1024,
-                              L"Controller %u: Connected\n"
-                              L"  Buttons: %s%s%s%s%s%s%s%s%s%s%s%s%s%s\n"
-                              L"  Left Trigger: %u\n"
-                              L"  Right Trigger: %u\n"
-                              L"  Left Thumbstick: %d/%d\n"
-                              L"  Right Thumbstick: %d/%d", i,
-                              ( wButtons & XINPUT_GAMEPAD_DPAD_UP ) ? L"DPAD_UP " : L"",
-                              ( wButtons & XINPUT_GAMEPAD_DPAD_DOWN ) ? L"DPAD_DOWN " : L"",
-                              ( wButtons & XINPUT_GAMEPAD_DPAD_LEFT ) ? L"DPAD_LEFT " : L"",
-                              ( wButtons & XINPUT_GAMEPAD_DPAD_RIGHT ) ? L"DPAD_RIGHT " : L"",
-                              ( wButtons & XINPUT_GAMEPAD_START ) ? L"START " : L"",
-                              ( wButtons & XINPUT_GAMEPAD_BACK ) ? L"BACK " : L"",
-                              ( wButtons & XINPUT_GAMEPAD_LEFT_THUMB ) ? L"LEFT_THUMB " : L"",
-                              ( wButtons & XINPUT_GAMEPAD_RIGHT_THUMB ) ? L"RIGHT_THUMB " : L"",
-                              ( wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER ) ? L"LEFT_SHOULDER " : L"",
-                              ( wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER ) ? L"RIGHT_SHOULDER " : L"",
-                              ( wButtons & XINPUT_GAMEPAD_A ) ? L"A " : L"",
-                              ( wButtons & XINPUT_GAMEPAD_B ) ? L"B " : L"",
-                              ( wButtons & XINPUT_GAMEPAD_X ) ? L"X " : L"",
-                              ( wButtons & XINPUT_GAMEPAD_Y ) ? L"Y " : L"",
-                              g_Controllers[i].state.Gamepad.bLeftTrigger,
-                              g_Controllers[i].state.Gamepad.bRightTrigger,
-                              g_Controllers[i].state.Gamepad.sThumbLX,
-                              g_Controllers[i].state.Gamepad.sThumbLY,
-                              g_Controllers[i].state.Gamepad.sThumbRX,
-                              g_Controllers[i].state.Gamepad.sThumbRY );
+                        L"Controller %u: Connected\n"
+                        L"  Buttons: %s%s%s%s%s%s%s%s%s%s%s%s%s%s\n"
+                        L"  Left Trigger: %u\n"
+                        L"  Right Trigger: %u\n"
+                        L"  Left Thumbstick: %d/%d\n"
+                        L"  Right Thumbstick: %d/%d", i,
+                        ( wButtons & XINPUT_GAMEPAD_DPAD_UP ) ? L"DPAD_UP " : L"",
+                        ( wButtons & XINPUT_GAMEPAD_DPAD_DOWN ) ? L"DPAD_DOWN " : L"",
+                        ( wButtons & XINPUT_GAMEPAD_DPAD_LEFT ) ? L"DPAD_LEFT " : L"",
+                        ( wButtons & XINPUT_GAMEPAD_DPAD_RIGHT ) ? L"DPAD_RIGHT " : L"",
+                        ( wButtons & XINPUT_GAMEPAD_START ) ? L"START " : L"",
+                        ( wButtons & XINPUT_GAMEPAD_BACK ) ? L"BACK " : L"",
+                        ( wButtons & XINPUT_GAMEPAD_LEFT_THUMB ) ? L"LEFT_THUMB " : L"",
+                        ( wButtons & XINPUT_GAMEPAD_RIGHT_THUMB ) ? L"RIGHT_THUMB " : L"",
+                        ( wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER ) ? L"LEFT_SHOULDER " : L"",
+                        ( wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER ) ? L"RIGHT_SHOULDER " : L"",
+                        ( wButtons & XINPUT_GAMEPAD_A ) ? L"A " : L"",
+                        ( wButtons & XINPUT_GAMEPAD_B ) ? L"B " : L"",
+                        ( wButtons & XINPUT_GAMEPAD_X ) ? L"X " : L"",
+                        ( wButtons & XINPUT_GAMEPAD_Y ) ? L"Y " : L"",
+                        g_Controllers[i].state.Gamepad.bLeftTrigger,
+                        g_Controllers[i].state.Gamepad.bRightTrigger,
+                        g_Controllers[i].state.Gamepad.sThumbLX,
+                        g_Controllers[i].state.Gamepad.sThumbLY,
+                        g_Controllers[i].state.Gamepad.sThumbRX,
+                        g_Controllers[i].state.Gamepad.sThumbRY );
         }
         else
         {
@@ -210,12 +210,12 @@ void RenderFrame()
 
     if( bRepaint )
     {
-        // Repaint the window if needed 
+        // Repaint the window if needed
         InvalidateRect( g_hWnd, nullptr, TRUE );
         UpdateWindow( g_hWnd );
     }
 
-    // This sample doesn't use Direct3D.  Instead, it just yields CPU time to other 
+    // This sample doesn't use Direct3D.  Instead, it just yields CPU time to other
     // apps but this is not typically done when rendering
     Sleep( 10 );
 }
@@ -228,68 +228,68 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
     switch( msg )
     {
-        case WM_ACTIVATEAPP:
-        {
+    case WM_ACTIVATEAPP:
+    {
 #if (_WIN32_WINNT >= 0x0602 /*_WIN32_WINNT_WIN8*/) || defined(USE_DIRECTX_SDK)
 
-            //
-            // XInputEnable is implemented by XInput 1.3 and 1.4, but not 9.1.0
-            //
+        //
+        // XInputEnable is implemented by XInput 1.3 and 1.4, but not 9.1.0
+        //
 
-            if( wParam == TRUE )
-            {
-                // App is now active, so re-enable XInput
-                XInputEnable( TRUE );
-            }
-            else
-            {
-                // App is now inactive, so disable XInput to prevent
-                // user input from effecting application and to 
-                // disable rumble. 
-                XInputEnable( FALSE );
-            }
+        if( wParam == TRUE )
+        {
+            // App is now active, so re-enable XInput
+            XInputEnable( TRUE );
+        }
+        else
+        {
+            // App is now inactive, so disable XInput to prevent
+            // user input from effecting application and to
+            // disable rumble.
+            XInputEnable( FALSE );
+        }
 
 #endif
-            break;
-        }
+        break;
+    }
 
-        case WM_KEYDOWN:
+    case WM_KEYDOWN:
+    {
+        if( wParam == 'D' ) g_bDeadZoneOn = !g_bDeadZoneOn;
+        break;
+    }
+
+    case WM_PAINT:
+    {
+        // Paint some simple explanation text
+        PAINTSTRUCT ps;
+        HDC hDC = BeginPaint( hWnd, &ps );
+        SetBkColor( hDC, 0xFF0000 );
+        SetTextColor( hDC, 0xFFFFFF );
+        RECT rect;
+        GetClientRect( hWnd, &rect );
+
+        rect.top = 20;
+        rect.left = 20;
+        DrawText( hDC,
+                  L"This sample displays the state of all 4 XInput controllers\nPress 'D' to toggle dead zone clamping.", -1, &rect, 0 );
+
+        for( DWORD i = 0; i < MAX_CONTROLLERS; i++ )
         {
-            if( wParam == 'D' ) g_bDeadZoneOn = !g_bDeadZoneOn;
-            break;
-        }
-
-        case WM_PAINT:
-        {
-            // Paint some simple explanation text
-            PAINTSTRUCT ps;
-            HDC hDC = BeginPaint( hWnd, &ps );
-            SetBkColor( hDC, 0xFF0000 );
-            SetTextColor( hDC, 0xFFFFFF );
-            RECT rect;
-            GetClientRect( hWnd, &rect );
-
-            rect.top = 20;
+            rect.top = i * 120 + 70;
             rect.left = 20;
-            DrawText( hDC,
-                      L"This sample displays the state of all 4 XInput controllers\nPress 'D' to toggle dead zone clamping.", -1, &rect, 0 );
-
-            for( DWORD i = 0; i < MAX_CONTROLLERS; i++ )
-            {
-                rect.top = i * 120 + 70;
-                rect.left = 20;
-                DrawText( hDC, g_szMessage[i], -1, &rect, 0 );
-            }
-
-            EndPaint( hWnd, &ps );
-            return 0;
+            DrawText( hDC, g_szMessage[i], -1, &rect, 0 );
         }
 
-        case WM_DESTROY:
-        {
-            PostQuitMessage( 0 );
-            break;
-        }
+        EndPaint( hWnd, &ps );
+        return 0;
+    }
+
+    case WM_DESTROY:
+    {
+        PostQuitMessage( 0 );
+        break;
+    }
     }
 
     return DefWindowProc( hWnd, msg, wParam, lParam );

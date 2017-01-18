@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: Camera.h
 //
 // Helper functions for Direct3D programming.
@@ -34,12 +34,16 @@ public:
         m_vCenter.x = float(m_nWidth) / 2.0f;
         m_vCenter.y = float(m_nHeight) / 2.0f;
     }
-    void SetOffset( _In_ INT nX, _In_ INT nY ) { m_Offset.x = nX; m_Offset.y = nY; }
+    void SetOffset( _In_ INT nX, _In_ INT nY )
+    {
+        m_Offset.x = nX;
+        m_Offset.y = nY;
+    }
 
     // Call these from client and use GetRotationMatrix() to read new rotation matrix
     void OnBegin( _In_ int nX, _In_ int nY );   // start the rotation (pass current mouse position)
     void OnMove( _In_ int nX, _In_ int nY );    // continue the rotation (pass current mouse position)
-    void OnEnd();                               // end the rotation 
+    void OnEnd();                               // end the rotation
 
     // Or call this to automatically handle left, middle, right buttons
     LRESULT HandleMessages( _In_ HWND hWnd, _In_ UINT uMsg, _In_ WPARAM wParam, _In_ LPARAM lParam );
@@ -51,11 +55,26 @@ public:
         XMVECTOR q = XMLoadFloat4( &m_qNow );
         return DirectX::XMMatrixRotationQuaternion( q );
     }
-    DirectX::XMMATRIX GetTranslationMatrix() const { return DirectX::XMLoadFloat4x4( &m_mTranslation ); }
-    DirectX::XMMATRIX GetTranslationDeltaMatrix() const { return DirectX::XMLoadFloat4x4( &m_mTranslationDelta ); }
-    bool IsBeingDragged() const { return m_bDrag; }
-    DirectX::XMVECTOR GetQuatNow() const { return DirectX::XMLoadFloat4( &m_qNow ); }
-    void SetQuatNow( _In_ DirectX::FXMVECTOR& q ) { DirectX::XMStoreFloat4( &m_qNow, q ); }
+    DirectX::XMMATRIX GetTranslationMatrix() const
+    {
+        return DirectX::XMLoadFloat4x4( &m_mTranslation );
+    }
+    DirectX::XMMATRIX GetTranslationDeltaMatrix() const
+    {
+        return DirectX::XMLoadFloat4x4( &m_mTranslationDelta );
+    }
+    bool IsBeingDragged() const
+    {
+        return m_bDrag;
+    }
+    DirectX::XMVECTOR GetQuatNow() const
+    {
+        return DirectX::XMLoadFloat4( &m_qNow );
+    }
+    void SetQuatNow( _In_ DirectX::FXMVECTOR& q )
+    {
+        DirectX::XMStoreFloat4( &m_qNow, q );
+    }
 
     static DirectX::XMVECTOR QuatFromBallPoints( _In_ DirectX::FXMVECTOR vFrom, _In_ DirectX::FXMVECTOR vTo )
     {
@@ -74,7 +93,7 @@ protected:
     POINT m_Offset;                         // window offset, or upper-left corner of window
     INT m_nWidth;                           // arc ball's window width
     INT m_nHeight;                          // arc ball's window height
-    DirectX::XMFLOAT2 m_vCenter;            // center of arc ball 
+    DirectX::XMFLOAT2 m_vCenter;            // center of arc ball
     float m_fRadius;                        // arc ball's radius in screen coords
     float m_fRadiusTranslation;             // arc ball's radius for translating the target
 
@@ -137,7 +156,7 @@ enum D3DUtil_CameraKeys
 
 //--------------------------------------------------------------------------------------
 // Simple base camera class that moves and rotates.  The base class
-//       records mouse and keyboard input for use by a derived class, and 
+//       records mouse and keyboard input for use by a derived class, and
 //       keeps common state.
 //--------------------------------------------------------------------------------------
 class CBaseCamera
@@ -155,15 +174,27 @@ public:
     virtual void SetProjParams( _In_ float fFOV, _In_ float fAspect, _In_ float fNearPlane, _In_ float fFarPlane );
 
     // Functions to change behavior
-    virtual void SetDragRect( _In_ const RECT& rc ) { m_rcDrag = rc; }
-    void SetInvertPitch( _In_ bool bInvertPitch ) { m_bInvertPitch = bInvertPitch; }
+    virtual void SetDragRect( _In_ const RECT& rc )
+    {
+        m_rcDrag = rc;
+    }
+    void SetInvertPitch( _In_ bool bInvertPitch )
+    {
+        m_bInvertPitch = bInvertPitch;
+    }
     void SetDrag( _In_ bool bMovementDrag, _In_ float fTotalDragTimeToZero = 0.25f )
     {
         m_bMovementDrag = bMovementDrag;
         m_fTotalDragTimeToZero = fTotalDragTimeToZero;
     }
-    void SetEnableYAxisMovement( _In_ bool bEnableYAxisMovement ) { m_bEnableYAxisMovement = bEnableYAxisMovement; }
-    void SetEnablePositionMovement( _In_ bool bEnablePositionMovement ) { m_bEnablePositionMovement = bEnablePositionMovement; }
+    void SetEnableYAxisMovement( _In_ bool bEnableYAxisMovement )
+    {
+        m_bEnableYAxisMovement = bEnableYAxisMovement;
+    }
+    void SetEnablePositionMovement( _In_ bool bEnablePositionMovement )
+    {
+        m_bEnablePositionMovement = bEnablePositionMovement;
+    }
     void SetClipToBoundary( _In_ bool bClipToBoundary, _In_opt_ DirectX::XMFLOAT3* pvMinBoundary, _In_opt_ DirectX::XMFLOAT3* pvMaxBoundary )
     {
         m_bClipToBoundary = bClipToBoundary;
@@ -175,28 +206,70 @@ public:
         m_fRotationScaler = fRotationScaler;
         m_fMoveScaler = fMoveScaler;
     }
-    void SetNumberOfFramesToSmoothMouseData( _In_ int nFrames ) { if( nFrames > 0 ) m_fFramesToSmoothMouseData = ( float )nFrames; }
-    void SetResetCursorAfterMove( _In_ bool bResetCursorAfterMove ) { m_bResetCursorAfterMove = bResetCursorAfterMove; }
+    void SetNumberOfFramesToSmoothMouseData( _In_ int nFrames )
+    {
+        if( nFrames > 0 ) m_fFramesToSmoothMouseData = ( float )nFrames;
+    }
+    void SetResetCursorAfterMove( _In_ bool bResetCursorAfterMove )
+    {
+        m_bResetCursorAfterMove = bResetCursorAfterMove;
+    }
 
     // Functions to get state
-    DirectX::XMMATRIX GetViewMatrix() const { return DirectX::XMLoadFloat4x4( &m_mView ); }
-    DirectX::XMMATRIX GetProjMatrix() const { return DirectX::XMLoadFloat4x4( &m_mProj ); }
-    DirectX::XMVECTOR GetEyePt() const { return DirectX::XMLoadFloat3( &m_vEye ); }
-    DirectX::XMVECTOR GetLookAtPt() const { return DirectX::XMLoadFloat3( &m_vLookAt ); }
-    float GetNearClip() const { return m_fNearPlane; }
-    float GetFarClip() const { return m_fFarPlane; }
+    DirectX::XMMATRIX GetViewMatrix() const
+    {
+        return DirectX::XMLoadFloat4x4( &m_mView );
+    }
+    DirectX::XMMATRIX GetProjMatrix() const
+    {
+        return DirectX::XMLoadFloat4x4( &m_mProj );
+    }
+    DirectX::XMVECTOR GetEyePt() const
+    {
+        return DirectX::XMLoadFloat3( &m_vEye );
+    }
+    DirectX::XMVECTOR GetLookAtPt() const
+    {
+        return DirectX::XMLoadFloat3( &m_vLookAt );
+    }
+    float GetNearClip() const
+    {
+        return m_fNearPlane;
+    }
+    float GetFarClip() const
+    {
+        return m_fFarPlane;
+    }
 
-    bool IsBeingDragged() const { return ( m_bMouseLButtonDown || m_bMouseMButtonDown || m_bMouseRButtonDown ); }
-    bool IsMouseLButtonDown() const { return m_bMouseLButtonDown; }
-    bool IsMouseMButtonDown() const { return m_bMouseMButtonDown; }
-    bool sMouseRButtonDown() const { return m_bMouseRButtonDown; }
+    bool IsBeingDragged() const
+    {
+        return ( m_bMouseLButtonDown || m_bMouseMButtonDown || m_bMouseRButtonDown );
+    }
+    bool IsMouseLButtonDown() const
+    {
+        return m_bMouseLButtonDown;
+    }
+    bool IsMouseMButtonDown() const
+    {
+        return m_bMouseMButtonDown;
+    }
+    bool sMouseRButtonDown() const
+    {
+        return m_bMouseRButtonDown;
+    }
 
 protected:
     // Functions to map a WM_KEYDOWN key to a D3DUtil_CameraKeys enum
     virtual D3DUtil_CameraKeys MapKey( _In_ UINT nKey );
 
-    bool IsKeyDown( _In_ BYTE key ) const { return( ( key & KEY_IS_DOWN_MASK ) == KEY_IS_DOWN_MASK ); }
-    bool WasKeyDown( _In_ BYTE key ) const { return( ( key & KEY_WAS_DOWN_MASK ) == KEY_WAS_DOWN_MASK ); }
+    bool IsKeyDown( _In_ BYTE key ) const
+    {
+        return( ( key & KEY_IS_DOWN_MASK ) == KEY_IS_DOWN_MASK );
+    }
+    bool WasKeyDown( _In_ BYTE key ) const
+    {
+        return( ( key & KEY_WAS_DOWN_MASK ) == KEY_WAS_DOWN_MASK );
+    }
 
     DirectX::XMVECTOR ConstrainToBoundary( _In_ DirectX::FXMVECTOR v )
     {
@@ -205,7 +278,7 @@ protected:
         XMVECTOR vMin = XMLoadFloat3( &m_vMinBoundary );
         XMVECTOR vMax = XMLoadFloat3( &m_vMaxBoundary );
 
-        // Constrain vector to a bounding box 
+        // Constrain vector to a bounding box
         return XMVectorClamp( v, vMin, vMax );
     }
 
@@ -213,7 +286,7 @@ protected:
     void UpdateVelocity( _In_ float fElapsedTime );
     void GetInput( _In_ bool bGetKeyboardInput, _In_ bool bGetMouseInput, _In_ bool bGetGamepadInput );
 
-    DirectX::XMFLOAT4X4 m_mView;                    // View matrix 
+    DirectX::XMFLOAT4X4 m_mView;                    // View matrix
     DirectX::XMFLOAT4X4 m_mProj;                    // Projection matrix
 
     DXUT_GAMEPAD m_GamePad[DXUT_MAX_CONTROLLERS];  // XInput controller state
@@ -226,7 +299,7 @@ protected:
     DirectX::XMFLOAT3 m_vKeyboardDirection; // Direction vector of keyboard input
     POINT m_ptLastMousePosition;            // Last absolute position of mouse cursor
     int m_nCurrentButtonMask;               // mask of which buttons are down
-    int m_nMouseWheelDelta;                 // Amount of middle wheel scroll (+/-) 
+    int m_nMouseWheelDelta;                 // Amount of middle wheel scroll (+/-)
     DirectX::XMFLOAT2 m_vMouseDelta;        // Mouse relative delta smoothed over a few frames
     float m_fFramesToSmoothMouseData;       // Number of frames to smooth mouse data over
     DirectX::XMFLOAT3 m_vDefaultEye;        // Default camera eye position
@@ -251,15 +324,15 @@ protected:
     float m_fRotationScaler;                // Scaler for rotation
     float m_fMoveScaler;                    // Scaler for movement
 
-    bool m_bMouseLButtonDown;               // True if left button is down 
-    bool m_bMouseMButtonDown;               // True if middle button is down 
-    bool m_bMouseRButtonDown;               // True if right button is down 
+    bool m_bMouseLButtonDown;               // True if left button is down
+    bool m_bMouseMButtonDown;               // True if middle button is down
+    bool m_bMouseRButtonDown;               // True if right button is down
     bool m_bMovementDrag;                   // If true, then camera movement will slow to a stop otherwise movement is instant
     bool m_bInvertPitch;                    // Invert the pitch axis
-    bool m_bEnablePositionMovement;         // If true, then the user can translate the camera/model 
+    bool m_bEnablePositionMovement;         // If true, then the user can translate the camera/model
     bool m_bEnableYAxisMovement;            // If true, then camera can move in the y-axis
     bool m_bClipToBoundary;                 // If true, then the camera will be clipped to the boundary
-    bool m_bResetCursorAfterMove;           // If true, the class will reset the cursor position so that the cursor always has space to move 
+    bool m_bResetCursorAfterMove;           // If true, the class will reset the cursor position so that the cursor always has space to move
 
     DirectX::XMFLOAT3 m_vMinBoundary;       // Min point in clip boundary
     DirectX::XMFLOAT3 m_vMaxBoundary;       // Max point in clip boundary
@@ -268,9 +341,9 @@ protected:
 
 //--------------------------------------------------------------------------------------
 // Simple first person camera class that moves and rotates.
-//       It allows yaw and pitch but not roll.  It uses WM_KEYDOWN and 
-//       GetCursorPos() to respond to keyboard and mouse input and updates the 
-//       view matrix based on input.  
+//       It allows yaw and pitch but not roll.  It uses WM_KEYDOWN and
+//       GetCursorPos() to respond to keyboard and mouse input and updates the
+//       view matrix based on input.
 //--------------------------------------------------------------------------------------
 class CFirstPersonCamera : public CBaseCamera
 {
@@ -284,12 +357,27 @@ public:
     void SetRotateButtons( _In_ bool bLeft, _In_ bool bMiddle, _In_ bool bRight, _In_ bool bRotateWithoutButtonDown = false );
 
     // Functions to get state
-    DirectX::XMMATRIX GetWorldMatrix() const { return DirectX::XMLoadFloat4x4( &m_mCameraWorld ); }
+    DirectX::XMMATRIX GetWorldMatrix() const
+    {
+        return DirectX::XMLoadFloat4x4( &m_mCameraWorld );
+    }
 
-    DirectX::XMVECTOR GetWorldRight() const { return DirectX::XMLoadFloat3( reinterpret_cast<const DirectX::XMFLOAT3*>( &m_mCameraWorld._11 ) ); }
-    DirectX::XMVECTOR GetWorldUp() const { return DirectX::XMLoadFloat3( reinterpret_cast<const DirectX::XMFLOAT3*>( &m_mCameraWorld._21 ) ); }
-    DirectX::XMVECTOR GetWorldAhead() const { return DirectX::XMLoadFloat3( reinterpret_cast<const DirectX::XMFLOAT3*>( &m_mCameraWorld._31 ) ); }
-    DirectX::XMVECTOR GetEyePt() const { return DirectX::XMLoadFloat3( reinterpret_cast<const DirectX::XMFLOAT3*>( &m_mCameraWorld._41 ) ); }
+    DirectX::XMVECTOR GetWorldRight() const
+    {
+        return DirectX::XMLoadFloat3( reinterpret_cast<const DirectX::XMFLOAT3*>( &m_mCameraWorld._11 ) );
+    }
+    DirectX::XMVECTOR GetWorldUp() const
+    {
+        return DirectX::XMLoadFloat3( reinterpret_cast<const DirectX::XMFLOAT3*>( &m_mCameraWorld._21 ) );
+    }
+    DirectX::XMVECTOR GetWorldAhead() const
+    {
+        return DirectX::XMLoadFloat3( reinterpret_cast<const DirectX::XMFLOAT3*>( &m_mCameraWorld._31 ) );
+    }
+    DirectX::XMVECTOR GetEyePt() const
+    {
+        return DirectX::XMLoadFloat3( reinterpret_cast<const DirectX::XMFLOAT3*>( &m_mCameraWorld._41 ) );
+    }
 
 protected:
     DirectX::XMFLOAT4X4 m_mCameraWorld; // World matrix of the camera (inverse of the view matrix)
@@ -321,7 +409,10 @@ public:
         m_nRotateModelButtonMask = nRotateModelButtonMask, m_nZoomButtonMask = nZoomButtonMask;
         m_nRotateCameraButtonMask = nRotateCameraButtonMask;
     }
-    void SetAttachCameraToModel( _In_ bool bEnable = false ) { m_bAttachCameraToModel = bEnable; }
+    void SetAttachCameraToModel( _In_ bool bEnable = false )
+    {
+        m_bAttachCameraToModel = bEnable;
+    }
     void SetWindow( _In_ int nWidth, _In_ int nHeight, _In_ float fArcballRadius=0.9f )
     {
         m_WorldArcBall.SetWindow( nWidth, nHeight, fArcballRadius );
@@ -329,11 +420,19 @@ public:
     }
     void SetRadius( _In_ float fDefaultRadius=5.0f, _In_ float fMinRadius=1.0f, _In_ float fMaxRadius=FLT_MAX )
     {
-        m_fDefaultRadius = m_fRadius = fDefaultRadius; m_fMinRadius = fMinRadius; m_fMaxRadius = fMaxRadius;
+        m_fDefaultRadius = m_fRadius = fDefaultRadius;
+        m_fMinRadius = fMinRadius;
+        m_fMaxRadius = fMaxRadius;
         m_bDragSinceLastUpdate = true;
     }
-    void SetModelCenter( _In_ const DirectX::XMFLOAT3& vModelCenter ) { m_vModelCenter = vModelCenter; }
-    void SetLimitPitch( _In_ bool bLimitPitch ) { m_bLimitPitch = bLimitPitch; }
+    void SetModelCenter( _In_ const DirectX::XMFLOAT3& vModelCenter )
+    {
+        m_vModelCenter = vModelCenter;
+    }
+    void SetLimitPitch( _In_ bool bLimitPitch )
+    {
+        m_bLimitPitch = bLimitPitch;
+    }
     void SetViewQuat( _In_ DirectX::FXMVECTOR q )
     {
         m_ViewArcBall.SetQuatNow( q );
@@ -346,7 +445,10 @@ public:
     }
 
     // Functions to get state
-    DirectX::XMMATRIX GetWorldMatrix() const { return DirectX::XMLoadFloat4x4( &m_mWorld ); }
+    DirectX::XMMATRIX GetWorldMatrix() const
+    {
+        return DirectX::XMLoadFloat4x4( &m_mWorld );
+    }
     void SetWorldMatrix( _In_ DirectX::CXMMATRIX mWorld )
     {
         XMStoreFloat4x4( &m_mWorld, mWorld );
@@ -357,7 +459,7 @@ protected:
     CD3DArcBall m_WorldArcBall;
     CD3DArcBall m_ViewArcBall;
     DirectX::XMFLOAT3 m_vModelCenter;
-    DirectX::XMFLOAT4X4 m_mModelLastRot;     // Last arcball rotation matrix for model 
+    DirectX::XMFLOAT4X4 m_mModelLastRot;     // Last arcball rotation matrix for model
     DirectX::XMFLOAT4X4 m_mModelRot;         // Rotation matrix of model
     DirectX::XMFLOAT4X4 m_mWorld;            // World matrix of model
 
@@ -368,8 +470,8 @@ protected:
     bool m_bAttachCameraToModel;
     bool m_bLimitPitch;
     bool m_bDragSinceLastUpdate;            // True if mouse drag has happened since last time FrameMove is called.
-    float m_fRadius;                        // Distance from the camera to model 
-    float m_fDefaultRadius;                 // Distance from the camera to model 
+    float m_fRadius;                        // Distance from the camera to model
+    float m_fDefaultRadius;                 // Distance from the camera to model
     float m_fMinRadius;                     // Min radius
     float m_fMaxRadius;                     // Max radius
 
@@ -378,8 +480,8 @@ protected:
 
 
 //--------------------------------------------------------------------------------------
-// Manages the mesh, direction, mouse events of a directional arrow that 
-// rotates around a radius controlled by an arcball 
+// Manages the mesh, direction, mouse events of a directional arrow that
+// rotates around a radius controlled by an arcball
 //--------------------------------------------------------------------------------------
 class CDXUTDirectionWidget
 {
@@ -390,7 +492,10 @@ public:
 
     HRESULT OnRender( _In_ DirectX::FXMVECTOR color, _In_ DirectX::CXMMATRIX pmView, _In_ DirectX::CXMMATRIX pmProj, _In_ DirectX::FXMVECTOR vEyePt );
 
-    DirectX::XMVECTOR GetLightDirection() const { return DirectX::XMLoadFloat3( &m_vCurrentDir ); }
+    DirectX::XMVECTOR GetLightDirection() const
+    {
+        return DirectX::XMLoadFloat3( &m_vCurrentDir );
+    }
     void SetLightDirection( _In_ DirectX::FXMVECTOR vDir )
     {
         DirectX::XMStoreFloat3( &m_vCurrentDir, vDir );
@@ -400,12 +505,24 @@ public:
     {
         m_vDefaultDir = m_vCurrentDir = vDir;
     }
-    void SetButtonMask( _In_ int nRotate = MOUSE_RIGHT_BUTTON ) { m_nRotateMask = nRotate; }
+    void SetButtonMask( _In_ int nRotate = MOUSE_RIGHT_BUTTON )
+    {
+        m_nRotateMask = nRotate;
+    }
 
-    float GetRadius() const { return m_fRadius; }
-    void SetRadius( _In_ float fRadius ) { m_fRadius = fRadius; }
+    float GetRadius() const
+    {
+        return m_fRadius;
+    }
+    void SetRadius( _In_ float fRadius )
+    {
+        m_fRadius = fRadius;
+    }
 
-    bool IsBeingDragged() { return m_ArcBall.IsBeingDragged(); }
+    bool IsBeingDragged()
+    {
+        return m_ArcBall.IsBeingDragged();
+    }
 
     static HRESULT WINAPI StaticOnD3D11CreateDevice( _In_ ID3D11Device* pd3dDevice, _In_ ID3D11DeviceContext* pd3dImmediateContext );
     static void WINAPI StaticOnD3D11DestroyDevice();

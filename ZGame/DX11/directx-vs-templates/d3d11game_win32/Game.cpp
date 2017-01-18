@@ -1,4 +1,4 @@
-//
+﻿//
 // Game.cpp
 //
 
@@ -169,32 +169,32 @@ void Game::CreateDevice()
 
     // Create the DX11 API device object, and get a corresponding context.
     HRESULT hr = D3D11CreateDevice(
-        nullptr,                                // specify nullptr to use the default adapter
-        D3D_DRIVER_TYPE_HARDWARE,
-        nullptr,
-        creationFlags,
-        featureLevels,
-        _countof(featureLevels),
-        D3D11_SDK_VERSION,
-        m_d3dDevice.ReleaseAndGetAddressOf(),   // returns the Direct3D device created
-        &m_featureLevel,                        // returns feature level of device created
-        m_d3dContext.ReleaseAndGetAddressOf()   // returns the device immediate context
-        );
+                     nullptr,                                // specify nullptr to use the default adapter
+                     D3D_DRIVER_TYPE_HARDWARE,
+                     nullptr,
+                     creationFlags,
+                     featureLevels,
+                     _countof(featureLevels),
+                     D3D11_SDK_VERSION,
+                     m_d3dDevice.ReleaseAndGetAddressOf(),   // returns the Direct3D device created
+                     &m_featureLevel,                        // returns feature level of device created
+                     m_d3dContext.ReleaseAndGetAddressOf()   // returns the device immediate context
+                 );
 
     if (hr == E_INVALIDARG)
     {
         // DirectX 11.0 platforms will not recognize D3D_FEATURE_LEVEL_11_1 so we need to retry without it.
         hr = D3D11CreateDevice(nullptr,
-            D3D_DRIVER_TYPE_HARDWARE,
-            nullptr,
-            creationFlags,
-            &featureLevels[1],
-            _countof(featureLevels) - 1,
-            D3D11_SDK_VERSION,
-            m_d3dDevice.ReleaseAndGetAddressOf(),
-            &m_featureLevel,
-            m_d3dContext.ReleaseAndGetAddressOf()
-            );
+                               D3D_DRIVER_TYPE_HARDWARE,
+                               nullptr,
+                               creationFlags,
+                               &featureLevels[1],
+                               _countof(featureLevels) - 1,
+                               D3D11_SDK_VERSION,
+                               m_d3dDevice.ReleaseAndGetAddressOf(),
+                               &m_featureLevel,
+                               m_d3dContext.ReleaseAndGetAddressOf()
+                              );
     }
 
     DX::ThrowIfFailed(hr);
@@ -256,7 +256,7 @@ void Game::CreateResources()
             // If the device was removed for any reason, a new device and swap chain will need to be created.
             OnDeviceLost();
 
-            // Everything is set up now. Do not continue execution of this method. OnDeviceLost will reenter this method 
+            // Everything is set up now. Do not continue execution of this method. OnDeviceLost will reenter this method
             // and correctly set up the new device.
             return;
         }
@@ -299,13 +299,13 @@ void Game::CreateResources()
 
             // Create a SwapChain from a Win32 window.
             DX::ThrowIfFailed(dxgiFactory2->CreateSwapChainForHwnd(
-                m_d3dDevice.Get(),
-                m_window,
-                &swapChainDesc,
-                &fsSwapChainDesc,
-                nullptr,
-                m_swapChain1.ReleaseAndGetAddressOf()
-                ));
+                                  m_d3dDevice.Get(),
+                                  m_window,
+                                  &swapChainDesc,
+                                  &fsSwapChainDesc,
+                                  nullptr,
+                                  m_swapChain1.ReleaseAndGetAddressOf()
+                              ));
 
             DX::ThrowIfFailed(m_swapChain1.As(&m_swapChain));
         }

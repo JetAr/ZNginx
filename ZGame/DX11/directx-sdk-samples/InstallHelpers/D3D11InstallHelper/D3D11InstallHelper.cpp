@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: D3D11InstallHelper.cpp
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -42,7 +42,7 @@ STDAPI CheckDirect3D11Status( UINT *pStatus )
     // OS Version check tells us most of what we need to know
     OSVERSIONINFOEX osinfo;
     osinfo.dwOSVersionInfoSize = sizeof(osinfo);
-    #pragma warning(suppress:4996)
+#pragma warning(suppress:4996)
     if ( !GetVersionEx( (OSVERSIONINFO*)&osinfo ) )
     {
         HRESULT hr = HRESULT_FROM_WIN32( GetLastError() );
@@ -51,7 +51,7 @@ STDAPI CheckDirect3D11Status( UINT *pStatus )
     }
 
     if ( osinfo.dwMajorVersion > 6
-         || ( osinfo.dwMajorVersion == 6 && osinfo.dwMinorVersion >= 1 ) )
+            || ( osinfo.dwMajorVersion == 6 && osinfo.dwMinorVersion >= 1 ) )
     {
         // Windows 7/Server 2008 R2 (6.1) and later versions of OS already have Direct3D 11
         *pStatus = D3D11IH_STATUS_INSTALLED;
@@ -101,7 +101,7 @@ STDAPI CheckDirect3D11Status( UINT *pStatus )
         // Verify it is a supported architecture for KB971644
         SYSTEM_INFO sysinfo;
         GetSystemInfo( &sysinfo );
-    
+
         switch( sysinfo.wProcessorArchitecture )
         {
         case PROCESSOR_ARCHITECTURE_INTEL:
@@ -156,7 +156,7 @@ static void D3D11UpdateProgressCBDefault( UINT phase, UINT progress, void *pCont
 template <class I> class IUNK : public I
 {
 public:
-    IUNK( D3D11UPDATEPROGRESSCB pfnProgress, void* pContext ) : 
+    IUNK( D3D11UPDATEPROGRESSCB pfnProgress, void* pContext ) :
         _pfnProgress( pfnProgress ), _pContext( pContext ) {}
 
     STDMETHODIMP QueryInterface( REFIID riid, void __RPC_FAR *__RPC_FAR *ppvObject)
@@ -172,14 +172,21 @@ public:
 
         return E_NOINTERFACE;
     }
-    STDMETHODIMP_(ULONG) AddRef(void) { return 1; }
-    STDMETHODIMP_(ULONG) Release(void) { return 1; }
+    STDMETHODIMP_(ULONG) AddRef(void)
+    {
+        return 1;
+    }
+    STDMETHODIMP_(ULONG) Release(void)
+    {
+        return 1;
+    }
 
     D3D11UPDATEPROGRESSCB   _pfnProgress;
     void *                  _pContext;
 };
 
-class ISCC : public IUNK<ISearchCompletedCallback> {
+class ISCC : public IUNK<ISearchCompletedCallback>
+{
 public:
     ISCC( D3D11UPDATEPROGRESSCB pfnProgress, void* pContext ) :
         IUNK<ISearchCompletedCallback>( pfnProgress, pContext )
@@ -202,7 +209,8 @@ public:
     HANDLE _Event;
 };
 
-class IDPC : public IUNK<IDownloadProgressChangedCallback> {
+class IDPC : public IUNK<IDownloadProgressChangedCallback>
+{
 public:
     IDPC( D3D11UPDATEPROGRESSCB pfnProgress, void* pContext ) :
         IUNK<IDownloadProgressChangedCallback>( pfnProgress, pContext ) {}
@@ -223,7 +231,8 @@ public:
     }
 };
 
-class IDCC : public IUNK<IDownloadCompletedCallback> {
+class IDCC : public IUNK<IDownloadCompletedCallback>
+{
 public:
     IDCC( D3D11UPDATEPROGRESSCB pfnProgress, void* pContext ) :
         IUNK<IDownloadCompletedCallback>( pfnProgress, pContext )
@@ -246,7 +255,8 @@ public:
     HANDLE _Event;
 };
 
-class IIPC : public IUNK<IInstallationProgressChangedCallback> {
+class IIPC : public IUNK<IInstallationProgressChangedCallback>
+{
 public:
     IIPC( D3D11UPDATEPROGRESSCB pfnProgress, void* pContext ) :
         IUNK<IInstallationProgressChangedCallback>( pfnProgress, pContext ) {}
@@ -267,7 +277,8 @@ public:
     }
 };
 
-class IICC : public IUNK<IInstallationCompletedCallback> {
+class IICC : public IUNK<IInstallationCompletedCallback>
+{
 public:
     IICC( D3D11UPDATEPROGRESSCB pfnProgress, void* pContext ) :
         IUNK<IInstallationCompletedCallback>( pfnProgress, pContext )
@@ -315,7 +326,7 @@ STDAPI DoUpdateForDirect3D11( DWORD dwFlags, D3D11UPDATEPROGRESSCB pfnProgress,
     case PROCESSOR_ARCHITECTURE_INTEL:
     case PROCESSOR_ARCHITECTURE_AMD64:
         break;
-    
+
     default:
         *pResult = D3D11IH_RESULT_NOT_SUPPORTED;
         return S_OK;
@@ -324,7 +335,7 @@ STDAPI DoUpdateForDirect3D11( DWORD dwFlags, D3D11UPDATEPROGRESSCB pfnProgress,
     // Verify we have Windows Vista/Server 2008 SP2 already installed
     OSVERSIONINFOEX osinfo;
     osinfo.dwOSVersionInfoSize = sizeof(osinfo);
-    #pragma warning(suppress:4996)
+#pragma warning(suppress:4996)
     if ( !GetVersionEx( (OSVERSIONINFO*)&osinfo ) )
     {
         HRESULT hr = HRESULT_FROM_WIN32( GetLastError() );
@@ -464,7 +475,7 @@ STDAPI DoUpdateForDirect3D11( DWORD dwFlags, D3D11UPDATEPROGRESSCB pfnProgress,
         }
         else
         {
-            DEBUG_MSG( L"DoUpdateForDirect3D11: Search failed: %x\n", hr ) 
+            DEBUG_MSG( L"DoUpdateForDirect3D11: Search failed: %x\n", hr )
         }
 
         SAFE_RELEASE( pWUResult )
@@ -472,7 +483,7 @@ STDAPI DoUpdateForDirect3D11( DWORD dwFlags, D3D11UPDATEPROGRESSCB pfnProgress,
     }
     else
     {
-        DEBUG_MSG( L"DoUpdateForDirect3D11: Failed to create update searcher: %x\n", hr ) 
+        DEBUG_MSG( L"DoUpdateForDirect3D11: Failed to create update searcher: %x\n", hr )
     }
 
     // Deal with EULAs...
@@ -487,7 +498,7 @@ STDAPI DoUpdateForDirect3D11( DWORD dwFlags, D3D11UPDATEPROGRESSCB pfnProgress,
             pWUColl->get_Item( i, &pUpdate );
 
             pUpdate->AcceptEula();
-                        
+
             SAFE_RELEASE( pUpdate )
         }
     }
@@ -499,7 +510,7 @@ STDAPI DoUpdateForDirect3D11( DWORD dwFlags, D3D11UPDATEPROGRESSCB pfnProgress,
     {
         IUpdateDownloader* pWUDownloader = NULL;
         hr = pWUSession->CreateUpdateDownloader( &pWUDownloader );
-         
+
         if ( SUCCEEDED(hr) )
         {
             hr = pWUDownloader->put_Updates( pWUColl );
@@ -519,7 +530,7 @@ STDAPI DoUpdateForDirect3D11( DWORD dwFlags, D3D11UPDATEPROGRESSCB pfnProgress,
                     pfnProgress( D3D11IH_PROGRESS_DOWNLOADING, 0, pContext );
 
                     WaitForSingleObject( completeCB._Event, INFINITE );
-        
+
                     hr = pWUDownloader->EndDownload( pJob, &pWUResult );
                     pJob->Release();
                 }
@@ -580,7 +591,7 @@ STDAPI DoUpdateForDirect3D11( DWORD dwFlags, D3D11UPDATEPROGRESSCB pfnProgress,
                         pWUInstaller2->put_ForceQuiet( VARIANT_TRUE );
                     }
                 }
-    
+
                 IInstallationResult *pWUResult = NULL;
                 IInstallationJob* pJob = NULL;
                 VARIANT pVar = { 0 };
@@ -594,7 +605,7 @@ STDAPI DoUpdateForDirect3D11( DWORD dwFlags, D3D11UPDATEPROGRESSCB pfnProgress,
                     pfnProgress( D3D11IH_PROGRESS_INSTALLING, 0, pContext );
 
                     WaitForSingleObject( completeCB._Event, INFINITE );
-        
+
                     hr = pWUInstaller->EndInstall( pJob, &pWUResult );
                     pJob->Release();
                 }
@@ -651,24 +662,24 @@ STDAPI DoUpdateForDirect3D11( DWORD dwFlags, D3D11UPDATEPROGRESSCB pfnProgress,
         // We use 'magic numbers' here to avoid reliance on an updated Windows SDK header
         // wuerror.h is included in the Windows SDK 7.0A or later
         case 0x8024402C: // WU_E_PT_WINHTTP_NAME_NOT_RESOLVED
-        case 0x80244016: // WU_E_PT_HTTP_STATUS_BAD_REQUEST 
-        case 0x80244017: // WU_E_PT_HTTP_STATUS_DENIED  
-        case 0x80244018: // WU_E_PT_HTTP_STATUS_FORBIDDEN 
+        case 0x80244016: // WU_E_PT_HTTP_STATUS_BAD_REQUEST
+        case 0x80244017: // WU_E_PT_HTTP_STATUS_DENIED
+        case 0x80244018: // WU_E_PT_HTTP_STATUS_FORBIDDEN
         case 0x80244019: // WU_E_PT_HTTP_STATUS_NOT_FOUND
-        case 0x8024401A: // WU_E_PT_HTTP_STATUS_BAD_METHOD 
+        case 0x8024401A: // WU_E_PT_HTTP_STATUS_BAD_METHOD
         case 0x8024401B: // WU_E_PT_HTTP_STATUS_PROXY_AUTH_REQ
-        case 0x8024401C: // WU_E_PT_HTTP_STATUS_REQUEST_TIMEOUT 
+        case 0x8024401C: // WU_E_PT_HTTP_STATUS_REQUEST_TIMEOUT
         case 0x8024401D: // WU_E_PT_HTTP_STATUS_CONFLICT
         case 0x8024401E: // WU_E_PT_HTTP_STATUS_GONE
-        case 0x8024401F: // WU_E_PT_HTTP_STATUS_SERVER_ERROR 
-        case 0x80244020: // WU_E_PT_HTTP_STATUS_NOT_SUPPORTED 
-        case 0x80244021: // WU_E_PT_HTTP_STATUS_BAD_GATEWAY 
-        case 0x80244022: // WU_E_PT_HTTP_STATUS_SERVICE_UNAVAIL 
+        case 0x8024401F: // WU_E_PT_HTTP_STATUS_SERVER_ERROR
+        case 0x80244020: // WU_E_PT_HTTP_STATUS_NOT_SUPPORTED
+        case 0x80244021: // WU_E_PT_HTTP_STATUS_BAD_GATEWAY
+        case 0x80244022: // WU_E_PT_HTTP_STATUS_SERVICE_UNAVAIL
         case 0x80244023: // WU_E_PT_HTTP_STATUS_GATEWAY_TIMEOUT
-        case 0x80244024: // WU_E_PT_HTTP_STATUS_VERSION_NOT_SUP 
+        case 0x80244024: // WU_E_PT_HTTP_STATUS_VERSION_NOT_SUP
 
-        case 0x8024f004: // WU_E_SERVER_BUSY 
-        case 0x8024001E: // WU_E_SERVICE_STOP 
+        case 0x8024f004: // WU_E_SERVER_BUSY
+        case 0x8024001E: // WU_E_SERVICE_STOP
         case 0x8024001F: // WU_E_NO_CONNECTION
         case 0x80240021: // WU_E_TIME_OUT
         case 0x80246005: // WU_E_DM_NONETWORK
@@ -677,7 +688,7 @@ STDAPI DoUpdateForDirect3D11( DWORD dwFlags, D3D11UPDATEPROGRESSCB pfnProgress,
             DEBUG_MSG( L"DoUpdateForDirect3D11: Failed with network/server error code %x, returning WU_SERVICE_ERROR result. Retry is possible\n", hr );
             *pResult = D3D11IH_RESULT_WU_SERVICE_ERROR;
             return S_OK;
-        
+
         default:
             return hr;
         }
@@ -794,7 +805,7 @@ UINT WINAPI SetD3D11InstallMSIProperties( MSIHANDLE hModule )
 {
     WCHAR szCustomActionData[1024] = {0};
 
-    WCHAR* szSourceDir = GetPropertyFromMSI( hModule, L"SourceDir" );   
+    WCHAR* szSourceDir = GetPropertyFromMSI( hModule, L"SourceDir" );
     assert( szSourceDir != NULL );
     wcscpy_s( szCustomActionData, 1024, szSourceDir );
 
@@ -818,10 +829,10 @@ UINT WINAPI SetD3D11InstallMSIProperties( MSIHANDLE hModule )
     {
         switch( status )
         {
-        TOSTRING(D3D11IH_STATUS_INSTALLED)
-        TOSTRING(D3D11IH_STATUS_NOT_SUPPORTED)
-        TOSTRING(D3D11IH_STATUS_REQUIRES_UPDATE)
-        TOSTRING(D3D11IH_STATUS_NEED_LATEST_SP)
+            TOSTRING(D3D11IH_STATUS_INSTALLED)
+            TOSTRING(D3D11IH_STATUS_NOT_SUPPORTED)
+            TOSTRING(D3D11IH_STATUS_REQUIRES_UPDATE)
+            TOSTRING(D3D11IH_STATUS_NEED_LATEST_SP)
         }
     }
 
@@ -830,7 +841,7 @@ UINT WINAPI SetD3D11InstallMSIProperties( MSIHANDLE hModule )
 #ifdef SHOW_DEBUG_MSGBOXES
     WCHAR sz[1024];
     swprintf_s( sz, 1024, L"RelativePathToD3D11IH ='%s' szSourceDir=%s szCustomActionData=%s, D3D11IH_STATUS=%s\n",
-                            szRelativePathToD3D11IH, szSourceDir, szCustomActionData, szStatus );
+                szRelativePathToD3D11IH, szSourceDir, szCustomActionData, szStatus );
     MessageBox( NULL, sz, L"SetD3D11InstallMSIProperties", MB_OK );
 #endif
 
@@ -864,7 +875,7 @@ UINT WINAPI DoD3D11InstallUsingMSI( MSIHANDLE hModule )
         CheckDirect3D11Status( &status );
 
         if ( status == D3D11IH_STATUS_NEED_LATEST_SP
-             || status == D3D11IH_STATUS_REQUIRES_UPDATE )
+                || status == D3D11IH_STATUS_REQUIRES_UPDATE )
         {
             SHELLEXECUTEINFO info;
             memset( &info, 0, sizeof(info) );
@@ -884,7 +895,7 @@ UINT WINAPI DoD3D11InstallUsingMSI( MSIHANDLE hModule )
                 DWORD ecode = 0;
                 GetExitCodeProcess( info.hProcess, &ecode );
 
-                if (ecode == 1)                 
+                if (ecode == 1)
                 {
                     // No other way for a deferred custom action to return data
                     GlobalAddAtomW( L"D3D11InstallHelperNeedsReboot" );
@@ -939,7 +950,7 @@ UINT WINAPI FinishD3D11InstallUsingMSI( MSIHANDLE hModule )
     }
 #ifdef SHOW_DEBUG_MSGBOXES
     else
-    { 
+    {
         MessageBox( NULL, L"Reboot is NOT required", L"FinishD3D11InstallUsingMSI", MB_OK );
     }
 #endif

@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeferredContexts11\src\renderers/IC_Renderer.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -50,7 +50,10 @@ class IC_Renderer : public RendererBase
 public:
     IC_Renderer() : RendererBase() {};
 
-    virtual MT_RENDER_STRATEGY GetContextType() {return RS_IMMEDIATE;}
+    virtual MT_RENDER_STRATEGY GetContextType()
+    {
+        return RS_IMMEDIATE;
+    }
 
 
 };

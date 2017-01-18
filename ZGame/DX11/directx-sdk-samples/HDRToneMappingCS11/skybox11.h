@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------------
 // File: skybox11.h
 //
 // Desc: Encapsulation of skybox geometry and textures
@@ -13,7 +13,7 @@ public:
     CSkybox11();
 
     HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, float fSize,
-        ID3D11Texture2D* pCubeTexture, ID3D11ShaderResourceView* pCubeRV );
+                                          ID3D11Texture2D* pCubeTexture, ID3D11ShaderResourceView* pCubeRV );
 
     void    OnD3D11ResizedSwapChain( const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc );
     void    D3D11Render( DirectX::CXMMATRIX mWorldViewProj, ID3D11DeviceContext* pd3dImmediateContext );
@@ -37,7 +37,7 @@ protected:
     struct CB_VS_PER_OBJECT
     {
         DirectX::XMFLOAT4X4 m_WorldViewProj;
-    };    
+    };
 
     ID3D11Texture2D* m_pEnvironmentMap11;
     ID3D11ShaderResourceView* m_pEnvironmentRV11;

@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeinterleavedTexturing\src\SSAO/ConstantBuffers.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -123,7 +123,7 @@ private:
 class PerPassConstantBuffer : public BaseConstantBuffer
 {
 public:
-    PerPassConstantBuffer() : BaseConstantBuffer(sizeof(m_Data)) 
+    PerPassConstantBuffer() : BaseConstantBuffer(sizeof(m_Data))
     {
         ZERO_STRUCT(m_Data);
     }

@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        SoftShadows\src/SimpleTexture2D.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -139,7 +139,7 @@ inline HRESULT MakeTexture2D(ID3D11Device *pd3dDevice,DXGI_FORMAT format,UINT wi
         if (msaaCount > 1)
             DSVDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
         else
-            DSVDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;        
+            DSVDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 
         V_RETURN(pd3dDevice->CreateDepthStencilView(*ppTex2D,&DSVDesc,ppDSV));
     }
@@ -160,7 +160,7 @@ inline HRESULT LoadTexture2D(ID3D11Device *device, const wchar_t *fileName, ID3D
     if (ppSRV) loadInfo.BindFlags |= D3D11_BIND_SHADER_RESOURCE;
     if (ppDSV) loadInfo.BindFlags |= D3D11_BIND_DEPTH_STENCIL;
     V_RETURN(D3DX11CreateTextureFromFile(device, str, &loadInfo, nullptr, (ID3D11Resource **)ppTex2D, &hr));
-    
+
     if (ppRTV)
     {
         V_RETURN(device->CreateRenderTargetView(*ppTex2D, nullptr, ppRTV));
@@ -169,7 +169,7 @@ inline HRESULT LoadTexture2D(ID3D11Device *device, const wchar_t *fileName, ID3D
     if (ppSRV)
     {
         V_RETURN(device->CreateShaderResourceView(*ppTex2D, nullptr, ppSRV));
-    }    
+    }
 
     if (ppDSV)
     {
@@ -205,15 +205,15 @@ SimpleTexture2D::SimpleTexture2D(
     ID3D11ShaderResourceView *srv = nullptr;
     ID3D11DepthStencilView *dsv = nullptr;
     m_hr = MakeTexture2D(
-        device,
-        m_format,
-        m_width,
-        m_height,
-        m_msaaCount,
-        &tex2D,
-        0 != (viewFlags & RenderTargetView) ? &rtv : nullptr,
-        0 != (viewFlags & ShaderResourceView) ? &srv : nullptr,
-        0 != (viewFlags & DepthStencilView) ? &dsv : nullptr);
+               device,
+               m_format,
+               m_width,
+               m_height,
+               m_msaaCount,
+               &tex2D,
+               0 != (viewFlags & RenderTargetView) ? &rtv : nullptr,
+               0 != (viewFlags & ShaderResourceView) ? &srv : nullptr,
+               0 != (viewFlags & DepthStencilView) ? &dsv : nullptr);
 
     if (tex2D != nullptr)
     {
@@ -232,7 +232,7 @@ SimpleTexture2D::SimpleTexture2D(
         DXUT_SetDebugName(srv, name);
         m_srv.reset(srv);
     }
-        
+
     if (rtv != nullptr)
     {
         DXUT_SetDebugName(rtv, name);
@@ -258,19 +258,19 @@ SimpleTexture2D::SimpleTexture2D(
     , m_msaaCount(1)
     , m_hr(S_OK)
 {
-    
+
     ID3D11Texture2D *tex2D = nullptr;
     ID3D11RenderTargetView *rtv = nullptr;
     ID3D11ShaderResourceView *srv = nullptr;
     ID3D11DepthStencilView *dsv = nullptr;
 
     m_hr = LoadTexture2D(
-        device,
-        fileName,
-        &tex2D,
-        0 != (viewFlags & RenderTargetView) ? &rtv : nullptr,
-        0 != (viewFlags & ShaderResourceView) ? &srv : nullptr,
-        0 != (viewFlags & DepthStencilView) ? &dsv : nullptr);
+               device,
+               fileName,
+               &tex2D,
+               0 != (viewFlags & RenderTargetView) ? &rtv : nullptr,
+               0 != (viewFlags & ShaderResourceView) ? &srv : nullptr,
+               0 != (viewFlags & DepthStencilView) ? &dsv : nullptr);
 
     if (tex2D != nullptr)
     {
@@ -289,7 +289,7 @@ SimpleTexture2D::SimpleTexture2D(
         DXUT_SetDebugName(srv, name);
         m_srv.reset(srv);
     }
-        
+
     if (rtv != nullptr)
     {
         DXUT_SetDebugName(rtv, name);

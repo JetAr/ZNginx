@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: Meshconvert.cpp
 //
 // Meshconvert command-line tool (sample for DirectXMesh library)
@@ -109,259 +109,269 @@ const SValue g_pOptions[] =
 
 namespace
 {
-    inline HANDLE safe_handle(HANDLE h) { return (h == INVALID_HANDLE_VALUE) ? 0 : h; }
+inline HANDLE safe_handle(HANDLE h)
+{
+    return (h == INVALID_HANDLE_VALUE) ? 0 : h;
+}
 
-    struct find_closer { void operator()(HANDLE h) { assert(h != INVALID_HANDLE_VALUE); if (h) FindClose(h); } };
+struct find_closer
+{
+    void operator()(HANDLE h)
+    {
+        assert(h != INVALID_HANDLE_VALUE);
+        if (h) FindClose(h);
+    }
+};
 
-    typedef public std::unique_ptr<void, find_closer> ScopedFindHandle;
+typedef public std::unique_ptr<void, find_closer> ScopedFindHandle;
 
 #pragma prefast(disable : 26018, "Only used with static internal arrays")
 
-    DWORD LookupByName(const wchar_t *pName, const SValue *pArray)
+DWORD LookupByName(const wchar_t *pName, const SValue *pArray)
+{
+    while (pArray->pName)
     {
-        while (pArray->pName)
-        {
-            if (!_wcsicmp(pName, pArray->pName))
-                return pArray->dwValue;
+        if (!_wcsicmp(pName, pArray->pName))
+            return pArray->dwValue;
 
-            pArray++;
-        }
-
-        return 0;
+        pArray++;
     }
 
+    return 0;
+}
 
-    const wchar_t* LookupByValue(DWORD pValue, const SValue *pArray)
+
+const wchar_t* LookupByValue(DWORD pValue, const SValue *pArray)
+{
+    while (pArray->pName)
     {
-        while (pArray->pName)
-        {
-            if (pValue == pArray->dwValue)
-                return pArray->pName;
+        if (pValue == pArray->dwValue)
+            return pArray->pName;
 
-            pArray++;
-        }
-
-        return L"";
+        pArray++;
     }
 
+    return L"";
+}
 
-    void SearchForFiles(const wchar_t* path, std::list<SConversion>& files, bool recursive)
+
+void SearchForFiles(const wchar_t* path, std::list<SConversion>& files, bool recursive)
+{
+    // Process files
+    WIN32_FIND_DATA findData = {};
+    ScopedFindHandle hFile(safe_handle(FindFirstFileExW(path,
+                                       FindExInfoBasic, &findData,
+                                       FindExSearchNameMatch, nullptr,
+                                       FIND_FIRST_EX_LARGE_FETCH)));
+    if (hFile)
     {
-        // Process files
-        WIN32_FIND_DATA findData = {};
-        ScopedFindHandle hFile(safe_handle(FindFirstFileExW(path,
-            FindExInfoBasic, &findData,
-            FindExSearchNameMatch, nullptr,
-            FIND_FIRST_EX_LARGE_FETCH)));
-        if (hFile)
+        for (;;)
         {
-            for (;;)
-            {
-                if (!(findData.dwFileAttributes & (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_DIRECTORY)))
-                {
-                    wchar_t drive[_MAX_DRIVE] = {};
-                    wchar_t dir[_MAX_DIR] = {};
-                    _wsplitpath_s(path, drive, _MAX_DRIVE, dir, _MAX_DIR, nullptr, 0, nullptr, 0);
-
-                    SConversion conv;
-                    _wmakepath_s(conv.szSrc, drive, dir, findData.cFileName, nullptr);
-                    files.push_back(conv);
-                }
-
-                if (!FindNextFile(hFile.get(), &findData))
-                    break;
-            }
-        }
-
-        // Process directories
-        if (recursive)
-        {
-            wchar_t searchDir[MAX_PATH] = {};
+            if (!(findData.dwFileAttributes & (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_DIRECTORY)))
             {
                 wchar_t drive[_MAX_DRIVE] = {};
                 wchar_t dir[_MAX_DIR] = {};
                 _wsplitpath_s(path, drive, _MAX_DRIVE, dir, _MAX_DIR, nullptr, 0, nullptr, 0);
-                _wmakepath_s(searchDir, drive, dir, L"*", nullptr);
+
+                SConversion conv;
+                _wmakepath_s(conv.szSrc, drive, dir, findData.cFileName, nullptr);
+                files.push_back(conv);
             }
 
-            hFile.reset(safe_handle(FindFirstFileExW(searchDir,
-                FindExInfoBasic, &findData,
-                FindExSearchLimitToDirectories, nullptr,
-                FIND_FIRST_EX_LARGE_FETCH)));
-            if (!hFile)
-                return;
-
-            for (;;)
-            {
-                if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-                {
-                    if (findData.cFileName[0] != L'.')
-                    {
-                        wchar_t subdir[MAX_PATH] = {};
-
-                        {
-                            wchar_t drive[_MAX_DRIVE] = {};
-                            wchar_t dir[_MAX_DIR] = {};
-                            wchar_t fname[_MAX_FNAME] = {};
-                            wchar_t ext[_MAX_FNAME] = {};
-                            _wsplitpath_s(path, drive, dir, fname, ext);
-                            wcscat_s(dir, findData.cFileName);
-                            _wmakepath_s(subdir, drive, dir, fname, ext);
-                        }
-
-                        SearchForFiles(subdir, files, recursive);
-                    }
-                }
-
-                if (!FindNextFile(hFile.get(), &findData))
-                    break;
-            }
+            if (!FindNextFile(hFile.get(), &findData))
+                break;
         }
     }
 
-
-    void PrintLogo()
+    // Process directories
+    if (recursive)
     {
-        wprintf(L"Microsoft (R) MeshConvert Command-line Tool\n");
-        wprintf(L"Copyright (C) Microsoft Corp. All rights reserved.\n");
+        wchar_t searchDir[MAX_PATH] = {};
+        {
+            wchar_t drive[_MAX_DRIVE] = {};
+            wchar_t dir[_MAX_DIR] = {};
+            _wsplitpath_s(path, drive, _MAX_DRIVE, dir, _MAX_DIR, nullptr, 0, nullptr, 0);
+            _wmakepath_s(searchDir, drive, dir, L"*", nullptr);
+        }
+
+        hFile.reset(safe_handle(FindFirstFileExW(searchDir,
+                                FindExInfoBasic, &findData,
+                                FindExSearchLimitToDirectories, nullptr,
+                                FIND_FIRST_EX_LARGE_FETCH)));
+        if (!hFile)
+            return;
+
+        for (;;)
+        {
+            if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+            {
+                if (findData.cFileName[0] != L'.')
+                {
+                    wchar_t subdir[MAX_PATH] = {};
+
+                    {
+                        wchar_t drive[_MAX_DRIVE] = {};
+                        wchar_t dir[_MAX_DIR] = {};
+                        wchar_t fname[_MAX_FNAME] = {};
+                        wchar_t ext[_MAX_FNAME] = {};
+                        _wsplitpath_s(path, drive, dir, fname, ext);
+                        wcscat_s(dir, findData.cFileName);
+                        _wmakepath_s(subdir, drive, dir, fname, ext);
+                    }
+
+                    SearchForFiles(subdir, files, recursive);
+                }
+            }
+
+            if (!FindNextFile(hFile.get(), &findData))
+                break;
+        }
+    }
+}
+
+
+void PrintLogo()
+{
+    wprintf(L"Microsoft (R) MeshConvert Command-line Tool\n");
+    wprintf(L"Copyright (C) Microsoft Corp. All rights reserved.\n");
 #ifdef _DEBUG
-        wprintf(L"*** Debug build ***\n");
+    wprintf(L"*** Debug build ***\n");
 #endif
-        wprintf(L"\n");
+    wprintf(L"\n");
+}
+
+
+void PrintUsage()
+{
+    PrintLogo();
+
+    wprintf(L"Usage: meshconvert <options> <files>\n");
+    wprintf(L"\n");
+    wprintf(L"   -r                  wildcard filename search is recursive\n");
+    wprintf(L"   -n | -na | -ne      generate normals weighted by angle/area/equal\n");
+    wprintf(L"   -t                  generate tangents\n");
+    wprintf(L"   -tb                 generate tangents & bi-tangents\n");
+    wprintf(L"   -cw                 faces are clockwise (defaults to counter-clockwise)\n");
+    wprintf(L"   -op                 vertex cache optimize the mesh (implies -c)\n");
+    wprintf(L"   -c                  mesh cleaning including vertex dups for atttribute sets\n");
+    wprintf(L"   -ta | -ga           generate topological vs. geometric adjancecy (def: ta)\n");
+    wprintf(L"   -sdkmesh|-cmo|-vbo  output file type\n");
+    wprintf(L"   -nodds              prevents extension renaming in exported materials\n");
+    wprintf(L"   -flip               reverse winding of faces\n");
+    wprintf(L"   -flipu              inverts the u texcoords\n");
+    wprintf(L"   -flipv              inverts the v texcoords\n");
+    wprintf(L"   -flipz              flips the handedness of the positions/normals\n");
+    wprintf(L"   -o <filename>       output filename\n");
+    wprintf(L"   -y                  overwrite existing output file (if any)\n");
+    wprintf(L"   -nologo             suppress copyright message\n");
+
+    wprintf(L"\n");
+}
+
+
+//--------------------------------------------------------------------------------------
+HRESULT LoadFromOBJ(const wchar_t* szFilename, std::unique_ptr<Mesh>& inMesh, std::vector<Mesh::Material>& inMaterial, DWORD options)
+{
+    WaveFrontReader<uint32_t> wfReader;
+    HRESULT hr = wfReader.Load(szFilename, (options & (1 << OPT_CLOCKWISE)) ? false : true);
+    if (FAILED(hr))
+        return hr;
+
+    inMesh.reset(new (std::nothrow) Mesh);
+    if (!inMesh)
+        return E_OUTOFMEMORY;
+
+    if (wfReader.indices.empty() || wfReader.vertices.empty())
+        return E_FAIL;
+
+    hr = inMesh->SetIndexData(wfReader.indices.size() / 3, wfReader.indices.data(),
+                              wfReader.attributes.empty() ? nullptr : wfReader.attributes.data());
+    if (FAILED(hr))
+        return hr;
+
+    static const D3D11_INPUT_ELEMENT_DESC s_vboLayout[] =
+    {
+        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    };
+
+    static const D3D11_INPUT_ELEMENT_DESC s_vboLayoutAlt[] =
+    {
+        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    };
+
+    const D3D11_INPUT_ELEMENT_DESC* layout = s_vboLayout;
+    size_t nDecl = _countof(s_vboLayout);
+
+    if (!wfReader.hasNormals && !wfReader.hasTexcoords)
+    {
+        nDecl = 1;
+    }
+    else if (wfReader.hasNormals && !wfReader.hasTexcoords)
+    {
+        nDecl = 2;
+    }
+    else if (!wfReader.hasNormals && wfReader.hasTexcoords)
+    {
+        layout = s_vboLayoutAlt;
+        nDecl = _countof(s_vboLayoutAlt);
     }
 
+    VBReader vbr;
+    hr = vbr.Initialize(layout, nDecl);
+    if (FAILED(hr))
+        return hr;
 
-    void PrintUsage()
+    hr = vbr.AddStream(wfReader.vertices.data(), wfReader.vertices.size(), 0, sizeof(WaveFrontReader<uint32_t>::Vertex));
+    if (FAILED(hr))
+        return hr;
+
+    hr = inMesh->SetVertexData(vbr, wfReader.vertices.size());
+    if (FAILED(hr))
+        return hr;
+
+    if (!wfReader.materials.empty())
     {
-        PrintLogo();
+        inMaterial.clear();
+        inMaterial.reserve(wfReader.materials.size());
 
-        wprintf(L"Usage: meshconvert <options> <files>\n");
-        wprintf(L"\n");
-        wprintf(L"   -r                  wildcard filename search is recursive\n");
-        wprintf(L"   -n | -na | -ne      generate normals weighted by angle/area/equal\n");
-        wprintf(L"   -t                  generate tangents\n");
-        wprintf(L"   -tb                 generate tangents & bi-tangents\n");
-        wprintf(L"   -cw                 faces are clockwise (defaults to counter-clockwise)\n");
-        wprintf(L"   -op                 vertex cache optimize the mesh (implies -c)\n");
-        wprintf(L"   -c                  mesh cleaning including vertex dups for atttribute sets\n");
-        wprintf(L"   -ta | -ga           generate topological vs. geometric adjancecy (def: ta)\n");
-        wprintf(L"   -sdkmesh|-cmo|-vbo  output file type\n");
-        wprintf(L"   -nodds              prevents extension renaming in exported materials\n");
-        wprintf(L"   -flip               reverse winding of faces\n");
-        wprintf(L"   -flipu              inverts the u texcoords\n");
-        wprintf(L"   -flipv              inverts the v texcoords\n");
-        wprintf(L"   -flipz              flips the handedness of the positions/normals\n");
-        wprintf(L"   -o <filename>       output filename\n");
-        wprintf(L"   -y                  overwrite existing output file (if any)\n");
-        wprintf(L"   -nologo             suppress copyright message\n");
-
-        wprintf(L"\n");
-    }
-
-
-    //--------------------------------------------------------------------------------------
-    HRESULT LoadFromOBJ(const wchar_t* szFilename, std::unique_ptr<Mesh>& inMesh, std::vector<Mesh::Material>& inMaterial, DWORD options)
-    {
-        WaveFrontReader<uint32_t> wfReader;
-        HRESULT hr = wfReader.Load(szFilename, (options & (1 << OPT_CLOCKWISE)) ? false : true);
-        if (FAILED(hr))
-            return hr;
-
-        inMesh.reset(new (std::nothrow) Mesh);
-        if (!inMesh)
-            return E_OUTOFMEMORY;
-
-        if (wfReader.indices.empty() || wfReader.vertices.empty())
-            return E_FAIL;
-
-        hr = inMesh->SetIndexData(wfReader.indices.size() / 3, wfReader.indices.data(),
-            wfReader.attributes.empty() ? nullptr : wfReader.attributes.data());
-        if (FAILED(hr))
-            return hr;
-
-        static const D3D11_INPUT_ELEMENT_DESC s_vboLayout[] =
+        for (auto it = wfReader.materials.cbegin(); it != wfReader.materials.cend(); ++it)
         {
-            { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        };
+            Mesh::Material mtl = {};
 
-        static const D3D11_INPUT_ELEMENT_DESC s_vboLayoutAlt[] =
-        {
-            { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        };
+            mtl.name = it->strName;
+            mtl.specularPower = (it->bSpecular) ? float(it->nShininess) : 1.f;
+            mtl.alpha = it->fAlpha;
+            mtl.ambientColor = it->vAmbient;
+            mtl.diffuseColor = it->vDiffuse;
+            mtl.specularColor = (it->bSpecular) ? it->vSpecular : XMFLOAT3(0.f, 0.f, 0.f);
+            mtl.emissiveColor = XMFLOAT3(0.f, 0.f, 0.f);
 
-        const D3D11_INPUT_ELEMENT_DESC* layout = s_vboLayout;
-        size_t nDecl = _countof(s_vboLayout);
-
-        if (!wfReader.hasNormals && !wfReader.hasTexcoords)
-        {
-            nDecl = 1;
-        }
-        else if (wfReader.hasNormals && !wfReader.hasTexcoords)
-        {
-            nDecl = 2;
-        }
-        else if (!wfReader.hasNormals && wfReader.hasTexcoords)
-        {
-            layout = s_vboLayoutAlt;
-            nDecl = _countof(s_vboLayoutAlt);
-        }
-
-        VBReader vbr;
-        hr = vbr.Initialize(layout, nDecl);
-        if (FAILED(hr))
-            return hr;
-
-        hr = vbr.AddStream(wfReader.vertices.data(), wfReader.vertices.size(), 0, sizeof(WaveFrontReader<uint32_t>::Vertex));
-        if (FAILED(hr))
-            return hr;
-
-        hr = inMesh->SetVertexData(vbr, wfReader.vertices.size());
-        if (FAILED(hr))
-            return hr;
-
-        if (!wfReader.materials.empty())
-        {
-            inMaterial.clear();
-            inMaterial.reserve(wfReader.materials.size());
-
-            for (auto it = wfReader.materials.cbegin(); it != wfReader.materials.cend(); ++it)
+            wchar_t texture[_MAX_PATH] = { 0 };
+            if (*it->strTexture)
             {
-                Mesh::Material mtl = {};
+                wchar_t txext[_MAX_EXT];
+                wchar_t txfname[_MAX_FNAME];
+                _wsplitpath_s(it->strTexture, nullptr, 0, nullptr, 0, txfname, _MAX_FNAME, txext, _MAX_EXT);
 
-                mtl.name = it->strName;
-                mtl.specularPower = (it->bSpecular) ? float(it->nShininess) : 1.f;
-                mtl.alpha = it->fAlpha;
-                mtl.ambientColor = it->vAmbient;
-                mtl.diffuseColor = it->vDiffuse;
-                mtl.specularColor = (it->bSpecular) ? it->vSpecular : XMFLOAT3(0.f, 0.f, 0.f);
-                mtl.emissiveColor = XMFLOAT3(0.f, 0.f, 0.f);
-
-                wchar_t texture[_MAX_PATH] = { 0 };
-                if (*it->strTexture)
+                if (!(options & (1 << OPT_NODDS)))
                 {
-                    wchar_t txext[_MAX_EXT];
-                    wchar_t txfname[_MAX_FNAME];
-                    _wsplitpath_s(it->strTexture, nullptr, 0, nullptr, 0, txfname, _MAX_FNAME, txext, _MAX_EXT);
-
-                    if (!(options & (1 << OPT_NODDS)))
-                    {
-                        wcscpy_s(txext, L".dds");
-                    }
-
-                    _wmakepath_s(texture, nullptr, nullptr, txfname, txext);
+                    wcscpy_s(txext, L".dds");
                 }
 
-                mtl.texture = texture;
-
-                inMaterial.push_back(mtl);
+                _wmakepath_s(texture, nullptr, nullptr, txfname, txext);
             }
-        }
 
-        return S_OK;
+            mtl.texture = texture;
+
+            inMaterial.push_back(mtl);
+        }
     }
+
+    return S_OK;
+}
 }
 
 
@@ -663,7 +673,7 @@ int __cdecl wmain(_In_ int argc, _In_z_count_(argc) wchar_t* argv[])
 
         // Compute vertex normals from faces
         if ((dwOptions & (1 << OPT_NORMALS))
-            || ((dwOptions & ((1 << OPT_TANGENTS) | (1 << OPT_CTF))) && !inMesh->GetNormalBuffer()))
+                || ((dwOptions & ((1 << OPT_TANGENTS) | (1 << OPT_CTF))) && !inMesh->GetNormalBuffer()))
         {
             DWORD flags = CNORM_DEFAULT;
 

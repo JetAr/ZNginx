@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXMeshClean.cpp
-//  
+//
 // DirectX Mesh Geometry Library - Mesh clean-up
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -52,13 +52,13 @@ HRESULT _Clean( _Inout_updates_all_(nFaces*3) index_t* indices,
         index_t i2 = indices[ face*3 + 2 ];
 
         if ( i0 == index_t(-1)
-             || i1 == index_t(-1)
-             || i2 == index_t(-1) )
+                || i1 == index_t(-1)
+                || i2 == index_t(-1) )
         {
             // ensure all index entries in the unused face are 'unused'
             indices[ face*3 ] =
-            indices[ face*3 + 1 ] =
-            indices[ face*3 + 2 ] = index_t(-1);
+                indices[ face*3 + 1 ] =
+                    indices[ face*3 + 2 ] = index_t(-1);
 
             // ensure no neighbor references the unused face
             if ( adjacency )
@@ -160,8 +160,8 @@ HRESULT _Clean( _Inout_updates_all_(nFaces*3) index_t* indices,
             index_t i2 = indices[ face*3 + 2 ];
 
             if ( i0 == index_t(-1)
-                 || i1 == index_t(-1)
-                 || i2 == index_t(-1) )
+                    || i1 == index_t(-1)
+                    || i2 == index_t(-1) )
             {
                 // ignore unused faces
                 continue;
@@ -172,8 +172,8 @@ HRESULT _Clean( _Inout_updates_all_(nFaces*3) index_t* indices,
             assert( i2 < nVerts );
 
             if ( i0 == i1
-                 || i0 == i2
-                 || i1 == i2 )
+                    || i0 == i2
+                    || i1 == i2 )
             {
                 // ignore degenerate faces
                 continue;
@@ -184,8 +184,8 @@ HRESULT _Clean( _Inout_updates_all_(nFaces*3) index_t* indices,
             uint32_t j2 = adjacency[ face*3 + 2 ];
 
             if ( ( j0 == j1 && j0 != UNUSED32 )
-                 || ( j0 == j2 && j0 != UNUSED32 )
-                 || ( j1 == j2 && j1 != UNUSED32 ) )
+                    || ( j0 == j2 && j0 != UNUSED32 )
+                    || ( j1 == j2 && j1 != UNUSED32 ) )
             {
                 uint32_t neighbor;
 
@@ -233,8 +233,8 @@ HRESULT _Clean( _Inout_updates_all_(nFaces*3) index_t* indices,
             index_t i2 = indices[ face*3 + 2 ];
 
             if ( i0 == index_t(-1)
-                 || i1 == index_t(-1)
-                 || i2 == index_t(-1) )
+                    || i1 == index_t(-1)
+                    || i2 == index_t(-1) )
             {
                 // ignore unused faces
                 faceSeen[ face * 3 ] = true;
@@ -248,8 +248,8 @@ HRESULT _Clean( _Inout_updates_all_(nFaces*3) index_t* indices,
             assert( i2 < nVerts );
 
             if ( i0 == i1
-                 || i0 == i2
-                 || i1 == i2 )
+                    || i0 == i2
+                    || i1 == i2 )
             {
                 // ignore degenerate faces
                 faceSeen[ face * 3 ] = true;
@@ -286,7 +286,7 @@ HRESULT _Clean( _Inout_updates_all_(nFaces*3) index_t* indices,
                     uint32_t curPoint = ovi.getpoint();
                     if ( curPoint > 2 )
                         return E_FAIL;
- 
+
                     faceSeen[ curFace*3 + curPoint ] = true;
 
                     index_t j = indices[ curFace * 3 + curPoint ];
@@ -331,7 +331,7 @@ HRESULT _Clean( _Inout_updates_all_(nFaces*3) index_t* indices,
         {
             dupAttr.push_back( UNUSED32 );
         }
-        
+
         std::unordered_multimap<uint32_t,size_t> dups;
 
         for( size_t face = 0; face < nFaces; ++face )
@@ -367,7 +367,7 @@ HRESULT _Clean( _Inout_updates_all_(nFaces*3) index_t* indices,
                     }
 
                     if ( it == range.second )
-                    {                        
+                    {
                         // Duplicate the vert
                         dups.insert( std::pair<uint32_t,size_t>( j, curNewVert ) );
 

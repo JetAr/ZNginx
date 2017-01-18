@@ -1,4 +1,4 @@
-//*********************************************************
+﻿//*********************************************************
 //
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
@@ -58,7 +58,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateCommandQueue(
     if (GetAffinityMode() == EAffinityMode::LDA)
     {
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -95,7 +95,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateCommandAllocator(
     if (GetAffinityMode() == EAffinityMode::LDA)
     {
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -143,7 +143,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateGraphicsPipelineState(
         HRESULT const hr = Device->CreateGraphicsPipelineState(&ActualDescriptor, IID_PPV_ARGS(&PipelineState));
         if (S_OK == hr)
         {
-            for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+            for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
             {
                 if (((1 << i) & EffectiveAffinityMask) != 0)
                 {
@@ -189,7 +189,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateComputePipelineState(
         HRESULT const hr = Device->CreateComputePipelineState(&ActualDescriptor, IID_PPV_ARGS(&PipelineState));
         if (S_OK == hr)
         {
-            for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+            for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
             {
                 if (((1 << i) & EffectiveAffinityMask) != 0)
                 {
@@ -229,14 +229,14 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateCommandList(
     if (GetAffinityMode() == EAffinityMode::LDA)
     {
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
                 ID3D12GraphicsCommandList* CommandList = nullptr;
                 HRESULT hr = Device->CreateCommandList(AffinityIndexToNodeMask(i), type,
-                    WrappedAllocator->GetChildObject(i),
-                    WrappedState ? WrappedState->mPipelineStates[i] : nullptr, IID_PPV_ARGS(&CommandList));
+                                                       WrappedAllocator->GetChildObject(i),
+                                                       WrappedState ? WrappedState->mPipelineStates[i] : nullptr, IID_PPV_ARGS(&CommandList));
 
                 if (S_OK == hr)
                 {
@@ -290,7 +290,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateDescriptorHeap(
     if (GetAffinityMode() == EAffinityMode::LDA)
     {
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -368,7 +368,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateRootSignature(
         HRESULT hr = Device->CreateRootSignature(MaskToUse, pBlobWithRootSignature, blobLengthInBytes, IID_PPV_ARGS(&Signature));
         if (S_OK == hr)
         {
-            for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+            for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
             {
                 if (((1 << i) & EffectiveAffinityMask) != 0)
                 {
@@ -398,7 +398,7 @@ void STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateConstantBufferView(
     if (GetAffinityMode() == EAffinityMode::LDA)
     {
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -436,7 +436,7 @@ void STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateShaderResourceViewWithAffini
     if (GetAffinityMode() == EAffinityMode::LDA)
     {
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -480,7 +480,7 @@ void STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateUnorderedAccessViewWithAffin
     if (GetAffinityMode() == EAffinityMode::LDA)
     {
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -518,7 +518,7 @@ void STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateRenderTargetViewWithAffinity
     if (GetAffinityMode() == EAffinityMode::LDA)
     {
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -562,7 +562,7 @@ void STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateDepthStencilViewWithAffinity
     if (GetAffinityMode() == EAffinityMode::LDA)
     {
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -588,7 +588,7 @@ void STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateSampler(
     if (GetAffinityMode() == EAffinityMode::LDA)
     {
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -612,7 +612,7 @@ void STDMETHODCALLTYPE CD3DX12AffinityDevice::CopyDescriptors(
     if (NumDestDescriptorRanges == 1 && NumSrcDescriptorRanges == 1)
     {
         return CopyDescriptorsOne(NumDestDescriptorRanges, pDestDescriptorRangeStarts, pDestDescriptorRangeSizes, NumSrcDescriptorRanges,
-            pSrcDescriptorRangeStarts, pSrcDescriptorRangeSizes, DescriptorHeapsType, AffinityMask);
+                                  pSrcDescriptorRangeStarts, pSrcDescriptorRangeSizes, DescriptorHeapsType, AffinityMask);
     }
     D3D12_CPU_DESCRIPTOR_HANDLE* ActualDestDescriptorRangeStarts = new D3D12_CPU_DESCRIPTOR_HANDLE[NumDestDescriptorRanges];
     D3D12_CPU_DESCRIPTOR_HANDLE* ActualSrcDescriptorRangeStarts = new D3D12_CPU_DESCRIPTOR_HANDLE[NumSrcDescriptorRanges];
@@ -620,7 +620,7 @@ void STDMETHODCALLTYPE CD3DX12AffinityDevice::CopyDescriptors(
     if (GetAffinityMode() == EAffinityMode::LDA)
     {
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -667,7 +667,7 @@ void STDMETHODCALLTYPE CD3DX12AffinityDevice::CopyDescriptorsOne(
     if (GetAffinityMode() == EAffinityMode::LDA)
     {
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -696,7 +696,7 @@ void STDMETHODCALLTYPE CD3DX12AffinityDevice::CopyDescriptorsSimple(
     if (GetAffinityMode() == EAffinityMode::LDA)
     {
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -782,7 +782,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateCommittedResource(
         ID3D12Device* Device = mDevices[0];
         D3D12_HEAP_PROPERTIES heapProp = Device->GetCustomHeapProperties(0, pHeapProperties->Type);
 
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -809,10 +809,10 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateCommittedResource(
                     Properties.VisibleNodeMask = nodeMask;
 #if TILE_MAPPING_GPUVA
                     if (GetNodeCount() > 1 &&
-                        pResourceDesc->Dimension == D3D12_RESOURCE_DIMENSION_BUFFER)
+                            pResourceDesc->Dimension == D3D12_RESOURCE_DIMENSION_BUFFER)
                     {
                         UINT64 Width = (pResourceDesc->Width + D3D12_TILED_RESOURCE_TILE_SIZE_IN_BYTES - 1)
-                            & ~(D3D12_TILED_RESOURCE_TILE_SIZE_IN_BYTES - 1);
+                                       & ~(D3D12_TILED_RESOURCE_TILE_SIZE_IN_BYTES - 1);
                         // Video memory buffers - allocate heaps on each GPU and a single reserved resource so we don't have to remap GPUVA.
                         D3D12_HEAP_DESC HeapDesc = { Width, Properties, pResourceDesc->Alignment, D3D12_HEAP_FLAG_ALLOW_ONLY_BUFFERS };
                         HRESULT hr = Device->CreateHeap(&HeapDesc, IID_PPV_ARGS(&Heaps[i]));
@@ -829,15 +829,15 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateCommittedResource(
         }
 #if TILE_MAPPING_GPUVA
         if (GetNodeCount() > 1 &&
-            pResourceDesc->Dimension == D3D12_RESOURCE_DIMENSION_BUFFER &&
-            heapProp.MemoryPoolPreference != D3D12_MEMORY_POOL_L0)
+                pResourceDesc->Dimension == D3D12_RESOURCE_DIMENSION_BUFFER &&
+                heapProp.MemoryPoolPreference != D3D12_MEMORY_POOL_L0)
         {
             HRESULT hr = Device->CreateReservedResource(pResourceDesc, InitialResourceState, pOptimizedClearValue, IID_PPV_ARGS(&Resources[0]));
             RETURN_IF_FAILED(hr);
 
             pHeaps = Heaps;
 
-            for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+            for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
             {
                 if (((1 << i) & EffectiveAffinityMask) != 0)
                 {
@@ -864,7 +864,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateCommittedResource(
                 ID3D12Fence* pFence = nullptr;
                 RETURN_IF_FAILED(Device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&pFence)));
                 HANDLE hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
-                for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+                for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
                 {
                     if (((1 << i) & EffectiveAffinityMask) != 0)
                     {
@@ -906,7 +906,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateHeap(
     if (GetAffinityMode() == EAffinityMode::LDA)
     {
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -955,19 +955,19 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::CreatePlacedResource(
 #endif
 
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
                 ID3D12Resource* Resource = nullptr;
 
                 HRESULT hr = Device->CreatePlacedResource(
-                    pHeap->GetChildObject(i),
-                    HeapOffset,
-                    pDesc,
-                    InitialState,
-                    pOptimizedClearValue,
-                    IID_PPV_ARGS(&Resource));
+                                 pHeap->GetChildObject(i),
+                                 HeapOffset,
+                                 pDesc,
+                                 InitialState,
+                                 pOptimizedClearValue,
+                                 IID_PPV_ARGS(&Resource));
                 if (S_OK == hr)
                 {
                     Resources[i] = Resource;
@@ -1005,17 +1005,17 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateReservedResource(
         }
 #endif
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
                 ID3D12Resource* Resource = nullptr;
 
                 HRESULT hr = Device->CreateReservedResource(
-                    pDesc,
-                    InitialState,
-                    pOptimizedClearValue,
-                    IID_PPV_ARGS(&Resource));
+                                 pDesc,
+                                 InitialState,
+                                 pOptimizedClearValue,
+                                 IID_PPV_ARGS(&Resource));
                 if (S_OK == hr)
                 {
                     Resources[i] = Resource;
@@ -1043,7 +1043,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::MakeResident(
     if (GetAffinityMode() == EAffinityMode::LDA)
     {
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -1081,7 +1081,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::Evict(
     if (GetAffinityMode() == EAffinityMode::LDA)
     {
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -1116,7 +1116,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateFence(
     {
         ID3D12Device* Device = mDevices[0];
         ID3D12Fence* Fence = nullptr;
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -1185,7 +1185,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateQueryHeap(
     if (GetAffinityMode() == EAffinityMode::LDA)
     {
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -1247,7 +1247,7 @@ HRESULT STDMETHODCALLTYPE CD3DX12AffinityDevice::CreateCommandSignature(
     if (GetAffinityMode() == EAffinityMode::LDA)
     {
         ID3D12Device* Device = mDevices[0];
-        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES;i++)
+        for (UINT i = 0; i < D3DX12_MAX_ACTIVE_NODES; i++)
         {
             if (((1 << i) & EffectiveAffinityMask) != 0)
             {
@@ -1517,7 +1517,7 @@ void CD3DX12AffinityDevice::WriteApplicationMessage(D3D12_MESSAGE_SEVERITY const
 
 UINT CD3DX12AffinityDevice::AffinityIndexToNodeMask(UINT const Index)
 {
-#ifndef D3DX12_SIMULATE_LDA_ON_SINGLE_NODE  
+#ifndef D3DX12_SIMULATE_LDA_ON_SINGLE_NODE
     if (mAffinityMode == EAffinityMode::LDA)
         return 1 << Index;
     else

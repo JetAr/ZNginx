@@ -1,4 +1,4 @@
-//*********************************************************
+﻿//*********************************************************
 //
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
@@ -16,12 +16,12 @@
 //
 enum LogSeverity
 {
-	ELS_Message,
-	ELS_Warning,
-	ELS_Error,
-	ELS_Critical,
+    ELS_Message,
+    ELS_Warning,
+    ELS_Error,
+    ELS_Critical,
 
-	_ELS_COUNT
+    _ELS_COUNT
 };
 
 //

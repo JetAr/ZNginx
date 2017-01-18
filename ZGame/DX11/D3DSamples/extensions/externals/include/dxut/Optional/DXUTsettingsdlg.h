@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: DXUTSettingsDlg.cpp
 //
 // Copyright (c) Microsoft Corporation. All rights reserved
@@ -67,15 +67,15 @@
 
 #define TOTAL_FEATURE_LEVLES                            6
 //--------------------------------------------------------------------------------------
-// Dialog for selection of device settings 
+// Dialog for selection of device settings
 // Use DXUTGetD3DSettingsDialog() to access global instance
 // To control the contents of the dialog, use the CD3D9Enumeration class.
 //--------------------------------------------------------------------------------------
 class CD3DSettingsDlg
 {
 public:
-                        CD3DSettingsDlg();
-                        ~CD3DSettingsDlg();
+    CD3DSettingsDlg();
+    ~CD3DSettingsDlg();
 
     void                Init( CDXUTDialogResourceManager* pManager );
     void                Init( CDXUTDialogResourceManager* pManager, LPCWSTR szControlTextureFileName );
@@ -95,7 +95,7 @@ public:
 
     HRESULT             OnD3D11CreateDevice( ID3D11Device* pd3dDevice );
     HRESULT             OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice,
-                                                 const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc );
+            const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc );
     void                OnD3D11DestroyDevice();
 
     CDXUTDialog* GetDialogControl()
@@ -108,7 +108,8 @@ public:
     }
     void                SetActive( bool bActive )
     {
-        m_bActive = bActive; if( bActive ) Refresh();
+        m_bActive = bActive;
+        if( bActive ) Refresh();
     }
     void                ShowControlSet( DXUTDeviceVersion ver );
 

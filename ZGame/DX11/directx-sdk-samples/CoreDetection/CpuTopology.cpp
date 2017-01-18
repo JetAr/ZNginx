@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // CpuTopology.cpp
-// 
+//
 // CpuToplogy class implementation.
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -51,7 +51,8 @@ public:
     //-----------------------------------------------------------------------------
     // DefaultImpl::IsDefaultImpl
     //-----------------------------------------------------------------------------
-    /*virtual*/ bool        IsDefaultImpl() const override
+    /*virtual*/
+    bool        IsDefaultImpl() const override
     {
         return true;
     }
@@ -103,7 +104,7 @@ public:
     //       from a call to GetLogicalProcessorInformation.
     //-----------------------------------------------------------------------------
     GlpiImpl() : m_pSlpi( nullptr ),
-                    m_nItems( 0 )
+        m_nItems( 0 )
     {
         _ASSERT( IsSupported() );
 
@@ -150,7 +151,7 @@ public:
         for( DWORD i = 0; i < m_nItems; ++i )
         {
             if( ( RelationProcessorCore == m_pSlpi[i].Relationship ) &&
-                ( m_pSlpi[i].ProcessorMask & dwProcessAffinity ) )
+                    ( m_pSlpi[i].ProcessorMask & dwProcessAffinity ) )
             {
                 ++nCores;
             }
@@ -208,8 +209,8 @@ public:
 private:
     // GetLogicalProcessorInformation function pointer
     typedef                 BOOL( WINAPI* GlpiFnPtr )( SYSTEM_LOGICAL_PROCESSOR_INFORMATION*,
-                                                       PDWORD
-                                                       );
+            PDWORD
+                                                     );
 
     //-----------------------------------------------------------------------------
     // Name: GlpiImpl::VerifyGlpiFn_
@@ -233,7 +234,7 @@ private:
             // This platform doesn't support the function
             return nullptr;
         }
-    
+
         // VerifyVersionInfo function pointer
         typedef BOOL ( WINAPI* VviFnPtr )( LPOSVERSIONINFOEX,
                                            DWORD,
@@ -249,8 +250,8 @@ private:
         {
             // VerSetConditionMask function pointer
             typedef ULONGLONG ( WINAPI* VscmFnPtr )( ULONGLONG,
-                                                     DWORD,
-                                                     BYTE );
+                    DWORD,
+                    BYTE );
 
             VscmFnPtr pVscm = ( VscmFnPtr )GetProcAddress( hMod, "VerSetConditionMask" );
 
@@ -332,7 +333,7 @@ public:
     BYTE        PackageId( BYTE apicId ) const
     {
         return ( apicId & m_pkgIdMask.mask ) >>
-            ( m_smtIdMask.width + m_coreIdMask.width );
+               ( m_smtIdMask.width + m_coreIdMask.width );
     }
 
     //-----------------------------------------------------------------------------
@@ -341,7 +342,7 @@ public:
     BYTE        PackageCoreId( BYTE apicId ) const
     {
         return ( apicId & ( m_pkgIdMask.mask | m_coreIdMask.mask ) ) >>
-            m_smtIdMask.width;
+               m_smtIdMask.width;
     }
 
     //-----------------------------------------------------------------------------
@@ -439,9 +440,9 @@ public:
     // Name: Cpuid::Cpuid
     //-----------------------------------------------------------------------------
     Cpuid() : m_eax( 0 ),
-                m_ebx( 0 ),
-                m_ecx( 0 ),
-                m_edx( 0 )
+        m_ebx( 0 ),
+        m_ecx( 0 ),
+        m_edx( 0 )
     {
     }
 
@@ -488,8 +489,8 @@ public:
         // Cache the vendor string
         static const Cpuid cpu( Std );
         return cpu.Ebx() == *reinterpret_cast<const DWORD*>( strVendor )
-            && cpu.Ecx() == *reinterpret_cast<const DWORD*>( strVendor + 8 )
-            && cpu.Edx() == *reinterpret_cast<const DWORD*>( strVendor + 4 );
+               && cpu.Ecx() == *reinterpret_cast<const DWORD*>( strVendor + 8 )
+               && cpu.Edx() == *reinterpret_cast<const DWORD*>( strVendor + 4 );
     }
 
     //-----------------------------------------------------------------------------
@@ -508,15 +509,15 @@ public:
         bool ret = false;
         switch( fnSet )
         {
-            case Std:
-                ret = ( fn <= MaxStdFn );
-                break;
-            case Ext:
-                ret = ( fn <= MaxExtFn );
-                break;
-            default:
-                _ASSERT( 0 );   // should never get here
-                break;
+        case Std:
+            ret = ( fn <= MaxStdFn );
+            break;
+        case Ext:
+            ret = ( fn <= MaxExtFn );
+            break;
+        default:
+            _ASSERT( 0 );   // should never get here
+            break;
         }
         return ret;
     }
@@ -683,7 +684,7 @@ public:
                         // the executing thread affinity back to this state.
                         _ASSERT( 0 == m_nItems );
                         dwPrevThreadAffinity = SetThreadAffinityMask( hThread,
-                                                                        dwThreadAffinity );
+                                               dwThreadAffinity );
                     }
                     else
                     {
@@ -799,7 +800,7 @@ public:
     static bool             IsSupported()
     {
         bool bSupported = Cpuid::IsVendor( GenuineIntel )
-            || Cpuid::IsVendor( AuthenticAMD );
+                          || Cpuid::IsVendor( AuthenticAMD );
 
         if( bSupported )
         {
@@ -824,7 +825,7 @@ public:
 
                 if( bSupported && ( dwSystemAffinity > 1 ) )
                 {
-                    // Attempt to set the thread affinity 
+                    // Attempt to set the thread affinity
                     HANDLE hThread = GetCurrentThread();
                     DWORD_PTR dwThreadAffinity = SetThreadAffinityMask( hThread, dwProcessAffinity );
                     if( dwThreadAffinity )

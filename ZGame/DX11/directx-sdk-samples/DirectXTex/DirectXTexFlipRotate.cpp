@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXTexFlipRotate.cpp
-//  
+//
 // DirectX Texture Library - Image flip/rotate operations
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -20,112 +20,112 @@ using Microsoft::WRL::ComPtr;
 
 namespace
 {
-    //-------------------------------------------------------------------------------------
-    // Do flip/rotate operation using WIC
-    //-------------------------------------------------------------------------------------
-    HRESULT PerformFlipRotateUsingWIC(
-        const Image& srcImage,
-        DWORD flags,
-        const WICPixelFormatGUID& pfGUID,
-        const Image& destImage)
+//-------------------------------------------------------------------------------------
+// Do flip/rotate operation using WIC
+//-------------------------------------------------------------------------------------
+HRESULT PerformFlipRotateUsingWIC(
+    const Image& srcImage,
+    DWORD flags,
+    const WICPixelFormatGUID& pfGUID,
+    const Image& destImage)
+{
+    if (!srcImage.pixels || !destImage.pixels)
+        return E_POINTER;
+
+    assert(srcImage.format == destImage.format);
+
+    bool iswic2 = false;
+    IWICImagingFactory* pWIC = GetWICFactory(iswic2);
+    if (!pWIC)
+        return E_NOINTERFACE;
+
+    ComPtr<IWICBitmap> source;
+    HRESULT hr = pWIC->CreateBitmapFromMemory(static_cast<UINT>(srcImage.width), static_cast<UINT>(srcImage.height), pfGUID,
+                 static_cast<UINT>(srcImage.rowPitch), static_cast<UINT>(srcImage.slicePitch),
+                 srcImage.pixels, source.GetAddressOf());
+    if (FAILED(hr))
+        return hr;
+
+    ComPtr<IWICBitmapFlipRotator> FR;
+    hr = pWIC->CreateBitmapFlipRotator(FR.GetAddressOf());
+    if (FAILED(hr))
+        return hr;
+
+    hr = FR->Initialize(source.Get(), static_cast<WICBitmapTransformOptions>(flags));
+    if (FAILED(hr))
+        return hr;
+
+    WICPixelFormatGUID pfFR;
+    hr = FR->GetPixelFormat(&pfFR);
+    if (FAILED(hr))
+        return hr;
+
+    if (memcmp(&pfFR, &pfGUID, sizeof(GUID)) != 0)
     {
-        if (!srcImage.pixels || !destImage.pixels)
-            return E_POINTER;
-
-        assert(srcImage.format == destImage.format);
-
-        bool iswic2 = false;
-        IWICImagingFactory* pWIC = GetWICFactory(iswic2);
-        if (!pWIC)
-            return E_NOINTERFACE;
-
-        ComPtr<IWICBitmap> source;
-        HRESULT hr = pWIC->CreateBitmapFromMemory(static_cast<UINT>(srcImage.width), static_cast<UINT>(srcImage.height), pfGUID,
-            static_cast<UINT>(srcImage.rowPitch), static_cast<UINT>(srcImage.slicePitch),
-            srcImage.pixels, source.GetAddressOf());
-        if (FAILED(hr))
-            return hr;
-
-        ComPtr<IWICBitmapFlipRotator> FR;
-        hr = pWIC->CreateBitmapFlipRotator(FR.GetAddressOf());
-        if (FAILED(hr))
-            return hr;
-
-        hr = FR->Initialize(source.Get(), static_cast<WICBitmapTransformOptions>(flags));
-        if (FAILED(hr))
-            return hr;
-
-        WICPixelFormatGUID pfFR;
-        hr = FR->GetPixelFormat(&pfFR);
-        if (FAILED(hr))
-            return hr;
-
-        if (memcmp(&pfFR, &pfGUID, sizeof(GUID)) != 0)
-        {
-            // Flip/rotate should return the same format as the source...
-            return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
-        }
-
-        UINT nwidth, nheight;
-        hr = FR->GetSize(&nwidth, &nheight);
-        if (FAILED(hr))
-            return hr;
-
-        if (destImage.width != nwidth || destImage.height != nheight)
-            return E_FAIL;
-
-        hr = FR->CopyPixels(0, static_cast<UINT>(destImage.rowPitch), static_cast<UINT>(destImage.slicePitch), destImage.pixels);
-        if (FAILED(hr))
-            return hr;
-
-        return S_OK;
+        // Flip/rotate should return the same format as the source...
+        return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
     }
 
+    UINT nwidth, nheight;
+    hr = FR->GetSize(&nwidth, &nheight);
+    if (FAILED(hr))
+        return hr;
 
-    //-------------------------------------------------------------------------------------
-    // Do conversion, flip/rotate using WIC, conversion cycle
-    //-------------------------------------------------------------------------------------
-    HRESULT PerformFlipRotateViaF32(
-        const Image& srcImage,
-        DWORD flags,
-        const Image& destImage)
-    {
-        if (!srcImage.pixels || !destImage.pixels)
-            return E_POINTER;
+    if (destImage.width != nwidth || destImage.height != nheight)
+        return E_FAIL;
 
-        assert(srcImage.format != DXGI_FORMAT_R32G32B32A32_FLOAT);
-        assert(srcImage.format == destImage.format);
+    hr = FR->CopyPixels(0, static_cast<UINT>(destImage.rowPitch), static_cast<UINT>(destImage.slicePitch), destImage.pixels);
+    if (FAILED(hr))
+        return hr;
 
-        ScratchImage temp;
-        HRESULT hr = _ConvertToR32G32B32A32(srcImage, temp);
-        if (FAILED(hr))
-            return hr;
+    return S_OK;
+}
 
-        const Image *tsrc = temp.GetImage(0, 0, 0);
-        if (!tsrc)
-            return E_POINTER;
 
-        ScratchImage rtemp;
-        hr = rtemp.Initialize2D(DXGI_FORMAT_R32G32B32A32_FLOAT, destImage.width, destImage.height, 1, 1);
-        if (FAILED(hr))
-            return hr;
+//-------------------------------------------------------------------------------------
+// Do conversion, flip/rotate using WIC, conversion cycle
+//-------------------------------------------------------------------------------------
+HRESULT PerformFlipRotateViaF32(
+    const Image& srcImage,
+    DWORD flags,
+    const Image& destImage)
+{
+    if (!srcImage.pixels || !destImage.pixels)
+        return E_POINTER;
 
-        const Image *tdest = rtemp.GetImage(0, 0, 0);
-        if (!tdest)
-            return E_POINTER;
+    assert(srcImage.format != DXGI_FORMAT_R32G32B32A32_FLOAT);
+    assert(srcImage.format == destImage.format);
 
-        hr = PerformFlipRotateUsingWIC(*tsrc, flags, GUID_WICPixelFormat128bppRGBAFloat, *tdest);
-        if (FAILED(hr))
-            return hr;
+    ScratchImage temp;
+    HRESULT hr = _ConvertToR32G32B32A32(srcImage, temp);
+    if (FAILED(hr))
+        return hr;
 
-        temp.Release();
+    const Image *tsrc = temp.GetImage(0, 0, 0);
+    if (!tsrc)
+        return E_POINTER;
 
-        hr = _ConvertFromR32G32B32A32(*tdest, destImage);
-        if (FAILED(hr))
-            return hr;
+    ScratchImage rtemp;
+    hr = rtemp.Initialize2D(DXGI_FORMAT_R32G32B32A32_FLOAT, destImage.width, destImage.height, 1, 1);
+    if (FAILED(hr))
+        return hr;
 
-        return S_OK;
-    }
+    const Image *tdest = rtemp.GetImage(0, 0, 0);
+    if (!tdest)
+        return E_POINTER;
+
+    hr = PerformFlipRotateUsingWIC(*tsrc, flags, GUID_WICPixelFormat128bppRGBAFloat, *tdest);
+    if (FAILED(hr))
+        return hr;
+
+    temp.Release();
+
+    hr = _ConvertFromR32G32B32A32(*tdest, destImage);
+    if (FAILED(hr))
+        return hr;
+
+    return S_OK;
+}
 }
 
 

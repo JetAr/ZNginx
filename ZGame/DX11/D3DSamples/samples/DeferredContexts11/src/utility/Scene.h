@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeferredContexts11\src\utility/Scene.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -84,8 +84,14 @@ public:
     void SetMeshForInstance(int i, LPSTR szName);
 
     void SetLight(int index, DC_Light& light);
-    int NumLights() {return g_iNumLights;}
-    DC_Light& GetLight(int i) {return m_lights[i];}
+    int NumLights()
+    {
+        return g_iNumLights;
+    }
+    DC_Light& GetLight(int i)
+    {
+        return m_lights[i];
+    }
 
     void GetAllActiveMeshes(const D3DXMATRIX* view, UINT** ppRenderMeshes, UINT* iNum);
     void GenerateRenderMeshesByMesh(const D3DXMATRIX* view, UINT** ppRenderMeshes, UINT* iNum);
@@ -94,18 +100,30 @@ public:
     D3DXVECTOR4& GetMeshColorFor(UINT iMeshInstance);
     D3DXMATRIX* GetPreviousWorldMatrixFor(UINT iMeshInstance);
     NvSimpleMesh* GetMeshFor(UINT iMeshInstance);
-    int GetMeshIndexFor(UINT iMeshInstance) {return m_iInstanceMeshIndices[iMeshInstance];}
-    int GetSortedMeshIndex(UINT iMeshInstance) {return m_iSortedMeshIndices[iMeshInstance];}
+    int GetMeshIndexFor(UINT iMeshInstance)
+    {
+        return m_iInstanceMeshIndices[iMeshInstance];
+    }
+    int GetSortedMeshIndex(UINT iMeshInstance)
+    {
+        return m_iSortedMeshIndices[iMeshInstance];
+    }
 
     void InitializeUpdateThreads();
-    int GetUpdateThreads() {return m_iNumUpdateThreads;}
+    int GetUpdateThreads()
+    {
+        return m_iNumUpdateThreads;
+    }
     void SetUpdateThreads(int threads);
     bool HasMeshUpdated(UINT iMeshInstance);
 
     void UpdateLights(double fTime);
     void UpdateScene(double fTime, float fElapsedTime);
 
-    int NumActiveInstances() {return m_iNumActiveInstances;}
+    int NumActiveInstances()
+    {
+        return m_iNumActiveInstances;
+    }
 
     void VaryMeshes();
     void CreateSortedMeshIndices();
@@ -121,8 +139,14 @@ protected:
     SimpleShipController* m_pShips[g_iMaxInstances];
 
     void UpdateInstance(int iInstance, float fTime, float fElapsedTime);
-    void SetWorldMatrixFor(int index, D3DXMATRIX* pMatrix) { memcpy(&m_MeshWorlds[index], pMatrix, sizeof(D3DXMATRIX));}
-    void SetMeshColorFor(int index, D3DXVECTOR4* pColor) {memcpy(&m_MeshColors[index], pColor, sizeof(D3DXVECTOR4));}
+    void SetWorldMatrixFor(int index, D3DXMATRIX* pMatrix)
+    {
+        memcpy(&m_MeshWorlds[index], pMatrix, sizeof(D3DXMATRIX));
+    }
+    void SetMeshColorFor(int index, D3DXVECTOR4* pColor)
+    {
+        memcpy(&m_MeshColors[index], pColor, sizeof(D3DXVECTOR4));
+    }
 
     float CPUGameLoadMethod(float fTime);    // simulates some load
 

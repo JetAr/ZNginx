@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: Mesh.cpp
 //
 // Mesh processing helper class
@@ -25,64 +25,73 @@ using namespace DirectX;
 
 namespace
 {
-    struct handle_closer { void operator()(HANDLE h) { if (h) CloseHandle(h); } };
-
-    typedef public std::unique_ptr<void, handle_closer> ScopedHandle;
-
-    inline HANDLE safe_handle(HANDLE h) { return (h == INVALID_HANDLE_VALUE) ? 0 : h; }
-
-    template<typename T> inline HRESULT write_file(HANDLE hFile, const T& value)
+struct handle_closer
+{
+    void operator()(HANDLE h)
     {
-        DWORD bytesWritten;
-        if (!WriteFile(hFile, &value, static_cast<DWORD>(sizeof(T)), &bytesWritten, nullptr))
+        if (h) CloseHandle(h);
+    }
+};
+
+typedef public std::unique_ptr<void, handle_closer> ScopedHandle;
+
+inline HANDLE safe_handle(HANDLE h)
+{
+    return (h == INVALID_HANDLE_VALUE) ? 0 : h;
+}
+
+template<typename T> inline HRESULT write_file(HANDLE hFile, const T& value)
+{
+    DWORD bytesWritten;
+    if (!WriteFile(hFile, &value, static_cast<DWORD>(sizeof(T)), &bytesWritten, nullptr))
+        return HRESULT_FROM_WIN32(GetLastError());
+
+    if (bytesWritten != sizeof(T))
+        return E_FAIL;
+
+    return S_OK;
+}
+
+inline HRESULT write_file_string(HANDLE hFile, const wchar_t* value)
+{
+    UINT length = (value) ? static_cast<UINT>( wcslen(value)+1 ) : 1;
+
+    DWORD bytesWritten;
+    if (!WriteFile(hFile, &length, static_cast<DWORD>(sizeof(UINT)), &bytesWritten, nullptr))
+        return HRESULT_FROM_WIN32(GetLastError());
+
+    if (bytesWritten != sizeof(UINT))
+        return E_FAIL;
+
+    if (length > 0)
+    {
+        DWORD bytes = static_cast<DWORD>(sizeof(wchar_t) * length);
+
+        if (!WriteFile(hFile, value, bytes, &bytesWritten, nullptr))
             return HRESULT_FROM_WIN32(GetLastError());
 
-        if (bytesWritten != sizeof(T))
+        if (bytesWritten != bytes)
             return E_FAIL;
-
-        return S_OK;
     }
-
-    inline HRESULT write_file_string(HANDLE hFile, const wchar_t* value)
+    else
     {
-        UINT length = (value) ? static_cast<UINT>( wcslen(value)+1 ) : 1;
-
-        DWORD bytesWritten;
-        if (!WriteFile(hFile, &length, static_cast<DWORD>(sizeof(UINT)), &bytesWritten, nullptr))
+        wchar_t nul = 0;
+        if (!WriteFile(hFile, &nul, sizeof(wchar_t), &bytesWritten, nullptr))
             return HRESULT_FROM_WIN32(GetLastError());
 
-        if (bytesWritten != sizeof(UINT))
+        if (bytesWritten != sizeof(wchar_t))
             return E_FAIL;
-
-        if (length > 0)
-        {
-            DWORD bytes = static_cast<DWORD>(sizeof(wchar_t) * length);
-
-            if (!WriteFile(hFile, value, bytes, &bytesWritten, nullptr))
-                return HRESULT_FROM_WIN32(GetLastError());
-
-            if (bytesWritten != bytes)
-                return E_FAIL;
-        }
-        else
-        {
-            wchar_t nul = 0;
-            if (!WriteFile(hFile, &nul, sizeof(wchar_t), &bytesWritten, nullptr))
-                return HRESULT_FROM_WIN32(GetLastError());
-
-            if (bytesWritten != sizeof(wchar_t))
-                return E_FAIL;
-        }
-
-        return S_OK;
     }
 
-    inline UINT64 roundup4k(UINT64 value)
-    {
-        return ((value + 4095) / 4096) * 4096;
-    }
+    return S_OK;
+}
 
-    static const uint8_t g_padding[4096] = { 0 };
+inline UINT64 roundup4k(UINT64 value)
+{
+    return ((value + 4095) / 4096) * 4096;
+}
+
+static const uint8_t g_padding[4096] = { 0 };
 }
 
 // Move constructor
@@ -173,7 +182,7 @@ HRESULT Mesh::SetIndexData( size_t nFaces, const uint16_t* indices, uint32_t* at
         attr.reset( new (std::nothrow) uint32_t[ nFaces ] );
         if ( !attr )
             return E_OUTOFMEMORY;
-        
+
         memcpy( attr.get(), attributes, sizeof(uint32_t) * nFaces);
     }
 
@@ -209,7 +218,7 @@ HRESULT Mesh::SetIndexData( size_t nFaces, const uint32_t* indices, uint32_t* at
         attr.reset( new (std::nothrow) uint32_t[ nFaces ] );
         if ( !attr )
             return E_OUTOFMEMORY;
-        
+
         memcpy( attr.get(), attributes, sizeof(uint32_t) * nFaces );
     }
 
@@ -242,11 +251,11 @@ HRESULT Mesh::SetVertexData( _Inout_ DirectX::VBReader& reader, _In_ size_t nVer
     std::unique_ptr<XMFLOAT3[]> pos( new (std::nothrow) XMFLOAT3[ nVerts ] );
     if (!pos)
         return E_OUTOFMEMORY;
-    
+
     HRESULT hr = reader.Read(pos.get(), "SV_Position", 0, nVerts);
     if (FAILED(hr))
         return hr;
-    
+
     // Load normals
     std::unique_ptr<XMFLOAT3[]> norms;
     auto e = reader.GetElement11("NORMAL", 0);
@@ -575,7 +584,7 @@ HRESULT Mesh::ComputeTangentFrame( _In_ bool bitangents )
             return E_OUTOFMEMORY;
 
         HRESULT hr = DirectX::ComputeTangentFrame(mIndices.get(), mnFaces, mPositions.get(), mNormals.get(), mTexCoords.get(), mnVerts,
-                                                  tan1.get(), tan2.get());
+                     tan1.get(), tan2.get());
         if (FAILED(hr))
             return hr;
     }
@@ -584,7 +593,7 @@ HRESULT Mesh::ComputeTangentFrame( _In_ bool bitangents )
         mBiTangents.reset();
 
         HRESULT hr = DirectX::ComputeTangentFrame(mIndices.get(), mnFaces, mPositions.get(), mNormals.get(), mTexCoords.get(), mnVerts,
-                                                  tan1.get());
+                     tan1.get());
         if (FAILED(hr))
             return hr;
     }
@@ -797,7 +806,7 @@ bool Mesh::Is16BitIndexBuffer() const
     {
         uint32_t index = *(iptr++);
         if (index != uint32_t(-1)
-            && (index >= UINT16_MAX))
+                && (index >= UINT16_MAX))
         {
             return false;
         }
@@ -947,23 +956,23 @@ namespace VBO
 
 #pragma pack(push,1)
 
-    struct header_t
-    {
-        uint32_t numVertices;
-        uint32_t numIndices;
-    };
+struct header_t
+{
+    uint32_t numVertices;
+    uint32_t numIndices;
+};
 
-    struct vertex_t
-    {
-        DirectX::XMFLOAT3 position;
-        DirectX::XMFLOAT3 normal;
-        DirectX::XMFLOAT2 textureCoordinate;
-    };
+struct vertex_t
+{
+    DirectX::XMFLOAT3 position;
+    DirectX::XMFLOAT3 normal;
+    DirectX::XMFLOAT2 textureCoordinate;
+};
 
 #pragma pack(pop)
 
-    static_assert(sizeof(header_t) == 8, "VBO header size mismatch");
-    static_assert(sizeof(vertex_t) == 32, "VBO vertex size mismatch");
+static_assert(sizeof(header_t) == 8, "VBO header size mismatch");
+static_assert(sizeof(vertex_t) == 32, "VBO vertex size mismatch");
 }; // namespace
 
 
@@ -1193,135 +1202,135 @@ HRESULT Mesh::CreateFromVBO( const wchar_t* szFileName, std::unique_ptr<Mesh>& r
 
 namespace VSD3DStarter
 {
-    // .CMO files
+// .CMO files
 
-    // UINT - Mesh count
-    // { [Mesh count]
-    //      UINT - Length of name
-    //      wchar_t[] - Name of mesh (if length > 0)
-    //      UINT - Material count
-    //      { [Material count]
-    //          UINT - Length of material name
-    //          wchar_t[] - Name of material (if length > 0)
-    //          Material structure
-    //          UINT - Length of pixel shader name
-    //          wchar_t[] - Name of pixel shader (if length > 0)
-    //          { [8]
-    //              UINT - Length of texture name
-    //              wchar_t[] - Name of texture (if length > 0)
-    //          }
-    //      }
-    //      BYTE - 1 if there is skeletal animation data present
-    //      UINT - SubMesh count
-    //      { [SubMesh count]
-    //          SubMesh structure
-    //      }
-    //      UINT - IB Count
-    //      { [IB Count]
-    //          UINT - Number of USHORTs in IB
-    //          USHORT[] - Array of indices
-    //      }
-    //      UINT - VB Count
-    //      { [VB Count]
-    //          UINT - Number of verts in VB
-    //          Vertex[] - Array of vertices
-    //      }
-    //      UINT - Skinning VB Count
-    //      { [Skinning VB Count]
-    //          UINT - Number of verts in Skinning VB
-    //          SkinningVertex[] - Array of skinning verts
-    //      }
-    //      MeshExtents structure
-    //      [If skeleton animation data is not present, file ends here]
-    //      UINT - Bone count
-    //      { [Bone count]
-    //          UINT - Length of bone name
-    //          wchar_t[] - Bone name (if length > 0)
-    //          Bone structure
-    //      }
-    //      UINT - Animation clip count
-    //      { [Animation clip count]
-    //          UINT - Length of clip name
-    //          wchar_t[] - Clip name (if length > 0)
-    //          float - Start time
-    //          float - End time
-    //          UINT - Keyframe count
-    //          { [Keyframe count]
-    //              Keyframe structure
-    //          }
-    //      }
-    // }
+// UINT - Mesh count
+// { [Mesh count]
+//      UINT - Length of name
+//      wchar_t[] - Name of mesh (if length > 0)
+//      UINT - Material count
+//      { [Material count]
+//          UINT - Length of material name
+//          wchar_t[] - Name of material (if length > 0)
+//          Material structure
+//          UINT - Length of pixel shader name
+//          wchar_t[] - Name of pixel shader (if length > 0)
+//          { [8]
+//              UINT - Length of texture name
+//              wchar_t[] - Name of texture (if length > 0)
+//          }
+//      }
+//      BYTE - 1 if there is skeletal animation data present
+//      UINT - SubMesh count
+//      { [SubMesh count]
+//          SubMesh structure
+//      }
+//      UINT - IB Count
+//      { [IB Count]
+//          UINT - Number of USHORTs in IB
+//          USHORT[] - Array of indices
+//      }
+//      UINT - VB Count
+//      { [VB Count]
+//          UINT - Number of verts in VB
+//          Vertex[] - Array of vertices
+//      }
+//      UINT - Skinning VB Count
+//      { [Skinning VB Count]
+//          UINT - Number of verts in Skinning VB
+//          SkinningVertex[] - Array of skinning verts
+//      }
+//      MeshExtents structure
+//      [If skeleton animation data is not present, file ends here]
+//      UINT - Bone count
+//      { [Bone count]
+//          UINT - Length of bone name
+//          wchar_t[] - Bone name (if length > 0)
+//          Bone structure
+//      }
+//      UINT - Animation clip count
+//      { [Animation clip count]
+//          UINT - Length of clip name
+//          wchar_t[] - Clip name (if length > 0)
+//          float - Start time
+//          float - End time
+//          UINT - Keyframe count
+//          { [Keyframe count]
+//              Keyframe structure
+//          }
+//      }
+// }
 
 #pragma pack(push,1)
 
-    struct Material
-    {
-        DirectX::XMFLOAT4   Ambient;
-        DirectX::XMFLOAT4   Diffuse;
-        DirectX::XMFLOAT4   Specular;
-        float               SpecularPower;
-        DirectX::XMFLOAT4   Emissive;
-        DirectX::XMFLOAT4X4 UVTransform;
-    };
+struct Material
+{
+    DirectX::XMFLOAT4   Ambient;
+    DirectX::XMFLOAT4   Diffuse;
+    DirectX::XMFLOAT4   Specular;
+    float               SpecularPower;
+    DirectX::XMFLOAT4   Emissive;
+    DirectX::XMFLOAT4X4 UVTransform;
+};
 
-    const uint32_t MAX_TEXTURE = 8;
+const uint32_t MAX_TEXTURE = 8;
 
-    struct SubMesh
-    {
-        UINT MaterialIndex;
-        UINT IndexBufferIndex;
-        UINT VertexBufferIndex;
-        UINT StartIndex;
-        UINT PrimCount;
-    };
+struct SubMesh
+{
+    UINT MaterialIndex;
+    UINT IndexBufferIndex;
+    UINT VertexBufferIndex;
+    UINT StartIndex;
+    UINT PrimCount;
+};
 
-    const uint32_t NUM_BONE_INFLUENCES = 4;
+const uint32_t NUM_BONE_INFLUENCES = 4;
 
-    struct Vertex
-    {
-        DirectX::XMFLOAT3 Position;
-        DirectX::XMFLOAT3 Normal;
-        DirectX::XMFLOAT4 Tangent;
-        UINT color;
-        DirectX::XMFLOAT2 TextureCoordinates;
-    };
+struct Vertex
+{
+    DirectX::XMFLOAT3 Position;
+    DirectX::XMFLOAT3 Normal;
+    DirectX::XMFLOAT4 Tangent;
+    UINT color;
+    DirectX::XMFLOAT2 TextureCoordinates;
+};
 
-    struct SkinningVertex
-    {
-        UINT boneIndex[NUM_BONE_INFLUENCES];
-        float boneWeight[NUM_BONE_INFLUENCES];
-    };
+struct SkinningVertex
+{
+    UINT boneIndex[NUM_BONE_INFLUENCES];
+    float boneWeight[NUM_BONE_INFLUENCES];
+};
 
-    struct MeshExtents
-    {
-        float CenterX, CenterY, CenterZ;
-        float Radius;
+struct MeshExtents
+{
+    float CenterX, CenterY, CenterZ;
+    float Radius;
 
-        float MinX, MinY, MinZ;
-        float MaxX, MaxY, MaxZ;
-    };
+    float MinX, MinY, MinZ;
+    float MaxX, MaxY, MaxZ;
+};
 
-    struct Bone
-    {
-        INT ParentIndex;
-        DirectX::XMFLOAT4X4 InvBindPos;
-        DirectX::XMFLOAT4X4 BindPos;
-        DirectX::XMFLOAT4X4 LocalTransform;
-    };
+struct Bone
+{
+    INT ParentIndex;
+    DirectX::XMFLOAT4X4 InvBindPos;
+    DirectX::XMFLOAT4X4 BindPos;
+    DirectX::XMFLOAT4X4 LocalTransform;
+};
 
-    struct Clip
-    {
-        float StartTime;
-        float EndTime;
-        UINT  keys;
-    };
+struct Clip
+{
+    float StartTime;
+    float EndTime;
+    UINT  keys;
+};
 
-    struct Keyframe
-    {
-        UINT BoneIndex;
-        float Time;
-        DirectX::XMFLOAT4X4 Transform;
-    };
+struct Keyframe
+{
+    UINT BoneIndex;
+    float Time;
+    DirectX::XMFLOAT4X4 Transform;
+};
 
 #pragma pack(pop)
 
@@ -1456,8 +1465,9 @@ HRESULT Mesh::ExportToCMO(const wchar_t* szFileName, size_t nMaterials, const Ma
 
     // Write materials
     static const Mesh::Material s_defMaterial = { L"default", false, 1.f, 1.f,
-        XMFLOAT3(0.2f, 0.2f, 0.2f), XMFLOAT3(0.8f, 0.8f, 0.8f),
-        XMFLOAT3(0.f, 0.f, 0.f), XMFLOAT3(0.f, 0.f, 0.f), L"" };
+                                                  XMFLOAT3(0.2f, 0.2f, 0.2f), XMFLOAT3(0.8f, 0.8f, 0.8f),
+                                                  XMFLOAT3(0.f, 0.f, 0.f), XMFLOAT3(0.f, 0.f, 0.f), L""
+                                                };
 
     UINT materialCount = 1;
     if (nMaterials > 0)
@@ -1705,7 +1715,7 @@ HRESULT Mesh::ExportToCMO(const wchar_t* szFileName, size_t nMaterials, const Ma
 
     return S_OK;
 }
-    
+
 
 
 //======================================================================================
@@ -1720,321 +1730,321 @@ HRESULT Mesh::ExportToCMO(const wchar_t* szFileName, size_t nMaterials, const Ma
 //--------------------------------------------------------------------------------------
 namespace DXUT
 {
-    // .SDKMESH files
+// .SDKMESH files
 
-    // SDKMESH_HEADER
-    // SDKMESH_VERTEX_BUFFER_HEADER header->VertexStreamHeadersOffset
-    // SDKMESH_INDEX_BUFFER_HEADER  header->IndexStreamHeadersOffset
-    // SDKMESH_MESH                 header->MeshDataOffset
-    // SDKMESH_SUBSET               header->SubsetDataOffset
-    // SDKMESH_FRAME                header->FrameDataOffset
-    // SDKMESH_MATERIAL             header->MaterialDataOffset
-    // [header->NonBufferDataSize]
-    // { [ header->NumVertexBuffers]
-    //      VB data
-    // }
-    // { [ header->NumIndexBuffers]
-    //      IB data
-    // }
+// SDKMESH_HEADER
+// SDKMESH_VERTEX_BUFFER_HEADER header->VertexStreamHeadersOffset
+// SDKMESH_INDEX_BUFFER_HEADER  header->IndexStreamHeadersOffset
+// SDKMESH_MESH                 header->MeshDataOffset
+// SDKMESH_SUBSET               header->SubsetDataOffset
+// SDKMESH_FRAME                header->FrameDataOffset
+// SDKMESH_MATERIAL             header->MaterialDataOffset
+// [header->NonBufferDataSize]
+// { [ header->NumVertexBuffers]
+//      VB data
+// }
+// { [ header->NumIndexBuffers]
+//      IB data
+// }
 
 
-    // .SDDKANIM files
+// .SDDKANIM files
 
-    // SDKANIMATION_FILE_HEADER
-    // BYTE[] - Length of fileheader->AnimationDataSize
+// SDKANIMATION_FILE_HEADER
+// BYTE[] - Length of fileheader->AnimationDataSize
 
-    // .SDKMESH uses Direct3D 9 decls, but only a subset of these is ever generated by the legacy DirectX SDK Content Exporter
+// .SDKMESH uses Direct3D 9 decls, but only a subset of these is ever generated by the legacy DirectX SDK Content Exporter
 
-    // D3DDECLUSAGE_POSITION / D3DDECLTYPE_FLOAT3
-    // (D3DDECLUSAGE_BLENDWEIGHT / D3DDECLTYPE_UBYTE4N
-    // D3DDECLUSAGE_BLENDINDICES / D3DDECLTYPE_UBYTE4)?
-    // (D3DDECLUSAGE_NORMAL / D3DDECLTYPE_FLOAT3 or D3DDECLTYPE_FLOAT16_4)?
-    // (D3DDECLUSAGE_COLOR / D3DDECLTYPE_D3DCOLOR)?
-    // (D3DDECLUSAGE_TEXCOORD / D3DDECLTYPE_FLOAT1, D3DDECLTYPE_FLOAT2 or D3DDECLTYPE_FLOAT16_2, D3DDECLTYPE_FLOAT3 or D3DDECLTYPE_FLOAT16_4, D3DDECLTYPE_FLOAT4 or D3DDECLTYPE_FLOAT16_4)*
-    // (D3DDECLUSAGE_TANGENT / D3DDECLTYPE_FLOAT3 or D3DDECLTYPE_FLOAT16_4)?
-    // (D3DDECLUSAGE_BINORMAL / D3DDECLTYPE_FLOAT3 or D3DDECLTYPE_FLOAT16_4)?
+// D3DDECLUSAGE_POSITION / D3DDECLTYPE_FLOAT3
+// (D3DDECLUSAGE_BLENDWEIGHT / D3DDECLTYPE_UBYTE4N
+// D3DDECLUSAGE_BLENDINDICES / D3DDECLTYPE_UBYTE4)?
+// (D3DDECLUSAGE_NORMAL / D3DDECLTYPE_FLOAT3 or D3DDECLTYPE_FLOAT16_4)?
+// (D3DDECLUSAGE_COLOR / D3DDECLTYPE_D3DCOLOR)?
+// (D3DDECLUSAGE_TEXCOORD / D3DDECLTYPE_FLOAT1, D3DDECLTYPE_FLOAT2 or D3DDECLTYPE_FLOAT16_2, D3DDECLTYPE_FLOAT3 or D3DDECLTYPE_FLOAT16_4, D3DDECLTYPE_FLOAT4 or D3DDECLTYPE_FLOAT16_4)*
+// (D3DDECLUSAGE_TANGENT / D3DDECLTYPE_FLOAT3 or D3DDECLTYPE_FLOAT16_4)?
+// (D3DDECLUSAGE_BINORMAL / D3DDECLTYPE_FLOAT3 or D3DDECLTYPE_FLOAT16_4)?
 
-    enum D3DDECLUSAGE
-    {
-        D3DDECLUSAGE_POSITION = 0,
-        D3DDECLUSAGE_BLENDWEIGHT = 1,
-        D3DDECLUSAGE_BLENDINDICES = 2,
-        D3DDECLUSAGE_NORMAL = 3,
-        D3DDECLUSAGE_TEXCOORD = 5,
-        D3DDECLUSAGE_TANGENT = 6,
-        D3DDECLUSAGE_BINORMAL = 7,
-        D3DDECLUSAGE_COLOR = 10,
-    };
+enum D3DDECLUSAGE
+{
+    D3DDECLUSAGE_POSITION = 0,
+    D3DDECLUSAGE_BLENDWEIGHT = 1,
+    D3DDECLUSAGE_BLENDINDICES = 2,
+    D3DDECLUSAGE_NORMAL = 3,
+    D3DDECLUSAGE_TEXCOORD = 5,
+    D3DDECLUSAGE_TANGENT = 6,
+    D3DDECLUSAGE_BINORMAL = 7,
+    D3DDECLUSAGE_COLOR = 10,
+};
 
-    enum D3DDECLTYPE
-    {
-        D3DDECLTYPE_FLOAT1 = 0,  // 1D float expanded to (value, 0., 0., 1.)
-        D3DDECLTYPE_FLOAT2 = 1,  // 2D float expanded to (value, value, 0., 1.)
-        D3DDECLTYPE_FLOAT3 = 2,  // 3D float expanded to (value, value, value, 1.)
-        D3DDECLTYPE_FLOAT4 = 3,  // 4D float
-        D3DDECLTYPE_D3DCOLOR = 4,  // 4D packed unsigned bytes mapped to 0. to 1. range
-        // Input is in D3DCOLOR format (ARGB) expanded to (R, G, B, A)
-        D3DDECLTYPE_UBYTE4 = 5,  // 4D unsigned byte
-        D3DDECLTYPE_UBYTE4N = 8,  // Each of 4 bytes is normalized by dividing to 255.0
-        D3DDECLTYPE_DEC3N = 14,  // 3D signed 10 10 10 format normalized and expanded to (v[0]/511.0, v[1]/511.0, v[2]/511.0, 1)
-        D3DDECLTYPE_FLOAT16_2 = 15,  // Two 16-bit floating point values, expanded to (value, value, 0, 1)
-        D3DDECLTYPE_FLOAT16_4 = 16,  // Four 16-bit floating point values
+enum D3DDECLTYPE
+{
+    D3DDECLTYPE_FLOAT1 = 0,  // 1D float expanded to (value, 0., 0., 1.)
+    D3DDECLTYPE_FLOAT2 = 1,  // 2D float expanded to (value, value, 0., 1.)
+    D3DDECLTYPE_FLOAT3 = 2,  // 3D float expanded to (value, value, value, 1.)
+    D3DDECLTYPE_FLOAT4 = 3,  // 4D float
+    D3DDECLTYPE_D3DCOLOR = 4,  // 4D packed unsigned bytes mapped to 0. to 1. range
+    // Input is in D3DCOLOR format (ARGB) expanded to (R, G, B, A)
+    D3DDECLTYPE_UBYTE4 = 5,  // 4D unsigned byte
+    D3DDECLTYPE_UBYTE4N = 8,  // Each of 4 bytes is normalized by dividing to 255.0
+    D3DDECLTYPE_DEC3N = 14,  // 3D signed 10 10 10 format normalized and expanded to (v[0]/511.0, v[1]/511.0, v[2]/511.0, 1)
+    D3DDECLTYPE_FLOAT16_2 = 15,  // Two 16-bit floating point values, expanded to (value, value, 0, 1)
+    D3DDECLTYPE_FLOAT16_4 = 16,  // Four 16-bit floating point values
 
-        D3DDECLTYPE_UNUSED = 17,  // When the type field in a decl is unused.
-    };
+    D3DDECLTYPE_UNUSED = 17,  // When the type field in a decl is unused.
+};
 
 #pragma pack(push,4)
 
-    struct D3DVERTEXELEMENT9
-    {
-        WORD    Stream;     // Stream index
-        WORD    Offset;     // Offset in the stream in bytes
-        BYTE    Type;       // Data type
-        BYTE    Method;     // Processing method
-        BYTE    Usage;      // Semantics
-        BYTE    UsageIndex; // Semantic index
-    };
+struct D3DVERTEXELEMENT9
+{
+    WORD    Stream;     // Stream index
+    WORD    Offset;     // Offset in the stream in bytes
+    BYTE    Type;       // Data type
+    BYTE    Method;     // Processing method
+    BYTE    Usage;      // Semantics
+    BYTE    UsageIndex; // Semantic index
+};
 
 #pragma pack(pop)
 
-    //--------------------------------------------------------------------------------------
-    // Hard Defines for the various structures
-    //--------------------------------------------------------------------------------------
-    const uint32_t SDKMESH_FILE_VERSION = 101;
-    const uint32_t MAX_VERTEX_ELEMENTS = 32;
-    const uint32_t MAX_VERTEX_STREAMS = 16;
-    const uint32_t MAX_FRAME_NAME = 100;
-    const uint32_t MAX_MESH_NAME = 100;
-    const uint32_t MAX_SUBSET_NAME = 100;
-    const uint32_t MAX_MATERIAL_NAME = 100;
-    const uint32_t MAX_TEXTURE_NAME = MAX_PATH;
-    const uint32_t MAX_MATERIAL_PATH = MAX_PATH;
-    const uint32_t INVALID_FRAME = uint32_t(-1);
-    const uint32_t INVALID_MESH = uint32_t(-1);
-    const uint32_t INVALID_MATERIAL = uint32_t(-1);
-    const uint32_t INVALID_SUBSET = uint32_t(-1);
-    const uint32_t INVALID_ANIMATION_DATA = uint32_t(-1);
-    const uint32_t INVALID_SAMPLER_SLOT = uint32_t(-1);
-    const uint32_t ERROR_RESOURCE_VALUE = 1;
+//--------------------------------------------------------------------------------------
+// Hard Defines for the various structures
+//--------------------------------------------------------------------------------------
+const uint32_t SDKMESH_FILE_VERSION = 101;
+const uint32_t MAX_VERTEX_ELEMENTS = 32;
+const uint32_t MAX_VERTEX_STREAMS = 16;
+const uint32_t MAX_FRAME_NAME = 100;
+const uint32_t MAX_MESH_NAME = 100;
+const uint32_t MAX_SUBSET_NAME = 100;
+const uint32_t MAX_MATERIAL_NAME = 100;
+const uint32_t MAX_TEXTURE_NAME = MAX_PATH;
+const uint32_t MAX_MATERIAL_PATH = MAX_PATH;
+const uint32_t INVALID_FRAME = uint32_t(-1);
+const uint32_t INVALID_MESH = uint32_t(-1);
+const uint32_t INVALID_MATERIAL = uint32_t(-1);
+const uint32_t INVALID_SUBSET = uint32_t(-1);
+const uint32_t INVALID_ANIMATION_DATA = uint32_t(-1);
+const uint32_t INVALID_SAMPLER_SLOT = uint32_t(-1);
+const uint32_t ERROR_RESOURCE_VALUE = 1;
 
-    template<typename TYPE> bool IsErrorResource(TYPE data)
-    {
-        if ((TYPE) ERROR_RESOURCE_VALUE == data)
-            return true;
-        return false;
-    }
+template<typename TYPE> bool IsErrorResource(TYPE data)
+{
+    if ((TYPE) ERROR_RESOURCE_VALUE == data)
+        return true;
+    return false;
+}
 
-    //--------------------------------------------------------------------------------------
-    // Enumerated Types.  These will have mirrors in both D3D9 and D3D11
-    //--------------------------------------------------------------------------------------
-    enum SDKMESH_PRIMITIVE_TYPE
-    {
-        PT_TRIANGLE_LIST = 0,
-        PT_TRIANGLE_STRIP,
-        PT_LINE_LIST,
-        PT_LINE_STRIP,
-        PT_POINT_LIST,
-        PT_TRIANGLE_LIST_ADJ,
-        PT_TRIANGLE_STRIP_ADJ,
-        PT_LINE_LIST_ADJ,
-        PT_LINE_STRIP_ADJ,
-        PT_QUAD_PATCH_LIST,
-        PT_TRIANGLE_PATCH_LIST,
-    };
+//--------------------------------------------------------------------------------------
+// Enumerated Types.  These will have mirrors in both D3D9 and D3D11
+//--------------------------------------------------------------------------------------
+enum SDKMESH_PRIMITIVE_TYPE
+{
+    PT_TRIANGLE_LIST = 0,
+    PT_TRIANGLE_STRIP,
+    PT_LINE_LIST,
+    PT_LINE_STRIP,
+    PT_POINT_LIST,
+    PT_TRIANGLE_LIST_ADJ,
+    PT_TRIANGLE_STRIP_ADJ,
+    PT_LINE_LIST_ADJ,
+    PT_LINE_STRIP_ADJ,
+    PT_QUAD_PATCH_LIST,
+    PT_TRIANGLE_PATCH_LIST,
+};
 
-    enum SDKMESH_INDEX_TYPE
-    {
-        IT_16BIT = 0,
-        IT_32BIT,
-    };
+enum SDKMESH_INDEX_TYPE
+{
+    IT_16BIT = 0,
+    IT_32BIT,
+};
 
-    enum FRAME_TRANSFORM_TYPE
-    {
-        FTT_RELATIVE = 0,
-        FTT_ABSOLUTE,		//This is not currently used but is here to support absolute transformations in the future
-    };
+enum FRAME_TRANSFORM_TYPE
+{
+    FTT_RELATIVE = 0,
+    FTT_ABSOLUTE,		//This is not currently used but is here to support absolute transformations in the future
+};
 
-    //--------------------------------------------------------------------------------------
-    // Structures.
-    //--------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------
+// Structures.
+//--------------------------------------------------------------------------------------
 #pragma pack(push,8)
 
-    struct SDKMESH_HEADER
+struct SDKMESH_HEADER
+{
+    //Basic Info and sizes
+    UINT Version;
+    BYTE IsBigEndian;
+    UINT64 HeaderSize;
+    UINT64 NonBufferDataSize;
+    UINT64 BufferDataSize;
+
+    //Stats
+    UINT NumVertexBuffers;
+    UINT NumIndexBuffers;
+    UINT NumMeshes;
+    UINT NumTotalSubsets;
+    UINT NumFrames;
+    UINT NumMaterials;
+
+    //Offsets to Data
+    UINT64 VertexStreamHeadersOffset;
+    UINT64 IndexStreamHeadersOffset;
+    UINT64 MeshDataOffset;
+    UINT64 SubsetDataOffset;
+    UINT64 FrameDataOffset;
+    UINT64 MaterialDataOffset;
+};
+
+struct SDKMESH_VERTEX_BUFFER_HEADER
+{
+    UINT64 NumVertices;
+    UINT64 SizeBytes;
+    UINT64 StrideBytes;
+    D3DVERTEXELEMENT9 Decl[MAX_VERTEX_ELEMENTS];
+    union
     {
-        //Basic Info and sizes
-        UINT Version;
-        BYTE IsBigEndian;
-        UINT64 HeaderSize;
-        UINT64 NonBufferDataSize;
-        UINT64 BufferDataSize;
+        UINT64 DataOffset;
+        ID3D11Buffer* pVB11;
+    };
+};
 
-        //Stats
-        UINT NumVertexBuffers;
-        UINT NumIndexBuffers;
-        UINT NumMeshes;
-        UINT NumTotalSubsets;
-        UINT NumFrames;
-        UINT NumMaterials;
+struct SDKMESH_INDEX_BUFFER_HEADER
+{
+    UINT64 NumIndices;
+    UINT64 SizeBytes;
+    UINT IndexType;
+    union
+    {
+        UINT64 DataOffset;
+        ID3D11Buffer* pIB11;
+    };
+};
 
-        //Offsets to Data
-        UINT64 VertexStreamHeadersOffset;
-        UINT64 IndexStreamHeadersOffset;
-        UINT64 MeshDataOffset;
-        UINT64 SubsetDataOffset;
-        UINT64 FrameDataOffset;
-        UINT64 MaterialDataOffset;
+struct SDKMESH_MESH
+{
+    char Name[MAX_MESH_NAME];
+    BYTE NumVertexBuffers;
+    UINT VertexBuffers[MAX_VERTEX_STREAMS];
+    UINT IndexBuffer;
+    UINT NumSubsets;
+    UINT NumFrameInfluences; //aka bones
+
+    DirectX::XMFLOAT3 BoundingBoxCenter;
+    DirectX::XMFLOAT3 BoundingBoxExtents;
+
+    union
+    {
+        UINT64 SubsetOffset;
+        INT* pSubsets;
+    };
+    union
+    {
+        UINT64 FrameInfluenceOffset;
+        UINT* pFrameInfluences;
+    };
+};
+
+struct SDKMESH_SUBSET
+{
+    char Name[MAX_SUBSET_NAME];
+    UINT MaterialID;
+    UINT PrimitiveType;
+    UINT64 IndexStart;
+    UINT64 IndexCount;
+    UINT64 VertexStart;
+    UINT64 VertexCount;
+};
+
+struct SDKMESH_FRAME
+{
+    char Name[MAX_FRAME_NAME];
+    UINT Mesh;
+    UINT ParentFrame;
+    UINT ChildFrame;
+    UINT SiblingFrame;
+    DirectX::XMFLOAT4X4 Matrix;
+    UINT AnimationDataIndex;		//Used to index which set of keyframes transforms this frame
+};
+
+struct SDKMESH_MATERIAL
+{
+    char    Name[MAX_MATERIAL_NAME];
+
+    // Use MaterialInstancePath
+    char    MaterialInstancePath[MAX_MATERIAL_PATH];
+
+    // Or fall back to d3d8-type materials
+    char    DiffuseTexture[MAX_TEXTURE_NAME];
+    char    NormalTexture[MAX_TEXTURE_NAME];
+    char    SpecularTexture[MAX_TEXTURE_NAME];
+
+    DirectX::XMFLOAT4 Diffuse;
+    DirectX::XMFLOAT4 Ambient;
+    DirectX::XMFLOAT4 Specular;
+    DirectX::XMFLOAT4 Emissive;
+    FLOAT Power;
+
+    union
+    {
+        UINT64 Force64_1;			//Force the union to 64bits
+        ID3D11Texture2D* pDiffuseTexture11;
+    };
+    union
+    {
+        UINT64 Force64_2;			//Force the union to 64bits
+        ID3D11Texture2D* pNormalTexture11;
+    };
+    union
+    {
+        UINT64 Force64_3;			//Force the union to 64bits
+        ID3D11Texture2D* pSpecularTexture11;
     };
 
-    struct SDKMESH_VERTEX_BUFFER_HEADER
+    union
     {
-        UINT64 NumVertices;
-        UINT64 SizeBytes;
-        UINT64 StrideBytes;
-        D3DVERTEXELEMENT9 Decl[MAX_VERTEX_ELEMENTS];
-        union
-        {
-            UINT64 DataOffset;
-            ID3D11Buffer* pVB11;
-        };
+        UINT64 Force64_4;			//Force the union to 64bits
+        ID3D11ShaderResourceView* pDiffuseRV11;
     };
-
-    struct SDKMESH_INDEX_BUFFER_HEADER
+    union
     {
-        UINT64 NumIndices;
-        UINT64 SizeBytes;
-        UINT IndexType;
-        union
-        {
-            UINT64 DataOffset;
-            ID3D11Buffer* pIB11;
-        };
+        UINT64 Force64_5;		    //Force the union to 64bits
+        ID3D11ShaderResourceView* pNormalRV11;
     };
-
-    struct SDKMESH_MESH
+    union
     {
-        char Name[MAX_MESH_NAME];
-        BYTE NumVertexBuffers;
-        UINT VertexBuffers[MAX_VERTEX_STREAMS];
-        UINT IndexBuffer;
-        UINT NumSubsets;
-        UINT NumFrameInfluences; //aka bones
-
-        DirectX::XMFLOAT3 BoundingBoxCenter;
-        DirectX::XMFLOAT3 BoundingBoxExtents;
-
-        union
-        {
-            UINT64 SubsetOffset;
-            INT* pSubsets;
-        };
-        union
-        {
-            UINT64 FrameInfluenceOffset;
-            UINT* pFrameInfluences;
-        };
+        UINT64 Force64_6;			//Force the union to 64bits
+        ID3D11ShaderResourceView* pSpecularRV11;
     };
+};
 
-    struct SDKMESH_SUBSET
+struct SDKANIMATION_FILE_HEADER
+{
+    UINT Version;
+    BYTE IsBigEndian;
+    UINT FrameTransformType;
+    UINT NumFrames;
+    UINT NumAnimationKeys;
+    UINT AnimationFPS;
+    UINT64 AnimationDataSize;
+    UINT64 AnimationDataOffset;
+};
+
+struct SDKANIMATION_DATA
+{
+    DirectX::XMFLOAT3 Translation;
+    DirectX::XMFLOAT4 Orientation;
+    DirectX::XMFLOAT3 Scaling;
+};
+
+struct SDKANIMATION_FRAME_DATA
+{
+    char FrameName[MAX_FRAME_NAME];
+    union
     {
-        char Name[MAX_SUBSET_NAME];
-        UINT MaterialID;
-        UINT PrimitiveType;
-        UINT64 IndexStart;
-        UINT64 IndexCount;
-        UINT64 VertexStart;
-        UINT64 VertexCount;
+        UINT64 DataOffset;
+        SDKANIMATION_DATA* pAnimationData;
     };
-
-    struct SDKMESH_FRAME
-    {
-        char Name[MAX_FRAME_NAME];
-        UINT Mesh;
-        UINT ParentFrame;
-        UINT ChildFrame;
-        UINT SiblingFrame;
-        DirectX::XMFLOAT4X4 Matrix;
-        UINT AnimationDataIndex;		//Used to index which set of keyframes transforms this frame
-    };
-
-    struct SDKMESH_MATERIAL
-    {
-        char    Name[MAX_MATERIAL_NAME];
-
-        // Use MaterialInstancePath
-        char    MaterialInstancePath[MAX_MATERIAL_PATH];
-
-        // Or fall back to d3d8-type materials
-        char    DiffuseTexture[MAX_TEXTURE_NAME];
-        char    NormalTexture[MAX_TEXTURE_NAME];
-        char    SpecularTexture[MAX_TEXTURE_NAME];
-
-        DirectX::XMFLOAT4 Diffuse;
-        DirectX::XMFLOAT4 Ambient;
-        DirectX::XMFLOAT4 Specular;
-        DirectX::XMFLOAT4 Emissive;
-        FLOAT Power;
-
-        union
-        {
-            UINT64 Force64_1;			//Force the union to 64bits
-            ID3D11Texture2D* pDiffuseTexture11;
-        };
-        union
-        {
-            UINT64 Force64_2;			//Force the union to 64bits
-            ID3D11Texture2D* pNormalTexture11;
-        };
-        union
-        {
-            UINT64 Force64_3;			//Force the union to 64bits
-            ID3D11Texture2D* pSpecularTexture11;
-        };
-
-        union
-        {
-            UINT64 Force64_4;			//Force the union to 64bits
-            ID3D11ShaderResourceView* pDiffuseRV11;
-        };
-        union
-        {
-            UINT64 Force64_5;		    //Force the union to 64bits
-            ID3D11ShaderResourceView* pNormalRV11;
-        };
-        union
-        {
-            UINT64 Force64_6;			//Force the union to 64bits
-            ID3D11ShaderResourceView* pSpecularRV11;
-        };
-    };
-
-    struct SDKANIMATION_FILE_HEADER
-    {
-        UINT Version;
-        BYTE IsBigEndian;
-        UINT FrameTransformType;
-        UINT NumFrames;
-        UINT NumAnimationKeys;
-        UINT AnimationFPS;
-        UINT64 AnimationDataSize;
-        UINT64 AnimationDataOffset;
-    };
-
-    struct SDKANIMATION_DATA
-    {
-        DirectX::XMFLOAT3 Translation;
-        DirectX::XMFLOAT4 Orientation;
-        DirectX::XMFLOAT3 Scaling;
-    };
-
-    struct SDKANIMATION_FRAME_DATA
-    {
-        char FrameName[MAX_FRAME_NAME];
-        union
-        {
-            UINT64 DataOffset;
-            SDKANIMATION_DATA* pAnimationData;
-        };
-    };
+};
 
 #pragma pack(pop)
 
@@ -2362,7 +2372,7 @@ HRESULT Mesh::ExportToSDKMESH(const wchar_t* szFileName, size_t nMaterials, cons
     header.BufferDataSize = roundup4k( vbHeader.SizeBytes ) + roundup4k( ibHeader.SizeBytes );
 
     header.VertexStreamHeadersOffset = sizeof(SDKMESH_HEADER);
-    header.IndexStreamHeadersOffset = header.VertexStreamHeadersOffset + sizeof(SDKMESH_VERTEX_BUFFER_HEADER); 
+    header.IndexStreamHeadersOffset = header.VertexStreamHeadersOffset + sizeof(SDKMESH_VERTEX_BUFFER_HEADER);
     header.MeshDataOffset = header.IndexStreamHeadersOffset + sizeof(SDKMESH_INDEX_BUFFER_HEADER);
     header.SubsetDataOffset = header.MeshDataOffset + sizeof(SDKMESH_MESH);
     header.FrameDataOffset = header.SubsetDataOffset + header.NumTotalSubsets * sizeof(SDKMESH_SUBSET);

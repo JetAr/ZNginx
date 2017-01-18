@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------------
 // File: RumbleController.cpp
 //
 // Simple use of XInput rumble force-feedback
@@ -59,7 +59,7 @@ HWND g_hWnd;
 
 //-----------------------------------------------------------------------------
 // Name: WinMain()
-// Desc: Entry point for the application.  Since we use a simple dialog for 
+// Desc: Entry point for the application.  Since we use a simple dialog for
 //       user interaction we don't need to pump messages.
 //-----------------------------------------------------------------------------
 int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ int )
@@ -111,7 +111,7 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE, _In_ LPWSTR, 
         }
     }
 
-    // Clean up 
+    // Clean up
     UnregisterClass( L"XInputSample", nullptr );
 
     CoUninitialize();
@@ -148,42 +148,42 @@ void RenderFrame()
                 // Map bLeftTrigger's 0-255 to wLeftMotorSpeed's 0-65535
                 if( g_Controllers[i].state.Gamepad.bLeftTrigger > 0 )
                     g_Controllers[i].vibration.wLeftMotorSpeed = ( ( g_Controllers[i].state.Gamepad.bLeftTrigger +
-                                                                     1 ) * 256 ) - 1;
+                            1 ) * 256 ) - 1;
                 else
                     g_Controllers[i].vibration.wLeftMotorSpeed = 0;
 
                 // Map bRightTrigger's 0-255 to wRightMotorSpeed's 0-65535
                 if( g_Controllers[i].state.Gamepad.bRightTrigger > 0 )
                     g_Controllers[i].vibration.wRightMotorSpeed = ( ( g_Controllers[i].state.Gamepad.bRightTrigger +
-                                                                      1 ) * 256 ) - 1;
+                            1 ) * 256 ) - 1;
                 else
                     g_Controllers[i].vibration.wRightMotorSpeed = 0;
             }
 
             if( ( g_Controllers[i].state.Gamepad.wButtons ) &&
-                ( g_Controllers[i].lastState.Gamepad.wButtons == 0 ) )
+                    ( g_Controllers[i].lastState.Gamepad.wButtons == 0 ) )
             {
                 if( !( !g_Controllers[i].bLockVibration && g_Controllers[i].vibration.wRightMotorSpeed == 0 &&
-                       g_Controllers[i].vibration.wLeftMotorSpeed == 0 ) )
+                        g_Controllers[i].vibration.wLeftMotorSpeed == 0 ) )
                     g_Controllers[i].bLockVibration = !g_Controllers[i].bLockVibration;
             }
 
             XInputSetState( i, &g_Controllers[i].vibration );
 
             swprintf_s( sz[i], 1024,
-                              L"Controller %u: Connected\n"
-                              L"  Left Motor Speed: %u\n"
-                              L"  Right Motor Speed: %u\n"
-                              L"  Rumble Lock: %d\n", i,
-                              g_Controllers[i].vibration.wLeftMotorSpeed,
-                              g_Controllers[i].vibration.wRightMotorSpeed,
-                              g_Controllers[i].bLockVibration );
+                        L"Controller %u: Connected\n"
+                        L"  Left Motor Speed: %u\n"
+                        L"  Right Motor Speed: %u\n"
+                        L"  Rumble Lock: %d\n", i,
+                        g_Controllers[i].vibration.wLeftMotorSpeed,
+                        g_Controllers[i].vibration.wRightMotorSpeed,
+                        g_Controllers[i].bLockVibration );
 
         }
         else if( g_Controllers[i].dwResult == ERROR_DEVICE_NOT_CONNECTED )
         {
             swprintf_s( sz[i], 1024,
-                             L"Controller %u: Not connected", i );
+                        L"Controller %u: Not connected", i );
         }
         else
         {
@@ -199,12 +199,12 @@ void RenderFrame()
 
     if( bRepaint )
     {
-        // Repaint the window if needed 
+        // Repaint the window if needed
         InvalidateRect( g_hWnd, nullptr, TRUE );
         UpdateWindow( g_hWnd );
     }
 
-    // This sample doesn't use Direct3D.  Instead, it just yields CPU time to other 
+    // This sample doesn't use Direct3D.  Instead, it just yields CPU time to other
     // apps but this is not typically done when rendering
     Sleep( 10 );
 }
@@ -217,64 +217,64 @@ LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
     switch( msg )
     {
-        case WM_ACTIVATEAPP:
-        {
+    case WM_ACTIVATEAPP:
+    {
 #if (_WIN32_WINNT >= 0x0602 /*_WIN32_WINNT_WIN8*/) || defined(USE_DIRECTX_SDK)
 
-            //
-            // XInputEnable is implemented by XInput 1.3 and 1.4, but not 9.1.0
-            //
+        //
+        // XInputEnable is implemented by XInput 1.3 and 1.4, but not 9.1.0
+        //
 
-            if( wParam == TRUE )
-            {
-                // App is now active, so re-enable XInput
-                XInputEnable( TRUE );
-            }
-            else
-            {
-                // App is now inactive, so disable XInput to prevent
-                // user input from effecting application and to 
-                // disable rumble. 
-                XInputEnable( FALSE );
-            }
+        if( wParam == TRUE )
+        {
+            // App is now active, so re-enable XInput
+            XInputEnable( TRUE );
+        }
+        else
+        {
+            // App is now inactive, so disable XInput to prevent
+            // user input from effecting application and to
+            // disable rumble.
+            XInputEnable( FALSE );
+        }
 
 #endif
-            break;
-        }
+        break;
+    }
 
-        case WM_PAINT:
+    case WM_PAINT:
+    {
+        // Paint some simple explanation text
+        PAINTSTRUCT ps;
+        HDC hDC = BeginPaint( hWnd, &ps );
+        SetBkColor( hDC, 0xFF0000 );
+        SetTextColor( hDC, 0xFFFFFF );
+        RECT rect;
+        GetClientRect( hWnd, &rect );
+
+        rect.top = 20;
+        rect.left = 20;
+        DrawText( hDC,
+                  L"Use the controller's left/right trigger to adjust the speed of the left/right rumble motor.\n"
+                  L"Press any controller button to lock or unlock at the current rumble speed.\n",
+                  -1, &rect, 0 );
+
+        for( DWORD i = 0; i < MAX_CONTROLLERS; i++ )
         {
-            // Paint some simple explanation text
-            PAINTSTRUCT ps;
-            HDC hDC = BeginPaint( hWnd, &ps );
-            SetBkColor( hDC, 0xFF0000 );
-            SetTextColor( hDC, 0xFFFFFF );
-            RECT rect;
-            GetClientRect( hWnd, &rect );
-
-            rect.top = 20;
+            rect.top = i * 80 + 90;
             rect.left = 20;
-            DrawText( hDC,
-                      L"Use the controller's left/right trigger to adjust the speed of the left/right rumble motor.\n"
-                      L"Press any controller button to lock or unlock at the current rumble speed.\n",
-                      -1, &rect, 0 );
-
-            for( DWORD i = 0; i < MAX_CONTROLLERS; i++ )
-            {
-                rect.top = i * 80 + 90;
-                rect.left = 20;
-                DrawText( hDC, g_szMessage[i], -1, &rect, 0 );
-            }
-
-            EndPaint( hWnd, &ps );
-            return 0;
+            DrawText( hDC, g_szMessage[i], -1, &rect, 0 );
         }
 
-        case WM_DESTROY:
-        {
-            PostQuitMessage( 0 );
-            break;
-        }
+        EndPaint( hWnd, &ps );
+        return 0;
+    }
+
+    case WM_DESTROY:
+    {
+        PostQuitMessage( 0 );
+        break;
+    }
     }
 
     return DefWindowProc( hWnd, msg, wParam, lParam );

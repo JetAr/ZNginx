@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        SoftShadows\src/SimpleTexture2D.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -36,7 +36,7 @@
 class SimpleTexture2D
 {
 public:
-    
+
     enum ViewFlags
     {
         RenderTargetView   = 1,
@@ -59,19 +59,49 @@ public:
         const wchar_t *fileName,
         int viewFlags = ShaderResourceView);
 
-    ID3D11Texture2D *getTexture() { return m_tex2D.get(); }
-    ID3D11DepthStencilView *getDepthStencilView() { return m_dsv.get(); }
-    ID3D11ShaderResourceView *getShaderResourceView() { return m_srv.get(); }
-    ID3D11RenderTargetView *getRenderTargetView() { return m_rtv.get(); }
+    ID3D11Texture2D *getTexture()
+    {
+        return m_tex2D.get();
+    }
+    ID3D11DepthStencilView *getDepthStencilView()
+    {
+        return m_dsv.get();
+    }
+    ID3D11ShaderResourceView *getShaderResourceView()
+    {
+        return m_srv.get();
+    }
+    ID3D11RenderTargetView *getRenderTargetView()
+    {
+        return m_rtv.get();
+    }
 
-    DXGI_FORMAT getFormat() const { return m_format; }
+    DXGI_FORMAT getFormat() const
+    {
+        return m_format;
+    }
 
-    UINT getWidth() const { return m_width; }
-    UINT getHeight() const { return m_height; }
-    UINT getMsaaCount() const { return m_msaaCount; }
+    UINT getWidth() const
+    {
+        return m_width;
+    }
+    UINT getHeight() const
+    {
+        return m_height;
+    }
+    UINT getMsaaCount() const
+    {
+        return m_msaaCount;
+    }
 
-    bool isValid() const { return SUCCEEDED(m_hr); }
-    HRESULT errorCode() const { return m_hr; }
+    bool isValid() const
+    {
+        return SUCCEEDED(m_hr);
+    }
+    HRESULT errorCode() const
+    {
+        return m_hr;
+    }
 
 private:
 

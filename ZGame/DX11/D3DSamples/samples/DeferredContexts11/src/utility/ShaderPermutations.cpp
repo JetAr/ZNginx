@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeferredContexts11\src\utility/ShaderPermutations.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -151,7 +151,8 @@ HRESULT ShaderPermutations::OnD3D11CreateDevice(ID3D11Device* pd3dDevice)
     };
 
 
-    for (size_t i=0; i<m_shaderVariations; i++) {
+    for (size_t i=0; i<m_shaderVariations; i++)
+    {
         static const char *idxToStr[m_shaderVariations] = {"0", "1", "2"};
         deflistVS[2].Definition = idxToStr[i];    // shader variations.
         deflistPS[3].Definition = idxToStr[i];    // shader variations.
@@ -165,62 +166,62 @@ HRESULT ShaderPermutations::OnD3D11CreateDevice(ID3D11Device* pd3dDevice)
         deflistVS[1].Definition = "0";    // enabled vertex colors
         V_RETURN(CompileShaderFromFile(L"..\\..\\deferredcontexts11\\assets\\MultithreadedTests11_VS.hlsl", "VSMain", pszVSModel, deflistVS, &pVertexShaderBuffer));
         V_RETURN(pd3dDevice->CreateVertexShader(pVertexShaderBuffer->GetBufferPointer(),
-            pVertexShaderBuffer->GetBufferSize(), NULL, m_pVertexShaderNoVTF+i));
+                                                pVertexShaderBuffer->GetBufferSize(), NULL, m_pVertexShaderNoVTF+i));
 
 #if 0
         deflistVS[0].Definition = "1";    // enable VTF world matrices
         V_RETURN(CompileShaderFromFile(L"..\\..\\deferredcontexts11\\assets\\MultithreadedTests11_VS.hlsl", "VSMain", pszVSModel, deflistVS, &pVertexShaderBufferVTF));
         V_RETURN(pd3dDevice->CreateVertexShader(pVertexShaderBufferVTF->GetBufferPointer(),
-            pVertexShaderBufferVTF->GetBufferSize(), NULL, m_pVertexShaderVTF+i));
+                                                pVertexShaderBufferVTF->GetBufferSize(), NULL, m_pVertexShaderVTF+i));
 #endif
 
         deflistVS[0].Definition = "1";    // enable VTF world matrices
         deflistVS[1].Definition = "1";    // enabled vertex colors
         V_RETURN(CompileShaderFromFile(L"..\\..\\deferredcontexts11\\assets\\MultithreadedTests11_VS.hlsl", "VSMain", pszVSModel, deflistVS, &pVertexShaderBufferVTF));
         V_RETURN(pd3dDevice->CreateVertexShader(pVertexShaderBufferVTF->GetBufferPointer(),
-            pVertexShaderBufferVTF->GetBufferSize(), NULL, m_pVertexShaderVTFVertexColor+i));
+                                                pVertexShaderBufferVTF->GetBufferSize(), NULL, m_pVertexShaderVTFVertexColor+i));
 //        SAFE_RELEASE(pBlob);
 
         deflistVS[0].Definition = "0";    // enable VTF world matrices
         deflistVS[1].Definition = "1";    // enabled vertex colors
         V_RETURN(CompileShaderFromFile(L"..\\..\\deferredcontexts11\\assets\\MultithreadedTests11_VS.hlsl", "VSMain", pszVSModel, deflistVS, &pBlob));
         V_RETURN(pd3dDevice->CreateVertexShader(pBlob->GetBufferPointer(),
-            pBlob->GetBufferSize(), NULL, m_pVertexShaderNoVTFVertexColor+i));
+                                                pBlob->GetBufferSize(), NULL, m_pVertexShaderNoVTFVertexColor+i));
         SAFE_RELEASE(pBlob);
 
         deflistPS[1].Definition = "0";
         deflistPS[2].Definition = "0";
         V_RETURN(CompileShaderFromFile(L"..\\..\\deferredcontexts11\\assets\\MultithreadedTests11_PS.hlsl", "PSMain", pszPSModel, deflistPS, &pPixelShaderBuffer));
         V_RETURN(pd3dDevice->CreatePixelShader(pPixelShaderBuffer->GetBufferPointer(),
-            pPixelShaderBuffer->GetBufferSize(), NULL, m_pPixelShader+i));
+                                               pPixelShaderBuffer->GetBufferSize(), NULL, m_pPixelShader+i));
 
         deflistPS[1].Definition = "1";    // disable shadow map
         deflistPS[2].Definition = "0";    // disable vertex color
         V_RETURN(CompileShaderFromFile(L"..\\..\\deferredcontexts11\\assets\\MultithreadedTests11_PS.hlsl", "PSMain", pszPSModel, deflistPS, &pBlob));
         V_RETURN(pd3dDevice->CreatePixelShader(pBlob->GetBufferPointer(),
-            pBlob->GetBufferSize(), NULL, m_pPixelShaderNoShadow+i));
+                                               pBlob->GetBufferSize(), NULL, m_pPixelShaderNoShadow+i));
         SAFE_RELEASE(pBlob);
 
         deflistPS[1].Definition = "0";    // enable shadow map
         deflistPS[2].Definition = "1";    // enable vertex color
         V_RETURN(CompileShaderFromFile(L"..\\..\\deferredcontexts11\\assets\\MultithreadedTests11_PS.hlsl", "PSMain", pszPSModel, deflistPS, &pBlob));
         V_RETURN(pd3dDevice->CreatePixelShader(pBlob->GetBufferPointer(),
-            pBlob->GetBufferSize(), NULL, m_pPixelShaderVertexColor+i));
+                                               pBlob->GetBufferSize(), NULL, m_pPixelShaderVertexColor+i));
         SAFE_RELEASE(pBlob);
 
         deflistPS[1].Definition = "1";    // disable shadow map
         deflistPS[2].Definition = "1";    // enable vertex color
         V_RETURN(CompileShaderFromFile(L"..\\..\\deferredcontexts11\\assets\\MultithreadedTests11_PS.hlsl", "PSMain", pszPSModel, deflistPS, &pBlob));
         V_RETURN(pd3dDevice->CreatePixelShader(pBlob->GetBufferPointer(),
-            pBlob->GetBufferSize(), NULL, m_pPixelShaderNoShadowVertexColor+i));
+                                               pBlob->GetBufferSize(), NULL, m_pPixelShaderNoShadowVertexColor+i));
         SAFE_RELEASE(pBlob);
 
         // One straightup from the mesh class
         V_RETURN(pd3dDevice->CreateInputLayout(NvSimpleRawMesh::D3D11InputElements,
-            NvSimpleRawMesh::D3D11ElementsSize,
-            pVertexShaderBuffer->GetBufferPointer(),
-            pVertexShaderBuffer->GetBufferSize(),
-            m_pVertexLayoutNoVTF+i));
+                                               NvSimpleRawMesh::D3D11ElementsSize,
+                                               pVertexShaderBuffer->GetBufferPointer(),
+                                               pVertexShaderBuffer->GetBufferSize(),
+                                               m_pVertexLayoutNoVTF+i));
 
         // copy the simple mesh input layout as that is what we are loading
         D3D11_INPUT_ELEMENT_DESC* UncompressedLayout = new D3D11_INPUT_ELEMENT_DESC[NvSimpleRawMesh::D3D11ElementsSize + 1];
@@ -228,13 +229,13 @@ HRESULT ShaderPermutations::OnD3D11CreateDevice(ID3D11Device* pd3dDevice)
 
         // but add in a separate stream which will contain the texcoords to lookup into VTF texture
         const D3D11_INPUT_ELEMENT_DESC InstanceStreamTexCoords[] = {{ "TEXCOORD",  1, DXGI_FORMAT_R32G32_UINT,   1, 0,  D3D11_INPUT_PER_INSTANCE_DATA, 1 }};
-         UncompressedLayout[NvSimpleRawMesh::D3D11ElementsSize] = InstanceStreamTexCoords[0];
+        UncompressedLayout[NvSimpleRawMesh::D3D11ElementsSize] = InstanceStreamTexCoords[0];
 
         V_RETURN(pd3dDevice->CreateInputLayout(UncompressedLayout,
-            NvSimpleRawMesh::D3D11ElementsSize + 1,
-            pVertexShaderBufferVTF->GetBufferPointer(),
-            pVertexShaderBufferVTF->GetBufferSize(),
-            m_pVertexLayoutVTFStream+i));
+                                               NvSimpleRawMesh::D3D11ElementsSize + 1,
+                                               pVertexShaderBufferVTF->GetBufferPointer(),
+                                               pVertexShaderBufferVTF->GetBufferSize(),
+                                               m_pVertexLayoutVTFStream+i));
 
         delete [] UncompressedLayout;
         SAFE_RELEASE(pVertexShaderBufferVTF);
@@ -247,7 +248,8 @@ HRESULT ShaderPermutations::OnD3D11CreateDevice(ID3D11Device* pd3dDevice)
 
 void ShaderPermutations::OnD3D11DestroyDevice()
 {
-    for (size_t i=0; i<m_shaderVariations; i++) {
+    for (size_t i=0; i<m_shaderVariations; i++)
+    {
         SAFE_RELEASE(m_pVertexLayoutNoVTF[i]);
         SAFE_RELEASE(m_pVertexLayoutVTFStream[i]);
         SAFE_RELEASE(m_pVertexShaderNoVTF[i]);

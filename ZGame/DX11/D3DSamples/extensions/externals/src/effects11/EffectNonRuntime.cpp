@@ -1,11 +1,11 @@
-//////////////////////////////////////////////////////////////////////////////
+﻿//////////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (C) Microsoft Corporation.  All Rights Reserved.
 //
 //  File:       EffectNonRuntime.cpp
 //  Content:    D3DX11 Effect low-frequency utility functions
 //              These functions are not intended to be called regularly.  They
-//              are typically called when creating, cloning, or optimizing an 
+//              are typically called when creating, cloning, or optimizing an
 //              Effect, or reflecting a variable.
 //
 //////////////////////////////////////////////////////////////////////////////
@@ -19,10 +19,10 @@ namespace D3DX11Effects
 extern SUnorderedAccessView g_NullUnorderedAccessView;
 
 SBaseBlock::SBaseBlock()
-: BlockType(EBT_Invalid)
-, IsUserManaged(FALSE)
-, AssignmentCount(0)
-, pAssignments(NULL)
+    : BlockType(EBT_Invalid)
+    , IsUserManaged(FALSE)
+    , AssignmentCount(0)
+    , pAssignments(NULL)
 {
 
 }
@@ -38,24 +38,24 @@ SPassBlock::SPassBlock()
 }
 
 STechnique::STechnique()
-: pName(NULL)
-, PassCount(0)
-, pPasses(NULL)
-, AnnotationCount(0)
-, pAnnotations(NULL)
-, InitiallyValid( TRUE )
-, HasDependencies( FALSE )
+    : pName(NULL)
+    , PassCount(0)
+    , pPasses(NULL)
+    , AnnotationCount(0)
+    , pAnnotations(NULL)
+    , InitiallyValid( TRUE )
+    , HasDependencies( FALSE )
 {
 }
 
 SGroup::SGroup()
-: pName(NULL)
-, TechniqueCount(0)
-, pTechniques(NULL)
-, AnnotationCount(0)
-, pAnnotations(NULL)
-, InitiallyValid( TRUE )
-, HasDependencies( FALSE )
+    : pName(NULL)
+    , TechniqueCount(0)
+    , pTechniques(NULL)
+    , AnnotationCount(0)
+    , pAnnotations(NULL)
+    , InitiallyValid( TRUE )
+    , HasDependencies( FALSE )
 {
 }
 
@@ -146,7 +146,7 @@ SShaderBlock::SShaderBlock(SD3DShaderVTable *pVirtualTable)
     pVT = pVirtualTable;
 
     pReflectionData = NULL;
-    
+
     pD3DObject = NULL;
 
     CBDepCount = 0;
@@ -230,7 +230,7 @@ EObjectType SShaderBlock::GetShaderType()
         return EOT_DomainShader5;
     else if (&g_vtCS == pVT)
         return EOT_ComputeShader5;
-    
+
     return EOT_Invalid;
 }
 
@@ -357,7 +357,7 @@ lExit:
 HRESULT SShaderBlock::GetShaderDesc(D3DX11_EFFECT_SHADER_DESC *pDesc, BOOL IsInline)
 {
     HRESULT hr = S_OK;
-    
+
     ZeroMemory(pDesc, sizeof(*pDesc));
 
     pDesc->pInputSignature = pInputSignatureBlob ? (const BYTE*)pInputSignatureBlob->GetBufferPointer() : NULL;
@@ -390,7 +390,7 @@ lExit:
 HRESULT SShaderBlock::GetVertexShader(ID3D11VertexShader **ppVS)
 {
     if (EOT_VertexShader == GetShaderType() ||
-        EOT_VertexShader5 == GetShaderType())
+            EOT_VertexShader5 == GetShaderType())
     {
         *ppVS = (ID3D11VertexShader *) pD3DObject;
         SAFE_ADDREF(*ppVS);
@@ -407,8 +407,8 @@ HRESULT SShaderBlock::GetVertexShader(ID3D11VertexShader **ppVS)
 HRESULT SShaderBlock::GetGeometryShader(ID3D11GeometryShader **ppGS)
 {
     if (EOT_GeometryShader == GetShaderType() ||
-        EOT_GeometryShaderSO == GetShaderType() ||
-        EOT_GeometryShader5 == GetShaderType())
+            EOT_GeometryShaderSO == GetShaderType() ||
+            EOT_GeometryShader5 == GetShaderType())
     {
         *ppGS = (ID3D11GeometryShader *) pD3DObject;
         SAFE_ADDREF(*ppGS);
@@ -425,7 +425,7 @@ HRESULT SShaderBlock::GetGeometryShader(ID3D11GeometryShader **ppGS)
 HRESULT SShaderBlock::GetPixelShader(ID3D11PixelShader **ppPS)
 {
     if (EOT_PixelShader == GetShaderType() ||
-        EOT_PixelShader5 == GetShaderType())
+            EOT_PixelShader5 == GetShaderType())
     {
         *ppPS = (ID3D11PixelShader *) pD3DObject;
         SAFE_ADDREF(*ppPS);
@@ -570,11 +570,11 @@ HRESULT SShaderBlock::GetSignatureElementDesc(ESigType SigType, UINT Element, D3
             if( _stricmp(pDesc->SemanticName, "SV_TARGET") == 0 )
             {
                 pDesc->SystemValueType = D3D10_NAME_TARGET;
-            } 
+            }
             else if( _stricmp(pDesc->SemanticName, "SV_DEPTH") == 0 )
             {
                 pDesc->SystemValueType = D3D10_NAME_DEPTH;
-            } 
+            }
             else if( _stricmp(pDesc->SemanticName, "SV_COVERAGE") == 0 )
             {
                 pDesc->SystemValueType = D3D10_NAME_COVERAGE;
@@ -592,7 +592,7 @@ HRESULT SShaderBlock::GetSignatureElementDesc(ESigType SigType, UINT Element, D3
         DPF(0, "%s: Cannot get signatures; shader bytecode is not present", pFuncName);
         VH( D3DERR_INVALIDCALL );
     }
-    
+
 lExit:
     return hr;
 }
@@ -671,7 +671,7 @@ void * GetBlockByIndex(EVarType VarType, EObjectType ObjectType, void *pBaseBloc
         case EOT_RWStructuredBufferAlloc:
         case EOT_RWStructuredBufferConsume:
         case EOT_AppendStructuredBuffer:
-        case EOT_ConsumeStructuredBuffer:    
+        case EOT_ConsumeStructuredBuffer:
             return (SUnorderedAccessView *)pBaseBlock + Index;
         default:
             D3DXASSERT(0);
@@ -1148,7 +1148,7 @@ HRESULT CEffect::BindToDevice(ID3D11Device *pDevice)
                 bufDesc.MiscFlags = 0;
 
                 VH( pDevice->CreateBuffer( &bufDesc, NULL, &pCB->pD3DObject) );
-                
+
                 D3D11_SHADER_RESOURCE_VIEW_DESC viewDesc;
                 viewDesc.Format = DXGI_FORMAT_R32G32B32A32_UINT;
                 viewDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
@@ -1241,9 +1241,9 @@ HRESULT CEffect::BindToDevice(ID3D11Device *pDevice)
             // SetPixelShader( NULL );
             continue;
         }
-        
-        if (pShader->pReflectionData->pStreamOutDecls[0] || pShader->pReflectionData->pStreamOutDecls[1] || 
-            pShader->pReflectionData->pStreamOutDecls[2] || pShader->pReflectionData->pStreamOutDecls[3] )
+
+        if (pShader->pReflectionData->pStreamOutDecls[0] || pShader->pReflectionData->pStreamOutDecls[1] ||
+                pShader->pReflectionData->pStreamOutDecls[2] || pShader->pReflectionData->pStreamOutDecls[3] )
         {
             // This is a geometry shader, process it's data
             CSOParser soParser;
@@ -1251,14 +1251,14 @@ HRESULT CEffect::BindToDevice(ID3D11Device *pDevice)
             UINT strides[4];
             soParser.GetStrides( strides );
             hr = m_pDevice->CreateGeometryShaderWithStreamOutput((UINT*) pShader->pReflectionData->pBytecode,
-                                                                pShader->pReflectionData->BytecodeLength,
-                                                                soParser.GetDeclArray(),
-                                                                soParser.GetDeclCount(),
-                                                                strides,
-                                                                featureLevelGE11 ? 4 : 1,
-                                                                pShader->pReflectionData->RasterizedStream,
-                                                                neededClassLinkage,
-                                                                (ID3D11GeometryShader**) &pShader->pD3DObject);
+                    pShader->pReflectionData->BytecodeLength,
+                    soParser.GetDeclArray(),
+                    soParser.GetDeclCount(),
+                    strides,
+                    featureLevelGE11 ? 4 : 1,
+                    pShader->pReflectionData->RasterizedStream,
+                    neededClassLinkage,
+                    (ID3D11GeometryShader**) &pShader->pD3DObject);
             if (FAILED(hr))
             {
                 DPF(1, "ID3DX11Effect::Load - failed to create GeometryShader with StreamOutput decl: \"%s\"", soParser.GetErrorString() );
@@ -1271,7 +1271,7 @@ HRESULT CEffect::BindToDevice(ID3D11Device *pDevice)
             // This is a regular shader
             if( pShader->pReflectionData->RasterizedStream == D3D11_SO_NO_RASTERIZED_STREAM )
                 pShader->IsValid = FALSE;
-            else 
+            else
             {
                 if( FAILED( (m_pDevice->*(pShader->pVT->pCreateShader))( (UINT *) pShader->pReflectionData->pBytecode, pShader->pReflectionData->BytecodeLength, neededClassLinkage, &pShader->pD3DObject) ) )
                 {
@@ -1370,7 +1370,7 @@ HRESULT CEffect::BindToDevice(ID3D11Device *pDevice)
         {
             STechnique* pTechnique = &pGroup->pTechniques[iTech];
             pTechnique->InitiallyValid = TRUE;
-           
+
             for( UINT iPass = 0; iPass < pTechnique->PassCount; iPass++ )
             {
                 SPassBlock* pPass = &pTechnique->pPasses[iPass];
@@ -1519,7 +1519,7 @@ SGlobalVariable * CEffect::FindLocalVariableByName(LPCSTR pName)
 BOOL SType::IsEqual(SType *pOtherType) CONST
 {
     if (VarType != pOtherType->VarType || Elements != pOtherType->Elements
-        || strcmp(pTypeName, pOtherType->pTypeName) != 0)
+    || strcmp(pTypeName, pOtherType->pTypeName) != 0)
     {
         return FALSE;
     }
@@ -1527,65 +1527,65 @@ BOOL SType::IsEqual(SType *pOtherType) CONST
     switch (VarType)
     {
     case EVT_Struct:
+    {
+        if (StructType.Members != pOtherType->StructType.Members)
         {
-            if (StructType.Members != pOtherType->StructType.Members)
-            {
-                return FALSE;
-            }
-            D3DXASSERT(StructType.pMembers != NULL && pOtherType->StructType.pMembers != NULL);
+            return FALSE;
+        }
+        D3DXASSERT(StructType.pMembers != NULL && pOtherType->StructType.pMembers != NULL);
 
-            UINT  i;
-            for (i = 0; i < StructType.Members; ++ i)
-            {
-                // names for types must exist (not true for semantics)
-                D3DXASSERT(StructType.pMembers[i].pName != NULL && pOtherType->StructType.pMembers[i].pName != NULL);
+        UINT  i;
+        for (i = 0; i < StructType.Members; ++ i)
+        {
+            // names for types must exist (not true for semantics)
+            D3DXASSERT(StructType.pMembers[i].pName != NULL && pOtherType->StructType.pMembers[i].pName != NULL);
 
-                if (StructType.pMembers[i].pType != pOtherType->StructType.pMembers[i].pType ||
+            if (StructType.pMembers[i].pType != pOtherType->StructType.pMembers[i].pType ||
                     StructType.pMembers[i].Data.Offset != pOtherType->StructType.pMembers[i].Data.Offset ||
                     StructType.pMembers[i].pName != pOtherType->StructType.pMembers[i].pName ||
                     StructType.pMembers[i].pSemantic != pOtherType->StructType.pMembers[i].pSemantic)
-                {
-                    return FALSE;
-                }
-            }
-        }
-        break;
-
-    case EVT_Object:
-        {
-            if (ObjectType != pOtherType->ObjectType)
             {
                 return FALSE;
             }
         }
-        break;
+    }
+    break;
+
+    case EVT_Object:
+    {
+        if (ObjectType != pOtherType->ObjectType)
+        {
+            return FALSE;
+        }
+    }
+    break;
 
     case EVT_Numeric:
-        {
-            if (NumericType.Rows != pOtherType->NumericType.Rows ||
+    {
+        if (NumericType.Rows != pOtherType->NumericType.Rows ||
                 NumericType.Columns != pOtherType->NumericType.Columns ||
                 NumericType.ScalarType != pOtherType->NumericType.ScalarType ||
                 NumericType.NumericLayout != pOtherType->NumericType.NumericLayout ||
                 NumericType.IsColumnMajor != pOtherType->NumericType.IsColumnMajor ||
                 NumericType.IsPackedArray != pOtherType->NumericType.IsPackedArray)
-            {
-                return FALSE;
-            }
-        }
-        break;
-
-    case EVT_Interface:
         {
-            // VarType and pTypeName handled above
-        }
-        break;
-
-    default:
-        {
-            D3DXASSERT(0);
             return FALSE;
         }
-        break;
+    }
+    break;
+
+    case EVT_Interface:
+    {
+        // VarType and pTypeName handled above
+    }
+    break;
+
+    default:
+    {
+        D3DXASSERT(0);
+        return FALSE;
+    }
+    break;
     }
 
     D3DXASSERT(TotalSize == pOtherType->TotalSize && Stride == pOtherType->Stride && PackedSize == pOtherType->PackedSize);
@@ -1606,7 +1606,7 @@ UINT SType::GetTotalUnpackedSize(BOOL IsSingleElement) CONST
     else if (Elements > 0 && IsSingleElement)
     {
         D3DXASSERT( ( TotalSize == 0 && Stride == 0 ) ||
-                    ( (TotalSize > (Stride * (Elements - 1))) && (TotalSize <= (Stride * Elements)) ) );
+        ( (TotalSize > (Stride * (Elements - 1))) && (TotalSize <= (Stride * Elements)) ) );
         return TotalSize - Stride * (Elements - 1);
     }
     else
@@ -1853,7 +1853,7 @@ HRESULT CEffect::CopyTypePool( CEffect* pEffectSource, CPointerMappingTable& map
                 }
             }
         }
-    } 
+    }
 
 lExit:
     return hr;
@@ -1919,7 +1919,7 @@ HRESULT CEffect::CopyOptimizedTypePool( CEffect* pEffectSource, CPointerMappingT
                 VH( RemapType((SType**)&pType->StructType.pMembers[i].pType, &mappingTableTypes) );
             }
         }
-    }  
+    }
 
 lExit:
     return hr;
@@ -2028,7 +2028,7 @@ HRESULT CEffect::CloneEffect(UINT Flags, ID3DX11Effect** ppClonedEffect )
     CPointerMappingTable mappingTableStrings;
 
     CEffectLoader loader;
-    CEffect* pNewEffect = NULL;    
+    CEffect* pNewEffect = NULL;
     CDataBlockStore* pTempHeap = NULL;
 
 
@@ -2076,7 +2076,7 @@ HRESULT CEffect::CloneEffect(UINT Flags, ID3DX11Effect** ppClonedEffect )
     pNewEffect->m_RenderTargetViewCount = m_RenderTargetViewCount;
     pNewEffect->m_pRenderTargetViews = m_pRenderTargetViews;
     pNewEffect->m_DepthStencilViewCount = m_DepthStencilViewCount;
-    pNewEffect->m_pDepthStencilViews = m_pDepthStencilViews; 
+    pNewEffect->m_pDepthStencilViews = m_pDepthStencilViews;
     pNewEffect->m_LocalTimer = m_LocalTimer;
     pNewEffect->m_FXLIndex = m_FXLIndex;
     pNewEffect->m_pDevice = m_pDevice;
@@ -2227,7 +2227,7 @@ HRESULT CEffect::Optimize()
     HRESULT hr = S_OK;
     UINT  i, j, k;
     CEffectHeap *pOptimizedTypeHeap = NULL;
-    
+
     if (IsOptimized())
     {
         DPF(0, "ID3DX11Effect::Optimize: Effect has already been Optimize()'ed");
@@ -2235,7 +2235,7 @@ HRESULT CEffect::Optimize()
     }
 
     // Delete annotations, names, semantics, and string data on variables
-    
+
     for (i = 0; i < m_VariableCount; ++ i)
     {
         m_pVariables[i].AnnotationCount = 0;
@@ -2318,7 +2318,7 @@ HRESULT CEffect::Optimize()
 
 
 
-    // get rid of the name/type hash tables and string data, 
+    // get rid of the name/type hash tables and string data,
     // then reallocate the type data and fix up this effect
     CPointerMappingTable mappingTable;
     CTypeHashTable::CIterator typeIter;
@@ -2330,7 +2330,7 @@ HRESULT CEffect::Optimize()
     for (m_pTypePool->GetFirstEntry(&typeIter); !m_pTypePool->PastEnd(&typeIter); m_pTypePool->GetNextEntry(&typeIter))
     {
         SType *pType = typeIter.GetData();
-        
+
         chkSpaceNeeded += AlignToPowerOf2(sizeof(SType), c_DataAlignment);
 
         // if this is a struct, allocate room for its members
@@ -2369,7 +2369,7 @@ HRESULT CEffect::Optimize()
 
         VH( mappingTable.AddValueWithHash(ptrMapping, ptrMapping.Hash()) );
     }
-    
+
     // third pass: fixup structure member & name pointers
     for (mappingTable.GetFirstEntry(&mapIter); !mappingTable.PastEnd(&mapIter); mappingTable.GetNextEntry(&mapIter))
     {
@@ -2388,7 +2388,7 @@ HRESULT CEffect::Optimize()
                 pType->StructType.pMembers[i].pSemantic = NULL;
             }
         }
-    }        
+    }
 
     // fixup this effect's variable's types
     VH( OptimizeTypes(&mappingTable) );
@@ -2672,7 +2672,7 @@ SMember * CreateNewMember(SType *pType, BOOL IsAnnotation)
                 DPF( 0, "Internal loading error: invalid scalar type." );
                 D3DXASSERT(0);
                 break;
-            }            
+            }
             break;
         default:
             D3DXASSERT(0);
@@ -2704,7 +2704,7 @@ HRESULT PlacementNewVariable(void *pVar, SType *pType, BOOL IsAnnotation)
             D3DXASSERT(sizeof(SClassInstanceGlobalVariable) == sizeof(SGlobalVariable));
             new(pVar) SClassInstanceGlobalVariable;
         }
-        else 
+        else
         {
             D3DXASSERT(sizeof(SNumericGlobalVariable) == sizeof(SGlobalVariable));
             new(pVar) SNumericGlobalVariable;
@@ -2728,7 +2728,7 @@ HRESULT PlacementNewVariable(void *pVar, SType *pType, BOOL IsAnnotation)
                 D3DXASSERT(sizeof(SStringGlobalVariable) == sizeof(SGlobalVariable));
                 new(pVar) SStringGlobalVariable;
             }
-            
+
             break;
         case EOT_Texture:
         case EOT_Texture1D:
@@ -2828,7 +2828,7 @@ HRESULT PlacementNewVariable(void *pVar, SType *pType, BOOL IsAnnotation)
                 D3DXASSERT(sizeof(SMatrixGlobalVariable) == sizeof(SGlobalVariable));
                 D3DXASSERT(sizeof(SMatrix4x4ColumnMajorGlobalVariable) == sizeof(SGlobalVariable));
                 D3DXASSERT(sizeof(SMatrix4x4RowMajorGlobalVariable) == sizeof(SGlobalVariable));
-                
+
                 if (pType->NumericType.Rows == 4 && pType->NumericType.Columns == 4)
                 {
                     if (pType->NumericType.IsColumnMajor)
@@ -2942,7 +2942,7 @@ HRESULT PlacementNewVariable(void *pVar, SType *pType, BOOL IsAnnotation)
                 DPF( 0, "Internal loading error: invalid scalar type." );
                 return E_FAIL;
                 break;
-            }            
+            }
             break;
         default:
             D3DXASSERT(0);

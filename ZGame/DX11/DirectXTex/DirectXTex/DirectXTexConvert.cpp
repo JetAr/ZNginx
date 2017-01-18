@@ -1,7 +1,7 @@
-//-------------------------------------------------------------------------------------
+ï»¿//-------------------------------------------------------------------------------------
 // DirectXTexConvert.cpp
-//  
-// DirectX Texture Library - Image pixel format conversion 
+//
+// DirectX Texture Library - Image pixel format conversion
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
 // ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
@@ -21,181 +21,187 @@ using Microsoft::WRL::ComPtr;
 
 namespace
 {
-    inline uint32_t FloatTo7e3(float Value)
-    {
-        uint32_t IValue = reinterpret_cast<uint32_t *>(&Value)[0];
+inline uint32_t FloatTo7e3(float Value)
+{
+    uint32_t IValue = reinterpret_cast<uint32_t *>(&Value)[0];
 
-        if (IValue & 0x80000000U)
+    if (IValue & 0x80000000U)
+    {
+        // Positive only
+        return 0;
+    }
+    else if (IValue > 0x41FF73FFU)
+    {
+        // The number is too large to be represented as a 7e3. Saturate.
+        return 0x3FFU;
+    }
+    else
+    {
+        if (IValue < 0x3E800000U)
         {
-            // Positive only
-            return 0;
-        }
-        else if (IValue > 0x41FF73FFU)
-        {
-            // The number is too large to be represented as a 7e3. Saturate.
-            return 0x3FFU;
+            // The number is too small to be represented as a normalized 7e3.
+            // Convert it to a denormalized value.
+            uint32_t Shift = 125U - (IValue >> 23U);
+            IValue = (0x800000U | (IValue & 0x7FFFFFU)) >> Shift;
         }
         else
         {
-            if (IValue < 0x3E800000U)
-            {
-                // The number is too small to be represented as a normalized 7e3.
-                // Convert it to a denormalized value.
-                uint32_t Shift = 125U - (IValue >> 23U);
-                IValue = (0x800000U | (IValue & 0x7FFFFFU)) >> Shift;
-            }
-            else
-            {
-                // Rebias the exponent to represent the value as a normalized 7e3.
-                IValue += 0xC2000000U;
-            }
-
-            return ((IValue + 0x7FFFU + ((IValue >> 16U) & 1U)) >> 16U) & 0x3FFU;
+            // Rebias the exponent to represent the value as a normalized 7e3.
+            IValue += 0xC2000000U;
         }
+
+        return ((IValue + 0x7FFFU + ((IValue >> 16U) & 1U)) >> 16U) & 0x3FFU;
+    }
+}
+
+inline float FloatFrom7e3(uint32_t Value)
+{
+    uint32_t Mantissa = (uint32_t)(Value & 0x7F);
+
+    uint32_t Exponent = (Value & 0x380);
+    if (Exponent != 0)  // The value is normalized
+    {
+        Exponent = (uint32_t)((Value >> 7) & 0x7);
+    }
+    else if (Mantissa != 0)     // The value is denormalized
+    {
+        // Normalize the value in the resulting float
+        Exponent = 1;
+
+        do
+        {
+            Exponent--;
+            Mantissa <<= 1;
+        }
+        while ((Mantissa & 0x80) == 0);
+
+        Mantissa &= 0x7F;
+    }
+    else                        // The value is zero
+    {
+        Exponent = (uint32_t)-124;
     }
 
-    inline float FloatFrom7e3(uint32_t Value)
+    uint32_t Result = ((Exponent + 124) << 23) | // Exponent
+                      (Mantissa << 16);          // Mantissa
+
+    return reinterpret_cast<float*>(&Result)[0];
+}
+
+inline uint32_t FloatTo6e4(float Value)
+{
+    uint32_t IValue = reinterpret_cast<uint32_t *>(&Value)[0];
+
+    if (IValue & 0x80000000U)
     {
-        uint32_t Mantissa = (uint32_t)(Value & 0x7F);
-
-        uint32_t Exponent = (Value & 0x380);
-        if (Exponent != 0)  // The value is normalized
-        {
-            Exponent = (uint32_t)((Value >> 7) & 0x7);
-        }
-        else if (Mantissa != 0)     // The value is denormalized
-        {
-            // Normalize the value in the resulting float
-            Exponent = 1;
-
-            do
-            {
-                Exponent--;
-                Mantissa <<= 1;
-            } while ((Mantissa & 0x80) == 0);
-
-            Mantissa &= 0x7F;
-        }
-        else                        // The value is zero
-        {
-            Exponent = (uint32_t)-124;
-        }
-
-        uint32_t Result = ((Exponent + 124) << 23) | // Exponent
-            (Mantissa << 16);          // Mantissa
-
-        return reinterpret_cast<float*>(&Result)[0];
+        // Positive only
+        return 0;
     }
-
-    inline uint32_t FloatTo6e4(float Value)
+    else if (IValue > 0x43FEFFFFU)
     {
-        uint32_t IValue = reinterpret_cast<uint32_t *>(&Value)[0];
-
-        if (IValue & 0x80000000U)
+        // The number is too large to be represented as a 6e4. Saturate.
+        return 0x3FFU;
+    }
+    else
+    {
+        if (IValue < 0x3C800000U)
         {
-            // Positive only
-            return 0;
-        }
-        else if (IValue > 0x43FEFFFFU)
-        {
-            // The number is too large to be represented as a 6e4. Saturate.
-            return 0x3FFU;
+            // The number is too small to be represented as a normalized 6e4.
+            // Convert it to a denormalized value.
+            uint32_t Shift = 121U - (IValue >> 23U);
+            IValue = (0x800000U | (IValue & 0x7FFFFFU)) >> Shift;
         }
         else
         {
-            if (IValue < 0x3C800000U)
-            {
-                // The number is too small to be represented as a normalized 6e4.
-                // Convert it to a denormalized value.
-                uint32_t Shift = 121U - (IValue >> 23U);
-                IValue = (0x800000U | (IValue & 0x7FFFFFU)) >> Shift;
-            }
-            else
-            {
-                // Rebias the exponent to represent the value as a normalized 6e4.
-                IValue += 0xC4000000U;
-            }
-
-            return ((IValue + 0xFFFFU + ((IValue >> 17U) & 1U)) >> 17U) & 0x3FFU;
+            // Rebias the exponent to represent the value as a normalized 6e4.
+            IValue += 0xC4000000U;
         }
-    }
 
-    inline float FloatFrom6e4(uint32_t Value)
+        return ((IValue + 0xFFFFU + ((IValue >> 17U) & 1U)) >> 17U) & 0x3FFU;
+    }
+}
+
+inline float FloatFrom6e4(uint32_t Value)
+{
+    uint32_t Mantissa = (uint32_t)(Value & 0x3F);
+
+    uint32_t Exponent = (Value & 0x3C0);
+    if (Exponent != 0)  // The value is normalized
     {
-        uint32_t Mantissa = (uint32_t)(Value & 0x3F);
-
-        uint32_t Exponent = (Value & 0x3C0);
-        if (Exponent != 0)  // The value is normalized
-        {
-            Exponent = (uint32_t)((Value >> 6) & 0xF);
-        }
-        else if (Mantissa != 0)     // The value is denormalized
-        {
-            // Normalize the value in the resulting float
-            Exponent = 1;
-
-            do
-            {
-                Exponent--;
-                Mantissa <<= 1;
-            } while ((Mantissa & 0x40) == 0);
-
-            Mantissa &= 0x3F;
-        }
-        else                        // The value is zero
-        {
-            Exponent = (uint32_t)-120;
-        }
-
-        uint32_t Result = ((Exponent + 120) << 23) | // Exponent
-            (Mantissa << 17);          // Mantissa
-
-        return reinterpret_cast<float*>(&Result)[0];
+        Exponent = (uint32_t)((Value >> 6) & 0xF);
     }
+    else if (Mantissa != 0)     // The value is denormalized
+    {
+        // Normalize the value in the resulting float
+        Exponent = 1;
+
+        do
+        {
+            Exponent--;
+            Mantissa <<= 1;
+        }
+        while ((Mantissa & 0x40) == 0);
+
+        Mantissa &= 0x3F;
+    }
+    else                        // The value is zero
+    {
+        Exponent = (uint32_t)-120;
+    }
+
+    uint32_t Result = ((Exponent + 120) << 23) | // Exponent
+                      (Mantissa << 17);          // Mantissa
+
+    return reinterpret_cast<float*>(&Result)[0];
+}
 
 #if DIRECTX_MATH_VERSION >= 310
 #define StoreFloat3SE XMStoreFloat3SE
 #else
-    inline void XM_CALLCONV StoreFloat3SE(_Out_ XMFLOAT3SE* pDestination, DirectX::FXMVECTOR V)
+inline void XM_CALLCONV StoreFloat3SE(_Out_ XMFLOAT3SE* pDestination, DirectX::FXMVECTOR V)
+{
+    assert(pDestination);
+
+    DirectX::XMFLOAT3A tmp;
+    DirectX::XMStoreFloat3A(&tmp, V);
+
+    static const float maxf9 = float(0x1FF << 7);
+    static const float minf9 = float(1.f / (1 << 16));
+
+    float x = (tmp.x >= 0.f) ? ((tmp.x > maxf9) ? maxf9 : tmp.x) : 0.f;
+    float y = (tmp.y >= 0.f) ? ((tmp.y > maxf9) ? maxf9 : tmp.y) : 0.f;
+    float z = (tmp.z >= 0.f) ? ((tmp.z > maxf9) ? maxf9 : tmp.z) : 0.f;
+
+    const float max_xy = (x > y) ? x : y;
+    const float max_xyz = (max_xy > z) ? max_xy : z;
+
+    const float maxColor = (max_xyz > minf9) ? max_xyz : minf9;
+
+    union
     {
-        assert(pDestination);
+        float f;
+        int32_t i;
+    } fi;
+    fi.f = maxColor;
+    fi.i += 0x00004000; // round up leaving 9 bits in fraction (including assumed 1)
 
-        DirectX::XMFLOAT3A tmp;
-        DirectX::XMStoreFloat3A(&tmp, V);
+    // Fix applied from DirectXMath 3.10
+    uint32_t exp = fi.i >> 23;
+    pDestination->e = exp - 0x6f;
 
-        static const float maxf9 = float(0x1FF << 7);
-        static const float minf9 = float(1.f / (1 << 16));
+    fi.i = 0x83000000 - (exp << 23);
+    float ScaleR = fi.f;
 
-        float x = (tmp.x >= 0.f) ? ((tmp.x > maxf9) ? maxf9 : tmp.x) : 0.f;
-        float y = (tmp.y >= 0.f) ? ((tmp.y > maxf9) ? maxf9 : tmp.y) : 0.f;
-        float z = (tmp.z >= 0.f) ? ((tmp.z > maxf9) ? maxf9 : tmp.z) : 0.f;
-
-        const float max_xy = (x > y) ? x : y;
-        const float max_xyz = (max_xy > z) ? max_xy : z;
-
-        const float maxColor = (max_xyz > minf9) ? max_xyz : minf9;
-
-        union { float f; int32_t i; } fi;
-        fi.f = maxColor;
-        fi.i += 0x00004000; // round up leaving 9 bits in fraction (including assumed 1)
-
-        // Fix applied from DirectXMath 3.10
-        uint32_t exp = fi.i >> 23;
-        pDestination->e = exp - 0x6f;
-
-        fi.i = 0x83000000 - (exp << 23);
-        float ScaleR = fi.f;
-
-        pDestination->xm = static_cast<uint32_t>(lroundf(x * ScaleR));
-        pDestination->ym = static_cast<uint32_t>(lroundf(y * ScaleR));
-        pDestination->zm = static_cast<uint32_t>(lroundf(z * ScaleR));
-    }
+    pDestination->xm = static_cast<uint32_t>(lroundf(x * ScaleR));
+    pDestination->ym = static_cast<uint32_t>(lroundf(y * ScaleR));
+    pDestination->zm = static_cast<uint32_t>(lroundf(z * ScaleR));
+}
 #endif
 
-    const XMVECTORF32 g_Grayscale = { 0.2125f, 0.7154f, 0.0721f, 0.0f };
-    const XMVECTORF32 g_HalfMin = { -65504.f, -65504.f, -65504.f, -65504.f };
-    const XMVECTORF32 g_HalfMax = { 65504.f, 65504.f, 65504.f, 65504.f };
-    const XMVECTORF32 g_8BitBias = { 0.5f / 255.f, 0.5f / 255.f, 0.5f / 255.f, 0.5f / 255.f };
+const XMVECTORF32 g_Grayscale = { 0.2125f, 0.7154f, 0.0721f, 0.0f };
+const XMVECTORF32 g_HalfMin = { -65504.f, -65504.f, -65504.f, -65504.f };
+const XMVECTORF32 g_HalfMax = { 65504.f, 65504.f, 65504.f, 65504.f };
+const XMVECTORF32 g_8BitBias = { 0.5f / 255.f, 0.5f / 255.f, 0.5f / 255.f, 0.5f / 255.f };
 }
 
 //-------------------------------------------------------------------------------------
@@ -219,7 +225,7 @@ void DirectX::_CopyScanline(
     {
         switch (static_cast<int>(format))
         {
-            //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
         case DXGI_FORMAT_R32G32B32A32_TYPELESS:
         case DXGI_FORMAT_R32G32B32A32_FLOAT:
         case DXGI_FORMAT_R32G32B32A32_UINT:
@@ -260,7 +266,7 @@ void DirectX::_CopyScanline(
             }
             return;
 
-            //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
         case DXGI_FORMAT_R16G16B16A16_TYPELESS:
         case DXGI_FORMAT_R16G16B16A16_FLOAT:
         case DXGI_FORMAT_R16G16B16A16_UNORM:
@@ -304,7 +310,7 @@ void DirectX::_CopyScanline(
             }
             return;
 
-            //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
         case DXGI_FORMAT_R10G10B10A2_TYPELESS:
         case DXGI_FORMAT_R10G10B10A2_UNORM:
         case DXGI_FORMAT_R10G10B10A2_UINT:
@@ -337,7 +343,7 @@ void DirectX::_CopyScanline(
             }
             return;
 
-            //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
         case DXGI_FORMAT_R8G8B8A8_TYPELESS:
         case DXGI_FORMAT_R8G8B8A8_UNORM:
         case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
@@ -377,7 +383,7 @@ void DirectX::_CopyScanline(
             }
             return;
 
-            //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
         case DXGI_FORMAT_B5G5R5A1_UNORM:
             if (inSize >= 2 && outSize >= 2)
             {
@@ -402,12 +408,12 @@ void DirectX::_CopyScanline(
             }
             return;
 
-            //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
         case DXGI_FORMAT_A8_UNORM:
             memset(pDestination, 0xff, outSize);
             return;
 
-            //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
         case DXGI_FORMAT_B4G4R4A4_UNORM:
             if (inSize >= 2 && outSize >= 2)
             {
@@ -462,7 +468,7 @@ void DirectX::_SwizzleScanline(
 
     switch (static_cast<int>(format))
     {
-        //---------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------
     case DXGI_FORMAT_R10G10B10A2_TYPELESS:
     case DXGI_FORMAT_R10G10B10A2_UNORM:
     case DXGI_FORMAT_R10G10B10A2_UINT:
@@ -510,7 +516,7 @@ void DirectX::_SwizzleScanline(
         }
         break;
 
-        //---------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------
     case DXGI_FORMAT_R8G8B8A8_TYPELESS:
     case DXGI_FORMAT_R8G8B8A8_UNORM:
     case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
@@ -559,7 +565,7 @@ void DirectX::_SwizzleScanline(
         }
         break;
 
-        //---------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------
     case DXGI_FORMAT_YUY2:
         if (inSize >= 4 && outSize >= 4)
         {
@@ -824,22 +830,22 @@ _Use_decl_annotations_ bool DirectX::_LoadScanline(
         LOAD_SCANLINE2(XMINT2, XMLoadSInt2, g_XMIdentityR3)
 
     case DXGI_FORMAT_D32_FLOAT_S8X24_UINT:
+    {
+        const size_t psize = sizeof(float) + sizeof(uint32_t);
+        if (size >= psize)
         {
-            const size_t psize = sizeof(float) + sizeof(uint32_t);
-            if (size >= psize)
+            const float * sPtr = reinterpret_cast<const float*>(pSource);
+            for (size_t icount = 0; icount < (size - psize + 1); icount += psize)
             {
-                const float * sPtr = reinterpret_cast<const float*>(pSource);
-                for (size_t icount = 0; icount < (size - psize + 1); icount += psize)
-                {
-                    const uint8_t* ps8 = reinterpret_cast<const uint8_t*>(&sPtr[1]);
-                    if (dPtr >= ePtr) break;
-                    *(dPtr++) = XMVectorSet(sPtr[0], static_cast<float>(*ps8), 0.f, 1.f);
-                    sPtr += 2;
-                }
-                return true;
+                const uint8_t* ps8 = reinterpret_cast<const uint8_t*>(&sPtr[1]);
+                if (dPtr >= ePtr) break;
+                *(dPtr++) = XMVectorSet(sPtr[0], static_cast<float>(*ps8), 0.f, 1.f);
+                sPtr += 2;
             }
+            return true;
         }
-        return false;
+    }
+    return false;
 
     case DXGI_FORMAT_R32_FLOAT_X8X24_TYPELESS:
     {
@@ -1284,13 +1290,13 @@ _Use_decl_annotations_ bool DirectX::_LoadScanline(
 
                 // http://msdn.microsoft.com/en-us/library/windows/desktop/dd206750.aspx
 
-                // Y’  = Y - 16
-                // Cb’ = Cb - 128
-                // Cr’ = Cr - 128
+                // Yâ€™  = Y - 16
+                // Cbâ€™ = Cb - 128
+                // Crâ€™ = Cr - 128
 
-                // R = 1.1644Y’ + 1.5960Cr’
-                // G = 1.1644Y’ - 0.3917Cb’ - 0.8128Cr’
-                // B = 1.1644Y’ + 2.0172Cb’
+                // R = 1.1644Yâ€™ + 1.5960Crâ€™
+                // G = 1.1644Yâ€™ - 0.3917Cbâ€™ - 0.8128Crâ€™
+                // B = 1.1644Yâ€™ + 2.0172Cbâ€™
 
                 int r = (298 * y + 409 * v + 128) >> 8;
                 int g = (298 * y - 100 * u - 208 * v + 128) >> 8;
@@ -1298,9 +1304,9 @@ _Use_decl_annotations_ bool DirectX::_LoadScanline(
 
                 if (dPtr >= ePtr) break;
                 *(dPtr++) = XMVectorSet(float(std::min<int>(std::max<int>(r, 0), 255)) / 255.f,
-                    float(std::min<int>(std::max<int>(g, 0), 255)) / 255.f,
-                    float(std::min<int>(std::max<int>(b, 0), 255)) / 255.f,
-                    float(a / 255.f));
+                                        float(std::min<int>(std::max<int>(g, 0), 255)) / 255.f,
+                                        float(std::min<int>(std::max<int>(b, 0), 255)) / 255.f,
+                                        float(a / 255.f));
             }
             return true;
         }
@@ -1320,13 +1326,13 @@ _Use_decl_annotations_ bool DirectX::_LoadScanline(
 
                 // http://msdn.microsoft.com/en-us/library/windows/desktop/bb970578.aspx
 
-                // Y’  = Y - 64
-                // Cb’ = Cb - 512
-                // Cr’ = Cr - 512
+                // Yâ€™  = Y - 64
+                // Cbâ€™ = Cb - 512
+                // Crâ€™ = Cr - 512
 
-                // R = 1.1678Y’ + 1.6007Cr’
-                // G = 1.1678Y’ - 0.3929Cb’ - 0.8152Cr’
-                // B = 1.1678Y’ + 2.0232Cb’
+                // R = 1.1678Yâ€™ + 1.6007Crâ€™
+                // G = 1.1678Yâ€™ - 0.3929Cbâ€™ - 0.8152Crâ€™
+                // B = 1.1678Yâ€™ + 2.0232Cbâ€™
 
                 int r = static_cast<int>((76533 * y + 104905 * v + 32768) >> 16);
                 int g = static_cast<int>((76533 * y - 25747 * u - 53425 * v + 32768) >> 16);
@@ -1334,9 +1340,9 @@ _Use_decl_annotations_ bool DirectX::_LoadScanline(
 
                 if (dPtr >= ePtr) break;
                 *(dPtr++) = XMVectorSet(float(std::min<int>(std::max<int>(r, 0), 1023)) / 1023.f,
-                    float(std::min<int>(std::max<int>(g, 0), 1023)) / 1023.f,
-                    float(std::min<int>(std::max<int>(b, 0), 1023)) / 1023.f,
-                    float(a / 3.f));
+                                        float(std::min<int>(std::max<int>(g, 0), 1023)) / 1023.f,
+                                        float(std::min<int>(std::max<int>(b, 0), 1023)) / 1023.f,
+                                        float(a / 3.f));
             }
             return true;
         }
@@ -1356,13 +1362,13 @@ _Use_decl_annotations_ bool DirectX::_LoadScanline(
 
                 // http://msdn.microsoft.com/en-us/library/windows/desktop/bb970578.aspx
 
-                // Y’  = Y - 4096
-                // Cb’ = Cb - 32768
-                // Cr’ = Cr - 32768
+                // Yâ€™  = Y - 4096
+                // Cbâ€™ = Cb - 32768
+                // Crâ€™ = Cr - 32768
 
-                // R = 1.1689Y’ + 1.6023Cr’
-                // G = 1.1689Y’ - 0.3933Cb’ - 0.8160Cr’
-                // B = 1.1689Y’+ 2.0251Cb’
+                // R = 1.1689Yâ€™ + 1.6023Crâ€™
+                // G = 1.1689Yâ€™ - 0.3933Cbâ€™ - 0.8160Crâ€™
+                // B = 1.1689Yâ€™+ 2.0251Cbâ€™
 
                 int r = static_cast<int>((76607 * y + 105006 * v + 32768) >> 16);
                 int g = static_cast<int>((76607 * y - 25772 * u - 53477 * v + 32768) >> 16);
@@ -1370,9 +1376,9 @@ _Use_decl_annotations_ bool DirectX::_LoadScanline(
 
                 if (dPtr >= ePtr) break;
                 *(dPtr++) = XMVectorSet(float(std::min<int>(std::max<int>(r, 0), 65535)) / 65535.f,
-                    float(std::min<int>(std::max<int>(g, 0), 65535)) / 65535.f,
-                    float(std::min<int>(std::max<int>(b, 0), 65535)) / 65535.f,
-                    float(std::min<int>(std::max<int>(a, 0), 65535)) / 65535.f);
+                                        float(std::min<int>(std::max<int>(g, 0), 65535)) / 65535.f,
+                                        float(std::min<int>(std::max<int>(b, 0), 65535)) / 65535.f,
+                                        float(std::min<int>(std::max<int>(a, 0), 65535)) / 65535.f);
             }
             return true;
         }
@@ -1397,9 +1403,9 @@ _Use_decl_annotations_ bool DirectX::_LoadScanline(
 
                 if (dPtr >= ePtr) break;
                 *(dPtr++) = XMVectorSet(float(std::min<int>(std::max<int>(r, 0), 255)) / 255.f,
-                    float(std::min<int>(std::max<int>(g, 0), 255)) / 255.f,
-                    float(std::min<int>(std::max<int>(b, 0), 255)) / 255.f,
-                    1.f);
+                                        float(std::min<int>(std::max<int>(g, 0), 255)) / 255.f,
+                                        float(std::min<int>(std::max<int>(b, 0), 255)) / 255.f,
+                                        1.f);
 
                 r = (298 * y1 + 409 * v + 128) >> 8;
                 g = (298 * y1 - 100 * u - 208 * v + 128) >> 8;
@@ -1407,9 +1413,9 @@ _Use_decl_annotations_ bool DirectX::_LoadScanline(
 
                 if (dPtr >= ePtr) break;
                 *(dPtr++) = XMVectorSet(float(std::min<int>(std::max<int>(r, 0), 255)) / 255.f,
-                    float(std::min<int>(std::max<int>(g, 0), 255)) / 255.f,
-                    float(std::min<int>(std::max<int>(b, 0), 255)) / 255.f,
-                    1.f);
+                                        float(std::min<int>(std::max<int>(g, 0), 255)) / 255.f,
+                                        float(std::min<int>(std::max<int>(b, 0), 255)) / 255.f,
+                                        1.f);
             }
             return true;
         }
@@ -1435,9 +1441,9 @@ _Use_decl_annotations_ bool DirectX::_LoadScanline(
 
                 if (dPtr >= ePtr) break;
                 *(dPtr++) = XMVectorSet(float(std::min<int>(std::max<int>(r, 0), 1023)) / 1023.f,
-                    float(std::min<int>(std::max<int>(g, 0), 1023)) / 1023.f,
-                    float(std::min<int>(std::max<int>(b, 0), 1023)) / 1023.f,
-                    1.f);
+                                        float(std::min<int>(std::max<int>(g, 0), 1023)) / 1023.f,
+                                        float(std::min<int>(std::max<int>(b, 0), 1023)) / 1023.f,
+                                        1.f);
 
                 r = static_cast<int>((76533 * y1 + 104905 * v + 32768) >> 16);
                 g = static_cast<int>((76533 * y1 - 25747 * u - 53425 * v + 32768) >> 16);
@@ -1445,9 +1451,9 @@ _Use_decl_annotations_ bool DirectX::_LoadScanline(
 
                 if (dPtr >= ePtr) break;
                 *(dPtr++) = XMVectorSet(float(std::min<int>(std::max<int>(r, 0), 1023)) / 1023.f,
-                    float(std::min<int>(std::max<int>(g, 0), 1023)) / 1023.f,
-                    float(std::min<int>(std::max<int>(b, 0), 1023)) / 1023.f,
-                    1.f);
+                                        float(std::min<int>(std::max<int>(g, 0), 1023)) / 1023.f,
+                                        float(std::min<int>(std::max<int>(b, 0), 1023)) / 1023.f,
+                                        1.f);
             }
             return true;
         }
@@ -1472,9 +1478,9 @@ _Use_decl_annotations_ bool DirectX::_LoadScanline(
 
                 if (dPtr >= ePtr) break;
                 *(dPtr++) = XMVectorSet(float(std::min<int>(std::max<int>(r, 0), 65535)) / 65535.f,
-                    float(std::min<int>(std::max<int>(g, 0), 65535)) / 65535.f,
-                    float(std::min<int>(std::max<int>(b, 0), 65535)) / 65535.f,
-                    1.f);
+                                        float(std::min<int>(std::max<int>(g, 0), 65535)) / 65535.f,
+                                        float(std::min<int>(std::max<int>(b, 0), 65535)) / 65535.f,
+                                        1.f);
 
                 r = static_cast<int>((76607 * y1 + 105006 * v + 32768) >> 16);
                 g = static_cast<int>((76607 * y1 - 25772 * u - 53477 * v + 32768) >> 16);
@@ -1482,9 +1488,9 @@ _Use_decl_annotations_ bool DirectX::_LoadScanline(
 
                 if (dPtr >= ePtr) break;
                 *(dPtr++) = XMVectorSet(float(std::min<int>(std::max<int>(r, 0), 65535)) / 65535.f,
-                    float(std::min<int>(std::max<int>(g, 0), 65535)) / 65535.f,
-                    float(std::min<int>(std::max<int>(b, 0), 65535)) / 65535.f,
-                    1.f);
+                                        float(std::min<int>(std::max<int>(g, 0), 65535)) / 65535.f,
+                                        float(std::min<int>(std::max<int>(b, 0), 65535)) / 65535.f,
+                                        1.f);
             }
             return true;
         }
@@ -1515,7 +1521,8 @@ _Use_decl_annotations_ bool DirectX::_LoadScanline(
             {
                 if (dPtr >= ePtr) break;
 
-                XMVECTORF32 vResult = {
+                XMVECTORF32 vResult =
+                {
                     FloatFrom7e3(sPtr->x),
                     FloatFrom7e3(sPtr->y),
                     FloatFrom7e3(sPtr->z),
@@ -1539,7 +1546,8 @@ _Use_decl_annotations_ bool DirectX::_LoadScanline(
             {
                 if (dPtr >= ePtr) break;
 
-                XMVECTORF32 vResult = {
+                XMVECTORF32 vResult =
+                {
                     FloatFrom6e4(sPtr->x),
                     FloatFrom6e4(sPtr->y),
                     FloatFrom6e4(sPtr->z),
@@ -1577,7 +1585,7 @@ _Use_decl_annotations_ bool DirectX::_LoadScanline(
         }
         return false;
 
-        // We don't support the planar or palettized formats
+    // We don't support the planar or palettized formats
 
     default:
         return false;
@@ -1681,26 +1689,26 @@ bool DirectX::_StoreScanline(
         STORE_SCANLINE(XMINT2, XMStoreSInt2)
 
     case DXGI_FORMAT_D32_FLOAT_S8X24_UINT:
+    {
+        const size_t psize = sizeof(float) + sizeof(uint32_t);
+        if (size >= psize)
         {
-            const size_t psize = sizeof(float) + sizeof(uint32_t);
-            if (size >= psize)
+            float *dPtr = reinterpret_cast<float*>(pDestination);
+            for (size_t icount = 0; icount < (size - psize + 1); icount += psize)
             {
-                float *dPtr = reinterpret_cast<float*>(pDestination);
-                for (size_t icount = 0; icount < (size - psize + 1); icount += psize)
-                {
-                    if (sPtr >= ePtr) break;
-                    XMFLOAT4 f;
-                    XMStoreFloat4(&f, *sPtr++);
-                    dPtr[0] = f.x;
-                    uint8_t* ps8 = reinterpret_cast<uint8_t*>(&dPtr[1]);
-                    ps8[0] = static_cast<uint8_t>(std::min<float>(255.f, std::max<float>(0.f, f.y)));
-                    ps8[1] = ps8[2] = ps8[3] = 0;
-                    dPtr += 2;
-                }
-                return true;
+                if (sPtr >= ePtr) break;
+                XMFLOAT4 f;
+                XMStoreFloat4(&f, *sPtr++);
+                dPtr[0] = f.x;
+                uint8_t* ps8 = reinterpret_cast<uint8_t*>(&dPtr[1]);
+                ps8[0] = static_cast<uint8_t>(std::min<float>(255.f, std::max<float>(0.f, f.y)));
+                ps8[1] = ps8[2] = ps8[3] = 0;
+                dPtr += 2;
             }
+            return true;
         }
-        return false;
+    }
+    return false;
 
     case DXGI_FORMAT_R10G10B10A2_UNORM:
         STORE_SCANLINE(XMUDECN4, XMStoreUDecN4);
@@ -1819,7 +1827,7 @@ bool DirectX::_StoreScanline(
                 XMFLOAT4 f;
                 XMStoreFloat4(&f, XMVectorClamp(*sPtr++, zero, clamp));
                 *dPtr++ = (static_cast<uint32_t>(f.x * 16777215.f) & 0xFFFFFF)
-                    | ((static_cast<uint32_t>(f.y) & 0xFF) << 24);
+                          | ((static_cast<uint32_t>(f.y) & 0xFF) << 24);
             }
             return true;
         }
@@ -2451,7 +2459,7 @@ bool DirectX::_StoreScanline(
         }
         return false;
 
-        // We don't support the planar or palettized formats
+    // We don't support the planar or palettized formats
 
     default:
         return false;
@@ -2789,110 +2797,110 @@ bool DirectX::_LoadScanlineLinear(
 //-------------------------------------------------------------------------------------
 namespace
 {
-    struct ConvertData
-    {
-        DXGI_FORMAT format;
-        size_t datasize;
-        DWORD flags;
-    };
+struct ConvertData
+{
+    DXGI_FORMAT format;
+    size_t datasize;
+    DWORD flags;
+};
 
-    const ConvertData g_ConvertTable[] =
-    {
-        { DXGI_FORMAT_R32G32B32A32_FLOAT,           32, CONVF_FLOAT | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_R32G32B32A32_UINT,            32, CONVF_UINT | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_R32G32B32A32_SINT,            32, CONVF_SINT | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_R32G32B32_FLOAT,              32, CONVF_FLOAT | CONVF_R | CONVF_G | CONVF_B },
-        { DXGI_FORMAT_R32G32B32_UINT,               32, CONVF_UINT | CONVF_R | CONVF_G | CONVF_B },
-        { DXGI_FORMAT_R32G32B32_SINT,               32, CONVF_SINT | CONVF_R | CONVF_G | CONVF_B },
-        { DXGI_FORMAT_R16G16B16A16_FLOAT,           16, CONVF_FLOAT | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_R16G16B16A16_UNORM,           16, CONVF_UNORM | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_R16G16B16A16_UINT,            16, CONVF_UINT | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_R16G16B16A16_SNORM,           16, CONVF_SNORM | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_R16G16B16A16_SINT,            16, CONVF_SINT | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_R32G32_FLOAT,                 32, CONVF_FLOAT | CONVF_R | CONVF_G },
-        { DXGI_FORMAT_R32G32_UINT,                  32, CONVF_UINT | CONVF_R | CONVF_G  },
-        { DXGI_FORMAT_R32G32_SINT,                  32, CONVF_SINT | CONVF_R | CONVF_G  },
-        { DXGI_FORMAT_D32_FLOAT_S8X24_UINT,         32, CONVF_FLOAT | CONVF_DEPTH | CONVF_STENCIL },
-        { DXGI_FORMAT_R10G10B10A2_UNORM,            10, CONVF_UNORM | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_R10G10B10A2_UINT,             10, CONVF_UINT | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_R11G11B10_FLOAT,              10, CONVF_FLOAT | CONVF_POS_ONLY | CONVF_R | CONVF_G | CONVF_B },
-        { DXGI_FORMAT_R8G8B8A8_UNORM,               8, CONVF_UNORM | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,          8, CONVF_UNORM | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_R8G8B8A8_UINT,                8, CONVF_UINT | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_R8G8B8A8_SNORM,               8, CONVF_SNORM | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_R8G8B8A8_SINT,                8, CONVF_SINT | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_R16G16_FLOAT,                 16, CONVF_FLOAT | CONVF_R | CONVF_G },
-        { DXGI_FORMAT_R16G16_UNORM,                 16, CONVF_UNORM | CONVF_R | CONVF_G },
-        { DXGI_FORMAT_R16G16_UINT,                  16, CONVF_UINT | CONVF_R | CONVF_G },
-        { DXGI_FORMAT_R16G16_SNORM,                 16, CONVF_SNORM | CONVF_R | CONVF_G },
-        { DXGI_FORMAT_R16G16_SINT,                  16, CONVF_SINT | CONVF_R | CONVF_G },
-        { DXGI_FORMAT_D32_FLOAT,                    32, CONVF_FLOAT | CONVF_DEPTH },
-        { DXGI_FORMAT_R32_FLOAT,                    32, CONVF_FLOAT | CONVF_R },
-        { DXGI_FORMAT_R32_UINT,                     32, CONVF_UINT | CONVF_R },
-        { DXGI_FORMAT_R32_SINT,                     32, CONVF_SINT | CONVF_R },
-        { DXGI_FORMAT_D24_UNORM_S8_UINT,            32, CONVF_UNORM | CONVF_DEPTH | CONVF_STENCIL },
-        { DXGI_FORMAT_R8G8_UNORM,                   8, CONVF_UNORM | CONVF_R | CONVF_G },
-        { DXGI_FORMAT_R8G8_UINT,                    8, CONVF_UINT | CONVF_R | CONVF_G },
-        { DXGI_FORMAT_R8G8_SNORM,                   8, CONVF_SNORM | CONVF_R | CONVF_G },
-        { DXGI_FORMAT_R8G8_SINT,                    8, CONVF_SINT | CONVF_R | CONVF_G },
-        { DXGI_FORMAT_R16_FLOAT,                    16, CONVF_FLOAT | CONVF_R },
-        { DXGI_FORMAT_D16_UNORM,                    16, CONVF_UNORM | CONVF_DEPTH },
-        { DXGI_FORMAT_R16_UNORM,                    16, CONVF_UNORM | CONVF_R },
-        { DXGI_FORMAT_R16_UINT,                     16, CONVF_UINT | CONVF_R },
-        { DXGI_FORMAT_R16_SNORM,                    16, CONVF_SNORM | CONVF_R },
-        { DXGI_FORMAT_R16_SINT,                     16, CONVF_SINT | CONVF_R },
-        { DXGI_FORMAT_R8_UNORM,                     8, CONVF_UNORM | CONVF_R },
-        { DXGI_FORMAT_R8_UINT,                      8, CONVF_UINT | CONVF_R },
-        { DXGI_FORMAT_R8_SNORM,                     8, CONVF_SNORM | CONVF_R },
-        { DXGI_FORMAT_R8_SINT,                      8, CONVF_SINT | CONVF_R },
-        { DXGI_FORMAT_A8_UNORM,                     8, CONVF_UNORM | CONVF_A },
-        { DXGI_FORMAT_R1_UNORM,                     1, CONVF_UNORM | CONVF_R },
-        { DXGI_FORMAT_R9G9B9E5_SHAREDEXP,           9, CONVF_FLOAT | CONVF_SHAREDEXP | CONVF_POS_ONLY | CONVF_R | CONVF_G | CONVF_B },
-        { DXGI_FORMAT_R8G8_B8G8_UNORM,              8, CONVF_UNORM | CONVF_PACKED | CONVF_R | CONVF_G | CONVF_B },
-        { DXGI_FORMAT_G8R8_G8B8_UNORM,              8, CONVF_UNORM | CONVF_PACKED | CONVF_R | CONVF_G | CONVF_B },
-        { DXGI_FORMAT_BC1_UNORM,                    8, CONVF_UNORM | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_BC1_UNORM_SRGB,               8, CONVF_UNORM | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_BC2_UNORM,                    8, CONVF_UNORM | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_BC2_UNORM_SRGB,               8, CONVF_UNORM | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_BC3_UNORM,                    8, CONVF_UNORM | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_BC3_UNORM_SRGB,               8, CONVF_UNORM | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_BC4_UNORM,                    8, CONVF_UNORM | CONVF_BC | CONVF_R },
-        { DXGI_FORMAT_BC4_SNORM,                    8, CONVF_SNORM | CONVF_BC | CONVF_R },
-        { DXGI_FORMAT_BC5_UNORM,                    8, CONVF_UNORM | CONVF_BC | CONVF_R | CONVF_G },
-        { DXGI_FORMAT_BC5_SNORM,                    8, CONVF_SNORM | CONVF_BC | CONVF_R | CONVF_G },
-        { DXGI_FORMAT_B5G6R5_UNORM,                 5, CONVF_UNORM | CONVF_R | CONVF_G | CONVF_B },
-        { DXGI_FORMAT_B5G5R5A1_UNORM,               5, CONVF_UNORM | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_B8G8R8A8_UNORM,               8, CONVF_UNORM | CONVF_BGR | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_B8G8R8X8_UNORM,               8, CONVF_UNORM | CONVF_BGR | CONVF_R | CONVF_G | CONVF_B },
-        { DXGI_FORMAT_R10G10B10_XR_BIAS_A2_UNORM,   10, CONVF_UNORM | CONVF_XR | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_B8G8R8A8_UNORM_SRGB,          8, CONVF_UNORM | CONVF_BGR | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_B8G8R8X8_UNORM_SRGB,          8, CONVF_UNORM | CONVF_BGR | CONVF_R | CONVF_G | CONVF_B },
-        { DXGI_FORMAT_BC6H_UF16,                    16, CONVF_FLOAT | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_BC6H_SF16,                    16, CONVF_FLOAT | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_BC7_UNORM,                    8, CONVF_UNORM | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_BC7_UNORM_SRGB,               8, CONVF_UNORM | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_AYUV,                         8, CONVF_UNORM | CONVF_YUV | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_Y410,                         10, CONVF_UNORM | CONVF_YUV | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_Y416,                         16, CONVF_UNORM | CONVF_YUV | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { DXGI_FORMAT_YUY2,                         8, CONVF_UNORM | CONVF_YUV | CONVF_PACKED | CONVF_R | CONVF_G | CONVF_B },
-        { DXGI_FORMAT_Y210,                         10, CONVF_UNORM | CONVF_YUV | CONVF_PACKED | CONVF_R | CONVF_G | CONVF_B },
-        { DXGI_FORMAT_Y216,                         16, CONVF_UNORM | CONVF_YUV | CONVF_PACKED | CONVF_R | CONVF_G | CONVF_B },
-        { DXGI_FORMAT_B4G4R4A4_UNORM,               4, CONVF_UNORM | CONVF_BGR | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { XBOX_DXGI_FORMAT_R10G10B10_7E3_A2_FLOAT,  10, CONVF_FLOAT | CONVF_POS_ONLY | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { XBOX_DXGI_FORMAT_R10G10B10_6E4_A2_FLOAT,  10, CONVF_FLOAT | CONVF_POS_ONLY | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { XBOX_DXGI_FORMAT_R10G10B10_SNORM_A2_UNORM,10, CONVF_SNORM | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
-        { XBOX_DXGI_FORMAT_R4G4_UNORM,               4, CONVF_UNORM | CONVF_R | CONVF_G },
-    };
+const ConvertData g_ConvertTable[] =
+{
+    { DXGI_FORMAT_R32G32B32A32_FLOAT,           32, CONVF_FLOAT | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_R32G32B32A32_UINT,            32, CONVF_UINT | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_R32G32B32A32_SINT,            32, CONVF_SINT | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_R32G32B32_FLOAT,              32, CONVF_FLOAT | CONVF_R | CONVF_G | CONVF_B },
+    { DXGI_FORMAT_R32G32B32_UINT,               32, CONVF_UINT | CONVF_R | CONVF_G | CONVF_B },
+    { DXGI_FORMAT_R32G32B32_SINT,               32, CONVF_SINT | CONVF_R | CONVF_G | CONVF_B },
+    { DXGI_FORMAT_R16G16B16A16_FLOAT,           16, CONVF_FLOAT | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_R16G16B16A16_UNORM,           16, CONVF_UNORM | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_R16G16B16A16_UINT,            16, CONVF_UINT | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_R16G16B16A16_SNORM,           16, CONVF_SNORM | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_R16G16B16A16_SINT,            16, CONVF_SINT | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_R32G32_FLOAT,                 32, CONVF_FLOAT | CONVF_R | CONVF_G },
+    { DXGI_FORMAT_R32G32_UINT,                  32, CONVF_UINT | CONVF_R | CONVF_G  },
+    { DXGI_FORMAT_R32G32_SINT,                  32, CONVF_SINT | CONVF_R | CONVF_G  },
+    { DXGI_FORMAT_D32_FLOAT_S8X24_UINT,         32, CONVF_FLOAT | CONVF_DEPTH | CONVF_STENCIL },
+    { DXGI_FORMAT_R10G10B10A2_UNORM,            10, CONVF_UNORM | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_R10G10B10A2_UINT,             10, CONVF_UINT | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_R11G11B10_FLOAT,              10, CONVF_FLOAT | CONVF_POS_ONLY | CONVF_R | CONVF_G | CONVF_B },
+    { DXGI_FORMAT_R8G8B8A8_UNORM,               8, CONVF_UNORM | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,          8, CONVF_UNORM | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_R8G8B8A8_UINT,                8, CONVF_UINT | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_R8G8B8A8_SNORM,               8, CONVF_SNORM | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_R8G8B8A8_SINT,                8, CONVF_SINT | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_R16G16_FLOAT,                 16, CONVF_FLOAT | CONVF_R | CONVF_G },
+    { DXGI_FORMAT_R16G16_UNORM,                 16, CONVF_UNORM | CONVF_R | CONVF_G },
+    { DXGI_FORMAT_R16G16_UINT,                  16, CONVF_UINT | CONVF_R | CONVF_G },
+    { DXGI_FORMAT_R16G16_SNORM,                 16, CONVF_SNORM | CONVF_R | CONVF_G },
+    { DXGI_FORMAT_R16G16_SINT,                  16, CONVF_SINT | CONVF_R | CONVF_G },
+    { DXGI_FORMAT_D32_FLOAT,                    32, CONVF_FLOAT | CONVF_DEPTH },
+    { DXGI_FORMAT_R32_FLOAT,                    32, CONVF_FLOAT | CONVF_R },
+    { DXGI_FORMAT_R32_UINT,                     32, CONVF_UINT | CONVF_R },
+    { DXGI_FORMAT_R32_SINT,                     32, CONVF_SINT | CONVF_R },
+    { DXGI_FORMAT_D24_UNORM_S8_UINT,            32, CONVF_UNORM | CONVF_DEPTH | CONVF_STENCIL },
+    { DXGI_FORMAT_R8G8_UNORM,                   8, CONVF_UNORM | CONVF_R | CONVF_G },
+    { DXGI_FORMAT_R8G8_UINT,                    8, CONVF_UINT | CONVF_R | CONVF_G },
+    { DXGI_FORMAT_R8G8_SNORM,                   8, CONVF_SNORM | CONVF_R | CONVF_G },
+    { DXGI_FORMAT_R8G8_SINT,                    8, CONVF_SINT | CONVF_R | CONVF_G },
+    { DXGI_FORMAT_R16_FLOAT,                    16, CONVF_FLOAT | CONVF_R },
+    { DXGI_FORMAT_D16_UNORM,                    16, CONVF_UNORM | CONVF_DEPTH },
+    { DXGI_FORMAT_R16_UNORM,                    16, CONVF_UNORM | CONVF_R },
+    { DXGI_FORMAT_R16_UINT,                     16, CONVF_UINT | CONVF_R },
+    { DXGI_FORMAT_R16_SNORM,                    16, CONVF_SNORM | CONVF_R },
+    { DXGI_FORMAT_R16_SINT,                     16, CONVF_SINT | CONVF_R },
+    { DXGI_FORMAT_R8_UNORM,                     8, CONVF_UNORM | CONVF_R },
+    { DXGI_FORMAT_R8_UINT,                      8, CONVF_UINT | CONVF_R },
+    { DXGI_FORMAT_R8_SNORM,                     8, CONVF_SNORM | CONVF_R },
+    { DXGI_FORMAT_R8_SINT,                      8, CONVF_SINT | CONVF_R },
+    { DXGI_FORMAT_A8_UNORM,                     8, CONVF_UNORM | CONVF_A },
+    { DXGI_FORMAT_R1_UNORM,                     1, CONVF_UNORM | CONVF_R },
+    { DXGI_FORMAT_R9G9B9E5_SHAREDEXP,           9, CONVF_FLOAT | CONVF_SHAREDEXP | CONVF_POS_ONLY | CONVF_R | CONVF_G | CONVF_B },
+    { DXGI_FORMAT_R8G8_B8G8_UNORM,              8, CONVF_UNORM | CONVF_PACKED | CONVF_R | CONVF_G | CONVF_B },
+    { DXGI_FORMAT_G8R8_G8B8_UNORM,              8, CONVF_UNORM | CONVF_PACKED | CONVF_R | CONVF_G | CONVF_B },
+    { DXGI_FORMAT_BC1_UNORM,                    8, CONVF_UNORM | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_BC1_UNORM_SRGB,               8, CONVF_UNORM | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_BC2_UNORM,                    8, CONVF_UNORM | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_BC2_UNORM_SRGB,               8, CONVF_UNORM | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_BC3_UNORM,                    8, CONVF_UNORM | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_BC3_UNORM_SRGB,               8, CONVF_UNORM | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_BC4_UNORM,                    8, CONVF_UNORM | CONVF_BC | CONVF_R },
+    { DXGI_FORMAT_BC4_SNORM,                    8, CONVF_SNORM | CONVF_BC | CONVF_R },
+    { DXGI_FORMAT_BC5_UNORM,                    8, CONVF_UNORM | CONVF_BC | CONVF_R | CONVF_G },
+    { DXGI_FORMAT_BC5_SNORM,                    8, CONVF_SNORM | CONVF_BC | CONVF_R | CONVF_G },
+    { DXGI_FORMAT_B5G6R5_UNORM,                 5, CONVF_UNORM | CONVF_R | CONVF_G | CONVF_B },
+    { DXGI_FORMAT_B5G5R5A1_UNORM,               5, CONVF_UNORM | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_B8G8R8A8_UNORM,               8, CONVF_UNORM | CONVF_BGR | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_B8G8R8X8_UNORM,               8, CONVF_UNORM | CONVF_BGR | CONVF_R | CONVF_G | CONVF_B },
+    { DXGI_FORMAT_R10G10B10_XR_BIAS_A2_UNORM,   10, CONVF_UNORM | CONVF_XR | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_B8G8R8A8_UNORM_SRGB,          8, CONVF_UNORM | CONVF_BGR | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_B8G8R8X8_UNORM_SRGB,          8, CONVF_UNORM | CONVF_BGR | CONVF_R | CONVF_G | CONVF_B },
+    { DXGI_FORMAT_BC6H_UF16,                    16, CONVF_FLOAT | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_BC6H_SF16,                    16, CONVF_FLOAT | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_BC7_UNORM,                    8, CONVF_UNORM | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_BC7_UNORM_SRGB,               8, CONVF_UNORM | CONVF_BC | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_AYUV,                         8, CONVF_UNORM | CONVF_YUV | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_Y410,                         10, CONVF_UNORM | CONVF_YUV | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_Y416,                         16, CONVF_UNORM | CONVF_YUV | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { DXGI_FORMAT_YUY2,                         8, CONVF_UNORM | CONVF_YUV | CONVF_PACKED | CONVF_R | CONVF_G | CONVF_B },
+    { DXGI_FORMAT_Y210,                         10, CONVF_UNORM | CONVF_YUV | CONVF_PACKED | CONVF_R | CONVF_G | CONVF_B },
+    { DXGI_FORMAT_Y216,                         16, CONVF_UNORM | CONVF_YUV | CONVF_PACKED | CONVF_R | CONVF_G | CONVF_B },
+    { DXGI_FORMAT_B4G4R4A4_UNORM,               4, CONVF_UNORM | CONVF_BGR | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { XBOX_DXGI_FORMAT_R10G10B10_7E3_A2_FLOAT,  10, CONVF_FLOAT | CONVF_POS_ONLY | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { XBOX_DXGI_FORMAT_R10G10B10_6E4_A2_FLOAT,  10, CONVF_FLOAT | CONVF_POS_ONLY | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { XBOX_DXGI_FORMAT_R10G10B10_SNORM_A2_UNORM,10, CONVF_SNORM | CONVF_R | CONVF_G | CONVF_B | CONVF_A },
+    { XBOX_DXGI_FORMAT_R4G4_UNORM,               4, CONVF_UNORM | CONVF_R | CONVF_G },
+};
 
 #pragma prefast( suppress : 25004, "Signature must match bsearch_s" );
-    int __cdecl _ConvertCompare(void *context, const void* ptr1, const void *ptr2)
-    {
-        UNREFERENCED_PARAMETER(context);
-        const ConvertData *p1 = reinterpret_cast<const ConvertData*>(ptr1);
-        const ConvertData *p2 = reinterpret_cast<const ConvertData*>(ptr2);
-        if (p1->format == p2->format) return 0;
-        else return (p1->format < p2->format) ? -1 : 1;
-    }
+int __cdecl _ConvertCompare(void *context, const void* ptr1, const void *ptr2)
+{
+    UNREFERENCED_PARAMETER(context);
+    const ConvertData *p1 = reinterpret_cast<const ConvertData*>(ptr1);
+    const ConvertData *p2 = reinterpret_cast<const ConvertData*>(ptr2);
+    if (p1->format == p2->format) return 0;
+    else return (p1->format < p2->format) ? -1 : 1;
+}
 }
 
 _Use_decl_annotations_
@@ -2911,7 +2919,7 @@ DWORD DirectX::_GetConvertFlags(DXGI_FORMAT format)
 
     ConvertData key = { format, 0 };
     const ConvertData* in = (const ConvertData*)bsearch_s(&key, g_ConvertTable, _countof(g_ConvertTable), sizeof(ConvertData),
-        _ConvertCompare, nullptr);
+                            _ConvertCompare, nullptr);
     return (in) ? in->flags : 0;
 }
 
@@ -2944,10 +2952,10 @@ void DirectX::_ConvertScanline(
     // Determine conversion details about source and dest formats
     ConvertData key = { inFormat, 0 };
     const ConvertData* in = (const ConvertData*)bsearch_s(&key, g_ConvertTable, _countof(g_ConvertTable), sizeof(ConvertData),
-        _ConvertCompare, nullptr);
+                            _ConvertCompare, nullptr);
     key.format = outFormat;
     const ConvertData* out = (const ConvertData*)bsearch_s(&key, g_ConvertTable, _countof(g_ConvertTable), sizeof(ConvertData),
-        _ConvertCompare, nullptr);
+                             _ConvertCompare, nullptr);
     if (!in || !out)
     {
         assert(false);
@@ -3161,7 +3169,7 @@ void DirectX::_ConvertScanline(
                         break;
                     }
 
-                    // fall-through
+                // fall-through
 
                 case TEX_FILTER_RGB_COPY_RED:
                 {
@@ -3445,7 +3453,7 @@ void DirectX::_ConvertScanline(
                     break;
                 }
 
-                // fall-through
+            // fall-through
 
             case TEX_FILTER_RGB_COPY_RED:
             {
@@ -3538,7 +3546,7 @@ void DirectX::_ConvertScanline(
                         break;
                     }
 
-                    // fall-through
+                // fall-through
 
                 case TEX_FILTER_RGB_COPY_RED:
                     // Leave data unchanged and the store will handle this...
@@ -3603,30 +3611,30 @@ void DirectX::_ConvertScanline(
 //-------------------------------------------------------------------------------------
 namespace
 {
-    // 4X4X4 ordered dithering matrix
-    const float g_Dither[] =
-    {
-        // (z & 3) + ( (y & 3) * 8) + (x & 3)
-        0.468750f,  -0.031250f, 0.343750f, -0.156250f, 0.468750f, -0.031250f, 0.343750f, -0.156250f,
-        -0.281250f,  0.218750f, -0.406250f, 0.093750f, -0.281250f, 0.218750f, -0.406250f, 0.093750f,
-        0.281250f,  -0.218750f, 0.406250f, -0.093750f, 0.281250f, -0.218750f, 0.406250f, -0.093750f,
-        -0.468750f,  0.031250f, -0.343750f, 0.156250f, -0.468750f, 0.031250f, -0.343750f, 0.156250f,
-    };
+// 4X4X4 ordered dithering matrix
+const float g_Dither[] =
+{
+    // (z & 3) + ( (y & 3) * 8) + (x & 3)
+    0.468750f,  -0.031250f, 0.343750f, -0.156250f, 0.468750f, -0.031250f, 0.343750f, -0.156250f,
+    -0.281250f,  0.218750f, -0.406250f, 0.093750f, -0.281250f, 0.218750f, -0.406250f, 0.093750f,
+    0.281250f,  -0.218750f, 0.406250f, -0.093750f, 0.281250f, -0.218750f, 0.406250f, -0.093750f,
+    -0.468750f,  0.031250f, -0.343750f, 0.156250f, -0.468750f, 0.031250f, -0.343750f, 0.156250f,
+};
 
-    const XMVECTORF32 g_Scale16pc = { 65535.f, 65535.f, 65535.f, 65535.f };
-    const XMVECTORF32 g_Scale15pc = { 32767.f, 32767.f, 32767.f, 32767.f };
-    const XMVECTORF32 g_Scale10pc = { 1023.f,  1023.f,  1023.f,     3.f };
-    const XMVECTORF32 g_Scale9pc = { 511.f,   511.f,   511.f,     3.f };
-    const XMVECTORF32 g_Scale8pc = { 255.f,   255.f,   255.f,   255.f };
-    const XMVECTORF32 g_Scale7pc = { 127.f,   127.f,   127.f,   127.f };
-    const XMVECTORF32 g_Scale565pc = { 31.f,    63.f,    31.f,     1.f };
-    const XMVECTORF32 g_Scale5551pc = { 31.f,    31.f,    31.f,     1.f };
-    const XMVECTORF32 g_Scale4pc = { 15.f,    15.f,    15.f,    15.f };
+const XMVECTORF32 g_Scale16pc = { 65535.f, 65535.f, 65535.f, 65535.f };
+const XMVECTORF32 g_Scale15pc = { 32767.f, 32767.f, 32767.f, 32767.f };
+const XMVECTORF32 g_Scale10pc = { 1023.f,  1023.f,  1023.f,     3.f };
+const XMVECTORF32 g_Scale9pc = { 511.f,   511.f,   511.f,     3.f };
+const XMVECTORF32 g_Scale8pc = { 255.f,   255.f,   255.f,   255.f };
+const XMVECTORF32 g_Scale7pc = { 127.f,   127.f,   127.f,   127.f };
+const XMVECTORF32 g_Scale565pc = { 31.f,    63.f,    31.f,     1.f };
+const XMVECTORF32 g_Scale5551pc = { 31.f,    31.f,    31.f,     1.f };
+const XMVECTORF32 g_Scale4pc = { 15.f,    15.f,    15.f,    15.f };
 
-    const XMVECTORF32 g_ErrorWeight3 = { 3.f / 16.f, 3.f / 16.f, 3.f / 16.f, 3.f / 16.f };
-    const XMVECTORF32 g_ErrorWeight5 = { 5.f / 16.f, 5.f / 16.f, 5.f / 16.f, 5.f / 16.f };
-    const XMVECTORF32 g_ErrorWeight1 = { 1.f / 16.f, 1.f / 16.f, 1.f / 16.f, 1.f / 16.f };
-    const XMVECTORF32 g_ErrorWeight7 = { 7.f / 16.f, 7.f / 16.f, 7.f / 16.f, 7.f / 16.f };
+const XMVECTORF32 g_ErrorWeight3 = { 3.f / 16.f, 3.f / 16.f, 3.f / 16.f, 3.f / 16.f };
+const XMVECTORF32 g_ErrorWeight5 = { 5.f / 16.f, 5.f / 16.f, 5.f / 16.f, 5.f / 16.f };
+const XMVECTORF32 g_ErrorWeight1 = { 1.f / 16.f, 1.f / 16.f, 1.f / 16.f, 1.f / 16.f };
+const XMVECTORF32 g_ErrorWeight7 = { 7.f / 16.f, 7.f / 16.f, 7.f / 16.f, 7.f / 16.f };
 
 #define STORE_SCANLINE( type, scalev, clampzero, norm, itype, mask, row, bgr ) \
         if ( size >= sizeof(type) ) \
@@ -3989,7 +3997,7 @@ bool DirectX::_StoreScanlineDither(
                 auto dPtr = &dest[index];
                 if (dPtr >= ePtr) break;
                 *dPtr = (static_cast<uint32_t>(tmp.x) & 0xFFFFFF)
-                    | ((static_cast<uint32_t>(tmp.y) & 0xFF) << 24);
+                        | ((static_cast<uint32_t>(tmp.y) & 0xFF) << 24);
             }
             return true;
         }
@@ -4236,7 +4244,7 @@ bool DirectX::_StoreScanlineDither(
                 auto dPtr = &dest[index];
                 if (dPtr >= ePtr) break;
                 *dPtr = (static_cast<uint8_t>(tmp.x) & 0xF)
-                    | ((static_cast<uint8_t>(tmp.y) & 0xF) << 4);
+                        | ((static_cast<uint8_t>(tmp.y) & 0xF) << 4);
             }
             return true;
         }
@@ -4255,210 +4263,233 @@ bool DirectX::_StoreScanlineDither(
 
 namespace
 {
-    //-------------------------------------------------------------------------------------
-    // Selection logic for using WIC vs. our own routines
-    //-------------------------------------------------------------------------------------
-    inline bool UseWICConversion(
-        _In_ DWORD filter,
-        _In_ DXGI_FORMAT sformat,
-        _In_ DXGI_FORMAT tformat,
-        _Out_ WICPixelFormatGUID& pfGUID,
-        _Out_ WICPixelFormatGUID& targetGUID)
+//-------------------------------------------------------------------------------------
+// Selection logic for using WIC vs. our own routines
+//-------------------------------------------------------------------------------------
+inline bool UseWICConversion(
+    _In_ DWORD filter,
+    _In_ DXGI_FORMAT sformat,
+    _In_ DXGI_FORMAT tformat,
+    _Out_ WICPixelFormatGUID& pfGUID,
+    _Out_ WICPixelFormatGUID& targetGUID)
+{
+    memcpy(&pfGUID, &GUID_NULL, sizeof(GUID));
+    memcpy(&targetGUID, &GUID_NULL, sizeof(GUID));
+
+    if (filter & TEX_FILTER_FORCE_NON_WIC)
     {
-        memcpy(&pfGUID, &GUID_NULL, sizeof(GUID));
-        memcpy(&targetGUID, &GUID_NULL, sizeof(GUID));
+        // Explicit flag indicates use of non-WIC code paths
+        return false;
+    }
 
-        if (filter & TEX_FILTER_FORCE_NON_WIC)
-        {
-            // Explicit flag indicates use of non-WIC code paths
-            return false;
-        }
+    if (!_DXGIToWIC(sformat, pfGUID) || !_DXGIToWIC(tformat, targetGUID))
+    {
+        // Source or target format are not WIC supported native pixel formats
+        return false;
+    }
 
-        if (!_DXGIToWIC(sformat, pfGUID) || !_DXGIToWIC(tformat, targetGUID))
-        {
-            // Source or target format are not WIC supported native pixel formats
-            return false;
-        }
-
-        if (filter & TEX_FILTER_FORCE_WIC)
-        {
-            // Explicit flag to use WIC code paths, skips all the case checks below
-            return true;
-        }
-
-        if (filter & TEX_FILTER_SEPARATE_ALPHA)
-        {
-            // Alpha is not premultiplied, so use non-WIC code paths
-            return false;
-        }
-
-        if (filter & TEX_FILTER_FLOAT_X2BIAS)
-        {
-            // X2 Scale & Bias conversions not supported by WIC code paths
-            return false;
-        }
-
-#if defined(_XBOX_ONE) && defined(_TITLE)
-        if (sformat == DXGI_FORMAT_R16G16B16A16_FLOAT
-            || sformat == DXGI_FORMAT_R16_FLOAT
-            || tformat == DXGI_FORMAT_R16G16B16A16_FLOAT
-            || tformat == DXGI_FORMAT_R16_FLOAT)
-        {
-            // Use non-WIC code paths as these conversions are not supported by Xbox One XDK
-            return false;
-        }
-#endif
-
-        // Check for special cases
-        switch (sformat)
-        {
-        case DXGI_FORMAT_R32G32B32A32_FLOAT:
-        case DXGI_FORMAT_R32G32B32_FLOAT:
-        case DXGI_FORMAT_R16G16B16A16_FLOAT:
-            switch (tformat)
-            {
-            case DXGI_FORMAT_R16_FLOAT:
-            case DXGI_FORMAT_R32_FLOAT:
-            case DXGI_FORMAT_D32_FLOAT:
-                // WIC converts via UNORM formats and ends up converting colorspaces for these cases
-            case DXGI_FORMAT_A8_UNORM:
-                // Conversion logic for these kinds of textures is unintuitive for WIC code paths
-                return false;
-            }
-            break;
-
-        case DXGI_FORMAT_R16_FLOAT:
-            switch (tformat)
-            {
-            case DXGI_FORMAT_R32_FLOAT:
-            case DXGI_FORMAT_D32_FLOAT:
-                // WIC converts via UNORM formats and ends up converting colorspaces for these cases
-            case DXGI_FORMAT_A8_UNORM:
-                // Conversion logic for these kinds of textures is unintuitive for WIC code paths
-                return false;
-            }
-            break;
-
-        case DXGI_FORMAT_A8_UNORM:
-            // Conversion logic for these kinds of textures is unintuitive for WIC code paths
-            return false;
-
-        default:
-            switch (tformat)
-            {
-            case DXGI_FORMAT_A8_UNORM:
-                // Conversion logic for these kinds of textures is unintuitive for WIC code paths
-                return false;
-            }
-        }
-
-        // Check for implicit color space changes
-        if (IsSRGB(sformat))
-            filter |= TEX_FILTER_SRGB_IN;
-
-        if (IsSRGB(tformat))
-            filter |= TEX_FILTER_SRGB_OUT;
-
-        if ((filter & (TEX_FILTER_SRGB_IN | TEX_FILTER_SRGB_OUT)) == (TEX_FILTER_SRGB_IN | TEX_FILTER_SRGB_OUT))
-        {
-            filter &= ~(TEX_FILTER_SRGB_IN | TEX_FILTER_SRGB_OUT);
-        }
-
-        DWORD wicsrgb = _CheckWICColorSpace(pfGUID, targetGUID);
-
-        if (wicsrgb != (filter & (TEX_FILTER_SRGB_IN | TEX_FILTER_SRGB_OUT)))
-        {
-            // WIC will perform a colorspace conversion we didn't request
-            return false;
-        }
-
+    if (filter & TEX_FILTER_FORCE_WIC)
+    {
+        // Explicit flag to use WIC code paths, skips all the case checks below
         return true;
     }
 
-    //-------------------------------------------------------------------------------------
-    // Convert the source image using WIC
-    //-------------------------------------------------------------------------------------
-    HRESULT ConvertUsingWIC(
-        _In_ const Image& srcImage,
-        _In_ const WICPixelFormatGUID& pfGUID,
-        _In_ const WICPixelFormatGUID& targetGUID,
-        _In_ DWORD filter,
-        _In_ float threshold,
-        _In_ const Image& destImage)
+    if (filter & TEX_FILTER_SEPARATE_ALPHA)
     {
-        assert(srcImage.width == destImage.width);
-        assert(srcImage.height == destImage.height);
-
-        bool iswic2 = false;
-        IWICImagingFactory* pWIC = GetWICFactory(iswic2);
-        if (!pWIC)
-            return E_NOINTERFACE;
-
-        ComPtr<IWICFormatConverter> FC;
-        HRESULT hr = pWIC->CreateFormatConverter(FC.GetAddressOf());
-        if (FAILED(hr))
-            return hr;
-
-        // Note that WIC conversion ignores the TEX_FILTER_SRGB_IN and TEX_FILTER_SRGB_OUT flags,
-        // but also always assumes UNORM <-> FLOAT conversions are changing color spaces sRGB <-> scRGB
-
-        BOOL canConvert = FALSE;
-        hr = FC->CanConvert(pfGUID, targetGUID, &canConvert);
-        if (FAILED(hr) || !canConvert)
-        {
-            // This case is not an issue for the subset of WIC formats that map directly to DXGI
-            return E_UNEXPECTED;
-        }
-
-        ComPtr<IWICBitmap> source;
-        hr = pWIC->CreateBitmapFromMemory(static_cast<UINT>(srcImage.width), static_cast<UINT>(srcImage.height), pfGUID,
-            static_cast<UINT>(srcImage.rowPitch), static_cast<UINT>(srcImage.slicePitch),
-            srcImage.pixels, source.GetAddressOf());
-        if (FAILED(hr))
-            return hr;
-
-        hr = FC->Initialize(source.Get(), targetGUID, _GetWICDither(filter), 0, threshold * 100.f, WICBitmapPaletteTypeCustom);
-        if (FAILED(hr))
-            return hr;
-
-        hr = FC->CopyPixels(0, static_cast<UINT>(destImage.rowPitch), static_cast<UINT>(destImage.slicePitch), destImage.pixels);
-        if (FAILED(hr))
-            return hr;
-
-        return S_OK;
+        // Alpha is not premultiplied, so use non-WIC code paths
+        return false;
     }
 
-
-    //-------------------------------------------------------------------------------------
-    // Convert the source image (not using WIC)
-    //-------------------------------------------------------------------------------------
-    HRESULT ConvertCustom(
-        _In_ const Image& srcImage,
-        _In_ DWORD filter,
-        _In_ const Image& destImage,
-        _In_ float threshold,
-        size_t z)
+    if (filter & TEX_FILTER_FLOAT_X2BIAS)
     {
-        assert(srcImage.width == destImage.width);
-        assert(srcImage.height == destImage.height);
+        // X2 Scale & Bias conversions not supported by WIC code paths
+        return false;
+    }
 
-        const uint8_t *pSrc = srcImage.pixels;
-        uint8_t *pDest = destImage.pixels;
-        if (!pSrc || !pDest)
-            return E_POINTER;
+#if defined(_XBOX_ONE) && defined(_TITLE)
+    if (sformat == DXGI_FORMAT_R16G16B16A16_FLOAT
+            || sformat == DXGI_FORMAT_R16_FLOAT
+            || tformat == DXGI_FORMAT_R16G16B16A16_FLOAT
+            || tformat == DXGI_FORMAT_R16_FLOAT)
+    {
+        // Use non-WIC code paths as these conversions are not supported by Xbox One XDK
+        return false;
+    }
+#endif
 
-        size_t width = srcImage.width;
-
-        if (filter & TEX_FILTER_DITHER_DIFFUSION)
+    // Check for special cases
+    switch (sformat)
+    {
+    case DXGI_FORMAT_R32G32B32A32_FLOAT:
+    case DXGI_FORMAT_R32G32B32_FLOAT:
+    case DXGI_FORMAT_R16G16B16A16_FLOAT:
+        switch (tformat)
         {
-            // Error diffusion dithering (aka Floyd-Steinberg dithering)
-            ScopedAlignedArrayXMVECTOR scanline(reinterpret_cast<XMVECTOR*>(_aligned_malloc((sizeof(XMVECTOR)*(width * 2 + 2)), 16)));
-            if (!scanline)
-                return E_OUTOFMEMORY;
+        case DXGI_FORMAT_R16_FLOAT:
+        case DXGI_FORMAT_R32_FLOAT:
+        case DXGI_FORMAT_D32_FLOAT:
+        // WIC converts via UNORM formats and ends up converting colorspaces for these cases
+        case DXGI_FORMAT_A8_UNORM:
+            // Conversion logic for these kinds of textures is unintuitive for WIC code paths
+            return false;
+        }
+        break;
 
-            XMVECTOR* pDiffusionErrors = scanline.get() + width;
-            memset(pDiffusionErrors, 0, sizeof(XMVECTOR)*(width + 2));
+    case DXGI_FORMAT_R16_FLOAT:
+        switch (tformat)
+        {
+        case DXGI_FORMAT_R32_FLOAT:
+        case DXGI_FORMAT_D32_FLOAT:
+        // WIC converts via UNORM formats and ends up converting colorspaces for these cases
+        case DXGI_FORMAT_A8_UNORM:
+            // Conversion logic for these kinds of textures is unintuitive for WIC code paths
+            return false;
+        }
+        break;
 
+    case DXGI_FORMAT_A8_UNORM:
+        // Conversion logic for these kinds of textures is unintuitive for WIC code paths
+        return false;
+
+    default:
+        switch (tformat)
+        {
+        case DXGI_FORMAT_A8_UNORM:
+            // Conversion logic for these kinds of textures is unintuitive for WIC code paths
+            return false;
+        }
+    }
+
+    // Check for implicit color space changes
+    if (IsSRGB(sformat))
+        filter |= TEX_FILTER_SRGB_IN;
+
+    if (IsSRGB(tformat))
+        filter |= TEX_FILTER_SRGB_OUT;
+
+    if ((filter & (TEX_FILTER_SRGB_IN | TEX_FILTER_SRGB_OUT)) == (TEX_FILTER_SRGB_IN | TEX_FILTER_SRGB_OUT))
+    {
+        filter &= ~(TEX_FILTER_SRGB_IN | TEX_FILTER_SRGB_OUT);
+    }
+
+    DWORD wicsrgb = _CheckWICColorSpace(pfGUID, targetGUID);
+
+    if (wicsrgb != (filter & (TEX_FILTER_SRGB_IN | TEX_FILTER_SRGB_OUT)))
+    {
+        // WIC will perform a colorspace conversion we didn't request
+        return false;
+    }
+
+    return true;
+}
+
+//-------------------------------------------------------------------------------------
+// Convert the source image using WIC
+//-------------------------------------------------------------------------------------
+HRESULT ConvertUsingWIC(
+    _In_ const Image& srcImage,
+    _In_ const WICPixelFormatGUID& pfGUID,
+    _In_ const WICPixelFormatGUID& targetGUID,
+    _In_ DWORD filter,
+    _In_ float threshold,
+    _In_ const Image& destImage)
+{
+    assert(srcImage.width == destImage.width);
+    assert(srcImage.height == destImage.height);
+
+    bool iswic2 = false;
+    IWICImagingFactory* pWIC = GetWICFactory(iswic2);
+    if (!pWIC)
+        return E_NOINTERFACE;
+
+    ComPtr<IWICFormatConverter> FC;
+    HRESULT hr = pWIC->CreateFormatConverter(FC.GetAddressOf());
+    if (FAILED(hr))
+        return hr;
+
+    // Note that WIC conversion ignores the TEX_FILTER_SRGB_IN and TEX_FILTER_SRGB_OUT flags,
+    // but also always assumes UNORM <-> FLOAT conversions are changing color spaces sRGB <-> scRGB
+
+    BOOL canConvert = FALSE;
+    hr = FC->CanConvert(pfGUID, targetGUID, &canConvert);
+    if (FAILED(hr) || !canConvert)
+    {
+        // This case is not an issue for the subset of WIC formats that map directly to DXGI
+        return E_UNEXPECTED;
+    }
+
+    ComPtr<IWICBitmap> source;
+    hr = pWIC->CreateBitmapFromMemory(static_cast<UINT>(srcImage.width), static_cast<UINT>(srcImage.height), pfGUID,
+                                      static_cast<UINT>(srcImage.rowPitch), static_cast<UINT>(srcImage.slicePitch),
+                                      srcImage.pixels, source.GetAddressOf());
+    if (FAILED(hr))
+        return hr;
+
+    hr = FC->Initialize(source.Get(), targetGUID, _GetWICDither(filter), 0, threshold * 100.f, WICBitmapPaletteTypeCustom);
+    if (FAILED(hr))
+        return hr;
+
+    hr = FC->CopyPixels(0, static_cast<UINT>(destImage.rowPitch), static_cast<UINT>(destImage.slicePitch), destImage.pixels);
+    if (FAILED(hr))
+        return hr;
+
+    return S_OK;
+}
+
+
+//-------------------------------------------------------------------------------------
+// Convert the source image (not using WIC)
+//-------------------------------------------------------------------------------------
+HRESULT ConvertCustom(
+    _In_ const Image& srcImage,
+    _In_ DWORD filter,
+    _In_ const Image& destImage,
+    _In_ float threshold,
+    size_t z)
+{
+    assert(srcImage.width == destImage.width);
+    assert(srcImage.height == destImage.height);
+
+    const uint8_t *pSrc = srcImage.pixels;
+    uint8_t *pDest = destImage.pixels;
+    if (!pSrc || !pDest)
+        return E_POINTER;
+
+    size_t width = srcImage.width;
+
+    if (filter & TEX_FILTER_DITHER_DIFFUSION)
+    {
+        // Error diffusion dithering (aka Floyd-Steinberg dithering)
+        ScopedAlignedArrayXMVECTOR scanline(reinterpret_cast<XMVECTOR*>(_aligned_malloc((sizeof(XMVECTOR)*(width * 2 + 2)), 16)));
+        if (!scanline)
+            return E_OUTOFMEMORY;
+
+        XMVECTOR* pDiffusionErrors = scanline.get() + width;
+        memset(pDiffusionErrors, 0, sizeof(XMVECTOR)*(width + 2));
+
+        for (size_t h = 0; h < srcImage.height; ++h)
+        {
+            if (!_LoadScanline(scanline.get(), width, pSrc, srcImage.rowPitch, srcImage.format))
+                return E_FAIL;
+
+            _ConvertScanline(scanline.get(), width, destImage.format, srcImage.format, filter);
+
+            if (!_StoreScanlineDither(pDest, destImage.rowPitch, destImage.format, scanline.get(), width, threshold, h, z, pDiffusionErrors))
+                return E_FAIL;
+
+            pSrc += srcImage.rowPitch;
+            pDest += destImage.rowPitch;
+        }
+    }
+    else
+    {
+        ScopedAlignedArrayXMVECTOR scanline(reinterpret_cast<XMVECTOR*>(_aligned_malloc((sizeof(XMVECTOR)*width), 16)));
+        if (!scanline)
+            return E_OUTOFMEMORY;
+
+        if (filter & TEX_FILTER_DITHER)
+        {
+            // Ordered dithering
             for (size_t h = 0; h < srcImage.height; ++h)
             {
                 if (!_LoadScanline(scanline.get(), width, pSrc, srcImage.rowPitch, srcImage.format))
@@ -4466,7 +4497,7 @@ namespace
 
                 _ConvertScanline(scanline.get(), width, destImage.format, srcImage.format, filter);
 
-                if (!_StoreScanlineDither(pDest, destImage.rowPitch, destImage.format, scanline.get(), width, threshold, h, z, pDiffusionErrors))
+                if (!_StoreScanlineDither(pDest, destImage.rowPitch, destImage.format, scanline.get(), width, threshold, h, z, nullptr))
                     return E_FAIL;
 
                 pSrc += srcImage.rowPitch;
@@ -4475,78 +4506,55 @@ namespace
         }
         else
         {
-            ScopedAlignedArrayXMVECTOR scanline(reinterpret_cast<XMVECTOR*>(_aligned_malloc((sizeof(XMVECTOR)*width), 16)));
-            if (!scanline)
-                return E_OUTOFMEMORY;
-
-            if (filter & TEX_FILTER_DITHER)
+            // No dithering
+            for (size_t h = 0; h < srcImage.height; ++h)
             {
-                // Ordered dithering
-                for (size_t h = 0; h < srcImage.height; ++h)
-                {
-                    if (!_LoadScanline(scanline.get(), width, pSrc, srcImage.rowPitch, srcImage.format))
-                        return E_FAIL;
+                if (!_LoadScanline(scanline.get(), width, pSrc, srcImage.rowPitch, srcImage.format))
+                    return E_FAIL;
 
-                    _ConvertScanline(scanline.get(), width, destImage.format, srcImage.format, filter);
+                _ConvertScanline(scanline.get(), width, destImage.format, srcImage.format, filter);
 
-                    if (!_StoreScanlineDither(pDest, destImage.rowPitch, destImage.format, scanline.get(), width, threshold, h, z, nullptr))
-                        return E_FAIL;
+                if (!_StoreScanline(pDest, destImage.rowPitch, destImage.format, scanline.get(), width, threshold))
+                    return E_FAIL;
 
-                    pSrc += srcImage.rowPitch;
-                    pDest += destImage.rowPitch;
-                }
-            }
-            else
-            {
-                // No dithering
-                for (size_t h = 0; h < srcImage.height; ++h)
-                {
-                    if (!_LoadScanline(scanline.get(), width, pSrc, srcImage.rowPitch, srcImage.format))
-                        return E_FAIL;
-
-                    _ConvertScanline(scanline.get(), width, destImage.format, srcImage.format, filter);
-
-                    if (!_StoreScanline(pDest, destImage.rowPitch, destImage.format, scanline.get(), width, threshold))
-                        return E_FAIL;
-
-                    pSrc += srcImage.rowPitch;
-                    pDest += destImage.rowPitch;
-                }
+                pSrc += srcImage.rowPitch;
+                pDest += destImage.rowPitch;
             }
         }
-
-        return S_OK;
     }
 
-    //-------------------------------------------------------------------------------------
-    DXGI_FORMAT _PlanarToSingle(_In_ DXGI_FORMAT format)
+    return S_OK;
+}
+
+//-------------------------------------------------------------------------------------
+DXGI_FORMAT _PlanarToSingle(_In_ DXGI_FORMAT format)
+{
+    switch (format)
     {
-        switch (format)
-        {
-        case DXGI_FORMAT_NV12:
-        case DXGI_FORMAT_NV11:
-            return DXGI_FORMAT_YUY2;
+    case DXGI_FORMAT_NV12:
+    case DXGI_FORMAT_NV11:
+        return DXGI_FORMAT_YUY2;
 
-        case DXGI_FORMAT_P010:
-            return DXGI_FORMAT_Y210;
+    case DXGI_FORMAT_P010:
+        return DXGI_FORMAT_Y210;
 
-        case DXGI_FORMAT_P016:
-            return DXGI_FORMAT_Y216;
+    case DXGI_FORMAT_P016:
+        return DXGI_FORMAT_Y216;
 
-            // We currently do not support conversion for Xbox One specific 16-bit depth formats
+    // We currently do not support conversion for Xbox One specific 16-bit depth formats
 
-            // We can't do anything with DXGI_FORMAT_420_OPAQUE because it's an opaque blob of bits
+    // We can't do anything with DXGI_FORMAT_420_OPAQUE because it's an opaque blob of bits
 
-            // We don't support conversion of JPEG Hardware decode formats
+    // We don't support conversion of JPEG Hardware decode formats
 
-        default:
-            return DXGI_FORMAT_UNKNOWN;
-        }
+    default:
+        return DXGI_FORMAT_UNKNOWN;
     }
+}
 
-    //-------------------------------------------------------------------------------------
-    // Convert the image from a planar to non-planar image
-    //-------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
+// Convert the image from a planar to non-planar image
+//-------------------------------------------------------------------------------------
 #define CONVERT_420_TO_422( srcType, destType )\
         {\
             size_t rowPitch = srcImage.rowPitch;\
@@ -4590,81 +4598,81 @@ namespace
             }\
         }
 
-    HRESULT ConvertToSinglePlane_(_In_ const Image& srcImage, _In_ const Image& destImage)
+HRESULT ConvertToSinglePlane_(_In_ const Image& srcImage, _In_ const Image& destImage)
+{
+    assert(srcImage.width == destImage.width);
+    assert(srcImage.height == destImage.height);
+
+    const uint8_t *pSrc = srcImage.pixels;
+    uint8_t *pDest = destImage.pixels;
+    if (!pSrc || !pDest)
+        return E_POINTER;
+
+    switch (srcImage.format)
     {
-        assert(srcImage.width == destImage.width);
-        assert(srcImage.height == destImage.height);
+    case DXGI_FORMAT_NV12:
+        assert(destImage.format == DXGI_FORMAT_YUY2);
+        CONVERT_420_TO_422(uint8_t, XMUBYTEN4);
+        return S_OK;
 
-        const uint8_t *pSrc = srcImage.pixels;
-        uint8_t *pDest = destImage.pixels;
-        if (!pSrc || !pDest)
-            return E_POINTER;
+    case DXGI_FORMAT_P010:
+        assert(destImage.format == DXGI_FORMAT_Y210);
+        CONVERT_420_TO_422(uint16_t, XMUSHORTN4);
+        return S_OK;
 
-        switch (srcImage.format)
+    case DXGI_FORMAT_P016:
+        assert(destImage.format == DXGI_FORMAT_Y216);
+        CONVERT_420_TO_422(uint16_t, XMUSHORTN4);
+        return S_OK;
+
+    case DXGI_FORMAT_NV11:
+        assert(destImage.format == DXGI_FORMAT_YUY2);
+        // Convert 4:1:1 to 4:2:2
         {
-        case DXGI_FORMAT_NV12:
-            assert(destImage.format == DXGI_FORMAT_YUY2);
-            CONVERT_420_TO_422(uint8_t, XMUBYTEN4);
-            return S_OK;
+            size_t rowPitch = srcImage.rowPitch;
 
-        case DXGI_FORMAT_P010:
-            assert(destImage.format == DXGI_FORMAT_Y210);
-            CONVERT_420_TO_422(uint16_t, XMUSHORTN4);
-            return S_OK;
+            const uint8_t* sourceE = pSrc + srcImage.slicePitch;
+            const uint8_t* pSrcUV = pSrc + (srcImage.height * rowPitch);
 
-        case DXGI_FORMAT_P016:
-            assert(destImage.format == DXGI_FORMAT_Y216);
-            CONVERT_420_TO_422(uint16_t, XMUSHORTN4);
-            return S_OK;
-
-        case DXGI_FORMAT_NV11:
-            assert(destImage.format == DXGI_FORMAT_YUY2);
-            // Convert 4:1:1 to 4:2:2
+            for (size_t y = 0; y < srcImage.height; ++y)
             {
-                size_t rowPitch = srcImage.rowPitch;
+                const uint8_t* sPtrY = pSrc;
+                const uint8_t* sPtrUV = pSrcUV;
 
-                const uint8_t* sourceE = pSrc + srcImage.slicePitch;
-                const uint8_t* pSrcUV = pSrc + (srcImage.height * rowPitch);
+                XMUBYTEN4 * __restrict dPtr = reinterpret_cast<XMUBYTEN4*>(pDest);
 
-                for (size_t y = 0; y < srcImage.height; ++y)
+                for (size_t x = 0; x < srcImage.width; x += 4)
                 {
-                    const uint8_t* sPtrY = pSrc;
-                    const uint8_t* sPtrUV = pSrcUV;
+                    if ((sPtrUV + 1) >= sourceE) break;
 
-                    XMUBYTEN4 * __restrict dPtr = reinterpret_cast<XMUBYTEN4*>(pDest);
+                    uint8_t u = *(sPtrUV++);
+                    uint8_t v = *(sPtrUV++);
 
-                    for (size_t x = 0; x < srcImage.width; x += 4)
-                    {
-                        if ((sPtrUV + 1) >= sourceE) break;
+                    dPtr->x = *(sPtrY++);
+                    dPtr->y = u;
+                    dPtr->z = *(sPtrY++);
+                    dPtr->w = v;
+                    ++dPtr;
 
-                        uint8_t u = *(sPtrUV++);
-                        uint8_t v = *(sPtrUV++);
-
-                        dPtr->x = *(sPtrY++);
-                        dPtr->y = u;
-                        dPtr->z = *(sPtrY++);
-                        dPtr->w = v;
-                        ++dPtr;
-
-                        dPtr->x = *(sPtrY++);
-                        dPtr->y = u;
-                        dPtr->z = *(sPtrY++);
-                        dPtr->w = v;
-                        ++dPtr;
-                    }
-
-                    pSrc += rowPitch;
-                    pSrcUV += (rowPitch >> 1);
-
-                    pDest += destImage.rowPitch;
+                    dPtr->x = *(sPtrY++);
+                    dPtr->y = u;
+                    dPtr->z = *(sPtrY++);
+                    dPtr->w = v;
+                    ++dPtr;
                 }
-            }
-            return S_OK;
 
-        default:
-            return E_UNEXPECTED;
+                pSrc += rowPitch;
+                pSrcUV += (rowPitch >> 1);
+
+                pDest += destImage.rowPitch;
+            }
         }
+        return S_OK;
+
+    default:
+        return E_UNEXPECTED;
     }
+}
 
 #undef CONVERT_420_TO_422
 }
@@ -4692,9 +4700,9 @@ HRESULT DirectX::Convert(
         return E_POINTER;
 
     if (IsCompressed(srcImage.format) || IsCompressed(format)
-        || IsPlanar(srcImage.format) || IsPlanar(format)
-        || IsPalettized(srcImage.format) || IsPalettized(format)
-        || IsTypeless(srcImage.format) || IsTypeless(format))
+            || IsPlanar(srcImage.format) || IsPlanar(format)
+            || IsPalettized(srcImage.format) || IsPalettized(format)
+            || IsTypeless(srcImage.format) || IsTypeless(format))
         return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
 
     if ((srcImage.width > UINT32_MAX) || (srcImage.height > UINT32_MAX))
@@ -4748,9 +4756,9 @@ HRESULT DirectX::Convert(
         return E_INVALIDARG;
 
     if (IsCompressed(metadata.format) || IsCompressed(format)
-        || IsPlanar(metadata.format) || IsPlanar(format)
-        || IsPalettized(metadata.format) || IsPalettized(format)
-        || IsTypeless(metadata.format) || IsTypeless(format))
+            || IsPlanar(metadata.format) || IsPlanar(format)
+            || IsPalettized(metadata.format) || IsPalettized(format)
+            || IsTypeless(metadata.format) || IsTypeless(format))
         return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
 
     if ((metadata.width > UINT32_MAX) || (metadata.height > UINT32_MAX))

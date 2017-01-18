@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
 // THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
@@ -8,7 +8,7 @@
 //
 // Developed by Minigraph
 //
-// Author:  James Stanard 
+// Author:  James Stanard
 //
 
 #pragma once
@@ -20,12 +20,12 @@ class ComputeContext;
 
 namespace FXAA
 {
-	extern BoolVar Enable;
-	extern NumVar ContrastThreshold;	// Default = 0.20
-	extern NumVar SubpixelRemoval;		// Default = 0.75
+extern BoolVar Enable;
+extern NumVar ContrastThreshold;	// Default = 0.20
+extern NumVar SubpixelRemoval;		// Default = 0.75
 
-	void Initialize( void );
-	void Shutdown( void );
-	void Render( ComputeContext& Context, bool bUsePreComputedLuma );
+void Initialize( void );
+void Shutdown( void );
+void Render( ComputeContext& Context, bool bUsePreComputedLuma );
 
 } // namespace FXAA

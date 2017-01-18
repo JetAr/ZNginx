@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: XAudio2Sound3D.cpp
 //
 // 3D positional audio and environmental reverb using XAudio2
@@ -156,13 +156,13 @@ bool CALLBACK IsD3D11DeviceAcceptable( const CD3D11EnumAdapterInfo *AdapterInfo,
                                        const CD3D11EnumDeviceInfo *DeviceInfo,
                                        DXGI_FORMAT BackBufferFormat, bool bWindowed, void* pUserContext );
 HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc,
-                                     void* pUserContext );
+                                      void* pUserContext );
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                         const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext );
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext );
 void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime,
-                                 float fElapsedTime, void* pUserContext );
+                                  float fElapsedTime, void* pUserContext );
 
 void InitApp();
 void RenderText();
@@ -335,94 +335,94 @@ void RenderText()
     // Interpretation of channels depends on channel mask
     switch( g_audioState.dwChannelMask )
     {
-        case SPEAKER_MONO:
-            g_pTxtHelper->DrawFormattedTextLine( L" C: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
-            break;
+    case SPEAKER_MONO:
+        g_pTxtHelper->DrawFormattedTextLine( L" C: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
+        break;
 
-        case SPEAKER_STEREO:
-            g_pTxtHelper->DrawFormattedTextLine( L" L: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
-            g_pTxtHelper->DrawFormattedTextLine( L" R: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
-            break;
+    case SPEAKER_STEREO:
+        g_pTxtHelper->DrawFormattedTextLine( L" L: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
+        g_pTxtHelper->DrawFormattedTextLine( L" R: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
+        break;
 
-        case SPEAKER_2POINT1:
-            g_pTxtHelper->DrawFormattedTextLine( L" L: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
-            g_pTxtHelper->DrawFormattedTextLine( L" R: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
-            g_pTxtHelper->DrawFormattedTextLine( L" LFE: %.3f", g_audioState.dspSettings.pMatrixCoefficients[2] );
-            break;
+    case SPEAKER_2POINT1:
+        g_pTxtHelper->DrawFormattedTextLine( L" L: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
+        g_pTxtHelper->DrawFormattedTextLine( L" R: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
+        g_pTxtHelper->DrawFormattedTextLine( L" LFE: %.3f", g_audioState.dspSettings.pMatrixCoefficients[2] );
+        break;
 
-        case SPEAKER_SURROUND:
-            g_pTxtHelper->DrawFormattedTextLine( L" L: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
-            g_pTxtHelper->DrawFormattedTextLine( L" R: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
-            g_pTxtHelper->DrawFormattedTextLine( L" C: %.3f", g_audioState.dspSettings.pMatrixCoefficients[2] );
-            g_pTxtHelper->DrawFormattedTextLine( L" B: %.3f", g_audioState.dspSettings.pMatrixCoefficients[3] );
-            break;
+    case SPEAKER_SURROUND:
+        g_pTxtHelper->DrawFormattedTextLine( L" L: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
+        g_pTxtHelper->DrawFormattedTextLine( L" R: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
+        g_pTxtHelper->DrawFormattedTextLine( L" C: %.3f", g_audioState.dspSettings.pMatrixCoefficients[2] );
+        g_pTxtHelper->DrawFormattedTextLine( L" B: %.3f", g_audioState.dspSettings.pMatrixCoefficients[3] );
+        break;
 
-        case SPEAKER_QUAD:
-            g_pTxtHelper->DrawFormattedTextLine( L" L: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
-            g_pTxtHelper->DrawFormattedTextLine( L" R: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
-            g_pTxtHelper->DrawFormattedTextLine( L" Lb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[2] );
-            g_pTxtHelper->DrawFormattedTextLine( L" Rb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[3] );
-            break;
+    case SPEAKER_QUAD:
+        g_pTxtHelper->DrawFormattedTextLine( L" L: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
+        g_pTxtHelper->DrawFormattedTextLine( L" R: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
+        g_pTxtHelper->DrawFormattedTextLine( L" Lb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[2] );
+        g_pTxtHelper->DrawFormattedTextLine( L" Rb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[3] );
+        break;
 
-        case SPEAKER_4POINT1:
-            g_pTxtHelper->DrawFormattedTextLine( L" L: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
-            g_pTxtHelper->DrawFormattedTextLine( L" R: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
-            g_pTxtHelper->DrawFormattedTextLine( L" LFE: %.3f", g_audioState.dspSettings.pMatrixCoefficients[2] );
-            g_pTxtHelper->DrawFormattedTextLine( L" Lb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[3] );
-            g_pTxtHelper->DrawFormattedTextLine( L" Rb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[4] );
-            break;
+    case SPEAKER_4POINT1:
+        g_pTxtHelper->DrawFormattedTextLine( L" L: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
+        g_pTxtHelper->DrawFormattedTextLine( L" R: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
+        g_pTxtHelper->DrawFormattedTextLine( L" LFE: %.3f", g_audioState.dspSettings.pMatrixCoefficients[2] );
+        g_pTxtHelper->DrawFormattedTextLine( L" Lb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[3] );
+        g_pTxtHelper->DrawFormattedTextLine( L" Rb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[4] );
+        break;
 
-        case SPEAKER_5POINT1:
-            g_pTxtHelper->DrawFormattedTextLine( L" L: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
-            g_pTxtHelper->DrawFormattedTextLine( L" R: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
-            g_pTxtHelper->DrawFormattedTextLine( L" C: %.3f", g_audioState.dspSettings.pMatrixCoefficients[2] );
-            g_pTxtHelper->DrawFormattedTextLine( L" LFE: %.3f", g_audioState.dspSettings.pMatrixCoefficients[3] );
-            g_pTxtHelper->DrawFormattedTextLine( L" Lb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[4] );
-            g_pTxtHelper->DrawFormattedTextLine( L" Rb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[5] );
-            break;
+    case SPEAKER_5POINT1:
+        g_pTxtHelper->DrawFormattedTextLine( L" L: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
+        g_pTxtHelper->DrawFormattedTextLine( L" R: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
+        g_pTxtHelper->DrawFormattedTextLine( L" C: %.3f", g_audioState.dspSettings.pMatrixCoefficients[2] );
+        g_pTxtHelper->DrawFormattedTextLine( L" LFE: %.3f", g_audioState.dspSettings.pMatrixCoefficients[3] );
+        g_pTxtHelper->DrawFormattedTextLine( L" Lb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[4] );
+        g_pTxtHelper->DrawFormattedTextLine( L" Rb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[5] );
+        break;
 
-        case SPEAKER_7POINT1:
-            g_pTxtHelper->DrawFormattedTextLine( L" L: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
-            g_pTxtHelper->DrawFormattedTextLine( L" R: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
-            g_pTxtHelper->DrawFormattedTextLine( L" C: %.3f", g_audioState.dspSettings.pMatrixCoefficients[2] );
-            g_pTxtHelper->DrawFormattedTextLine( L" LFE: %.3f", g_audioState.dspSettings.pMatrixCoefficients[3] );
-            g_pTxtHelper->DrawFormattedTextLine( L" Lb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[4] );
-            g_pTxtHelper->DrawFormattedTextLine( L" Rb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[5] );
-            g_pTxtHelper->DrawFormattedTextLine( L" Lfc: %.3f", g_audioState.dspSettings.pMatrixCoefficients[6] );
-            g_pTxtHelper->DrawFormattedTextLine( L" Rfc: %.3f", g_audioState.dspSettings.pMatrixCoefficients[7] );
-            break;
+    case SPEAKER_7POINT1:
+        g_pTxtHelper->DrawFormattedTextLine( L" L: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
+        g_pTxtHelper->DrawFormattedTextLine( L" R: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
+        g_pTxtHelper->DrawFormattedTextLine( L" C: %.3f", g_audioState.dspSettings.pMatrixCoefficients[2] );
+        g_pTxtHelper->DrawFormattedTextLine( L" LFE: %.3f", g_audioState.dspSettings.pMatrixCoefficients[3] );
+        g_pTxtHelper->DrawFormattedTextLine( L" Lb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[4] );
+        g_pTxtHelper->DrawFormattedTextLine( L" Rb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[5] );
+        g_pTxtHelper->DrawFormattedTextLine( L" Lfc: %.3f", g_audioState.dspSettings.pMatrixCoefficients[6] );
+        g_pTxtHelper->DrawFormattedTextLine( L" Rfc: %.3f", g_audioState.dspSettings.pMatrixCoefficients[7] );
+        break;
 
-        case SPEAKER_5POINT1_SURROUND:
-            g_pTxtHelper->DrawFormattedTextLine( L" L: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
-            g_pTxtHelper->DrawFormattedTextLine( L" R: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
-            g_pTxtHelper->DrawFormattedTextLine( L" C: %.3f", g_audioState.dspSettings.pMatrixCoefficients[2] );
-            g_pTxtHelper->DrawFormattedTextLine( L" LFE: %.3f", g_audioState.dspSettings.pMatrixCoefficients[3] );
-            g_pTxtHelper->DrawFormattedTextLine( L" Ls: %.3f", g_audioState.dspSettings.pMatrixCoefficients[4] );
-            g_pTxtHelper->DrawFormattedTextLine( L" Rs: %.3f", g_audioState.dspSettings.pMatrixCoefficients[5] );
-            break;
+    case SPEAKER_5POINT1_SURROUND:
+        g_pTxtHelper->DrawFormattedTextLine( L" L: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
+        g_pTxtHelper->DrawFormattedTextLine( L" R: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
+        g_pTxtHelper->DrawFormattedTextLine( L" C: %.3f", g_audioState.dspSettings.pMatrixCoefficients[2] );
+        g_pTxtHelper->DrawFormattedTextLine( L" LFE: %.3f", g_audioState.dspSettings.pMatrixCoefficients[3] );
+        g_pTxtHelper->DrawFormattedTextLine( L" Ls: %.3f", g_audioState.dspSettings.pMatrixCoefficients[4] );
+        g_pTxtHelper->DrawFormattedTextLine( L" Rs: %.3f", g_audioState.dspSettings.pMatrixCoefficients[5] );
+        break;
 
-        case SPEAKER_7POINT1_SURROUND:
-            g_pTxtHelper->DrawFormattedTextLine( L" L: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
-            g_pTxtHelper->DrawFormattedTextLine( L" R: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
-            g_pTxtHelper->DrawFormattedTextLine( L" C: %.3f", g_audioState.dspSettings.pMatrixCoefficients[2] );
-            g_pTxtHelper->DrawFormattedTextLine( L" LFE: %.3f", g_audioState.dspSettings.pMatrixCoefficients[3] );
-            g_pTxtHelper->DrawFormattedTextLine( L" Lb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[4] );
-            g_pTxtHelper->DrawFormattedTextLine( L" Rb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[5] );
-            g_pTxtHelper->DrawFormattedTextLine( L" Ls: %.3f", g_audioState.dspSettings.pMatrixCoefficients[6] );
-            g_pTxtHelper->DrawFormattedTextLine( L" Rs: %.3f", g_audioState.dspSettings.pMatrixCoefficients[7] );
-            break;
+    case SPEAKER_7POINT1_SURROUND:
+        g_pTxtHelper->DrawFormattedTextLine( L" L: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
+        g_pTxtHelper->DrawFormattedTextLine( L" R: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
+        g_pTxtHelper->DrawFormattedTextLine( L" C: %.3f", g_audioState.dspSettings.pMatrixCoefficients[2] );
+        g_pTxtHelper->DrawFormattedTextLine( L" LFE: %.3f", g_audioState.dspSettings.pMatrixCoefficients[3] );
+        g_pTxtHelper->DrawFormattedTextLine( L" Lb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[4] );
+        g_pTxtHelper->DrawFormattedTextLine( L" Rb: %.3f", g_audioState.dspSettings.pMatrixCoefficients[5] );
+        g_pTxtHelper->DrawFormattedTextLine( L" Ls: %.3f", g_audioState.dspSettings.pMatrixCoefficients[6] );
+        g_pTxtHelper->DrawFormattedTextLine( L" Rs: %.3f", g_audioState.dspSettings.pMatrixCoefficients[7] );
+        break;
 
-        default:
-            // Generic channel output for non-standard channel masks
-            g_pTxtHelper->DrawFormattedTextLine( L" [0]: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
-            g_pTxtHelper->DrawFormattedTextLine( L" [1]: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
-            g_pTxtHelper->DrawFormattedTextLine( L" [2]: %.3f", g_audioState.dspSettings.pMatrixCoefficients[2] );
-            g_pTxtHelper->DrawFormattedTextLine( L" [3]: %.3f", g_audioState.dspSettings.pMatrixCoefficients[3] );
-            g_pTxtHelper->DrawFormattedTextLine( L" [4]: %.3f", g_audioState.dspSettings.pMatrixCoefficients[4] );
-            g_pTxtHelper->DrawFormattedTextLine( L" [5]: %.3f", g_audioState.dspSettings.pMatrixCoefficients[5] );
-            g_pTxtHelper->DrawFormattedTextLine( L" [6]: %.3f", g_audioState.dspSettings.pMatrixCoefficients[6] );
-            g_pTxtHelper->DrawFormattedTextLine( L" [7]: %.3f", g_audioState.dspSettings.pMatrixCoefficients[7] );
-            break;
+    default:
+        // Generic channel output for non-standard channel masks
+        g_pTxtHelper->DrawFormattedTextLine( L" [0]: %.3f", g_audioState.dspSettings.pMatrixCoefficients[0] );
+        g_pTxtHelper->DrawFormattedTextLine( L" [1]: %.3f", g_audioState.dspSettings.pMatrixCoefficients[1] );
+        g_pTxtHelper->DrawFormattedTextLine( L" [2]: %.3f", g_audioState.dspSettings.pMatrixCoefficients[2] );
+        g_pTxtHelper->DrawFormattedTextLine( L" [3]: %.3f", g_audioState.dspSettings.pMatrixCoefficients[3] );
+        g_pTxtHelper->DrawFormattedTextLine( L" [4]: %.3f", g_audioState.dspSettings.pMatrixCoefficients[4] );
+        g_pTxtHelper->DrawFormattedTextLine( L" [5]: %.3f", g_audioState.dspSettings.pMatrixCoefficients[5] );
+        g_pTxtHelper->DrawFormattedTextLine( L" [6]: %.3f", g_audioState.dspSettings.pMatrixCoefficients[6] );
+        g_pTxtHelper->DrawFormattedTextLine( L" [7]: %.3f", g_audioState.dspSettings.pMatrixCoefficients[7] );
+        break;
     }
 
     g_pTxtHelper->SetForegroundColor( Colors::Gray );
@@ -456,7 +456,7 @@ bool CALLBACK IsD3D11DeviceAcceptable( const CD3D11EnumAdapterInfo *AdapterInfo,
 // Create any D3D11 resources that aren't dependant on the back buffer
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc,
-                                     void* pUserContext )
+                                      void* pUserContext )
 {
     HRESULT hr;
 
@@ -473,16 +473,16 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
                                    &pVertexShaderBuffer ) );
 
     ID3DBlob* pPixelShaderBuffer = nullptr;
-    V_RETURN( DXUTCompileFromFile( L"XAudio2Sound3D.fx", nullptr, "RenderScenePS", "ps_4_0_level_9_1", D3DCOMPILE_ENABLE_STRICTNESS, 0, 
+    V_RETURN( DXUTCompileFromFile( L"XAudio2Sound3D.fx", nullptr, "RenderScenePS", "ps_4_0_level_9_1", D3DCOMPILE_ENABLE_STRICTNESS, 0,
                                    &pPixelShaderBuffer ) );
 
     // Create the shaders
     V_RETURN( pd3dDevice->CreateVertexShader( pVertexShaderBuffer->GetBufferPointer(),
-                                              pVertexShaderBuffer->GetBufferSize(), nullptr, &g_pVertexShader11 ) );
+              pVertexShaderBuffer->GetBufferSize(), nullptr, &g_pVertexShader11 ) );
     DXUT_SetDebugName( g_pVertexShader11, "RenderSceneVS" );
 
     V_RETURN( pd3dDevice->CreatePixelShader( pPixelShaderBuffer->GetBufferPointer(),
-                                             pPixelShaderBuffer->GetBufferSize(), nullptr, &g_pPixelShader11 ) );
+              pPixelShaderBuffer->GetBufferSize(), nullptr, &g_pPixelShader11 ) );
     DXUT_SetDebugName( g_pPixelShader11, "RenderScenePS" );
 
     // Create a layout for the object data
@@ -493,7 +493,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     };
 
     V_RETURN( pd3dDevice->CreateInputLayout( layout, ARRAYSIZE( layout ), pVertexShaderBuffer->GetBufferPointer(),
-                                             pVertexShaderBuffer->GetBufferSize(), &g_pLayout11 ) );
+              pVertexShaderBuffer->GetBufferSize(), &g_pLayout11 ) );
     DXUT_SetDebugName( g_pLayout11, "Primary" );
 
     // No longer need the shader blobs
@@ -501,7 +501,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     SAFE_RELEASE( pPixelShaderBuffer );
 
     // Create state
-    D3D11_DEPTH_STENCIL_DESC desc={0};
+    D3D11_DEPTH_STENCIL_DESC desc= {0};
     desc.DepthEnable = false;
     desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
     desc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
@@ -521,7 +521,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     DXUT_SetDebugName( g_pDepthState, "DisableZ" );
 
     pd3dImmediateContext->OMSetDepthStencilState( g_pDepthState, 0 );
-  
+
     // Create constant buffers
     D3D11_BUFFER_DESC cbDesc;
     ZeroMemory( &cbDesc, sizeof(cbDesc) );
@@ -540,10 +540,10 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     vbdesc.Usage = D3D11_USAGE_DEFAULT;
     vbdesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
-    D3D11_SUBRESOURCE_DATA initData ={0};
+    D3D11_SUBRESOURCE_DATA initData = {0};
 
     // Floor
-    static const Vertex s_floor[4] = 
+    static const Vertex s_floor[4] =
     {
         { XMFLOAT3( float(XMIN), float(ZMIN), 0 ), FLOOR_COLOR },
         { XMFLOAT3( float(XMIN), float(ZMAX), 0 ), FLOOR_COLOR },
@@ -571,7 +571,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     DXUT_SetDebugName( g_pvbSource, "Source" );
 
     // Listener
-    static const Vertex s_listener[3] = 
+    static const Vertex s_listener[3] =
     {
         { XMFLOAT3(-0.5f, -1.f, 0), LISTENER_COLOR },
         { XMFLOAT3(0, 1.f, 0 ),     LISTENER_COLOR },
@@ -639,7 +639,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
         pVertices[ j * 2 + 1 ].Pos = XMFLOAT3( float(i), float(ZMAX), 0 );
         pVertices[ j * 2 + 1 ].color = GRID_COLOR;
     }
-    
+
     vbdesc.ByteWidth = sizeof( Vertex ) * lcount;
     initData.pSysMem = pVertices;
     V_RETURN( pd3dDevice->CreateBuffer( &vbdesc, &initData, &g_pvbGrid ) );
@@ -654,7 +654,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 // Create any D3D11 resources that depend on the back buffer
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                         const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
     HRESULT hr;
 
@@ -674,14 +674,14 @@ HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapCha
 // Render the scene using the D3D11 device
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime,
-                                 float fElapsedTime, void* pUserContext )
+                                  float fElapsedTime, void* pUserContext )
 {
     // If the settings dialog is being shown, then render it instead of rendering the app's scene
     if( g_SettingsDlg.IsActive() )
     {
         g_SettingsDlg.OnRender( fElapsedTime );
         return;
-    }       
+    }
 
     auto pRTV = DXUTGetD3D11RenderTargetView();
     pd3dImmediateContext->ClearRenderTargetView( pRTV, Colors::MidnightBlue );
@@ -728,7 +728,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
         XMMATRIX mRot = XMMatrixRotationZ( -g_audioState.fListenerAngle );
 
         XMMATRIX mat = mRot * mTrans * mScale;
- 
+
         V( pd3dImmediateContext->Map( g_pcbVSPerObject11, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedResource ) );
         pVSPerObject = reinterpret_cast<CB_VS_PER_OBJECT*>( MappedResource.pData );
         XMStoreFloat4x4( &pVSPerObject->m_Transform, XMMatrixTranspose( mat ) );
@@ -763,7 +763,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
         XMMATRIX mTrans = XMMatrixTranslation( g_audioState.vEmitterPos.x, g_audioState.vEmitterPos.z, 0 );
 
         XMMATRIX mat = mTrans * mScale;
- 
+
         V( pd3dImmediateContext->Map( g_pcbVSPerObject11, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedResource ) );
         pVSPerObject = reinterpret_cast<CB_VS_PER_OBJECT*>( MappedResource.pData );
         XMStoreFloat4x4( &pVSPerObject->m_Transform, XMMatrixTranspose( mat ) );
@@ -784,7 +784,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
 
     static ULONGLONG timefirst = GetTickCount64();
     if ( GetTickCount64() - timefirst > 5000 )
-    {    
+    {
         OutputDebugString( DXUTGetFrameStats( DXUTIsVsyncEnabled() ) );
         OutputDebugString( L"\n" );
         timefirst = GetTickCount64();
@@ -793,7 +793,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11ResizedSwapChain 
+// Release D3D11 resources created in OnD3D11ResizedSwapChain
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 {
@@ -802,7 +802,7 @@ void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11CreateDevice 
+// Release D3D11 resources created in OnD3D11CreateDevice
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
 {
@@ -912,37 +912,37 @@ void CALLBACK OnKeyboard( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserC
 {
     switch( nChar )
     {
-        case 'W':
-        case 'w':
-            if( bKeyDown )
-                g_moveFlags |= FLAG_MOVE_UP;
-            else
-                g_moveFlags &= ~FLAG_MOVE_UP;
-            break;
+    case 'W':
+    case 'w':
+        if( bKeyDown )
+            g_moveFlags |= FLAG_MOVE_UP;
+        else
+            g_moveFlags &= ~FLAG_MOVE_UP;
+        break;
 
-        case 'A':
-        case 'a':
-            if( bKeyDown )
-                g_moveFlags |= FLAG_MOVE_LEFT;
-            else
-                g_moveFlags &= ~FLAG_MOVE_LEFT;
-            break;
+    case 'A':
+    case 'a':
+        if( bKeyDown )
+            g_moveFlags |= FLAG_MOVE_LEFT;
+        else
+            g_moveFlags &= ~FLAG_MOVE_LEFT;
+        break;
 
-        case 'D':
-        case 'd':
-            if( bKeyDown )
-                g_moveFlags |= FLAG_MOVE_RIGHT;
-            else
-                g_moveFlags &= ~FLAG_MOVE_RIGHT;
-            break;
+    case 'D':
+    case 'd':
+        if( bKeyDown )
+            g_moveFlags |= FLAG_MOVE_RIGHT;
+        else
+            g_moveFlags &= ~FLAG_MOVE_RIGHT;
+        break;
 
-        case 'S':
-        case 's':
-            if( bKeyDown )
-                g_moveFlags |= FLAG_MOVE_DOWN;
-            else
-                g_moveFlags &= ~FLAG_MOVE_DOWN;
-            break;
+    case 'S':
+    case 's':
+        if( bKeyDown )
+            g_moveFlags |= FLAG_MOVE_DOWN;
+        else
+            g_moveFlags &= ~FLAG_MOVE_DOWN;
+        break;
     }
 
 }
@@ -957,74 +957,74 @@ void CALLBACK OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, v
 
     switch( nControlID )
     {
-        case IDC_TOGGLEFULLSCREEN:
-            DXUTToggleFullScreen();
-            break;
-        case IDC_TOGGLEREF:
-            DXUTToggleREF();
-            break;
-        case IDC_TOGGLEWARP:
-            DXUTToggleWARP();
-            break;
-        case IDC_CHANGEDEVICE:
-            g_SettingsDlg.SetActive( !g_SettingsDlg.IsActive() );
-            break;
+    case IDC_TOGGLEFULLSCREEN:
+        DXUTToggleFullScreen();
+        break;
+    case IDC_TOGGLEREF:
+        DXUTToggleREF();
+        break;
+    case IDC_TOGGLEWARP:
+        DXUTToggleWARP();
+        break;
+    case IDC_CHANGEDEVICE:
+        g_SettingsDlg.SetActive( !g_SettingsDlg.IsActive() );
+        break;
 
-        case IDC_SOUND:
-            pComboBox = reinterpret_cast<CDXUTComboBox*>( pControl );
-            PrepareAudio( g_SOUND_NAMES[ PtrToInt( pComboBox->GetSelectedData() ) ] );
-            break;
+    case IDC_SOUND:
+        pComboBox = reinterpret_cast<CDXUTComboBox*>( pControl );
+        PrepareAudio( g_SOUND_NAMES[ PtrToInt( pComboBox->GetSelectedData() ) ] );
+        break;
 
-        case IDC_CONTROL_MODE:
-            pComboBox = reinterpret_cast<CDXUTComboBox*>( pControl );
-            g_eControlMode = ( CONTROL_MODE )( int )PtrToInt( pComboBox->GetSelectedData() );
-            break;
+    case IDC_CONTROL_MODE:
+        pComboBox = reinterpret_cast<CDXUTComboBox*>( pControl );
+        g_eControlMode = ( CONTROL_MODE )( int )PtrToInt( pComboBox->GetSelectedData() );
+        break;
 
-        case IDC_PRESET:
-            pComboBox = reinterpret_cast<CDXUTComboBox*>( pControl );
-            SetReverb( ( int )PtrToInt( pComboBox->GetSelectedData() ) );
-            break;
+    case IDC_PRESET:
+        pComboBox = reinterpret_cast<CDXUTComboBox*>( pControl );
+        SetReverb( ( int )PtrToInt( pComboBox->GetSelectedData() ) );
+        break;
 
-        case IDC_UP:
-        {
-            auto& vec = ( g_eControlMode == CONTROL_LISTENER ) ? g_audioState.vListenerPos : g_audioState.vEmitterPos;
-            vec.z += 0.5f;
-            vec.z = std::min<float>( float( ZMAX ), vec.z );
-        }
-            break;
+    case IDC_UP:
+    {
+        auto& vec = ( g_eControlMode == CONTROL_LISTENER ) ? g_audioState.vListenerPos : g_audioState.vEmitterPos;
+        vec.z += 0.5f;
+        vec.z = std::min<float>( float( ZMAX ), vec.z );
+    }
+    break;
 
-        case IDC_LEFT:
-        {
-            auto& vec = ( g_eControlMode == CONTROL_LISTENER ) ? g_audioState.vListenerPos : g_audioState.vEmitterPos;
-            vec.x -= 0.5f;
-            vec.x = std::max<float>( float( XMIN ), vec.x );
-        }
-            break;
+    case IDC_LEFT:
+    {
+        auto& vec = ( g_eControlMode == CONTROL_LISTENER ) ? g_audioState.vListenerPos : g_audioState.vEmitterPos;
+        vec.x -= 0.5f;
+        vec.x = std::max<float>( float( XMIN ), vec.x );
+    }
+    break;
 
-        case IDC_RIGHT:
-        {
-            auto& vec = ( g_eControlMode == CONTROL_LISTENER ) ? g_audioState.vListenerPos : g_audioState.vEmitterPos;
-            vec.x += 0.5f;
-            vec.x = std::min<float>( float( XMAX ), vec.x );
-        }
-            break;
+    case IDC_RIGHT:
+    {
+        auto& vec = ( g_eControlMode == CONTROL_LISTENER ) ? g_audioState.vListenerPos : g_audioState.vEmitterPos;
+        vec.x += 0.5f;
+        vec.x = std::min<float>( float( XMAX ), vec.x );
+    }
+    break;
 
-        case IDC_DOWN:
-        {
-            auto& vec = ( g_eControlMode == CONTROL_LISTENER ) ? g_audioState.vListenerPos : g_audioState.vEmitterPos;
-            vec.z -= 0.5f;
-            vec.z = std::max<float>( float( ZMIN ), vec.z );
-        }
-            break;
-        case IDC_LISTENERCONE:
-        {
-            g_audioState.fUseListenerCone = !g_audioState.fUseListenerCone;
-        }
-            break;
-        case IDC_INNERRADIUS:
-        {
-            g_audioState.fUseInnerRadius = !g_audioState.fUseInnerRadius;
-        }
-            break;
+    case IDC_DOWN:
+    {
+        auto& vec = ( g_eControlMode == CONTROL_LISTENER ) ? g_audioState.vListenerPos : g_audioState.vEmitterPos;
+        vec.z -= 0.5f;
+        vec.z = std::max<float>( float( ZMIN ), vec.z );
+    }
+    break;
+    case IDC_LISTENERCONE:
+    {
+        g_audioState.fUseListenerCone = !g_audioState.fUseListenerCone;
+    }
+    break;
+    case IDC_INNERRADIUS:
+    {
+        g_audioState.fUseInnerRadius = !g_audioState.fUseInnerRadius;
+    }
+    break;
     }
 }

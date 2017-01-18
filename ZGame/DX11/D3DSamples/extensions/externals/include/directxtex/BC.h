@@ -1,13 +1,13 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // BC.h
-//  
+//
 // Block-compression (BC) functionality
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
 // ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
 // THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
 // PARTICULAR PURPOSE.
-//  
+//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // http://go.microsoft.com/fwlink/?LinkId=248926
@@ -80,11 +80,17 @@ public:
     {
         switch(uElement)
         {
-        case 0: return r;
-        case 1: return g;
-        case 2: return b;
-        case 3: return a;
-        default: assert(false); return r;
+        case 0:
+            return r;
+        case 1:
+            return g;
+        case 2:
+            return b;
+        case 3:
+            return a;
+        default:
+            assert(false);
+            return r;
         }
     }
 
@@ -92,11 +98,17 @@ public:
     {
         switch(uElement)
         {
-        case 0: return r;
-        case 1: return g;
-        case 2: return b;
-        case 3: return a;
-        default: assert(false); return r;
+        case 0:
+            return r;
+        case 1:
+            return g;
+        case 2:
+            return b;
+        case 3:
+            return a;
+        default:
+            assert(false);
+            return r;
         }
     }
 
@@ -107,10 +119,25 @@ public:
         const int* aWeights = nullptr;
         switch(wcprec)
         {
-        case 2: aWeights = g_aWeights2; assert( wc < 4 ); _Analysis_assume_( wc < 4 ); break;
-        case 3: aWeights = g_aWeights3; assert( wc < 8 ); _Analysis_assume_( wc < 8 ); break;
-        case 4: aWeights = g_aWeights4; assert( wc < 16 ); _Analysis_assume_( wc < 16 ); break;
-        default: assert(false); out.r = out.g = out.b = 0; return;
+        case 2:
+            aWeights = g_aWeights2;
+            assert( wc < 4 );
+            _Analysis_assume_( wc < 4 );
+            break;
+        case 3:
+            aWeights = g_aWeights3;
+            assert( wc < 8 );
+            _Analysis_assume_( wc < 8 );
+            break;
+        case 4:
+            aWeights = g_aWeights4;
+            assert( wc < 16 );
+            _Analysis_assume_( wc < 16 );
+            break;
+        default:
+            assert(false);
+            out.r = out.g = out.b = 0;
+            return;
         }
         out.r = uint8_t((uint32_t(c0.r) * uint32_t(BC67_WEIGHT_MAX - aWeights[wc]) + uint32_t(c1.r) * uint32_t(aWeights[wc]) + BC67_WEIGHT_ROUND) >> BC67_WEIGHT_SHIFT);
         out.g = uint8_t((uint32_t(c0.g) * uint32_t(BC67_WEIGHT_MAX - aWeights[wc]) + uint32_t(c1.g) * uint32_t(aWeights[wc]) + BC67_WEIGHT_ROUND) >> BC67_WEIGHT_SHIFT);
@@ -122,10 +149,25 @@ public:
         const int* aWeights = nullptr;
         switch(waprec)
         {
-        case 2: aWeights = g_aWeights2; assert( wa < 4 ); _Analysis_assume_( wa < 4 ); break;
-        case 3: aWeights = g_aWeights3; assert( wa < 8 ); _Analysis_assume_( wa < 8 ); break;
-        case 4: aWeights = g_aWeights4; assert( wa < 16 ); _Analysis_assume_( wa < 16 ); break;
-        default: assert(false); out.a = 0; return;
+        case 2:
+            aWeights = g_aWeights2;
+            assert( wa < 4 );
+            _Analysis_assume_( wa < 4 );
+            break;
+        case 3:
+            aWeights = g_aWeights3;
+            assert( wa < 8 );
+            _Analysis_assume_( wa < 8 );
+            break;
+        case 4:
+            aWeights = g_aWeights4;
+            assert( wa < 16 );
+            _Analysis_assume_( wa < 16 );
+            break;
+        default:
+            assert(false);
+            out.a = 0;
+            return;
         }
         out.a = uint8_t((uint32_t(c0.a) * uint32_t(BC67_WEIGHT_MAX - aWeights[wa]) + uint32_t(c1.a) * uint32_t(aWeights[wa]) + BC67_WEIGHT_ROUND) >> BC67_WEIGHT_SHIFT);
     }
@@ -192,7 +234,7 @@ public:
         a += c.a;
         return *this;
     }
-    
+
     HDRColorA& operator -= ( _In_ const HDRColorA& c )
     {
         r -= c.r;
@@ -201,7 +243,7 @@ public:
         a -= c.a;
         return *this;
     }
-    
+
     HDRColorA& operator *= ( _In_ float f )
     {
         r *= f;
@@ -210,7 +252,7 @@ public:
         a *= f;
         return *this;
     }
-    
+
     HDRColorA& operator /= ( _In_ float f )
     {
         float fInv = 1.0f / f;
@@ -310,8 +352,18 @@ public:
 
 public:
     INTColor() {}
-    INTColor(int nr, int ng, int nb) {r = nr; g = ng; b = nb;}
-    INTColor(const INTColor& c) {r = c.r; g = c.g; b = c.b;}
+    INTColor(int nr, int ng, int nb)
+    {
+        r = nr;
+        g = ng;
+        b = nb;
+    }
+    INTColor(const INTColor& c)
+    {
+        r = c.r;
+        g = c.g;
+        b = c.b;
+    }
 
     INTColor operator - ( _In_ const INTColor& c ) const
     {
@@ -603,8 +655,8 @@ private:
     static void SwapIndices(_In_ const EncodeParams* pEP, _Inout_updates_all_(BC6H_MAX_REGIONS) INTEndPntPair aEndPts[],
                             _In_reads_(NUM_PIXELS_PER_BLOCK) size_t aIndices[]);
     void AssignIndices(_In_ const EncodeParams* pEP, _In_reads_(BC6H_MAX_REGIONS) const INTEndPntPair aEndPts[],
-                        _Out_writes_(NUM_PIXELS_PER_BLOCK) size_t aIndices[],
-                        _Out_writes_(BC6H_MAX_REGIONS) float aTotErr[]) const;
+                       _Out_writes_(NUM_PIXELS_PER_BLOCK) size_t aIndices[],
+                       _Out_writes_(BC6H_MAX_REGIONS) float aTotErr[]) const;
     void QuantizeEndPts(_In_ const EncodeParams* pEP, _Out_writes_(BC6H_MAX_REGIONS) INTEndPntPair* qQntEndPts) const;
     void EmitBlock(_In_ const EncodeParams* pEP, _In_reads_(BC6H_MAX_REGIONS) const INTEndPntPair aEndPts[],
                    _In_reads_(NUM_PIXELS_PER_BLOCK) const size_t aIndices[]);
@@ -756,7 +808,7 @@ template <bool bRange> void OptimizeAlpha(float *pX, float *pY, const float *pPo
         {
             if(pPoints[iPoint] < fX)
                 fX = pPoints[iPoint];
-    
+
             if(pPoints[iPoint] > fY)
                 fY = pPoints[iPoint];
         }
@@ -767,7 +819,7 @@ template <bool bRange> void OptimizeAlpha(float *pX, float *pY, const float *pPo
         {
             if(pPoints[iPoint] < fX && pPoints[iPoint] > MIN_VALUE)
                 fX = pPoints[iPoint];
-    
+
             if(pPoints[iPoint] > fY && pPoints[iPoint] < MAX_VALUE)
                 fY = pPoints[iPoint];
         }
@@ -787,7 +839,7 @@ template <bool bRange> void OptimizeAlpha(float *pX, float *pY, const float *pPo
 
         if((fY - fX) < (1.0f / 256.0f))
             break;
-        
+
         fScale = fSteps / (fY - fX);
 
         // Calculate new steps
@@ -831,7 +883,7 @@ template <bool bRange> void OptimizeAlpha(float *pX, float *pY, const float *pPo
                 dX  += pC[iStep] * fDiff;
                 d2X += pC[iStep] * pC[iStep];
 
-                dY  += pD[iStep] * fDiff; 
+                dY  += pD[iStep] * fDiff;
                 d2Y += pD[iStep] * pD[iStep];
             }
         }
@@ -845,7 +897,9 @@ template <bool bRange> void OptimizeAlpha(float *pX, float *pY, const float *pPo
 
         if(fX > fY)
         {
-            float f = fX; fX = fY; fY = f;
+            float f = fX;
+            fX = fY;
+            fY = f;
         }
 
         if((dX * dX < (1.0f / 64.0f)) && (dY * dY < (1.0f / 64.0f)))
@@ -877,7 +931,7 @@ void D3DXDecodeBC6HS(_Out_writes_(NUM_PIXELS_PER_BLOCK) XMVECTOR *pColor, _In_re
 void D3DXDecodeBC7(_Out_writes_(NUM_PIXELS_PER_BLOCK) XMVECTOR *pColor, _In_reads_(16) const uint8_t *pBC);
 
 void D3DXEncodeBC1(_Out_writes_(8) uint8_t *pBC, _In_reads_(NUM_PIXELS_PER_BLOCK) const XMVECTOR *pColor, _In_ float alphaRef, _In_ DWORD flags);
-    // BC1 requires one additional parameter, so it doesn't match signature of BC_ENCODE above
+// BC1 requires one additional parameter, so it doesn't match signature of BC_ENCODE above
 
 void D3DXEncodeBC2(_Out_writes_(16) uint8_t *pBC, _In_reads_(NUM_PIXELS_PER_BLOCK) const XMVECTOR *pColor, _In_ DWORD flags);
 void D3DXEncodeBC3(_Out_writes_(16) uint8_t *pBC, _In_reads_(NUM_PIXELS_PER_BLOCK) const XMVECTOR *pColor, _In_ DWORD flags);

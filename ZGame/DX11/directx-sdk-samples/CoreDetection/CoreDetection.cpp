@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // CoreDetection.cpp
-// 
+//
 // Main program execution.
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -62,7 +62,8 @@ unsigned int WINAPI SpinThreadProc( void* lpParameter )
     do
     {
         curTime = timeGetTime();
-    } while( curTime < endTime );
+    }
+    while( curTime < endTime );
     return endTime;
 }
 
@@ -131,11 +132,11 @@ int wmain()
                 if( dwCoreAffinity )
                 {
                     threads[nThreads] = ( HANDLE )_beginthreadex( nullptr,
-                                                                  0,
-                                                                  SpinThreadProc,
-                                                                  ( void* )CpuLoadTime,
-                                                                  CREATE_SUSPENDED,
-                                                                  nullptr );
+                                        0,
+                                        SpinThreadProc,
+                                        ( void* )CpuLoadTime,
+                                        CREATE_SUSPENDED,
+                                        nullptr );
                     SetThreadAffinityMask( threads[nThreads], dwCoreAffinity );
                     ResumeThread( threads[nThreads] );
                     ++nThreads;
@@ -146,7 +147,8 @@ int wmain()
             do
             {
                 wprintf( L"%c", 0xb1 );
-            } while( WAIT_TIMEOUT == WaitForMultipleObjects( nThreads, threads, TRUE, CpuLoadIndicatorFreq ) );
+            }
+            while( WAIT_TIMEOUT == WaitForMultipleObjects( nThreads, threads, TRUE, CpuLoadIndicatorFreq ) );
 
             // Cleanup resources.
             for( DWORD i = 0; i < nThreads; ++i )
@@ -336,7 +338,8 @@ int wmain()
         wprintf( L"(R)efresh, (M)ax out cpu for %Iu seconds, (Q)uit\n", CpuLoadTime / 1000 );
         ch = _getwch();
 
-    } while( L'q' != ch && L'Q' != ch );
+    }
+    while( L'q' != ch && L'Q' != ch );
 
     return 0;
 }

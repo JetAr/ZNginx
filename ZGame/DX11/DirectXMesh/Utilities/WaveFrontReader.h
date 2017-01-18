@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: WaveFrontReader.h
 //
 // Code for loading basic mesh data from a WaveFront OBJ file
@@ -193,7 +193,7 @@ public:
                     // the mesh.
                     DWORD index = AddVertex( iPosition, &vertex, vertexCache );
                     if ( index == (DWORD)-1 )
-                       return E_OUTOFMEMORY;
+                        return E_OUTOFMEMORY;
 
 #pragma warning( suppress : 4127 )
                     if ( sizeof(index_t) == 2 && ( index >= 0xFFFF ) )
@@ -210,13 +210,13 @@ public:
 
                     faceIndex[ iFace ] = index;
                     ++iFace;
-   
+
                     // Check for more face data or end of the face statement
                     bool faceEnd = false;
                     for(;;)
                     {
                         wchar_t p = InFile.peek();
-                    
+
                         if ( '\n' == p || !InFile )
                         {
                             faceEnd = true;
@@ -255,8 +255,8 @@ public:
                     {
                         indices.push_back( static_cast<index_t>( index ) );
                         indices.push_back( static_cast<index_t>( i1 ) );
-                    }                        
-                     
+                    }
+
                     attributes.push_back( curSubset );
 
                     i1 = index;
@@ -525,7 +525,10 @@ public:
             nShininess( 0 ),
             fAlpha( 1.f ),
             bSpecular( false )
-            { memset(strName, 0, sizeof(strName)); memset(strTexture, 0, sizeof(strTexture)); } 
+        {
+            memset(strName, 0, sizeof(strName));
+            memset(strTexture, 0, sizeof(strTexture));
+        }
     };
 
     std::vector<Vertex>     vertices;

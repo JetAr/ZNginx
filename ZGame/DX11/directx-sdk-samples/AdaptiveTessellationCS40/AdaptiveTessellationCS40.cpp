@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: AdaptiveTessellationCS40.cpp
 //
 // Demos how to use Compute Shader 4.0 to do one simple adaptive tessellation scheme
@@ -69,31 +69,31 @@ bool                                g_bShowTessellated = true;  // Whether to sh
 #define IDC_PARTITIONING_FRACTIONAL_EVEN    9
 
 //--------------------------------------------------------------------------------------
-// Forward declarations 
+// Forward declarations
 //--------------------------------------------------------------------------------------
 bool CALLBACK ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* pUserContext );
 void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext );
 LRESULT CALLBACK MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bool* pbNoFurtherProcessing,
-                         void* pUserContext );
+                          void* pUserContext );
 void CALLBACK KeyboardProc( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserContext );
 void CALLBACK OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, void* pUserContext );
 
 bool CALLBACK IsD3D11DeviceAcceptable( const CD3D11EnumAdapterInfo *AdapterInfo, UINT Output, const CD3D11EnumDeviceInfo *DeviceInfo,
-                                      DXGI_FORMAT BackBufferFormat, bool bWindowed, void* pUserContext );
+                                       DXGI_FORMAT BackBufferFormat, bool bWindowed, void* pUserContext );
 HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc,
-                                     void* pUserContext );
+                                      void* pUserContext );
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                         const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext );
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext );
 void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime,
-                                 float fElapsedTime, void* pUserContext );
+                                  float fElapsedTime, void* pUserContext );
 
 void InitApp();
 void RenderText();
 
 //--------------------------------------------------------------------------------------
-// Entry point to the program. Initializes everything and goes into a message processing 
+// Entry point to the program. Initializes everything and goes into a message processing
 // loop. Idle time is used to render the scene.
 //--------------------------------------------------------------------------------------
 int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow )
@@ -133,7 +133,7 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 
 //--------------------------------------------------------------------------------------
-// Initialize the app 
+// Initialize the app
 //--------------------------------------------------------------------------------------
 void InitApp()
 {
@@ -141,7 +141,8 @@ void InitApp()
     g_HUD.Init( &g_DialogResourceManager );
     g_SampleUI.Init( &g_DialogResourceManager );
 
-    g_HUD.SetCallback( OnGUIEvent ); int iY = 10;
+    g_HUD.SetCallback( OnGUIEvent );
+    int iY = 10;
     g_HUD.AddButton( IDC_TOGGLEFULLSCREEN, L"Toggle full screen", 0, iY, 170, 23 );
     g_HUD.AddButton( IDC_TOGGLEREF, L"Toggle REF (F3)", 0, iY += 26, 170, 23, VK_F3 );
     g_HUD.AddButton( IDC_CHANGEDEVICE, L"Change device (F2)", 0, iY += 26, 170, 23, VK_F2 );
@@ -152,7 +153,7 @@ void InitApp()
     g_SampleUI.AddRadioButton( IDC_PARTITIONING_POW2, 0, L"Pow2 Partitioning(2)", 0, iY += 26, 125, 22, false, '2' );
     g_SampleUI.AddRadioButton( IDC_PARTITIONING_FRACTIONAL_ODD, 0, L"Odd Fractional Partitioning(3)", 0, iY += 26, 125, 22, false, '3' );
     g_SampleUI.AddRadioButton( IDC_PARTITIONING_FRACTIONAL_EVEN, 0, L"Even Fractional Partitioning(4)", 0, iY += 26, 125, 22, true, '4' );
-    g_SampleUI.SetCallback( OnGUIEvent ); 
+    g_SampleUI.SetCallback( OnGUIEvent );
 }
 
 
@@ -165,24 +166,24 @@ bool CALLBACK ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* p
 
 //--------------------------------------------------------------------------------------
 // This callback function will be called once at the beginning of every frame. This is the
-// best location for your application to handle updates to the scene, but is not 
-// intended to contain actual rendering calls, which should instead be placed in the 
-// OnFrameRender callback.  
+// best location for your application to handle updates to the scene, but is not
+// intended to contain actual rendering calls, which should instead be placed in the
+// OnFrameRender callback.
 //--------------------------------------------------------------------------------------
 void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext )
 {
-    // Update the camera's position based on user input 
-    g_Camera.FrameMove( fElapsedTime );    
+    // Update the camera's position based on user input
+    g_Camera.FrameMove( fElapsedTime );
 }
 
 
 //--------------------------------------------------------------------------------------
-// Before handling window messages, DXUT passes incoming windows 
-// messages to the application through this callback function. If the application sets 
+// Before handling window messages, DXUT passes incoming windows
+// messages to the application through this callback function. If the application sets
 // *pbNoFurtherProcessing to TRUE, then DXUT will not process this message.
 //--------------------------------------------------------------------------------------
 LRESULT CALLBACK MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bool* pbNoFurtherProcessing,
-                         void* pUserContext )
+                          void* pUserContext )
 {
     // Pass messages to dialog resource manager calls so GUI state is updated correctly
     *pbNoFurtherProcessing = g_DialogResourceManager.MsgProc( hWnd, uMsg, wParam, lParam );
@@ -219,7 +220,8 @@ void CALLBACK KeyboardProc( UINT nChar, bool bKeyDown, bool bAltDown, void* pUse
         switch( nChar )
         {
         case VK_F1:
-            g_bShowSampleUI = !g_bShowSampleUI; break;        
+            g_bShowSampleUI = !g_bShowSampleUI;
+            break;
         }
     }
 }
@@ -233,11 +235,14 @@ void CALLBACK OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, v
     switch( nControlID )
     {
     case IDC_TOGGLEFULLSCREEN:
-        DXUTToggleFullScreen(); break;
+        DXUTToggleFullScreen();
+        break;
     case IDC_TOGGLEREF:
-        DXUTToggleREF(); break;
+        DXUTToggleREF();
+        break;
     case IDC_CHANGEDEVICE:
-        g_D3DSettingsDlg.SetActive( !g_D3DSettingsDlg.IsActive() ); break;
+        g_D3DSettingsDlg.SetActive( !g_D3DSettingsDlg.IsActive() );
+        break;
     case IDC_SHOWTESSELLATED:
         g_bShowTessellated = !g_bShowTessellated;
         break;
@@ -263,7 +268,7 @@ void CALLBACK OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, v
 
 //--------------------------------------------------------------------------------------
 bool CALLBACK IsD3D11DeviceAcceptable( const CD3D11EnumAdapterInfo *AdapterInfo, UINT Output, const CD3D11EnumDeviceInfo *DeviceInfo,
-                                      DXGI_FORMAT BackBufferFormat, bool bWindowed, void* pUserContext )
+                                       DXGI_FORMAT BackBufferFormat, bool bWindowed, void* pUserContext )
 {
     // reject any device which doesn't support CS4x
     if ( DeviceInfo->ComputeShaders_Plus_RawAndStructuredBuffers_Via_Shader_4_x == FALSE )
@@ -277,9 +282,9 @@ bool CALLBACK IsD3D11DeviceAcceptable( const CD3D11EnumAdapterInfo *AdapterInfo,
 // Create any D3D11 resources that aren't dependant on the back buffer
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc,
-                                     void* pUserContext )
+                                      void* pUserContext )
 {
-    HRESULT hr; 
+    HRESULT hr;
 
     static bool bFirstOnCreateDevice = true;
 
@@ -287,8 +292,8 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     if ( DXUTGetDeviceSettings().d3d11.DriverType != D3D_DRIVER_TYPE_HARDWARE && bFirstOnCreateDevice )
     {
         if ( MessageBox( 0, L"CS4x capability is missing. "\
-                            L"In order to continue, a non-hardware device has been created, "\
-                            L"it will be very slow, continue?", L"Warning", MB_ICONEXCLAMATION | MB_YESNO ) != IDYES )
+                         L"In order to continue, a non-hardware device has been created, "\
+                         L"it will be very slow, continue?", L"Warning", MB_ICONEXCLAMATION | MB_YESNO ) != IDYES )
             return E_FAIL;
     }
 
@@ -315,10 +320,9 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 
         while ( ifs >> line )
         {
-            if ( 0 == wcscmp( line, L"#" ) ) 
+            if ( 0 == wcscmp( line, L"#" ) )
                 ifs.getline( line, 255 );
-            else
-            if ( 0 == wcscmp( line, L"v" ) )
+            else if ( 0 == wcscmp( line, L"v" ) )
             {
                 XMFLOAT4 pos;
                 ifs >> pos.x >> pos.y >> pos.z;
@@ -331,10 +335,9 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
         ifs.seekg( 0 );
         while ( ifs >> line )
         {
-            if ( 0 == wcscmp( line, L"#" ) ) 
+            if ( 0 == wcscmp( line, L"#" ) )
                 ifs.getline( line, 255 );
-            else
-            if ( 0 == wcscmp( line, L"f" ) )
+            else if ( 0 == wcscmp( line, L"f" ) )
             {
                 ifs.getline( line, 255 );
                 std::wstringstream ss(line);
@@ -344,14 +347,18 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
                     std::wstringstream ss2(line);
                     ss2 >> idx[i++];
                 }
-                
-                initdata.push_back( v[idx[0]-1] ); initdata.push_back( v[idx[1]-1] ); initdata.push_back( v[idx[2]-1] );
+
+                initdata.push_back( v[idx[0]-1] );
+                initdata.push_back( v[idx[1]-1] );
+                initdata.push_back( v[idx[2]-1] );
                 if ( i >= 4 ) // quad face?
                 {
-                    initdata.push_back( v[idx[2]-1] ); initdata.push_back( v[idx[3]-1] ); initdata.push_back( v[idx[0]-1] );
+                    initdata.push_back( v[idx[2]-1] );
+                    initdata.push_back( v[idx[3]-1] );
+                    initdata.push_back( v[idx[0]-1] );
                 }
             }
-        }        
+        }
     }
 
     D3D11_BUFFER_DESC desc;
@@ -369,23 +376,23 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 
     ID3DBlob* pBlob = nullptr;
     V_RETURN( DXUTCompileFromFile( L"Render.hlsl", nullptr, "RenderVS", "vs_4_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &pBlob ) );
-    V_RETURN( pd3dDevice->CreateVertexShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &g_pVS ) );    
+    V_RETURN( pd3dDevice->CreateVertexShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &g_pVS ) );
     SAFE_RELEASE( pBlob );
     DXUT_SetDebugName( g_pVS, "RenderVS" );
 
     V_RETURN( DXUTCompileFromFile( L"Render.hlsl", nullptr, "RenderBaseVS", "vs_4_0", D3DCOMPILE_ENABLE_STRICTNESS, 0, &pBlob ) );
-    V_RETURN( pd3dDevice->CreateVertexShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &g_pBaseVS ) ); 
+    V_RETURN( pd3dDevice->CreateVertexShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &g_pBaseVS ) );
     DXUT_SetDebugName( g_pBaseVS, "RenderBaseVS" );
 
     {
         D3D11_INPUT_ELEMENT_DESC layout[] =
         {
-            { "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },  
+            { "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         };
         UINT numElements = sizeof(layout) / sizeof(layout[0]);
         V_RETURN( pd3dDevice->CreateInputLayout(layout, numElements, pBlob->GetBufferPointer(), pBlob->GetBufferSize(), &g_pBaseVBLayout) );
         DXUT_SetDebugName( g_pBaseVBLayout, "Primary" );
-    }    
+    }
 
     SAFE_RELEASE( pBlob );
 
@@ -401,7 +408,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
     Desc.MiscFlags = 0;
     Desc.ByteWidth = sizeof( XMFLOAT4X4 );
-    V_RETURN( pd3dDevice->CreateBuffer( &Desc, nullptr, &g_pVSCB ) );    
+    V_RETURN( pd3dDevice->CreateBuffer( &Desc, nullptr, &g_pVSCB ) );
     DXUT_SetDebugName( g_pVSCB, "XMMATRIX" );
 
     // Rasterizer state
@@ -425,7 +432,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                         const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
     HRESULT hr;
 
@@ -449,7 +456,7 @@ HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapCha
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 {
-    g_DialogResourceManager.OnD3D11ReleasingSwapChain();    
+    g_DialogResourceManager.OnD3D11ReleasingSwapChain();
 }
 
 
@@ -474,7 +481,8 @@ void RenderText()
                                     L"Move: A,W,S,D or Arrow Keys\n"
                                     L"Move up/down: Q,E or PgUp,PgDn\n"
                                     L"Reset camera: Home\n" );
-    } else
+    }
+    else
     {
         g_pTxtHelper->SetForegroundColor( Colors::White );
         g_pTxtHelper->DrawTextLine( L"Press F1 for sample UI" );
@@ -486,16 +494,16 @@ void RenderText()
 
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime,
-                                 float fElapsedTime, void* pUserContext )
+                                  float fElapsedTime, void* pUserContext )
 {
     HRESULT hr = S_OK;
-    
+
     // If the settings dialog is being shown, then render it instead of rendering the app's scene
     if( g_D3DSettingsDlg.IsActive() )
     {
         g_D3DSettingsDlg.OnRender( fElapsedTime );
         return;
-    }       
+    }
 
     auto pRTV = DXUTGetD3D11RenderTargetView();
     pd3dImmediateContext->ClearRenderTargetView( pRTV, Colors::MidnightBlue );
@@ -530,7 +538,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
             ID3D11ShaderResourceView* aRViews[2] = { g_Tessellator.m_pBaseVBSRV, g_Tessellator.m_pTessedVerticesBufSRV };
             pd3dImmediateContext->VSSetShaderResources( 0, 2, aRViews );
 
-            pd3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);        
+            pd3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
             pd3dImmediateContext->IASetIndexBuffer(g_pTessedIB, DXGI_FORMAT_R32_UINT, 0);
             pd3dImmediateContext->DrawIndexed(num_tessed_indices, 0, 0);
 
@@ -538,7 +546,8 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
             pd3dImmediateContext->VSSetShaderResources( 0, 2, ppSRVNULL );
             pd3dImmediateContext->IASetIndexBuffer(nullptr, DXGI_FORMAT_R32_UINT, 0);
         }
-    } else
+    }
+    else
     {
         // render original mesh
         pd3dImmediateContext->RSSetState( g_pRasWireFrame );
@@ -563,19 +572,19 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
 
         ID3D11Buffer* vbsnull[] = { nullptr };
         pd3dImmediateContext->IASetVertexBuffers( 0, 1, vbsnull, strides, offsets );
-    }    
+    }
 
     DXUT_BeginPerfEvent( DXUT_PERFEVENTCOLOR, L"HUD / Stats" );
     g_HUD.OnRender( fElapsedTime );
     if ( g_bShowSampleUI )
         g_SampleUI.OnRender( fElapsedTime );
     RenderText();
-    DXUT_EndPerfEvent();    
+    DXUT_EndPerfEvent();
 }
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11CreateDevice 
+// Release D3D11 resources created in OnD3D11CreateDevice
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
 {
@@ -583,7 +592,7 @@ void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
     g_D3DSettingsDlg.OnD3D11DestroyDevice();
     DXUTGetGlobalResourceCache().OnDestroyDevice();
     g_Tessellator.OnDestroyDevice();
-    SAFE_DELETE( g_pTxtHelper );    
+    SAFE_DELETE( g_pTxtHelper );
 
     SAFE_RELEASE( g_pBaseVBLayout );
     SAFE_RELEASE( g_pBaseVB );

@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: WAVFileReader.cpp
 //
 // Functions for loading WAV audio files
@@ -23,12 +23,21 @@
 //--------------------------------------------------------------------------------------
 namespace
 {
-    
-struct handle_closer { void operator()(HANDLE h) { if (h) CloseHandle(h); } };
+
+struct handle_closer
+{
+    void operator()(HANDLE h)
+    {
+        if (h) CloseHandle(h);
+    }
+};
 
 typedef public std::unique_ptr<void, handle_closer> ScopedHandle;
 
-inline HANDLE safe_handle( HANDLE h ) { return (h == INVALID_HANDLE_VALUE) ? 0 : h; }
+inline HANDLE safe_handle( HANDLE h )
+{
+    return (h == INVALID_HANDLE_VALUE) ? 0 : h;
+}
 
 
 //--------------------------------------------------------------------------------------
@@ -204,82 +213,82 @@ static HRESULT WaveFindFormatAndData( _In_reads_bytes_(wavDataSize) const uint8_
         break;
 
     default:
+    {
+        if ( fmtChunk->size < sizeof(WAVEFORMATEX) )
         {
-            if ( fmtChunk->size < sizeof(WAVEFORMATEX) )
-            {
-                return E_FAIL;
-            }
-
-            auto wfx = reinterpret_cast<const WAVEFORMATEX*>( ptr );
-
-            if ( fmtChunk->size < ( sizeof(WAVEFORMATEX) + wfx->cbSize ) )
-            {
-                return E_FAIL;
-            }
-
-            switch( wfx->wFormatTag )
-            {
-            case WAVE_FORMAT_WMAUDIO2:
-            case WAVE_FORMAT_WMAUDIO3:
-                dpds = true;
-                break;
-
-            case  0x166 /*WAVE_FORMAT_XMA2*/: // XMA2 is supported by Xbox One
-                if ( ( fmtChunk->size < 52 /*sizeof(XMA2WAVEFORMATEX)*/ ) || ( wfx->cbSize < 34 /*( sizeof(XMA2WAVEFORMATEX) - sizeof(WAVEFORMATEX) )*/ ) )
-                {
-                    return E_FAIL;
-                }
-                seek = true;
-                break;
-
-            case WAVE_FORMAT_ADPCM:
-                if ( ( fmtChunk->size < ( sizeof(WAVEFORMATEX) + 32 ) ) || ( wfx->cbSize < 32 /*MSADPCM_FORMAT_EXTRA_BYTES*/ ) )
-                {
-                    return E_FAIL;
-                }
-                break;
-
-            case WAVE_FORMAT_EXTENSIBLE:
-                if ( ( fmtChunk->size < sizeof(WAVEFORMATEXTENSIBLE) ) || ( wfx->cbSize < ( sizeof(WAVEFORMATEXTENSIBLE) - sizeof(WAVEFORMATEX) ) ) )
-                {
-                    return E_FAIL;
-                }
-                else
-                {
-                     static const GUID s_wfexBase = {0x00000000, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71};
-
-                     auto wfex = reinterpret_cast<const WAVEFORMATEXTENSIBLE*>( ptr );
-
-                    if ( memcmp( reinterpret_cast<const BYTE*>(&wfex->SubFormat) + sizeof(DWORD),
-                                 reinterpret_cast<const BYTE*>(&s_wfexBase) + sizeof(DWORD), sizeof(GUID) - sizeof(DWORD) ) != 0 )
-                    {
-                        return HRESULT_FROM_WIN32( ERROR_NOT_SUPPORTED );
-                    }
-
-                    switch( wfex->SubFormat.Data1 )
-                    {
-                    case WAVE_FORMAT_PCM:
-                    case WAVE_FORMAT_IEEE_FLOAT:
-                        break;
-
-                    // MS-ADPCM and XMA2 are not supported as WAVEFORMATEXTENSIBLE
-
-                    case WAVE_FORMAT_WMAUDIO2:
-                    case WAVE_FORMAT_WMAUDIO3:
-                        dpds = true;
-                        break;
-
-                    default:
-                        return HRESULT_FROM_WIN32( ERROR_NOT_SUPPORTED );
-                    }
-
-                }
-                break;
-
-            default:
-                return HRESULT_FROM_WIN32( ERROR_NOT_SUPPORTED );
-            }
+            return E_FAIL;
         }
+
+        auto wfx = reinterpret_cast<const WAVEFORMATEX*>( ptr );
+
+        if ( fmtChunk->size < ( sizeof(WAVEFORMATEX) + wfx->cbSize ) )
+        {
+            return E_FAIL;
+        }
+
+        switch( wfx->wFormatTag )
+        {
+        case WAVE_FORMAT_WMAUDIO2:
+        case WAVE_FORMAT_WMAUDIO3:
+            dpds = true;
+            break;
+
+        case  0x166 /*WAVE_FORMAT_XMA2*/: // XMA2 is supported by Xbox One
+            if ( ( fmtChunk->size < 52 /*sizeof(XMA2WAVEFORMATEX)*/ ) || ( wfx->cbSize < 34 /*( sizeof(XMA2WAVEFORMATEX) - sizeof(WAVEFORMATEX) )*/ ) )
+            {
+                return E_FAIL;
+            }
+            seek = true;
+            break;
+
+        case WAVE_FORMAT_ADPCM:
+            if ( ( fmtChunk->size < ( sizeof(WAVEFORMATEX) + 32 ) ) || ( wfx->cbSize < 32 /*MSADPCM_FORMAT_EXTRA_BYTES*/ ) )
+            {
+                return E_FAIL;
+            }
+            break;
+
+        case WAVE_FORMAT_EXTENSIBLE:
+            if ( ( fmtChunk->size < sizeof(WAVEFORMATEXTENSIBLE) ) || ( wfx->cbSize < ( sizeof(WAVEFORMATEXTENSIBLE) - sizeof(WAVEFORMATEX) ) ) )
+            {
+                return E_FAIL;
+            }
+            else
+            {
+                static const GUID s_wfexBase = {0x00000000, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71};
+
+                auto wfex = reinterpret_cast<const WAVEFORMATEXTENSIBLE*>( ptr );
+
+                if ( memcmp( reinterpret_cast<const BYTE*>(&wfex->SubFormat) + sizeof(DWORD),
+                             reinterpret_cast<const BYTE*>(&s_wfexBase) + sizeof(DWORD), sizeof(GUID) - sizeof(DWORD) ) != 0 )
+                {
+                    return HRESULT_FROM_WIN32( ERROR_NOT_SUPPORTED );
+                }
+
+                switch( wfex->SubFormat.Data1 )
+                {
+                case WAVE_FORMAT_PCM:
+                case WAVE_FORMAT_IEEE_FLOAT:
+                    break;
+
+                // MS-ADPCM and XMA2 are not supported as WAVEFORMATEXTENSIBLE
+
+                case WAVE_FORMAT_WMAUDIO2:
+                case WAVE_FORMAT_WMAUDIO3:
+                    dpds = true;
+                    break;
+
+                default:
+                    return HRESULT_FROM_WIN32( ERROR_NOT_SUPPORTED );
+                }
+
+            }
+            break;
+
+        default:
+            return HRESULT_FROM_WIN32( ERROR_NOT_SUPPORTED );
+        }
+    }
     }
 
     // Locate 'data'
@@ -484,18 +493,18 @@ static HRESULT LoadAudioFromFile( _In_z_ const wchar_t* szFileName, _Inout_ std:
     // open the file
 #if (_WIN32_WINNT >= _WIN32_WINNT_WIN8)
     ScopedHandle hFile( safe_handle( CreateFile2( szFileName,
-                                                  GENERIC_READ,
-                                                  FILE_SHARE_READ,
-                                                  OPEN_EXISTING,
-                                                  nullptr ) ) );
+                                     GENERIC_READ,
+                                     FILE_SHARE_READ,
+                                     OPEN_EXISTING,
+                                     nullptr ) ) );
 #else
     ScopedHandle hFile( safe_handle( CreateFileW( szFileName,
-                                                  GENERIC_READ,
-                                                  FILE_SHARE_READ,
-                                                  nullptr,
-                                                  OPEN_EXISTING,
-                                                  FILE_ATTRIBUTE_NORMAL,
-                                                  nullptr ) ) );
+                                     GENERIC_READ,
+                                     FILE_SHARE_READ,
+                                     nullptr,
+                                     OPEN_EXISTING,
+                                     FILE_ATTRIBUTE_NORMAL,
+                                     nullptr ) ) );
 #endif
 
     if ( !hFile )
@@ -542,7 +551,7 @@ static HRESULT LoadAudioFromFile( _In_z_ const wchar_t* szFileName, _Inout_ std:
                    FileSize.LowPart,
                    bytesRead,
                    nullptr
-                   ))
+                 ))
     {
         return HRESULT_FROM_WIN32( GetLastError() );
     }
@@ -583,7 +592,7 @@ HRESULT DirectX::LoadWAVAudioInMemory( const uint8_t* wavData,
 
 //--------------------------------------------------------------------------------------
 _Use_decl_annotations_
-HRESULT DirectX::LoadWAVAudioFromFile( const wchar_t* szFileName, 
+HRESULT DirectX::LoadWAVAudioFromFile( const wchar_t* szFileName,
                                        std::unique_ptr<uint8_t[]>& wavData,
                                        const WAVEFORMATEX** wfx,
                                        const uint8_t** startAudio,

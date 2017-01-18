@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: SoundCommon.cpp
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -21,12 +21,16 @@ using namespace DirectX;
 
 namespace
 {
-    template <typename T> WORD ChannelsSpecifiedInMask(T x)
+template <typename T> WORD ChannelsSpecifiedInMask(T x)
+{
+    WORD bitCount = 0;
+    while (x)
     {
-        WORD bitCount = 0;
-        while (x) {++bitCount; x &= (x-1);}
-        return bitCount;
+        ++bitCount;
+        x &= (x-1);
     }
+    return bitCount;
+}
 }
 
 
@@ -274,7 +278,7 @@ bool DirectX::IsValid( _In_ const WAVEFORMATEX* wfx )
                 auto channelBits = ChannelsSpecifiedInMask( xmaFmt->ChannelMask );
                 if ( channelBits != wfx->nChannels )
                 {
-                    DebugTrace( "ERROR: Wave format XMA2 - nChannels=%u but ChannelMask (%08X) has %u bits set\n", 
+                    DebugTrace( "ERROR: Wave format XMA2 - nChannels=%u but ChannelMask (%08X) has %u bits set\n",
                                 xmaFmt->ChannelMask, wfx->nChannels, channelBits );
                     return false;
                 }
@@ -318,11 +322,11 @@ bool DirectX::IsValid( _In_ const WAVEFORMATEX* wfx )
             auto wfex = reinterpret_cast<const WAVEFORMATEXTENSIBLE*>( wfx );
 
             if ( memcmp( reinterpret_cast<const BYTE*>(&wfex->SubFormat) + sizeof(DWORD),
-                            reinterpret_cast<const BYTE*>(&s_wfexBase) + sizeof(DWORD), sizeof(GUID) - sizeof(DWORD) ) != 0 )
+                         reinterpret_cast<const BYTE*>(&s_wfexBase) + sizeof(DWORD), sizeof(GUID) - sizeof(DWORD) ) != 0 )
             {
-                DebugTrace( "ERROR: Wave format WAVEFORMATEXTENSIBLE encountered with unknown GUID ({%8.8lX-%4.4X-%4.4X-%2.2X%2.2X-%2.2X%2.2X%2.2X%2.2X%2.2X%2.2X})\n", 
+                DebugTrace( "ERROR: Wave format WAVEFORMATEXTENSIBLE encountered with unknown GUID ({%8.8lX-%4.4X-%4.4X-%2.2X%2.2X-%2.2X%2.2X%2.2X%2.2X%2.2X%2.2X})\n",
                             wfex->SubFormat.Data1, wfex->SubFormat.Data2, wfex->SubFormat.Data3,
-                            wfex->SubFormat.Data4[0], wfex->SubFormat.Data4[1], wfex->SubFormat.Data4[2], wfex->SubFormat.Data4[3], 
+                            wfex->SubFormat.Data4[0], wfex->SubFormat.Data4[1], wfex->SubFormat.Data4[2], wfex->SubFormat.Data4[3],
                             wfex->SubFormat.Data4[4], wfex->SubFormat.Data4[5], wfex->SubFormat.Data4[6], wfex->SubFormat.Data4[7] );
                 return false;
             }
@@ -465,7 +469,7 @@ bool DirectX::IsValid( _In_ const WAVEFORMATEX* wfx )
                 auto channelBits = ChannelsSpecifiedInMask( wfex->dwChannelMask );
                 if ( channelBits != wfx->nChannels )
                 {
-                    DebugTrace( "ERROR: WAVEFORMATEXTENSIBLE: nChannels=%u but ChannelMask has %u bits set\n", 
+                    DebugTrace( "ERROR: WAVEFORMATEXTENSIBLE: nChannels=%u but ChannelMask has %u bits set\n",
                                 wfx->nChannels, channelBits );
                     return false;
                 }
@@ -485,15 +489,24 @@ uint32_t DirectX::GetDefaultChannelMask( int channels )
 {
     switch( channels )
     {
-        case 1: return SPEAKER_MONO;
-        case 2: return SPEAKER_STEREO;
-        case 3: return SPEAKER_2POINT1;
-        case 4: return SPEAKER_QUAD;
-        case 5: return SPEAKER_4POINT1;
-        case 6: return SPEAKER_5POINT1;
-        case 7: return SPEAKER_5POINT1 | SPEAKER_BACK_CENTER;
-        case 8: return SPEAKER_7POINT1;
-        default: return 0;
+    case 1:
+        return SPEAKER_MONO;
+    case 2:
+        return SPEAKER_STEREO;
+    case 3:
+        return SPEAKER_2POINT1;
+    case 4:
+        return SPEAKER_QUAD;
+    case 5:
+        return SPEAKER_4POINT1;
+    case 6:
+        return SPEAKER_5POINT1;
+    case 7:
+        return SPEAKER_5POINT1 | SPEAKER_BACK_CENTER;
+    case 8:
+        return SPEAKER_7POINT1;
+    default:
+        return 0;
     }
 }
 
@@ -620,8 +633,8 @@ void DirectX::CreateXMA2( WAVEFORMATEX* wfx, size_t wfxSize, int sampleRate, int
 
     xmaFmt->SamplesEncoded = static_cast<DWORD>( samplesEncoded );
     xmaFmt->BytesPerBlock = bytesPerBlock;
-    xmaFmt->PlayBegin = xmaFmt->PlayLength = 
-    xmaFmt->LoopBegin = xmaFmt->LoopLength = xmaFmt->LoopCount = 0;
+    xmaFmt->PlayBegin = xmaFmt->PlayLength =
+                            xmaFmt->LoopBegin = xmaFmt->LoopLength = xmaFmt->LoopCount = 0;
     xmaFmt->EncoderVersion = 4 /* XMAENCODER_VERSION_XMA2 */;
     xmaFmt->BlockCount = static_cast<WORD>( blockCount );
 

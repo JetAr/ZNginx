@@ -1,4 +1,4 @@
-//
+﻿//
 // Game.cpp
 //
 
@@ -194,8 +194,8 @@ void Game::ValidateDevice()
     // a new D3D device must be created.
 
     if (previousDesc.AdapterLuid.LowPart != currentDesc.AdapterLuid.LowPart
-        || previousDesc.AdapterLuid.HighPart != currentDesc.AdapterLuid.HighPart
-        || FAILED(m_d3dDevice->GetDeviceRemovedReason()))
+            || previousDesc.AdapterLuid.HighPart != currentDesc.AdapterLuid.HighPart
+            || FAILED(m_d3dDevice->GetDeviceRemovedReason()))
     {
         // Create a new device and swap chain.
         OnDeviceLost();
@@ -241,17 +241,17 @@ void Game::CreateDevice()
     ComPtr<ID3D11Device> d3dDevice;
     ComPtr<ID3D11DeviceContext> d3dContext;
     DX::ThrowIfFailed(D3D11CreateDevice(
-        nullptr,                    // specify nullptr to use the default adapter
-        D3D_DRIVER_TYPE_HARDWARE,
-        nullptr,
-        creationFlags,
-        featureLevels,
-        _countof(featureLevels),
-        D3D11_SDK_VERSION,
-        d3dDevice.GetAddressOf(),   // returns the Direct3D device created
-        &m_featureLevel,            // returns feature level of device created
-        d3dContext.GetAddressOf()   // returns the device immediate context
-        ));
+                          nullptr,                    // specify nullptr to use the default adapter
+                          D3D_DRIVER_TYPE_HARDWARE,
+                          nullptr,
+                          creationFlags,
+                          featureLevels,
+                          _countof(featureLevels),
+                          D3D11_SDK_VERSION,
+                          d3dDevice.GetAddressOf(),   // returns the Direct3D device created
+                          &m_featureLevel,            // returns feature level of device created
+                          d3dContext.GetAddressOf()   // returns the device immediate context
+                      ));
 
     DX::ThrowIfFailed(d3dDevice.As(&m_d3dDevice));
     DX::ThrowIfFailed(d3dContext.As(&m_d3dContext));
@@ -309,7 +309,7 @@ void Game::CreateResources()
             // If the device was removed for any reason, a new device and swap chain will need to be created.
             OnDeviceLost();
 
-            // Everything is set up now. Do not continue execution of this method. OnDeviceLost will reenter this method 
+            // Everything is set up now. Do not continue execution of this method. OnDeviceLost will reenter this method
             // and correctly set up the new device.
             return;
         }
@@ -347,12 +347,12 @@ void Game::CreateResources()
 
         ComPtr<IDXGISwapChain1> swapChain;
         DX::ThrowIfFailed(dxgiFactory->CreateSwapChainForCoreWindow(
-            m_d3dDevice.Get(),
-            m_window,
-            &swapChainDesc,
-            nullptr,
-            swapChain.GetAddressOf()
-            ));
+                              m_d3dDevice.Get(),
+                              m_window,
+                              &swapChainDesc,
+                              nullptr,
+                              swapChain.GetAddressOf()
+                          ));
 
         DX::ThrowIfFailed(swapChain.As(&m_swapChain));
 

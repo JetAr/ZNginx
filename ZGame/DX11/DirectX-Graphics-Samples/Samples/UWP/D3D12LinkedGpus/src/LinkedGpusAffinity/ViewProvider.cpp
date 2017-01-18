@@ -1,4 +1,4 @@
-//*********************************************************
+﻿//*********************************************************
 //
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
@@ -14,11 +14,11 @@
 #include "View.h"
 
 ViewProvider::ViewProvider(UINT_PTR pSample) :
-	m_pSample(pSample)
+    m_pSample(pSample)
 {
 }
 
 Windows::ApplicationModel::Core::IFrameworkView^ ViewProvider::CreateView()
 {
-	return ref new View(m_pSample);
+    return ref new View(m_pSample);
 }

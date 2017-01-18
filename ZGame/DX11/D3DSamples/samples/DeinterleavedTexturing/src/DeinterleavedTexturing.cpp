@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeinterleavedTexturing\src/DeinterleavedTexturing.cpp
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -244,7 +244,7 @@ void InitAOParams(GFSDK_SSAO_Parameters &AOParams)
 }
 
 //--------------------------------------------------------------------------------------
-// 
+//
 //--------------------------------------------------------------------------------------
 void ReleaseRenderTargets()
 {
@@ -258,7 +258,7 @@ void ReleaseRenderTargets()
 }
 
 //--------------------------------------------------------------------------------------
-// 
+//
 //--------------------------------------------------------------------------------------
 void CreateRenderTargets(ID3D11Device* pd3dDevice)
 {
@@ -292,7 +292,7 @@ void CreateRenderTargets(ID3D11Device* pd3dDevice)
 }
 
 //--------------------------------------------------------------------------------------
-// 
+//
 //--------------------------------------------------------------------------------------
 void ReleaseDepthBuffer()
 {
@@ -302,7 +302,7 @@ void ReleaseDepthBuffer()
 }
 
 //--------------------------------------------------------------------------------------
-// 
+//
 //--------------------------------------------------------------------------------------
 void CreateDepthBuffer(ID3D11Device* pd3dDevice)
 {
@@ -359,7 +359,7 @@ void CreateDepthBuffer(ID3D11Device* pd3dDevice)
 }
 
 //--------------------------------------------------------------------------------------
-// 
+//
 //--------------------------------------------------------------------------------------
 void ResizeScreenSizedBuffers(ID3D11Device* pd3dDevice)
 {
@@ -368,12 +368,12 @@ void ResizeScreenSizedBuffers(ID3D11Device* pd3dDevice)
 }
 
 //--------------------------------------------------------------------------------------
-// This callback function is called immediately before a device is created to allow the 
-// application to modify the device settings. The supplied pDeviceSettings parameter 
-// contains the settings that the framework has selected for the new device, and the 
-// application can make any desired changes directly to this structure.  Note however that 
-// DXUT will not correct invalid device settings so care must be taken 
-// to return valid device settings, otherwise CreateDevice() will fail.  
+// This callback function is called immediately before a device is created to allow the
+// application to modify the device settings. The supplied pDeviceSettings parameter
+// contains the settings that the framework has selected for the new device, and the
+// application can make any desired changes directly to this structure.  Note however that
+// DXUT will not correct invalid device settings so care must be taken
+// to return valid device settings, otherwise CreateDevice() will fail.
 //--------------------------------------------------------------------------------------
 bool CALLBACK ModifyDeviceSettings(DXUTDeviceSettings* pDeviceSettings, void* pUserContext)
 {
@@ -388,8 +388,8 @@ bool CALLBACK ModifyDeviceSettings(DXUTDeviceSettings* pDeviceSettings, void* pU
     {
         s_bFirstTime = false;
         if ((DXUT_D3D9_DEVICE == pDeviceSettings->ver && pDeviceSettings->d3d9.DeviceType == D3DDEVTYPE_REF) ||
-            (DXUT_D3D11_DEVICE == pDeviceSettings->ver &&
-             pDeviceSettings->d3d11.DriverType == D3D_DRIVER_TYPE_REFERENCE))
+                (DXUT_D3D11_DEVICE == pDeviceSettings->ver &&
+                 pDeviceSettings->d3d11.DriverType == D3D_DRIVER_TYPE_REFERENCE))
         {
             DXUTDisplaySwitchingToREFWarning(pDeviceSettings->ver);
         }
@@ -409,7 +409,7 @@ bool CALLBACK IsD3D11DeviceAcceptable(const CD3D11EnumAdapterInfo *AdapterInfo, 
 }
 
 //--------------------------------------------------------------------------------------
-// 
+//
 //--------------------------------------------------------------------------------------
 void LoadScenes(ID3D11Device* pd3dDevice)
 {
@@ -532,7 +532,7 @@ void CALLBACK OnFrameMove(double fTime, float fElapsedTime, void* pUserContext)
 }
 
 //--------------------------------------------------------------------------------------
-void RenderAOFromMesh(ID3D11Device* pd3dDevice, 
+void RenderAOFromMesh(ID3D11Device* pd3dDevice,
                       ID3D11DeviceContext* pd3dImmediateContext,
                       ID3D11RenderTargetView* pBackBufferRTV,
                       SceneMesh *pMesh)
@@ -606,10 +606,10 @@ void RenderAOFromMesh(ID3D11Device* pd3dDevice,
 }
 
 //--------------------------------------------------------------------------------------
-// Callback function that renders the frame.  This function sets up the rendering 
+// Callback function that renders the frame.  This function sets up the rendering
 // matrices and renders the scene and UI.
 //--------------------------------------------------------------------------------------
-void CALLBACK OnD3D11FrameRender(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, 
+void CALLBACK OnD3D11FrameRender(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext,
                                  double fTime, float fElapsedTime, void* pUserContext)
 {
     // If the settings dialog is being shown, then render it instead of rendering the app's scene
@@ -636,7 +636,7 @@ void CALLBACK OnD3D11FrameRender(ID3D11Device* pd3dDevice, ID3D11DeviceContext* 
 
     if (pMesh)
     {
-        RenderAOFromMesh(pd3dDevice, 
+        RenderAOFromMesh(pd3dDevice,
                          pd3dImmediateContext,
                          pBackBufferRTV,
                          pMesh);
@@ -653,7 +653,7 @@ void CALLBACK OnD3D11FrameRender(ID3D11Device* pd3dDevice, ID3D11DeviceContext* 
 }
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11ResizedSwapChain 
+// Release D3D11 resources created in OnD3D11ResizedSwapChain
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11ReleasingSwapChain(void* pUserContext)
 {
@@ -663,8 +663,8 @@ void CALLBACK OnD3D11ReleasingSwapChain(void* pUserContext)
 }
 
 //--------------------------------------------------------------------------------------
-// This callback function will be called immediately after the Direct3D device has 
-// been destroyed, which generally happens as a result of application termination or 
+// This callback function will be called immediately after the Direct3D device has
+// been destroyed, which generally happens as a result of application termination or
 // windowed/full screen toggles.
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11DestroyDevice(void* pUserContext)
@@ -692,8 +692,8 @@ void CALLBACK OnD3D11DestroyDevice(void* pUserContext)
 //--------------------------------------------------------------------------------------
 // Handle messages to the application
 //--------------------------------------------------------------------------------------
-LRESULT CALLBACK MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, 
-                          bool* pbNoFurtherProcessing, void* pUserContext)
+LRESULT CALLBACK MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam,
+                         bool* pbNoFurtherProcessing, void* pUserContext)
 {
     // Always allow dialog resource manager calls to handle global messages
     // so GUI state is updated correctly
@@ -736,96 +736,100 @@ void CALLBACK OnGUIEvent(UINT nEvent, int nControlID, CDXUTControl* pControl, vo
 {
     switch (nControlID)
     {
-        case IDC_TOGGLEFULLSCREEN:   DXUTToggleFullScreen(); break;
-        case IDC_TOGGLEREF:          DXUTToggleREF();        break;
-           
-        case IDC_CHANGEDEVICE:
-        {
-            g_SettingsDlg.SetActive(!g_SettingsDlg.IsActive()); 
-            break;
-        }
-        case IDC_CHANGESCENE:
-        {
-            CDXUTComboBox* pComboBox = (CDXUTComboBox*) pControl;
-            g_CurrentSceneId = pComboBox->GetSelectedIndex();
-            break;
-        }
-        case IDC_BLUR_AO:
-        {
-            g_BlurAO = g_HUD.GetCheckBox(nControlID)->GetChecked();
-            break;
-        }
-        case IDC_DEINTERLEAVE:
-        {
-            g_UseDeinterleavedTexturing = g_HUD.GetCheckBox(nControlID)->GetChecked();
-            break;
-        }
-        case IDC_RANDOMIZE:
-        {
-            g_RandomizeSamples = g_HUD.GetCheckBox(nControlID)->GetChecked();
-            break;
-        }
-        case IDC_RADIUS_SLIDER:
-        {
-            g_AOParams.Radius = (float) g_HUD.GetSlider(IDC_RADIUS_SLIDER)->GetValue() * MAX_RADIUS_MULT / 100.0f;
+    case IDC_TOGGLEFULLSCREEN:
+        DXUTToggleFullScreen();
+        break;
+    case IDC_TOGGLEREF:
+        DXUTToggleREF();
+        break;
 
-            WCHAR sz[100];
-            StringCchPrintf(sz, 100, UI_RADIUS_MULT L"%0.2f", g_AOParams.Radius); 
-            g_HUD.GetStatic(IDC_RADIUS_STATIC)->SetText(sz);
+    case IDC_CHANGEDEVICE:
+    {
+        g_SettingsDlg.SetActive(!g_SettingsDlg.IsActive());
+        break;
+    }
+    case IDC_CHANGESCENE:
+    {
+        CDXUTComboBox* pComboBox = (CDXUTComboBox*) pControl;
+        g_CurrentSceneId = pComboBox->GetSelectedIndex();
+        break;
+    }
+    case IDC_BLUR_AO:
+    {
+        g_BlurAO = g_HUD.GetCheckBox(nControlID)->GetChecked();
+        break;
+    }
+    case IDC_DEINTERLEAVE:
+    {
+        g_UseDeinterleavedTexturing = g_HUD.GetCheckBox(nControlID)->GetChecked();
+        break;
+    }
+    case IDC_RANDOMIZE:
+    {
+        g_RandomizeSamples = g_HUD.GetCheckBox(nControlID)->GetChecked();
+        break;
+    }
+    case IDC_RADIUS_SLIDER:
+    {
+        g_AOParams.Radius = (float) g_HUD.GetSlider(IDC_RADIUS_SLIDER)->GetValue() * MAX_RADIUS_MULT / 100.0f;
 
-            break;
-        }
-        case IDC_BIAS_SLIDER:
-        {
-            g_AOParams.Bias = (float) g_HUD.GetSlider(IDC_BIAS_SLIDER)->GetValue() / 1000.f;
+        WCHAR sz[100];
+        StringCchPrintf(sz, 100, UI_RADIUS_MULT L"%0.2f", g_AOParams.Radius);
+        g_HUD.GetStatic(IDC_RADIUS_STATIC)->SetText(sz);
 
-            WCHAR sz[100];
-            StringCchPrintf(sz, 100, UI_AO_BIAS L"%g", g_AOParams.Bias); 
-            g_HUD.GetStatic(IDC_BIAS_STATIC)->SetText(sz);
+        break;
+    }
+    case IDC_BIAS_SLIDER:
+    {
+        g_AOParams.Bias = (float) g_HUD.GetSlider(IDC_BIAS_SLIDER)->GetValue() / 1000.f;
 
-            break;
-        }
-        case IDC_EXPONENT_SLIDER: 
-        {
-            g_AOParams.PowerExponent = (float)g_HUD.GetSlider(IDC_EXPONENT_SLIDER)->GetValue() / 100.0f;
+        WCHAR sz[100];
+        StringCchPrintf(sz, 100, UI_AO_BIAS L"%g", g_AOParams.Bias);
+        g_HUD.GetStatic(IDC_BIAS_STATIC)->SetText(sz);
 
-            WCHAR sz[100];
-            StringCchPrintf(sz, 100, UI_POW_EXPONENT L"%0.2f", g_AOParams.PowerExponent);
-            g_HUD.GetStatic(IDC_EXPONENT_STATIC)->SetText(sz);
+        break;
+    }
+    case IDC_EXPONENT_SLIDER:
+    {
+        g_AOParams.PowerExponent = (float)g_HUD.GetSlider(IDC_EXPONENT_SLIDER)->GetValue() / 100.0f;
 
-            break;
-        }
-        case IDC_BLUR_SHARPNESS_SLIDER: 
-        {
-            g_AOParams.Blur.Sharpness = (float)g_HUD.GetSlider(IDC_BLUR_SHARPNESS_SLIDER)->GetValue() / 100.0f;
+        WCHAR sz[100];
+        StringCchPrintf(sz, 100, UI_POW_EXPONENT L"%0.2f", g_AOParams.PowerExponent);
+        g_HUD.GetStatic(IDC_EXPONENT_STATIC)->SetText(sz);
 
-            WCHAR sz[100];
-            StringCchPrintf(sz, 100, UI_BLUR_SHARPNESS L"%0.2f", g_AOParams.Blur.Sharpness);
-            g_HUD.GetStatic(IDC_BLUR_SHARPNESS_STATIC)->SetText(sz);
+        break;
+    }
+    case IDC_BLUR_SHARPNESS_SLIDER:
+    {
+        g_AOParams.Blur.Sharpness = (float)g_HUD.GetSlider(IDC_BLUR_SHARPNESS_SLIDER)->GetValue() / 100.0f;
 
-            break;
-        }
-        case IDC_PER_PIXEL_AO:
-        {
-            g_AOParams.Output.MSAAMode = GFSDK_SSAO_PER_PIXEL_AO;
-            break;
-        }
-        case IDC_PER_SAMPLE_AO:
-        {
-            g_AOParams.Output.MSAAMode = GFSDK_SSAO_PER_SAMPLE_AO;
-            break;
-        }
-        case IDC_1xMSAA:
-        case IDC_2xMSAA:
-        case IDC_4xMSAA:
-        case IDC_8xMSAA:
-        {
-            g_RenderTargetsDirty = true;
-            g_MSAACurrentSettings = nControlID - IDC_1xMSAA;
-            assert(g_MSAACurrentSettings >= MSAA_MODE_1X);
-            assert(g_MSAACurrentSettings <= MSAA_MODE_8X);
-            break;
-        }
+        WCHAR sz[100];
+        StringCchPrintf(sz, 100, UI_BLUR_SHARPNESS L"%0.2f", g_AOParams.Blur.Sharpness);
+        g_HUD.GetStatic(IDC_BLUR_SHARPNESS_STATIC)->SetText(sz);
+
+        break;
+    }
+    case IDC_PER_PIXEL_AO:
+    {
+        g_AOParams.Output.MSAAMode = GFSDK_SSAO_PER_PIXEL_AO;
+        break;
+    }
+    case IDC_PER_SAMPLE_AO:
+    {
+        g_AOParams.Output.MSAAMode = GFSDK_SSAO_PER_SAMPLE_AO;
+        break;
+    }
+    case IDC_1xMSAA:
+    case IDC_2xMSAA:
+    case IDC_4xMSAA:
+    case IDC_8xMSAA:
+    {
+        g_RenderTargetsDirty = true;
+        g_MSAACurrentSettings = nControlID - IDC_1xMSAA;
+        assert(g_MSAACurrentSettings >= MSAA_MODE_1X);
+        assert(g_MSAACurrentSettings <= MSAA_MODE_8X);
+        break;
+    }
     }
 }
 
@@ -838,9 +842,9 @@ void CALLBACK OnKeyboard(UINT nChar, bool bKeyDown, bool bAltDown, void* pUserCo
     {
         switch (nChar)
         {
-            case 'U':
-                g_DrawUI = !g_DrawUI;
-                break;
+        case 'U':
+            g_DrawUI = !g_DrawUI;
+            break;
         }
     }
 }
@@ -848,9 +852,9 @@ void CALLBACK OnKeyboard(UINT nChar, bool bKeyDown, bool bAltDown, void* pUserCo
 //--------------------------------------------------------------------------------------
 // Handle mouse button presses
 //--------------------------------------------------------------------------------------
-void CALLBACK OnMouse(bool bLeftButtonDown, bool bRightButtonDown, bool bMiddleButtonDown, 
-                       bool bSideButton1Down, bool bSideButton2Down, int nMouseWheelDelta, 
-                       int xPos, int yPos, void* pUserContext)
+void CALLBACK OnMouse(bool bLeftButtonDown, bool bRightButtonDown, bool bMiddleButtonDown,
+                      bool bSideButton1Down, bool bSideButton2Down, int nMouseWheelDelta,
+                      int xPos, int yPos, void* pUserContext)
 {
 }
 
@@ -872,8 +876,8 @@ void InitGUI()
     g_HUD.Init(&g_DialogResourceManager);
     g_HUD.SetCallback(OnGUIEvent);
     g_TextRenderer.Init(&g_DialogResourceManager);
-    
-    int iY = 10; 
+
+    int iY = 10;
     g_HUD.AddButton  (IDC_TOGGLEFULLSCREEN,   L"Toggle full screen" ,   35, iY, 160, 22);
     g_HUD.AddButton  (IDC_TOGGLEREF,          L"Toggle REF (F3)"    ,   35, iY += 24, 160, 22, VK_F3);
     g_HUD.AddButton  (IDC_CHANGEDEVICE,       L"Change device (F2)" ,   35, iY += 24, 160, 22, VK_F2);
@@ -894,19 +898,19 @@ void InitGUI()
 
     WCHAR sz[100];
     int dy = 20;
-    StringCchPrintf(sz, 100, UI_RADIUS_MULT L"%0.2f", g_AOParams.Radius); 
+    StringCchPrintf(sz, 100, UI_RADIUS_MULT L"%0.2f", g_AOParams.Radius);
     g_HUD.AddStatic(IDC_RADIUS_STATIC, sz, 35, iY += dy, 125, 22);
     g_HUD.AddSlider(IDC_RADIUS_SLIDER, 50, iY += dy, 100, 22, 0, 100, int(g_AOParams.Radius / MAX_RADIUS_MULT * 100));
 
-    StringCchPrintf(sz, 100, UI_AO_BIAS L"%g", g_AOParams.Bias); 
+    StringCchPrintf(sz, 100, UI_AO_BIAS L"%g", g_AOParams.Bias);
     g_HUD.AddStatic(IDC_BIAS_STATIC, sz, 35, iY += dy, 125, 22);
     g_HUD.AddSlider(IDC_BIAS_SLIDER, 50, iY += dy, 100, 22, 0, 500, int(g_AOParams.Bias * 1000));
 
-    StringCchPrintf(sz, 100, UI_POW_EXPONENT L"%0.2f", g_AOParams.PowerExponent); 
+    StringCchPrintf(sz, 100, UI_POW_EXPONENT L"%0.2f", g_AOParams.PowerExponent);
     g_HUD.AddStatic(IDC_EXPONENT_STATIC, sz, 35, iY += dy, 125, 22);
     g_HUD.AddSlider(IDC_EXPONENT_SLIDER, 50, iY += dy, 100, 22, 0, 400, (int)(100.0f*g_AOParams.PowerExponent));
 
-    StringCchPrintf(sz, 100, UI_BLUR_SHARPNESS L"%0.2f", g_AOParams.Blur.Sharpness); 
+    StringCchPrintf(sz, 100, UI_BLUR_SHARPNESS L"%0.2f", g_AOParams.Blur.Sharpness);
     g_HUD.AddStatic(IDC_BLUR_SHARPNESS_STATIC, sz, 35, iY += dy, 125, 22);
     g_HUD.AddSlider(IDC_BLUR_SHARPNESS_SLIDER, 50, iY += dy, 100, 22, 0, 1600, (int)(100.0f*g_AOParams.Blur.Sharpness));
 

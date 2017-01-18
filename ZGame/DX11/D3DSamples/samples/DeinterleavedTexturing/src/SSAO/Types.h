@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeinterleavedTexturing\src\SSAO/Types.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -119,8 +119,8 @@ struct GFSDK_SSAO_InputDepthData
         , pProjectionMatrix(NULL)
         , ProjectionMatrixLayout(GFSDK_SSAO_ROW_MAJOR_ORDER)
         , MetersToViewSpaceUnits(1.f)
-     {
-     }
+    {
+    }
 };
 
 /*====================================================================================================

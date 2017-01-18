@@ -1,13 +1,13 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // BC.h
-//  
+//
 // Block-compression (BC) functionality
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
 // ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
 // THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
 // PARTICULAR PURPOSE.
-//  
+//
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //
 // http://go.microsoft.com/fwlink/?LinkId=248926
@@ -93,7 +93,7 @@ public:
         a += c.a;
         return *this;
     }
-    
+
     HDRColorA& operator -= ( const HDRColorA& c )
     {
         r -= c.r;
@@ -102,7 +102,7 @@ public:
         a -= c.a;
         return *this;
     }
-    
+
     HDRColorA& operator *= ( float f )
     {
         r *= f;
@@ -111,7 +111,7 @@ public:
         a *= f;
         return *this;
     }
-    
+
     HDRColorA& operator /= ( float f )
     {
         float fInv = 1.0f / f;
@@ -294,7 +294,9 @@ template <bool bRange> void OptimizeAlpha(float *pX, float *pY, const float *pPo
 
         if (fX > fY)
         {
-            float f = fX; fX = fY; fY = f;
+            float f = fX;
+            fX = fY;
+            fY = f;
         }
 
         if ((dX * dX < (1.0f / 64.0f)) && (dY * dY < (1.0f / 64.0f)))
@@ -325,7 +327,7 @@ void D3DXDecodeBC6HS(_Out_writes_(NUM_PIXELS_PER_BLOCK) XMVECTOR *pColor, _In_re
 void D3DXDecodeBC7(_Out_writes_(NUM_PIXELS_PER_BLOCK) XMVECTOR *pColor, _In_reads_(16) const uint8_t *pBC);
 
 void D3DXEncodeBC1(_Out_writes_(8) uint8_t *pBC, _In_reads_(NUM_PIXELS_PER_BLOCK) const XMVECTOR *pColor, _In_ float threshold, _In_ DWORD flags);
-    // BC1 requires one additional parameter, so it doesn't match signature of BC_ENCODE above
+// BC1 requires one additional parameter, so it doesn't match signature of BC_ENCODE above
 
 void D3DXEncodeBC2(_Out_writes_(16) uint8_t *pBC, _In_reads_(NUM_PIXELS_PER_BLOCK) const XMVECTOR *pColor, _In_ DWORD flags);
 void D3DXEncodeBC3(_Out_writes_(16) uint8_t *pBC, _In_reads_(NUM_PIXELS_PER_BLOCK) const XMVECTOR *pColor, _In_ DWORD flags);

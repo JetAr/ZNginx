@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: WICImage.cpp
 //
 // GDFTrace - Game Definition File trace utility
@@ -27,20 +27,42 @@ public:
         }
     }
 
-    bool IsNull() const { return (!_pointer); }
+    bool IsNull() const
+    {
+        return (!_pointer);
+    }
 
-    T& operator*() { return *_pointer; }
-    T* operator->() { return _pointer; }
-    T** operator&() { return &_pointer; }
+    T& operator*()
+    {
+        return *_pointer;
+    }
+    T* operator->()
+    {
+        return _pointer;
+    }
+    T** operator&()
+    {
+        return &_pointer;
+    }
 
-    void Reset(T *p = 0) { if ( _pointer ) { _pointer->Release(); } _pointer = p; }
+    void Reset(T *p = 0)
+    {
+        if ( _pointer )
+        {
+            _pointer->Release();
+        }
+        _pointer = p;
+    }
 
-    T* Get() const { return _pointer; }
+    T* Get() const
+    {
+        return _pointer;
+    }
 
 private:
     ScopedObject(const ScopedObject&);
     ScopedObject& operator=(const ScopedObject&);
-        
+
     T* _pointer;
 };
 
@@ -53,12 +75,12 @@ static IWICImagingFactory* _GetWIC()
         return s_Factory;
 
     HRESULT hr = CoCreateInstance(
-        CLSID_WICImagingFactory,
-        nullptr,
-        CLSCTX_INPROC_SERVER,
-        __uuidof(IWICImagingFactory),
-        (LPVOID*)&s_Factory
-        );
+                     CLSID_WICImagingFactory,
+                     nullptr,
+                     CLSCTX_INPROC_SERVER,
+                     __uuidof(IWICImagingFactory),
+                     (LPVOID*)&s_Factory
+                 );
 
     if ( FAILED(hr) )
     {
@@ -128,7 +150,7 @@ HRESULT GetImageInfoFromMemory( _In_bytecount_(wicDataSize) const BYTE* wicData,
         info.container = IMAGE_TIFF;
     else if ( memcmp( &containerID, &GUID_ContainerFormatWmp, sizeof(GUID) ) == 0 )
         info.container = IMAGE_WMP;
-    
+
     ScopedObject<IWICBitmapFrameDecode> frame;
     hr = decoder->GetFrame( 0, &frame );
     if ( FAILED(hr) )
@@ -148,7 +170,7 @@ HRESULT GetImageInfoFromMemory( _In_bytecount_(wicDataSize) const BYTE* wicData,
         return hr;
 
     memcpy( &info.pixelFormat, &pixelFormat, sizeof(GUID) );
-     
+
     ScopedObject<IWICComponentInfo> cinfo;
     if ( FAILED( pWIC->CreateComponentInfo( pixelFormat, &cinfo ) ) )
         return 0;

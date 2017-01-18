@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        ComputeFilter\src/sat.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -36,8 +36,8 @@
 
 namespace SAT
 {
-    void Initialize(ID3D11Device * d3dDevice, int width, int height );
-    void Cleanup();
-    void GenerateSAT(ID3D11DeviceContext * pd3dContext, ID3D11ShaderResourceView * pInputSRV);
-    ID3D11ShaderResourceView * GetSAT();
+void Initialize(ID3D11Device * d3dDevice, int width, int height );
+void Cleanup();
+void GenerateSAT(ID3D11DeviceContext * pd3dContext, ID3D11ShaderResourceView * pInputSRV);
+ID3D11ShaderResourceView * GetSAT();
 };

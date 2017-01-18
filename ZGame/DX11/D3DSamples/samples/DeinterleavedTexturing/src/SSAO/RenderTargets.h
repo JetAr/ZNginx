@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeinterleavedTexturing\src\SSAO/RenderTargets.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -146,7 +146,7 @@ class RenderTargets
 {
 public:
     RenderTargets() :
-          m_pDevice(NULL)
+        m_pDevice(NULL)
         , m_FullWidth(0)
         , m_FullHeight(0)
     {

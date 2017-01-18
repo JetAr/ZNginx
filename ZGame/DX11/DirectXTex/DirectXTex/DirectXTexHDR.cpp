@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXTexHDR.cpp
-//  
+//
 // DirectX Texture Library - Radiance HDR (RGBE) file format reader/writer
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -22,10 +22,10 @@
 //      +X width -Y height
 //      -X width +Y height
 //      -X width -Y height
-//      +Y height +X width 
-//      -Y height +X width 
-//      +Y height -X width 
-//      -Y height -X width 
+//      +Y height +X width
+//      -Y height +X width
+//      +Y height -X width
+//      -Y height -X width
 //
 // All HDR files we've encountered are always written as "-Y height +X width", so
 // we support only that one as that's what other Radiance parsing code does as well.
@@ -41,314 +41,424 @@ using namespace DirectX;
 
 namespace
 {
-    const char g_Signature[] = "#?RADIANCE";
-    const char g_Format[] = "FORMAT=";
-    const char g_Exposure[] = "EXPOSURE=";
+const char g_Signature[] = "#?RADIANCE";
+const char g_Format[] = "FORMAT=";
+const char g_Exposure[] = "EXPOSURE=";
 
-    const char g_sRGBE[] = "32-bit_rle_rgbe";
-    const char g_sXYZE[] = "32-bit_rle_xyze";
+const char g_sRGBE[] = "32-bit_rle_rgbe";
+const char g_sXYZE[] = "32-bit_rle_xyze";
 
-    const char g_Header[] =
-        "#?RADIANCE\n"\
-        "FORMAT=32-bit_rle_rgbe\n"\
-        "\n"\
-        "-Y %u +X %u\n";
+const char g_Header[] =
+    "#?RADIANCE\n"\
+    "FORMAT=32-bit_rle_rgbe\n"\
+    "\n"\
+    "-Y %u +X %u\n";
 
-    inline size_t FindEOL(const char* str, size_t maxlen)
+inline size_t FindEOL(const char* str, size_t maxlen)
+{
+    size_t pos = 0;
+
+    while (pos < maxlen)
     {
-        size_t pos = 0;
+        if (str[pos] == '\n')
+            return pos;
+        else if (str[pos] == '\0')
+            return size_t(-1);
+        ++pos;
+    }
 
-        while (pos < maxlen)
+    return 0;
+}
+
+//-------------------------------------------------------------------------------------
+// Decodes HDR header
+//-------------------------------------------------------------------------------------
+HRESULT DecodeHDRHeader(
+    _In_reads_bytes_(size) const void* pSource,
+    size_t size,
+    _Out_ TexMetadata& metadata,
+    size_t& offset,
+    float& exposure)
+{
+    if (!pSource)
+        return E_INVALIDARG;
+
+    memset(&metadata, 0, sizeof(TexMetadata));
+
+    exposure = 1.f;
+
+    if (size < sizeof(g_Signature))
+    {
+        return HRESULT_FROM_WIN32(ERROR_INVALID_DATA);
+    }
+
+    // Verify magic signature
+    if (memcmp(pSource, g_Signature, sizeof(g_Signature) - 1) != 0)
+    {
+        return E_FAIL;
+    }
+
+    // Process first part of header
+    bool formatFound = false;
+    const char* info = reinterpret_cast<const char*>(pSource);
+    while (size > 0)
+    {
+        if (*info == '\n')
         {
-            if (str[pos] == '\n')
-                return pos;
-            else if (str[pos] == '\0')
-                return size_t(-1);
-            ++pos;
+            ++info;
+            --size;
+            break;
         }
 
+        const size_t formatLen = sizeof(g_Format) - 1;
+        const size_t exposureLen = sizeof(g_Exposure) - 1;
+        if ((size > formatLen) && memcmp(info, g_Format, formatLen) == 0)
+        {
+            info += formatLen;
+            size -= formatLen;
+
+            // Trim whitespace
+            while (*info == ' ' || *info == '\t')
+            {
+                if (--size == 0)
+                    return E_FAIL;
+                ++info;
+            }
+
+            static_assert(sizeof(g_sRGBE) == sizeof(g_sXYZE), "Format strings length mismatch");
+
+            const size_t encodingLen = sizeof(g_sRGBE) - 1;
+
+            if (size < encodingLen)
+            {
+                return E_FAIL;
+            }
+
+            if (memcmp(info, g_sRGBE, encodingLen) != 0 && memcmp(info, g_sXYZE, encodingLen) != 0)
+            {
+                return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
+            }
+
+            formatFound = true;
+
+            size_t len = FindEOL(info, size);
+            if (len == size_t(-1))
+            {
+                return E_FAIL;
+            }
+
+            info += len + 1;
+            size -= len + 1;
+        }
+        else if ((size > exposureLen) && memcmp(info, g_Exposure, exposureLen) == 0)
+        {
+            info += exposureLen;
+            size -= exposureLen;
+
+            // Trim whitespace
+            while (*info == ' ' || *info == '\t')
+            {
+                if (--size == 0)
+                    return E_FAIL;
+                ++info;
+            }
+
+            size_t len = FindEOL(info, size);
+            if (len == size_t(-1)
+                    || len < 1)
+            {
+                return E_FAIL;
+            }
+
+            char buff[32] = {};
+            strncpy_s(buff, info, std::min<size_t>(31, len));
+
+            float newExposure = static_cast<float>(atof(buff));
+            if ((newExposure >= 1e-12) && (newExposure <= 1e12))
+            {
+                // Note that we ignore strange exposure values (like EXPOSURE=0)
+                exposure *= newExposure;
+            }
+
+            info += len + 1;
+            size -= len + 1;
+        }
+        else
+        {
+            size_t len = FindEOL(info, size);
+            if (len == size_t(-1))
+            {
+                return E_FAIL;
+            }
+
+            info += len + 1;
+            size -= len + 1;
+        }
+    }
+
+    if (!formatFound)
+    {
+        return E_FAIL;
+    }
+
+    // Get orientation
+    char orient[256] = {};
+
+    size_t len = FindEOL(info, std::min<size_t>(sizeof(orient), size - 1));
+    if (len == size_t(-1)
+            || len <= 2)
+    {
+        return E_FAIL;
+    }
+
+    strncpy_s(orient, info, len);
+
+    if (orient[0] != '-' && orient[1] != 'Y')
+    {
+        // We only support the -Y +X orientation (see top of file)
+        return HRESULT_FROM_WIN32(
+                   ((orient[0] == '+' || orient[0] == '-') && (orient[1] == 'X' || orient[1] == 'Y'))
+                   ? ERROR_NOT_SUPPORTED : ERROR_INVALID_DATA
+               );
+    }
+
+    uint32_t height = 0;
+    if (sscanf_s(orient + 2, "%u", &height) != 1)
+    {
+        return E_FAIL;
+    }
+
+    const char* ptr = orient + 2;
+    while (*ptr != 0 && *ptr != '-' && *ptr != '+')
+        ++ptr;
+
+    if (*ptr == 0)
+    {
+        return E_FAIL;
+    }
+    else if (*ptr != '+')
+    {
+        // We only support the -Y +X orientation (see top of file)
+        return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
+    }
+
+    ++ptr;
+    if (*ptr == 0 || (*ptr != 'X' && *ptr != 'Y'))
+    {
+        return E_FAIL;
+    }
+    else if (*ptr != 'X')
+    {
+        // We only support the -Y +X orientation (see top of file)
+        return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
+    }
+
+    ++ptr;
+    uint32_t width;
+    if (sscanf_s(ptr, "%u", &width) != 1)
+    {
+        return E_FAIL;
+    }
+
+    info += len + 1;
+    size -= len + 1;
+
+    if (!width || !height)
+    {
+        return HRESULT_FROM_WIN32(ERROR_INVALID_DATA);
+    }
+
+    if (size == 0)
+    {
+        return E_FAIL;
+    }
+
+    offset = info - reinterpret_cast<const char*>(pSource);
+
+    metadata.width = width;
+    metadata.height = height;
+    metadata.depth = metadata.arraySize = metadata.mipLevels = 1;
+    metadata.format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+    metadata.dimension = TEX_DIMENSION_TEXTURE2D;
+
+    return S_OK;
+}
+
+//-------------------------------------------------------------------------------------
+// FloatToRGBE
+//-------------------------------------------------------------------------------------
+inline void FloatToRGBE(_Out_writes_(width*4) uint8_t* pDestination, _In_reads_(width*fpp) const float* pSource, size_t width, _In_range_(3, 4) int fpp)
+{
+    auto ePtr = pSource + width * fpp;
+
+    for (size_t j = 0; j < width; ++j)
+    {
+        if (pSource + 2 >= ePtr) break;
+        float r = pSource[0] >= 0.f ? pSource[0] : 0.f;
+        float g = pSource[1] >= 0.f ? pSource[1] : 0.f;
+        float b = pSource[2] >= 0.f ? pSource[2] : 0.f;
+        pSource += fpp;
+
+        const float max_xy = (r > g) ? r : g;
+        float max_xyz = (max_xy > b) ? max_xy : b;
+
+        if (max_xyz > 1e-32)
+        {
+            int e;
+            max_xyz = frexpf(max_xyz, &e) * 256.f / max_xyz;
+            e += 128;
+
+            uint8_t red = uint8_t(r * max_xyz);
+            uint8_t green = uint8_t(g * max_xyz);
+            uint8_t blue = uint8_t(b * max_xyz);
+
+            pDestination[0] = red;
+            pDestination[1] = green;
+            pDestination[2] = blue;
+            pDestination[3] = (red || green || blue) ? uint8_t(e & 0xff) : 0;
+        }
+        else
+        {
+            pDestination[0] = pDestination[1] = pDestination[2] = pDestination[3] = 0;
+        }
+
+        pDestination += 4;
+    }
+}
+
+//-------------------------------------------------------------------------------------
+// Encode using Adapative RLE
+//-------------------------------------------------------------------------------------
+_Success_(return > 0)
+size_t EncodeRLE(_Out_writes_(width * 4) uint8_t* enc, _In_reads_(width * 4) const uint8_t* rgbe, size_t rowPitch, size_t width)
+{
+    if (width < 8 || width > 32767)
+    {
+        // Don't try to compress too narrow or too wide scan-lines
         return 0;
     }
 
-    //-------------------------------------------------------------------------------------
-    // Decodes HDR header
-    //-------------------------------------------------------------------------------------
-    HRESULT DecodeHDRHeader(
-        _In_reads_bytes_(size) const void* pSource,
-        size_t size,
-        _Out_ TexMetadata& metadata,
-        size_t& offset,
-        float& exposure)
+#ifdef WRITE_OLD_COLORS
+    size_t encSize = 0;
+
+    const uint8_t* scanPtr = rgbe;
+    for (size_t pixelCount = 0; pixelCount < width;)
     {
-        if (!pSource)
-            return E_INVALIDARG;
-
-        memset(&metadata, 0, sizeof(TexMetadata));
-
-        exposure = 1.f;
-        
-        if (size < sizeof(g_Signature))
+        size_t spanLen = 1;
+        const uint32_t* spanPtr = reinterpret_cast<const uint32_t*>(scanPtr);
+        while (pixelCount + spanLen < width && spanLen < 32767)
         {
-            return HRESULT_FROM_WIN32(ERROR_INVALID_DATA);
-        }
-
-        // Verify magic signature
-        if (memcmp(pSource, g_Signature, sizeof(g_Signature) - 1) != 0)
-        {
-            return E_FAIL;
-        }
-
-        // Process first part of header
-        bool formatFound = false;
-        const char* info = reinterpret_cast<const char*>(pSource);
-        while (size > 0)
-        {
-            if (*info == '\n')
+            if (spanPtr[spanLen] == *spanPtr)
             {
-                ++info;
-                --size;
+                ++spanLen;
+            }
+            else
                 break;
-            }
+        }
 
-            const size_t formatLen = sizeof(g_Format) - 1;
-            const size_t exposureLen = sizeof(g_Exposure) - 1;
-            if ((size > formatLen) && memcmp(info, g_Format, formatLen) == 0)
+        if (spanLen > 2)
+        {
+            if (scanPtr[0] == 1 && scanPtr[1] == 1 && scanPtr[2] == 1)
             {
-                info += formatLen;
-                size -= formatLen;
-
-                // Trim whitespace
-                while (*info == ' ' || *info == '\t')
-                {
-                    if (--size == 0)
-                        return E_FAIL;
-                    ++info;
-                }
-
-                static_assert(sizeof(g_sRGBE) == sizeof(g_sXYZE), "Format strings length mismatch");
-
-                const size_t encodingLen = sizeof(g_sRGBE) - 1;
-
-                if (size < encodingLen)
-                {
-                    return E_FAIL;
-                }
-
-                if (memcmp(info, g_sRGBE, encodingLen) != 0 && memcmp(info, g_sXYZE, encodingLen) != 0)
-                {
-                    return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
-                }
-
-                formatFound = true;
-
-                size_t len = FindEOL(info, size);
-                if (len == size_t(-1))
-                {
-                    return E_FAIL;
-                }
-
-                info += len + 1;
-                size -= len + 1;
+                return 0;
             }
-            else if ((size > exposureLen) && memcmp(info, g_Exposure, exposureLen) == 0)
+
+            if (encSize + 8 > rowPitch)
+                return 0;
+
+            uint8_t rleLen = static_cast<uint8_t>(std::min<size_t>(spanLen - 1, 255));
+
+            enc[0] = scanPtr[0];
+            enc[1] = scanPtr[1];
+            enc[2] = scanPtr[2];
+            enc[3] = scanPtr[3];
+            enc[4] = 1;
+            enc[5] = 1;
+            enc[6] = 1;
+            enc[7] = rleLen;
+            enc += 8;
+            encSize += 8;
+
+            size_t remaining = spanLen - 1 - rleLen;
+
+            if (remaining > 0)
             {
-                info += exposureLen;
-                size -= exposureLen;
+                rleLen = static_cast<uint8_t>(remaining >> 8);
 
-                // Trim whitespace
-                while (*info == ' ' || *info == '\t')
+                if (rleLen > 0)
                 {
-                    if (--size == 0)
-                        return E_FAIL;
-                    ++info;
+                    if (encSize + 4 > rowPitch)
+                        return 0;
+
+                    enc[0] = 1;
+                    enc[1] = 1;
+                    enc[2] = 1;
+                    enc[3] = rleLen;
+                    enc += 4;
+                    encSize += 4;
+
+                    remaining -= (rleLen << 8);
                 }
 
-                size_t len = FindEOL(info, size);
-                if (len == size_t(-1)
-                    || len < 1)
+                while (remaining > 0)
                 {
-                    return E_FAIL;
+                    if (encSize + 4 > rowPitch)
+                        return 0;
+
+                    enc[0] = scanPtr[0];
+                    enc[1] = scanPtr[1];
+                    enc[2] = scanPtr[2];
+                    enc[3] = scanPtr[3];
+                    enc += 4;
+                    encSize += 4;
+
+                    --remaining;
                 }
-
-                char buff[32] = {};
-                strncpy_s(buff, info, std::min<size_t>(31, len));
-
-                float newExposure = static_cast<float>(atof(buff));
-                if ((newExposure >= 1e-12) && (newExposure <= 1e12))
-                {
-                    // Note that we ignore strange exposure values (like EXPOSURE=0)
-                    exposure *= newExposure;
-                }
-
-                info += len + 1;
-                size -= len + 1;
-            }
-            else
-            {
-                size_t len = FindEOL(info, size);
-                if (len == size_t(-1))
-                {
-                    return E_FAIL;
-                }
-
-                info += len + 1;
-                size -= len + 1;
-            }
-        }
-
-        if (!formatFound)
-        {
-            return E_FAIL;
-        }
-
-        // Get orientation
-        char orient[256] = {};
-
-        size_t len = FindEOL(info, std::min<size_t>(sizeof(orient), size - 1));
-        if (len == size_t(-1)
-            || len <= 2)
-        {
-            return E_FAIL;
-        }
-
-        strncpy_s(orient, info, len);
-
-        if (orient[0] != '-' && orient[1] != 'Y')
-        {
-            // We only support the -Y +X orientation (see top of file)
-            return HRESULT_FROM_WIN32(
-                ((orient[0] == '+' || orient[0] == '-') && (orient[1] == 'X' || orient[1] == 'Y'))
-                ? ERROR_NOT_SUPPORTED : ERROR_INVALID_DATA
-            );
-        }
-
-        uint32_t height = 0;
-        if (sscanf_s(orient + 2, "%u", &height) != 1)
-        {
-            return E_FAIL;
-        }
-
-        const char* ptr = orient + 2;
-        while (*ptr != 0 && *ptr != '-' && *ptr != '+')
-            ++ptr;
-
-        if (*ptr == 0)
-        {
-            return E_FAIL;
-        }
-        else if (*ptr != '+')
-        {
-            // We only support the -Y +X orientation (see top of file)
-            return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
-        }
-
-        ++ptr;
-        if (*ptr == 0 || (*ptr != 'X' && *ptr != 'Y'))
-        {
-            return E_FAIL;
-        }
-        else if (*ptr != 'X')
-        {
-            // We only support the -Y +X orientation (see top of file)
-            return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
-        }
-
-        ++ptr;
-        uint32_t width;
-        if (sscanf_s(ptr, "%u", &width) != 1)
-        {
-            return E_FAIL;
-        }
-
-        info += len + 1;
-        size -= len + 1;
-
-        if (!width || !height)
-        {
-            return HRESULT_FROM_WIN32(ERROR_INVALID_DATA);
-        }
-
-        if (size == 0)
-        {
-            return E_FAIL;
-        }
-
-        offset = info - reinterpret_cast<const char*>(pSource);
-
-        metadata.width = width;
-        metadata.height = height;
-        metadata.depth = metadata.arraySize = metadata.mipLevels = 1;
-        metadata.format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-        metadata.dimension = TEX_DIMENSION_TEXTURE2D;
-
-        return S_OK;
-    }
-
-    //-------------------------------------------------------------------------------------
-    // FloatToRGBE
-    //-------------------------------------------------------------------------------------
-    inline void FloatToRGBE(_Out_writes_(width*4) uint8_t* pDestination, _In_reads_(width*fpp) const float* pSource, size_t width, _In_range_(3, 4) int fpp)
-    {
-        auto ePtr = pSource + width * fpp;
-
-        for (size_t j = 0; j < width; ++j)
-        {
-            if (pSource + 2 >= ePtr) break;
-            float r = pSource[0] >= 0.f ? pSource[0] : 0.f;
-            float g = pSource[1] >= 0.f ? pSource[1] : 0.f;
-            float b = pSource[2] >= 0.f ? pSource[2] : 0.f;
-            pSource += fpp;
-
-            const float max_xy = (r > g) ? r : g;
-            float max_xyz = (max_xy > b) ? max_xy : b;
-
-            if (max_xyz > 1e-32)
-            {
-                int e;
-                max_xyz = frexpf(max_xyz, &e) * 256.f / max_xyz;
-                e += 128;
-
-                uint8_t red = uint8_t(r * max_xyz);
-                uint8_t green = uint8_t(g * max_xyz);
-                uint8_t blue = uint8_t(b * max_xyz);
-
-                pDestination[0] = red;
-                pDestination[1] = green;
-                pDestination[2] = blue;
-                pDestination[3] = (red || green || blue) ? uint8_t(e & 0xff) : 0;
-            }
-            else
-            {
-                pDestination[0] = pDestination[1] = pDestination[2] = pDestination[3] = 0;
             }
 
-            pDestination += 4;
+            scanPtr += spanLen * 4;
+            pixelCount += spanLen;
         }
-    }
-
-    //-------------------------------------------------------------------------------------
-    // Encode using Adapative RLE
-    //-------------------------------------------------------------------------------------
-    _Success_(return > 0)
-        size_t EncodeRLE(_Out_writes_(width * 4) uint8_t* enc, _In_reads_(width * 4) const uint8_t* rgbe, size_t rowPitch, size_t width)
-    {
-        if (width < 8 || width > 32767)
+        else if (scanPtr[0] == 1 && scanPtr[1] == 1 && scanPtr[2] == 1)
         {
-            // Don't try to compress too narrow or too wide scan-lines
             return 0;
         }
+        else
+        {
+            if (encSize + 4 > rowPitch)
+                return 0;
 
-#ifdef WRITE_OLD_COLORS
-        size_t encSize = 0;
+            enc[0] = scanPtr[0];
+            enc[1] = scanPtr[1];
+            enc[2] = scanPtr[2];
+            enc[3] = scanPtr[3];
+            enc += 4;
+            encSize += 4;
+            ++pixelCount;
+            scanPtr += 4;
+        }
+    }
 
-        const uint8_t* scanPtr = rgbe;
+    return encSize;
+#else
+    enc[0] = 2;
+    enc[1] = 2;
+    enc[2] = uint8_t(width >> 8);
+    enc[3] = uint8_t(width & 0xff);
+    enc += 4;
+    size_t encSize = 4;
+
+    uint8_t scan[128] = {};
+
+    for (int channel = 0; channel < 4; ++channel)
+    {
+        const uint8_t* spanPtr = rgbe + channel;
         for (size_t pixelCount = 0; pixelCount < width;)
         {
-            size_t spanLen = 1;
-            const uint32_t* spanPtr = reinterpret_cast<const uint32_t*>(scanPtr);
-            while (pixelCount + spanLen < width && spanLen < 32767)
+            uint8_t spanLen = 1;
+            while (pixelCount + spanLen < width && spanLen < 127)
             {
-                if (spanPtr[spanLen] == *spanPtr)
+                if (spanPtr[spanLen * 4] == *spanPtr)
                 {
                     ++spanLen;
                 }
@@ -356,158 +466,48 @@ namespace
                     break;
             }
 
-            if (spanLen > 2)
+            if (spanLen > 1)
             {
-                if (scanPtr[0] == 1 && scanPtr[1] == 1 && scanPtr[2] == 1)
-                {
-                    return 0;
-                }
-
-                if (encSize + 8 > rowPitch)
+                if (encSize + 2 > rowPitch)
                     return 0;
 
-                uint8_t rleLen = static_cast<uint8_t>(std::min<size_t>(spanLen - 1, 255));
-
-                enc[0] = scanPtr[0];
-                enc[1] = scanPtr[1];
-                enc[2] = scanPtr[2];
-                enc[3] = scanPtr[3];
-                enc[4] = 1;
-                enc[5] = 1;
-                enc[6] = 1;
-                enc[7] = rleLen;
-                enc += 8;
-                encSize += 8;
-
-                size_t remaining = spanLen - 1 - rleLen;
-
-                if (remaining > 0)
-                {
-                    rleLen = static_cast<uint8_t>(remaining >> 8);
-
-                    if (rleLen > 0)
-                    {
-                        if (encSize + 4 > rowPitch)
-                            return 0;
-
-                        enc[0] = 1;
-                        enc[1] = 1;
-                        enc[2] = 1;
-                        enc[3] = rleLen;
-                        enc += 4;
-                        encSize += 4;
-
-                        remaining -= (rleLen << 8);
-                    }
-
-                    while (remaining > 0)
-                    {
-                        if (encSize + 4 > rowPitch)
-                            return 0;
-
-                        enc[0] = scanPtr[0];
-                        enc[1] = scanPtr[1];
-                        enc[2] = scanPtr[2];
-                        enc[3] = scanPtr[3];
-                        enc += 4;
-                        encSize += 4;
-
-                        --remaining;
-                    }
-                }
-
-                scanPtr += spanLen * 4;
+                enc[0] = 128 + spanLen;
+                enc[1] = *spanPtr;
+                enc += 2;
+                encSize += 2;
+                spanPtr += spanLen * 4;
                 pixelCount += spanLen;
-            }
-            else if (scanPtr[0] == 1 && scanPtr[1] == 1 && scanPtr[2] == 1)
-            {
-                return 0;
             }
             else
             {
-                if (encSize + 4 > rowPitch)
-                    return 0;
-
-                enc[0] = scanPtr[0];
-                enc[1] = scanPtr[1];
-                enc[2] = scanPtr[2];
-                enc[3] = scanPtr[3];
-                enc += 4;
-                encSize += 4;
-                ++pixelCount;
-                scanPtr += 4;
-            }
-        }
-
-        return encSize;
-#else
-        enc[0] = 2;
-        enc[1] = 2;
-        enc[2] = uint8_t(width >> 8);
-        enc[3] = uint8_t(width & 0xff);
-        enc += 4;
-        size_t encSize = 4;
-
-        uint8_t scan[128] = {};
-
-        for (int channel = 0; channel < 4; ++channel)
-        {
-            const uint8_t* spanPtr = rgbe + channel;
-            for (size_t pixelCount = 0; pixelCount < width;)
-            {
-                uint8_t spanLen = 1;
-                while (pixelCount + spanLen < width && spanLen < 127)
+                uint8_t runLen = 1;
+                scan[0] = *spanPtr;
+                while (pixelCount + runLen < width && runLen < 127)
                 {
-                    if (spanPtr[spanLen * 4] == *spanPtr)
+                    if (spanPtr[(runLen - 1) * 4] != spanPtr[runLen * 4])
                     {
-                        ++spanLen;
+                        scan[runLen++] = spanPtr[runLen * 4];
                     }
                     else
                         break;
                 }
 
-                if (spanLen > 1)
-                {
-                    if (encSize + 2 > rowPitch)
-                        return 0;
+                if (encSize + runLen + 1 > rowPitch)
+                    return 0;
 
-                    enc[0] = 128 + spanLen;
-                    enc[1] = *spanPtr;
-                    enc += 2;
-                    encSize += 2;
-                    spanPtr += spanLen * 4;
-                    pixelCount += spanLen;
-                }
-                else
-                {
-                    uint8_t runLen = 1;
-                    scan[0] = *spanPtr;
-                    while (pixelCount + runLen < width && runLen < 127)
-                    {
-                        if (spanPtr[(runLen - 1) * 4] != spanPtr[runLen * 4])
-                        {
-                            scan[runLen++] = spanPtr[runLen * 4];
-                        }
-                        else
-                            break;
-                    }
-
-                    if (encSize + runLen + 1 > rowPitch)
-                        return 0;
-
-                    *enc++ = runLen;
-                    memcpy(enc, scan, runLen);
-                    enc += runLen;
-                    encSize += runLen + 1;
-                    spanPtr += runLen * 4;
-                    pixelCount += runLen;
-                }
+                *enc++ = runLen;
+                memcpy(enc, scan, runLen);
+                enc += runLen;
+                encSize += runLen + 1;
+                spanPtr += runLen * 4;
+                pixelCount += runLen;
             }
         }
-
-        return encSize;
-#endif
     }
+
+    return encSize;
+#endif
+}
 }
 
 
@@ -539,7 +539,7 @@ HRESULT DirectX::GetMetadataFromHDRFile(const wchar_t* szFile, TexMetadata& meta
     ScopedHandle hFile(safe_handle(CreateFile2(szFile, GENERIC_READ, FILE_SHARE_READ, OPEN_EXISTING, nullptr)));
 #else
     ScopedHandle hFile(safe_handle(CreateFileW(szFile, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING,
-        FILE_FLAG_SEQUENTIAL_SCAN, nullptr)));
+                                   FILE_FLAG_SEQUENTIAL_SCAN, nullptr)));
 #endif
     if (!hFile)
     {
@@ -640,7 +640,7 @@ HRESULT DirectX::LoadFromHDRMemory(const void* pSource, size_t size, TexMetadata
         pixelLen -= 4;
 
         auto scanLine = reinterpret_cast<float*>(destPtr);
-        
+
         if (inColor[0] == 2 && inColor[1] == 2 && inColor[2] < 128)
         {
             // Adaptive Run Length Encoding (RLE)
@@ -811,7 +811,7 @@ HRESULT DirectX::LoadFromHDRFile(const wchar_t* szFile, TexMetadata* metadata, S
     ScopedHandle hFile(safe_handle(CreateFile2(szFile, GENERIC_READ, FILE_SHARE_READ, OPEN_EXISTING, nullptr)));
 #else
     ScopedHandle hFile(safe_handle(CreateFileW(szFile, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING,
-        FILE_FLAG_SEQUENTIAL_SCAN, nullptr)));
+                                   FILE_FLAG_SEQUENTIAL_SCAN, nullptr)));
 #endif
     if (!hFile)
     {

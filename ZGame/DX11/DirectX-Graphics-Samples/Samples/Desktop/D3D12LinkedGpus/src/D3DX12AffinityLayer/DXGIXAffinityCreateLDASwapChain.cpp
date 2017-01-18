@@ -1,4 +1,4 @@
-//*********************************************************
+﻿//*********************************************************
 //
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
@@ -77,7 +77,7 @@ HRESULT STDMETHODCALLTYPE DXGIXAffinityCreateLDASwapChain(
 
     pSwapChain->AddRef();
     const HRESULT hr = pSwapChain->ResizeBuffers1(AffinityChain->mNumBackBuffers, pDesc->Width, pDesc->Height, pDesc->Format, pDesc->Flags,
-        pCreationNodes.data(), ppCommandQueues.data());
+                       pCreationNodes.data(), ppCommandQueues.data());
 
     return hr;
 }

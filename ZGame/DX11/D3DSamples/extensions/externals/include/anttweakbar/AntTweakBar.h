@@ -1,9 +1,9 @@
-// ----------------------------------------------------------------------------
+﻿// ----------------------------------------------------------------------------
 //
 //  @file       AntTweakBar.h
 //
-//  @brief      AntTweakBar is a light and intuitive graphical user interface 
-//              that can be readily integrated into OpenGL and DirectX 
+//  @brief      AntTweakBar is a light and intuitive graphical user interface
+//              that can be readily integrated into OpenGL and DirectX
 //              applications in order to interactively tweak parameters.
 //
 //  @author     Philippe Decaudin
@@ -34,7 +34,7 @@
 #   else
 #       include <string>
 #   endif
-    extern "C" {
+extern "C" {
 #endif  // __cplusplus
 
 
@@ -269,7 +269,7 @@ TW_API int      TW_CALL TwKeyTest(int key, int modifiers);
 typedef enum ETwMouseAction
 {
     TW_MOUSE_RELEASED,
-    TW_MOUSE_PRESSED  
+    TW_MOUSE_PRESSED
 } TwMouseAction;
 typedef enum ETwMouseButtonID
 {
@@ -299,9 +299,9 @@ TW_API void     TW_CALL TwHandleErrors(TwErrorHandler errorHandler);
 #   define _W64
 #endif  // _W64
 #ifdef _WIN64
-    TW_API int  TW_CALL TwEventWin(void *wnd, unsigned int msg, unsigned __int64 _W64 wParam, __int64 _W64 lParam);
+TW_API int  TW_CALL TwEventWin(void *wnd, unsigned int msg, unsigned __int64 _W64 wParam, __int64 _W64 lParam);
 #else
-    TW_API int  TW_CALL TwEventWin(void *wnd, unsigned int msg, unsigned int _W64 wParam, int _W64 lParam);
+TW_API int  TW_CALL TwEventWin(void *wnd, unsigned int msg, unsigned int _W64 wParam, int _W64 lParam);
 #endif
 #define TwEventWin32    TwEventWin // For compatibility with AntTweakBar versions prior to 1.11
 
@@ -311,20 +311,20 @@ TW_API int      TW_CALL TwEventSDL(const void *sdlEvent, unsigned char sdlMajorV
 // For GLFW event callbacks
 // You should define GLFW_CDECL before including AntTweakBar.h if your version of GLFW uses cdecl calling convensions
 #ifdef GLFW_CDECL
-    TW_API int TW_CDECL_CALL TwEventMouseButtonGLFWcdecl(int glfwButton, int glfwAction);
-    TW_API int TW_CDECL_CALL TwEventKeyGLFWcdecl(int glfwKey, int glfwAction);
-    TW_API int TW_CDECL_CALL TwEventCharGLFWcdecl(int glfwChar, int glfwAction);
-    TW_API int TW_CDECL_CALL TwEventMousePosGLFWcdecl(int mouseX, int mouseY);
-    TW_API int TW_CDECL_CALL TwEventMouseWheelGLFWcdecl(int wheelPos);
+TW_API int TW_CDECL_CALL TwEventMouseButtonGLFWcdecl(int glfwButton, int glfwAction);
+TW_API int TW_CDECL_CALL TwEventKeyGLFWcdecl(int glfwKey, int glfwAction);
+TW_API int TW_CDECL_CALL TwEventCharGLFWcdecl(int glfwChar, int glfwAction);
+TW_API int TW_CDECL_CALL TwEventMousePosGLFWcdecl(int mouseX, int mouseY);
+TW_API int TW_CDECL_CALL TwEventMouseWheelGLFWcdecl(int wheelPos);
 #   define TwEventMouseButtonGLFW TwEventMouseButtonGLFWcdecl
 #   define TwEventKeyGLFW         TwEventKeyGLFWcdecl
 #   define TwEventCharGLFW        TwEventCharGLFWcdecl
 #   define TwEventMousePosGLFW    TwEventMousePosGLFWcdecl
 #   define TwEventMouseWheelGLFW  TwEventMouseWheelGLFWcdecl
 #else
-    TW_API int  TW_CALL TwEventMouseButtonGLFW(int glfwButton, int glfwAction);
-    TW_API int  TW_CALL TwEventKeyGLFW(int glfwKey, int glfwAction);
-    TW_API int  TW_CALL TwEventCharGLFW(int glfwChar, int glfwAction);
+TW_API int  TW_CALL TwEventMouseButtonGLFW(int glfwButton, int glfwAction);
+TW_API int  TW_CALL TwEventKeyGLFW(int glfwKey, int glfwAction);
+TW_API int  TW_CALL TwEventCharGLFW(int glfwChar, int glfwAction);
 #   define TwEventMousePosGLFW     TwMouseMotion
 #   define TwEventMouseWheelGLFW   TwMouseWheel
 #endif
@@ -350,7 +350,7 @@ TW_API int      TW_CALL TwEventSFML(const void *sfmlEvent, unsigned char sfmlMaj
 
 // For X11 event loop
 #if defined(_UNIX)
-    TW_API int TW_CDECL_CALL TwEventX11(void *xevent);
+TW_API int TW_CDECL_CALL TwEventX11(void *xevent);
 #endif
 
 // ----------------------------------------------------------------------------
@@ -367,19 +367,19 @@ TW_COMPILE_TIME_ASSERT(TW_DOUBLE,  sizeof(double)  == 8);
 
 // Check pointer size on Windows
 #if !defined(_WIN64) && defined(_WIN32)
-    // If the following assert failed, the platform is not 32-bit and _WIN64 is not defined.
-    // When targetting 64-bit Windows platform, _WIN64 must be defined.
-    TW_COMPILE_TIME_ASSERT(TW_PTR32, sizeof(void*) == 4);
+// If the following assert failed, the platform is not 32-bit and _WIN64 is not defined.
+// When targetting 64-bit Windows platform, _WIN64 must be defined.
+TW_COMPILE_TIME_ASSERT(TW_PTR32, sizeof(void*) == 4);
 #elif defined(_WIN64)
-    // If the following assert failed, _WIN64 is defined but the targeted platform is not 64-bit.
-    TW_COMPILE_TIME_ASSERT(TW_PTR64, sizeof(void*) == 8);
+// If the following assert failed, _WIN64 is defined but the targeted platform is not 64-bit.
+TW_COMPILE_TIME_ASSERT(TW_PTR64, sizeof(void*) == 8);
 #endif
 
 //  ---------------------------------------------------------------------------
 
 
 #ifdef  __cplusplus
-    }   // extern "C"
+}   // extern "C"
 #endif  // __cplusplus
 
 

@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // DirectXTexPMAlpha.cpp
-//  
+//
 // DirectX Texture Library - Premultiplied alpha operations
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -19,171 +19,171 @@ using namespace DirectX;
 
 namespace
 {
-    //---------------------------------------------------------------------------------
-    // NonPremultiplied alpha -> Premultiplied alpha
-    HRESULT PremultiplyAlpha_(const Image& srcImage, const Image& destImage)
+//---------------------------------------------------------------------------------
+// NonPremultiplied alpha -> Premultiplied alpha
+HRESULT PremultiplyAlpha_(const Image& srcImage, const Image& destImage)
+{
+    assert(srcImage.width == destImage.width);
+    assert(srcImage.height == destImage.height);
+
+    ScopedAlignedArrayXMVECTOR scanline(reinterpret_cast<XMVECTOR*>(_aligned_malloc((sizeof(XMVECTOR)*srcImage.width), 16)));
+    if (!scanline)
+        return E_OUTOFMEMORY;
+
+    const uint8_t *pSrc = srcImage.pixels;
+    uint8_t *pDest = destImage.pixels;
+    if (!pSrc || !pDest)
+        return E_POINTER;
+
+    for (size_t h = 0; h < srcImage.height; ++h)
     {
-        assert(srcImage.width == destImage.width);
-        assert(srcImage.height == destImage.height);
+        if (!_LoadScanline(scanline.get(), srcImage.width, pSrc, srcImage.rowPitch, srcImage.format))
+            return E_FAIL;
 
-        ScopedAlignedArrayXMVECTOR scanline(reinterpret_cast<XMVECTOR*>(_aligned_malloc((sizeof(XMVECTOR)*srcImage.width), 16)));
-        if (!scanline)
-            return E_OUTOFMEMORY;
-
-        const uint8_t *pSrc = srcImage.pixels;
-        uint8_t *pDest = destImage.pixels;
-        if (!pSrc || !pDest)
-            return E_POINTER;
-
-        for (size_t h = 0; h < srcImage.height; ++h)
+        XMVECTOR* ptr = scanline.get();
+        for (size_t w = 0; w < srcImage.width; ++w)
         {
-            if (!_LoadScanline(scanline.get(), srcImage.width, pSrc, srcImage.rowPitch, srcImage.format))
-                return E_FAIL;
-
-            XMVECTOR* ptr = scanline.get();
-            for (size_t w = 0; w < srcImage.width; ++w)
-            {
-                XMVECTOR v = *ptr;
-                XMVECTOR alpha = XMVectorSplatW(*ptr);
-                alpha = XMVectorMultiply(v, alpha);
-                *(ptr++) = XMVectorSelect(v, alpha, g_XMSelect1110);
-            }
-
-            if (!_StoreScanline(pDest, destImage.rowPitch, destImage.format, scanline.get(), srcImage.width))
-                return E_FAIL;
-
-            pSrc += srcImage.rowPitch;
-            pDest += destImage.rowPitch;
+            XMVECTOR v = *ptr;
+            XMVECTOR alpha = XMVectorSplatW(*ptr);
+            alpha = XMVectorMultiply(v, alpha);
+            *(ptr++) = XMVectorSelect(v, alpha, g_XMSelect1110);
         }
 
-        return S_OK;
+        if (!_StoreScanline(pDest, destImage.rowPitch, destImage.format, scanline.get(), srcImage.width))
+            return E_FAIL;
+
+        pSrc += srcImage.rowPitch;
+        pDest += destImage.rowPitch;
     }
 
-    HRESULT PremultiplyAlphaLinear(const Image& srcImage, DWORD flags, const Image& destImage)
+    return S_OK;
+}
+
+HRESULT PremultiplyAlphaLinear(const Image& srcImage, DWORD flags, const Image& destImage)
+{
+    assert(srcImage.width == destImage.width);
+    assert(srcImage.height == destImage.height);
+
+    static_assert(TEX_PMALPHA_SRGB_IN == TEX_FILTER_SRGB_IN, "TEX_PMALHPA_SRGB* should match TEX_FILTER_SRGB*");
+    static_assert(TEX_PMALPHA_SRGB_OUT == TEX_FILTER_SRGB_OUT, "TEX_PMALHPA_SRGB* should match TEX_FILTER_SRGB*");
+    static_assert(TEX_PMALPHA_SRGB == TEX_FILTER_SRGB, "TEX_PMALHPA_SRGB* should match TEX_FILTER_SRGB*");
+    flags &= TEX_PMALPHA_SRGB;
+
+    ScopedAlignedArrayXMVECTOR scanline(reinterpret_cast<XMVECTOR*>(_aligned_malloc((sizeof(XMVECTOR)*srcImage.width), 16)));
+    if (!scanline)
+        return E_OUTOFMEMORY;
+
+    const uint8_t *pSrc = srcImage.pixels;
+    uint8_t *pDest = destImage.pixels;
+    if (!pSrc || !pDest)
+        return E_POINTER;
+
+    for (size_t h = 0; h < srcImage.height; ++h)
     {
-        assert(srcImage.width == destImage.width);
-        assert(srcImage.height == destImage.height);
+        if (!_LoadScanlineLinear(scanline.get(), srcImage.width, pSrc, srcImage.rowPitch, srcImage.format, flags))
+            return E_FAIL;
 
-        static_assert(TEX_PMALPHA_SRGB_IN == TEX_FILTER_SRGB_IN, "TEX_PMALHPA_SRGB* should match TEX_FILTER_SRGB*");
-        static_assert(TEX_PMALPHA_SRGB_OUT == TEX_FILTER_SRGB_OUT, "TEX_PMALHPA_SRGB* should match TEX_FILTER_SRGB*");
-        static_assert(TEX_PMALPHA_SRGB == TEX_FILTER_SRGB, "TEX_PMALHPA_SRGB* should match TEX_FILTER_SRGB*");
-        flags &= TEX_PMALPHA_SRGB;
-
-        ScopedAlignedArrayXMVECTOR scanline(reinterpret_cast<XMVECTOR*>(_aligned_malloc((sizeof(XMVECTOR)*srcImage.width), 16)));
-        if (!scanline)
-            return E_OUTOFMEMORY;
-
-        const uint8_t *pSrc = srcImage.pixels;
-        uint8_t *pDest = destImage.pixels;
-        if (!pSrc || !pDest)
-            return E_POINTER;
-
-        for (size_t h = 0; h < srcImage.height; ++h)
+        XMVECTOR* ptr = scanline.get();
+        for (size_t w = 0; w < srcImage.width; ++w)
         {
-            if (!_LoadScanlineLinear(scanline.get(), srcImage.width, pSrc, srcImage.rowPitch, srcImage.format, flags))
-                return E_FAIL;
-
-            XMVECTOR* ptr = scanline.get();
-            for (size_t w = 0; w < srcImage.width; ++w)
-            {
-                XMVECTOR v = *ptr;
-                XMVECTOR alpha = XMVectorSplatW(*ptr);
-                alpha = XMVectorMultiply(v, alpha);
-                *(ptr++) = XMVectorSelect(v, alpha, g_XMSelect1110);
-            }
-
-            if (!_StoreScanlineLinear(pDest, destImage.rowPitch, destImage.format, scanline.get(), srcImage.width, flags))
-                return E_FAIL;
-
-            pSrc += srcImage.rowPitch;
-            pDest += destImage.rowPitch;
+            XMVECTOR v = *ptr;
+            XMVECTOR alpha = XMVectorSplatW(*ptr);
+            alpha = XMVectorMultiply(v, alpha);
+            *(ptr++) = XMVectorSelect(v, alpha, g_XMSelect1110);
         }
 
-        return S_OK;
+        if (!_StoreScanlineLinear(pDest, destImage.rowPitch, destImage.format, scanline.get(), srcImage.width, flags))
+            return E_FAIL;
+
+        pSrc += srcImage.rowPitch;
+        pDest += destImage.rowPitch;
     }
 
-    //---------------------------------------------------------------------------------
-    // Premultiplied alpha -> NonPremultiplied alpha (a.k.a. Straight alpha)
-    HRESULT DemultiplyAlpha(const Image& srcImage, const Image& destImage)
+    return S_OK;
+}
+
+//---------------------------------------------------------------------------------
+// Premultiplied alpha -> NonPremultiplied alpha (a.k.a. Straight alpha)
+HRESULT DemultiplyAlpha(const Image& srcImage, const Image& destImage)
+{
+    assert(srcImage.width == destImage.width);
+    assert(srcImage.height == destImage.height);
+
+    ScopedAlignedArrayXMVECTOR scanline(reinterpret_cast<XMVECTOR*>(_aligned_malloc((sizeof(XMVECTOR)*srcImage.width), 16)));
+    if (!scanline)
+        return E_OUTOFMEMORY;
+
+    const uint8_t *pSrc = srcImage.pixels;
+    uint8_t *pDest = destImage.pixels;
+    if (!pSrc || !pDest)
+        return E_POINTER;
+
+    for (size_t h = 0; h < srcImage.height; ++h)
     {
-        assert(srcImage.width == destImage.width);
-        assert(srcImage.height == destImage.height);
+        if (!_LoadScanline(scanline.get(), srcImage.width, pSrc, srcImage.rowPitch, srcImage.format))
+            return E_FAIL;
 
-        ScopedAlignedArrayXMVECTOR scanline(reinterpret_cast<XMVECTOR*>(_aligned_malloc((sizeof(XMVECTOR)*srcImage.width), 16)));
-        if (!scanline)
-            return E_OUTOFMEMORY;
-
-        const uint8_t *pSrc = srcImage.pixels;
-        uint8_t *pDest = destImage.pixels;
-        if (!pSrc || !pDest)
-            return E_POINTER;
-
-        for (size_t h = 0; h < srcImage.height; ++h)
+        XMVECTOR* ptr = scanline.get();
+        for (size_t w = 0; w < srcImage.width; ++w)
         {
-            if (!_LoadScanline(scanline.get(), srcImage.width, pSrc, srcImage.rowPitch, srcImage.format))
-                return E_FAIL;
-
-            XMVECTOR* ptr = scanline.get();
-            for (size_t w = 0; w < srcImage.width; ++w)
-            {
-                XMVECTOR v = *ptr;
-                XMVECTOR alpha = XMVectorSplatW(*ptr);
-                alpha = XMVectorDivide(v, alpha);
-                *(ptr++) = XMVectorSelect(v, alpha, g_XMSelect1110);
-            }
-
-            if (!_StoreScanline(pDest, destImage.rowPitch, destImage.format, scanline.get(), srcImage.width))
-                return E_FAIL;
-
-            pSrc += srcImage.rowPitch;
-            pDest += destImage.rowPitch;
+            XMVECTOR v = *ptr;
+            XMVECTOR alpha = XMVectorSplatW(*ptr);
+            alpha = XMVectorDivide(v, alpha);
+            *(ptr++) = XMVectorSelect(v, alpha, g_XMSelect1110);
         }
 
-        return S_OK;
+        if (!_StoreScanline(pDest, destImage.rowPitch, destImage.format, scanline.get(), srcImage.width))
+            return E_FAIL;
+
+        pSrc += srcImage.rowPitch;
+        pDest += destImage.rowPitch;
     }
 
-    HRESULT DemultiplyAlphaLinear(const Image& srcImage, DWORD flags, const Image& destImage)
+    return S_OK;
+}
+
+HRESULT DemultiplyAlphaLinear(const Image& srcImage, DWORD flags, const Image& destImage)
+{
+    assert(srcImage.width == destImage.width);
+    assert(srcImage.height == destImage.height);
+
+    static_assert(TEX_PMALPHA_SRGB_IN == TEX_FILTER_SRGB_IN, "TEX_PMALHPA_SRGB* should match TEX_FILTER_SRGB*");
+    static_assert(TEX_PMALPHA_SRGB_OUT == TEX_FILTER_SRGB_OUT, "TEX_PMALHPA_SRGB* should match TEX_FILTER_SRGB*");
+    static_assert(TEX_PMALPHA_SRGB == TEX_FILTER_SRGB, "TEX_PMALHPA_SRGB* should match TEX_FILTER_SRGB*");
+    flags &= TEX_PMALPHA_SRGB;
+
+    ScopedAlignedArrayXMVECTOR scanline(reinterpret_cast<XMVECTOR*>(_aligned_malloc((sizeof(XMVECTOR)*srcImage.width), 16)));
+    if (!scanline)
+        return E_OUTOFMEMORY;
+
+    const uint8_t *pSrc = srcImage.pixels;
+    uint8_t *pDest = destImage.pixels;
+    if (!pSrc || !pDest)
+        return E_POINTER;
+
+    for (size_t h = 0; h < srcImage.height; ++h)
     {
-        assert(srcImage.width == destImage.width);
-        assert(srcImage.height == destImage.height);
+        if (!_LoadScanlineLinear(scanline.get(), srcImage.width, pSrc, srcImage.rowPitch, srcImage.format, flags))
+            return E_FAIL;
 
-        static_assert(TEX_PMALPHA_SRGB_IN == TEX_FILTER_SRGB_IN, "TEX_PMALHPA_SRGB* should match TEX_FILTER_SRGB*");
-        static_assert(TEX_PMALPHA_SRGB_OUT == TEX_FILTER_SRGB_OUT, "TEX_PMALHPA_SRGB* should match TEX_FILTER_SRGB*");
-        static_assert(TEX_PMALPHA_SRGB == TEX_FILTER_SRGB, "TEX_PMALHPA_SRGB* should match TEX_FILTER_SRGB*");
-        flags &= TEX_PMALPHA_SRGB;
-
-        ScopedAlignedArrayXMVECTOR scanline(reinterpret_cast<XMVECTOR*>(_aligned_malloc((sizeof(XMVECTOR)*srcImage.width), 16)));
-        if (!scanline)
-            return E_OUTOFMEMORY;
-
-        const uint8_t *pSrc = srcImage.pixels;
-        uint8_t *pDest = destImage.pixels;
-        if (!pSrc || !pDest)
-            return E_POINTER;
-
-        for (size_t h = 0; h < srcImage.height; ++h)
+        XMVECTOR* ptr = scanline.get();
+        for (size_t w = 0; w < srcImage.width; ++w)
         {
-            if (!_LoadScanlineLinear(scanline.get(), srcImage.width, pSrc, srcImage.rowPitch, srcImage.format, flags))
-                return E_FAIL;
-
-            XMVECTOR* ptr = scanline.get();
-            for (size_t w = 0; w < srcImage.width; ++w)
-            {
-                XMVECTOR v = *ptr;
-                XMVECTOR alpha = XMVectorSplatW(*ptr);
-                alpha = XMVectorDivide(v, alpha);
-                *(ptr++) = XMVectorSelect(v, alpha, g_XMSelect1110);
-            }
-
-            if (!_StoreScanlineLinear(pDest, destImage.rowPitch, destImage.format, scanline.get(), srcImage.width, flags))
-                return E_FAIL;
-
-            pSrc += srcImage.rowPitch;
-            pDest += destImage.rowPitch;
+            XMVECTOR v = *ptr;
+            XMVECTOR alpha = XMVectorSplatW(*ptr);
+            alpha = XMVectorDivide(v, alpha);
+            *(ptr++) = XMVectorSelect(v, alpha, g_XMSelect1110);
         }
 
-        return S_OK;
+        if (!_StoreScanlineLinear(pDest, destImage.rowPitch, destImage.format, scanline.get(), srcImage.width, flags))
+            return E_FAIL;
+
+        pSrc += srcImage.rowPitch;
+        pDest += destImage.rowPitch;
     }
+
+    return S_OK;
+}
 }
 
 
@@ -204,10 +204,10 @@ HRESULT DirectX::PremultiplyAlpha(
         return E_POINTER;
 
     if (IsCompressed(srcImage.format)
-        || IsPlanar(srcImage.format)
-        || IsPalettized(srcImage.format)
-        || IsTypeless(srcImage.format)
-        || !HasAlpha(srcImage.format))
+            || IsPlanar(srcImage.format)
+            || IsPalettized(srcImage.format)
+            || IsTypeless(srcImage.format)
+            || !HasAlpha(srcImage.format))
         return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
 
     if ((srcImage.width > UINT32_MAX) || (srcImage.height > UINT32_MAX))
@@ -257,10 +257,10 @@ HRESULT DirectX::PremultiplyAlpha(
         return E_INVALIDARG;
 
     if (IsCompressed(metadata.format)
-        || IsPlanar(metadata.format)
-        || IsPalettized(metadata.format)
-        || IsTypeless(metadata.format)
-        || !HasAlpha(metadata.format))
+            || IsPlanar(metadata.format)
+            || IsPalettized(metadata.format)
+            || IsTypeless(metadata.format)
+            || !HasAlpha(metadata.format))
         return HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED);
 
     if ((metadata.width > UINT32_MAX) || (metadata.height > UINT32_MAX))

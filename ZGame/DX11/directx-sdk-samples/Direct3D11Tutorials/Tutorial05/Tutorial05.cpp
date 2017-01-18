@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: Tutorial05.cpp
 //
 // This application demonstrates animation using matrix transformations
@@ -33,9 +33,9 @@ struct SimpleVertex
 
 struct ConstantBuffer
 {
-	XMMATRIX mWorld;
-	XMMATRIX mView;
-	XMMATRIX mProjection;
+    XMMATRIX mWorld;
+    XMMATRIX mView;
+    XMMATRIX mProjection;
 };
 
 
@@ -78,7 +78,7 @@ void Render();
 
 
 //--------------------------------------------------------------------------------------
-// Entry point to the program. Initializes everything and goes into a message processing 
+// Entry point to the program. Initializes everything and goes into a message processing
 // loop. Idle time is used to render the scene.
 //--------------------------------------------------------------------------------------
 int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow )
@@ -167,8 +167,8 @@ HRESULT CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR sz
     DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG
     // Set the D3DCOMPILE_DEBUG flag to embed debug information in the shaders.
-    // Setting this flag improves the shader debugging experience, but still allows 
-    // the shaders to be optimized and to run exactly the way they will run in 
+    // Setting this flag improves the shader debugging experience, but still allows
+    // the shaders to be optimized and to run exactly the way they will run in
     // the release configuration of this program.
     dwShaderFlags |= D3DCOMPILE_DEBUG;
 
@@ -177,8 +177,8 @@ HRESULT CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR sz
 #endif
 
     ID3DBlob* pErrorBlob = nullptr;
-    hr = D3DCompileFromFile( szFileName, nullptr, nullptr, szEntryPoint, szShaderModel, 
-        dwShaderFlags, 0, ppBlobOut, &pErrorBlob );
+    hr = D3DCompileFromFile( szFileName, nullptr, nullptr, szEntryPoint, szShaderModel,
+                             dwShaderFlags, 0, ppBlobOut, &pErrorBlob );
     if( FAILED(hr) )
     {
         if( pErrorBlob )
@@ -219,14 +219,14 @@ HRESULT InitDevice()
     };
     UINT numDriverTypes = ARRAYSIZE( driverTypes );
 
-	D3D_FEATURE_LEVEL featureLevels[] =
+    D3D_FEATURE_LEVEL featureLevels[] =
     {
         D3D_FEATURE_LEVEL_11_1,
         D3D_FEATURE_LEVEL_11_0,
         D3D_FEATURE_LEVEL_10_1,
         D3D_FEATURE_LEVEL_10_0,
-	};
-	UINT numFeatureLevels = ARRAYSIZE( featureLevels );
+    };
+    UINT numFeatureLevels = ARRAYSIZE( featureLevels );
 
     for( UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++ )
     {
@@ -338,7 +338,7 @@ HRESULT InitDevice()
 
     // Create depth stencil texture
     D3D11_TEXTURE2D_DESC descDepth;
-	ZeroMemory( &descDepth, sizeof(descDepth) );
+    ZeroMemory( &descDepth, sizeof(descDepth) );
     descDepth.Width = width;
     descDepth.Height = height;
     descDepth.MipLevels = 1;
@@ -356,7 +356,7 @@ HRESULT InitDevice()
 
     // Create the depth stencil view
     D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
-	ZeroMemory( &descDSV, sizeof(descDSV) );
+    ZeroMemory( &descDSV, sizeof(descDSV) );
     descDSV.Format = descDepth.Format;
     descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
     descDSV.Texture2D.MipSlice = 0;
@@ -376,8 +376,8 @@ HRESULT InitDevice()
     vp.TopLeftY = 0;
     g_pImmediateContext->RSSetViewports( 1, &vp );
 
-	// Compile the vertex shader
-	ID3DBlob* pVSBlob = nullptr;
+    // Compile the vertex shader
+    ID3DBlob* pVSBlob = nullptr;
     hr = CompileShaderFromFile( L"Tutorial05.fx", "VS", "vs_4_0", &pVSBlob );
     if( FAILED( hr ) )
     {
@@ -386,34 +386,34 @@ HRESULT InitDevice()
         return hr;
     }
 
-	// Create the vertex shader
-	hr = g_pd3dDevice->CreateVertexShader( pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), nullptr, &g_pVertexShader );
-	if( FAILED( hr ) )
-	{	
-		pVSBlob->Release();
+    // Create the vertex shader
+    hr = g_pd3dDevice->CreateVertexShader( pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), nullptr, &g_pVertexShader );
+    if( FAILED( hr ) )
+    {
+        pVSBlob->Release();
         return hr;
-	}
+    }
 
     // Define the input layout
     D3D11_INPUT_ELEMENT_DESC layout[] =
     {
         { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         { "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	};
-	UINT numElements = ARRAYSIZE( layout );
+    };
+    UINT numElements = ARRAYSIZE( layout );
 
     // Create the input layout
-	hr = g_pd3dDevice->CreateInputLayout( layout, numElements, pVSBlob->GetBufferPointer(),
+    hr = g_pd3dDevice->CreateInputLayout( layout, numElements, pVSBlob->GetBufferPointer(),
                                           pVSBlob->GetBufferSize(), &g_pVertexLayout );
-	pVSBlob->Release();
-	if( FAILED( hr ) )
+    pVSBlob->Release();
+    if( FAILED( hr ) )
         return hr;
 
     // Set the input layout
     g_pImmediateContext->IASetInputLayout( g_pVertexLayout );
 
-	// Compile the pixel shader
-	ID3DBlob* pPSBlob = nullptr;
+    // Compile the pixel shader
+    ID3DBlob* pPSBlob = nullptr;
     hr = CompileShaderFromFile( L"Tutorial05.fx", "PS", "ps_4_0", &pPSBlob );
     if( FAILED( hr ) )
     {
@@ -422,9 +422,9 @@ HRESULT InitDevice()
         return hr;
     }
 
-	// Create the pixel shader
-	hr = g_pd3dDevice->CreatePixelShader( pPSBlob->GetBufferPointer(), pPSBlob->GetBufferSize(), nullptr, &g_pPixelShader );
-	pPSBlob->Release();
+    // Create the pixel shader
+    hr = g_pd3dDevice->CreatePixelShader( pPSBlob->GetBufferPointer(), pPSBlob->GetBufferSize(), nullptr, &g_pPixelShader );
+    pPSBlob->Release();
     if( FAILED( hr ) )
         return hr;
 
@@ -441,13 +441,13 @@ HRESULT InitDevice()
         { XMFLOAT3( -1.0f, -1.0f, 1.0f ), XMFLOAT4( 0.0f, 0.0f, 0.0f, 1.0f ) },
     };
     D3D11_BUFFER_DESC bd;
-	ZeroMemory( &bd, sizeof(bd) );
+    ZeroMemory( &bd, sizeof(bd) );
     bd.Usage = D3D11_USAGE_DEFAULT;
     bd.ByteWidth = sizeof( SimpleVertex ) * 8;
     bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bd.CPUAccessFlags = 0;
+    bd.CPUAccessFlags = 0;
     D3D11_SUBRESOURCE_DATA InitData;
-	ZeroMemory( &InitData, sizeof(InitData) );
+    ZeroMemory( &InitData, sizeof(InitData) );
     InitData.pSysMem = vertices;
     hr = g_pd3dDevice->CreateBuffer( &bd, &InitData, &g_pVertexBuffer );
     if( FAILED( hr ) )
@@ -482,7 +482,7 @@ HRESULT InitDevice()
     bd.Usage = D3D11_USAGE_DEFAULT;
     bd.ByteWidth = sizeof( WORD ) * 36;        // 36 vertices needed for 12 triangles in a triangle list
     bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	bd.CPUAccessFlags = 0;
+    bd.CPUAccessFlags = 0;
     InitData.pSysMem = indices;
     hr = g_pd3dDevice->CreateBuffer( &bd, &InitData, &g_pIndexBuffer );
     if( FAILED( hr ) )
@@ -494,27 +494,27 @@ HRESULT InitDevice()
     // Set primitive topology
     g_pImmediateContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
-	// Create the constant buffer
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(ConstantBuffer);
-	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	bd.CPUAccessFlags = 0;
+    // Create the constant buffer
+    bd.Usage = D3D11_USAGE_DEFAULT;
+    bd.ByteWidth = sizeof(ConstantBuffer);
+    bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+    bd.CPUAccessFlags = 0;
     hr = g_pd3dDevice->CreateBuffer( &bd, nullptr, &g_pConstantBuffer );
     if( FAILED( hr ) )
         return hr;
 
     // Initialize the world matrix
-	g_World1 = XMMatrixIdentity();
-	g_World2 = XMMatrixIdentity();
+    g_World1 = XMMatrixIdentity();
+    g_World2 = XMMatrixIdentity();
 
     // Initialize the view matrix
-	XMVECTOR Eye = XMVectorSet( 0.0f, 1.0f, -5.0f, 0.0f );
-	XMVECTOR At = XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f );
-	XMVECTOR Up = XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f );
-	g_View = XMMatrixLookAtLH( Eye, At, Up );
+    XMVECTOR Eye = XMVectorSet( 0.0f, 1.0f, -5.0f, 0.0f );
+    XMVECTOR At = XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f );
+    XMVECTOR Up = XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f );
+    g_View = XMMatrixLookAtLH( Eye, At, Up );
 
     // Initialize the projection matrix
-	g_Projection = XMMatrixPerspectiveFovLH( XM_PIDIV2, width / (FLOAT)height, 0.01f, 100.0f );
+    g_Projection = XMMatrixPerspectiveFovLH( XM_PIDIV2, width / (FLOAT)height, 0.01f, 100.0f );
 
     return S_OK;
 }
@@ -564,8 +564,8 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
         PostQuitMessage( 0 );
         break;
 
-        // Note that this tutorial does not handle resizing (WM_SIZE) requests,
-        // so we created the window without the resize border.
+    // Note that this tutorial does not handle resizing (WM_SIZE) requests,
+    // so we created the window without the resize border.
 
     default:
         return DefWindowProc( hWnd, message, wParam, lParam );
@@ -596,15 +596,15 @@ void Render()
     }
 
     // 1st Cube: Rotate around the origin
-	g_World1 = XMMatrixRotationY( t );
+    g_World1 = XMMatrixRotationY( t );
 
     // 2nd Cube:  Rotate around origin
     XMMATRIX mSpin = XMMatrixRotationZ( -t );
     XMMATRIX mOrbit = XMMatrixRotationY( -t * 2.0f );
-	XMMATRIX mTranslate = XMMatrixTranslation( -4.0f, 0.0f, 0.0f );
-	XMMATRIX mScale = XMMatrixScaling( 0.3f, 0.3f, 0.3f );
+    XMMATRIX mTranslate = XMMatrixTranslation( -4.0f, 0.0f, 0.0f );
+    XMMATRIX mScale = XMMatrixScaling( 0.3f, 0.3f, 0.3f );
 
-	g_World2 = mScale * mSpin * mTranslate * mOrbit;
+    g_World2 = mScale * mSpin * mTranslate * mOrbit;
 
     //
     // Clear the back buffer
@@ -620,32 +620,32 @@ void Render()
     // Update variables for the first cube
     //
     ConstantBuffer cb1;
-	cb1.mWorld = XMMatrixTranspose( g_World1 );
-	cb1.mView = XMMatrixTranspose( g_View );
-	cb1.mProjection = XMMatrixTranspose( g_Projection );
-	g_pImmediateContext->UpdateSubresource( g_pConstantBuffer, 0, nullptr, &cb1, 0, 0 );
+    cb1.mWorld = XMMatrixTranspose( g_World1 );
+    cb1.mView = XMMatrixTranspose( g_View );
+    cb1.mProjection = XMMatrixTranspose( g_Projection );
+    g_pImmediateContext->UpdateSubresource( g_pConstantBuffer, 0, nullptr, &cb1, 0, 0 );
 
     //
     // Render the first cube
     //
-	g_pImmediateContext->VSSetShader( g_pVertexShader, nullptr, 0 );
-	g_pImmediateContext->VSSetConstantBuffers( 0, 1, &g_pConstantBuffer );
-	g_pImmediateContext->PSSetShader( g_pPixelShader, nullptr, 0 );
-	g_pImmediateContext->DrawIndexed( 36, 0, 0 );
+    g_pImmediateContext->VSSetShader( g_pVertexShader, nullptr, 0 );
+    g_pImmediateContext->VSSetConstantBuffers( 0, 1, &g_pConstantBuffer );
+    g_pImmediateContext->PSSetShader( g_pPixelShader, nullptr, 0 );
+    g_pImmediateContext->DrawIndexed( 36, 0, 0 );
 
     //
     // Update variables for the second cube
     //
     ConstantBuffer cb2;
-	cb2.mWorld = XMMatrixTranspose( g_World2 );
-	cb2.mView = XMMatrixTranspose( g_View );
-	cb2.mProjection = XMMatrixTranspose( g_Projection );
-	g_pImmediateContext->UpdateSubresource( g_pConstantBuffer, 0, nullptr, &cb2, 0, 0 );
+    cb2.mWorld = XMMatrixTranspose( g_World2 );
+    cb2.mView = XMMatrixTranspose( g_View );
+    cb2.mProjection = XMMatrixTranspose( g_Projection );
+    g_pImmediateContext->UpdateSubresource( g_pConstantBuffer, 0, nullptr, &cb2, 0, 0 );
 
     //
     // Render the second cube
     //
-	g_pImmediateContext->DrawIndexed( 36, 0, 0 );
+    g_pImmediateContext->DrawIndexed( 36, 0, 0 );
 
     //
     // Present our back buffer to our front buffer

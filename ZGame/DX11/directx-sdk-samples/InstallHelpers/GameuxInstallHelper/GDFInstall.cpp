@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------------
+﻿//-----------------------------------------------------------------------------
 // File: GDFInstall.cpp
 //
 // Desc: Windows code that calls GameuxInstallHelper sample dll and displays the results.
@@ -95,15 +95,15 @@ int PASCAL WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
         if( FAILED( hr ) )
         {
             swprintf_s( szMsg, 512, L"Adding game failed: 0x%0.8x\nGDF binary: %s\nGDF Install path: %s\nAll users: %d\n\nNote: This will fail if the game has already been added.  Make sure the game is removed first.",
-                hr, settings.strGDFBinPath, settings.strInstallPath, settings.bAllUsers );
+                        hr, settings.strGDFBinPath, settings.strInstallPath, settings.bAllUsers );
             if( !settings.bSilent )
                 MessageBox( NULL, szMsg, TEXT( "GameExplorerInstall" ), MB_OK | MB_ICONINFORMATION );
             bFailure = true;
         }
-        else 
+        else
         {
             swprintf_s( szMsg, 512, L"GDF binary: %s\nGDF Install path: %s\nAll users: %d\n\n",
-                             settings.strGDFBinPath, settings.strInstallPath, settings.bAllUsers );
+                        settings.strGDFBinPath, settings.strInstallPath, settings.bAllUsers );
 
             wcscat_s( szMsg, 512, L"Adding GDF binary succeeded\n" );
             wcscat_s( szMsg, 512, L"\nGDFInstall.exe /? for a list of options" );
@@ -123,7 +123,7 @@ int PASCAL WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
                 MessageBox( NULL, szMsg, TEXT( "GameExplorerUpdate" ), MB_OK | MB_ICONINFORMATION );
             bFailure = true;
         }
-        else 
+        else
         {
             swprintf_s( szMsg, 256, L"Update of '%s' succeeded\n", settings.strGDFBinPath );
             if( !settings.bSilent )
@@ -141,7 +141,7 @@ int PASCAL WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
                 MessageBox( NULL, szMsg, TEXT( "GameExplorerUninstall" ), MB_OK | MB_ICONINFORMATION );
             bFailure = true;
         }
-        else 
+        else
         {
             swprintf_s( szMsg, 256, L"Uninstall of '%s' succeeded\n", settings.strGDFBinPath );
             if( !settings.bSilent )
@@ -213,7 +213,7 @@ HRESULT EnumAndRemoveGames()
                                                0L, NULL, NULL, &pIWbemServices );
             if( SUCCEEDED( hr ) && pIWbemServices != NULL )
             {
-                // Switch security level to IMPERSONATE. 
+                // Switch security level to IMPERSONATE.
                 CoSetProxyBlanket( pIWbemServices, RPC_C_AUTHN_WINNT, RPC_C_AUTHZ_NONE, NULL,
                                    RPC_C_AUTHN_LEVEL_CALL, RPC_C_IMP_LEVEL_IMPERSONATE, NULL, 0 );
 
@@ -270,7 +270,7 @@ HRESULT EnumAndRemoveGames()
 
                             WCHAR szMsg[256];
                             swprintf_s( szMsg, 256, L"Remove %s [%s] [%s]?", strGameName, strGDFBinaryPath,
-                                             strGameGUID );
+                                        strGameGUID );
                             if( IDYES == MessageBox( NULL, szMsg, L"GDFInstall", MB_YESNO ) )
                             {
                                 GameExplorerUninstall( strGDFBinaryPath );
@@ -299,7 +299,7 @@ HRESULT EnumAndRemoveGames()
 
 
 //--------------------------------------------------------------------------------------
-// Parses the command line for parameters.  See DXUTInit() for list 
+// Parses the command line for parameters.  See DXUTInit() for list
 //--------------------------------------------------------------------------------------
 bool ParseCommandLine( SETTINGS* pSettings )
 {

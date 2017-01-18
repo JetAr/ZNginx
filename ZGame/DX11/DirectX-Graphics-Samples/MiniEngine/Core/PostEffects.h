@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) Microsoft. All rights reserved.
 // This code is licensed under the MIT License (MIT).
 // THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
@@ -8,7 +8,7 @@
 //
 // Developed by Minigraph
 //
-// Author:  James Stanard 
+// Author:  James Stanard
 //
 
 #pragma once
@@ -18,28 +18,28 @@
 
 namespace PostEffects
 {
-	extern BoolVar EnableHDR;			// Turn on tone mapping features
+extern BoolVar EnableHDR;			// Turn on tone mapping features
 
-	// Tone mapping parameters
-	extern ExpVar Exposure;				// Brightness scaler
-	extern ExpVar WhitePoint;			// After exposure, the brightness that reaches full saturation
-	extern BoolVar EnableAdaptation;	// Automatically adjust brightness based on perceived luminance
-	extern BoolVar  bToneMapOnlyLuma;	// Keep color saturation from being lost.
+// Tone mapping parameters
+extern ExpVar Exposure;				// Brightness scaler
+extern ExpVar WhitePoint;			// After exposure, the brightness that reaches full saturation
+extern BoolVar EnableAdaptation;	// Automatically adjust brightness based on perceived luminance
+extern BoolVar  bToneMapOnlyLuma;	// Keep color saturation from being lost.
 
-	// Adapation parameters
-	extern ExpVar MinExposure;
-	extern ExpVar MaxExposure;
-	extern NumVar TargetLuminance;
-	extern NumVar AdaptationRate;
+// Adapation parameters
+extern ExpVar MinExposure;
+extern ExpVar MaxExposure;
+extern NumVar TargetLuminance;
+extern NumVar AdaptationRate;
 
-	// Bloom parameters
-	extern NumVar BloomThreshold;
-	extern NumVar BloomStrength;
-	extern NumVar g_ToeStrength;
+// Bloom parameters
+extern NumVar BloomThreshold;
+extern NumVar BloomStrength;
+extern NumVar g_ToeStrength;
 
-	extern BoolVar EnableFXAA;
+extern BoolVar EnableFXAA;
 
-	void Initialize( void );
-	void Shutdown( void );
-	void Render( void );
+void Initialize( void );
+void Shutdown( void );
+void Render( void );
 };

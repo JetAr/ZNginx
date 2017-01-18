@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // MonitorAPO.h
 //
 // Example custom xAPO for XAudio2
@@ -25,9 +25,9 @@ struct MonitorAPOParams
     MonitorAPOPipe *pipe;
 };
 
-class __declspec( uuid("{A4945B8A-EB14-4c96-8067-DF726B528091}")) 
-CMonitorAPO
-: public CSampleXAPOBase<CMonitorAPO, MonitorAPOParams>
+class __declspec( uuid("{A4945B8A-EB14-4c96-8067-DF726B528091}"))
+    CMonitorAPO
+    : public CSampleXAPOBase<CMonitorAPO, MonitorAPOParams>
 {
 public:
     CMonitorAPO();

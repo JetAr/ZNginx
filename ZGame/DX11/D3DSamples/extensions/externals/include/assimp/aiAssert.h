@@ -1,4 +1,4 @@
-/** @file aiAssert.h
+﻿/** @file aiAssert.h
  */
 #ifndef AI_DEBUG_H_INC
 #define AI_DEBUG_H_INC
@@ -9,7 +9,8 @@
 #error This header requires C++ to be used.
 #endif
 
-namespace Assimp {
+namespace Assimp
+{
 
 //!	\brief	ASSIMP specific assertion test, only works in debug mode
 //!	\param	uiLine	Line in file
@@ -19,7 +20,7 @@ AI_WONT_RETURN void aiAssert(const std::string &message, unsigned int uiLine, co
 
 //!	\def	ai_assert
 //!	\brief	ASSIMP specific assertion test
-#ifdef DEBUG  
+#ifdef DEBUG
 #  define	ai_assert(expression) if( !(expression)) Assimp::aiAssert( #expression, __LINE__, __FILE__);
 #else
 #  define	ai_assert(expression)

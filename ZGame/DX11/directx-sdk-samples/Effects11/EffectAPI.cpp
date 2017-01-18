@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: EffectAPI.cpp
 //
 // Effect API entry point
@@ -21,11 +21,20 @@ using namespace D3DX11Effects;
 
 //-------------------------------------------------------------------------------------
 
-struct handle_closer { void operator()(HANDLE h) { if (h) CloseHandle(h); } };
+struct handle_closer
+{
+    void operator()(HANDLE h)
+    {
+        if (h) CloseHandle(h);
+    }
+};
 
 typedef public std::unique_ptr<void, handle_closer> ScopedHandle;
 
-inline HANDLE safe_handle( HANDLE h ) { return (h == INVALID_HANDLE_VALUE) ? 0 : h; }
+inline HANDLE safe_handle( HANDLE h )
+{
+    return (h == INVALID_HANDLE_VALUE) ? 0 : h;
+}
 
 //-------------------------------------------------------------------------------------
 
@@ -34,18 +43,18 @@ static HRESULT LoadBinaryFromFile( _In_z_ LPCWSTR pFileName, _Inout_ std::unique
     // open the file
 #if (_WIN32_WINNT >= _WIN32_WINNT_WIN8)
     ScopedHandle hFile( safe_handle( CreateFile2( pFileName,
-                                                  GENERIC_READ,
-                                                  FILE_SHARE_READ,
-                                                  OPEN_EXISTING,
-                                                  nullptr ) ) );
+                                     GENERIC_READ,
+                                     FILE_SHARE_READ,
+                                     OPEN_EXISTING,
+                                     nullptr ) ) );
 #else
     ScopedHandle hFile( safe_handle( CreateFileW( pFileName,
-                                                  GENERIC_READ,
-                                                  FILE_SHARE_READ,
-                                                  nullptr,
-                                                  OPEN_EXISTING,
-                                                  FILE_ATTRIBUTE_NORMAL,
-                                                  nullptr ) ) );
+                                     GENERIC_READ,
+                                     FILE_SHARE_READ,
+                                     nullptr,
+                                     OPEN_EXISTING,
+                                     FILE_ATTRIBUTE_NORMAL,
+                                     nullptr ) ) );
 #endif
 
     if ( !hFile )
@@ -106,7 +115,7 @@ static HRESULT LoadBinaryFromFile( _In_z_ LPCWSTR pFileName, _Inout_ std::unique
 
 _Use_decl_annotations_
 HRESULT WINAPI D3DX11CreateEffectFromMemory(LPCVOID pData, SIZE_T DataLength, UINT FXFlags,
-                                            ID3D11Device *pDevice, ID3DX11Effect **ppEffect, LPCSTR srcName )
+        ID3D11Device *pDevice, ID3DX11Effect **ppEffect, LPCSTR srcName )
 {
     if ( !pData || !DataLength || !pDevice || !ppEffect )
         return E_INVALIDARG;

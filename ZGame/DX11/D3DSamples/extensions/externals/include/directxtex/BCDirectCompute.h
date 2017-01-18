@@ -1,6 +1,6 @@
-//-------------------------------------------------------------------------------------
+﻿//-------------------------------------------------------------------------------------
 // BCDirectCompute.h
-//  
+//
 // Direct3D 11 Compute Shader BC Compressor
 //
 // THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
@@ -29,7 +29,10 @@ public:
 
     HRESULT Compress( _In_ const Image& srcImage, _In_ const Image& destImage );
 
-    DXGI_FORMAT GetSourceFormat() const { return m_srcformat; }
+    DXGI_FORMAT GetSourceFormat() const
+    {
+        return m_srcformat;
+    }
 
 private:
     DXGI_FORMAT                                         m_bcformat;
@@ -53,7 +56,7 @@ private:
     Microsoft::WRL::ComPtr<ID3D11Buffer>                m_outputCPU;
     Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView>   m_outputUAV;
     Microsoft::WRL::ComPtr<ID3D11Buffer>                m_constBuffer;
-    
+
     // Compute shader library
     Microsoft::WRL::ComPtr<ID3D11ComputeShader>         m_BC6H_tryModeG10CS;
     Microsoft::WRL::ComPtr<ID3D11ComputeShader>         m_BC6H_tryModeLE10CS;
@@ -62,7 +65,7 @@ private:
     Microsoft::WRL::ComPtr<ID3D11ComputeShader>         m_BC7_tryMode456CS;
     Microsoft::WRL::ComPtr<ID3D11ComputeShader>         m_BC7_tryMode137CS;
     Microsoft::WRL::ComPtr<ID3D11ComputeShader>         m_BC7_tryMode02CS;
-    Microsoft::WRL::ComPtr<ID3D11ComputeShader>         m_BC7_encodeBlockCS;    
+    Microsoft::WRL::ComPtr<ID3D11ComputeShader>         m_BC7_encodeBlockCS;
 };
 
 }; // namespace

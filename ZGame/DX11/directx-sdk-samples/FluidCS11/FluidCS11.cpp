@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: FluidCS11.cpp
 //
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -7,7 +7,7 @@
 //--------------------------------------------------------------------------------------
 // Smoothed Particle Hydrodynamics Algorithm Based Upon:
 // Particle-Based Fluid Simulation for Interactive Applications
-// Matthias M�ller
+// Matthias Müller
 //--------------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------------
@@ -102,7 +102,8 @@ FLOAT g_fMapWidth = (4.0f / 3.0f) * g_fMapHeight;
 
 // Map Wall Collision Planes
 FLOAT g_fWallStiffness = 3000.0f;
-XMFLOAT3A g_vPlanes[4] = {
+XMFLOAT3A g_vPlanes[4] =
+{
     XMFLOAT3A(1, 0, 0),
     XMFLOAT3A(0, 1, 0),
     XMFLOAT3A(-1, 0, g_fMapWidth),
@@ -129,7 +130,7 @@ UINT                                g_iNullUINT = 0;         // Helper to Clear 
 
 CDXUTDialogResourceManager          g_DialogResourceManager; // manager for shared resources of dialogs
 CD3DSettingsDlg                     g_D3DSettingsDlg;        // Device settings dialog
-CDXUTDialog                         g_HUD;                   // manages the 3D   
+CDXUTDialog                         g_HUD;                   // manages the 3D
 CDXUTDialog                         g_SampleUI;              // dialog for sample specific controls
 
 // Resources
@@ -198,7 +199,7 @@ __declspec(align(16)) struct CBSimulationConstants
     FLOAT fGradPressureCoef;
     FLOAT fLapViscosityCoef;
     FLOAT fWallStiffness;
-    
+
     XMFLOAT2A vGravity;
     XMFLOAT4A vGridDim;
 
@@ -241,7 +242,7 @@ ID3D11Buffer*                       g_pSortCB = nullptr;
 #define IDC_SIMGRID               11
 
 //--------------------------------------------------------------------------------------
-// Forward declarations 
+// Forward declarations
 //--------------------------------------------------------------------------------------
 bool CALLBACK ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* pUserContext );
 LRESULT CALLBACK MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bool* pbNoFurtherProcessing,
@@ -253,7 +254,7 @@ bool CALLBACK IsD3D11DeviceAcceptable( const CD3D11EnumAdapterInfo *AdapterInfo,
 HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc,
                                       void* pUserContext );
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                          const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext );
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext );
 void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime,
@@ -264,7 +265,7 @@ void InitApp();
 void RenderText();
 
 //--------------------------------------------------------------------------------------
-// Entry point to the program. Initializes everything and goes into a message processing 
+// Entry point to the program. Initializes everything and goes into a message processing
 // loop. Idle time is used to render the scene.
 //--------------------------------------------------------------------------------------
 int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow )
@@ -300,7 +301,7 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 
 //--------------------------------------------------------------------------------------
-// Initialize the app 
+// Initialize the app
 //--------------------------------------------------------------------------------------
 void InitApp()
 {
@@ -309,15 +310,17 @@ void InitApp()
     g_HUD.Init( &g_DialogResourceManager );
     g_SampleUI.Init( &g_DialogResourceManager );
 
-    g_HUD.SetCallback( OnGUIEvent ); int iY = 20;
+    g_HUD.SetCallback( OnGUIEvent );
+    int iY = 20;
     g_HUD.AddButton( IDC_TOGGLEFULLSCREEN, L"Toggle full screen", 0, iY, 170, 22 );
     g_HUD.AddButton( IDC_TOGGLEREF, L"Toggle REF (F3)", 0, iY += 26, 170, 22, VK_F3 );
     g_HUD.AddButton( IDC_CHANGEDEVICE, L"Change device (F2)", 0, iY += 26, 170, 22, VK_F2 );
 
-    g_SampleUI.SetCallback( OnGUIEvent ); iY = 0;
+    g_SampleUI.SetCallback( OnGUIEvent );
+    iY = 0;
 
     g_SampleUI.AddButton( IDC_RESETSIM, L"Reset Particles", 0, iY += 26, 170, 22 );
-    
+
     g_SampleUI.AddComboBox( IDC_NUMPARTICLES, 0, iY += 26, 170, 22 );
     g_SampleUI.GetComboBox( IDC_NUMPARTICLES )->AddItem( L"8K Particles", UIntToPtr(NUM_PARTICLES_8K) );
     g_SampleUI.GetComboBox( IDC_NUMPARTICLES )->AddItem( L"16K Particles", UIntToPtr(NUM_PARTICLES_16K) );
@@ -400,27 +403,35 @@ void CALLBACK OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, v
 {
     switch( nControlID )
     {
-            // Standard DXUT controls
-        case IDC_TOGGLEFULLSCREEN:
-            DXUTToggleFullScreen(); break;
-        case IDC_TOGGLEREF:
-            DXUTToggleREF(); break;
-        case IDC_CHANGEDEVICE:
-            g_D3DSettingsDlg.SetActive( !g_D3DSettingsDlg.IsActive() ); break;
-        case IDC_RESETSIM:
-            CreateSimulationBuffers( DXUTGetD3D11Device() ); break;
-        case IDC_NUMPARTICLES:
-            g_iNumParticles = PtrToUint( ((CDXUTComboBox*)pControl)->GetSelectedData() );
-            CreateSimulationBuffers( DXUTGetD3D11Device() );
-            break;
-        case IDC_GRAVITY:
-            g_vGravity = *(const XMFLOAT2A*)((CDXUTComboBox*)pControl)->GetSelectedData(); break;
-        case IDC_SIMSIMPLE:
-            g_eSimMode = SIM_MODE_SIMPLE; break;
-        case IDC_SIMSHARED:
-            g_eSimMode = SIM_MODE_SHARED; break;
-        case IDC_SIMGRID:
-            g_eSimMode = SIM_MODE_GRID; break;
+    // Standard DXUT controls
+    case IDC_TOGGLEFULLSCREEN:
+        DXUTToggleFullScreen();
+        break;
+    case IDC_TOGGLEREF:
+        DXUTToggleREF();
+        break;
+    case IDC_CHANGEDEVICE:
+        g_D3DSettingsDlg.SetActive( !g_D3DSettingsDlg.IsActive() );
+        break;
+    case IDC_RESETSIM:
+        CreateSimulationBuffers( DXUTGetD3D11Device() );
+        break;
+    case IDC_NUMPARTICLES:
+        g_iNumParticles = PtrToUint( ((CDXUTComboBox*)pControl)->GetSelectedData() );
+        CreateSimulationBuffers( DXUTGetD3D11Device() );
+        break;
+    case IDC_GRAVITY:
+        g_vGravity = *(const XMFLOAT2A*)((CDXUTComboBox*)pControl)->GetSelectedData();
+        break;
+    case IDC_SIMSIMPLE:
+        g_eSimMode = SIM_MODE_SIMPLE;
+        break;
+    case IDC_SIMSHARED:
+        g_eSimMode = SIM_MODE_SHARED;
+        break;
+    case IDC_SIMGRID:
+        g_eSimMode = SIM_MODE_GRID;
+        break;
     }
 }
 
@@ -511,7 +522,7 @@ HRESULT CreateSimulationBuffers( ID3D11Device* pd3dDevice )
     SAFE_RELEASE( g_pParticles );
     SAFE_RELEASE( g_pParticlesSRV );
     SAFE_RELEASE( g_pParticlesUAV );
-    
+
     SAFE_RELEASE( g_pSortedParticles );
     SAFE_RELEASE( g_pSortedParticlesSRV );
     SAFE_RELEASE( g_pSortedParticlesUAV );
@@ -519,7 +530,7 @@ HRESULT CreateSimulationBuffers( ID3D11Device* pd3dDevice )
     SAFE_RELEASE( g_pParticleForces );
     SAFE_RELEASE( g_pParticleForcesSRV );
     SAFE_RELEASE( g_pParticleForcesUAV );
-    
+
     SAFE_RELEASE( g_pParticleDensity );
     SAFE_RELEASE( g_pParticleDensitySRV );
     SAFE_RELEASE( g_pParticleDensityUAV );
@@ -625,7 +636,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 
     // Compute Shaders
     const char* CSTarget = (pd3dDevice->GetFeatureLevel() >= D3D_FEATURE_LEVEL_11_0)? "cs_5_0" : "cs_4_0";
-    
+
     CWaitDlg CompilingShadersDlg;
     CompilingShadersDlg.ShowDialog( L"Compiling Shaders..." );
 
@@ -718,7 +729,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 // Create any D3D11 resources that depend on the back buffer
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                          const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
     HRESULT hr;
 
@@ -958,7 +969,7 @@ void SimulateFluid( ID3D11DeviceContext* pd3dImmediateContext, float fElapsedTim
     pData.fLapViscosityCoef = g_fParticleMass * g_fViscosity * 45.0f / (XM_PI * pow(g_fSmoothlen, 6));
 
     pData.vGravity = g_vGravity;
-    
+
     // Cells are spaced the size of the smoothing length search radius
     // That way we only need to search the 8 adjacent cells + current cell
     pData.vGridDim.x = 1.0f / g_fSmoothlen;
@@ -975,21 +986,22 @@ void SimulateFluid( ID3D11DeviceContext* pd3dImmediateContext, float fElapsedTim
 
     pd3dImmediateContext->UpdateSubresource( g_pcbSimulationConstants, 0, nullptr, &pData, 0, 0 );
 
-    switch (g_eSimMode) {
-        // Simple N^2 Algorithm
-        case SIM_MODE_SIMPLE:
-            SimulateFluid_Simple( pd3dImmediateContext );
-            break;
+    switch (g_eSimMode)
+    {
+    // Simple N^2 Algorithm
+    case SIM_MODE_SIMPLE:
+        SimulateFluid_Simple( pd3dImmediateContext );
+        break;
 
-        // Optimized N^2 Algorithm using Shared Memory
-        case SIM_MODE_SHARED:
-            SimulateFluid_Shared( pd3dImmediateContext );
-            break;
+    // Optimized N^2 Algorithm using Shared Memory
+    case SIM_MODE_SHARED:
+        SimulateFluid_Shared( pd3dImmediateContext );
+        break;
 
-        // Optimized Grid + Sort Algorithm
-        case SIM_MODE_GRID:
-            SimulateFluid_Grid( pd3dImmediateContext );
-            break;
+    // Optimized Grid + Sort Algorithm
+    case SIM_MODE_GRID:
+        SimulateFluid_Grid( pd3dImmediateContext );
+        break;
     }
 
     // Unset
@@ -1078,7 +1090,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11ResizedSwapChain 
+// Release D3D11 resources created in OnD3D11ResizedSwapChain
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 {
@@ -1087,7 +1099,7 @@ void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11CreateDevice 
+// Release D3D11 resources created in OnD3D11CreateDevice
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
 {
@@ -1121,7 +1133,7 @@ void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
     SAFE_RELEASE( g_pParticles );
     SAFE_RELEASE( g_pParticlesSRV );
     SAFE_RELEASE( g_pParticlesUAV );
-    
+
     SAFE_RELEASE( g_pSortedParticles );
     SAFE_RELEASE( g_pSortedParticlesSRV );
     SAFE_RELEASE( g_pSortedParticlesUAV );
@@ -1129,7 +1141,7 @@ void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
     SAFE_RELEASE( g_pParticleForces );
     SAFE_RELEASE( g_pParticleForcesSRV );
     SAFE_RELEASE( g_pParticleForcesUAV );
-    
+
     SAFE_RELEASE( g_pParticleDensity );
     SAFE_RELEASE( g_pParticleDensitySRV );
     SAFE_RELEASE( g_pParticleDensityUAV );

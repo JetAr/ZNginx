@@ -1,4 +1,4 @@
-//--------------------------------------------------------------------------------------
+﻿//--------------------------------------------------------------------------------------
 // File: MultithreadedRendering11.cpp
 //
 // This sample shows an example of using Direct3D 11's Deferred Contexts for
@@ -33,9 +33,9 @@ using namespace DirectX;
 enum DEVICECONTEXT_TYPE
 {
     DEVICECONTEXT_IMMEDIATE,                // Traditional rendering, one thread, immediate device context
-    DEVICECONTEXT_ST_DEFERRED_PER_SCENE,    // One thread, multiple deferred device contexts, one per scene 
+    DEVICECONTEXT_ST_DEFERRED_PER_SCENE,    // One thread, multiple deferred device contexts, one per scene
     DEVICECONTEXT_MT_DEFERRED_PER_SCENE,    // Multiple threads, one per scene, each with one deferred device context
-    DEVICECONTEXT_ST_DEFERRED_PER_CHUNK,    // One thread, multiple deferred device contexts, one per physical processor 
+    DEVICECONTEXT_ST_DEFERRED_PER_CHUNK,    // One thread, multiple deferred device contexts, one per physical processor
     DEVICECONTEXT_MT_DEFERRED_PER_CHUNK,    // Multiple threads, one per physical processor, each with one deferred device context
 };
 
@@ -44,7 +44,7 @@ const int   g_iNumLights = 4;
 const int   g_iNumShadows = 1;
 const int   g_iNumMirrors = 4;
 
-// The vertex for a corner of the mirror quad.  Only the Position is used.  
+// The vertex for a corner of the mirror quad.  Only the Position is used.
 // The others are so we can use the same vertex shader as the main scene
 struct MirrorVertex
 {
@@ -75,7 +75,7 @@ struct SceneParamsStatic
     XMFLOAT4                    m_vTintColor;
     XMFLOAT4                    m_vMirrorPlane;
 
-    // If m_pDepthStencilView is non-nullptr then these 
+    // If m_pDepthStencilView is non-nullptr then these
     // are for a shadow map.  Otherwise, use the DXUT
     // defaults.
     ID3D11DepthStencilView*     m_pDepthStencilView;
@@ -86,8 +86,8 @@ struct SceneParamsStatic
 // which scene we're drawing (shadow/mirror/direct), and
 // also changes per scene.
 //
-// To be safe, we pass these to per-chunk worker threads 
-// by value.  This would become necessary if we were to 
+// To be safe, we pass these to per-chunk worker threads
+// by value.  This would become necessary if we were to
 // start letting thread communication lag by more than
 // one scene --- e.g. the main thread starts on scene 2
 // while the worker threads are still operating on scene 1.
@@ -99,9 +99,9 @@ struct SceneParamsDynamic
 // The different types of job in the per-chunk work queues
 enum WorkQueueEntryType
 {
-    WORK_QUEUE_ENTRY_TYPE_SETUP, 
-    WORK_QUEUE_ENTRY_TYPE_CHUNK, 
-    WORK_QUEUE_ENTRY_TYPE_FINALIZE, 
+    WORK_QUEUE_ENTRY_TYPE_SETUP,
+    WORK_QUEUE_ENTRY_TYPE_CHUNK,
+    WORK_QUEUE_ENTRY_TYPE_FINALIZE,
 
     WORK_QUEUE_ENTRY_TYPE_COUNT
 };
@@ -209,7 +209,7 @@ CDXUTDialogResourceManager  g_DialogResourceManager; // manager for shared resou
 CDXUTDirectionWidget        g_LightControl;
 #endif
 CD3DSettingsDlg             g_D3DSettingsDlg;       // Device settings dialog
-CDXUTDialog                 g_HUD;                  // manages the 3D   
+CDXUTDialog                 g_HUD;                  // manages the 3D
 CDXUTDialog                 g_SampleUI;             // dialog for sample specific controls
 CDXUTTextHelper*            g_pTxtHelper = nullptr;
 bool                        g_bShowHelp = false;    // If true, it renders the UI control text
@@ -317,7 +317,7 @@ int                         g_iPerSceneThreadInstanceData[g_iNumPerSceneRenderTh
 // Per-chunk-worker-thread values
 //--------------------------------------------------------------------------------------
 unsigned int WINAPI         _PerChunkRenderDeferredProc( LPVOID lpParameter );
-const int                   g_iMaxPerChunkRenderThreads = 32;   // For true scalability, this should not be fixed at compile-time 
+const int                   g_iMaxPerChunkRenderThreads = 32;   // For true scalability, this should not be fixed at compile-time
 const int                   g_iMaxPendingQueueEntries = 1024;     // Max value of g_hBeginPerChunkRenderDeferredSemaphore
 int                         g_iNumPerChunkRenderThreads;    // One thread per physical processor, minus the main thread
 HANDLE                      g_hPerChunkRenderDeferredThread[g_iMaxPerChunkRenderThreads];
@@ -337,7 +337,7 @@ SceneParamsStatic           g_StaticParamsShadow[g_iNumShadows];
 SceneParamsStatic           g_StaticParamsMirror[g_iNumMirrors];
 
 //--------------------------------------------------------------------------------------
-// Forward declarations 
+// Forward declarations
 //--------------------------------------------------------------------------------------
 bool CALLBACK ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* pUserContext );
 void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext );
@@ -351,7 +351,7 @@ bool CALLBACK IsD3D11DeviceAcceptable( const CD3D11EnumAdapterInfo *AdapterInfo,
 HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc,
                                       void* pUserContext );
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                          const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext );
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext );
 void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime,
@@ -364,22 +364,22 @@ void RenderText();
 //--------------------------------------------------------------------------------------
 // Convenient checks for the current render pathway
 //--------------------------------------------------------------------------------------
-inline bool IsRenderDeferredPerScene() 
-{ 
+inline bool IsRenderDeferredPerScene()
+{
     return g_iDeviceContextType == DEVICECONTEXT_ST_DEFERRED_PER_SCENE
-        || g_iDeviceContextType == DEVICECONTEXT_MT_DEFERRED_PER_SCENE;
+           || g_iDeviceContextType == DEVICECONTEXT_MT_DEFERRED_PER_SCENE;
 }
-inline bool IsRenderMultithreadedPerScene() 
-{ 
+inline bool IsRenderMultithreadedPerScene()
+{
     return g_iDeviceContextType == DEVICECONTEXT_MT_DEFERRED_PER_SCENE;
 }
-inline bool IsRenderDeferredPerChunk() 
-{ 
+inline bool IsRenderDeferredPerChunk()
+{
     return g_iDeviceContextType == DEVICECONTEXT_ST_DEFERRED_PER_CHUNK
-        || g_iDeviceContextType == DEVICECONTEXT_MT_DEFERRED_PER_CHUNK;
+           || g_iDeviceContextType == DEVICECONTEXT_MT_DEFERRED_PER_CHUNK;
 }
-inline bool IsRenderMultithreadedPerChunk() 
-{ 
+inline bool IsRenderMultithreadedPerChunk()
+{
     return g_iDeviceContextType == DEVICECONTEXT_MT_DEFERRED_PER_CHUNK;
 }
 inline bool IsRenderDeferred()
@@ -389,7 +389,7 @@ inline bool IsRenderDeferred()
 
 
 //--------------------------------------------------------------------------------------
-// Entry point to the program. Initializes everything and goes into a message processing 
+// Entry point to the program. Initializes everything and goes into a message processing
 // loop. Idle time is used to render the scene.
 //--------------------------------------------------------------------------------------
 int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow )
@@ -414,7 +414,7 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     DXUTSetCallbackD3D11FrameRender( OnD3D11FrameRender );
     DXUTSetCallbackD3D11SwapChainReleasing( OnD3D11ReleasingSwapChain );
     DXUTSetCallbackD3D11DeviceDestroyed( OnD3D11DestroyDevice );
-    
+
     InitApp();
     DXUTInit( true, true, lpCmdLine ); // Parse the command line, show msgboxes on error, no extra command line params
     DXUTSetCursorSettings( true, true ); // Show the cursor and clip it when in full screen
@@ -427,7 +427,7 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 
 //--------------------------------------------------------------------------------------
-// Initialize the app 
+// Initialize the app
 //--------------------------------------------------------------------------------------
 void InitApp()
 {
@@ -436,7 +436,7 @@ void InitApp()
     g_HUD.Init( &g_DialogResourceManager );
     g_SampleUI.Init( &g_DialogResourceManager );
 
-    g_HUD.SetCallback( OnGUIEvent ); 
+    g_HUD.SetCallback( OnGUIEvent );
     int iY = 30;
     int iYo = 26;
     g_HUD.AddButton( IDC_TOGGLEFULLSCREEN, L"Toggle full screen", 0, iY, 170, 22 );
@@ -455,7 +455,8 @@ void InitApp()
     CDXUTRadioButton* pRadioButton = g_HUD.GetRadioButton( IDC_DEVICECONTEXT_IMMEDIATE );
     pRadioButton->SetChecked( true );
 
-    g_SampleUI.SetCallback( OnGUIEvent ); iY = 10;
+    g_SampleUI.SetCallback( OnGUIEvent );
+    iY = 10;
 }
 
 
@@ -501,7 +502,7 @@ void CALLBACK OnFrameMove( double fTime, float fElapsedTime, void* pUserContext 
     v = g_XMNegIdentityR1 + cycle3;
     g_vLightDir[3] = XMVector3Normalize( v );
 
-    // Update the camera's position based on user input 
+    // Update the camera's position based on user input
     g_Camera.FrameMove( fElapsedTime );
 }
 
@@ -592,8 +593,9 @@ void CALLBACK OnKeyboard( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserC
     {
         switch( nChar )
         {
-            case VK_F1:
-                g_bShowHelp = !g_bShowHelp; break;
+        case VK_F1:
+            g_bShowHelp = !g_bShowHelp;
+            break;
         }
     }
 }
@@ -606,36 +608,38 @@ void CALLBACK OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, v
 {
     switch( nControlID )
     {
-        case IDC_TOGGLEFULLSCREEN:
-            DXUTToggleFullScreen(); break;
-        case IDC_TOGGLEREF:
-            DXUTToggleREF(); break;
-        case IDC_CHANGEDEVICE:
-            g_D3DSettingsDlg.SetActive( !g_D3DSettingsDlg.IsActive() );
-            break;
+    case IDC_TOGGLEFULLSCREEN:
+        DXUTToggleFullScreen();
+        break;
+    case IDC_TOGGLEREF:
+        DXUTToggleREF();
+        break;
+    case IDC_CHANGEDEVICE:
+        g_D3DSettingsDlg.SetActive( !g_D3DSettingsDlg.IsActive() );
+        break;
 #ifdef RENDER_SCENE_LIGHT_POV
-        case IDC_TOGGLELIGHTVIEW:
-            g_bRenderSceneLightPOV = !g_bRenderSceneLightPOV;
-            break;
+    case IDC_TOGGLELIGHTVIEW:
+        g_bRenderSceneLightPOV = !g_bRenderSceneLightPOV;
+        break;
 #endif
-        case IDC_TOGGLEWIRE:
-            g_bWireFrame = !g_bWireFrame;
-            break;
-        case IDC_DEVICECONTEXT_IMMEDIATE:
-            g_iDeviceContextType = DEVICECONTEXT_IMMEDIATE;
-            break;
-        case IDC_DEVICECONTEXT_ST_DEFERRED_PER_SCENE:
-            g_iDeviceContextType = DEVICECONTEXT_ST_DEFERRED_PER_SCENE;
-            break;
-        case IDC_DEVICECONTEXT_MT_DEFERRED_PER_SCENE:
-            g_iDeviceContextType = DEVICECONTEXT_MT_DEFERRED_PER_SCENE;
-            break;
-        case IDC_DEVICECONTEXT_ST_DEFERRED_PER_CHUNK:
-            g_iDeviceContextType = DEVICECONTEXT_ST_DEFERRED_PER_CHUNK;
-            break;
-        case IDC_DEVICECONTEXT_MT_DEFERRED_PER_CHUNK:
-            g_iDeviceContextType = DEVICECONTEXT_MT_DEFERRED_PER_CHUNK;
-            break;
+    case IDC_TOGGLEWIRE:
+        g_bWireFrame = !g_bWireFrame;
+        break;
+    case IDC_DEVICECONTEXT_IMMEDIATE:
+        g_iDeviceContextType = DEVICECONTEXT_IMMEDIATE;
+        break;
+    case IDC_DEVICECONTEXT_ST_DEFERRED_PER_SCENE:
+        g_iDeviceContextType = DEVICECONTEXT_ST_DEFERRED_PER_SCENE;
+        break;
+    case IDC_DEVICECONTEXT_MT_DEFERRED_PER_SCENE:
+        g_iDeviceContextType = DEVICECONTEXT_MT_DEFERRED_PER_SCENE;
+        break;
+    case IDC_DEVICECONTEXT_ST_DEFERRED_PER_CHUNK:
+        g_iDeviceContextType = DEVICECONTEXT_ST_DEFERRED_PER_CHUNK;
+        break;
+    case IDC_DEVICECONTEXT_MT_DEFERRED_PER_CHUNK:
+        g_iDeviceContextType = DEVICECONTEXT_MT_DEFERRED_PER_CHUNK;
+        break;
     }
 
 }
@@ -659,7 +663,7 @@ void InitializeLights()
 
     //g_vLightColor[0] =                  XMFLOAT4( 1.5f * 0.160f, 1.5f * 0.341f, 1.5f * 1.000f, 1.000f );
     g_vLightColor[0] =                  XMFLOAT4( 3.0f * 0.160f, 3.0f * 0.341f, 3.0f * 1.000f, 1.000f );
-    g_vLightDir[0] =                    XMVector3Normalize( s_lightDir0 ); 
+    g_vLightDir[0] =                    XMVector3Normalize( s_lightDir0 );
     g_vLightPos[0] =                    s_vSceneCenter - s_fSceneRadius * g_vLightDir[0];
     g_fLightFOV[0] =                    XM_PI / 4.0f;
 
@@ -672,17 +676,17 @@ void InitializeLights()
     g_vLightPos[1] =                    s_lightPos1;
     g_vLightDir[1] =                    g_XMNegIdentityR1;
     g_fLightFOV[1] =                    65.0f * ( XM_PI / 180.0f );
-    
+
     g_vLightColor[2] =                  XMFLOAT4( 0.5f * 0.388f, 0.5f * 0.641f, 0.5f * 0.401f, 1.0f );
     g_vLightPos[2] =                    s_lightPos2;
     g_vLightDir[2] =                    g_XMNegIdentityR1;
     g_fLightFOV[2] =                    65.0f * ( XM_PI / 180.0f );
-    
+
     g_vLightColor[3] =                  XMFLOAT4( 0.4f * 1.000f, 0.4f * 0.837f, 0.4f * 0.848f, 1.0f );
     g_vLightPos[3] =                    s_lightPos3;
     g_vLightDir[3] =                    g_XMNegIdentityR1;
     g_fLightFOV[3] =                    65.0f * ( XM_PI / 180.0f );
-    
+
     // For the time beings, let's make these params follow the same pattern for all lights
     for ( int iLight = 0; iLight < g_iNumLights; ++iLight )
     {
@@ -718,7 +722,8 @@ HRESULT InitializeShadows( ID3D11Device* pd3dDevice )
         g_fShadowResolutionY[iShadow] = 2048.0f;
 
         // The shadow map, along with depth-stencil and texture view
-        D3D11_TEXTURE2D_DESC ShadowDesc = {
+        D3D11_TEXTURE2D_DESC ShadowDesc =
+        {
             UINT(g_fShadowResolutionX[iShadow]),    // UINT Width;
             UINT(g_fShadowResolutionY[iShadow]),    // UINT Height;
             1,                                      // UINT MipLevels;
@@ -726,18 +731,20 @@ HRESULT InitializeShadows( ID3D11Device* pd3dDevice )
             DXGI_FORMAT_R32_TYPELESS,               // DXGI_FORMAT Format;
             { 1, 0, },                              // DXGI_SAMPLE_DESC SampleDesc;
             D3D11_USAGE_DEFAULT,                    // D3D11_USAGE Usage;
-            D3D11_BIND_SHADER_RESOURCE 
-                | D3D11_BIND_DEPTH_STENCIL,         // UINT BindFlags;
+            D3D11_BIND_SHADER_RESOURCE
+            | D3D11_BIND_DEPTH_STENCIL,         // UINT BindFlags;
             0,                                      // UINT CPUAccessFlags;
             0,                                      // UINT MiscFlags;
         };
-        D3D11_DEPTH_STENCIL_VIEW_DESC ShadowDepthStencilViewDesc = {
+        D3D11_DEPTH_STENCIL_VIEW_DESC ShadowDepthStencilViewDesc =
+        {
             DXGI_FORMAT_D32_FLOAT,                  // DXGI_FORMAT Format;
             D3D11_DSV_DIMENSION_TEXTURE2D,          // D3D11_DSV_DIMENSION ViewDimension;
             0,                                      // UINT ReadOnlyUsage;
             {0, },                                  // D3D11_TEX2D_RTV Texture2D;
         };
-        D3D11_SHADER_RESOURCE_VIEW_DESC ShadowResourceViewDesc = {
+        D3D11_SHADER_RESOURCE_VIEW_DESC ShadowResourceViewDesc =
+        {
             DXGI_FORMAT_R32_FLOAT,                  // DXGI_FORMAT Format;
             D3D11_SRV_DIMENSION_TEXTURE2D,          // D3D11_SRV_DIMENSION ViewDimension;
             {0, 1, },                               // D3D11_TEX2D_SRV Texture2D;
@@ -745,12 +752,12 @@ HRESULT InitializeShadows( ID3D11Device* pd3dDevice )
         V_RETURN( pd3dDevice->CreateTexture2D( &ShadowDesc, nullptr, &g_pShadowTexture[iShadow] ) );
         DXUT_SetDebugName( g_pShadowTexture[iShadow], "Shadow" );
 
-        V_RETURN( pd3dDevice->CreateDepthStencilView( g_pShadowTexture[iShadow], &ShadowDepthStencilViewDesc, 
-            &g_pShadowDepthStencilView[iShadow] ) );
+        V_RETURN( pd3dDevice->CreateDepthStencilView( g_pShadowTexture[iShadow], &ShadowDepthStencilViewDesc,
+                  &g_pShadowDepthStencilView[iShadow] ) );
         DXUT_SetDebugName( g_pShadowDepthStencilView[iShadow], "Shadow DSV" );
 
-        V_RETURN( pd3dDevice->CreateShaderResourceView( g_pShadowTexture[iShadow], &ShadowResourceViewDesc, 
-            &g_pShadowResourceView[iShadow] ) );
+        V_RETURN( pd3dDevice->CreateShaderResourceView( g_pShadowTexture[iShadow], &ShadowResourceViewDesc,
+                  &g_pShadowResourceView[iShadow] ) );
         DXUT_SetDebugName( g_pShadowResourceView[iShadow] , "Shadow RSV" );
 
         g_ShadowViewport[iShadow].Width = g_fShadowResolutionX[iShadow];
@@ -785,107 +792,119 @@ HRESULT InitializeMirrors( ID3D11Device* pd3dDevice )
     // depth-stencil states...
 
     // Write stencil if the depth test passes
-    D3D11_DEPTH_STENCIL_DESC DepthStencilDescDepthTestStencilOverwrite = {
+    D3D11_DEPTH_STENCIL_DESC DepthStencilDescDepthTestStencilOverwrite =
+    {
         TRUE,                           // BOOL DepthEnable;
         D3D11_DEPTH_WRITE_MASK_ZERO,    // D3D11_DEPTH_WRITE_MASK DepthWriteMask;
         D3D11_COMPARISON_LESS_EQUAL,    // D3D11_COMPARISON_FUNC DepthFunc;
         TRUE,                           // BOOL StencilEnable;
         0,                              // UINT8 StencilReadMask;
         g_iStencilMask,                 // UINT8 StencilWriteMask;
-        {                               // D3D11_DEPTH_STENCILOP_DESC FrontFace;
+        {
+            // D3D11_DEPTH_STENCILOP_DESC FrontFace;
             D3D11_STENCIL_OP_REPLACE,   // D3D11_STENCIL_OP StencilFailOp;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilDepthFailOp;
             D3D11_STENCIL_OP_REPLACE,   // D3D11_STENCIL_OP StencilPassOp;
             D3D11_COMPARISON_ALWAYS,    // D3D11_COMPARISON_FUNC StencilFunc;
-        }, 
-        {                               // D3D11_DEPTH_STENCILOP_DESC BackFace;
+        },
+        {
+            // D3D11_DEPTH_STENCILOP_DESC BackFace;
             D3D11_STENCIL_OP_REPLACE,   // D3D11_STENCIL_OP StencilFailOp;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilDepthFailOp;
             D3D11_STENCIL_OP_REPLACE,   // D3D11_STENCIL_OP StencilPassOp;
             D3D11_COMPARISON_ALWAYS,    // D3D11_COMPARISON_FUNC StencilFunc;
-        }, 
+        },
     };
-    V_RETURN( pd3dDevice->CreateDepthStencilState( 
-        &DepthStencilDescDepthTestStencilOverwrite, 
-        &g_pMirrorDepthStencilStateDepthTestStencilOverwrite ) );
+    V_RETURN( pd3dDevice->CreateDepthStencilState(
+                  &DepthStencilDescDepthTestStencilOverwrite,
+                  &g_pMirrorDepthStencilStateDepthTestStencilOverwrite ) );
     DXUT_SetDebugName( g_pMirrorDepthStencilStateDepthTestStencilOverwrite, "Mirror SO" );
 
-    // Overwrite depth and if stencil test passes 
-    D3D11_DEPTH_STENCIL_DESC DepthStencilDescDepthOverwriteStencilTest = {
+    // Overwrite depth and if stencil test passes
+    D3D11_DEPTH_STENCIL_DESC DepthStencilDescDepthOverwriteStencilTest =
+    {
         TRUE,                           // BOOL DepthEnable;
         D3D11_DEPTH_WRITE_MASK_ALL,     // D3D11_DEPTH_WRITE_MASK DepthWriteMask;
         D3D11_COMPARISON_ALWAYS,        // D3D11_COMPARISON_FUNC DepthFunc;
         TRUE,                           // BOOL StencilEnable;
         g_iStencilMask,                 // UINT8 StencilReadMask;
         0,                              // UINT8 StencilWriteMask;
-        {                               // D3D11_DEPTH_STENCILOP_DESC FrontFace;
+        {
+            // D3D11_DEPTH_STENCILOP_DESC FrontFace;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilFailOp;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilDepthFailOp;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilPassOp;
             D3D11_COMPARISON_EQUAL,     // D3D11_COMPARISON_FUNC StencilFunc;
-        }, 
-        {                               // D3D11_DEPTH_STENCILOP_DESC BackFace;
+        },
+        {
+            // D3D11_DEPTH_STENCILOP_DESC BackFace;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilFailOp;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilDepthFailOp;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilPassOp;
             D3D11_COMPARISON_EQUAL,     // D3D11_COMPARISON_FUNC StencilFunc;
-        }, 
+        },
     };
-    V_RETURN( pd3dDevice->CreateDepthStencilState( 
-        &DepthStencilDescDepthOverwriteStencilTest, 
-        &g_pMirrorDepthStencilStateDepthOverwriteStencilTest ) );
+    V_RETURN( pd3dDevice->CreateDepthStencilState(
+                  &DepthStencilDescDepthOverwriteStencilTest,
+                  &g_pMirrorDepthStencilStateDepthOverwriteStencilTest ) );
     DXUT_SetDebugName( g_pMirrorDepthStencilStateDepthOverwriteStencilTest, "Mirror DO" );
 
     // Perform normal depth test/write if the stencil test passes
-    D3D11_DEPTH_STENCIL_DESC DepthStencilDescDepthWriteStencilTest = {
+    D3D11_DEPTH_STENCIL_DESC DepthStencilDescDepthWriteStencilTest =
+    {
         TRUE,                           // BOOL DepthEnable;
         D3D11_DEPTH_WRITE_MASK_ALL,     // D3D11_DEPTH_WRITE_MASK DepthWriteMask;
         D3D11_COMPARISON_LESS_EQUAL,    // D3D11_COMPARISON_FUNC DepthFunc;
         TRUE,                           // BOOL StencilEnable;
         g_iStencilMask,                 // UINT8 StencilReadMask;
         0,                              // UINT8 StencilWriteMask;
-        {                               // D3D11_DEPTH_STENCILOP_DESC FrontFace;
+        {
+            // D3D11_DEPTH_STENCILOP_DESC FrontFace;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilFailOp;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilDepthFailOp;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilPassOp;
             D3D11_COMPARISON_EQUAL,     // D3D11_COMPARISON_FUNC StencilFunc;
-        }, 
-        {                               // D3D11_DEPTH_STENCILOP_DESC BackFace;
+        },
+        {
+            // D3D11_DEPTH_STENCILOP_DESC BackFace;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilFailOp;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilDepthFailOp;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilPassOp;
             D3D11_COMPARISON_EQUAL,     // D3D11_COMPARISON_FUNC StencilFunc;
-        }, 
+        },
     };
-    V_RETURN( pd3dDevice->CreateDepthStencilState( 
-        &DepthStencilDescDepthWriteStencilTest, 
-        &g_pMirrorDepthStencilStateDepthWriteStencilTest ) );
+    V_RETURN( pd3dDevice->CreateDepthStencilState(
+                  &DepthStencilDescDepthWriteStencilTest,
+                  &g_pMirrorDepthStencilStateDepthWriteStencilTest ) );
     DXUT_SetDebugName( g_pMirrorDepthStencilStateDepthWriteStencilTest, "Mirror Normal" );
 
-    // Overwrite depth and clear stencil if stencil test passes 
-    D3D11_DEPTH_STENCIL_DESC DepthStencilDescDepthOverwriteStencilClear = {
+    // Overwrite depth and clear stencil if stencil test passes
+    D3D11_DEPTH_STENCIL_DESC DepthStencilDescDepthOverwriteStencilClear =
+    {
         TRUE,                           // BOOL DepthEnable;
         D3D11_DEPTH_WRITE_MASK_ALL,     // D3D11_DEPTH_WRITE_MASK DepthWriteMask;
         D3D11_COMPARISON_ALWAYS,        // D3D11_COMPARISON_FUNC DepthFunc;
         TRUE,                           // BOOL StencilEnable;
         g_iStencilMask,                 // UINT8 StencilReadMask;
         g_iStencilMask,                 // UINT8 StencilWriteMask;
-        {                               // D3D11_DEPTH_STENCILOP_DESC FrontFace;
+        {
+            // D3D11_DEPTH_STENCILOP_DESC FrontFace;
             D3D11_STENCIL_OP_ZERO,      // D3D11_STENCIL_OP StencilFailOp;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilDepthFailOp;
             D3D11_STENCIL_OP_ZERO,      // D3D11_STENCIL_OP StencilPassOp;
             D3D11_COMPARISON_EQUAL,     // D3D11_COMPARISON_FUNC StencilFunc;
-        }, 
-        {                               // D3D11_DEPTH_STENCILOP_DESC BackFace;
+        },
+        {
+            // D3D11_DEPTH_STENCILOP_DESC BackFace;
             D3D11_STENCIL_OP_ZERO,      // D3D11_STENCIL_OP StencilFailOp;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilDepthFailOp;
             D3D11_STENCIL_OP_ZERO,      // D3D11_STENCIL_OP StencilPassOp;
             D3D11_COMPARISON_EQUAL,     // D3D11_COMPARISON_FUNC StencilFunc;
-        }, 
+        },
     };
-    V_RETURN( pd3dDevice->CreateDepthStencilState( 
-        &DepthStencilDescDepthOverwriteStencilClear, 
-        &g_pMirrorDepthStencilStateDepthOverwriteStencilClear ) );
+    V_RETURN( pd3dDevice->CreateDepthStencilState(
+                  &DepthStencilDescDepthOverwriteStencilClear,
+                  &g_pMirrorDepthStencilStateDepthOverwriteStencilClear ) );
     DXUT_SetDebugName( g_pMirrorDepthStencilStateDepthOverwriteStencilClear, "Mirror Clear" );
 
     // These values are hard-coded based on the sdkmesh contents, plus some
@@ -962,16 +981,16 @@ HRESULT InitializeMirrors( ID3D11Device* pd3dDevice )
             g_MirrorRect[iMirror][iCorner].Position.y = 0.5f * g_fMirrorHeight[iMirror] * g_vMirrorCorner[iCorner].y;
             g_MirrorRect[iMirror][iCorner].Position.z =                                   g_vMirrorCorner[iCorner].z;
 
-            g_MirrorRect[iMirror][iCorner].Normal.x = 
-            g_MirrorRect[iMirror][iCorner].Normal.y = 
-            g_MirrorRect[iMirror][iCorner].Normal.z = 0.0f;
+            g_MirrorRect[iMirror][iCorner].Normal.x =
+                g_MirrorRect[iMirror][iCorner].Normal.y =
+                    g_MirrorRect[iMirror][iCorner].Normal.z = 0.0f;
 
-            g_MirrorRect[iMirror][iCorner].Texcoord.x = 
-            g_MirrorRect[iMirror][iCorner].Texcoord.y = 0.0f;
+            g_MirrorRect[iMirror][iCorner].Texcoord.x =
+                g_MirrorRect[iMirror][iCorner].Texcoord.y = 0.0f;
 
-            g_MirrorRect[iMirror][iCorner].Tangent.x = 
-            g_MirrorRect[iMirror][iCorner].Tangent.y = 
-            g_MirrorRect[iMirror][iCorner].Tangent.z = 0.0f;
+            g_MirrorRect[iMirror][iCorner].Tangent.x =
+                g_MirrorRect[iMirror][iCorner].Tangent.y =
+                    g_MirrorRect[iMirror][iCorner].Tangent.z = 0.0f;
         }
 
         // The parameters to pass to per-chunk threads for the mirror scenes
@@ -993,7 +1012,7 @@ HRESULT InitializeMirrors( ID3D11Device* pd3dDevice )
 // system.  ( Copied from the doc page for GetLogicalProcessorInformation() )
 //--------------------------------------------------------------------------------------
 typedef BOOL (WINAPI *LPFN_GLPI)(
-    PSYSTEM_LOGICAL_PROCESSOR_INFORMATION, 
+    PSYSTEM_LOGICAL_PROCESSOR_INFORMATION,
     PDWORD);
 
 
@@ -1034,31 +1053,31 @@ static int GetPhysicalProcessorCount()
     PSYSTEM_LOGICAL_PROCESSOR_INFORMATION buffer = nullptr;
     DWORD returnLength = 0;
 
-    while (!done) 
+    while (!done)
     {
         BOOL rc = Glpi(buffer, &returnLength);
 
-        if (FALSE == rc) 
+        if (FALSE == rc)
         {
-            if (GetLastError() == ERROR_INSUFFICIENT_BUFFER) 
+            if (GetLastError() == ERROR_INSUFFICIENT_BUFFER)
             {
-                if (buffer) 
+                if (buffer)
                     free(buffer);
 
                 buffer = reinterpret_cast<PSYSTEM_LOGICAL_PROCESSOR_INFORMATION>( malloc( returnLength ) );
 
-                if ( !buffer ) 
+                if ( !buffer )
                 {
                     // Allocation failure
                     return procCoreCount;
                 }
-            } 
-            else 
+            }
+            else
             {
                 // Unanticipated error
                 return procCoreCount;
             }
-        } 
+        }
         else done = true;
     }
 
@@ -1067,9 +1086,9 @@ static int GetPhysicalProcessorCount()
 
     DWORD byteOffset = 0;
     PSYSTEM_LOGICAL_PROCESSOR_INFORMATION ptr = buffer;
-    while (byteOffset < returnLength) 
+    while (byteOffset < returnLength)
     {
-        if (ptr->Relationship == RelationProcessorCore) 
+        if (ptr->Relationship == RelationProcessorCore)
         {
             if(ptr->ProcessorCore.Flags)
             {
@@ -1108,16 +1127,16 @@ HRESULT InitializeWorkerThreads( ID3D11Device* pd3dDevice )
         g_hBeginPerSceneRenderDeferredEvent[iInstance] = CreateEvent( nullptr, FALSE, FALSE, nullptr );
         g_hEndPerSceneRenderDeferredEvent[iInstance] = CreateEvent( nullptr, FALSE, FALSE, nullptr );
 
-        V_RETURN( pd3dDevice->CreateDeferredContext( 0 /*Reserved for future use*/, 
-            &g_pd3dPerSceneDeferredContext[iInstance] ) );
+        V_RETURN( pd3dDevice->CreateDeferredContext( 0 /*Reserved for future use*/,
+                  &g_pd3dPerSceneDeferredContext[iInstance] ) );
 
-        g_hPerSceneRenderDeferredThread[iInstance] = ( HANDLE )_beginthreadex( 
-            nullptr, 
-            0, 
-            _PerSceneRenderDeferredProc, 
-            &g_iPerSceneThreadInstanceData[iInstance], 
-            CREATE_SUSPENDED, 
-            nullptr );
+        g_hPerSceneRenderDeferredThread[iInstance] = ( HANDLE )_beginthreadex(
+                    nullptr,
+                    0,
+                    _PerSceneRenderDeferredProc,
+                    &g_iPerSceneThreadInstanceData[iInstance],
+                    CREATE_SUSPENDED,
+                    nullptr );
 
 #if defined(PROFILE) || defined(DEBUG)
         char threadid[ 16 ];
@@ -1131,7 +1150,7 @@ HRESULT InitializeWorkerThreads( ID3D11Device* pd3dDevice )
     // Per-chunk data init
 
     // Reserve one core for the main thread if possible
-    g_iNumPerChunkRenderThreads = GetPhysicalProcessorCount() - 1; 
+    g_iNumPerChunkRenderThreads = GetPhysicalProcessorCount() - 1;
 
     // Restrict to the max static allocation --- can be easily relaxed if need be
     g_iNumPerChunkRenderThreads = std::min( g_iNumPerChunkRenderThreads, g_iMaxPerChunkRenderThreads );
@@ -1140,25 +1159,25 @@ HRESULT InitializeWorkerThreads( ID3D11Device* pd3dDevice )
     g_iNumPerChunkRenderThreads = std::max( g_iNumPerChunkRenderThreads, 1 );
 
     // uncomment to force exactly one worker context (and therefore predictable render order)
-    //g_iNumPerChunkRenderThreads = 1; 
+    //g_iNumPerChunkRenderThreads = 1;
 
     for ( int iInstance = 0; iInstance < g_iNumPerChunkRenderThreads; ++iInstance )
     {
         g_iPerChunkThreadInstanceData[iInstance] = iInstance;
 
-        g_hBeginPerChunkRenderDeferredSemaphore[iInstance] = CreateSemaphore( nullptr, 0, 
-            g_iMaxPendingQueueEntries, nullptr );
+        g_hBeginPerChunkRenderDeferredSemaphore[iInstance] = CreateSemaphore( nullptr, 0,
+                g_iMaxPendingQueueEntries, nullptr );
         g_hEndPerChunkRenderDeferredEvent[iInstance] = CreateEvent( nullptr, FALSE, FALSE, nullptr );
 
-        V_RETURN( pd3dDevice->CreateDeferredContext( 0 /*Reserved for future use*/, 
-            &g_pd3dPerChunkDeferredContext[iInstance] ) );
+        V_RETURN( pd3dDevice->CreateDeferredContext( 0 /*Reserved for future use*/,
+                  &g_pd3dPerChunkDeferredContext[iInstance] ) );
 
-        g_hPerChunkRenderDeferredThread[iInstance] = ( HANDLE )_beginthreadex( nullptr, 
-            0, 
-            _PerChunkRenderDeferredProc, 
-            &g_iPerChunkThreadInstanceData[iInstance], 
-            CREATE_SUSPENDED, 
-            nullptr );
+        g_hPerChunkRenderDeferredThread[iInstance] = ( HANDLE )_beginthreadex( nullptr,
+                0,
+                _PerChunkRenderDeferredProc,
+                &g_iPerChunkThreadInstanceData[iInstance],
+                CREATE_SUSPENDED,
+                nullptr );
 
 #if defined(PROFILE) || defined(DEBUG)
         char threadid[ 16 ];
@@ -1186,7 +1205,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     V_RETURN( g_D3DSettingsDlg.OnD3D11CreateDevice( pd3dDevice ) );
     g_pTxtHelper = new CDXUTTextHelper( pd3dDevice, pd3dImmediateContext, &g_DialogResourceManager, 15 );
 
-    // Compile the shaders 
+    // Compile the shaders
     ID3DBlob* pVertexShaderBuffer = nullptr;
     V_RETURN( DXUTCompileFromFile( L"MultithreadedRendering11_VS.hlsl", nullptr, "VSMain", "vs_4_0",
                                    D3DCOMPILE_ENABLE_STRICTNESS, 0, &pVertexShaderBuffer ) );
@@ -1197,15 +1216,15 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 
     // Create the shaders
     V_RETURN( pd3dDevice->CreateVertexShader( pVertexShaderBuffer->GetBufferPointer(),
-                                              pVertexShaderBuffer->GetBufferSize(), nullptr, &g_pVertexShader ) );
+              pVertexShaderBuffer->GetBufferSize(), nullptr, &g_pVertexShader ) );
     V_RETURN( pd3dDevice->CreatePixelShader( pPixelShaderBuffer->GetBufferPointer(),
-                                             pPixelShaderBuffer->GetBufferSize(), nullptr, &g_pPixelShader ) );
+              pPixelShaderBuffer->GetBufferSize(), nullptr, &g_pPixelShader ) );
 
     DXUT_SetDebugName( g_pVertexShader, "VSMain" );
     DXUT_SetDebugName( g_pPixelShader, "PSMain" );
 
     // Create our vertex input layout
-    // The content exporter supports either compressed or uncompressed formats for 
+    // The content exporter supports either compressed or uncompressed formats for
     // normal/tangent/binormal.  Unfortunately the relevant compressed formats are
     // deprecated for DX10+.  So they required special handling in the vertex shader.
     // If we use uncompressed data here, need to also #define UNCOMPRESSED_VERTEX_DATA
@@ -1226,69 +1245,72 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     };
 
 #ifdef UNCOMPRESSED_VERTEX_DATA
-    V_RETURN( pd3dDevice->CreateInputLayout( UncompressedLayout, 
-        ARRAYSIZE( UncompressedLayout ), 
-        pVertexShaderBuffer->GetBufferPointer(),
-        pVertexShaderBuffer->GetBufferSize(), 
-        &g_pVertexLayout11 ) );
+    V_RETURN( pd3dDevice->CreateInputLayout( UncompressedLayout,
+              ARRAYSIZE( UncompressedLayout ),
+              pVertexShaderBuffer->GetBufferPointer(),
+              pVertexShaderBuffer->GetBufferSize(),
+              &g_pVertexLayout11 ) );
     DXUT_SetDebugName(g_pVertexLayout11, "Uncompressed" );
 #else
-    V_RETURN( pd3dDevice->CreateInputLayout( CompressedLayout, 
-        ARRAYSIZE( CompressedLayout ), 
-        pVertexShaderBuffer->GetBufferPointer(),
-        pVertexShaderBuffer->GetBufferSize(), 
-        &g_pVertexLayout11 ) );
+    V_RETURN( pd3dDevice->CreateInputLayout( CompressedLayout,
+              ARRAYSIZE( CompressedLayout ),
+              pVertexShaderBuffer->GetBufferPointer(),
+              pVertexShaderBuffer->GetBufferSize(),
+              &g_pVertexLayout11 ) );
 
     DXUT_SetDebugName(g_pVertexLayout11, "Compressed" );
 #endif
 
-    V_RETURN( pd3dDevice->CreateInputLayout( UncompressedLayout, 
-        ARRAYSIZE( UncompressedLayout ), 
-        pVertexShaderBuffer->GetBufferPointer(),
-        pVertexShaderBuffer->GetBufferSize(), 
-        &g_pMirrorVertexLayout11 ) );
+    V_RETURN( pd3dDevice->CreateInputLayout( UncompressedLayout,
+              ARRAYSIZE( UncompressedLayout ),
+              pVertexShaderBuffer->GetBufferPointer(),
+              pVertexShaderBuffer->GetBufferSize(),
+              &g_pMirrorVertexLayout11 ) );
     DXUT_SetDebugName( g_pMirrorVertexLayout11, "Mirror" );
-    
+
     SAFE_RELEASE( pVertexShaderBuffer );
     SAFE_RELEASE( pPixelShaderBuffer );
 
     // The standard depth-stencil state
-    D3D11_DEPTH_STENCIL_DESC DepthStencilDescNoStencil = {
+    D3D11_DEPTH_STENCIL_DESC DepthStencilDescNoStencil =
+    {
         TRUE,                           // BOOL DepthEnable;
         D3D11_DEPTH_WRITE_MASK_ALL,     // D3D11_DEPTH_WRITE_MASK DepthWriteMask;
         D3D11_COMPARISON_LESS_EQUAL,    // D3D11_COMPARISON_FUNC DepthFunc;
         FALSE,                          // BOOL StencilEnable;
         0,                              // UINT8 StencilReadMask;
         0,                              // UINT8 StencilWriteMask;
-        {                               // D3D11_DEPTH_STENCILOP_DESC FrontFace;
+        {
+            // D3D11_DEPTH_STENCILOP_DESC FrontFace;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilFailOp;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilDepthFailOp;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilPassOp;
             D3D11_COMPARISON_NEVER,     // D3D11_COMPARISON_FUNC StencilFunc;
-        }, 
-        {                               // D3D11_DEPTH_STENCILOP_DESC BackFace;
+        },
+        {
+            // D3D11_DEPTH_STENCILOP_DESC BackFace;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilFailOp;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilDepthFailOp;
             D3D11_STENCIL_OP_KEEP,      // D3D11_STENCIL_OP StencilPassOp;
             D3D11_COMPARISON_NEVER,     // D3D11_COMPARISON_FUNC StencilFunc;
-        }, 
+        },
     };
-    V_RETURN( pd3dDevice->CreateDepthStencilState( 
-        &DepthStencilDescNoStencil, 
-        &g_pDepthStencilStateNoStencil ) );
+    V_RETURN( pd3dDevice->CreateDepthStencilState(
+                  &DepthStencilDescNoStencil,
+                  &g_pDepthStencilStateNoStencil ) );
     DXUT_SetDebugName( g_pDepthStencilStateNoStencil, "No Stencil" );
 
     // Provide the intercept callback for CMultiDeviceContextDXUTMesh, which allows
     // us to farm out different mesh chunks to different device contexts
-    void RenderMesh( CMultiDeviceContextDXUTMesh* pMesh, 
-        UINT iMesh,
-        bool bAdjacent,
-        ID3D11DeviceContext* pd3dDeviceContext,
-        UINT iDiffuseSlot,
-        UINT iNormalSlot,
-        UINT iSpecularSlot );
+    void RenderMesh( CMultiDeviceContextDXUTMesh* pMesh,
+                     UINT iMesh,
+                     bool bAdjacent,
+                     ID3D11DeviceContext* pd3dDeviceContext,
+                     UINT iDiffuseSlot,
+                     UINT iNormalSlot,
+                     UINT iSpecularSlot );
     MDC_SDKMESH_CALLBACKS11 MeshCallbacks;
-    ZeroMemory( &MeshCallbacks, sizeof(MeshCallbacks) ); 
+    ZeroMemory( &MeshCallbacks, sizeof(MeshCallbacks) );
     MeshCallbacks.pRenderMesh = RenderMesh;
 
     // Load the mesh
@@ -1349,11 +1371,12 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 
     // Setup backface culling states:
     //  1) g_pRasterizerStateNoCull --- no culling (debugging only)
-    //  2) g_pRasterizerStateBackfaceCull --- backface cull (mirror quads and the assets 
+    //  2) g_pRasterizerStateBackfaceCull --- backface cull (mirror quads and the assets
     //      reflected in the mirrors)
-    //  3) g_pRasterizerStateFrontfaceCull --- frontface cull (pre-built assets from 
+    //  3) g_pRasterizerStateFrontfaceCull --- frontface cull (pre-built assets from
     //      the content pipeline)
-    D3D11_RASTERIZER_DESC RasterizerDescNoCull = {
+    D3D11_RASTERIZER_DESC RasterizerDescNoCull =
+    {
         D3D11_FILL_SOLID,   // D3D11_FILL_MODE FillMode;
         D3D11_CULL_NONE,    // D3D11_CULL_MODE CullMode;
         TRUE,               // BOOL FrontCounterClockwise;
@@ -1372,7 +1395,8 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     V_RETURN( pd3dDevice->CreateRasterizerState( &RasterizerDescNoCull, &g_pRasterizerStateNoCullWireFrame ) );
     DXUT_SetDebugName( g_pRasterizerStateNoCullWireFrame, "Wireframe" );
 
-    D3D11_RASTERIZER_DESC RasterizerDescBackfaceCull = {
+    D3D11_RASTERIZER_DESC RasterizerDescBackfaceCull =
+    {
         D3D11_FILL_SOLID,   // D3D11_FILL_MODE FillMode;
         D3D11_CULL_BACK,    // D3D11_CULL_MODE CullMode;
         TRUE,               // BOOL FrontCounterClockwise;
@@ -1387,7 +1411,8 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     V_RETURN( pd3dDevice->CreateRasterizerState( &RasterizerDescBackfaceCull, &g_pRasterizerStateBackfaceCull ) );
     DXUT_SetDebugName( g_pRasterizerStateBackfaceCull, "BackfaceCull" );
 
-    D3D11_RASTERIZER_DESC RasterizerDescFrontfaceCull = {
+    D3D11_RASTERIZER_DESC RasterizerDescFrontfaceCull =
+    {
         D3D11_FILL_SOLID,   // D3D11_FILL_MODE FillMode;
         D3D11_CULL_FRONT,   // D3D11_CULL_MODE CullMode;
         TRUE,               // BOOL FrontCounterClockwise;
@@ -1412,17 +1437,17 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
     g_StaticParamsDirect.m_pViewport = nullptr;
 
 #ifdef DEBUG
-    // These checks are important for avoiding implicit assumptions of D3D state carry-over 
-    // across device contexts.  A very common source of error in multithreaded rendering  
-    // is setting some state in one context and inadvertently relying on that state in 
+    // These checks are important for avoiding implicit assumptions of D3D state carry-over
+    // across device contexts.  A very common source of error in multithreaded rendering
+    // is setting some state in one context and inadvertently relying on that state in
     // another context.  Setting all these flags to true should expose all such errors
     // (at non-trivial performance cost).
-    // 
+    //
     // The names mean a bit more than they say.  The flags force that state be cleared when:
     //
     //  1) We actually perform the action in question (e.g. call FinishCommandList)
     //  2) We reach any point in the frame when the action could have been
-    // performed (e.g. we are using DEVICECONTEXT_IMMEDIATE but would otherwise 
+    // performed (e.g. we are using DEVICECONTEXT_IMMEDIATE but would otherwise
     // have called FinishCommandList)
     //
     // This usage guarantees consistent behavior across the different pathways.
@@ -1446,7 +1471,7 @@ HRESULT CALLBACK OnD3D11CreateDevice( ID3D11Device* pd3dDevice, const DXGI_SURFA
 
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK OnD3D11ResizedSwapChain( ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain,
-                                          const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
+        const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
     HRESULT hr;
 
@@ -1489,8 +1514,8 @@ XMMATRIX CalcLightViewProj( int iLight )
 // The RenderMesh version which always calls the regular DXUT pathway.
 // Here we set up the per-object constant buffers.
 //--------------------------------------------------------------------------------------
-void RenderMeshDirect( ID3D11DeviceContext* pd3dContext, 
-                      UINT iMesh )
+void RenderMeshDirect( ID3D11DeviceContext* pd3dContext,
+                       UINT iMesh )
 {
     HRESULT hr = S_OK;
     D3D11_MAPPED_SUBRESOURCE MappedResource;
@@ -1516,40 +1541,40 @@ void RenderMeshDirect( ID3D11DeviceContext* pd3dContext,
     pd3dContext->PSSetConstantBuffers( g_iCBPSPerObjectBind, 1, &g_pcbPSPerObject );
 
     g_Mesh11.RenderMesh( iMesh,
-        false,
-        pd3dContext,
-        0,
-        1,
-        INVALID_SAMPLER_SLOT );
+                         false,
+                         pd3dContext,
+                         0,
+                         1,
+                         INVALID_SAMPLER_SLOT );
 }
 
 
 //--------------------------------------------------------------------------------------
-// The RenderMesh version which may redirect to another device context and/or thread.  
-// This function gets called from the main thread or a per-scene thread, but not from 
+// The RenderMesh version which may redirect to another device context and/or thread.
+// This function gets called from the main thread or a per-scene thread, but not from
 // a per-chunk worker thread.
 //
 // There are three cases to consider:
 //
-//  1) If we are not using per-chunk deferred contexts, the call gets routed straight 
+//  1) If we are not using per-chunk deferred contexts, the call gets routed straight
 // back to DXUT with the given device context.
 //  2) If we are using singlethreaded per-chunk deferred contexts, the call gets added
 // to the next deferred context, and the draw submission occurs inline here.
 //  3) If we are using multithreaded per-chunk deferred contexts, the call gets recorded
-// in the next per-chunk work queue, and the corresponding semaphore gets incremented.  
+// in the next per-chunk work queue, and the corresponding semaphore gets incremented.
 // The appropriate worker thread detects the semaphore signal, grabs the work queue
 // entry, and submits the draw call from its deferred context.
-// 
+//
 // We ignore most of the arguments to this function, because they are constant for this
 // sample.
 //--------------------------------------------------------------------------------------
-void RenderMesh( CMultiDeviceContextDXUTMesh* pMesh, 
-                UINT iMesh,
-                bool bAdjacent,
-                ID3D11DeviceContext* pd3dDeviceContext,
-                UINT iDiffuseSlot,
-                UINT iNormalSlot,
-                UINT iSpecularSlot )
+void RenderMesh( CMultiDeviceContextDXUTMesh* pMesh,
+                 UINT iMesh,
+                 bool bAdjacent,
+                 ID3D11DeviceContext* pd3dDeviceContext,
+                 UINT iDiffuseSlot,
+                 UINT iNormalSlot,
+                 UINT iSpecularSlot )
 {
     static int iNextAvailableChunkQueue = 0;   // next per-chunk deferred context to assign to
 
@@ -1591,8 +1616,8 @@ void RenderMesh( CMultiDeviceContextDXUTMesh* pMesh,
 // start with a completely new device context, and then successfully call RenderMesh
 // afterwards.
 //--------------------------------------------------------------------------------------
-HRESULT RenderSceneSetup( ID3D11DeviceContext* pd3dContext, const SceneParamsStatic* pStaticParams, 
-                         const SceneParamsDynamic* pDynamicParams )
+HRESULT RenderSceneSetup( ID3D11DeviceContext* pd3dContext, const SceneParamsStatic* pStaticParams,
+                          const SceneParamsDynamic* pDynamicParams )
 {
     HRESULT hr;
     D3D11_MAPPED_SUBRESOURCE MappedResource;
@@ -1630,7 +1655,7 @@ HRESULT RenderSceneSetup( ID3D11DeviceContext* pd3dContext, const SceneParamsSta
 
     // Set the vertex buffer format
     pd3dContext->IASetInputLayout( g_pVertexLayout11 );
-    
+
     // Set the VS per-scene constant data
     V( pd3dContext->Map( g_pcbVSPerScene, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedResource ) );
     auto pVSPerScene = reinterpret_cast<CB_VS_PER_SCENE*>( MappedResource.pData );
@@ -1667,20 +1692,20 @@ HRESULT RenderSceneSetup( ID3D11DeviceContext* pd3dContext, const SceneParamsSta
         auto pPSPerLight = reinterpret_cast<CB_PS_PER_LIGHT*>( MappedResource.pData );
         for ( int iLight = 0; iLight < g_iNumLights; ++iLight )
         {
-            XMVECTOR vLightPos = XMVectorSetW( g_vLightPos[iLight], 1.0f ); 
-            XMVECTOR vLightDir = XMVectorSetW( g_vLightDir[iLight], 0.0f ); 
+            XMVECTOR vLightPos = XMVectorSetW( g_vLightPos[iLight], 1.0f );
+            XMVECTOR vLightDir = XMVectorSetW( g_vLightDir[iLight], 0.0f );
 
             XMMATRIX mLightViewProj = CalcLightViewProj( iLight );
-            
+
             pPSPerLight->m_LightData[iLight].m_vLightColor = g_vLightColor[iLight];
             XMStoreFloat4( &pPSPerLight->m_LightData[iLight].m_vLightPos, vLightPos );
             XMStoreFloat4( &pPSPerLight->m_LightData[iLight].m_vLightDir, vLightDir );
             XMStoreFloat4x4( &pPSPerLight->m_LightData[iLight].m_mLightViewProj, XMMatrixTranspose( mLightViewProj ) );
             pPSPerLight->m_LightData[iLight].m_vFalloffs = XMFLOAT4(
-                g_fLightFalloffDistEnd[iLight], 
-                g_fLightFalloffDistRange[iLight], 
-                g_fLightFalloffCosAngleEnd[iLight], 
-                g_fLightFalloffCosAngleRange[iLight]);
+                        g_fLightFalloffDistEnd[iLight],
+                        g_fLightFalloffDistRange[iLight],
+                        g_fLightFalloffCosAngleEnd[iLight],
+                        g_fLightFalloffCosAngleRange[iLight]);
         }
         pd3dContext->Unmap( g_pcbPSPerLight, 0 );
 
@@ -1693,15 +1718,15 @@ HRESULT RenderSceneSetup( ID3D11DeviceContext* pd3dContext, const SceneParamsSta
 
 //--------------------------------------------------------------------------------------
 // Render the scene from either:
-//      - The immediate context in main thread, or 
+//      - The immediate context in main thread, or
 //      - A deferred context in the main thread, or
 //      - A deferred context in a worker thread
-//      - Several deferred contexts in the main thread, handling objects alternately 
+//      - Several deferred contexts in the main thread, handling objects alternately
 //      - Several deferred contexts in worker threads, handling objects alternately
 // The scene can be either the main scene, a mirror scene, or a shadow map scene
 //--------------------------------------------------------------------------------------
-HRESULT RenderScene( ID3D11DeviceContext* pd3dContext, const SceneParamsStatic *pStaticParams, 
-                    const SceneParamsDynamic *pDynamicParams )
+HRESULT RenderScene( ID3D11DeviceContext* pd3dContext, const SceneParamsStatic *pStaticParams,
+                     const SceneParamsDynamic *pDynamicParams )
 {
     HRESULT hr = S_OK;
 
@@ -1714,8 +1739,8 @@ HRESULT RenderScene( ID3D11DeviceContext* pd3dContext, const SceneParamsStatic *
     // Clear the shadow buffer
     if ( pStaticParams->m_pDepthStencilView )
     {
-        pd3dContext->ClearDepthStencilView( pStaticParams->m_pDepthStencilView, 
-            D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0, 0 );
+        pd3dContext->ClearDepthStencilView( pStaticParams->m_pDepthStencilView,
+                                            D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0, 0 );
     }
 
     // Perform scene setup on every d3d context we will use
@@ -1723,7 +1748,7 @@ HRESULT RenderScene( ID3D11DeviceContext* pd3dContext, const SceneParamsStatic *
     {
         for ( int iInstance = 0; iInstance < g_iNumPerChunkRenderThreads; ++iInstance )
         {
-            // Reset count 
+            // Reset count
             g_iPerChunkQueueOffset[iInstance] = 0;
 
             // Create and submit a worker queue entry
@@ -1781,24 +1806,24 @@ HRESULT RenderScene( ID3D11DeviceContext* pd3dContext, const SceneParamsStatic *
             }
 
             // Wait until all worker threads signal that their command lists are finalized
-            WaitForMultipleObjects( g_iNumPerChunkRenderThreads, 
-                g_hEndPerChunkRenderDeferredEvent, TRUE, INFINITE );
+            WaitForMultipleObjects( g_iNumPerChunkRenderThreads,
+                                    g_hEndPerChunkRenderDeferredEvent, TRUE, INFINITE );
         }
         else
         {
             // Directly finalize all command lists
             for ( int iInstance = 0; iInstance < g_iNumPerChunkRenderThreads; ++iInstance )
             {
-                V( g_pd3dPerChunkDeferredContext[iInstance]->FinishCommandList( 
-                    !g_bClearStateUponFinishCommandList, &g_pd3dPerChunkCommandList[iInstance] ) );
+                V( g_pd3dPerChunkDeferredContext[iInstance]->FinishCommandList(
+                       !g_bClearStateUponFinishCommandList, &g_pd3dPerChunkCommandList[iInstance] ) );
             }
         }
 
         // Execute all command lists.  Note these now produce a scattered render order.
         for ( int iInstance = 0; iInstance < g_iNumPerChunkRenderThreads; ++iInstance )
         {
-            pd3dContext->ExecuteCommandList( g_pd3dPerChunkCommandList[iInstance], 
-                !g_bClearStateUponExecuteCommandList );
+            pd3dContext->ExecuteCommandList( g_pd3dPerChunkCommandList[iInstance],
+                                             !g_bClearStateUponExecuteCommandList );
             SAFE_RELEASE( g_pd3dPerChunkCommandList[iInstance] );
         }
     }
@@ -1825,7 +1850,7 @@ VOID RenderShadow( int iShadow, ID3D11DeviceContext* pd3dContext )
 
     XMMATRIX m = CalcLightViewProj( iShadow );
 
-    SceneParamsDynamic DynamicParams;   
+    SceneParamsDynamic DynamicParams;
     XMStoreFloat4x4( &DynamicParams.m_mViewProj, m );
 
     V( RenderScene( pd3dContext, &g_StaticParamsShadow[iShadow], &DynamicParams ) );
@@ -1845,7 +1870,7 @@ VOID RenderMirror( int iMirror, ID3D11DeviceContext* pd3dContext )
     XMMATRIX mViewProj;
 
 #ifdef RENDER_SCENE_LIGHT_POV
-    if ( g_bRenderSceneLightPOV ) 
+    if ( g_bRenderSceneLightPOV )
     {
         vEyePoint = g_vLightPos[0];
         mViewProj = CalcLightViewProj( 0 );
@@ -1853,7 +1878,7 @@ VOID RenderMirror( int iMirror, ID3D11DeviceContext* pd3dContext )
     else
 #endif
     {
-        // Find the right view matrix for the mirror.  
+        // Find the right view matrix for the mirror.
         vEyePoint = g_Camera.GetEyePt();
         mViewProj = g_Camera.GetViewMatrix() * g_Camera.GetProjMatrix();
     }
@@ -1880,7 +1905,7 @@ VOID RenderMirror( int iMirror, ID3D11DeviceContext* pd3dContext )
         pd3dContext->ClearState();
     }
 
-    // Restore the main view 
+    // Restore the main view
     DXUTSetupD3D11Views( pd3dContext );
 
     //--------------------------------------------------------------------------------------
@@ -1888,8 +1913,8 @@ VOID RenderMirror( int iMirror, ID3D11DeviceContext* pd3dContext )
     //--------------------------------------------------------------------------------------
 
     // Set the depth-stencil state
-    pd3dContext->OMSetDepthStencilState( g_pMirrorDepthStencilStateDepthTestStencilOverwrite, 
-        g_iStencilRef );
+    pd3dContext->OMSetDepthStencilState( g_pMirrorDepthStencilStateDepthTestStencilOverwrite,
+                                         g_iStencilRef );
 
     // Set the cull state
     pd3dContext->RSSetState( g_pRasterizerStateBackfaceCull );
@@ -1932,8 +1957,8 @@ VOID RenderMirror( int iMirror, ID3D11DeviceContext* pd3dContext )
     //--------------------------------------------------------------------------------------
 
     // Set the depth-stencil state
-    pd3dContext->OMSetDepthStencilState( g_pMirrorDepthStencilStateDepthOverwriteStencilTest, 
-        g_iStencilRef );
+    pd3dContext->OMSetDepthStencilState( g_pMirrorDepthStencilStateDepthOverwriteStencilTest,
+                                         g_iStencilRef );
 
     // Set up the transform matrices to alway output depth equal to the far plane (z = w of output)
     XMFLOAT4X4 mvp4x4;
@@ -1965,13 +1990,13 @@ VOID RenderMirror( int iMirror, ID3D11DeviceContext* pd3dContext )
     // At the same time, set the depth buffer to the depth value of the mirror.
     //--------------------------------------------------------------------------------------
 
-    // Assume this context is completely from scratch, since we've just come back from 
+    // Assume this context is completely from scratch, since we've just come back from
     // scene rendering
     V( DXUTSetupD3D11Views( pd3dContext ) );
 
     // Set the depth-stencil state
-    pd3dContext->OMSetDepthStencilState( g_pMirrorDepthStencilStateDepthOverwriteStencilClear, 
-        g_iStencilRef );
+    pd3dContext->OMSetDepthStencilState( g_pMirrorDepthStencilStateDepthOverwriteStencilClear,
+                                         g_iStencilRef );
 
     // Set the cull state
     pd3dContext->RSSetState( g_pRasterizerStateBackfaceCull );
@@ -2031,7 +2056,7 @@ VOID RenderSceneDirect( ID3D11DeviceContext* pd3dContext )
 
 
 //--------------------------------------------------------------------------------------
-// The per-scene worker thread entry point.  Loops infinitely, rendering either a 
+// The per-scene worker thread entry point.  Loops infinitely, rendering either a
 // shadow scene or a mirror scene or the main scene into a command list.
 //--------------------------------------------------------------------------------------
 unsigned int WINAPI _PerSceneRenderDeferredProc( LPVOID lpParameter )
@@ -2104,48 +2129,48 @@ unsigned int WINAPI _PerChunkRenderDeferredProc( LPVOID lpParameter )
         {
         // Begin the scene by setting all required state
         case WORK_QUEUE_ENTRY_TYPE_SETUP:
+        {
+            auto pSetupEntry = reinterpret_cast<const WorkQueueEntrySetup*>( pEntry );
+
+            if ( g_bClearStateUponBeginCommandList )
             {
-                auto pSetupEntry = reinterpret_cast<const WorkQueueEntrySetup*>( pEntry );
-
-                if ( g_bClearStateUponBeginCommandList )
-                {
-                    pd3dDeferredContext->ClearState();
-                }
-
-                V( RenderSceneSetup( pd3dDeferredContext, pSetupEntry->m_pSceneParamsStatic, 
-                    &pSetupEntry->m_SceneParamsDynamic ) );
-
-                iQueueOffset += sizeof(WorkQueueEntrySetup);
-                break;
+                pd3dDeferredContext->ClearState();
             }
+
+            V( RenderSceneSetup( pd3dDeferredContext, pSetupEntry->m_pSceneParamsStatic,
+                                 &pSetupEntry->m_SceneParamsDynamic ) );
+
+            iQueueOffset += sizeof(WorkQueueEntrySetup);
+            break;
+        }
 
         // Submit a single chunk to the deferred context
         case WORK_QUEUE_ENTRY_TYPE_CHUNK:
-            {
-                auto pChunkEntry = reinterpret_cast<const WorkQueueEntryChunk*>( pEntry );
+        {
+            auto pChunkEntry = reinterpret_cast<const WorkQueueEntryChunk*>( pEntry );
 
-                // Submit work to deferred context
-                RenderMeshDirect( pd3dDeferredContext, pChunkEntry->m_iMesh );
+            // Submit work to deferred context
+            RenderMeshDirect( pd3dDeferredContext, pChunkEntry->m_iMesh );
 
-                iQueueOffset += sizeof(WorkQueueEntryChunk);
-                break;
-            }
+            iQueueOffset += sizeof(WorkQueueEntryChunk);
+            break;
+        }
 
         // Finalize scene rendering
         case WORK_QUEUE_ENTRY_TYPE_FINALIZE:
-            {
-                // Finalize preceding work
-                V( pd3dDeferredContext->FinishCommandList( !g_bClearStateUponFinishCommandList, &pd3dCommandList ) );
+        {
+            // Finalize preceding work
+            V( pd3dDeferredContext->FinishCommandList( !g_bClearStateUponFinishCommandList, &pd3dCommandList ) );
 
-                // Tell main thread command list is finished
-                SetEvent( g_hEndPerChunkRenderDeferredEvent[iInstance] );
+            // Tell main thread command list is finished
+            SetEvent( g_hEndPerChunkRenderDeferredEvent[iInstance] );
 
-                iQueueOffset += sizeof(WorkQueueEntryFinalize); // unnecessary currently as this is the last item
+            iQueueOffset += sizeof(WorkQueueEntryFinalize); // unnecessary currently as this is the last item
 
-                // Reset queue
-                iQueueOffset = 0;
-                break;
-            }
+            // Reset queue
+            iQueueOffset = 0;
+            break;
+        }
 
         // Error --- unrecognized entry type
         default:
@@ -2184,8 +2209,8 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
 
     // Clear the render target
     pd3dImmediateContext->ClearRenderTargetView( DXUTGetD3D11RenderTargetView(), Colors::MidnightBlue );
-    pd3dImmediateContext->ClearDepthStencilView( DXUTGetD3D11DepthStencilView(), 
-        D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0, 0 );
+    pd3dImmediateContext->ClearDepthStencilView( DXUTGetD3D11DepthStencilView(),
+            D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0, 0 );
 
     // Three possible render pathways:
     if ( IsRenderMultithreadedPerScene() )
@@ -2198,10 +2223,10 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
         }
 
         // wait for completion
-        WaitForMultipleObjects( g_iNumPerSceneRenderThreads, 
-            g_hEndPerSceneRenderDeferredEvent, 
-            TRUE, 
-            INFINITE );
+        WaitForMultipleObjects( g_iNumPerSceneRenderThreads,
+                                g_hEndPerSceneRenderDeferredEvent,
+                                TRUE,
+                                INFINITE );
     }
     else if ( IsRenderDeferredPerScene() )
     {
@@ -2209,23 +2234,23 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
         for ( int iShadow = 0; iShadow < g_iNumShadows; ++iShadow )
         {
             RenderShadow( iShadow, g_pd3dPerSceneDeferredContext[iShadow] );
-            V( g_pd3dPerSceneDeferredContext[iShadow]->FinishCommandList( 
-                !g_bClearStateUponFinishCommandList, 
-                &g_pd3dPerSceneCommandList[iShadow] ) );
+            V( g_pd3dPerSceneDeferredContext[iShadow]->FinishCommandList(
+                   !g_bClearStateUponFinishCommandList,
+                   &g_pd3dPerSceneCommandList[iShadow] ) );
         }
 
         for ( int iMirror = 0; iMirror < g_iNumMirrors; ++iMirror )
         {
             RenderMirror( iMirror, g_pd3dPerSceneDeferredContext[iMirror] );
-            V( g_pd3dPerSceneDeferredContext[iMirror]->FinishCommandList( 
-                !g_bClearStateUponFinishCommandList, 
-                &g_pd3dPerSceneCommandList[g_iNumShadows + iMirror] ) );
+            V( g_pd3dPerSceneDeferredContext[iMirror]->FinishCommandList(
+                   !g_bClearStateUponFinishCommandList,
+                   &g_pd3dPerSceneCommandList[g_iNumShadows + iMirror] ) );
         }
 
         RenderSceneDirect( g_pd3dPerSceneDeferredContext[g_iNumMirrors] );
-        V( g_pd3dPerSceneDeferredContext[g_iNumMirrors]->FinishCommandList( 
-            !g_bClearStateUponFinishCommandList, 
-            &g_pd3dPerSceneCommandList[g_iNumShadows + g_iNumMirrors] ) );
+        V( g_pd3dPerSceneDeferredContext[g_iNumMirrors]->FinishCommandList(
+               !g_bClearStateUponFinishCommandList,
+               &g_pd3dPerSceneCommandList[g_iNumShadows + g_iNumMirrors] ) );
     }
     else
     {
@@ -2243,14 +2268,14 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
         RenderSceneDirect( pd3dImmediateContext );
     }
 
-    // If we are doing ST_DEFERRED_PER_SCENE or MT_DEFERRED_PER_SCENE, we have generated a 
+    // If we are doing ST_DEFERRED_PER_SCENE or MT_DEFERRED_PER_SCENE, we have generated a
     // bunch of command lists.  Execute those lists now.
     if ( IsRenderDeferredPerScene() )
     {
         for ( int iInstance = 0; iInstance < g_iNumPerSceneRenderThreads; ++iInstance )
         {
-            pd3dImmediateContext->ExecuteCommandList( g_pd3dPerSceneCommandList[iInstance], 
-                !g_bClearStateUponExecuteCommandList );
+            pd3dImmediateContext->ExecuteCommandList( g_pd3dPerSceneCommandList[iInstance],
+                    !g_bClearStateUponExecuteCommandList );
             SAFE_RELEASE( g_pd3dPerSceneCommandList[iInstance] );
         }
     }
@@ -2277,7 +2302,7 @@ void CALLBACK OnD3D11FrameRender( ID3D11Device* pd3dDevice, ID3D11DeviceContext*
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11ResizedSwapChain 
+// Release D3D11 resources created in OnD3D11ResizedSwapChain
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 {
@@ -2286,7 +2311,7 @@ void CALLBACK OnD3D11ReleasingSwapChain( void* pUserContext )
 
 
 //--------------------------------------------------------------------------------------
-// Release D3D11 resources created in OnD3D11CreateDevice 
+// Release D3D11 resources created in OnD3D11CreateDevice
 //--------------------------------------------------------------------------------------
 void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
 {
@@ -2313,7 +2338,7 @@ void CALLBACK OnD3D11DestroyDevice( void* pUserContext )
     SAFE_DELETE( g_pTxtHelper );
 
     g_Mesh11.Destroy();
-                
+
     SAFE_RELEASE( g_pVertexLayout11 );
     SAFE_RELEASE( g_pVertexShader );
     SAFE_RELEASE( g_pPixelShader );

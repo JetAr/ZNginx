@@ -1,6 +1,6 @@
-//----------------------------------------------------------------------------------
+﻿//----------------------------------------------------------------------------------
 // File:        DeferredContexts11\src\renderers/IC_Instancing_Renderer.h
-// SDK Version: v1.2 
+// SDK Version: v1.2
 // Email:       gameworks@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -50,10 +50,17 @@ class IC_Instancing_Renderer : public RendererBase
 public:
     IC_Instancing_Renderer() : RendererBase() {};
 
-    virtual MT_RENDER_STRATEGY GetContextType() {return RS_IC_INSTANCING;}
+    virtual MT_RENDER_STRATEGY GetContextType()
+    {
+        return RS_IC_INSTANCING;
+    }
 
     // Instancing will *always* use VTF
-    virtual void SetUseVTF(bool bUseVTF) { DC_UNREFERENCED_PARAM(bUseVTF); RendererBase::SetUseVTF(true);}
+    virtual void SetUseVTF(bool bUseVTF)
+    {
+        DC_UNREFERENCED_PARAM(bUseVTF);
+        RendererBase::SetUseVTF(true);
+    }
 
     virtual ID3D11PixelShader* PickAppropriatePixelShader();
     virtual ID3D11VertexShader* PickAppropriateVertexShader();
