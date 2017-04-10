@@ -1,3 +1,0 @@
-E:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/bin/CMakeFiles/ALL_BUILD.dir
-E:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/bin/CMakeFiles/ZERO_CHECK.dir
-E:/MyDoc/Work/Work/Defect/3dsmax_XFile/lib3ds/lib3ds/bin/CMakeFiles/lib3ds.dir
